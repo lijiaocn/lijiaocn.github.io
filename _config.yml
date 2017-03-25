@@ -1,0 +1,16 @@
+encoding:    UTF-8
+gems: [jekyll-paginate]
+paginate_path: '/page/:num'
+paginate: 30 
+future: true
+
+host:        0.0.0.0
+port:        4000
+baseurl:    
+imgurl: 
+url:         http://localhost:4000
+lsi:         false
+excerpt_separator: "----"
+ICP-number: 鲁ICP备17004409号-1
+footlinks: {"Lijiaocn":"http://www.lijiaocn.com", "znr.io":"http://znr.io"}
+pageheader: 最牛推荐，网址超短：<a href="/" style="font-weight:bold;font-size:20px">znr.io</a>

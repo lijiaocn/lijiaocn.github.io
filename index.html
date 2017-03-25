@@ -1,0 +1,50 @@
+---
+layout: index
+title: 深度好文|全站列表
+author: 
+keywords: 好文章,好思想,好经历,好吃的,好玩的,好股票
+description: 最牛推荐:发现好文章、好思想、好经历、好吃的、好玩的、好商品、好闺蜜和好股票！网址超短znr.io。要想有好思想、学到好技术、买到好商品、找到好股票和好吃的，就要来最牛推荐。
+
+---
+
+<div class="postlist">
+	<!-- 遍历分页后的文章 -->
+	{% for post in paginator.posts %}
+	<h2><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>
+	<div class="postinfo" >
+		<p><span><a href="{{ site.baseurl }}/tags/{{ post.tags }}.html">{{ post.tags }}</a> / {{ post.author }} / {{ post.createdate }}</span></p>
+	</div>
+	<div class="postdesc">
+		<p>{{ post.description }}... <a href="{{ site.baseurl }}{{ post.url }}">more</a><p>
+	</div>
+	<hr>
+	{% endfor %}
+</div>
+
+<!-- 分页链接 -->
+{% if paginator.total_pages > 1 %}
+<div class="pagination">
+  {% if paginator.previous_page %}
+    <a href="{{ '/index.html' | prepend: paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">&laquo; 上一页</a>
+  {% else %}
+    <span>&laquo; 上一页</span>
+  {% endif %}
+
+  {% for page in (1..paginator.total_pages) %}
+    {% if page == paginator.page %}
+      <em>{{ page }}</em>
+    {% elsif page == 1 %}
+      <a href="{{ '/index.html' | prepend: site.baseurl | replace: '//', '/' }}">{{ page }}</a>
+    {% else %}
+      <a href="{{ site.paginate_path | prepend: site.baseurl | replace: '//', '/' | replace: ':num', page }}/index.html"/>{{ page }}</a>
+    {% endif %}
+  {% endfor %}
+
+  {% if paginator.next_page %}
+    <a href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}/index.html">下一页 &raquo;</a>
+  {% else %}
+    <span>Next &raquo;</span>
+  {% endif %}
+</div>
+{% endif %}
+<hr>

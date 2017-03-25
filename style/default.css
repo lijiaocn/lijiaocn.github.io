@@ -1,0 +1,328 @@
+#main-nav-bar-2{
+	padding:0px;
+	margin:0px;
+}
+.body {
+	background-color: #ffffff;
+	padding-left:0px;
+	padding-top:50px;
+	font-family: 宋体;
+	-ms-overflow-style: scrollbar;
+}
+
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/ 
+::-webkit-scrollbar  
+{  
+	width: 16px;  
+	height: 16px;  
+	background-color: #F5F5F5;  
+	border-radius: 10px;  
+}  
+/*定义滚动条轨道 内阴影+圆角*/  
+::-webkit-scrollbar-track  
+{  
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);  
+	border-radius: 10px;  
+	background-color: #FFFFFF;  
+}  
+
+/*定义滑块 内阴影+圆角*/  
+::-webkit-scrollbar-thumb  
+{  
+	border-radius: 10px;  
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);  
+	background-color: #eee;  
+}  
+
+a.anchor{
+	display: block;
+	top: -100px;
+	visibility: hidden;
+	position:relative;
+}
+
+.navbar-wrapper {
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+	z-index: 20;
+}
+
+.navbar-wrapper > .container {
+	padding-right: 0;
+	padding-left: 0;
+}
+.navbar-wrapper .navbar {
+	padding-right: 15px;
+	padding-left: 15px;
+}
+.navbar-wrapper .navbar .container {
+	width: auto;
+}
+
+.navselected{
+	font-weight:bold;
+	font-size:16px;
+}
+
+.navbutton{
+	border:1px;
+	background:#333;
+	position:left;
+	padding:0px;
+	margin:0px;
+	text-align:left;
+	margin-left:-4px;
+}
+
+.main{
+	padding-top:10px;
+	background-color: #ffffff;
+}
+
+.searchbar{
+	padding-top:5px;
+	padding-bottom:5px;
+	height: 80px;
+}
+
+.baidusearch{
+	width:370px;
+	padding-top:10px;
+}
+
+.searchbarLinks{
+	padding-top:23px;
+	padding-bottom:2px;
+	width:350px;
+}
+.
+.rightsearch{
+}
+
+.lsidebar{
+	float:left;
+}
+
+div.lsidebar nav{
+	border-radius:10px;
+	background-color:#e8e8e8;
+	border-radius:10px;
+}
+div.lsidebar ul{
+	overflow-y:auto;
+	height:500px;
+}
+
+.center{
+	margin-left:0px;
+}
+
+div.center p{
+	font-size:16px;
+	font-family: 宋体;
+	line-height: 180%;
+	padding:0px;
+}
+div.center img{
+	max-width:100%;
+}
+div.center h2 {
+	font-size:22px;
+	font-family: 宋体;
+	font-weight:bold;
+}
+div.center h1 {
+	font-size:24px;
+	font-family: 宋体;
+	font-weight:bold;
+}
+div.center h2 a{
+	color: #000000;
+}
+
+div.center pre{
+	font-size: 15px;
+	font-weight:bold;
+}
+
+div.postlist p{
+	line-height:130%;
+	padding-top:5px;
+	padding-left:0px
+}
+
+div.postinfo p{
+	font-size:13px;
+	padding-top:0px;
+	padding-left:3px
+}
+
+div.postdesc p{
+	padding-top:0px;
+	padding-left:1px;
+	color: #888;
+}
+
+.mainbottomleft{
+	padding-top:10px;
+	float:left;
+}
+
+.mainbottomright{
+	padding-top:10px;
+	float:right;
+	text-align:center;
+}
+
+.column-title{
+	height:40px;
+	line-height:40px;
+	background-image:-webkit-linear-gradient(to bottom, #e8e8e8, #ffffff);
+	background-image:linear-gradient(to bottom,#e8e8e8,#ffffff);
+	border-radius:4px;
+	margin-top: 10px;
+}
+
+div.column-title p{
+	font-size:16px;
+	font-weight: bold;
+	color:gray;
+}
+.column-content{
+	padding:0px;
+	font-size:0;
+	padding-bottom:40px;
+}
+.column-element{
+	margin:0px;
+	width:175px;
+	height:74.46px;
+}
+div.column-element img{
+	width:  100%;
+	height: 100%;
+}
+
+.rsidebar{
+	text-align:center;
+}
+
+.rsidebar-title{
+	height:40px;
+	line-height:40px;
+	border-radius:4px;
+	margin-top: 10px;
+}
+div.rsidebar-title p{
+	border-radius:4px;
+	background-image:-webkit-linear-gradient(to bottom, #e8e8e8, #ffffff);
+	background-image:linear-gradient(to bottom,#e8e8e8,#ffffff);
+}
+.rsidebar-content{
+}
+
+.rsidebar-element{
+	padding-left:0px;
+	padding-bottom:0px;
+}
+
+.foot{
+	margin-top: 20px;
+	padding-top:10px;
+	text-align:center;
+	background-color: #5a5a5a;
+}
+
+/* Featurettes
+   ------------------------- */
+.featurette-divider {
+	margin: 80px 0; /* Space out the Bootstrap <hr> more */
+}
+
+/* Thin out the marketing headings */
+.featurette-heading {
+	font-weight: 300;
+	line-height: 1;
+	letter-spacing: -1px;
+}
+
+/* RESPONSIVE CSS
+   -------------------------------------------------- */
+@media (min-width: 300px) and (max-width: 900px){
+	div.center img{
+		width: 100%;
+		padding:0px;
+		margin: 0px;
+	}
+}
+@media (max-width:768px){
+	.center{
+		margin-left:0px;
+	}
+	div.center h1 {
+		font-size:22px;
+		font-family: 宋体;
+		font-weight:bold;
+	}
+	div.center h2 {
+		font-size:20px;
+		font-family: 宋体;
+		font-weight:bold;
+	}
+	.body {
+		background-color: #ffffff;
+		padding-left:0px;
+		padding-top:0px;
+		font-family: 宋体;
+		-ms-overflow-style: scrollbar;
+	}
+	.searchbarLinks{
+		padding-top:0px;
+		padding-bottom:0px;
+		margin-top:0px;
+		margin-bottom:0px;
+		width:350px;
+	}
+}
+
+@media (min-width: 768px) {
+	/* Navbar positioning foo */
+	.navbar-wrapper {
+		margin-top: 20px;
+	}
+	.navbar-wrapper .container {
+		padding-right: 15px;
+		padding-left: 15px;
+	}
+	.navbar-wrapper .navbar {
+		padding-right: 0;
+		padding-left: 0;
+	}
+
+	/* The navbar becomes detached from the top, so we round the corners */
+	.navbar-wrapper .navbar {
+		border-radius: 4px;
+	}
+
+	/* Bump up size of carousel content */
+	.carousel-caption p {
+		margin-bottom: 80px;
+		font-size: 21px;
+		line-height: 1.4;
+	}
+
+	.featurette-heading {
+		font-size: 50px;
+	}
+}
+
+@media (min-width: 992px) {
+	.featurette-heading {
+		margin-top: 120px;
+	}
+}
+
+@media (min-width: 1200px) {
+}

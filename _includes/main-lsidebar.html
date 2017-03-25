@@ -1,0 +1,8 @@
+<nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm hidden-md hidden-lg" >
+	<ul class="nav ">
+		<li><a href="{{ site.baseurl }}/index.html">全部</a></li>
+		{% for tag in site.tags %} 
+		<li><a href="{{ site.baseurl }}/tags/{{ tag[0]}}.html">{{ tag[0] }}</a></li>
+		{% endfor %}
+	</ul>
+</nav>

@@ -1,0 +1,25 @@
+---
+layout: index
+title: 深度好文|观点
+author: 
+keywords: 观点,文章列表,观点碰撞
+description: 这里是最牛推荐(znr.io)精心采编的各家观点、现实看法的文章列表。znr.io只收录、推荐最牛的有深度的观点！
+
+---
+
+{% for tag in site.tags %} 
+	{% if tag[0] == "观点" %}
+		<div class="postlist">
+		{% for post in tag[1] %}
+			<h2><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>
+			<div class="postinfo" >
+				<p><span>{{ post.tags }} / {{ post.author }} / {{ post.createdate }}</span></p>
+			</div>
+			<div class="postdesc">
+				<p>{{ post.description }}... <a href="{{ site.baseurl }}{{ post.url }}">more</a><p>
+			</div>
+			<hr>
+		{% endfor %}
+		</div>
+	{% endif %}
+{% endfor %}

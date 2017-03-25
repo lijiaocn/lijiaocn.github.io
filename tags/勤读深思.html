@@ -1,0 +1,25 @@
+---
+layout: index
+title: 深度好文|勤读深思
+author: 
+keywords: 勤读深思,文章列表,读书笔记
+description: 这里是最牛推荐(znr.io)精心采编的阅读好书后得到的感悟、深入思考后收获的真知的记录。znr.io只收录、推荐最牛的勤读深思的好文章！
+
+---
+
+{% for tag in site.tags %} 
+	{% if tag[0] == "勤读深思" %}
+		<div class="postlist">
+		{% for post in tag[1] %}
+			<h2><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>
+			<div class="postinfo" >
+				<p><span>{{ post.tags }} / {{ post.author }} / {{ post.createdate }}</span></p>
+			</div>
+			<div class="postdesc">
+				<p>{{ post.description }}... <a href="{{ site.baseurl }}{{ post.url }}">more</a><p>
+			</div>
+			<hr>
+		{% endfor %}
+		</div>
+	{% endif %}
+{% endfor %}

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	{% include head.html %}
+<body class="body">
+	{% include topnav.html %}
+	<div class="container main">
+		<div class="row">
+			{% include main-first-row.html %}
+		</div>
+	</div>
+
+	<div class=".visible-lg-block lsidebar">
+		{% include main-lsidebar.html %}
+	</div>
+
+	<div class="container main">
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 center">
+				<div class="row" style="height:30px">
+					<div class="col-xs-12 col-lg-12">
+						{{ site.pageheader }}<hr style="margin-top:0px;margin-bottom:0px">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12 col-lg-12">
+						{% if page.author %}
+							<p>（{{ page.author }}  {{ page.createdate }}）</p>
+						{% endif %}
+						{{content}}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12 col-lg-12">
+					</div>
+					<div class="col-xs-12 col-lg-12">
+						<div class="jiathis_style">
+							<span class="jiathis_txt">分享到：</span>
+							<a class="jiathis_button_qzone">QQ空间</a>
+							<a class="jiathis_button_tsina">微博</a>
+							<a class="jiathis_button_weixin">微信</a>
+							<a href="http://www.jiathis.com/share?uid=2126233" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+							<a class="jiathis_counter_style"></a>
+						</div>
+						<!-- JiaThis Button BEGIN -->
+						<script type="text/javascript">
+							var jiathis_config = {data_track_clickback:'true'};
+						</script>
+						<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=2126233" charset="utf-8"></script>
+						<!-- JiaThis Button END -->
+					</div>
+					<div class="col-xs-12 col-lg-12">
+						{% include main-bottom.html %}
+					</div>
+					<div class="col-xs-12 col-lg-12">
+						<!-- 友言评论UY BEGIN -->
+						<div id="uyan_frame"></div>
+						<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2126233"></script>
+						<!-- UY END -->
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-3 col-lg-2 rsidebar">
+				{% include main-rsidebar.html %}
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid foot">
+	{% include foot.html %}
+	</div>
+
+	<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<script src="http://s1.bdstatic.com/r/www/cache/global/js/BaiduHttps_20150714_zhanzhang.js"></script>
+	<script src="{{ site.baseurl }}/js/body.js"></script>
+</body>
+</html>
