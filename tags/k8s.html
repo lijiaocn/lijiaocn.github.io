@@ -1,0 +1,24 @@
+---
+layout: default
+title:  k8s
+author: lijiaocn
+keywords:  k8s,kubernetes
+description: k8s,成k8s的文章  
+
+---
+
+{% for tag in site.tags %} 
+	{% if tag[0] == "k8s" %}
+		<div class="postlist">
+		{% for post in tag[1] %}
+			<h2><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>
+			<div class="postinfo" >
+				<p><span>{{ post.tags }} / {{ post.author }} / {{ post.createdate }}</span></p>
+			</div>
+			<div class="postdesc">
+				<p>{{ post.description }}... <a href="{{ site.baseurl }}{{ post.url }}">more</a><p>
+			</div>
+		{% endfor %}
+		</div>
+	{% endif %}
+{% endfor %}

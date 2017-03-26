@@ -1,7 +1,6 @@
 ---
 layout: default
 title: Kubernetes
-tags: 杂项
 
 ---
 
