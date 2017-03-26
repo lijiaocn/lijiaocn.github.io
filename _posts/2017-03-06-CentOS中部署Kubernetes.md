@@ -3,7 +3,7 @@ layout: default
 title: CentOS中部署Kubernetes
 author: lijiaocn
 createdate: 2017/03/06 11:59:43
-changedate: 2017/03/26 21:59:10
+changedate: 2017/03/26 22:02:17
 categories:
 tags: k8s
 keywords: kubernetes,业务编排,centos
@@ -295,7 +295,7 @@ kubernetes的使用、自动化部署以及组件的详细解析等内容，将�
 	slave1 192.168.40.11
 	slave2 192.168.40.12
 
-### 部署master:
+### 部署master
 
 	yum install -y epel-release
 	yum install -y etcd 
