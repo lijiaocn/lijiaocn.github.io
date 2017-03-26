@@ -143,8 +143,8 @@ div.center h2 a{
 }
 
 div.center pre{
-	font-size: 15px;
-	font-weight:bold;
+	font-size: 13px;
+	overflow: auto;
 }
 
 div.postlist p{
