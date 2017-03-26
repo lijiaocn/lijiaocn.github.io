@@ -3,7 +3,7 @@ layout: default
 title: CentOS中部署Kubernetes
 author: lijiaocn
 createdate: 2017/03/06 11:59:43
-changedate: 2017/03/26 21:54:32
+changedate: 2017/03/26 21:59:10
 categories:
 tags: k8s
 keywords: kubernetes,业务编排,centos
@@ -11,7 +11,7 @@ description: 介绍了如何在CentOS上部署kubernetes系统。
 
 ---
 
-* 目录
+* auto-gen TOC:
 {:toc}
 
 ## 环境
