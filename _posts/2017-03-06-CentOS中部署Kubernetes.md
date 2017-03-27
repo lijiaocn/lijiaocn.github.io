@@ -3,7 +3,7 @@ layout: default
 title: CentOS中部署Kubernetes
 author: lijiaocn
 createdate: 2017/03/06 11:59:43
-changedate: 2017/03/26 22:02:17
+changedate: 2017/03/27 11:02:01
 categories:
 tags: k8s
 keywords: kubernetes,业务编排,centos
@@ -580,6 +580,32 @@ dashboard的deployment包含一个service和一个pod:
 
 这时候发送到192.168.40.12的80端口请求就会被转发到服务defaultbackend。
 
+## 为apiserver签署https证书:
+
+生成apiserver的签署请求：
+
+	DIR=/etc/kubernetes/cert.d
+	openssl genrsa -out ${DIR}/apiserver.key 1024               
+	openssl req -new -key ${DIR}/apiserver.key -out ${DIR}/apiserver.csr
+
+Comman Name输入kubernetes服务的地址：
+
+	Common Name (eg, your name or your server's hostname) []:10.254.0.1
+
+kubernetes服务地址的获取方式:
+
+	$ kubectl -s 192.168.40.10:8080 get services
+	NAME         CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+	kubernetes   10.254.0.1   <none>        443/TCP   4d
+
+使用root证书签署：
+
+	DIR=/etc/kubernetes/cert.d
+	openssl x509 -req -days 365 -in ${DIR}/apiserver.csr -CA ${DIR}/root-ca.crt -CAkey ${DIR}/root-ca.key -CAcreateserial  -out ${DIR}/apiserver.crt 
+
+在/etc/kubernetes/apiserver中添加配置：
+
+	--tls-cert-file /etc/kubernetes/cert.d/apiserver.crt --tls-private-key-file  /etc/kubernetes/cert.d/apiserver.key --secure-port 443
 
 ## docker registry
 
