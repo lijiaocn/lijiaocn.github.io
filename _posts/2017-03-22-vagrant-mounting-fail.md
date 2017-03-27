@@ -3,11 +3,11 @@ layout: default
 title: vagrant /sbin/mount.vboxsf, mounting failed with the error, No such device
 author: lijiaocn
 createdate: 2017/03/27 16:56:41
-changedate: 2017/03/27 18:57:54
+changedate: 2017/03/27 18:58:59
 categories:
 tags: 问题
 keywords : vagrant
-description: vagrant /sbin/mount.vboxsf: mounting failed with the error: No such device
+description: "vagrant /sbin/mount.vboxsf: mounting failed with the error: No such device"
 
 ---
 
