@@ -1,14 +1,18 @@
 ---
 layout: default
-title: Vim
-tags: 杂项
+title: Vim使用手册
+author: lijiaocn
+createdate: 2017/04/01 11:00:33
+changedate: 2017/04/01 11:03:11
+categories:
+tags: 手册
+keywords: vim
+description: vim的使用手册，包含常用的扩展方法，和一些非常有用的小技巧。
 
 ---
 
-# Vim
-创建时间: 2014/07/21 21:02:16  修改时间: 2016/12/17 20:13:15 作者:lijiao
-
-----
+* auto-gen TOC:
+{:toc}
 
 ## 摘要
 
@@ -636,6 +640,17 @@ YouCompleteMe支持的语言更为丰富。
 
 	/a.\{-}b
 	
+
+## 实用技巧
+
+### vim粘贴时取消自动缩进
+
+	:set paste
+
+重启开启：
+
+	:set nopaste
+
 ## 文献
 
-1. http://xxx  "Name"
+

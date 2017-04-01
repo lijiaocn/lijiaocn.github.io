@@ -1,9 +1,9 @@
 ---
 layout: default
-title: 使用Swagger描述REST风格的API
+title: Swagger使用手册
 author: lijiaocn
 createdate: 2017/03/11 19:06:24
-changedate: 2017/03/27 17:04:40
+changedate: 2017/04/01 10:57:31
 categories:
 tags: 手册
 keywords: swagger,restful

@@ -1,14 +1,18 @@
 ---
 layout: default
-title: Git
-tags: 杂项
+title: Git使用手册
+author: lijiaocn
+createdate: 2017/04/01 11:00:33
+changedate: 2017/04/01 11:06:52
+categories:
+tags: 手册
+keywords: git
+description: git的使用手册，常用的协作方法，和一些非常有用的小技巧。
 
 ---
 
-# Git
-创建时间: 2015/07/22 22:29:47  修改时间: 2016/04/26 15:13:03 作者:lijiao
-
-----
+* auto-gen TOC:
+{:toc}
 
 ## 摘要
 
@@ -180,14 +184,15 @@ git reset:
 	git gc --prune=now
 	git gc --aggressive --prune=now''
 
-## 中文名乱码
+## 配置编辑器
+
+	git config --global core.editor vim
+
+## 有用的小方法
+
+### 中文名乱码
 
 解决中文文件名显示乱码：
 
 	git config core.quotepath false
 
-## 配置编辑器
-
-	git config --global core.editor vim
-
-## 文献

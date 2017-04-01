@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes在CentOS上的集群部署
 author: lijiaocn
 createdate: 2017/03/06 11:59:43
-changedate: 2017/03/27 18:56:06
+changedate: 2017/03/27 19:12:07
 categories:
 tags: k8s
 keywords: kubernetes,业务编排,centos
@@ -316,41 +316,6 @@ dashboard的deployment包含一个service和一个pod:
 	nginx-ingress-controller-432417711-6r342   1/1       Running   0          1h        192.168.40.12   slave2
 
 这时候就可以直接访问192.168.40.12:80，因为还没有创建ingress，所有发送到192.168.40.12的80端口的请求都会被转发到默认服务default-http-backend。
-
-## 为dashboard创建ingress
-
-dashboard的服务名称为kubernetes-dashboard：
-
-	$ ./kubectl.sh get service -n kube-system
-	 NAME                   CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
-	 default-http-backend   10.254.251.110   <none>        80/TCP         12m
-	 kubernetes-dashboard   172.16.60.36     <nodes>       80:31275/TCP   3d
-
-撰写ingress文件:
-
-	apiVersion: extensions/v1beta1
-	kind: Ingress
-	metadata:
-	  name: dashboard
-	  namespace: kube-system
-	spec:
-	  rules:
-	  - http:
-	      paths:
-	      - path: /
-	        backend:
-	          serviceName: kubernetes-dashboard
-	          servicePort: 80
-
-ingress文件的含义时，在namespace"kube-system"中创建一个名为dashboard的ingress，所有到路径"/"的http请求被转发到同一个namespace服务"kubernetes-dashboard"。
-
-创建成功后，可以查看到ingress的地址:
-
-	$./kubectl.sh get ingress  -n kube-system
-	NAME        HOSTS     ADDRESS         PORTS     AGE
-	dashboard   *         192.168.40.12   80        22s
-
-这时候就可以通过地址“http://192.168.40.12:80”，访问dashboard了。
 
 ## 为apiserver签署https证书:
 
