@@ -1,9 +1,9 @@
 ---
 layout: default
-title: linux iptables
+title: Iptables使用手册
 author: lijiaocn
 createdate: 2014/04/16 10:16:55
-changedate: 2017/04/01 10:36:26
+changedate: 2017/04/01 11:11:28
 categories:
 tags: 手册
 keywords:  linux iptables
