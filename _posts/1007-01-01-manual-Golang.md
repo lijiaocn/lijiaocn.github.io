@@ -1,11 +1,11 @@
 ---
 layout: default
-title: Golang编程
+title: Golang手册
 author: lijiaocn
 createdate: 2017/03/28 10:01:38
-changedate: 2017/03/28 13:06:15
+changedate: 2017/04/01 11:27:05
 categories:
-tags: Go
+tags: 手册
 keywords: Go编程
 description: Go编程
 

@@ -1,27 +1,25 @@
 ---
 layout: default
-title: docker使用核对清单
-tags: 杂项
+title: Docker的检查清单
+author: lijiaocn
+createdate: 2017/03/29 11:11:53
+changedate: 2017/04/01 11:19:20
+categories:
+tags: 手册
+keywords: docker,使用手册,docker的使用手册
+description: 使用docker时的检查清单。
 
 ---
 
-# 2015-07-29-docker使用核对清单
-创建时间: 2015/07/29 22:09:33  修改时间: 2016/12/06 00:31:56 作者:lijiao
-
-----
+* auto-gen TOC:
+{:toc}
 
 ## 摘要
 
 将在使用docker的时候遇到的一些问题记录在这里, 这样下次使用就可以来这里进行核对, 避免同样的错误。
 
-## 清单
-
-1. 是否在image中正确的设置了时区?
+## 是否在image中正确的设置了时区?
 
 	物理机上的时区正确不意味着docker中的时区也是正确的。
 
 	CentOS设置方式: ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-
-## 文献
-
-

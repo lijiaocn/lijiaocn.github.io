@@ -1,14 +1,14 @@
 ---
 layout: default
-title:  手册
+title:  工具
 author: lijiaocn
-keywords:  手册,kubernetes
-description: 手册,成手册的文章  
+keywords:  工具
+description: 工具,工具介绍 
 
 ---
 
 {% for tag in site.tags %} 
-	{% if tag[0] == "手册" %}
+	{% if tag[0] == "工具" %}
 		<div class="postlist">
 		{% for post in tag[1] %}
 			<h2><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>

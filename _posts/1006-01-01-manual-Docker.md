@@ -1,14 +1,18 @@
 ---
 layout: default
-title: docker
-tags: 杂项
+title: Docker的使用手册
+author: lijiaocn
+createdate: 2017/03/29 11:11:53
+changedate: 2017/04/01 11:24:02
+categories:
+tags: 手册
+keywords: docker,使用手册,docker的使用手册
+description: docker的使用手册，配置docker deamon运行参数等。
 
 ---
 
-# docker
-创建时间: 2014/09/25 14:29:09  修改时间: 2017/01/12 17:19:02 作者:lijiao
-
-----
+* auto-gen TOC:
+{:toc}
 
 ## 摘要
 
@@ -325,46 +329,6 @@ docker自身的编译环境也是运行在docker容器中的, 这里以docker编
 	# Upload docker source
 	COPY . /go/src/github.com/docker/docker
 
-## docker的开发环境镜像
-
-[官方手册](https://docs.docker.com/contributing/devenvironment/)
-
-docker的开发环境也是一个docker，在docker源码的根目录下，有一个Dockerfile, 在make build时候会根据这个Dockerfile创建一个开发环境的image.
-
-通过下面的操作, 将开发环境的镜像导出:
-
-	1. 先安装一个docker, 并且启动docker server.
-		$ wget https://get.docker.io/builds/Linux/x86_64/docker-latest -O docker
-		$ chmod +x docker
-		$ sudo ./docker -d &
-	2. 下载一份docker的源码：
-		$ git clone https://git@github.com/docker/docker
-		$ cd docker
-	3. make build    
-		查看Makefile可以发现, 首先运行make build时使用docker build创建了一个image, 
-		这个image就是docker的编译环境
-			build: bundles
-				docker build -t "$(DOCKER_IMAGE)" .
-
-	   成功之后，会在docker images中看到一个名为 dockerXXX的镜像, 可以将其save到一个文件中,如下:
-			docker save -o ubuntu_14.04.tar.gz ubuntu:14.04     //save
-			docker load -i ubuntu_14.04.tar.gz                  //load
-
-也可以根据Dockerfile中的描述，自行配置docker的开发环境。
-
-源码的顶层目录结构如下, 其中docker目录是代码的入口:
-
-	[root@localhost docker.git]# pwd
-	/root/docker.git
-	[root@localhost docker.git]# ls
-	api           contrib          docs         integration-cli  opts       vendor
-	archive       CONTRIBUTING.md  engine       LICENSE          pkg        VERSION
-	AUTHORS       daemon           events       links            README.md  volumes
-	builder       docker           graph        MAINTAINERS      reexec
-	builtins      Dockerfile       hack         Makefile         registry
-	bundles       dockerinit       image        nat              runconfig
-	CHANGELOG.md  dockerversion    integration  NOTICE           utils
-
 ## 镜像管理
 
 ### 查看本地所有的镜像
@@ -378,11 +342,16 @@ docker的开发环境也是一个docker，在docker源码的根目录下，有�
 
 ### 搜索镜像
 
-docker search
+	docker search
+
+docker搜索其它registry中的镜像:
+
+	docker search 192.168.1.104:5000/redis
+	docker search 192.168.1.104:5000/*
 
 ### 下载镜像
 
-docker pull
+	docker pull
 
 ### 提交镜像
 
@@ -407,15 +376,18 @@ docker tag为容器设置tag
 
 ### 发布镜像
 
-docker push, 将image发布出去
+将image发布出去
+
+	docker push 
 
 ### 导入导出
 
 save/load
+
 	docker save IMAGE -o xxx.tar    //将基本镜像一同导出
 	docker load -i xxx.tar          //导入
 
-### 镜像的位置
+### 镜像的本地存放
 
 Where is images? 对于虚拟机来说, 虚拟机文件就在那里, 当时docker的image文件还真不好找...
 
@@ -589,6 +561,83 @@ docker rm删除镜像:
 	CONTAINER ID  IMAGE                   COMMAND       CREATED        STATUS        PORTS                    NAMES
 	bc533791f3f5  training/webapp:latest  python app.py 5 seconds ago  Up 2 seconds  0.0.0.0:49155->5000/tcp  nostalgic_morse
 
+## 配置docker daemon运行参数
+
+### 方式1，在服务配置文件中配置
+
+如果是CentOS，可以在"/etc/sysconfig/docker"中添加启动参数：
+
+	OPTIONS='--selinux-enabled --log-driver=journald --signature-verification=false"
+
+这里配置的参数，将会作为docker daemon的启动参数，通过"ps |grep docker"可以看到：
+
+	/usr/bin/dockerd-current --add-runtime docker-runc=/usr/libexec/docker/docker-runc-current --default-runtime=docker-runc --exec-opt native.cgroupdriver=systemd --userland-proxy-path=/usr/libexec/docker/docker-proxy-current --selinux-enabled --log-driver=journald --signature-verification=false --registry-mirror=https://pee6w651.mirror.aliyunc
+
+### 方式2，在/etc/docker/daemon.json中配置
+
+docker启动的时候会自动加载/etc/docker/deamon.json，读取其中的配置。通过这种方式配置的参数在"ps |grep docker"中看不到：
+
+	$cat /etc/docker/daemon.json
+	{
+	    "live-restore": true,
+	    "insecure-registries": ["docker-registry.i.bbtfax.com:5000"]
+	}
+
+注意同一个参数只能使用一种方式配置，如果既在配置文件中配置了，也在daemon.json中配置了，docker daemon将会启动失败。
+## 其它
+
+### boot2docker
+
+一个boot2docker的发行版, 专门运行docker镜像的linux, 比较有意思, 以后闲暇时可以研究下。
+
+### docker搜索其它registry中的镜像
+
+默认搜索docker.io中的镜像，现在要搜索192.168.1.104中镜像:
+
+	docker search 192.168.1.104:5000/redis
+	docker search 192.168.1.104:5000/*
+
+## docker的开发环境镜像
+
+[官方手册](https://docs.docker.com/contributing/devenvironment/)
+
+docker的开发环境也是一个docker，在docker源码的根目录下，有一个Dockerfile, 在make build时候会根据这个Dockerfile创建一个开发环境的image.
+
+通过下面的操作, 将开发环境的镜像导出:
+
+	1. 先安装一个docker, 并且启动docker server.
+		$ wget https://get.docker.io/builds/Linux/x86_64/docker-latest -O docker
+		$ chmod +x docker
+		$ sudo ./docker -d &
+	2. 下载一份docker的源码：
+		$ git clone https://git@github.com/docker/docker
+		$ cd docker
+	3. make build    
+		查看Makefile可以发现, 首先运行make build时使用docker build创建了一个image, 
+		这个image就是docker的编译环境
+			build: bundles
+				docker build -t "$(DOCKER_IMAGE)" .
+
+	   成功之后，会在docker images中看到一个名为 dockerXXX的镜像, 可以将其save到一个文件中,如下:
+			docker save -o ubuntu_14.04.tar.gz ubuntu:14.04     //save
+			docker load -i ubuntu_14.04.tar.gz                  //load
+
+也可以根据Dockerfile中的描述，自行配置docker的开发环境。
+
+源码的顶层目录结构如下, 其中docker目录是代码的入口:
+
+	[root@localhost docker.git]# pwd
+	/root/docker.git
+	[root@localhost docker.git]# ls
+	api           contrib          docs         integration-cli  opts       vendor
+	archive       CONTRIBUTING.md  engine       LICENSE          pkg        VERSION
+	AUTHORS       daemon           events       links            README.md  volumes
+	builder       docker           graph        MAINTAINERS      reexec
+	builtins      Dockerfile       hack         Makefile         registry
+	bundles       dockerinit       image        nat              runconfig
+	CHANGELOG.md  dockerversion    integration  NOTICE           utils
+
+
 ## API
 
 Docker Server是一个后台进程(docker -d), 提供了一个类似rest的API
@@ -692,9 +741,6 @@ daemon初始化:
 
 	docker/daemon.go -- func mainDaemon(){...}
 
-## 其它
-
-一个boot2docker的发行版, 专门运行docker镜像的linux, 比较有意思, 以后闲暇时可以研究下。
 
 ## 搭建Docker registry
 
@@ -725,4 +771,3 @@ Docker Hub已经提供了一个Registry的容器
 
 	docker  pull X.X.X.X:5000/redis:latest
 
-## 文献
