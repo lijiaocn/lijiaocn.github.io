@@ -3,7 +3,7 @@ layout: default
 title: Tcpdump使用手册
 author: lijiaocn
 createdate: 2017/04/01 10:39:05
-changedate: 2017/04/01 10:55:59
+changedate: 2017/04/01 11:33:53
 categories:
 tags: 手册
 keywords: tcpdump使用，抓包规则
@@ -99,5 +99,8 @@ TCP的Payload开始字符为"MAIL"，0x4d41494c是"MAIL"的16进制表示。
 ## 参考
 
 1. [tcpdump非常实用的抓包实例][1]
+2. [tcpdump link-layer types][2]
+
 
 [1]: http://blog.csdn.net/nanyun2010/article/details/23445223  "tcpdump非常实用的抓包实例" 
+[2]: http://www.tcpdump.org/linktypes.html "tcpdump linktypes"

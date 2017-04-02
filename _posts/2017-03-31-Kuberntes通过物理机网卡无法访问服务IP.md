@@ -3,7 +3,7 @@ layout: default
 title: Kuberntes通过物理机网卡无法访问Service
 author: lijiaocn
 createdate: 2017/03/31 16:26:56
-changedate: 2017/04/01 11:09:30
+changedate: 2017/04/01 13:46:53
 categories:
 tags: 问题 k8s
 keywords:  
@@ -152,21 +152,21 @@ endpoint端:
 
 客户端:
 
- $tcpdump -i flannel0
- tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
- listening on flannel0, link-type RAW (Raw IP), capture size 65535 bytes
- 10:00:18.136220 IP 10.39.0.17.55735 > 192.168.67.4.us-cli: Flags [S], seq 2791854768, win 29200, options [mss 1460,sackOK,TS val 230686779 ecr 0,nop,wscale 7], length 0
- 10:00:19.136867 IP 10.39.0.17.55735 > 192.168.67.4.us-cli: Flags [S], seq 2791854768, win 29200, options [mss 1460,sackOK,TS val 230687780 ecr 0,nop,wscale 7], length 0
- 10:00:21.140809 IP 10.39.0.17.55735 > 192.168.67.4.us-cli: Flags [S], seq 2791854768, win 29200, options [mss 1460,sackOK,TS val 230689784 ecr 0,nop,wscale 7], length 00
+	 $tcpdump -i flannel0
+	 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+	 listening on flannel0, link-type RAW (Raw IP), capture size 65535 bytes
+	 10:00:18.136220 IP 10.39.0.17.55735 > 192.168.67.4.us-cli: Flags [S], seq 2791854768, win 29200, options [mss 1460,sackOK,TS val 230686779 ecr 0,nop,wscale 7], length 0
+	 10:00:19.136867 IP 10.39.0.17.55735 > 192.168.67.4.us-cli: Flags [S], seq 2791854768, win 29200, options [mss 1460,sackOK,TS val 230687780 ecr 0,nop,wscale 7], length 0
+	 10:00:21.140809 IP 10.39.0.17.55735 > 192.168.67.4.us-cli: Flags [S], seq 2791854768, win 29200, options [mss 1460,sackOK,TS val 230689784 ecr 0,nop,wscale 7], length 00
 
 endpoint端:
 
- $tcpdump -i flannel0
- tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
- listening on flannel0, link-type RAW (Raw IP), capture size 65535 bytes
- 10:00:18.088526 IP 10.39.0.17.55735 > 192.168.67.4.us-cli: Flags [S], seq 2791854768, win 29200, options [mss 1460,sackOK,TS val 230686779 ecr 0,nop,wscale 7], length 0
- 10:00:19.089163 IP 10.39.0.17.55735 > 192.168.67.4.us-cli: Flags [S], seq 2791854768, win 29200, options [mss 1460,sackOK,TS val 230687780 ecr 0,nop,wscale 7], length 0
- 10:00:21.093064 IP 10.39.0.17.55735 > 192.168.67.4.us-cli: Flags [S], seq 2791854768, win 29200, options [mss 1460,sackOK,TS val 230689784 ecr 0,nop,wscale 7], length 00
+	 $tcpdump -i flannel0
+	 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+	 listening on flannel0, link-type RAW (Raw IP), capture size 65535 bytes
+	 10:00:18.088526 IP 10.39.0.17.55735 > 192.168.67.4.us-cli: Flags [S], seq 2791854768, win 29200, options [mss 1460,sackOK,TS val 230686779 ecr 0,nop,wscale 7], length 0
+	 10:00:19.089163 IP 10.39.0.17.55735 > 192.168.67.4.us-cli: Flags [S], seq 2791854768, win 29200, options [mss 1460,sackOK,TS val 230687780 ecr 0,nop,wscale 7], length 0
+	 10:00:21.093064 IP 10.39.0.17.55735 > 192.168.67.4.us-cli: Flags [S], seq 2791854768, win 29200, options [mss 1460,sackOK,TS val 230689784 ecr 0,nop,wscale 7], length 00
 
 可以看到，当flannel0收到源IP不属于flannel0管理的网段的报文时没有回应SYN。
 
