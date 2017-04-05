@@ -1,0 +1,24 @@
+---
+layout: default
+title:  手册
+author: lijiaocn
+keywords:  手册,kubernetes
+description: 手册,成手册的文章  
+
+---
+
+{% for tag in site.tags %} 
+	{% if tag[0] == "手册" %}
+		<div class="postlist">
+		{% for post in tag[1] %}
+			<h2><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>
+			<div class="postinfo" >
+				<p><span>{{ post.tags }} / {{ post.author }} / {{ post.createdate }}</span></p>
+			</div>
+			<div class="postdesc">
+				<p>{{ post.description }}... <a href="{{ site.baseurl }}{{ post.url }}">more</a><p>
+			</div>
+		{% endfor %}
+		</div>
+	{% endif %}
+{% endfor %}
