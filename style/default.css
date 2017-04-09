@@ -1,6 +1,10 @@
 #main-nav-bar-2{
 	padding:0px;
 	margin:0px;
+	border-radius: 0px;  
+}
+#main-nav-bar-1{
+	border-radius: 0px;  
 }
 .body {
 	background-color: #ffffff;
