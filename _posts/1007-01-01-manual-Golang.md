@@ -1,18 +1,15 @@
 ---
 layout: default
-title: Golang编程
-tags: 杂项
+title: Golang手册
+author: lijiaocn
+createdate: 2017/03/28 10:01:38
+changedate: 2017/04/01 11:27:05
+categories:
+tags: 手册
+keywords: Go编程
+description: Go编程
 
 ---
-
-# Golang编程
-创建时间: 2016/01/14 16:16:50  修改时间: 2016/12/26 06:27:31 作者:lijiao
-
-----
-
-## 摘要
-
-由以前的《Go的零碎事项》《Go的工程管理》《GoPackages》合并而成的, 以后Golang相关的内容都记录在这里，方便查找。
 
 ## Golang编译相关
 

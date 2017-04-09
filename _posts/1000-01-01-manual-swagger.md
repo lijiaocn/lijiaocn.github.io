@@ -1,11 +1,11 @@
 ---
 layout: default
-title: 使用Swagger描述REST风格的API
+title: Swagger使用手册
 author: lijiaocn
 createdate: 2017/03/11 19:06:24
-changedate: 2017/03/25 17:49:49
+changedate: 2017/04/01 10:57:31
 categories:
-tags: 技巧技术
+tags: 手册
 keywords: swagger,restful
 description: Swagger是一种描述RESTful APIs的方法（Specification）。它对REST API做了系统的整理，提出一套完整的描述方式。配套的UI工具（swagger-ui）和代码生成器器
 
