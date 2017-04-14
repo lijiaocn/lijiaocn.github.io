@@ -3,7 +3,7 @@ layout: default
 title: DockerImage存储方案
 author: lijiaocn
 createdate: 2017/04/01 16:39:28
-changedate: 2017/04/01 17:40:56
+changedate: 2017/04/05 12:54:10
 categories:
 tags: 手册
 keywords: Docker,image,Registry

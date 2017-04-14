@@ -3,13 +3,16 @@ layout: default
 title: Golang手册
 author: lijiaocn
 createdate: 2017/03/28 10:01:38
-changedate: 2017/04/01 11:27:05
+changedate: 2017/04/11 13:24:37
 categories:
 tags: 手册
 keywords: Go编程
 description: Go编程
 
 ---
+
+* auto-gen TOC:
+{:toc}
 
 ## Golang编译相关
 
@@ -295,7 +298,7 @@ godep用于将工程中依赖的package打包(godep save)到Godeps目录中, 以
 
 	go get github.com/tools/godep
 
-### (可选)安装gotag
+### 安装gotag
 
 [gotag](https://github.com/jstemmer/gotags)用来与vim配合，生成ctags文件:
 
@@ -303,29 +306,20 @@ godep用于将工程中依赖的package打包(godep save)到Godeps目录中, 以
 
 	go get -u github.com/jstemmer/gotags
 
-### (可选)安装gocode
+### 安装gocode
 
 [gocode](https://github.com/nsf/gocode)用于golang代码的自动补全，与vim等配合使用
 
 	go get -u github.com/nsf/gocode
 
-### (可选)配置VIM
+### 配置VIM
 
 可以直接使用[github.com/lijiaocn/vim](https://github.com/lijiaocn/vim)中的vim配置，已经包含了多种常用插件。
 
 vim的相关内容可以参考：[Vim](/2014/07/21/Vim.html)
 
-#### 安装vim-go
+### 安装vim-go
 
-将vim-go中的内容复制到.vim目录中:
-
-	git clone https://github.com/fatih/vim-go
-
-插件安装完成后，在vim安装依赖的程序:
-
-	:GoInstallBinaries
-
-命令执行过程中去获取缺失的程序的源码，完成安装和编译。
 
 #### 安装gocode的vim插件
 
@@ -735,6 +729,10 @@ golang的net/http中提供了http客户端client, 可以用client发起http操�
 >其实就是替换了默认的设置
 
 ## Golang Packages
+
+### 非核心Package
+
+[https://godoc.org/-/subrepo](https://godoc.org/-/subrepo)
 
 用过的一些Golang Packages。
 
@@ -1242,3 +1240,6 @@ Go在time包中提供时间操作函数
 
 ## 文献
 
+1. [vim-go][1]
+
+[1]: https://github.com/fatih/vim-go "https://github.com/fatih/vim-go"

@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes在CentOS上的All In One部署
 author: lijiaocn
 createdate: 2017/03/27 18:50:37
-changedate: 2017/03/27 18:55:14
+changedate: 2017/04/10 09:34:47
 categories:
 tags: k8s
 keywords: kubernets部署,centos,allinone
@@ -284,4 +284,3 @@ kubelet.service
 上面只进行了一个all-on-one的部署，当搞清楚了配置项的含义以后，从all-in-one到跨多台服务器就是一个很简单的过程。
 
 kubernetes的使用、自动化部署以及组件的详细解析等内容，将独立成篇。
-
