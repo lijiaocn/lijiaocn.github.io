@@ -3,7 +3,7 @@ layout: default
 title: Calico网络的原理、组网方式与使用
 author: lijiaocn
 createdate: 2017/04/11 10:58:34
-changedate: 2017/04/14 10:57:20
+changedate: 2017/04/14 11:20:27
 categories:
 tags: 手册
 keywords:
@@ -18,7 +18,9 @@ description: Calico是一个比较有趣的SDN解决方案，利用路由规则�
 
 Calico是一个比较有趣的SDN解决方案，利用路由规则在大二层中实现网络隔离，通过BGP协议，将每个物理机编程一个自治系统。
 
-Calico方案中SDN IP之间完全都是三层互联，IP可以自由漂移，没有Overlay带来的额外开销和运维难度，是一个比较理想的私有云SDN网络方案。
+Calico方案中endpoints之间通过三层IP网络互联，没有Overlay带来的额外开销和运维难度，IP可以自由漂移，在特定场景下是一个比较理想的PAAS网络方案。
+
+但是，Calico官方网站没有给出的具体的部署案例，不知道它的实战效果如何。有了解的朋友，不妨留言沟通一下。
 
 ## 名词解释
 
