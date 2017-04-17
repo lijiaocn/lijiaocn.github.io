@@ -3,7 +3,7 @@ layout: default
 title: Iptables使用手册
 author: lijiaocn
 createdate: 2014/04/16 10:16:55
-changedate: 2017/04/01 11:11:28
+changedate: 2017/04/17 14:23:34
 categories:
 tags: 手册
 keywords:  linux iptables
@@ -161,12 +161,12 @@ iptables的日志信息是kernal日志，可以通过dmesg查看，为了方便�
 
 下面规则在本地发出的报文经过的每个检查点上都设置了日志:
 
-iptables -t raw -A OUTPUT -m limit --limit 5000/minute -j LOG --log-level 7 --log-prefix "raw out: "
-iptables -t mangle -A OUTPUT -m limit --limit 5000/minute -j LOG --log-level 7 --log-prefix "mangle out: "
-iptables -t nat -A OUTPUT -m limit --limit 5000/minute -j LOG --log-level 7 --log-prefix "nat out: "
-iptables -t filter -A OUTPUT -m limit --limit 5000/minute -j LOG --log-level 7 --log-prefix "filter out: "
-iptables -t mangle -A POSTROUTING -m limit --limit 5000/minute -j LOG --log-level 7 --log-prefix "mangle post: "
-iptables -t nat -A POSTROUTING -m limit --limit 5000/minute -j LOG --log-level 7 --log-prefix "nat post: "
+	iptables -t raw -A OUTPUT -m limit --limit 5000/minute -j LOG --log-level 7 --log-prefix "raw out: "
+	iptables -t mangle -A OUTPUT -m limit --limit 5000/minute -j LOG --log-level 7 --log-prefix "mangle out: "
+	iptables -t nat -A OUTPUT -m limit --limit 5000/minute -j LOG --log-level 7 --log-prefix "nat out: "
+	iptables -t filter -A OUTPUT -m limit --limit 5000/minute -j LOG --log-level 7 --log-prefix "filter out: "
+	iptables -t mangle -A POSTROUTING -m limit --limit 5000/minute -j LOG --log-level 7 --log-prefix "mangle post: "
+	iptables -t nat -A POSTROUTING -m limit --limit 5000/minute -j LOG --log-level 7 --log-prefix "nat post: "
 
 >注意这里设置了--limit防止打印出太多的日志，--limit如果设置的太小，可能会恰好丢弃要观察的包的日志，可以将limit调大，或者去除。
 
