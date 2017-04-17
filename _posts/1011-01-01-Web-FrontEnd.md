@@ -3,11 +3,11 @@ layout: default
 title: 前端开发工具
 author: lijiaocn
 createdate: 2015/11/26 13:50:55
-changedate: 2017/04/05 13:59:01
+changedate: 2017/04/17 13:11:47
 categories:
 tags: 手册
 keywords:
-description: 
+description: 对前端不熟悉，这是初学过程中学到的一些内容，仅供参考，有问题请留言。
 
 ---
 
