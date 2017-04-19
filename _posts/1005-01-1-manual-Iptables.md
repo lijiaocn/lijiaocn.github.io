@@ -3,7 +3,7 @@ layout: default
 title: Iptables使用手册
 author: lijiaocn
 createdate: 2014/04/16 10:16:55
-changedate: 2017/04/17 14:23:34
+changedate: 2017/04/19 14:21:08
 categories:
 tags: 手册
 keywords:  linux iptables
@@ -14,7 +14,11 @@ description: 介绍了iptables的原理、表之间的关系、报文处理时�
 * auto-gen TOC:
 {:toc}
 
-iptables是linux自带的防火墙，这里做系统的介绍。
+iptables是linux自带的防火墙，这里做系统的介绍。完全不懂iptables的，可以到[iptables-contents][5]中从头学习。
+
+查看iptables的Target的配置项:
+
+	man iptables-extensions
 
 ## 概览
 
@@ -53,31 +57,31 @@ iptables的规则按照“表(table)->规则链(chain)->规则(rule)”的层次
 并不是每张表都包含了所有的五个Chain，五张表的用途不同，它们只包含了需要包含的Chain。
 
 	filter: 
-		Chain INPUT
-		Chain FORWARD
-		Chain OUTPUT
-
+	    Chain INPUT
+	    Chain FORWARD
+	    Chain OUTPUT
+	
 	nat:
-		Chain PREROUTING
-		Chain INPUT
-		Chain OUTPUT
-		Chain POSTROUTING
-
+	    Chain PREROUTING
+	    Chain INPUT
+	    Chain OUTPUT
+	    Chain POSTROUTING
+	
 	mangle:
-		Chain PREROUTING
-		Chain INPUT
-		Chain FORWARD
-		Chain OUTPUT
-		Chain POSTROUTING
-
+	    Chain PREROUTING
+	    Chain INPUT
+	    Chain FORWARD
+	    Chain OUTPUT
+	    Chain POSTROUTING
+	
 	raw:
-		Chain PREROUTING
-		Chain OUTPUT
-
+	    Chain PREROUTING
+	    Chain OUTPUT
+	
 	security:
-		Chain INPUT
-		Chain FORWARD
-		Chain OUTPUT
+	    Chain INPUT
+	    Chain FORWARD
+	    Chain OUTPUT
 
 除了上述的5个固定的Chain，也可以自定义Chain，但只有通过上述5个Chain中设置的跳转规则，跳转到自定义的dChain，自定义的Chain才可以发生作用。
 
@@ -101,13 +105,14 @@ iptables的规则按照“表(table)->规则链(chain)->规则(rule)”的层次
 
 	raw.PREROUTING -> mangle.PREROUTING -> nat.PREROUTING -> mangle.INPUT -> filter.INPUT 
 
+经主机转发的报文:
+
+	raw.PREROUTING -> mangle.PREROUTING -> nat.PREROUTING -> mangle.FORWARD -> filter.FORWARD -> mangle.POSTROUTING -> nat.POSTROUTING
+
 主机发出的报文:
 
 	raw.OUTPUT -> mangle.OUTPUT -> nat.OUTPUT -> filter.OUTPUT -> mangle.POSTROUTING -> nat.POSTROUTING
 
-经主机转发的报文:
-
-	raw.PREROUTING -> mangle.PREROUTING -> mangle.FORWARD -> filter.FORWARD -> mangle.POSTROUTING -> nat.POSTROUTING
 
 ![nf-packet-flow]({{ site.imglocal }}/nf-packet-flow.png )
 
@@ -249,7 +254,10 @@ iptables的日志信息是kernal日志，可以通过dmesg查看，为了方便�
 2. [sturcture of iptables][2]
 3. [利用raw表实现iptables调试][3]
 4. [iptables-debugging][4]
+5. [iptables-contents][5]
+6. man iptables-extensions
 
 [2]: http://www.iptables.info/en/structure-of-iptables.html "structure-of-iptables"
 [3]: http://flymanhi.blog.51cto.com/1011558/1276331 "利用raw表实现iptables调试"
 [4]: http://adminberlin.de/iptables-debugging/ "iptables-debugging"
+[5]: http://www.iptables.info/en/iptables-contents.html "iptables-contents"
