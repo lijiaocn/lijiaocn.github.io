@@ -3,11 +3,11 @@ layout: default
 title: Calico网络的原理、组网方式与使用
 author: lijiaocn
 createdate: 2017/04/11 10:58:34
-changedate: 2017/04/19 16:34:00
+changedate: 2017/04/21 11:27:56
 categories:
 tags: 手册
 keywords:
-description: Calico是一个比较有趣的SDN解决方案，利用路由规则在大二层中实现网络隔离。
+description: Calico是一个比较有趣的SDN解决方案，完全利用路由规则在实现动态组网，通过BGP协议通告路由。
 
 ---
 
@@ -16,15 +16,17 @@ description: Calico是一个比较有趣的SDN解决方案，利用路由规则�
 
 ## Calico
 
-Calico是一个比较有趣的SDN解决方案，利用路由规则在大二层或者三层中实现动态组网，通过BGP协议通告路由。
+Calico是一个比较有趣的SDN解决方案，完全利用路由规则实现动态组网，通过BGP协议通告路由。
 
 Calico的好处是endpoints组成的网络构建在二层网络（一个AS）或三层网络上（多个AS），报文的流向完全通过路由规则控制，没有Overlay带来的开销。
 
 Calico的endpoint可以漂移，并且支持ACL，在特定场景下是一个比较理想的PAAS网络方案。
 
-Calico的缺点是路由的数量与容器数量是一个数量级别，非常容易超过路由器、三层交换的处理能力，从而限制了整个网络的规模。
+Calico的缺点是路由的数量与容器数量相同，非常容易超过路由器、三层交换、甚至node的处理能力，从而限制了整个网络的扩张。
 
-Calico的每个node上会设置大量（海量!)的iptables规则、路由条目，运维、排障难度大，并且它的原理决定了它不可能支持VPC（容器的IP来自相同的IP池，不能相同）
+Calico的每个node上会设置大量（海量!)的iptables规则、路由条目，可以有隐患，并且运维、排障难度大。
+
+Calico的的原理决定了它不可能支持VPC，每个容器的IP都来自相同的IP地址池，不同租户的容器也不能使用相同的IP，而私有的IPv4地址的数量有限。
 
 Calico目前的实现没有流量控制的功能，会出现抢占node带宽的情况。
 
@@ -55,7 +57,7 @@ Calico组网的核心原理就是IP路由，每个容器或者虚拟机会分配
 	|         |          |              |         |          | 
 	|       wl-A         |              |       wl-B         | 
 	|         |          |              |         |          |
-	+-------host-A-------+              +-------host-B-------+ 
+	+-------node-A-------+              +-------node-B-------+ 
 	        |    |                               |    |
 	        |    | type1.  in the same lan       |    |
 	        |    +-------------------------------+    |
@@ -69,8 +71,8 @@ Calico组网的核心原理就是IP路由，每个容器或者虚拟机会分配
 
 	从ConA中发送给ConB的报文被nodeA的wl-A接收，根据nodeA上的路由规则，经过各种iptables规则后，转发到nodeB。
 	
-	如果nodeA和nodeB在同一个二层网段，下一条地址直接就是host-B，经过二层交换机即可到达。
-	如果nodeA和nodeB在不同的网段，报文被路由到下一跳，经过三层交换或路由器，一步步跳转到host-B。
+	如果nodeA和nodeB在同一个二层网段，下一条地址直接就是node-B，经过二层交换机即可到达。
+	如果nodeA和nodeB在不同的网段，报文被路由到下一跳，经过三层交换或路由器，一步步跳转到node-B。
 
 核心问题是，nodeA怎样得知下一跳的地址？答案是node之间通过BGP协议交换路由信息。
 
