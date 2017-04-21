@@ -3,7 +3,7 @@ layout: default
 title: Calico网络的原理、组网方式与使用
 author: lijiaocn
 createdate: 2017/04/11 10:58:34
-changedate: 2017/04/21 11:27:56
+changedate: 2017/04/21 11:31:43
 categories:
 tags: 手册
 keywords:
@@ -244,7 +244,7 @@ node本地发出的报文，经过路由决策之后，直接进入raw,OUTPUT规
 
 	raw.OUTPUT -> mangle.OUTPUT -> nat.OUTPUT -> filter.OUTPUT -> mangle.POSTROUTING -> nat.POSTROUTING
 
-### 路由决策之前：流入slave1的报文的处理
+### 路由决策之前：流入node的报文的处理
 
 #### 进入raw表
 
