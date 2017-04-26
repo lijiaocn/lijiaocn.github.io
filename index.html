@@ -12,7 +12,11 @@ description: 最牛推荐:发现好文章、好思想、好经历、好吃的、
 	{% for post in paginator.posts %}
 	<h2><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>
 	<div class="postinfo" >
-		<p><span><a href="{{ site.baseurl }}/tags/{{ post.tags }}.html">{{ post.tags }}</a> / {{ post.author }} / {{ post.createdate }}</span></p>
+		<p><span><a href="{{ site.baseurl }}/tags/{{ post.tags[0] }}.html">{{ post.tags[0] }}</a> / {{ post.author }} / {{ post.createdate }}
+		{% for tag in post.tags offset:1 %}
+		/<a href="{{ site.baseurl }}/tags/{{ tag }}.html">{{ tag }}</a>
+		{% endfor %} 
+		<span></p>
 	</div>
 	<div class="postdesc">
 		<p>{{ post.description }}... <a href="{{ site.baseurl }}{{ post.url }}">more</a><p>
