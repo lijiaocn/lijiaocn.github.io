@@ -176,11 +176,10 @@ div.center h2 a{
 div.center pre{
 	font-size: 13px;
 	overflow: auto;
-	white-space: nowrap;
 }
 
 div.center pre code{
-	white-space: nowrap;
+	white-space: pre;
 }
 
 div.postlist p{
