@@ -176,6 +176,7 @@ div.center h2 a{
 div.center pre{
 	font-size: 13px;
 	overflow: auto;
+	white-space: nowrap;
 }
 
 div.postlist p{
