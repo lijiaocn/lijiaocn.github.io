@@ -179,6 +179,10 @@ div.center pre{
 	white-space: nowrap;
 }
 
+div.center pre code{
+	white-space: nowrap;
+}
+
 div.postlist p{
 	line-height:130%;
 	padding-top:5px;
