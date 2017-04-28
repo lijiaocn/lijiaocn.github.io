@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes在CentOS上的集群部署
 author: lijiaocn
 createdate: 2017/03/06 11:59:43
-changedate: 2017/03/27 19:12:07
+changedate: 2017/04/26 16:52:52
 categories:
 tags: k8s
 keywords: kubernetes,业务编排,centos
@@ -32,51 +32,59 @@ description: 介绍了如何在CentOS上部署kubernetes系统。
 	yum install -y etcd 
 	yum install -y kubernetes-master
 
-准备根证书,根证书可以从CA机构获取，也可以自己制作：
+#### 准备根证书
+
+根证书可以从CA机构获取，也可以自己制作：
 
 	mkdir -p /etc/kubernetes/cert.d
 	openssl req  -nodes -new -x509 -days 3650 -keyout /etc/kubernetes/cert.d/root-ca.key -out /etc/kubernetes/cert.d/root-ca.crt
 
->根证书将作为参数传递给controller-manager，controller-manager会将根证书下发给每一个容器。
+根证书将作为参数传递给controller-manager，controller-manager会将根证书下发给每一个容器。
 
-准备用于签署ServieAccount的证书：
+容器使用根证书来验证它所访问的https站点的证书是否合法。
+
+#### 准备用于签署ServieAccount的证书
 
 	mkdir -p /etc/kubernetes/cert.d
 	openssl req  -nodes -new -x509 -days 3650 -keyout /etc/kubernetes/cert.d/service-account.key -out /etc/kubernetes/cert.d/service-account.crt
 
->ServiceAccount证书的key将作为参数传递给controller-manager，controller-manager使用这个key签署ServiceAccount的Token，生成的Token被下发到对应的容器。
+ServiceAccount`证书的key`将作为参数传递给controller-manager，controller-manager使用这个key签署ServiceAccount的Token，生成的Token被下发到对应的容器。
 
->ServiceAccount证书将作为参数传递给apiserver，apiserver用ServiceAccount证书验证请求者的key。
+ServiceAccount`证书本身`将作为参数传递给apiserver，容器访问apiserver时会带上生成的token，apiserver用ServiceAccount证书验证请求者的token。
 
-配置master:
+#### 配置master
 
-	# in /etc/kuberntes/config
+/etc/kuberntes/config:
+
 	KUBE_API_ADDRESS="--insecure-bind-address=192.168.40.10"
 	KUBE_MASTER="--master=http://192.168.40.10:8080"
 
-	# in /etc/kubernetes/apiserver
+/etc/kubernetes/apiserver:
+
 	KUBE_ETCD_SERVERS="--etcd-servers=http://192.168.40.10:2379"
 	KUBE_API_ARGS="--service-account-key-file /etc/kubernetes/cert.d/service-account.crt --advertise-address 192.168.40.10"
 	KUBE_API_ARGS+=$KUBE_API_ARGS + "  --advertise-address 192.168.40.10"
 
-	# in /etc/kubernetes/controller-manager
+/etc/kubernetes/controller-manager:
+
 	KUBE_CONTROLLER_MANAGER_ARGS="--service-account-private-key-file  /etc/kubernetes/cert.d/service-account.key "
 	KUBE_CONTROLLER_MANAGER_ARGS+="--root-ca-file= /etc/kubernetes/cert.d/root-ca.crt "
 
-	# in /etc/etcd/etcd.conf
+/etc/etcd/etcd.conf:
+
 	ETCD_LISTEN_CLIENT_URLS="http://192.168.40.10:2379"
 	ETCD_ADVERTISE_CLIENT_URLS="http://192.168.40.10:2379"
 	ETCD_LISTEN_PEER_URLS="http://192.168.40.10:2380"
 	ETCD_INITIAL_CLUSTER="default=http://192.168.40.10:2380"
 
-启动master:
+#### 启动master
 
 	systemctl start etcd            
 	systemctl start kube-apiserver 
 	systemctl start kube-controller-manager
 	systemctl start kube-scheduler
 
-查看状态:
+#### 查看状态
 
 	$kubectl -s 192.168.40.10:8080 get cs
 	NAME                 STATUS    MESSAGE              ERROR
@@ -84,7 +92,7 @@ description: 介绍了如何在CentOS上部署kubernetes系统。
 	controller-manager   Healthy   ok
 	etcd-0               Healthy   {"health": "true"}
 
-查看默认的ServiceAccount:
+#### 默认的ServiceAccount
 
 	$kubectl -s 192.168.40.10:8080 get serviceAccounts
 	NAME      SECRETS   AGE
@@ -98,16 +106,17 @@ description: 介绍了如何在CentOS上部署kubernetes系统。
 
 对应有一个secret:
 
-	# kubectl -s 192.168.40.10:8080 get secret -n kube-system
+	$kubectl -s 192.168.40.10:8080 get secret -n kube-system
 	NAME                  TYPE                                  DATA      AGE
 	default-token-sbvct   kubernetes.io/service-account-token   2         5m
-	# kubectl -s 192.168.40.10:8080 get secret
+	
+	$kubectl -s 192.168.40.10:8080 get secret
 	NAME                  TYPE                                  DATA      AGE
 	default-token-z4tvt   kubernetes.io/service-account-token   2         5m
 
 ### 配置flannel
 
-准备一个flannel的配置文件config，内容如下，这些内容将被写入etcd:
+准备一个flannel的配置文件config，内容如下，并这些内容将被写入etcd:
 
 	#!/bin/bash
 	FLANNEL_PREFIX="/atomic.io/network"
@@ -133,7 +142,7 @@ description: 介绍了如何在CentOS上部署kubernetes系统。
 	yum install -y kubernetes-node
 	yum install -y flannel
 
-如果salve多个IP，需要在hosts中设置hostname绑定的ip，例如:
+如果salve有多个IP，需要在hosts中设置hostname绑定的ip，例如:
 
 	# /etc/hosts on slave1
 	192.168.40.11 slave1
@@ -146,34 +155,38 @@ description: 介绍了如何在CentOS上部署kubernetes系统。
 	$ hostname -i
 	192.168.40.11
 
-配置slave:
+#### 配置slave
 
-	# in /etc/kubernetes/config
+/etc/kubernetes/config
+
 	KUBE_MASTER="--master=http://192.168.40.10:8080"
 	# in /etc/kuberntes/kubelet
 	KUBELET_API_SERVER="--api-servers=http://192.168.40.10:8080"
 
-	# /etc/sysconfig/flanneld
+/etc/sysconfig/flanneld
+
 	FLANNEL_ETCD_ENDPOINTS="http://192.168.40.10:2379"
 	FLANNEL_ETCD_PREFIX="/atomic.io/network"
 	FLANNEL_OPTIONS="-iface eth1"
 
-	# /etc/kubernetes/kubelet
+/etc/kubernetes/kubelet
+
 	KUBELET_ADDRESS="--address=192.168.40.11"     #for slave1
 	KUBELET_HOSTNAME="--hostname-override=slave1" #for slave1
 	KUBELET_ARGS="--register-node=false"          #稍后手动添加slave
 
-	# /etc/sysconfig/docker，添加镜像源
+/etc/sysconfig/docker，添加镜像源
+
 	OPTIONS='--selinux-enabled --log-driver=journald --signature-verification=false --registry-mirror=https://pee6w651.mirror.aliyuncs.com'
 
-启动slave:
+#### 启动slave
 
 	systemctl start flanneld
 	systemctl start kubelet
 	systemctl start kube-proxy
 	systemctl start docker
 
->kubelet服务依赖docker，会自动触发docker服务的启动
+kubelet服务依赖docker，会自动触发docker服务的启动
 
 ### 注册slave
 
@@ -185,19 +198,19 @@ description: 介绍了如何在CentOS上部署kubernetes系统。
 	- apiVersion: v1
 	  kind: Node
 	  metadata:
-		labels:
-		  name: slave1
-		name: slave1
-		namespace: ""
+	    labels:
+	      name: slave1
+	    name: slave1
+	    namespace: ""
 	  spec:
-		externalID: slave1
+	    externalID: slave1
 	- apiVersion: v1
 	  kind: Node
 	  metadata:
-		labels:
-		  name: slave2
-		name: slave2
-		namespace: ""
+	    labels:
+	      name: slave2
+	    name: slave2
+	    namespace: ""
 
 注册：
 
