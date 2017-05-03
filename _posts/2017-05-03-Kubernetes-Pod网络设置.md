@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes的Pod网络设置
 author: lijiaocn
 createdate: 2017/05/03 09:30:33
-changedate: 2017/05/03 13:24:16
+changedate: 2017/05/03 13:29:05
 categories:
 tags: k8s
 keywords: kuberntes,pod,network
@@ -288,7 +288,7 @@ k8s.io/kubernetes/vendor/github.com/containernetworking/cni/libcni/api.go:
 		if err != nil {
 			return nil, err
 		}
-
+		
 		return invoke.ExecPluginWithResult(pluginPath, net.Bytes, c.args("ADD", rt))
 	}
 
