@@ -3,7 +3,7 @@ layout: default
 title: Calico网络的原理、组网方式与使用
 author: lijiaocn
 createdate: 2017/04/11 10:58:34
-changedate: 2017/04/21 11:31:43
+changedate: 2017/05/03 15:02:34
 categories:
 tags: 手册
 keywords:
@@ -54,7 +54,7 @@ Calico组网的核心原理就是IP路由，每个容器或者虚拟机会分配
 	|   |    ConA    |   |              |   |    ConB    |   | 
 	|   |            |   |              |   |            |   | 
 	|   +-----+------+   |              |   +-----+------+   | 
-	|         |          |              |         |          | 
+	|         |veth      |              |         |veth      | 
 	|       wl-A         |              |       wl-B         | 
 	|         |          |              |         |          |
 	+-------node-A-------+              +-------node-B-------+ 
