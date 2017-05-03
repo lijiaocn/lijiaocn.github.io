@@ -3,7 +3,7 @@ layout: default
 title: Kuberntes命令行实现
 author: lijiaocn
 createdate: 2017/04/27 14:39:12
-changedate: 2017/04/28 10:40:17
+changedate: 2017/05/02 09:46:49
 categories:
 tags:  k8s
 keywords: kubernetes命令行的实现
