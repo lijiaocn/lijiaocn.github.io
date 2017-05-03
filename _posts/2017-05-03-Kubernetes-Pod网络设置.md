@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes的Pod网络设置
 author: lijiaocn
 createdate: 2017/05/03 09:30:33
-changedate: 2017/05/03 13:11:07
+changedate: 2017/05/03 13:24:16
 categories:
 tags: k8s
 keywords: kuberntes,pod,network
@@ -295,11 +295,3 @@ k8s.io/kubernetes/vendor/github.com/containernetworking/cni/libcni/api.go:
 invoke.FindInPath在c.Path目录下寻找名为net.Network.Type的文件，返回文件的完整路径pluginPath
 
 最后，直接使用plugin的子命令`ADD`，将容器添加到指定网络中。
-
-## 参考
-
-1. [文献1][1]
-2. [文献2][2]
-
-[1]: 1.com  "文献1" 
-[2]: 2.com  "文献1" 
