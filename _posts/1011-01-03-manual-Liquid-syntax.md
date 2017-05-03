@@ -3,7 +3,7 @@ layout: default
 title: Liquid语法
 author: lijiaocn
 createdate: 2017/04/26 13:13:03
-changedate: 2017/04/26 15:09:29
+changedate: 2017/05/03 09:38:34
 categories:
 tags: 手册
 keywords: liquid语法,liquid,模版语言 
@@ -24,7 +24,7 @@ description: Liquid是一个ruby开发的开源的模版语言,静态网页生�
 
 ## Objects
 
-Objects是用`{{`和`}}`围起来的liquid代码
+Objects是用\{\{和\}\}围起来的liquid代码
 
 	Objects tell Liquid where to show content on a page. 
 	Objects and variable names are denoted by double curly braces: {{ and }}.
@@ -35,7 +35,7 @@ example:
 
 ## Tags
 
-Tags是用`{%`和`%}`包裹起来的liquid代码，做逻辑处理和control flow。
+Tags是用\{%和%\}包裹起来的liquid代码，做逻辑处理和control flow。
 
 	Tags create the logic and control flow for templates. 
 	They are denoted by curly braces and percent signs: {% and %}.
