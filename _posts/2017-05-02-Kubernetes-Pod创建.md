@@ -3,11 +3,11 @@ layout: default
 title: Kubernetes的Pod创建
 author: lijiaocn
 createdate: 2017/05/02 10:03:20
-changedate: 2017/05/03 09:32:25
+changedate: 2017/05/03 13:12:35
 categories:
 tags: k8s
 keywords: kubelet,kubelete,工作流程,源码走读
-description: kubelet的工作过程,源码走读
+description: kubernetes中pod的创建过程，kubelet从启动到运行
 
 ---
 
@@ -363,7 +363,7 @@ syncPod中内容比较多，这里重点提一下容器网络的设置
 	   +Status() : error
 	   +TearDownPod(namespace string, name string, podInfraContainerID kubecontainer.ContainerID) : error
 
-例如在DockerManager中:
+例如在DockerManager中,k8s.io/kubernetes/pkg/kubelet/dockertools/docker_manager.go:
 
 	if !kubecontainer.IsHostNetworkPod(pod) {
 	    if err := dm.network.SetUpPod(pod.Namespace, pod.Name, podInfraContainerID.ContainerID(), pod.Annotations); err != nil {
