@@ -3,7 +3,7 @@ layout: default
 title: Calico的cni-plugin实现
 author: lijiaocn
 createdate: 2017/05/03 14:13:39
-changedate: 2017/05/03 15:31:06
+changedate: 2017/05/03 15:34:35
 categories:
 tags: k8s
 keywords: Calico,CNI
@@ -16,7 +16,7 @@ description: calico实现了符合CNI标准的plugin，可以接入kubernetes，
 
 ## 概况
 
-[calico-cni-plugin][1]的实现很简单，直接使用[skel][2]，直接需要实现add命令和del命令。
+[calico-cni-plugin][1]的实现很简单，直接使用[skel][2]，只需要实现add命令和del命令。
 
 ## 非k8s
 
