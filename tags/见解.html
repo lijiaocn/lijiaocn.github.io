@@ -1,14 +1,14 @@
 ---
-layout: default
-title:  原理
+layout: tags
+title:  见解
 author: lijiaocn
-keywords:  原理,kubernetes
-description: 原理,成原理的文章  
+keywords:  见解,观点,看法
+description: 一些个人的观点,看法  
 
 ---
 
 {% for tag in site.tags %} 
-	{% if tag[0] == "原理" %}
+	{% if tag[0] == "见解" %}
 		<div class="postlist">
 		{% for post in tag[1] %}
 			<h2><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>

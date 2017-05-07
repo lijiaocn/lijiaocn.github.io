@@ -16,4 +16,4 @@ lsi:         false
 excerpt_separator: "----"
 ICP-number: 鲁ICP备17004409号-1
 footlinks: {"Lijiaocn":"http://www.lijiaocn.com", "znr.io":"http://znr.io"}
-pageheader: 最牛推荐，网址超短：<a href="/" style="font-weight:bold;font-size:20px">znr.io</a>
+pageheader: 最牛推荐，网址超短：<a href="http://znr.io" style="font-weight:bold;font-size:20px">znr.io</a>
