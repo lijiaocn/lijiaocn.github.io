@@ -1,14 +1,14 @@
 ---
-layout: default
-title:  系列
+layout: tags
+title:  编程
 author: lijiaocn
-keywords:  系列,成系列的文章
-description: 系列,成系列的文章  
+keywords:  编程,计算机编程语言,Go,kubernetes
+description: 常用的计算机编程语言学习,记录计算机编程学习过程中遇到的各种问题。
 
 ---
 
 {% for tag in site.tags %} 
-	{% if tag[0] == "系列" %}
+	{% if tag[0] == "编程" %}
 		<div class="postlist">
 		{% for post in tag[1] %}
 			<h2><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>

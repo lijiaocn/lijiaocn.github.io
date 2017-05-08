@@ -1,14 +1,14 @@
 ---
-layout: default
-title:  Go
+layout: tags
+title:  前端
 author: lijiaocn
-keywords:  Go,kubernetes
-description: Go,Go解决 
+keywords:  前端,信息呈现,人机交互
+description: 前端,信息呈现,人机交互   
 
 ---
 
 {% for tag in site.tags %} 
-	{% if tag[0] == "Go" %}
+	{% if tag[0] == "前端" %}
 		<div class="postlist">
 		{% for post in tag[1] %}
 			<h2><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>
