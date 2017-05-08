@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes-Apiserver的工作过程
 author: lijiaocn
 createdate: 2017/05/04 16:28:23
-changedate: 2017/05/05 17:35:14
+changedate: 2017/05/08 13:45:39
 categories:
 tags: k8s
 keywords: Kubernetes,k8s,Kubernetes的apiserver,请求处理
@@ -446,6 +446,10 @@ k8s.io/kubernetes/pkg/master/master.go:
 
 可以看到InstallAPIs就是将所有的apiGroup转载到GenericAPIServer中。
 
+### InstallAPIGroup
+
+InstallAPIGroup是GenericAPIServer的功能，目的是将APIGroupInfo中的storage转换成handler，并转载到GenericAPIServer。
+
 k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/genericapiserver.go:
 
 	func (s *GenericAPIServer) InstallAPIGroup(apiGroupInfo *APIGroupInfo) error {
@@ -627,6 +631,263 @@ handler的生成，即直接访问storage：
 
 				return r.Get(ctx, name, &options)
 			})
+	}
+
+## unsecure模式
+
+GenericAPIServer创建完成后，就可以启动了，Kubernetes的apiserver提供了两个服务端口，一个是unsecure模式，没有认证授权等过程，另一个是secure模式。
+
+### unsecure mode下的REST请求传递过程
+
+unsecure模式比较简单，创建了REST的请求处理链之后，直接启动即可。
+
+unsecure模式下，直接使用最终的ServeMux:
+
+k8s.io/kubernetes/cmd/kube-apiserver/app/server.go:
+
+	...
+	if insecureServingOptions != nil {
+		insecureHandlerChain := kubeserver.BuildInsecureHandlerChain(kubeAPIServer.GenericAPIServer.HandlerContainer.ServeMux, kubeAPIServerConfig.GenericConfig)
+		if err := kubeserver.NonBlockingRun(insecureServingOptions, insecureHandlerChain, stopCh); err != nil {
+			return err
+		}
+	}
+	...
+
+REST处理链:
+
+k8s.io/kubernetes/pkg/kubeapiserver/server/insecure_handler.go:
+
+	func BuildInsecureHandlerChain(apiHandler http.Handler, c *server.Config) http.Handler {
+		handler := genericapifilters.WithAudit(apiHandler, c.RequestContextMapper, c.AuditWriter)
+		handler = genericfilters.WithCORS(handler, c.CorsAllowedOriginList, nil, nil, nil, "true")
+		handler = genericfilters.WithPanicRecovery(handler, c.RequestContextMapper)
+		handler = genericfilters.WithTimeoutForNonLongRunningRequests(handler, c.RequestContextMapper, c.LongRunningFunc)
+		handler = genericfilters.WithMaxInFlightLimit(handler, c.MaxRequestsInFlight, c.MaxMutatingRequestsInFlight, c.RequestContextMapper, c.LongRunningFunc)
+		handler = genericapifilters.WithRequestInfo(handler, server.NewRequestInfoResolver(c), c.RequestContextMapper)
+		handler = apirequest.WithRequestContext(handler, c.RequestContextMapper)
+		
+		return handler
+	}
+
+#### REST请求处理链原理
+
+例如添加审计过程,k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/endpoints/filters/audit.go:
+
+	func WithAudit(handler http.Handler, requestContextMapper request.RequestContextMapper, out io.Writer) http.Handler {
+		if out == nil {
+			return handler
+		}
+		return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+			ctx, ok := requestContextMapper.Get(req)
+			if !ok {
+		
+		...
+		
+			respWriter := decorateResponseWriter(w, out, id)
+			handler.ServeHTTP(respWriter, req)
+		})
+	}
+
+可以看到，就是将传入的handler包裹了一下，返回一个新的handler。
+
+### unsecure模式下服务启动
+
+启动过程很简单，就是启动http server，insecureHandler传递给了NonBlockingRun。
+
+k8s.io/kubernetes/pkg/kubeapiserver/server/insecure_handler.go:
+
+	func NonBlockingRun(insecureServingInfo *InsecureServingInfo, insecureHandler http.Handler, stopCh <-chan struct{}) error {
+		....
+		if insecureServingInfo != nil && insecureHandler != nil {
+			if err := serveInsecurely(insecureServingInfo, insecureHandler, internalStopCh); err != nil {
+				close(internalStopCh)
+				return err
+			}
+		}
+		...
+	}
+
+k8s.io/kubernetes/pkg/kubeapiserver/server/insecure_handler.go:
+
+	func serveInsecurely(insecureServingInfo *InsecureServingInfo, insecureHandler http.Handler, stopCh <-chan struct{}) error {
+		insecureServer := &http.Server{
+			Addr:           insecureServingInfo.BindAddress,
+			Handler:        insecureHandler,
+			MaxHeaderBytes: 1 << 20,
+		}
+		glog.Infof("Serving insecurely on %s", insecureServingInfo.BindAddress)
+		var err error
+		_, err = server.RunServer(insecureServer, insecureServingInfo.BindNetwork, stopCh)
+		return err
+	}
+
+insecureHandler传递给了insecureServer。
+
+k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/serve.go:
+
+	func RunServer(server *http.Server, network string, stopCh <-chan struct{}) (int, error) {
+		if len(server.Addr) == 0 {
+			return 0, errors.New("address cannot be empty")
+		}
+		
+		if len(network) == 0 {
+			network = "tcp"
+		}
+		
+		// first listen is synchronous (fail early!)
+		ln, err := net.Listen(network, server.Addr)
+		if err != nil {
+			return 0, fmt.Errorf("failed to listen on %v: %v", server.Addr, err)
+		}
+		
+		// get port
+		tcpAddr, ok := ln.Addr().(*net.TCPAddr)
+		if !ok {
+			ln.Close()
+			return 0, fmt.Errorf("invalid listen address: %q", ln.Addr().String())
+		}
+		....
+
+## secure模式
+
+secure模式是在GenericAPIServer的基础上创建了一个aggregatorServer，在aggregatorServer的创建过程完成了REST的请求处理链。
+
+### aggregator Server的创建
+
+k8s.io/kubernetes/cmd/kube-apiserver/app/server.go:
+
+	aggregatorConfig, err := createAggregatorConfig(*kubeAPIServerConfig.GenericConfig, runOptions)
+	if err != nil {
+		return err
+	}
+	aggregatorServer, err := createAggregatorServer(aggregatorConfig, kubeAPIServer.GenericAPIServer, sharedInformers, stopCh)
+	if err != nil {
+		// we don't need special handling for innerStopCh because the aggregator server doesn't create any go routines
+		return err
+	}
+	return aggregatorServer.GenericAPIServer.PrepareRun().Run(stopCh)
+
+k8s.io/kubernetes/cmd/kube-apiserver/app/aggregator.go,createAggregatorServer():
+
+	aggregatorServer, err := aggregatorConfig.Complete().NewWithDelegate(delegateAPIServer, stopCh)
+
+k8s.io/kubernetes/staging/src/k8s.io/kube-aggregator/pkg/apiserver/apiserver.go:
+
+	// New returns a new instance of APIAggregator from the given config.
+	func (c completedConfig) NewWithDelegate(delegationTarget genericapiserver.DelegationTarget, stopCh <-chan struct{}) (*APIAggregator, error) {
+		genericServer, err := c.Config.GenericConfig.SkipComplete().NewWithDelegate(delegationTarget) // completion is done in Complete, no need for a second time
+		if err != nil {
+			return nil, err
+		}
+	......
+
+k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/config.go:
+
+	func (c completedConfig) NewWithDelegate(delegationTarget DelegationTarget) (*GenericAPIServer, error) {
+		// some pieces of the delegationTarget take precendence.  Callers should already have ensured that these
+		// were wired correctly.  Documenting them here.
+		// c.RequestContextMapper = delegationTarget.RequestContextMapper()
+
+		s, err := c.constructServer()
+		if err != nil {
+			return nil, err
+		}
+
+		for k, v := range delegationTarget.PostStartHooks() {
+			s.postStartHooks[k] = v
+		}
+
+		for _, delegateCheck := range delegationTarget.HealthzChecks() {
+			skip := false
+			for _, existingCheck := range c.HealthzChecks {
+				if existingCheck.Name() == delegateCheck.Name() {
+					skip = true
+					break
+				}
+			}
+			if skip {
+				continue
+			}
+			
+			s.healthzChecks = append(s.healthzChecks, delegateCheck)
+		}
+		
+		s.listedPathProvider = routes.ListedPathProviders{s.listedPathProvider, delegationTarget}
+		
+		// use the UnprotectedHandler from the delegation target to ensure that we don't attempt to double authenticator, authorize,
+		// or some other part of the filter chain in delegation cases.
+		return c.buildHandlers(s, delegationTarget.UnprotectedHandler())
+	}
+
+注意，这里使用的是NewWithDelegate，创建了一个新的GenericAPIServer，并装载了Handler。
+
+k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/config.go:
+
+	// buildHandlers builds our handling chain
+	func (c completedConfig) buildHandlers(s *GenericAPIServer, delegate http.Handler) (*GenericAPIServer, error) {
+		if s.openAPIConfig != nil {
+			if s.openAPIConfig.Info == nil {
+				s.openAPIConfig.Info = &spec.Info{}
+			}
+			if s.openAPIConfig.Info.Version == "" {
+				if c.Version != nil {
+					s.openAPIConfig.Info.Version = strings.Split(c.Version.String(), "-")[0]
+				} else {
+					s.openAPIConfig.Info.Version = "unversioned"
+				}
+			}
+		}
+		
+		installAPI(s, c.Config, delegate)
+		
+		s.Handler = c.BuildHandlerChainFunc(s.HandlerContainer.ServeMux, c.Config)
+		
+		return s, nil
+	}
+
+在BuildHandlerChainFunc中进行了创建REST请求的处理链。
+
+### BuildHandlerChainFunc
+
+k8s.io/kubernetes/cmd/kube-apiserver/app/server.go:
+
+	func CreateKubeAPIServerConfig(s *options.ServerRunOptions) (*master.Config, informers.SharedInformerFactory, *kubeserver.InsecureServingInfo, error) {
+		...
+		genericConfig, sharedInformers, insecureServingOptions, err := BuildGenericConfig(s)
+		...
+
+k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/config.go:
+
+	// BuildGenericConfig takes the master server options and produces the genericapiserver.Config associated with it
+	func BuildGenericConfig(s *options.ServerRunOptions) (*genericapiserver.Config, informers.SharedInformerFactory, *kubeserver.InsecureServingInfo, error) {
+		genericConfig := genericapiserver.NewConfig(api.Codecs)
+		...
+
+k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/config.go:
+
+	func NewConfig(codecs serializer.CodecFactory) *Config {
+		return &Config{
+			Serializer:                  codecs,
+			ReadWritePort:               443,
+			RequestContextMapper:        apirequest.NewRequestContextMapper(),
+			BuildHandlerChainFunc:       DefaultBuildHandlerChain,
+		...
+
+k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/config.go:
+
+	func DefaultBuildHandlerChain(apiHandler http.Handler, c *Config) http.Handler {
+		handler := genericapifilters.WithAuthorization(apiHandler, c.RequestContextMapper, c.Authorizer)
+		handler = genericapifilters.WithImpersonation(handler, c.RequestContextMapper, c.Authorizer)
+		handler = genericapifilters.WithAudit(handler, c.RequestContextMapper, c.AuditWriter)
+		handler = genericapifilters.WithAuthentication(handler, c.RequestContextMapper, c.Authenticator, genericapifilters.Unauthorized(c.SupportsBasicAuth))
+		handler = genericfilters.WithCORS(handler, c.CorsAllowedOriginList, nil, nil, nil, "true")
+		handler = genericfilters.WithPanicRecovery(handler, c.RequestContextMapper)
+		handler = genericfilters.WithTimeoutForNonLongRunningRequests(handler, c.RequestContextMapper, c.LongRunningFunc)
+		handler = genericfilters.WithMaxInFlightLimit(handler, c.MaxRequestsInFlight, c.MaxMutatingRequestsInFlight, c.RequestContextMapper, c.LongRunningFunc)
+		handler = genericapifilters.WithRequestInfo(handler, NewRequestInfoResolver(c), c.RequestContextMapper)
+		handler = apirequest.WithRequestContext(handler, c.RequestContextMapper)
+		return handler
 	}
 
 ## 参考
