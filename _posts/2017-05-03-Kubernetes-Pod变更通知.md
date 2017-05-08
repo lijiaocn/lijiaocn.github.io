@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Kubernetes中的Pod变更过程
+title: Kubernetes的Pod变更过程
 author: lijiaocn
 createdate: 2017/05/03 17:09:37
-changedate: 2017/05/04 14:35:03
+changedate: 2017/05/08 13:47:52
 categories:
 tags: k8s
 keywords: kubernete,pod,receive,变更通知
