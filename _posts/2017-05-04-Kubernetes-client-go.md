@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Kubernetes的KubeClient实现
+title: Kubernetes的client-go的使用与实现
 author: lijiaocn
 createdate: 2017/05/04 15:13:00
-changedate: 2017/05/04 16:17:43
+changedate: 2017/05/09 19:27:28
 categories:
 tags: k8s
 keywords: kubernetes,k8s,clientset,KubeClient
@@ -14,11 +14,103 @@ description: Kubelet等组件与apiserver进行通信，通过KubeClient完成�
 * auto-gen TOC:
 {:toc}
 
-Kubelet等组件与apiserver进行通信，通过KubeClient完成，clientset.Interface约定了KubeClient需要实现的方法。
+client-go是k8s社区维护的一个用于与kubernetes交互的client。
 
-这部分代码已经被拆分出来： k8s.io/client-go/kubernetes/clientset.go
+注意：kubernetes项目中没有引用[client-go][1]，使用的是kubernetes项目下的`pkg/client/clientset_generated/clientset/`，怀疑是编译时，由client-go转换得到的。
+
+## Clientset
+
+Clientset是多个client的集合。
+
+k8s.io/client-go/kubernetes/clientset.go:
+
+	// Clientset contains the clients for groups. Each group has exactly one
+	// version included in a Clientset.
+	type Clientset struct {
+		*discovery.DiscoveryClient
+		*corev1.CoreV1Client
+		*appsv1beta1.AppsV1beta1Client
+		*authenticationv1.AuthenticationV1Client
+		*authenticationv1beta1.AuthenticationV1beta1Client
+		*authorizationv1.AuthorizationV1Client
+		*authorizationv1beta1.AuthorizationV1beta1Client
+		*autoscalingv1.AutoscalingV1Client
+		*autoscalingv2alpha1.AutoscalingV2alpha1Client
+		*batchv1.BatchV1Client
+		*batchv2alpha1.BatchV2alpha1Client
+		*certificatesv1beta1.CertificatesV1beta1Client
+		*extensionsv1beta1.ExtensionsV1beta1Client
+		*policyv1beta1.PolicyV1beta1Client
+		*rbacv1beta1.RbacV1beta1Client
+		*rbacv1alpha1.RbacV1alpha1Client
+		*settingsv1alpha1.SettingsV1alpha1Client
+		*storagev1beta1.StorageV1beta1Client
+		*storagev1.StorageV1Client
+	}
+
+## Clientset的创建
+
+k8s.io/client-go/kubernetes/clientset.go:
+
+	+New(c rest.Interface) : *Clientset
+	+NewForConfig(c *rest.Config) : *Clientset, error
+	+NewForConfigOrDie(c *rest.Config) : *Clientset
+
+关键是传入参数，可以从rest.Interface创建，可以从rest.Config创建。
+
+k8s.io/client-go/rest/client.go:
+
+	type Interface interface {
+		GetRateLimiter() flowcontrol.RateLimiter
+		Verb(verb string) *Request
+		Post() *Request
+		Put() *Request
+		Patch(pt types.PatchType) *Request
+		Get() *Request
+		Delete() *Request
+		APIVersion() schema.GroupVersion
+	}
+
+k8s.io/client-go/rest/config.go:
+
+	type Config struct {
+		Host string
+		APIPath string
+		Prefix string
+		ContentConfig
+		Username string
+		Password string
+		BearerToken string
+		Impersonate ImpersonationConfig
+		AuthProvider *clientcmdapi.AuthProviderConfig
+		AuthConfigPersister AuthProviderConfigPersister
+		TLSClientConfig
+		UserAgent string
+		Transport http.RoundTripper
+		WrapTransport func(rt http.RoundTripper) http.RoundTripper
+		QPS float32
+		Burst int
+		RateLimiter flowcontrol.RateLimiter
+		Timeout time.Duration
+	}
+
+创建的过程中，就是初始化Clientset中的每个Client
+
+k8s.io/client-go/kubernetes/clientset.go:
+
+	func NewForConfig(c *rest.Config) (*Clientset, error) {
+		...
+		var cs Clientset
+		cs.CoreV1Client, err = corev1.NewForConfig(&configShallowCopy)
+		...
+		cs.AppsV1beta1Client, err = appsv1beta1.NewForConfig(&configShallowCopy)
+		...
+		cs.AuthenticationV1Client, err = authenticationv1.NewForConfig(&configShallowCopy)
+		...
 
 ## clientset.Interface
+
+Clientset实现了Interface，可以直接通过这些方法获得具体的client。
 
 k8s.io/client-go/kubernetes/clientset.go:
 
@@ -68,118 +160,16 @@ k8s.io/client-go/kubernetes/clientset.go:
 		Storage() storagev1.StorageV1Interface
 	}
 
-## Clientset
-
-k8s.io/client-go/kubernetes/clientset.go中实现了一个Clientset:
-
-	// Clientset contains the clients for groups. Each group has exactly one
-	// version included in a Clientset.
-	type Clientset struct {
-		*discovery.DiscoveryClient
-		*corev1.CoreV1Client
-		*appsv1beta1.AppsV1beta1Client
-		*authenticationv1.AuthenticationV1Client
-		*authenticationv1beta1.AuthenticationV1beta1Client
-		*authorizationv1.AuthorizationV1Client
-		*authorizationv1beta1.AuthorizationV1beta1Client
-		*autoscalingv1.AutoscalingV1Client
-		*autoscalingv2alpha1.AutoscalingV2alpha1Client
-		*batchv1.BatchV1Client
-		*batchv2alpha1.BatchV2alpha1Client
-		*certificatesv1beta1.CertificatesV1beta1Client
-		*extensionsv1beta1.ExtensionsV1beta1Client
-		*policyv1beta1.PolicyV1beta1Client
-		*rbacv1beta1.RbacV1beta1Client
-		*rbacv1alpha1.RbacV1alpha1Client
-		*settingsv1alpha1.SettingsV1alpha1Client
-		*storagev1beta1.StorageV1beta1Client
-		*storagev1.StorageV1Client
-	}
-
-## 创建Clientset
-
-k8s.io/client-go/kubernetes/clientset.go:
-
-	+New(c rest.Interface) : *Clientset
-	+NewForConfig(c *rest.Config) : *Clientset, error
-	+NewForConfigOrDie(c *rest.Config) : *Clientset
-
-关键是传入参数：
-
-k8s.io/client-go/rest/client.go:
-
-	type Interface interface {
-		GetRateLimiter() flowcontrol.RateLimiter
-		Verb(verb string) *Request
-		Post() *Request
-		Put() *Request
-		Patch(pt types.PatchType) *Request
-		Get() *Request
-		Delete() *Request
-		APIVersion() schema.GroupVersion
-	}
-
-k8s.io/client-go/rest/config.go:
-
-	type Config struct {
-		Host string
-		APIPath string
-		Prefix string
-		ContentConfig
-		Username string
-		Password string
-		BearerToken string
-		Impersonate ImpersonationConfig
-		AuthProvider *clientcmdapi.AuthProviderConfig
-		AuthConfigPersister AuthProviderConfigPersister
-		TLSClientConfig
-		UserAgent string
-		Transport http.RoundTripper
-		WrapTransport func(rt http.RoundTripper) http.RoundTripper
-		QPS float32
-		Burst int
-		RateLimiter flowcontrol.RateLimiter
-		Timeout time.Duration
-	}
-
 ## corev1.CoreV1Client
 
-ClientSet其实是由多个Client组合成的，这里只分析corev1.CoreV1Client
+Clientset中的corev1.CoreV1Client的实现。
 
 k8s.io/client-go/kubernetes/clientset.go, NewForConfig():
 
+	...
 	cs.CoreV1Client, err = corev1.NewForConfig(&configShallowCopy)
-	if err != nil {
-		return nil, err
-	}
+	...
 
-k8s.io/client-go/kubernetes/typed/core/v1/core_client.go，由restClient和一堆的方法组成:
-
-	-+CoreV1Client : struct
-	    [fields]
-	   -restClient : rest.Interface
-	    [methods]
-	   +ComponentStatuses() : ComponentStatusInterface
-	   +ConfigMaps(namespace string) : ConfigMapInterface
-	   +Endpoints(namespace string) : EndpointsInterface
-	   +Events(namespace string) : EventInterface
-	   +LimitRanges(namespace string) : LimitRangeInterface
-	   +Namespaces() : NamespaceInterface
-	   +Nodes() : NodeInterface
-	   +PersistentVolumeClaims(namespace string) : PersistentVolumeClaimInterface
-	   +PersistentVolumes() : PersistentVolumeInterface
-	   +PodTemplates(namespace string) : PodTemplateInterface
-	   +Pods(namespace string) : PodInterface
-	   +RESTClient() : rest.Interface
-	   +ReplicationControllers(namespace string) : ReplicationControllerInterface
-	   +ResourceQuotas(namespace string) : ResourceQuotaInterface
-	   +Secrets(namespace string) : SecretInterface
-	   +ServiceAccounts(namespace string) : ServiceAccountInterface
-	   +Services(namespace string) : ServiceInterface
-	    [functions]
-	   +New(c rest.Interface) : *CoreV1Client
-	   +NewForConfig(c *rest.Config) : *CoreV1Client, error
-	   +NewForConfigOrDie(c *rest.Config) : *CoreV1Client
 
 k8s.io/client-go/kubernetes/typed/core/v1/core_client.go，创建:
 
@@ -224,6 +214,35 @@ k8s.io/client-go/rest/config.go, RESTClientFor():
 
 NewRESTClient中创建了最终的RESTClient。
 
+一言概之，CoreV1Client就是围绕着restClient，实现了一些具体的方法，通过这些方法直接获取对应的kubernetes资源。
+
+k8s.io/client-go/kubernetes/typed/core/v1/core_client.go:
+
+	-+CoreV1Client : struct
+	    [fields]
+	   -restClient : rest.Interface
+	    [methods]
+	   +ComponentStatuses() : ComponentStatusInterface
+	   +ConfigMaps(namespace string) : ConfigMapInterface
+	   +Endpoints(namespace string) : EndpointsInterface
+	   +Events(namespace string) : EventInterface
+	   +LimitRanges(namespace string) : LimitRangeInterface
+	   +Namespaces() : NamespaceInterface
+	   +Nodes() : NodeInterface
+	   +PersistentVolumeClaims(namespace string) : PersistentVolumeClaimInterface
+	   +PersistentVolumes() : PersistentVolumeInterface
+	   +PodTemplates(namespace string) : PodTemplateInterface
+	   +Pods(namespace string) : PodInterface
+	   +RESTClient() : rest.Interface
+	   +ReplicationControllers(namespace string) : ReplicationControllerInterface
+	   +ResourceQuotas(namespace string) : ResourceQuotaInterface
+	   +Secrets(namespace string) : SecretInterface
+	   +ServiceAccounts(namespace string) : ServiceAccountInterface
+	   +Services(namespace string) : ServiceInterface
+	    [functions]
+	   +New(c rest.Interface) : *CoreV1Client
+	   +NewForConfig(c *rest.Config) : *CoreV1Client, error
+	   +NewForConfigOrDie(c *rest.Config) : *CoreV1Client
 
 ## RESTClient
 
@@ -326,3 +345,9 @@ k8s.io/client-go/tools/cache/listwatch.go:
 		}
 		return &ListWatch{ListFunc: listFunc, WatchFunc: watchFunc}
 	}
+
+## 参考
+
+1. [kubernetes client-go][1]
+
+[1]: https://github.com/kubernetes/client-go "kubernetes client-go"
