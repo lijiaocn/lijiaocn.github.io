@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Kubernetes的client-go的使用与实现
+title: Kubernetes的Client-go的使用与实现
 author: lijiaocn
 createdate: 2017/05/04 15:13:00
-changedate: 2017/05/09 19:27:28
+changedate: 2017/05/10 11:15:54
 categories:
 tags: k8s
 keywords: kubernetes,k8s,clientset,KubeClient

@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Kubernetes的Pod创建
+title: Kubernetes的kubelet的工作过程
 author: lijiaocn
 createdate: 2017/05/02 10:03:20
-changedate: 2017/05/03 17:13:56
+changedate: 2017/05/10 11:14:42
 categories:
 tags: k8s
 keywords: kubelet,kubelete,工作流程,源码走读

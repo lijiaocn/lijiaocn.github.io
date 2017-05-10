@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Kubernetes的controller-manager的工作过程
+title: Kubernetes的Controller-manager的工作过程
 author: lijiaocn
 createdate: 2017/05/08 13:54:33
-changedate: 2017/05/09 19:10:09
+changedate: 2017/05/10 11:16:08
 categories:
 tags: k8s
 keywords: kubernetes,controller-manger,工作原理,工作过程
