@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Kube-proxy转发规则分析
+title: Kubernetes的Kube-proxy的转发规则分析
 author: lijiaocn
 createdate: 2017/03/27 10:16:55
-changedate: 2017/03/27 19:04:56
+changedate: 2017/05/10 11:22:22
 categories:
 tags: k8s
 keywords: kube-proxy转发规则分析

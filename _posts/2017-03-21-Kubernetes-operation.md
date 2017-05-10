@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Kubernetes基本操作
+title: Kubernetes的基本操作
 author: lijiaocn
 createdate: 2017/03/21 15:32:31
-changedate: 2017/03/26 21:42:58
+changedate: 2017/05/10 11:23:02
 categories:
 tags: k8s
 keywords: kubernetes,k8s
