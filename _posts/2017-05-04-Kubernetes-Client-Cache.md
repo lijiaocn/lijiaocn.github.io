@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes的Client端Cache
 author: lijiaocn
 createdate: 2017/05/04 10:06:47
-changedate: 2017/05/04 14:35:35
+changedate: 2017/05/10 11:07:29
 categories:
 tags: k8s
 keywords: client-go,kubernetes,cache
@@ -92,35 +92,6 @@ UndeltaStore会将增、删、改等操作通过PushFunc()向外通知。
 		PushFunc func([]interface{})
 	}
 
-## ListerWatcher
-
-Reflector依赖ListerWatcher接口，来感知服务端的变动
-
-k8s.io/client-go/tools/cache/listwatch.go:
-
-	// ListerWatcher is any object that knows how to perform an initial list and start a watch on a resource.
-	type ListerWatcher interface {
-		// List should return a list type object; the Items field will be extracted, and the
-		// ResourceVersion field will be used to start the watch in the right place.
-		List(options metav1.ListOptions) (runtime.Object, error)
-		// Watch should begin a watch at the specified version.
-		Watch(options metav1.ListOptions) (watch.Interface, error)
-	}
-
-### ListWath
-
-ListWatch实现了ListerWatcher接口
-
-	-+ListWatch : struct
-	    [fields]
-	   +ListFunc : ListFunc
-	   +WatchFunc : WatchFunc
-	    [methods]
-	   +List(options metav1.ListOptions) : runtime.Object, error
-	   +Watch(options metav1.ListOptions) : watch.Interface, error
-	    [functions]
-	   +NewListWatchFromClient(c Getter, resource string, namespace string, fieldSelector fields.Selector) : *ListWatch
-
 ## Reflector
 
 Reflector通过传入参数ListerWatcher感知服务端的内容变化，并实时更新到传入的store，保证store中的内容与服务端一致。
@@ -152,3 +123,32 @@ k8s.io/client-go/tools/cache/reflector.go:
 			}
 		}, r.period, wait.NeverStop)
 	}
+### ListerWatcher
+
+Reflector依赖ListerWatcher接口，来感知服务端的变动
+
+k8s.io/client-go/tools/cache/listwatch.go:
+
+	// ListerWatcher is any object that knows how to perform an initial list and start a watch on a resource.
+	type ListerWatcher interface {
+		// List should return a list type object; the Items field will be extracted, and the
+		// ResourceVersion field will be used to start the watch in the right place.
+		List(options metav1.ListOptions) (runtime.Object, error)
+		// Watch should begin a watch at the specified version.
+		Watch(options metav1.ListOptions) (watch.Interface, error)
+	}
+
+### ListWath
+
+ListWatch实现了ListerWatcher接口
+
+	-+ListWatch : struct
+	    [fields]
+	   +ListFunc : ListFunc
+	   +WatchFunc : WatchFunc
+	    [methods]
+	   +List(options metav1.ListOptions) : runtime.Object, error
+	   +Watch(options metav1.ListOptions) : watch.Interface, error
+	    [functions]
+	   +NewListWatchFromClient(c Getter, resource string, namespace string, fieldSelector fields.Selector) : *ListWatch
+
