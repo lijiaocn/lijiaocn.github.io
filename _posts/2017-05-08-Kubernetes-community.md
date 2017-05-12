@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes的社区资源与项目参与方式
 author: lijiaocn
 createdate: 2017/03/28 10:01:38
-changedate: 2017/05/10 11:21:40
+changedate: 2017/05/12 17:12:42
 categories:
 tags: k8s
 keywords: kubernetes,源代码,编译
@@ -19,6 +19,12 @@ description: 汇总了Kubernetes的社区资源，介绍了kubernetes社区的�
 ## Kubernetes community 
 
 [Kubernetes community][3]介绍了如何参与到kubernetes社区。
+
+[Kubernetes's blog][12]
+
+[Kubernetes on twitter][11]
+
+[Kubernetes on slack][13]
 
 ## SIGs and Working Groups
 
@@ -60,6 +66,9 @@ Kubernetes的社区由多个小组组成，每个小组有自己Google Group和S
 8. [Kubernetes Design and Architecture][8]
 9. [Kubernetes Developer Guide][9]
 10. [Kubernetes Development Guide][10]
+11. [Kubernetes on twitter][11]
+12. [Kubernetes's blog][12]
+13. [Kubernetes on slack][13]
 
 [1]: https://github.com/kubernetes/kubernetes  "kubernetes REAMDME.md" 
 [2]: https://github.com/kubernetes/community/blob/master/contributors/devel/development.md "kubernetes development"
@@ -71,3 +80,6 @@ Kubernetes的社区由多个小组组成，每个小组有自己Google Group和S
 [8]: https://github.com/kubernetes/community/blob/master/contributors/design-proposals/architecture.md "Kubernetes Design and Architecture"
 [9]: https://github.com/kubernetes/community/blob/master/contributors/devel/README.md  "Kubernetes Developer Guide"
 [10]: https://github.com/kubernetes/community/blob/master/contributors/devel/development.md "Kubernetes Development Guide"
+[11]: https://twitter.com/kubernetesio "Kubernetes on twitter"
+[12]: http://blog.kubernetes.io/  "Kubernetes's blog"
+[13]: http://stackoverflow.com/questions/tagged/kubernetes "Kubernetes on slack"

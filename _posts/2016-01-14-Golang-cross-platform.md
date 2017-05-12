@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Golang跨平台编译
+title: Golang的跨平台编译
 author: lijiaocn
 createdate: 2017/03/28 16:17:36
-changedate: 2017/05/07 23:29:12
+changedate: 2017/05/12 11:04:36
 categories:
 tags: 编程
 keywords: golang编译

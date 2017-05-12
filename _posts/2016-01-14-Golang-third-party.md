@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Golang依赖包管理
+title: Golang的依赖包管理
 author: lijiaocn
 createdate: 2017/03/28 13:05:05
-changedate: 2017/05/07 23:02:37
+changedate: 2017/05/12 11:04:02
 categories:
 tags: 编程
 keywords: Go编程,依赖包
@@ -16,30 +16,24 @@ description:  Golang依赖包管理，Golang可以自由地引用Git仓库中的
 
 Golang可以自由地引用Git仓库中的代码，这样就带来了依赖包版本管理的问题。
 
-## godep使用
+## Godep
 
-Golang本身没有提供依赖包管理的功能，可以通过一个独立的[Godep][2]工具进行管理。
+早期Golang本身没有提供依赖包管理的功能，可以通过一个独立的[Godep][2]工具进行管理。
 
 通过以下命令，可以直接保存项目引用的第三方代码以及版本信息:
 
 	godep save          #保存当前目录下的go文件(不遍历子目录)引用的第三方代码
 	godep save ./...    #保存当前目录以及子目录下的go文件引用的第三方代码
 
-在golang 1.5之前的版本，godep将第三方代码和版本信息直接保存的Godeps目录下。
+在Golang 1.5之前，Godep将版本信息和第三方代码保存的Godeps目录下。
 
-在golang1.5以及以后的版本中，引入了vendor功能，godep将第三方代码保存在vendor目录，版本信息保存在Godeps目录中。
+在Golang 1.5以后，Godep将版本信息保存在Godeps目录中,将第三方代码保存在vendor目录。
 
-## vendor说明
+## vendor
 
-vendor是1.5中的一个试验特性，在1.6版本中被正式引入。编译时，会优先使用vendor目录中的文件。
+vendor是1.5中的一个试验特性，在1.6版本中被正式引入。编译过程中，会先引用vendor目录中的代码。
 
-在没有vendor之前，项目vendor_test目录结构如下:
-
-	▾ vendor_test/
-	  ▾ main/
-	      main.go
-
-main.go:
+对于同样的代码main.go:
 
 	package main
 	
@@ -51,7 +45,13 @@ main.go:
 	    version.Show()
 	}
 
-编译时使用的是$GOPATH/github.com/lijiaocn/GoPkgs/version中的文件。
+没有vendor之前，项目vendor_test目录结构如下:
+
+	▾ vendor_test/
+	  ▾ main/
+	      main.go
+
+main.go中引用的是$GOPATH/github.com/lijiaocn/GoPkgs/version中的文件。
 
 使用vendor之后，目录结构如下：
 
@@ -66,7 +66,9 @@ main.go:
 	          ▸ version/
 	            LICENSE
 
-编译时,使用的是vendor/github.com/lijiaocn/GoPkgs/version中的文件。
+main.go中引用的是vendor/github.com/lijiaocn/GoPkgs/version中的文件。
+
+不需要对main.go做任何修改。
 
 ## 参考
 
