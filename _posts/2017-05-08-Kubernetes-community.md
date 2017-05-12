@@ -3,9 +3,9 @@ layout: default
 title: Kubernetes的社区资源与项目参与方式
 author: lijiaocn
 createdate: 2017/03/28 10:01:38
-changedate: 2017/05/12 17:12:42
+changedate: 2017/05/12 18:06:14
 categories:
-tags: k8s
+tags: 手册 k8s
 keywords: kubernetes,源代码,编译
 description: 汇总了Kubernetes的社区资源，介绍了kubernetes社区的运作方式和参与方式。
 
