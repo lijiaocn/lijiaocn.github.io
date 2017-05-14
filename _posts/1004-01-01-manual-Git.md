@@ -3,7 +3,7 @@ layout: default
 title: Git使用手册
 author: lijiaocn
 createdate: 2017/04/01 11:00:33
-changedate: 2017/04/01 11:06:52
+changedate: 2017/05/14 17:59:05
 categories:
 tags: 手册
 keywords: git
@@ -17,6 +17,32 @@ description: git的使用手册，常用的协作方法，和一些非常有用�
 ## 摘要
 
 Git的操作经常忘记, 这里记录下常用的操作。
+
+## 设置代理
+
+有一些项目使用了自己的git服务器，因为“墙”的存在，从国内访问这些git服务的时候，需要通过能够翻墙的代理。
+
+可以设置为全局的：
+
+	git config --global http.proxy 127.0.0.1:49710
+	git config --global https.proxy 127.0.0.1:49710
+	git config --global http.sslverify false 
+
+git的全局配置文件是`~/.gitconfig`:
+
+	[http]
+		proxy = 127.0.0.1:49710
+		sslverify = false
+	[https]
+		proxy = 127.0.0.1:49710
+
+不需要代理的时候，可以用#号注释掉。
+
+将repo获取到以后，可以在repo里设置local config，只在当前repo中使用代理:
+
+	git config --local http.proxy 127.0.0.1:49710
+	git config --local https.proxy 127.0.0.1:49710
+	git config --local http.sslverify false 
 
 ## Github协作
 
