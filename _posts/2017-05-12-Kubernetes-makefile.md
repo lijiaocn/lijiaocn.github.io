@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes的makefile的工作过程
 author: lijiaocn
 createdate: 2017/05/12 16:56:24
-changedate: 2017/05/15 13:34:44
+changedate: 2017/05/15 15:00:00
 categories:
 tags: k8s
 keywords: k8s,makefile,kubernetes,k8s的构建
@@ -218,6 +218,8 @@ build.sh用来编译具体的目标。
 	
 	kube::golang::build_binaries "$@"
 	kube::golang::place_bins
+
+kube::golang::build_binaries():
 
 ## 参考
 
