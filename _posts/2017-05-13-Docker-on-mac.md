@@ -1,11 +1,11 @@
 ---
 layout: default
-title: 2017-05-13-Docker-on-mac
+title: Docker-on-mac
 author: lijiaocn
 createdate: 2017/05/15 15:36:55
-changedate: 2017/05/15 16:10:33
+changedate: 2017/05/15 22:33:58
 categories: 技巧
-tags: 技巧
+tags: docker mac
 keywords: docker,mac
 description: 现在可以在mac上直接运行docker，可不是只运行docker-client哦
 
