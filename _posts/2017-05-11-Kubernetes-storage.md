@@ -4,7 +4,7 @@ title: Kubernetes的Storage的实现
 author: lijiaocn
 createdate: 2017/05/11 17:23:22
 changedate: 2017/05/12 10:12:01
-categories:
+categories: 项目
 tags: k8s
 keywords: kubernetes,storage,kubernetes的storage的实现。
 description: kubernetes的Apiserver没有直接使用etcd,而是通过storage访问etcd。

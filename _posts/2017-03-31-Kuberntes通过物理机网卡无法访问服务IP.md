@@ -4,7 +4,7 @@ title: Kuberntes通过物理机网卡无法访问Service
 author: lijiaocn
 createdate: 2017/03/31 16:26:56
 changedate: 2017/04/01 13:46:53
-categories:
+categories: 问题
 tags: 问题 k8s
 keywords:  
 description: 在kubernetes的一台物理机上访问service的clusterIP，没有响应，经过调查发现通过物理机的网卡无法访问服务。

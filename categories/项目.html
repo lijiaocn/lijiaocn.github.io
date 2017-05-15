@@ -1,16 +1,16 @@
 ---
-layout: tags
-title:  技巧
+layout: category
+title: 项目
 author: lijiaocn
-keywords:  技巧,常用的技巧
-description: 技巧,常用的技巧介绍 
+keywords:  项目,开源项目
+description: 学习的开源项目
 
 ---
 
-{% for tag in site.tags %} 
-	{% if tag[0] == "技巧" %}
+{% for cate in site.categories %}
+	{% if cate[0] == page.title %}
 		<div class="postlist">
-		{% for post in tag[1] %}
+		{% for post in cate[1] %}
 			<h2><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>
 			<div class="postinfo" >
 				<p><span>{{ post.tags }} / {{ post.author }} / {{ post.createdate }}</span></p>

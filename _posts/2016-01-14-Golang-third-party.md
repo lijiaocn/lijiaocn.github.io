@@ -4,7 +4,7 @@ title: Golang的依赖包管理
 author: lijiaocn
 createdate: 2017/03/28 13:05:05
 changedate: 2017/05/12 11:04:02
-categories:
+categories: 编程
 tags: 编程
 keywords: Go编程,依赖包
 description:  Golang依赖包管理，Golang可以自由地引用Git仓库中的代码，这样就带来了依赖包版本管理的问题。

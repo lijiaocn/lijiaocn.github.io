@@ -1,16 +1,16 @@
 ---
-layout: tags
-title:  手册
+layout: category
+title:  杂项
 author: lijiaocn
-keywords:  手册,kubernetes
-description: 手册,成手册的文章  
+keywords:  杂项,零碎,乱七八糟
+description: 这是早期记录的比较零碎、没有归集整理的内容。
 
 ---
 
-{% for tag in site.tags %} 
-	{% if tag[0] == "手册" %}
+{% for cate in site.categories %}
+	{% if cate[0] == page.title %}
 		<div class="postlist">
-		{% for post in tag[1] %}
+		{% for post in cate[1] %}
 			<h2><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>
 			<div class="postinfo" >
 				<p><span>{{ post.tags }} / {{ post.author }} / {{ post.createdate }}</span></p>

@@ -1,16 +1,16 @@
 ---
-layout: tags
-title:  见解
+layout: category
+title:  编程
 author: lijiaocn
-keywords:  见解,观点,看法
-description: 一些个人的观点,看法  
+keywords:  编程,编程语言,编程手册
+description: 编程语言学习
 
 ---
 
-{% for tag in site.tags %} 
-	{% if tag[0] == "见解" %}
+{% for cate in site.categories %}
+	{% if cate[0] == page.title %}
 		<div class="postlist">
-		{% for post in tag[1] %}
+		{% for post in cate[1] %}
 			<h2><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>
 			<div class="postinfo" >
 				<p><span>{{ post.tags }} / {{ post.author }} / {{ post.createdate }}</span></p>

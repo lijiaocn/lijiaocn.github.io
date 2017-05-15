@@ -3,9 +3,9 @@ layout: default
 title: Calico网络的原理、组网方式与使用
 author: lijiaocn
 createdate: 2017/04/11 10:58:34
-changedate: 2017/05/03 15:40:41
-categories:
-tags: 手册
+changedate: 2017/05/15 18:38:28
+categories: 手册
+tags: sdn calico
 keywords:
 description: Calico是一个比较有趣的SDN解决方案，完全利用路由规则在实现动态组网，通过BGP协议通告路由。
 

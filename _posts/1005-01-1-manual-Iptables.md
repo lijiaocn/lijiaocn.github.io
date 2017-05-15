@@ -3,9 +3,9 @@ layout: default
 title: Iptables使用手册
 author: lijiaocn
 createdate: 2014/04/16 10:16:55
-changedate: 2017/04/19 14:21:08
-categories:
-tags: 手册
+changedate: 2017/05/15 18:35:37
+categories: 手册
+tags: iptables
 keywords:  linux iptables
 description: 介绍了iptables的原理、表之间的关系、报文处理时经过规则链的顺序。以及iptables的调试方法和比较有意思的应用。
 

@@ -3,9 +3,9 @@ layout: default
 title: Grunt使用手册
 author: lijiaocn
 createdate: 2017/04/25 15:41:52
-changedate: 2017/04/26 09:59:56
-categories:
-tags: 手册
+changedate: 2017/05/15 18:39:45
+categories: 手册
+tags: grunt
 keywords: Grunt,Grunt插件,javascript,构建工具
 description: Grunt,JaveScript世界的构建工具,主要还是依靠大量的插件，了解插件的功能和配置方式即可。
 

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Angularjs学习笔记
-tags: 杂项
+categories: 杂项
 
 ---
 
@@ -178,7 +178,7 @@ P39 过滤器格式化数据
 
 	var homeModule =angular.module('HomeModule',[]);
 	homeModule.filter('titleCase', function(){
-tags: 杂项
+categories: 杂项
 		XXXXX
 		});
 

@@ -1,16 +1,16 @@
 ---
-layout: tags
-title:  k8s
+layout: category
+title: 问题 
 author: lijiaocn
-keywords:  k8s,kubernetes,源代码分析,企业应用实战
-description: k8s,kubernetes开源项目的的学习分析 
+keywords:  问题,问题解决
+description: 记录工作中遇到的一些问题以及解决方法。
 
 ---
 
-{% for tag in site.tags %} 
-	{% if tag[0] == "k8s" %}
+{% for cate in site.categories %}
+	{% if cate[0] == page.title %}
 		<div class="postlist">
-		{% for post in tag[1] %}
+		{% for post in cate[1] %}
 			<h2><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>
 			<div class="postinfo" >
 				<p><span>{{ post.tags }} / {{ post.author }} / {{ post.createdate }}</span></p>

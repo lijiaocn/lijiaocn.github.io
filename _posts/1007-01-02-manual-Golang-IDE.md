@@ -3,9 +3,9 @@ layout: default
 title: Golang-IDE
 author: lijiaocn
 createdate: 2017/04/11 13:07:24
-changedate: 2017/04/11 14:02:27
-categories:
-tags: 手册
+changedate: 2017/05/15 18:37:40
+categories: 手册
+tags: golang
 keywords: Golang,IDE,vim-go
 description: 找到一个适合自己的IDE，是开启快乐开发工作的第一步。
 

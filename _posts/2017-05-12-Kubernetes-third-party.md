@@ -4,7 +4,7 @@ title: Kubernetes的第三方包的使用
 author: lijiaocn
 createdate: 2017/05/12 10:25:44
 changedate: 2017/05/12 16:13:31
-categories:
+categories: 项目
 tags: k8s
 keywords: k8s,kubernetes,third party,第三方包
 description: 不同的是，Kubernetes同时也会将项目中的部分代码以独立项目的形式再次发布出去。

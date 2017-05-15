@@ -3,9 +3,9 @@ layout: default
 title: LDAP解决方案
 author: lijiaocn
 createdate: 2017/04/01 17:41:15
-changedate: 2017/04/11 10:40:55
-categories:
-tags: 手册
+changedate: 2017/05/15 18:38:00
+categories: 手册
+tags: ldap
 keywords:
 description: LDAP的协议，以及开源的解决方案，客户端Library。
 

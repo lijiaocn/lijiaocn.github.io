@@ -4,7 +4,7 @@ title: Kubernetes的基本操作
 author: lijiaocn
 createdate: 2017/03/21 15:32:31
 changedate: 2017/05/10 11:23:02
-categories:
+categories: 项目
 tags: k8s
 keywords: kubernetes,k8s
 description: 记录了kubernetes的基本操作

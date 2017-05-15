@@ -4,7 +4,7 @@ title: Kubernetes的Apiserver的工作过程
 author: lijiaocn
 createdate: 2017/05/04 16:28:23
 changedate: 2017/05/10 16:24:34
-categories:
+categories: 项目
 tags: k8s
 keywords: Kubernetes,k8s,Kubernetes的apiserver,请求处理
 description: kubernetes的apiserver的实现挺复杂，理解了kubernetes-style的apiserver后, 原理就清晰了。

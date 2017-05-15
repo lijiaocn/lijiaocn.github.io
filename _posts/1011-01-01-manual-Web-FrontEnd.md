@@ -3,9 +3,10 @@ layout: default
 title: 前端开发工具
 author: lijiaocn
 createdate: 2015/11/26 13:50:55
-changedate: 2017/04/26 09:52:07
-categories:
-tags: 手册
+changedate: 2017/05/15 18:38:50
+categories: 手册
+categories: 前端
+tags: 前端 yeoman
 keywords:
 description: 对前端不熟悉，这是初学过程中学到的一些内容，仅供参考，有问题请留言。
 

@@ -3,8 +3,8 @@ layout: default
 title: Kubernetes的kubelet的工作过程
 author: lijiaocn
 createdate: 2017/05/02 10:03:20
-changedate: 2017/05/10 11:14:42
-categories:
+changedate: 2017/05/15 11:14:31
+categories: 项目
 tags: k8s
 keywords: kubelet,kubelete,工作流程,源码走读
 description: kubernetes中pod的创建过程，kubelet从启动到运行

@@ -3,9 +3,9 @@ layout: default
 title: Golang手册
 author: lijiaocn
 createdate: 2017/03/28 10:01:38
-changedate: 2017/04/11 13:24:37
-categories:
-tags: 手册
+changedate: 2017/05/15 18:37:30
+categories: 手册
+tags: golang
 keywords: Go编程
 description: Go编程
 

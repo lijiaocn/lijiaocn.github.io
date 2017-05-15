@@ -3,9 +3,9 @@ layout: default
 title: 企业级PaaS平台设计思路
 author: lijiaocn
 createdate: 2017/04/05 13:07:40
-changedate: 2017/04/24 13:52:51
-categories:
-tags:
+changedate: 2017/05/15 18:40:02
+categories: 手册
+tags: paas
 keywords:
 description: 
 

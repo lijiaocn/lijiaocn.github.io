@@ -1,16 +1,16 @@
 ---
-layout: tags
-title:  前端
+layout: category
+title: 前端
 author: lijiaocn
-keywords:  前端,信息呈现,人机交互
-description: 前端,信息呈现,人机交互   
+keywords:  前端
+description: 记录前端、用户交互、UI、图形界面方面的内容
 
 ---
 
-{% for tag in site.tags %} 
-	{% if tag[0] == "前端" %}
+{% for cate in site.categories %}
+	{% if cate[0] == page.title %}
 		<div class="postlist">
-		{% for post in tag[1] %}
+		{% for post in cate[1] %}
 			<h2><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>
 			<div class="postinfo" >
 				<p><span>{{ post.tags }} / {{ post.author }} / {{ post.createdate }}</span></p>

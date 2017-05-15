@@ -3,9 +3,9 @@ layout: default
 title: jekyll使用手册
 author: lijiaocn
 createdate: 2017/05/15 17:00:59
-changedate: 2017/05/15 17:06:57
-categories:
-tags: 手册
+changedate: 2017/05/15 18:40:50
+categories: 手册
+tags: jekyll
 keywords: jekyll,手册
 description: jekyll是一个构建静态站点的工具。
 

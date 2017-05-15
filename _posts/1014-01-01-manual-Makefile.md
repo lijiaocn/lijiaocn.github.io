@@ -3,9 +3,9 @@ layout: default
 title: Makefile
 author: lijiaocn
 createdate: 2012/10/29 10:24:34
-changedate: 2017/05/15 09:41:30
-categories:
-tags: 手册
+changedate: 2017/05/15 18:40:27
+categories: 手册
+tags: make
 keywords: makefile,linux,make
 description: 收集了在一些项目中遇到的Makefile的语法、变量、函数等。
 

@@ -1,16 +1,16 @@
 ---
-layout: tags
-title:  问题
+layout: category
+title:  技巧
 author: lijiaocn
-keywords:  问题,遇到的一些问题的解决
-description: 问题,问题解决,记录了这些问题是怎样解决的。 
+keywords:  技巧,使用技巧,使用方法
+description: 记录了常用的软件、工作技巧。
 
 ---
 
-{% for tag in site.tags %} 
-	{% if tag[0] == "问题" %}
+{% for cate in site.categories %}
+	{% if cate[0] == page.title %}
 		<div class="postlist">
-		{% for post in tag[1] %}
+		{% for post in cate[1] %}
 			<h2><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>
 			<div class="postinfo" >
 				<p><span>{{ post.tags }} / {{ post.author }} / {{ post.createdate }}</span></p>

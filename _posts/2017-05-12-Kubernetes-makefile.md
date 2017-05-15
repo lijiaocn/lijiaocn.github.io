@@ -4,7 +4,7 @@ title: Kubernetes的makefile的工作过程
 author: lijiaocn
 createdate: 2017/05/12 16:56:24
 changedate: 2017/05/15 15:00:00
-categories:
+categories: 项目
 tags: k8s
 keywords: k8s,makefile,kubernetes,k8s的构建
 description: Kubernetes使用Makefile管理项目的构建，顶层Makefile中包含多个Target。

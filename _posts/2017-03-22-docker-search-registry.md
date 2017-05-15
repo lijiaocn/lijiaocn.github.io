@@ -4,7 +4,7 @@ title:  docker搜索其它registry中的镜像
 author: lijiaocn
 createdate: 2017/03/27 16:59:53
 changedate: 2017/03/27 17:01:01
-categories:
+categories: 问题
 tags: 问题
 keywords: docker,registry,搜索镜像
 description: docker搜索其它registry中的镜像

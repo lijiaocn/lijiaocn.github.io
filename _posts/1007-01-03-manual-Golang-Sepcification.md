@@ -3,9 +3,9 @@ layout: default
 title: The Go Programming Language Specification
 author: lijiaocn
 createdate: 2017/04/28 18:01:57
-changedate: 2017/05/15 16:51:27
-categories:
-tags: 手册 Go
+changedate: 2017/05/15 18:37:47
+categories: 手册
+tags: golang
 keywords:  Specification,Go,golang
 description: 查阅一个语言的Specification，其实是一个特别有效的方法。
 

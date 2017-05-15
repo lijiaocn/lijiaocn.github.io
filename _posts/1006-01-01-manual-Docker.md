@@ -3,9 +3,9 @@ layout: default
 title: Docker的使用手册
 author: lijiaocn
 createdate: 2017/03/29 11:11:53
-changedate: 2017/04/01 11:24:02
-categories:
-tags: 手册
+changedate: 2017/05/15 18:37:15
+categories: 手册
+tags: docker
 keywords: docker,使用手册,docker的使用手册
 description: docker的使用手册，配置docker deamon运行参数等。
 

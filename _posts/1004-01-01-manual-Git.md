@@ -3,9 +3,9 @@ layout: default
 title: Git使用手册
 author: lijiaocn
 createdate: 2017/04/01 11:00:33
-changedate: 2017/05/14 17:59:05
-categories:
-tags: 手册
+changedate: 2017/05/15 18:35:28
+categories: 手册
+tags: git
 keywords: git
 description: git的使用手册，常用的协作方法，和一些非常有用的小技巧。
 

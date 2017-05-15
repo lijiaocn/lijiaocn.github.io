@@ -3,9 +3,9 @@ layout: default
 title: Linux Network Tunnel技术
 author: lijiaocn
 createdate: 2017/04/01 14:33:46
-changedate: 2017/04/01 16:38:52
-categories:
-tags: 手册
+changedate: 2017/05/15 18:35:15
+categories: 手册
+tags: linux
 keywords: tunnel,ipip,gre,vxlan,linux
 description: 介绍了Linux上使用的网络隧道（tunnel）技术。
 
