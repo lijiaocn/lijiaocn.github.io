@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Kubernetes-compile
+title: Kubernetes的项目构建编译
 author: lijiaocn
 createdate: 2017/05/15 15:25:04
-changedate: 2017/05/15 16:17:52
+changedate: 2017/05/16 09:24:05
 categories: 项目
 tags: k8s
 keywords: k8s,kubernetes,compile,编译
@@ -16,7 +16,7 @@ description: kubernetes编译有两种方式，直接编译和在docker中编译
 
 kubernetes编译有两种方式，直接编译和在docker中编译。
 
-如果是在MAC上操作，需要安装[GNU command tools][3]。
+如果是在MAC上操作，因为MAC的shell命令是BSD风格的，因此需要安装[GNU command tools][3]。
 
 	brew install coreutils
 	brew install gnu-tar
@@ -36,6 +36,15 @@ kubernetes编译有两种方式，直接编译和在docker中编译。
 如下所示，make命令将在容器中运行。
 
 	build/run.sh make all
+
+build/run.sh运行时会构建编译使用的容器镜像。
+
+	▾ build/
+	  ▾ build-image/
+	    ▸ cross/
+	      Dockerfile  <-- 用于构建镜像的Dockerfile
+	      rsyncd.sh*
+	      VERSION
 
 ## 参考
 
