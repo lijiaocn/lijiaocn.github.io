@@ -3,7 +3,7 @@ layout: default
 title: Tor的社区资源与文章汇总
 author: lijiaocn
 createdate: 2017/05/14 14:40:05
-changedate: 2017/05/15 18:40:44
+changedate: 2017/05/15 22:09:32
 categories: 手册
 tags: tor
 keywords: tor,tor的社区资源
@@ -63,6 +63,7 @@ epel源中提供了tor，可以安装使用:
 12. [Why can a Tor exit node decrypt data, but not the entry node?][12]
 13. [Tor's FAQ][13]
 14. [key establishment][14]
+15. [OpenWrt Tor proxy and anonymizing middlebox setup guide][15]
 
 [1]: https://www.torproject.org/  "Tor's website"
 [2]: https://gitweb.torproject.org/  "Tor's git repo" 
@@ -78,3 +79,4 @@ epel源中提供了tor，可以安装使用:
 [12]: https://security.stackexchange.com/questions/36571/why-can-a-tor-exit-node-decrypt-data-but-not-the-entry-node "Why can a Tor exit node decrypt data, but not the entry node?"
 [13]: https://www.torproject.org/docs/faq "Tor's FAQ"
 [14]: https://www.zhihu.com/question/25116415 "key establishment"
+[15]: https://fixmynix.com/openwrt-tor-proxy-setup/ "OpenWrt Tor proxy and anonymizing middlebox setup guide"
