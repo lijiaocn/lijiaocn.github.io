@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes的Client端Cache
 author: lijiaocn
 createdate: 2017/05/04 10:06:47
-changedate: 2017/05/10 11:07:29
+changedate: 2017/05/17 13:21:57
 categories: 项目
 tags: k8s
 keywords: client-go,kubernetes,cache
@@ -110,7 +110,6 @@ k8s.io/client-go/tools/cache/reflector.go:
 			store Store, 
 			resyncPeriod time.Duration) *Reflector {
 
-
 k8s.io/client-go/tools/cache/reflector.go:
 
 	// Run starts a watch and handles watch events. Will restart the watch if it is closed.
@@ -123,6 +122,7 @@ k8s.io/client-go/tools/cache/reflector.go:
 			}
 		}, r.period, wait.NeverStop)
 	}
+
 ### ListerWatcher
 
 Reflector依赖ListerWatcher接口，来感知服务端的变动

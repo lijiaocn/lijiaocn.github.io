@@ -1,12 +1,12 @@
 ---
 layout: default
-title: Kubernetes的federation部署，跨区高可用
+title: Kubernetes的federation部署，跨区Service
 author: lijiaocn
 createdate: 2017/05/16 14:21:30
-changedate: 2017/05/16 19:47:33
+changedate: 2017/05/17 13:22:41
 categories: 项目
 tags: k8s
-keywords: k8s,federation,跨区,高可用
+keywords: k8s,federation,跨区,Service
 description: 通过kubernetes的联邦机制,可以统一管理多个k8s集群。
 
 ---
