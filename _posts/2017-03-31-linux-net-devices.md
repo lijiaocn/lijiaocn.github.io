@@ -1,11 +1,11 @@
 ---
 layout: default
-title: Linux中的网络设备
+title: Linux的常用的网络设备
 author: lijiaocn
 createdate: 2017/03/31 18:47:12
-changedate: 2017/05/15 18:35:05
-categories: 手册
-tags: linux
+changedate: 2017/05/17 10:00:14
+categories: 技巧
+tags: linuxnet
 keywords: tun设备,tap设备,tun/tap,veth,虚拟设备
 description: 介绍了Linux中的网络设备，重点是tun、tap、veth等虚拟的网络设备。
 

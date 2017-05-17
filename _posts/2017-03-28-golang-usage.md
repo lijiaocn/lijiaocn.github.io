@@ -1,10 +1,10 @@
 ---
 layout: default
-title: Golang手册
+title: Golang的基本使用
 author: lijiaocn
 createdate: 2017/03/28 10:01:38
-changedate: 2017/05/15 18:37:30
-categories: 手册
+changedate: 2017/05/17 10:36:44
+categories: 编程
 tags: golang
 keywords: Go编程
 description: Go编程

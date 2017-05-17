@@ -1,11 +1,11 @@
 ---
 layout: default
-title: Iptables使用手册
+title: linux的iptables使用
 author: lijiaocn
 createdate: 2014/04/16 10:16:55
-changedate: 2017/05/15 18:35:37
-categories: 手册
-tags: iptables
+changedate: 2017/05/17 10:10:55
+categories: 技巧
+tags: iptables linuxnet
 keywords:  linux iptables
 description: 介绍了iptables的原理、表之间的关系、报文处理时经过规则链的顺序。以及iptables的调试方法和比较有意思的应用。
 

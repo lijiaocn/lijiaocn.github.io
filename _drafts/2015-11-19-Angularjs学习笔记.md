@@ -66,23 +66,23 @@ P22, ng-repeat
 
 	var students = [{name:'A', id: '1'},
 	                {name:'B', id: '2'}];
-
+	
 	function StudentListController($scope){
 		$scope.students = students;
 	}
-
+	
 	<ul ng-controller='Studentlistcontroller'>
 		<li ng-repeat='student in students'>
 			<a href='/student/view/{{student.id}}'>{{student.name}}</a>
 		</li>
 	</ul>
-
+	
 	可以通过$index返回当前引用的元素序号
 	$first、$middle、$last, 返回布尔值
 
 P24, ng-show, ng-hide, 显示和隐藏
 
->通过将display设置位block或者none来隐藏元素
+通过将display设置位block或者none来隐藏元素
 
 P26, ng-class, ng-style, 动态选择样式
 

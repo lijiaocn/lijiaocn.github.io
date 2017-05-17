@@ -1,19 +1,19 @@
 ---
 layout: default
-title: Swagger的手册
+title: Calico的手册
 author: lijiaocn
 createdate: 2017/05/17 09:23:14
-changedate: 2017/05/17 09:39:16
+changedate: 2017/05/17 10:51:42
 categories: 手册
-tags: swagger
-keywords: swagger
-description: 与swagger相关的文章，标签swagger。
+tags: calico
+keywords: calico
+description: 与calico相关的文章，标签calico。
 
 ---
 
 * auto-gen TOC:
 {:toc}
 
-{% for post in site.tags.swagger %}
+{% for post in site.tags.calico %}
 <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
 {% endfor %}

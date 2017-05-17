@@ -3,11 +3,11 @@ layout: default
 title: 企业级PaaS平台设计思路
 author: lijiaocn
 createdate: 2017/04/05 13:07:40
-changedate: 2017/05/15 18:40:02
-categories: 手册
+changedate: 2017/05/17 10:59:03
+categories: 见解
 tags: paas
-keywords:
-description: 
+keywords: PaaS,paas,企业级
+description: 对企业用PaaS的一些理解
 
 ---
 

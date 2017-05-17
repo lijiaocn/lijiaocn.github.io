@@ -3,9 +3,9 @@ layout: default
 title: idea安装golang插件
 author: lijiaocn
 createdate: 2017/03/27 17:38:05
-changedate: 2017/03/27 17:40:27
+changedate: 2017/05/17 11:14:09
 categories: 问题
-tags: 问题
+tags: 问题 golang
 keywords: golang,idea,IDE
 description: 在idea中安装golang插件
 

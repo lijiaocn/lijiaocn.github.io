@@ -3,8 +3,8 @@ layout: default
 title: DockerImage存储方案
 author: lijiaocn
 createdate: 2017/04/01 16:39:28
-changedate: 2017/05/15 18:35:46
-categories: 手册
+changedate: 2017/05/17 10:24:36
+categories: 项目
 tags: docker
 keywords: Docker,image,Registry
 description: 收录介绍了几种Docker镜像存储、管理方法。
