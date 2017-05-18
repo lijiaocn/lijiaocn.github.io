@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes的第三方包的使用
 author: lijiaocn
 createdate: 2017/05/12 10:25:44
-changedate: 2017/05/18 09:44:33
+changedate: 2017/05/18 10:38:21
 categories: 项目
 tags: k8s
 keywords: k8s,kubernetes,third party,第三方包
@@ -16,7 +16,7 @@ description: 不同的是，Kubernetes同时也会将项目中的部分代码以
 
 [Kubernetes][1]也和其它Go开发项目一样，会引用第三方包，不同的是，Kubernetes同时也会将项目中的部分代码以独立项目的形式再次发布出去。
 
-## Godep
+## 使用Godep管理
 
 [Golang的依赖包管理][2]中介绍过Golang的依赖包管理方式。Kubernetes使用Godep管理第三方包。
 
@@ -51,7 +51,9 @@ Godeps.json:
 			},
 	...
 
-第三方代码:
+如果要修改依赖包的版本，或者增加依赖包，直接修改Godeps.json，然后执行`go restore`。
+
+发布前，执行`godep save ./...`将所有的依赖包保存到vendor目录中（go1.5之前保存到Godeps目录中)
 
 	▾ vendor/
 	  ▸ bitbucket.org/
@@ -68,8 +70,7 @@ Godeps.json:
 
 ## 以第三方包方式引用的项目代码
 
-
-Kubernetes项目中的一些代码会被自动导出了独立的repo，譬如[client-go][3]，
+Kubernetes项目中的一些代码会被导出为独立的repo，譬如[client-go][3]，
 
 虽然代码就在repo中，但k8s用引用第三方包的方式引用这些代码，。
 
@@ -102,18 +103,17 @@ vendor/k8s.io目录中的符号链接，链接到了项目的staging目录下文
 	
 	The staged content is copied from the main repo, i.e., k8s.io/kubernetes, with directory rearrangement and necessary rewritings. 
 
-也就是说，staging中的代码是要作为单独的repo发布的, 而这些repo与kubernetes结合的又很紧密，采用这种管理方式后，在开发过程中，就不需要频繁的在多个repo之间切换了，
+也就是说，staging中的代码是要作为单独的repo发布的，在用到staging中的代码时，也用引用第三方包的方式引用，使用方式保持一致。
 
-只需要在kubernetes项目(一个repo)中完成开发，然后通过k8s项目中的脚本更新其它的repo即可。
-
-### staging/copy.sh
+### staging/copy.sh：生成client-go
 
 在运行`make update`的时候，会引发脚本`hack/update-staging-client-go.sh`的执行, 继而引发`staging/copy.sh`的执行。
 
-在执行copy.sh之前，会检查`godep restore`是否已经执行，否则需要首先执行godep，将godep中描述的依赖包安装到$GOPATH中。这个过程想要翻墙。
+在执行copy.sh之前，会检查`godep restore`是否已经执行，否则需要首先执行`godep restore`，将godep中描述的依赖包安装到$GOPATH中，这个过程要翻墙。
 
-copy.sh的作用就是将client相关的代码，拷贝到一个临时目录中:
-	
+copy.sh先将client-go相关的代码，拷贝到一个临时目录中:
+
+	...
 	# save everything for which the staging directory is the source of truth
 	save "discovery"
 	save "dynamic"
@@ -126,17 +126,17 @@ copy.sh的作用就是将client相关的代码，拷贝到一个临时目录中:
 	save "util"
 	save "examples"
 	save "OWNERS"
-	
+	...
 	find "${MAIN_REPO}/pkg/version" -maxdepth 1 -type f | xargs -I{} cp {} "${CLIENT_REPO_TEMP}/pkg/version"
 	# need to copy clientsets, though later we should copy APIs and later generate clientsets
 	mkcp "pkg/client/clientset_generated/${CLIENTSET}" "pkg/client/clientset_generated"
 	mkcp "pkg/client/informers/informers_generated/externalversions" "pkg/client/informers/informers_generated"
 
-并在临时目录中通过godep命令，汇集client依赖的代码。
+然后临时目录中通过godep命令，汇集client-go依赖的代码。
 
 	GOPATH="${TMP_GOPATH}:${GOPATH}" godep save ./...
 
-copy.sh同时会修改临时目录中的代码，将依赖包的路径改为client-go，修改完成后，临时目录就成了一个自治的repo的。
+同时会修改临时目录中的代码，将代码中的依赖包的路径改为client-go，修改完成后，临时目录就成了一个自治的repo的。
 
 最后将临时目录中的代码复制到staing/src/k8s.io/client-go目录中。
 
@@ -144,6 +144,8 @@ copy.sh同时会修改临时目录中的代码，将依赖包的路径改为clie
 	  ls "${CLIENT_REPO}" | { grep -v '_tmp' || true; } | xargs rm -rf
 	  mv "${CLIENT_REPO_TEMP}"/* "${CLIENT_REPO}"
 	fi
+
+vendor中的通过符号链接链接到client-go，kubernetes中就可以直接引用client-go了。
 
 ## 参考
 

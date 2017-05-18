@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes的项目构建编译
 author: lijiaocn
 createdate: 2017/05/15 15:25:04
-changedate: 2017/05/18 10:07:32
+changedate: 2017/05/18 10:41:29
 categories: 项目
 tags: k8s
 keywords: k8s,kubernetes,compile,编译
@@ -261,6 +261,14 @@ update-all.sh会依次执行hack/XXX.sh，完成更新操作。
 		update-staging-godeps
 		update-bazel"
 
+####  hack/update-staging-client-go.sh
+
+update-staging-client-go.sh目的是更新staging/src/k8s.io/client-go/中的文件。
+
+首先会检查是否已经执行`go restore`，确保kubernetes的依赖包已经安装在$GOPATH中。
+
+之后运行staging/copy.sh，copy.sh的作用是更新staging/src/k8s.io/client-go，具体过程见：[k8s的第三方包的使用][5]
+
 ## hack/make-rules/build.sh
 
 build.sh用来编译具体的目标。
@@ -278,15 +286,16 @@ build.sh用来编译具体的目标。
 
 kube::golang::build_binaries():
 
-
 ## 参考
 
 1. [k8s development Guide][1]
 2. [Building Kubernetes][2]
 3. [Install and Use GNU Command Line Tools on macOS/OS X][3] 
 4. [gengo][4]
+5. [k8s的第三方包的使用][5]
 
 [1]: https://github.com/kubernetes/community/blob/master/contributors/devel/development.md "k8s development"
 [2]: https://github.com/kubernetes/kubernetes/blob/885ddcc1389bf744f00e7a5f96fbff5515423022/build/README.md "Building Kubernetes"
 [3]: https://www.topbug.net/blog/2013/04/14/install-and-use-gnu-command-line-tools-in-mac-os-x/ "Install and Use GNU Command Line Tools on macOS/OS X"
 [4]: https://github.com/kubernetes/gengo "gengo" 
+[5]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2017/05/12/Kubernetes-third-party.html "k8s third party"
