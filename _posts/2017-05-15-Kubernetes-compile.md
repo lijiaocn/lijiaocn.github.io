@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes的项目构建编译
 author: lijiaocn
 createdate: 2017/05/15 15:25:04
-changedate: 2017/05/18 12:03:38
+changedate: 2017/05/18 14:53:13
 categories: 项目
 tags: k8s
 keywords: k8s,kubernetes,compile,编译
@@ -284,6 +284,260 @@ k8s.io/kubernetes/Makefile.generated_files:
 	#     // +k8s:openapi-gen=true
 	## hack/make-rules/build.sh
 
+### hack/make-rules/build.sh
+
+build.sh用来编译具体的目标。
+
+#### 构建目标
+
+	set -o errexit
+	set -o nounset
+	set -o pipefail
+	
+	KUBE_ROOT=$(dirname "${BASH_SOURCE}")/../..
+	KUBE_VERBOSE="${KUBE_VERBOSE:-1}"
+	source "${KUBE_ROOT}/hack/lib/init.sh"
+	
+	kube::golang::build_binaries "$@"
+	kube::golang::place_bins
+
+如果没有传入构建目标，默认构建所有目标。
+
+	readonly KUBE_ALL_TARGETS=(
+	  "${KUBE_SERVER_TARGETS[@]}"
+	  "${KUBE_CLIENT_TARGETS[@]}"
+	  "${KUBE_TEST_TARGETS[@]}"
+	  "${KUBE_TEST_SERVER_TARGETS[@]}"
+	  cmd/gke-certificates-controller
+	)
+	...
+	if [[ ${#targets[@]} -eq 0 ]]; then
+	  targets=("${KUBE_ALL_TARGETS[@]}")
+	fi
+
+具体的目标有:
+
+	KUBE_SERVER_TARGETS:
+		cmd/kube-proxy
+		cmd/kube-apiserver
+		cmd/kube-controller-manager
+		cmd/cloud-controller-manager
+		cmd/kubelet
+		cmd/kubeadm
+		cmd/hyperkube
+		vendor/k8s.io/kube-aggregator
+		vendor/k8s.io/kube-apiextensions-server
+		plugin/cmd/kube-scheduler
+	
+	KUBE_CLIENT_TARGETS
+		cmd/kubectl
+		federation/cmd/kubefed
+	
+	KUBE_TEST_TARGETS
+		cmd/gendocs
+		cmd/genkubedocs
+		cmd/genman
+		cmd/genyaml
+		cmd/mungedocs
+		cmd/genswaggertypedocs
+		cmd/linkcheck
+		federation/cmd/genfeddocs
+		vendor/github.com/onsi/ginkgo/ginkgo
+		test/e2e/e2e.test
+	
+	KUBE_TEST_SERVER_TARGETS
+		cmd/kubemark
+		vendor/github.com/onsi/ginkgo/ginkgo
+	
+	cmd/gke-certificates-controller
+
+函数kube::golang::build_binaries()，接收构建目标，进行构建。
+
+#### 设置编译环境
+
+设置环境变量: kube::golang::setup_env() 
+
+编译时的GOPATH为: \_output/local/go
+
+	KUBE_OUTPUT_SUBPATH="${KUBE_OUTPUT_SUBPATH:-_output/local}"
+	KUBE_OUTPUT="${KUBE_ROOT}/${KUBE_OUTPUT_SUBPATH}"
+	KUBE_GOPATH="${KUBE_OUTPUT}/go"
+	GOPATH=${KUBE_GOPATH}
+	GOPATH="${GOPATH}:${KUBE_EXTRA_GOPATH}"
+	
+	可以通过设置环境变量KUBE_EXTRA_GOPATH，增加GOPATH中的路径
+
+编译时源码路径: \_out/local/go/src/k8s.io/kubernetes
+
+	KUBE_GO_PACKAGE=k8s.io/kubernetes
+	${KUBE_GOPATH}/src/${KUBE_GO_PACKAGE}
+
+编译时选项:
+
+	goflags=(${KUBE_GOFLAGS:-})
+	gogcflags="${KUBE_GOGCFLAGS:-}"
+	goldflags="${KUBE_GOLDFLAGS:-} $(kube::version::ldflags)"
+
+链接时选项，就是通过`-X`，修改`pkg/version/`和`vendor/k8s.io/client-go/pkg/version`中的变量：
+
+	kube::version::ldflag() {
+	  local key=${1}
+	  local val=${2}
+	
+	  echo "-X ${KUBE_GO_PACKAGE}/pkg/version.${key}=${val}"
+	  echo "-X ${KUBE_GO_PACKAGE}/vendor/k8s.io/client-go/pkg/version.${key}=${val}"
+	}
+	
+	# Prints the value that needs to be passed to the -ldflags parameter of go build
+	# in order to set the Kubernetes based on the git tree status.
+	kube::version::ldflags() {
+	  kube::version::get_version_vars
+	
+	  local -a ldflags=($(kube::version::ldflag "buildDate" "$(date -u +'%Y-%m-%dT%H:%M:%SZ')"))
+	  if [[ -n ${KUBE_GIT_COMMIT-} ]]; then
+	    ldflags+=($(kube::version::ldflag "gitCommit" "${KUBE_GIT_COMMIT}"))
+	    ldflags+=($(kube::version::ldflag "gitTreeState" "${KUBE_GIT_TREE_STATE}"))
+	  fi
+	
+	  if [[ -n ${KUBE_GIT_VERSION-} ]]; then
+	    ldflags+=($(kube::version::ldflag "gitVersion" "${KUBE_GIT_VERSION}"))
+	  fi
+	
+	  if [[ -n ${KUBE_GIT_MAJOR-} && -n ${KUBE_GIT_MINOR-} ]]; then
+	    ldflags+=(
+	      $(kube::version::ldflag "gitMajor" "${KUBE_GIT_MAJOR}")
+	      $(kube::version::ldflag "gitMinor" "${KUBE_GIT_MINOR}")
+	    )
+	  fi
+	
+	  # The -ldflags parameter takes a single string, so join the output.
+	  echo "${ldflags[*]-}"
+	}
+
+运行时，传入的以`-`开始的参数，被认为是新增的goflags:
+
+	for arg; do
+	  if [[ "${arg}" == "--use_go_build" ]]; then
+	    use_go_build=true
+	  elif [[ "${arg}" == -* ]]; then
+	    # Assume arguments starting with a dash are flags to pass to go.
+	    goflags+=("${arg}")
+	  else
+	    targets+=("${arg}")
+	  fi
+	done
+
+#### 准备工具链
+
+准备编译时工具链: kube::golang::build_kube_toolchain() 
+
+	kube::golang::build_kube_toolchain() {
+	  local targets=(
+	    hack/cmd/teststale
+	    vendor/github.com/jteeuwen/go-bindata/go-bindata
+	  )
+	
+	  local binaries
+	  binaries=($(kube::golang::binaries_from_targets "${targets[@]}"))
+	
+	  kube::log::status "Building the toolchain targets:" "${binaries[@]}"
+	  go install "${goflags[@]:+${goflags[@]}}" \
+	        -gcflags "${gogcflags}" \
+	        -ldflags "${goldflags}" \
+	        "${binaries[@]:+${binaries[@]}}"
+	}
+
+go-bindata用于将任意文件编译到go源码文件中。
+
+#### 源码预处理
+
+`go generate`生成bindata
+
+	readonly KUBE_BINDATAS=(
+	  test/e2e/generated/gobindata_util.go
+	)
+	...
+	for bindata in ${KUBE_BINDATAS[@]}; do
+	  if [[ -f "${KUBE_ROOT}/${bindata}" ]]; then
+	    go generate "${goflags[@]:+${goflags[@]}}" "${KUBE_ROOT}/${bindata}"
+	  fi
+	done
+
+go generate会运行目标.go文件中以`//go:generate`开始的注释行中的指令。
+
+在test/e2e/generated/gobindata_util.go中，运行generate-bindata.sh:
+
+	//go:generate ../../../hack/generate-bindata.sh
+
+generate-bindata.sh将一下二进制文件打包到对应的源码中:
+
+	# These are files for e2e tests.
+	BINDATA_OUTPUT="test/e2e/generated/bindata.go"
+	go-bindata -nometadata -o "${BINDATA_OUTPUT}.tmp" -pkg generated \
+		-ignore .jpg -ignore .png -ignore .md \
+		"examples/..." \
+		"test/e2e/testing-manifests/..." \
+		"test/images/..." \
+		"test/fixtures/..."
+
+	BINDATA_OUTPUT="pkg/generated/bindata.go"
+	go-bindata -nometadata -nocompress -o "${BINDATA_OUTPUT}.tmp" -pkg generated \
+		-ignore .jpg -ignore .png -ignore .md \
+		"translations/..."
+
+#### 设置目标平台
+
+设置目标平台，kube::golang::set_platform_envs()
+
+	export GOOS=${platform%/*}
+	export GOARCH=${platform##*/}
+
+#### 开始编译
+
+开始编译，kube::golang::build_binaries_for_platform()。
+
+编译时将目标分为静态链接、动态链接、测试三组。
+
+	//binary就是上面列出的构建目标
+	for binary in "${binaries[@]}"; do
+		if [[ "${binary}" =~ ".test"$ ]]; then
+		  tests+=($binary)
+		elif kube::golang::is_statically_linked_library "${binary}"; then
+		  statics+=($binary)
+		else
+		  nonstatics+=($binary)
+		fi
+	done
+
+以.test结尾的为测试用，除了下面指定为静态链接的，其它为动态链接：
+
+	readonly KUBE_STATIC_LIBRARIES=(
+	  cloud-controller-manager
+	  kube-apiserver
+	  kube-controller-manager
+	  kube-scheduler
+	  kube-proxy
+	  kube-aggregator
+	  kubeadm
+	  kubectl
+	)
+
+静态链接目标的编译：
+
+	CGO_ENABLED=0 go build -o "${outfile}" \
+	"${goflags[@]:+${goflags[@]}}" \
+	-gcflags "${gogcflags}" \
+	-ldflags "${goldflags}" \
+	"${binary}"
+
+非静态目标的编译：
+
+	go build -o "${outfile}" \
+	"${goflags[@]:+${goflags[@]}}" \
+	-gcflags "${gogcflags}" \
+	-ldflags "${goldflags}" \
+	"${binary}"
+
 ## make update
 
 	.PHONY: update
@@ -320,23 +574,6 @@ update-staging-client-go.sh目的是更新staging/src/k8s.io/client-go/中的文
 首先会检查是否已经执行`go restore`，确保kubernetes的依赖包已经安装在$GOPATH中。
 
 之后运行staging/copy.sh，copy.sh的作用是更新staging/src/k8s.io/client-go，具体过程见：[k8s的第三方包的使用][5]
-
-## hack/make-rules/build.sh
-
-build.sh用来编译具体的目标。
-
-	set -o errexit
-	set -o nounset
-	set -o pipefail
-	
-	KUBE_ROOT=$(dirname "${BASH_SOURCE}")/../..
-	KUBE_VERBOSE="${KUBE_VERBOSE:-1}"
-	source "${KUBE_ROOT}/hack/lib/init.sh"
-	
-	kube::golang::build_binaries "$@"
-	kube::golang::place_bins
-
-kube::golang::build_binaries():
 
 ## 参考
 
