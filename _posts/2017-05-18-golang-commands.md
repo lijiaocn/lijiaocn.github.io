@@ -3,7 +3,7 @@ layout: default
 title: Golang的子命令与工具
 author: lijiaocn
 createdate: 2017/05/18 16:00:04
-changedate: 2017/05/18 16:17:50
+changedate: 2017/05/18 19:47:04
 categories: 编程
 tags: golang
 keywords: golang,编译
@@ -69,6 +69,14 @@ description: golang有多个子命令，其中一些子命令有比较有趣的�
 	yacc
 
 [Go's Tools][2]中介绍了这些工具。
+
+## generate
+
+generate用来执行代码注释指定的命令：
+
+	//go:generate command argument...
+
+command是任意指定的，通常用来对代码预先处理。`go generate`必须手动执行，`go build`等不会自动触发generate的运行。
 
 ## 参考
 

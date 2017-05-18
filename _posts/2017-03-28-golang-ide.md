@@ -3,7 +3,7 @@ layout: default
 title: Golang的开发环境-基于Vim
 author: lijiaocn
 createdate: 2017/03/28 10:01:38
-changedate: 2017/05/18 17:09:01
+changedate: 2017/05/18 19:24:31
 categories: 编程
 tags: golang
 keywords: Go编程
@@ -94,23 +94,86 @@ godep是用于第三方依赖包的管理，可以将工程中依赖的package�
 
 	go get -u github.com/nsf/gocode
 
-### 配置VIM
+## 配置VIM
 
 可以直接使用[github.com/lijiaocn/vim][5]中的vim配置，已经包含了多种常用插件。
 
 ### 安装vim-go
 
-#### 安装gocode的vim插件
+[vim-go][6]是vim的一个golang全家桶插件，提供了很多非常实用的命令。
 
-	#!/bin/sh
-	mkdir -p "$HOME/.vim/autoload"
-	mkdir -p "$HOME/.vim/ftplugin/go"
-	cp "${0%/*}/autoload/gocomplete.vim" "$HOME/.vim/autoload"
-	cp "${0%/*}/ftplugin/go/gocomplete.vim" "$HOME/.vim/ftplugin/go"
+	:GoBuild
+	:GoInstall
+	:GoTest
+	:GoCoverage
+	:GoCoverageBrowser
+	:GoDef
+	:GoDecls 
+	:GoDeclsDir
+	:GoDoc
+	:GoDocBrowser
+	:GoRun
+	:GoImplements
+	:GoCallees
+	:GoReferrers
+	:GoPath
+	:GoMetaLinter
+	:GoRename
+	:GoPlay
+	:GoAlternate
+	:GoAddTags
+	:GoImport
+	:GoDrop
 
-#### 安装neosnippet-snippets
+快捷键需要自行设置。vim-go/doc/vim-go.txt的go-mappings中给出可用的映射:
 
-	git clone https://github.com/Shougo/neosnippet-snippets.git
+	au FileType go nmap <leader>r <Plug>(go-run)
+	au FileType go nmap <leader>b <Plug>(go-build)
+	au FileType go nmap <leader>t <Plug>(go-test)
+	au FileType go nmap <leader>c <Plug>(go-coverage)
+
+vim-go的作者[fatih][7]专门写了一个[教程][8]。
+
+### vim-go 安装
+
+安装很简单，将插件加入到vim中即可：
+
+	Pathogen:
+	    git clone https://github.com/fatih/vim-go.git ~/.vim/bundle/vim-go
+	vim-plug:
+	    Plug 'fatih/vim-go'
+	Vim packages:
+	    git clone https://github.com/fatih/vim-go.git ~/.vim/pack/plugins/start/vim-go
+
+然后直接在vim中执行:
+
+	:GoInstallBinaries
+
+但是要注意这个过程会联网安装，会访问golang.org，可能需要翻墙。
+
+好在github上有mirror, [https://github.com/golang/tools][9]，修改vim-go的plugin目录下go.vim中的依赖包:
+
+在.vim/bundle/vim-go/plugin/go.vim中可以看到依赖包:
+
+	let s:packages = [
+	            \ "github.com/nsf/gocode",
+	            \ "github.com/alecthomas/gometalinter",
+	            \ "golang.org/x/tools/cmd/goimports",
+	            \ "golang.org/x/tools/cmd/guru",
+	            \ "golang.org/x/tools/cmd/gorename",
+	            \ "github.com/golang/lint/golint",
+	            \ "github.com/kisielk/errcheck",
+	            \ "github.com/jstemmer/gotags",
+	            \ "github.com/klauspost/asmfmt/cmd/asmfmt",
+	            \ "github.com/fatih/motion",
+	            \ "github.com/zmb3/gogetdoc",
+	            \ ]
+
+手动用mirror安装依赖包:
+
+	go get github.com/golang/tools/cmd/goimports
+	go get github.com/golang/tools/cmd/guru
+	go get github.com/golang/tools/cmd/gorename
 
 ## Golang零碎事项
 
@@ -193,9 +256,17 @@ golang的net/http中提供了http客户端client, 可以用client发起http操�
 3. [gotag][3]
 4. [gocode][4]
 5. [lijiaocn vim][5]
+6. [vim-go][6]
+7. [vim-go author: fatih Arslan][7]
+8. [vim-go tutorial][8]
+9. [golang tools mirror][9]
 
 [1]: https://github.com/fatih/vim-go "https://github.com/fatih/vim-go"
 [2]: https://github.com/golang/go/wiki/GoGetTools "go get tools"
 [3]: https://github.com/jstemmer/gotags "gotag"
 [4]: https://github.com/nsf/gocode "gocode"
 [5]: https://github.com/lijiaocn/vim "lijiaocn vim"
+[6]: https://github.com/fatih/vim-go "https://github.com/fatih/vim-go"
+[7]: https://www.patreon.com/fatih "https://www.patreon.com/fatih"
+[8]: https://github.com/fatih/vim-go-tutorial "https://github.com/fatih/vim-go-tutorial"
+[9]: https://github.com/golang/tools "https://github.com/golang/tools
