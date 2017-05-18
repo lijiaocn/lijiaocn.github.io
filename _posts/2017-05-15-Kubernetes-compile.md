@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes的项目构建编译
 author: lijiaocn
 createdate: 2017/05/15 15:25:04
-changedate: 2017/05/18 10:41:29
+changedate: 2017/05/18 12:03:38
 categories: 项目
 tags: k8s
 keywords: k8s,kubernetes,compile,编译
@@ -47,6 +47,58 @@ build/run.sh运行时会构建编译使用的容器镜像。
 	      VERSION
 
 makefile的工作过程在《Kubernetes的makefile的工作原理》中说明。
+
+### build/run.sh
+
+在容器中编译时，会有data、rsync、build三个容器参与。
+
+run.sh运行时，会以`gcr.io/google_containers/kube-cross:KUBE_BUILD_IMAGE_CROSS_TAG`为基础镜像，创建一个kube-build镜像。
+
+然后创建一个名为`${KUBE_DATA_CONTAINER_NAME}`的data容器:
+
+src/k8s.io/kubernetes/build/common.sh
+
+	function kube::build::ensure_data_container() {
+	..
+	  --volume "${REMOTE_ROOT}"   # white-out the whole output dir
+	  --volume /usr/local/go/pkg/linux_386_cgo
+	  --volume /usr/local/go/pkg/linux_amd64_cgo
+	  --volume /usr/local/go/pkg/linux_arm_cgo
+	  --volume /usr/local/go/pkg/linux_arm64_cgo
+	  ...
+
+data容器中准备了好volume，rsync和build容器都会通过`--volume-from`共享data容器的所有volume。
+
+之后，启动rsync容器，将KUBE_ROOT中的文件同步到rysnc容器的HOME目录:
+
+src/k8s.io/kubernetes/build/common.sh
+
+	function kube::build::sync_to_container() {
+	  kube::log::status "Syncing sources to container"
+	  ...
+	  kube::build::rsync \
+		--delete \
+		--filter='+ /staging/**' \
+		--filter='- /.git/' \
+		--filter='- /.make/' \
+		--filter='- /_tmp/' \
+		--filter='- /_output/' \
+		--filter='- /' \
+		--filter='- zz_generated.*' \
+		--filter='- generated.proto' \
+		"${KUBE_ROOT}/" "rsync://k8s@${KUBE_RSYNC_ADDR}/k8s/"
+
+k8s.io/kubernetes/build/build-image/Dockerfile:
+
+	ENV HOME /go/src/k8s.io/kubernetes
+	WORKDIR ${HOME}
+
+同步完成之后，启动build容器，在buid容器的HOME目录下执行编译命令。执行完成后，再将buid容器中的文件同步到本地。
+
+	# Copy all build results back out.
+	function kube::build::copy_output() {
+	  kube::log::status "Syncing out of container"
+	...
 
 ## 顶层Makefile
 
