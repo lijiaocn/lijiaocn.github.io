@@ -3,7 +3,7 @@ layout: default
 title: Golang的基本使用
 author: lijiaocn
 createdate: 2017/03/28 10:01:38
-changedate: 2017/05/17 10:36:44
+changedate: 2017/05/18 09:35:49
 categories: 编程
 tags: golang
 keywords: Go编程
@@ -290,6 +290,8 @@ go get命令可以直接从github中获取代码，自动完成代码拉取、�
 
 	yum install -y git
 
+https://github.com/golang/go/wiki/GoGetTools
+
 ### 安装godep
 
 godep用于将工程中依赖的package打包(godep save)到Godeps目录中, 以及恢复workspace(go restore).
@@ -297,6 +299,8 @@ godep用于将工程中依赖的package打包(godep save)到Godeps目录中, 以
 安装：
 
 	go get github.com/tools/godep
+
+如果需要通过代理，设置环境http_proxy=127.0.0.1:8080 
 
 ### 安装gotag
 

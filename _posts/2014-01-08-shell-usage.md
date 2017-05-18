@@ -1,8 +1,13 @@
 ---
 layout: default
 title: Shell编程
-categories: 杂项
+author: lijiaocn
+createdate: 2014/04/30 16:33:01
+changedate: 2017/05/18 09:25:38
+categories: 编程
 tags: shell
+keywords:
+description:  积累的一些shell用法。
 
 ---
 
@@ -680,6 +685,46 @@ http://www.wuzesheng.com/?p=1657
 	-d  指定域分隔符
 	-f n,m  剪切域n-m,从1开始编号
 	-c n,m  第n-m个字符，注意不能和-f一起使用
+
+## getopt
+
+getopt用来解析输入参数，例如下面的命令中：
+
+	getopt ab:cd -a -b he free cat
+
+`ab:cd`是参数说明，a、b、c、d表示三个同名的命令行参数-a、-b、-c、-d，其中b是带有接收参数的选项。
+
+执行后得到:
+
+	 -a -b he -- free cat
+
+--将选项与非选项参数分开。
+
+## getopts
+
+注意getopts和getopt不是一回事，getopts从stdin每次读取一个参数并赋给指定变量。
+
+	getopts  "参数说明"  变量名   
+
+例如:
+
+	while getopts ":abc" opt ; do
+		case $opt in
+			a)
+				echo $opt
+				;;
+			b)
+				echo $opt
+				;;
+			c)
+				echo $opt
+				;;
+			\?)
+				echo Invalid
+				exit 1
+				;;
+		esac
+	done
 
 ## 文献
 
