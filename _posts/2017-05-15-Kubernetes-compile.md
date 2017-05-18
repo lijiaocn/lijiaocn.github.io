@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes的项目构建编译
 author: lijiaocn
 createdate: 2017/05/15 15:25:04
-changedate: 2017/05/18 14:53:13
+changedate: 2017/05/18 15:58:33
 categories: 项目
 tags: k8s
 keywords: k8s,kubernetes,compile,编译
@@ -28,6 +28,19 @@ kubernetes编译有两种方式，直接编译和在docker中编译。
 构建过程，用make管理:
 
 	make all
+
+编译指定目标，以及指定编译时选项:
+
+	make all WHAT=cmd/kubelet GOFLAGS=-v
+	makn all GOGCFLAGS="-N -l"
+
+编译要求:
+
+	Kubernetes        requires Go
+	1.0 - 1.2         1.4.2
+	1.3, 1.4          1.6
+	1.5 and higher    1.7 - 1.7.5
+	                  1.8 not verified as of Feb 2017
 
 ## 在容器中编译
 
@@ -492,6 +505,25 @@ generate-bindata.sh将一下二进制文件打包到对应的源码中:
 	export GOOS=${platform%/*}
 	export GOARCH=${platform##*/}
 
+通过环境变量KUBE_BUILD_PLATFORMS指定目标平台，格式为`OS/ARCH`
+
+	local -a platforms=(${KUBE_BUILD_PLATFORMS:-})
+	if [[ ${#platforms[@]} -eq 0 ]]; then
+	  platforms=("${host_platform}")
+	fi
+
+例如：
+
+	darwin/amd64
+
+GOARCH: 
+
+	目标CPU结构，amd64, 386, arm, ppc64
+
+GOOS:
+
+	目标操作系统，linux, darwin, windows, netbsd
+
 #### 开始编译
 
 开始编译，kube::golang::build_binaries_for_platform()。
@@ -574,6 +606,81 @@ update-staging-client-go.sh目的是更新staging/src/k8s.io/client-go/中的文
 首先会检查是否已经执行`go restore`，确保kubernetes的依赖包已经安装在$GOPATH中。
 
 之后运行staging/copy.sh，copy.sh的作用是更新staging/src/k8s.io/client-go，具体过程见：[k8s的第三方包的使用][5]
+
+## 附录
+
+make all的输出：
+
+	+++ [0518 15:19:14] Building the toolchain targets:
+	    k8s.io/kubernetes/hack/cmd/teststale
+	    k8s.io/kubernetes/vendor/github.com/jteeuwen/go-bindata/go-bindata
+	+++ [0518 15:19:14] Generating bindata:
+	    test/e2e/generated/gobindata_util.go
+	~/Work/Docker/GOPATH/src/k8s.io/kubernetes ~/Work/Docker/GOPATH/src/k8s.io/kubernetes/test/e2e/generated
+	~/Work/Docker/GOPATH/src/k8s.io/kubernetes/test/e2e/generated
+	+++ [0518 15:19:14] Building go targets for darwin/amd64:
+	    cmd/libs/go2idl/deepcopy-gen
+	+++ [0518 15:19:18] Building the toolchain targets:
+	    k8s.io/kubernetes/hack/cmd/teststale
+	    k8s.io/kubernetes/vendor/github.com/jteeuwen/go-bindata/go-bindata
+	+++ [0518 15:19:18] Generating bindata:
+	    test/e2e/generated/gobindata_util.go
+	~/Work/Docker/GOPATH/src/k8s.io/kubernetes ~/Work/Docker/GOPATH/src/k8s.io/kubernetes/test/e2e/generated
+	~/Work/Docker/GOPATH/src/k8s.io/kubernetes/test/e2e/generated
+	+++ [0518 15:19:19] Building go targets for darwin/amd64:
+	    cmd/libs/go2idl/defaulter-gen
+	+++ [0518 15:19:23] Building the toolchain targets:
+	    k8s.io/kubernetes/hack/cmd/teststale
+	    k8s.io/kubernetes/vendor/github.com/jteeuwen/go-bindata/go-bindata
+	+++ [0518 15:19:23] Generating bindata:
+	    test/e2e/generated/gobindata_util.go
+	~/Work/Docker/GOPATH/src/k8s.io/kubernetes ~/Work/Docker/GOPATH/src/k8s.io/kubernetes/test/e2e/generated
+	~/Work/Docker/GOPATH/src/k8s.io/kubernetes/test/e2e/generated
+	+++ [0518 15:19:23] Building go targets for darwin/amd64:
+	    cmd/libs/go2idl/conversion-gen
+	+++ [0518 15:19:27] Building the toolchain targets:
+	    k8s.io/kubernetes/hack/cmd/teststale
+	    k8s.io/kubernetes/vendor/github.com/jteeuwen/go-bindata/go-bindata
+	+++ [0518 15:19:27] Generating bindata:
+	    test/e2e/generated/gobindata_util.go
+	~/Work/Docker/GOPATH/src/k8s.io/kubernetes ~/Work/Docker/GOPATH/src/k8s.io/kubernetes/test/e2e/generated
+	~/Work/Docker/GOPATH/src/k8s.io/kubernetes/test/e2e/generated
+	+++ [0518 15:19:28] Building go targets for darwin/amd64:
+	    cmd/libs/go2idl/openapi-gen
+	+++ [0518 15:19:33] Building the toolchain targets:
+	    k8s.io/kubernetes/hack/cmd/teststale
+	    k8s.io/kubernetes/vendor/github.com/jteeuwen/go-bindata/go-bindata
+	+++ [0518 15:19:33] Generating bindata:
+	    test/e2e/generated/gobindata_util.go
+	~/Work/Docker/GOPATH/src/k8s.io/kubernetes ~/Work/Docker/GOPATH/src/k8s.io/kubernetes/test/e2e/generated
+	~/Work/Docker/GOPATH/src/k8s.io/kubernetes/test/e2e/generated
+	+++ [0518 15:19:34] Building go targets for darwin/amd64:
+	    cmd/kube-proxy
+	    cmd/kube-apiserver
+	    cmd/kube-controller-manager
+	    cmd/cloud-controller-manager
+	    cmd/kubelet
+	    cmd/kubeadm
+	    cmd/hyperkube
+	    vendor/k8s.io/kube-aggregator
+	    plugin/cmd/kube-scheduler
+	    cmd/kubectl
+	    federation/cmd/kubefed
+	    cmd/gendocs
+	    cmd/genkubedocs
+	    cmd/genman
+	    cmd/genyaml
+	    cmd/mungedocs
+	    cmd/genswaggertypedocs
+	    cmd/linkcheck
+	    examples/k8petstore/web-server/src
+	    federation/cmd/genfeddocs
+	    vendor/github.com/onsi/ginkgo/ginkgo
+	    test/e2e/e2e.test
+	    cmd/kubemark
+	    vendor/github.com/onsi/ginkgo/ginkgo
+	    test/e2e_node/e2e_node.test
+	    cmd/gke-certificates-controller
 
 ## 参考
 
