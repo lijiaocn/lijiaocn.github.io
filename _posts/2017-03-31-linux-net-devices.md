@@ -3,7 +3,7 @@ layout: default
 title: Linux的常用的网络设备
 author: lijiaocn
 createdate: 2017/03/31 18:47:12
-changedate: 2017/05/17 10:00:14
+changedate: 2017/05/19 20:35:22
 categories: 技巧
 tags: linuxnet
 keywords: tun设备,tap设备,tun/tap,veth,虚拟设备
@@ -315,6 +315,21 @@ ipvlan和macvlan的区别在于它在ip层进行流量分离而不是基于mac�
 
 ![veth工作原理]({{ site.imglocal }}/veth-work.jpeg)
 
+veth设备是成对创建的：
+
+	$ip link add vethA type veth peer name vethB
+
+创建之后，执行`ip link`就可以看到新创建的veth设备：
+
+	58: vethB@vethA: <BROADCAST,MULTICAST,M-DOWN> mtu 1500 qdisc noop state DOWN mode DEFAULT qlen 1000
+	link/ether ee:1b:b0:11:38:eb brd ff:ff:ff:ff:ff:ff
+	59: vethA@vethB: <BROADCAST,MULTICAST,M-DOWN> mtu 1500 qdisc noop state DOWN mode DEFAULT qlen 1000
+	link/ether a6:f8:50:36:2d:1e brd ff:ff:ff:ff:ff:ff
+
+注意veth设备前面的ID，`58:`和`59:`，一对veth设备的ID是相差1的，并且系统内全局唯一。可以通过ID找到一个veth设备的对端。
+
+[veth设备理解][6]
+
 ## 通过ip link add添加的虚拟设备
 
 命令`ip link add ...`可以创建多种类型的虚拟网络设备。
@@ -354,9 +369,11 @@ ipvlan和macvlan的区别在于它在ip层进行流量分离而不是基于mac�
 3. [Linux网络虚拟化][3]
 4. [TUN/TAP MACVLAN MACVTAP][4]
 5. [图解几个与Linux网络虚拟化相关的虚拟网卡][5]
+6. [veth设备理解][6]
 
 [1]: https://www.kernel.org/doc/Documentation/networking/tuntap.txt  "kernel doc tuntap.txt" 
 [2]: https://en.wikipedia.org/wiki/TUN/TAP "wiki TUN/TAP"
 [3]: https://blog.kghost.info/2013/03/01/linux-network-emulator "Linux网络虚拟化"
 [4]: https://blog.kghost.info/2013/03/27/linux-network-tun/ "TUN/TAP MACVLAN MACVTAP"
 [5]: http://blog.csdn.net/dog250/article/details/45788279 "图解几个与Linux网络虚拟化相关的虚拟网卡"
+[6]: https://segmentfault.com/a/1190000009251098 "veth设备理解"
