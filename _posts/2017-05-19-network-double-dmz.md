@@ -3,7 +3,7 @@ layout: default
 title: 部署多DMZ区的安全企业网
 author: lijiaocn
 createdate: 2017/05/19 10:46:21
-changedate: 2017/05/19 11:04:26
+changedate: 2017/05/19 11:11:13
 categories: 技巧
 tags: network  security
 keywords: DMZ,安全企业网,双DMZ
@@ -119,6 +119,6 @@ description: 部署多DMZ区的安全企业网络，通过设置多重防火墙�
 
 蜜罐是一种可以应用于很多环境中的高度灵活的技术。作为一种安全工具，它们具有一些特定的优势。具体说来，蜜罐只收集到少量的数据，但是这些数据中的大部分都是具有很高价值的信息。它们具备在资源紧张环境中有效工作的能力，并且从概念上讲它们都是非常简单的设备。而且，通过检测和捕获未知授权的活动，它们会迅速体现出其价值来。
 
-双重DMZ安全企业网的模拟部署：
+## 双重DMZ安全企业网的模拟部署
 
 ![双重DMZ网络部署示例]({{ site.imglocal }}/net-double-dmz-security-example.png)
