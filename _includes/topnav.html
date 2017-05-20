@@ -1,8 +1,8 @@
-<nav id="main-nav-bar" class="navbar navbar-inverse navbar-fixed-static">
+<nav class="navbar navbar-inverse navbar-fixed-static topnav">
 	<!-- display sm md lg -->
 	<div class="container" >
 		<div class="navbar-header ">
-			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarshop" aria-expanded="false" aria-controls="navbar">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#categories" aria-expanded="false" aria-controls="navbar">
 				<span class="sr-only">Toggle navigation</span>
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
@@ -14,7 +14,7 @@
 			</div>
 
 		</div>
-		<div class="collapse navbar-collapse " id="navbarshop">
+		<div class="collapse navbar-collapse " id="categories">
 			<ul class="nav navbar-nav">
 				{% for cate in site.categories %} 
 					<li><a href="{{ site.baseurl }}/categories/{{ cate[0]}}.html">{{ cate[0] }}</a></li>
