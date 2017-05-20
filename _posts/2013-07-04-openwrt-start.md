@@ -1,15 +1,18 @@
 ---
 layout: default
-title: OpenWrt
+title: OpenWrt初次使用
 author: lijiaocn
 createdate: 2014/04/25 19:06:24
-changedate: 2017/05/20 16:13:40
+changedate: 2017/05/20 16:22:31
 categories: 项目
 tags: openwrt
 keywords: openwrt
 description: Openwrt是开源的路由器系统，可以安装在多种硬件平台上。
 
 ---
+
+* auto-gen TOC:
+{:toc}
 
 ## 摘要
 
