@@ -3,9 +3,9 @@ layout: default
 title: MAC上的SSH客户端工具
 author: lijiaocn
 createdate: 2017/03/29 18:50:52
-changedate: 2017/05/07 23:05:30
+changedate: 2017/05/20 16:03:27
 categories: 技巧
-tags: 技巧
+tags: mac ssh
 keywords: MAC,SSH客户端,ZOC
 description:  mac上虽然有iterm等shell终端，可以直接ssh登陆，但是不能保存机器列表和密码，每次输入IP，比较烦。可以使用ZOC
 

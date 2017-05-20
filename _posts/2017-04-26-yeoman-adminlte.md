@@ -3,9 +3,9 @@ layout: default
 title: yeoman-adminlte-折腾笔记
 author: lijiaocn
 createdate: 2017/04/26 09:49:03
-changedate: 2017/04/26 10:35:40
+changedate: 2017/05/20 15:54:35
 categories: 前端
-tags: 前端
+tags: yeoman  adminlte
 keywords: yeoman,adminlte,前端技术,折腾笔记
 description: 折腾了很久总算是大概厘清了yeoman套件的工作过程。算是有了一点小进步。
 

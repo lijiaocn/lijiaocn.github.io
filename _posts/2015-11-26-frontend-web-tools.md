@@ -1,13 +1,13 @@
 ---
 layout: default
-title: 前端开发工具
+title: yeoman的初次使用
 author: lijiaocn
 createdate: 2015/11/26 13:50:55
-changedate: 2017/05/17 11:01:20
+changedate: 2017/05/20 15:58:28
 categories: 前端
-tags: 前端 yeoman
+tags: yeoman
 keywords:
-description: 对前端不熟悉，这是初学过程中学到的一些内容，仅供参考，有问题请留言。
+description: yeoman是一套前端工作中用到的脚手架，在了解前端技术时遇到的。
 
 ---
 
