@@ -3,9 +3,9 @@ layout: default
 title: Golang的变量作用域，局部变量的存放位置是？
 author: lijiaocn
 createdate: 2017/05/18 16:18:01
-changedate: 2017/05/18 16:24:11
+changedate: 2017/05/20 16:07:26
 categories: 编程
-tags: golang 问题
+tags: golang
 keywords: golang,变量,作用域,栈空间
 description:  因为Go的编译器会把存在没有使用的变量的情况当作语法错误处理, 因此在涉及到变量作用域时
 
