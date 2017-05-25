@@ -1,9 +1,9 @@
 ---
 layout: default
-title: OpenWrt安装到TP-Link的TL-WR703N路由器
+title: OpenWrt安装到TP-Link的WR703N路由器
 author: lijiaocn
 createdate: 2017/05/20 16:25:19
-changedate: 2017/05/20 18:12:07
+changedate: 2017/05/25 16:54:44
 categories: 项目
 tags: openwrt
 keywords: openwrt,tp-link,安装,TL-WR703N
