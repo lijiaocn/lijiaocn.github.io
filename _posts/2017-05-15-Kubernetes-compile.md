@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Kubernetes的项目构建编译
+title: Kubernetes的编译、打包、发布
 author: lijiaocn
 createdate: 2017/05/15 15:25:04
-changedate: 2017/05/18 15:58:33
+changedate: 2017/05/25 16:51:12
 categories: 项目
 tags: k8s
 keywords: k8s,kubernetes,compile,编译
@@ -21,26 +21,109 @@ kubernetes编译有两种方式，直接编译和在docker中编译。
 	brew install coreutils
 	brew install gnu-tar
 
-## 直接编译 
+## 常用变量
 
-[Development Guide][1]中给出了直接编译的方法。
+以`KUBE_`开头的变量经常在后面的脚本中使用到，这些变量一般都是通过`hack/lib/init.sh`引入的。
 
-构建过程，用make管理:
+### KUBE_CLIENT_TARGETS 与 KUBE_CLIENT_BINARIES
 
-	make all
+在`hack/lib/golang.sh`中定义，client程序:
 
-编译指定目标，以及指定编译时选项:
+	readonly KUBE_CLIENT_TARGETS=(
+	  cmd/kubectl
+	  federation/cmd/kubefed
+	)
+	
+	readonly KUBE_CLIENT_BINARIES=("${KUBE_CLIENT_TARGETS[@]##*/}")
 
-	make all WHAT=cmd/kubelet GOFLAGS=-v
-	makn all GOGCFLAGS="-N -l"
+release的时候，被打包到client包里的程序。
 
-编译要求:
+### KUBE_NODE_TARGETS 与 KUBE_NODE_BINARIES
 
-	Kubernetes        requires Go
-	1.0 - 1.2         1.4.2
-	1.3, 1.4          1.6
-	1.5 and higher    1.7 - 1.7.5
-	                  1.8 not verified as of Feb 2017
+在`hack/lib/golang.sh`中定义，node中的程序:
+
+	kube::golang::node_targets() {
+	  local targets=(
+	    cmd/kube-proxy
+	    cmd/kubelet
+	  )
+	  echo "${targets[@]}"
+	}
+	
+	readonly KUBE_NODE_TARGETS=($(kube::golang::node_targets))
+	readonly KUBE_NODE_BINARIES=("${KUBE_NODE_TARGETS[@]##*/}")
+
+## 可以编译的目标
+
+直接用`WHAT`指定编译目标，通过GOFLAGS和GOGCFLAGS传入编译时参数:
+
+	KUBE_BUILD_PLATFORMS=linux/amd64 make all WHAT=cmd/kubelet GOFLAGS=-v GOGCFLAGS="-N -l"
+
+如果不指定WHAT，则编译全部。`KUBE_BUILD_PLATFORMS`指定目标平台。
+
+### 目标平台
+
+通过环境变量KUBE_BUILD_PLATFORMS指定目标平台，格式为`GOOS/GOARCH`:
+
+GOOS选项:
+
+	linux, darwin, windows, netbsd
+
+GOARCH选项:
+
+	amd64, 386, arm, ppc64
+
+### 目标列表
+
+编译目标在src/k8s.io/kubernetes/hack/lib/golang.sh中定义：
+
+	readonly KUBE_ALL_TARGETS=(
+	  "${KUBE_SERVER_TARGETS[@]}"
+	  "${KUBE_CLIENT_TARGETS[@]}"
+	  "${KUBE_TEST_TARGETS[@]}"
+	  "${KUBE_TEST_SERVER_TARGETS[@]}"
+	  cmd/gke-certificates-controller
+	)
+	...
+	if [[ ${#targets[@]} -eq 0 ]]; then
+	  targets=("${KUBE_ALL_TARGETS[@]}")
+	fi
+
+相关变量也在src/k8s.io/kubernetes/hack/lib/golang.sh中定义：
+
+	KUBE_SERVER_TARGETS:
+		cmd/kube-proxy
+		cmd/kube-apiserver
+		cmd/kube-controller-manager
+		cmd/cloud-controller-manager
+		cmd/kubelet
+		cmd/kubeadm
+		cmd/hyperkube
+		vendor/k8s.io/kube-aggregator
+		vendor/k8s.io/kube-apiextensions-server
+		plugin/cmd/kube-scheduler
+	
+	KUBE_CLIENT_TARGETS
+		cmd/kubectl
+		federation/cmd/kubefed
+	
+	KUBE_TEST_TARGETS
+		cmd/gendocs
+		cmd/genkubedocs
+		cmd/genman
+		cmd/genyaml
+		cmd/mungedocs
+		cmd/genswaggertypedocs
+		cmd/linkcheck
+		federation/cmd/genfeddocs
+		vendor/github.com/onsi/ginkgo/ginkgo
+		test/e2e/e2e.test
+	
+	KUBE_TEST_SERVER_TARGETS
+		cmd/kubemark
+		vendor/github.com/onsi/ginkgo/ginkgo
+	
+	cmd/gke-certificates-controller
 
 ## 在容器中编译
 
@@ -112,6 +195,27 @@ k8s.io/kubernetes/build/build-image/Dockerfile:
 	function kube::build::copy_output() {
 	  kube::log::status "Syncing out of container"
 	...
+
+## 直接编译 
+
+[Development Guide][1]中给出了直接编译的方法。
+
+构建过程，用make管理:
+
+	make all
+
+编译指定目标，以及指定编译时选项:
+
+	make all WHAT=cmd/kubelet GOFLAGS=-v
+	makn all GOGCFLAGS="-N -l"
+
+编译要求:
+
+	Kubernetes        requires Go
+	1.0 - 1.2         1.4.2
+	1.3, 1.4          1.6
+	1.5 and higher    1.7 - 1.7.5
+	                  1.8 not verified as of Feb 2017
 
 ## 顶层Makefile
 
@@ -315,54 +419,6 @@ build.sh用来编译具体的目标。
 	kube::golang::place_bins
 
 如果没有传入构建目标，默认构建所有目标。
-
-	readonly KUBE_ALL_TARGETS=(
-	  "${KUBE_SERVER_TARGETS[@]}"
-	  "${KUBE_CLIENT_TARGETS[@]}"
-	  "${KUBE_TEST_TARGETS[@]}"
-	  "${KUBE_TEST_SERVER_TARGETS[@]}"
-	  cmd/gke-certificates-controller
-	)
-	...
-	if [[ ${#targets[@]} -eq 0 ]]; then
-	  targets=("${KUBE_ALL_TARGETS[@]}")
-	fi
-
-具体的目标有:
-
-	KUBE_SERVER_TARGETS:
-		cmd/kube-proxy
-		cmd/kube-apiserver
-		cmd/kube-controller-manager
-		cmd/cloud-controller-manager
-		cmd/kubelet
-		cmd/kubeadm
-		cmd/hyperkube
-		vendor/k8s.io/kube-aggregator
-		vendor/k8s.io/kube-apiextensions-server
-		plugin/cmd/kube-scheduler
-	
-	KUBE_CLIENT_TARGETS
-		cmd/kubectl
-		federation/cmd/kubefed
-	
-	KUBE_TEST_TARGETS
-		cmd/gendocs
-		cmd/genkubedocs
-		cmd/genman
-		cmd/genyaml
-		cmd/mungedocs
-		cmd/genswaggertypedocs
-		cmd/linkcheck
-		federation/cmd/genfeddocs
-		vendor/github.com/onsi/ginkgo/ginkgo
-		test/e2e/e2e.test
-	
-	KUBE_TEST_SERVER_TARGETS
-		cmd/kubemark
-		vendor/github.com/onsi/ginkgo/ginkgo
-	
-	cmd/gke-certificates-controller
 
 函数kube::golang::build_binaries()，接收构建目标，进行构建。
 
@@ -607,6 +663,226 @@ update-staging-client-go.sh目的是更新staging/src/k8s.io/client-go/中的文
 
 之后运行staging/copy.sh，copy.sh的作用是更新staging/src/k8s.io/client-go，具体过程见：[k8s的第三方包的使用][5]
 
+## make release
+
+如果变量KUBE_FASTBUILD为“true”，只发布linux/amd64，否则发布所有平台。
+
+hack/lib/golang.sh:
+
+	if [[ "${KUBE_FASTBUILD:-}" == "true" ]]; then
+	  readonly KUBE_SERVER_PLATFORMS=(linux/amd64)
+	  readonly KUBE_NODE_PLATFORMS=(linux/amd64)
+	  if [[ "${KUBE_BUILDER_OS:-}" == "darwin"* ]]; then
+	    readonly KUBE_TEST_PLATFORMS=(
+	      darwin/amd64
+	      linux/amd64
+	    )
+	    readonly KUBE_CLIENT_PLATFORMS=(
+	      darwin/amd64
+	      linux/amd64
+	    )
+	...
+
+### build/release.sh
+
+release.sh首先在容器中进行编译，然后进行打包：
+
+src/k8s.io/kubernetes/build/release.sh:
+
+	kube::build::verify_prereqs
+	kube::build::build_image
+	kube::build::run_build_command make cross
+	
+	if [[ $KUBE_RELEASE_RUN_TESTS =~ ^[yY]$ ]]; then
+	  kube::build::run_build_command make test
+	  kube::build::run_build_command make test-integration
+	fi
+	
+	kube::build::copy_output
+	
+	kube::release::package_tarballs
+	kube::release::package_hyperkube
+
+#### kube::release::package_tarballs
+
+	function kube::release::package_tarballs() {
+	  # Clean out any old releases
+	  rm -rf "${RELEASE_DIR}"
+	  mkdir -p "${RELEASE_DIR}"
+	  #源代码打包
+	  kube::release::package_src_tarball &
+	  #client端程序打包
+	  kube::release::package_client_tarballs &
+	  kube::release::package_salt_tarball &
+	  kube::release::package_kube_manifests_tarball &
+	  kube::util::wait-for-jobs || { kube::log::error "previous tarball phase failed"; return 1; }
+	
+	  # _node and _server tarballs depend on _src tarball
+	  kube::release::package_node_tarballs &
+	  kube::release::package_server_tarballs &
+	  kube::util::wait-for-jobs || { kube::log::error "previous tarball phase failed"; return 1; }
+	
+	  kube::release::package_final_tarball & # _final depends on some of the previous phases
+	  kube::release::package_test_tarball & # _test doesn't depend on anything
+	  kube::util::wait-for-jobs || { kube::log::error "previous tarball phase failed"; return 1; }
+	}
+
+##### kube::release::package_src_tarball() 
+
+	# Package the source code we built, for compliance/licensing/audit/yadda.
+	function kube::release::package_src_tarball() {
+	  kube::log::status "Building tarball: src"
+	  local source_files=(
+	    $(cd "${KUBE_ROOT}" && find . -mindepth 1 -maxdepth 1 \
+	      -not \( \
+	        \( -path ./_\*        -o \
+	           -path ./.git\*     -o \
+	           -path ./.config\* -o \
+	           -path ./.gsutil\*    \
+	        \) -prune \
+	      \))
+	  )
+	  "${TAR}" czf "${RELEASE_DIR}/kubernetes-src.tar.gz" -C "${KUBE_ROOT}" "${source_files[@]}"
+	}
+
+##### kube::release::package_client_tarballs
+
+将变量KUBE_CLIENT_BINARIES中的程序打包:
+
+	.:
+	kubernetes
+	
+	./kubernetes:
+	client
+	
+	./kubernetes/client:
+	bin
+	
+	./kubernetes/client/bin:
+	kubectl  kubefed
+
+##### kube::release::package_salt_tarball
+
+将`cluster/saltbase/`目录打包, 这是一套用saltstack部署k8s集群的脚本。
+
+##### kube::release::package_kube_manifests_tarball
+
+	# This will pack kube-system manifests files for distros without using salt
+	# such as GCI and Ubuntu Trusty. We directly copy manifests from
+	# cluster/addons and cluster/saltbase/salt. The script of cluster initialization
+	# will remove the salt configuration and evaluate the variables in the manifests.
+
+##### kube::release::package_node_tarballs
+
+将变量`KUBE_NODE_BINARIES`中列出的程序打包:
+
+	.:
+	kubernetes
+	
+	./kubernetes:
+	kubernetes-src.tar.gz  LICENSES  node
+	
+	./kubernetes/node:
+	bin
+	
+	./kubernetes/node/bin:
+	kubectl  kubefed  kubelet  kube-proxy
+
+##### kube::release::package_server_tarballs
+
+将变量`KUBE_NODE_BINARIES`和变量`KUBE_SERVER_BINARIES`中列出的程序打包:
+
+	.:
+	kubernetes
+	
+	./kubernetes:
+	addons  kubernetes-src.tar.gz  LICENSES  server
+	
+	./kubernetes/addons:
+	
+	./kubernetes/server:
+	bin
+	
+	./kubernetes/server/bin:
+	cloud-controller-manager  kube-aggregator          kubectl  kube-proxy
+	hyperkube                 kube-apiserver           kubefed  kube-scheduler
+	kubeadm                   kube-controller-manager  kubelet
+
+并为server端的程序创建docker image:
+
+    kube::release::create_docker_images_for_server "${release_stage}/server/bin" "${arch}"
+
+###### kube::release::create_docker_images_for_server 
+
+在`lib/release.sh`中定义，分别将这些程序打包到各自的docker image中:
+
+    local binaries=($(kube::build::get_docker_wrapped_binaries ${arch}))
+
+get_docker_wrapped_binaries在build/common.sh中定义:
+
+	kube::build::get_docker_wrapped_binaries() {
+	  debian_iptables_version=v7
+	  case $1 in
+	    "amd64")
+	        local targets=(
+	          kube-apiserver,busybox
+	          kube-controller-manager,busybox
+	          kube-scheduler,busybox
+	          kube-aggregator,busybox
+	          kube-proxy,gcr.io/google-containers/debian-iptables-amd64:${debian_iptables_version}
+	        );;
+	    "arm")
+	        local targets=(
+	          kube-apiserver,armel/busybox
+	          kube-controller-manager,armel/busybox
+	          kube-scheduler,armel/busybox
+	          kube-aggregator,armel/busybox
+	          kube-proxy,gcr.io/google-containers/debian-iptables-arm:${debian_iptables_version}
+	        );;
+	    ......
+	  esac
+	
+	echo "${targets[@]}"
+	}
+
+每个target的`,`之前是要打包进容器的程序名binary_name，`,`之后是base_image。
+
+Dockerfile:
+
+	printf " FROM ${base_image} \n ADD ${binary_name} /usr/local/bin/${binary_name}\n" > ${docker_file_path}
+
+最终镜像保存在:
+
+	"${DOCKER[@]}" save ${docker_image_tag} > ${binary_dir}/${binary_name}.tar
+
+	./_output/release-stage/server/linux-amd64/kubernetes/server/bin/kube-controller-manager.tar
+	./_output/release-stage/server/linux-amd64/kubernetes/server/bin/kube-scheduler.tar
+	./_output/release-stage/server/linux-amd64/kubernetes/server/bin/kube-proxy.tar
+	./_output/release-stage/server/linux-amd64/kubernetes/server/bin/kube-apiserver.tar
+	./_output/release-stage/server/linux-amd64/kubernetes/server/bin/kube-aggregator.tar
+
+##### kube::release::package_final_tarball 
+
+	# This is all the platform-independent stuff you need to run/install kubernetes.
+	# Arch-specific binaries will need to be downloaded separately (possibly by
+	# using the bundled cluster/get-kube-binaries.sh script).
+	# Included in this tarball:
+	#   - Cluster spin up/down scripts and configs for various cloud providers
+	#   - Tarballs for salt configs that are ready to be uploaded
+	#     to master by whatever means appropriate.
+	#   - Examples (which may or may not still work)
+	#   - The remnants of the docs/ directory
+
+##### kube::release::package_test_tarball() {
+
+	# This is the stuff you need to run tests from the binary distribution.
+
+### 如果不是在容器中编译的
+
+`make release`执行的是build/releash.sh，默认在在容器中编译，并对编译的后内容打包。
+
+如果要打包宿主机编译的内容，可以使用[k8s build local][6]。
+
 ## 附录
 
 make all的输出：
@@ -689,9 +965,11 @@ make all的输出：
 3. [Install and Use GNU Command Line Tools on macOS/OS X][3] 
 4. [gengo][4]
 5. [k8s的第三方包的使用][5]
+6. [k8s build local][6]
 
 [1]: https://github.com/kubernetes/community/blob/master/contributors/devel/development.md "k8s development"
 [2]: https://github.com/kubernetes/kubernetes/blob/885ddcc1389bf744f00e7a5f96fbff5515423022/build/README.md "Building Kubernetes"
 [3]: https://www.topbug.net/blog/2013/04/14/install-and-use-gnu-command-line-tools-in-mac-os-x/ "Install and Use GNU Command Line Tools on macOS/OS X"
 [4]: https://github.com/kubernetes/gengo "gengo" 
 [5]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2017/05/12/Kubernetes-third-party.html "k8s third party"
+[6]: https://github.com/lijiaocn/k8s-build-local "k8s build local"
