@@ -3,7 +3,7 @@ layout: default
 title: arp相关的命令
 author: lijiaocn
 createdate: 2017/05/26 09:28:32
-changedate: 2017/05/26 09:44:03
+changedate: 2017/05/26 10:26:32
 categories: 技巧
 tags: linuxtool
 keywords: arp arping
@@ -104,3 +104,11 @@ arping - send ARP REQUEST to a neighbour host
 	 Unicast reply from 192.168.40.1 [0A:00:27:00:00:00]  0.699ms
 	 Unicast reply from 192.168.40.1 [0A:00:27:00:00:00]  0.731ms
 	 Unicast reply from 192.168.40.1 [0A:00:27:00:00:00]  0.722ms
+
+## 参考
+
+1. [Linux命令大全][1]
+
+[1]: http://man.linuxde.net/ "Linux命令大全"
+
+
