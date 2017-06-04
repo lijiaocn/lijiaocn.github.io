@@ -1,9 +1,9 @@
 ---
 layout: default
-title: openwrt的系统启动、初始化过程
+title: Openwrt的系统启动、初始化过程
 author: lijiaocn
 createdate: 2017/05/25 21:53:47
-changedate: 2017/05/25 22:48:53
+changedate: 2017/06/03 17:19:00
 categories: 项目
 tags: openwrt
 keywords: openwrt,系统启动,初始化
