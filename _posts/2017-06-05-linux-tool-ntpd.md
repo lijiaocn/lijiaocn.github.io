@@ -3,7 +3,7 @@ layout: default
 title: ntpd同步系统时间
 author: lijiaocn
 createdate: 2017/06/05 15:27:55
-changedate: 2017/06/05 15:45:16
+changedate: 2017/06/06 15:29:45
 categories: 技巧
 tags: linuxtool
 keywords: ntpd, ntpupdate

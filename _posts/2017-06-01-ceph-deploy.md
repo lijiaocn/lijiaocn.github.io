@@ -1,9 +1,9 @@
 ---
 layout: default
-title: 使用Ceph-deploy部署Ceph集群
+title: Ceph集群的部署
 author: lijiaocn
 createdate: 2017/06/01 13:13:26
-changedate: 2017/06/06 15:28:43
+changedate: 2017/06/06 15:44:22
 categories: 项目
 tags: ceph
 keywords: ceph,ceph-deploy
@@ -771,7 +771,7 @@ ceph storage cluster、ceph filesystem、ceph block device、ceph object gateway
 	HEALTH_WARN clock skew detected on mon.slave1; Monitor clock skew detected
 	mon.slave1 addr 192.168.40.11:6789/0 clock skew 0.159472s > max 0.05s (latency 0.00194991s)
 
-在node上配置[ntpd同步系统时间]({% post 2017-06-05-linux-tool-ntpd.md %})
+在node上配置[ntpd同步系统时间]({% post_url 2017-06-05-linux-tool-ntpd %})
 
 如果时间同步精度难以达到，可以增加ceph的容忍度，在ceph.conf中:
 
