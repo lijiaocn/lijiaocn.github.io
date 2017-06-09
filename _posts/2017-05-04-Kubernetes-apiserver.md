@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes的Apiserver的工作过程
 author: lijiaocn
 createdate: 2017/05/04 16:28:23
-changedate: 2017/05/10 16:24:34
+changedate: 2017/06/08 16:40:40
 categories: 项目
 tags: k8s
 keywords: Kubernetes,k8s,Kubernetes的apiserver,请求处理
@@ -396,7 +396,7 @@ k8s.io/kubernetes/pkg/master/master.go:
 		}
 		...
 
-可以看到InstallAPIs()的功能就是将所有的apiGroup转载到GenericAPIServer中。
+可以看到InstallAPIs()的功能就是将所有的apiGroup装载到GenericAPIServer中。
 
 ### InstallAPIGroup()
 
