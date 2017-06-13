@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes的apiserver的启动过程
 author: lijiaocn
 createdate: 2017/06/09 15:57:36
-changedate: 2017/06/12 16:28:32
+changedate: 2017/06/13 11:20:42
 categories: 项目
 tags: k8s
 keywords: kubernetes,apiserver
@@ -493,7 +493,7 @@ pkg/registry/core/rest/storage_core.go:
 	var ParameterCodec = runtime.NewParameterCodec(Scheme)
 	var Codecs = serializer.NewCodecFactory(Scheme)
 
-与序列化和反序列化相关的是Scheme:
+可以看到ParameterCodec和Codecs都是在Scheme的基础上的。
 
 staging/src/k8s.io/apimachinery/pkg/runtime/scheme.go:
 
@@ -518,6 +518,328 @@ Scheme是在apimachinery中定义的。apimachinery是一个独立的package，�
 ## apimachinery
 
 apimachinery代码位于staging/src/k8s.io/apimachinery目录中，同时导出到了一个单独的[repo][1]中。
+
+### Scheme
+
+apimachinery的中心是`type Scheme struct`，Schem中记录了资源名称与类型的映射关系，以及转换、序列化函数。
+
+staging/src/k8s.io/apimachinery/pkg/runtime/scheme.go:
+
+	type Scheme struct {
+		//资源名称映射到资源类型
+		gvkToType map[schema.GroupVersionKind]reflect.Type
+		
+		//资源类型映射到资源名称
+		typeToGVK map[reflect.Type][]schema.GroupVersionKind
+		
+		// unversionedTypes are transformed without conversion in ConvertToVersion.
+		unversionedTypes map[reflect.Type]schema.GroupVersionKind
+		
+		// unversionedKinds are the names of kinds that can be created in the context of any group
+		unversionedKinds map[string]reflect.Type
+		
+		fieldLabelConversionFuncs map[string]map[string]FieldLabelConversionFunc
+		
+		// defaulterFuncs is an array of interfaces to be called with an object to provide defaulting
+		// the provided object must be a pointer.
+		defaulterFuncs map[reflect.Type]func(interface{})
+		
+		//conversion函数
+		converter *conversion.Converter
+		
+		//clone函数
+		cloner *conversion.Cloner
+	}
+
+通过调用Scheme的方法相关函数的注册：
+
+	-+Scheme : struct
+	   [fields]
+	   -cloner : *conversion.Cloner
+	   -converter : *conversion.Converter
+	   -defaulterFuncs : map[reflect.Type]func(interface{})
+	   -fieldLabelConversionFuncs : map[string]map[string]FieldLabelConversionFunc
+	   -gvkToType : map[schema.GroupVersionKind]reflect.Type
+	   -typeToGVK : map[reflect.Type][]schema.GroupVersionKind
+	   -unversionedKinds : map[string]reflect.Type
+	   -unversionedTypes : map[reflect.Type]schema.GroupVersionKind
+	   [methods]
+	   +AddConversionFuncs(conversionFuncs ) : error
+	   +AddDeepCopyFuncs(deepCopyFuncs ) : error
+	   +AddDefaultingFuncs(defaultingFuncs ) : error
+	   +AddFieldLabelConversionFunc(version, kind string, conversionFunc FieldLabelConversionFunc) : error
+	   +AddGeneratedConversionFuncs(conversionFuncs ) : error
+	   +AddGeneratedDeepCopyFuncs(deepCopyFuncs ) : error
+	   ...
+
+注册过程函数在每组api的install.go文件中被注册，以pkg/api为例:
+
+pkg/api/install/install.go:
+
+	func init() {
+		Install(api.GroupFactoryRegistry, api.Registry, api.Scheme)
+	}
+	
+	func Install(groupFactoryRegistry announced.APIGroupFactoryRegistry, registry *registered.APIRegistrationManager, scheme *runtime.Scheme) {
+		if err := announced.NewGroupMetaFactory(
+			&announced.GroupMetaFactoryArgs{
+				GroupName:                  api.GroupName,
+				VersionPreferenceOrder:     []string{v1.SchemeGroupVersion.Version},
+				ImportPrefix:               "k8s.io/kubernetes/pkg/api",
+				AddInternalObjectsToScheme: api.AddToScheme,
+				RootScopedKinds: sets.NewString(
+					"Node",
+					"Namespace",
+					"PersistentVolume",
+					"ComponentStatus",
+				),
+				IgnoredKinds: sets.NewString(
+					"ListOptions",
+					"DeleteOptions",
+					"Status",
+					"PodLogOptions",
+					...
+				),
+			},
+			announced.VersionToSchemeFunc{
+				v1.SchemeGroupVersion.Version: v1.AddToScheme,
+			},
+		).Announce(groupFactoryRegistry).RegisterAndEnable(registry, scheme); err != nil {
+			panic(err)
+		}
+	}
+
+这里的变量v1.AddToScheme在pkg/api/v1/register.go中定义:
+
+	SchemeBuilder = runtime.NewSchemeBuilder(addKnownTypes, addDefaultingFuncs, addConversionFuncs, addFastPathConversionFuncs)
+	AddToScheme   = SchemeBuilder.AddToScheme
+
+SchemeBuilder中注册了函数`addKnownType()`，就是在addKnownType()中调用了Scheme的方法完成了注册：
+
+pkg/api/register.go:
+
+	func addKnownTypes(scheme *runtime.Scheme) error {
+		scheme.AddKnownTypes(SchemeGroupVersion,
+			&Pod{},
+			&PodList{},
+			&PodStatusResult{},
+			&PodTemplate{},
+			&PodTemplateList{},
+			&ReplicationController{},
+			...
+		)
+		scheme.AddKnownTypes(SchemeGroupVersion, &metav1.Status{})
+		metav1.AddToGroupVersion(scheme, SchemeGroupVersion)
+		return nil
+	}
+
+### NewGroupMetaFactory()
+
+staging/src/k8s.io/apimachinery/pkg/apimachinery/announced/group_factory.go:
+
+	func NewGroupMetaFactory(groupArgs *GroupMetaFactoryArgs, versions VersionToSchemeFunc) *GroupMetaFactory {
+		gmf := &GroupMetaFactory{
+			GroupArgs:   groupArgs,
+			VersionArgs: map[string]*GroupVersionFactoryArgs{},
+		}
+		for v, f := range versions {
+			gmf.VersionArgs[v] = &GroupVersionFactoryArgs{
+				GroupName:   groupArgs.GroupName,
+				VersionName: v,
+				AddToScheme: f,
+			}
+		}
+		return gmf
+	}
+
+### Announce()
+
+Annouce()的过程就是将GroupMetaFactory添加到变量api.GroupFactoryRegistry中。
+
+pkg/api/register.go
+
+	var GroupFactoryRegistry = make(announced.APIGroupFactoryRegistry)
+
+staging/src/k8s.io/apimachinery/pkg/apimachinery/announced/group_factory.go:
+
+	func (gmf *GroupMetaFactory) Announce(groupFactoryRegistry APIGroupFactoryRegistry) *GroupMetaFactory {
+		if err := groupFactoryRegistry.AnnouncePreconstructedFactory(gmf); err != nil {
+			panic(err)
+		}
+		return gmf
+	}
+
+staging/src/k8s.io/apimachinery/pkg/apimachinery/announced/announced.go:
+
+	func (gar APIGroupFactoryRegistry) AnnouncePreconstructedFactory(gmf *GroupMetaFactory) error {
+		name := gmf.GroupArgs.GroupName
+		if _, exists := gar[name]; exists {
+			return fmt.Errorf("the group %q has already been announced.", name)
+		}
+		gar[name] = gmf
+		return nil
+	}
+
+### RegisterAndEnable()
+
+staging/src/k8s.io/apimachinery/pkg/apimachinery/announced/group_factory.go:
+
+	func (gmf *GroupMetaFactory) RegisterAndEnable(registry *registered.APIRegistrationManager, scheme *runtime.Scheme) error {
+		if err := gmf.Register(registry); err != nil {
+			return err
+		}
+		if err := gmf.Enable(registry, scheme); err != nil {
+			return err
+		}
+		return nil
+	}
+
+#### Register()
+
+Register()函数的作用是将GroupVersion按照指定的优先级排序后，注册到传入参数m中：
+
+	func (gmf *GroupMetaFactory) Register(m *registered.APIRegistrationManager) error {
+		...
+		pvSet := sets.NewString(gmf.GroupArgs.VersionPreferenceOrder...)
+		if pvSet.Len() != len(gmf.GroupArgs.VersionPreferenceOrder) {
+			return fmt.Errorf("preference order for group %v has duplicates: %v", gmf.GroupArgs.GroupName, gmf.GroupArgs.VersionPreferenceOrder)
+		}
+		prioritizedVersions := []schema.GroupVersion{}
+		for _, v := range gmf.GroupArgs.VersionPreferenceOrder {
+			prioritizedVersions = append(
+				prioritizedVersions,
+				schema.GroupVersion{
+					Group:   gmf.GroupArgs.GroupName,
+					Version: v,
+				},
+			)
+		}
+		unprioritizedVersions := []schema.GroupVersion{}
+		for _, v := range gmf.VersionArgs {
+			if v.GroupName != gmf.GroupArgs.GroupName {
+				return fmt.Errorf("found %v/%v in group %v?", v.GroupName, v.VersionName, gmf.GroupArgs.GroupName)
+			}
+			if pvSet.Has(v.VersionName) {
+				pvSet.Delete(v.VersionName)
+				continue
+			}
+			unprioritizedVersions = append(unprioritizedVersions, schema.GroupVersion{Group: v.GroupName, Version: v.VersionName})
+		}
+		...
+		prioritizedVersions = append(prioritizedVersions, unprioritizedVersions...)
+		m.RegisterVersions(prioritizedVersions)
+		gmf.prioritizedVersionList = prioritizedVersions
+		return nil
+	}
+
+m的类型是APIRegistrationManager:
+
+staging/src/k8s.io/apimachinery/pkg/apimachinery/registered/registered.go:
+
+	func (m *APIRegistrationManager) RegisterVersions(availableVersions []schema.GroupVersion) { for _, v := range availableVersions {
+			m.registeredVersions[v] = struct{}{}
+		}
+	}
+
+传入的参数registry是api.Registry:
+
+pkg/api/register.go:
+
+	var Registry = registered.NewOrDie(os.Getenv("KUBE_API_VERSIONS"))
+
+staging/src/k8s.io/apimachinery/pkg/apimachinery/registered/registered.go:
+
+#### Enable()
+
+Enable主要完成了两个工作，注册到参数m中，添加到scheme中。
+
+	func (gmf *GroupMetaFactory) Enable(m *registered.APIRegistrationManager, scheme *runtime.Scheme) error {
+		externalVersions := []schema.GroupVersion{}
+		for _, v := range gmf.prioritizedVersionList {
+			if !m.IsAllowedVersion(v) {
+				continue
+			}
+			externalVersions = append(externalVersions, v)
+			if err := m.EnableVersions(v); err != nil {
+				return err
+			}
+			gmf.VersionArgs[v.Version].AddToScheme(scheme)
+		}
+		...
+		if gmf.GroupArgs.AddInternalObjectsToScheme != nil {
+			gmf.GroupArgs.AddInternalObjectsToScheme(scheme)
+		}
+		
+		preferredExternalVersion := externalVersions[0]
+		accessor := meta.NewAccessor()
+		
+		groupMeta := &apimachinery.GroupMeta{
+			GroupVersion:  preferredExternalVersion,
+			GroupVersions: externalVersions,
+			SelfLinker:    runtime.SelfLinker(accessor),
+		}
+		for _, v := range externalVersions {
+			gvf := gmf.VersionArgs[v.Version]
+			if err := groupMeta.AddVersionInterfaces(
+				schema.GroupVersion{Group: gvf.GroupName, Version: gvf.VersionName},
+				&meta.VersionInterfaces{
+					ObjectConvertor:  scheme,
+					MetadataAccessor: accessor,
+				},
+			); err != nil {
+				return err
+			}
+		}
+		groupMeta.InterfacesFor = groupMeta.DefaultInterfacesFor
+		groupMeta.RESTMapper = gmf.newRESTMapper(scheme, externalVersions, groupMeta)
+		
+		if err := m.RegisterGroup(*groupMeta); err != nil {
+			return err
+		}
+		return nil
+	}
+
+传入的参数m是api.Registry:
+
+	var Registry = registered.NewOrDie(os.Getenv("KUBE_API_VERSIONS"))
+
+staging/src/k8s.io/apimachinery/pkg/apimachinery/registered/registered.go:
+
+	func (m *APIRegistrationManager) RegisterGroup(groupMeta apimachinery.GroupMeta) error {
+		groupName := groupMeta.GroupVersion.Group
+		if _, found := m.groupMetaMap[groupName]; found {
+			return fmt.Errorf("group %q is already registered in groupsMap: %v", groupName, m.groupMetaMap)
+		}
+		m.groupMetaMap[groupName] = &groupMeta
+		return nil
+	}
+
+传入的参数scheme是:
+
+	var Registry = registered.NewOrDie(os.Getenv("KUBE_API_VERSIONS"))
+
+而上面的AddToScheme函数，是在创建GroupMetaFactory的时候传入的：
+
+	func NewGroupMetaFactory(groupArgs *GroupMetaFactoryArgs, versions VersionToSchemeFunc) *GroupMetaFactory {
+		gmf := &GroupMetaFactory{
+			GroupArgs:   groupArgs,
+			VersionArgs: map[string]*GroupVersionFactoryArgs{},
+		}
+		for v, f := range versions {
+			gmf.VersionArgs[v] = &GroupVersionFactoryArgs{
+				GroupName:   groupArgs.GroupName,
+				VersionName: v,
+				AddToScheme: f,
+			}
+		}
+		return gmf
+	}
+
+参数versions是:
+
+		announced.VersionToSchemeFunc{
+			v1.SchemeGroupVersion.Version: v1.AddToScheme,
+		},
 
 ## main()
 
