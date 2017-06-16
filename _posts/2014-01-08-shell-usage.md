@@ -3,7 +3,7 @@ layout: default
 title: Shell编程
 author: lijiaocn
 createdate: 2014/04/30 16:33:01
-changedate: 2017/05/18 09:25:38
+changedate: 2017/06/16 16:51:04
 categories: 编程
 tags: shell
 keywords:
@@ -15,15 +15,274 @@ description:  积累的一些shell用法。
 
 ----
 
+* auto-gen TOC:
+{:toc}
+
 ## 摘要
 
-## 括号
+这里使用的是bash，bash兼容sh，并且吸收了ksh和csh的一些特性，`man bash`是最好的文档。
 
-[括号的用法][1]
+## Bash Options
 
-## 算数运算
+bash有自己的运行时配置，这里只列举常用的一些参数：
 
-### let
+	-c string:     从string读取命令
+	-i:            交互式运行
+	-r:            RESTRICTED SHELL
+	-O [options]:  设置shell内置命令的选项
+	+O [options]:  取消shell内置命令选项的设置
+	--:            表示Options结束, --之后的字符被当作文件名和传入参数
+
+除了上面的列出的这些，bash还有大量运行时配置，这些配置使用`set`命令设置，例如:
+
+	set [--abefhkmnptuvxBCHP] [-o option] [arg ...]
+
+## GRAMMER
+
+### Simple Commands
+
+命令执行，返回值的是命令的退出状态。
+
+如果命令是被信号终止的，返回值是`128+signal num`。
+
+### Pipelines
+
+	[time [-p]] [ ! ] command [ | command2 ... ]
+	
+	time: 显示整个pipline的执行时间
+	-p:   指定输出格式
+	!:    对pipline的结果取反
+
+pipline中的每个命令都在一个独立的进程中执行的。
+
+如果没有设置`pipefail`，返回的是最后一个命令的退出状态。
+
+如果设置了`pipefail`，只有所有命令都返回0，才返回0，否则返回的是最后一个不为0的退出状态。
+
+pipfail设置方法:
+
+	set -o pipefail
+
+### Lists
+
+Lists是多个拼接到一起的pipeline。
+
+pipelines通过下面保留字符拼接：
+
+	;   &   &&   ||
+
+以这些字符结尾：
+
+	;   &   <newline>
+
+字符含义：
+
+	&    命令在后台的执行，前台shell不等待命令执行的完成，立即得到返回值0。
+	;    分割开的命令单独执行，前台等待每个命令完成，返回的是最后一个命令的退出状态。
+	&&   只有前面的命令的返回值是0，才会执行后面的命令，返回最后一个命令的退出状态。
+	||   只有前面的命令的返回值非0，才会执行后面的命令，返回最后一个命令的退出状态。
+
+### Compound Commands
+
+命令有以下几种组合方式：
+
+	( list )
+	    list在一个独立的shell环境中运行，运行时对shell做的设置，在运行结束后失效。
+	    返回list的退出状态
+	
+	{ list; }
+	    list在当前shell环境中运行，命令必须用换行符或者分号标记结束。
+	    返回list的退出状态
+	    注意`{`和`}`必须用空格与后面或者前面都字符区分开。
+	
+	((expression))
+	    算术表达式计算，如果结果非0，返回0，否则返回1
+	    等同于 `let "expression"`
+	
+	[[ expression ]]
+	    条件表达式计算，
+	    ==,!= :  检查左侧是否匹配了右侧的正则表达式(Pattern Matring)
+	             shell option nocasematch，设置是否忽略大小写
+	             如果匹配结果与表达式一致，返回0
+	    =~:      检查左侧是否匹配右侧的扩展的正则表达式(regex(3))
+	             匹配返回0，不匹配返回1
+	             正则表达式语法错误，返回2
+	             如果匹配结果与表达式一致，返回0
+	             表达式匹配的字符串存放在数组BASH_REMATCH
+	             BASH_REMATCH[0]: 整个表达式匹配的字符串
+	             BASH_REMATCH[n]: 第n个括号中的表达式匹配的字符串
+	
+	for name [ in word ] ; do list ; done
+	     如果没有`in word`，就遍历位置参数(positional parameter)
+	     返回最后一次list执行的退出状态
+	     如果word是空的，返回0
+	
+	for (( expr1 ; expr2 ; expr3 )) ; do list ; done
+	     对表达式expr1执行算术运算
+	     对表达式expr2执行算术运算，如果结果非0，执行list，并对表达式expr3执行算数运算
+	     如果表达式为空，认为是1
+	     返回最后一次list的执行退出状态
+	     如果任意一个表达式错误，放回false
+	
+	select name [ in word ] ; do list ; done
+	     在stderr列出所有的word，提示选择，name的值将为选择的字符串
+	     如果在list中，没有遇到`break`，重复这一个过程
+	     返回最后一个命令的退出状态
+	     如果没有命令被执行，返回0
+	
+	case word in [ [(] pattern [ | pattern ] ... ) list ;; ] ... esac
+	     按照Pathname  Expansion的规则，寻找能够匹配word的pattern，执行后面的对应的list
+	     只有第一个匹配有效
+	     返回执行的命令的退出状态
+	     如果没有匹配，返回0
+	
+	if list; then list; [ elif list; then list; ] ... [ else list; ] fi
+	     如果list退出状态为0，那么执行
+	     返回执行的命令的退出状态
+	     如果命令执行，返回0
+	      
+	while list; do list; done
+	until list; do list; done
+
+### function 函数定义
+
+	[ function ] name () compound-command [redirection]
+
+保留字function是可选的，如果使用function，可以省略`()`。
+
+compound-command可以上一节给出的任意一种，不是必须是`{ XXX }`
+
+redirection将函数运行是的输入输出做了重定向。
+
+例如可以写成：
+
+	function a()  ( ls / ) >log
+
+funciton命令的返回值是0，除非有语法错误或者函数重名。
+
+执行function时，返回的是最后一个命令的退出状态。
+
+## QUOTING (字符转义)
+
+反斜线`\`是转移字符，更改后面的字符含义。
+
+单引号`'  '`保留了所有的字面取值，所见即所得。
+
+双引号`" "`保留了`$`、`\`，和反引号之外的字符的字面值。
+
+	\a     alert (bell)
+	\b     backspace
+	\e     an escape character
+	\f     form feed
+	\n     new line
+	\r     carriage return
+	\t     horizontal tab
+	\v     vertical tab
+	\\     backslash
+	\'     single quote
+	\nnn   the eight-bit character whose value is the octal value nnn (one to three digits)
+	\xHH   the eight-bit character whose value is the hexadecimal value HH (one or two hex digits)
+	\cx    a control-x character
+
+## PARAMETERS(参数/变量)
+
+参数就是可以存储值的变量：
+
+	name=[value]
+	name+=[value]
+
+如果没有value，name的值是null string。
+
+一旦创建了变量，只能通过命令`unset`消除。
+
+变量赋值可以作为这些内置命令的参数:
+
+	alias
+	declare
+	typeset
+	export
+	readonly
+	local
+
+### 位置变量
+
+	When a positional parameter consisting of more than a single digit is expanded, it must be enclosed in braces (see EXPANSION below)
+
+### 特殊变量
+
+	*:    如果位于双引号中(例如"$*")，value是将位置参数用$IFS链接起来后结果，整体是一个word
+	@:    如果位于双引号中(例如"$@")，每个位置参数被解读为一个word，是多个word
+	#:    位置参数的个数
+	?:    上一个前台命令状态
+	-:    已经设置了的option，通过通过set命令设置的，和shell启动时传入的
+	$:    当前shell的进程ID，如果是在子shell中，返回的也是当前shell的进程ID，不是子shell的
+	!:    上一个后台命令的进程ID
+	0:    shell或者shell脚本的名称，如果通过bash调用脚本，$0是脚本名，如果是`bash -c`的方式，$0是第一个参数
+	_:    shell或者shell脚本的绝对路径
+
+脚本a.sh：
+
+	for i in "$*" ;do echo a$i; done
+	for i in "$@" ;do echo b$i; done
+
+执行结果：
+
+	bash ./a.sh  1 2 3 4 5
+	a1 2 3 4 5
+	b1
+	b2
+	b3
+	b4
+	b5
+
+### Shell Variables
+
+Shell的变量比较多，这里不列出
+
+## EXPANSION
+
+
+## REDIRECTION (重定向)
+
+## ALIASES (别名)
+
+## FUNCTIONS
+
+## ARITHMETIC EVALUATION
+
+## CONDITIONAL EXPRESSIONS
+
+## SIMPLE COMMAND EXPANSION
+
+## COMMAND EXECUTION
+
+## COMMAND EXECUTION ENVIRONMENT
+
+## ENVIRONMENT
+
+## EXIT STATUS
+
+## SIGNALS
+
+## JOB CONTRO
+
+## PROMPTING
+
+## READLINE
+
+## HISTORY
+
+## HISTORY EXPANSION
+
+## SHELL BUILTIN COMMANDS
+
+## RESTRICTED SHELL
+
+## 以往遗留的，未整理的内容
+
+### 算数运算
+
+#### let
 
 手册：
 
@@ -58,7 +317,7 @@ let后面可以添加多个表达式：
 
 	let a=2**2 b=1  //a=2^2 b=1
 
-### echo $[表达式]
+#### echo $[表达式]
 
 echo $[]表示数学运算。
 
@@ -70,7 +329,7 @@ echo $[]表示数学运算。
 	echo $[a=1]     //a=1
 	echo $[b=$a+1]  //b=2
 
-### expr
+#### expr
 手册：
 
 	man expr
@@ -79,7 +338,7 @@ echo $[]表示数学运算。
 
 	expr 1 + 2
 
-## Sed
+### Sed
 
 sed&awk第二版
 
@@ -89,7 +348,7 @@ sed&awk第二版
 
 	man sed
 
-### 命令格式
+#### 命令格式
 
 Sed的命令格式如下:
 
@@ -99,9 +358,9 @@ address表示的是行数, function是sed内置的命令（例如a/b/c/d/D/s等�
 
 例如，删除文件的第一行:
 
-	sed -e "1d"   #d就是function,没有参数
+	sed -e "1d"   ##d就是function,没有参数
 
-### Sed的正则语法
+#### Sed的正则语法
 
 Sed支持两种正则表达式：basic regular expressions (basic REs) 和 extended (modern) regular expressions (extended REs)。
 
@@ -111,12 +370,12 @@ Sed默认传入的正则表达式是basic REs, 使用“-E”选项后, 切换�
 
 	man re_format
 
-### Sed直接修改文件内容 
+#### Sed直接修改文件内容 
 
 使用-i选项
 sed -i 'command'  filename
 
-### Sed编辑命令 
+#### Sed编辑命令 
 
 p  打印匹配行 
 
@@ -174,7 +433,7 @@ q  第一个模式匹配完成后退出或立即退出
 
 
 
-### Sed贪婪匹配与非贪婪匹配
+#### Sed贪婪匹配与非贪婪匹配
 
 re_format(7)：
 
@@ -194,11 +453,11 @@ re_format(7)：
 
 	可以看到“[^b]*b”的匹配效果与“.*?b”相同
 
-### Sed多行匹配
+#### Sed多行匹配
 
 TODO
 
-## find
+### find
 
 跳过子目录 
 
@@ -208,7 +467,7 @@ TODO
 
 	find . -path '/src' -exec COMMAND {}+
 
-## 去除重复行 
+### 去除重复行 
 
 	http://churuimin425.blog.163.com/blog/static/341298772012230112956712/
 	方法一
@@ -223,7 +482,7 @@ TODO
 	
 	    shell> sort -k2n file | sed '$!N; /^\(.*\)\n\1$/!P; D'
 
-## 获取当前时间 
+### 获取当前时间 
 
 直接使用date命令获取当前时间
 
@@ -231,7 +490,7 @@ TODO
 	    date %y-%m-%d-%H-%M-%S
 
 
-## 调试 
+### 调试 
 
 使用set辅助调试
 
@@ -245,35 +504,35 @@ TODO
 	
 	set +x 关闭x选项
 
-## 信号 
+### 信号 
 
 kill -l 查看所有信号
 
-### 捕获信号 
+#### 捕获信号 
 
 trap "command" signal
 
 捕捉到信号signal后，执行command
 
-	trap ""   signal   # 忽略sginal
-	trap signal        # 复位signal
+	trap ""   signal   ## 忽略sginal
+	trap signal        ## 复位signal
 
-## 变量 
+### 变量 
 
-### 赋值
+#### 赋值
 
 特别注意：“=”两边都不能有空格!
 
 	var=xxxx
 
-### 访问
+#### 访问
 
 	{var:-value}   如果定了变量var，则使用var，否则使用value
 	{var:=value}   如果没有定义var，定义并赋值value, 使用定以后的var
 	${var:offset}  var的值的子字符串
 	${var:offset:length} 
 
-### 打印特定前缀的变量 
+#### 打印特定前缀的变量 
 
 将带有前缀为prefix的参数名打印出来
 
@@ -281,12 +540,12 @@ trap "command" signal
 	${!prefix@}
 
 
-### 只读变量
+#### 只读变量
 
 	readonly var 
 	readonly 显示所有的只读变量
 
-### 局部变量 
+#### 局部变量 
 
 只能在函数内部使用，定义函数内部变量
 
@@ -300,7 +559,7 @@ trap "command" signal
 	   -t  give name the trace attribute
 	   -x  export name to subsequent commands via the environment
 
-### 本地变量 
+#### 本地变量 
 
 默认定义的变量在当前shell的生命期有效，属于本地变量
 
@@ -312,7 +571,7 @@ trap "command" signal
 
 	unset
 
-### 环境变量 
+#### 环境变量 
 
 环境变量用于所有用户进程
 
@@ -335,24 +594,24 @@ trap "command" signal
 	LOGNAME 登录名
 	MAIL    邮箱路径名
 	PATH    查找目录顺序
-	PS1     shell提示符，缺省值为超级用户#，其他用户$
+	PS1     shell提示符，缺省值为超级用户##，其他用户$
 	PS2     附属提示符，用于提示多行命令，缺省为>
 	SHELL   缺省shell
 	TERM    终端类型，vt100 vt200 linux等
 	PWD     当前路径
 
-### 默认变量
+#### 默认变量
 
 	$0            参数0, 运行程序
 	$1-$9-${10}.. 参数
-	$#            参数个数
+	$##            参数个数
 	$*            所有参数，不包括$0
 	$@            所有参数，不包括$0
 	$$            当前进程ID 
 	$!            后台运行的最后一个进程的ID 
 	$?            最后命令的退出状态，0表示没有错误
 
-### 数组 
+#### 数组 
 
 定义数组array:
 
@@ -382,11 +641,11 @@ trap "command" signal
 
 数组元素个数:
 
-	echo ${#array[@]}
+	echo ${##array[@]}
 
 第3个元素中元素的个数:
 
-	echo ${#array[3]}
+	echo ${##array[3]}
 
 打印数组下标 
 
@@ -394,11 +653,11 @@ trap "command" signal
 	${!name[*]}
 	这个是针对name数组的，打印出来name数组有哪些下标
 
-### map 
+#### map 
 
 必须是4.1.2以上的bash
 
-## shell嵌入命令完整列表 
+### shell嵌入命令完整列表 
 
 	| 命令     | 说明                                     |
 	|----------|------------------------------------------|
@@ -429,7 +688,7 @@ trap "command" signal
 	| logger   | 写入系统日志文件                         |
 	| local    | 定义局部变量                             |
 
-## 解引用 
+### 解引用 
 
 双引号
 
@@ -447,7 +706,7 @@ trap "command" signal
 
 	屏蔽特殊函数，可以屏蔽反引号`
 
-## 文件类型测试 
+### 文件类型测试 
 
 	| 操作      | 测试条件                                 |
 	|-----------|------------------------------------------|
@@ -476,14 +735,14 @@ trap "command" signal
 	| F1 -ot F2 | 文件F1比文件F2旧 *                       |
 	| F1 -ef F2 | 文件F1和文件F2都是同一个文件的硬链接 *   |
 
-## 字符串测试 
+### 字符串测试 
 
 	=     相等
 	!=    不相等
 	-z    空串
 	-n    非空串
 
-## 数值测试 
+### 数值测试 
 
 	-eq   equal
 	-ne   not equal
@@ -492,7 +751,7 @@ trap "command" signal
 	-le   litter or equal
 	-ge   great or littel
 
-## 控制结构 
+### 控制结构 
 
 case
 
@@ -533,7 +792,7 @@ continue
 
 	立即开始下一个循环 
 
-## 函数 
+### 函数 
 
 	函数名()
 	{
@@ -547,26 +806,26 @@ continue
 
 向函数参数传递参数
 
-	# 和向脚本传递参数相同，使用特殊变量$0 $1 ... $9 
+	## 和向脚本传递参数相同，使用特殊变量$0 $1 ... $9 
 
 函数返回值
 
-	# 函数返回值保存在$?中 
+	## 函数返回值保存在$?中 
 	
-	compare() $a $b $c     # 调用
-	if[ $? = 0 ]           # $?是函数的返回值
+	compare() $a $b $c     ## 调用
+	if[ $? = 0 ]           ## $?是函数的返回值
 
 调用函数文件中的函数
 
-	.   /path/function.sh    # 引入了函数文件
+	.   /path/function.sh    ## 引入了函数文件
 
 shift
 	将参数向左偏移一位 
 
 获取最后一个参数
 
-	eval echo \$$# 
-	shift 'expr $# -2'
+	eval echo \$$## 
+	shift 'expr $## -2'
 
 getopts
 
@@ -586,29 +845,15 @@ getopts
 	    esac
 	done
 
-## linux命令行选项的通常含义
 
-	-a  扩展 
-	-c  计数，拷贝
-	-d  目录，设备
-	-e  执行
-	-f  文件名，强制
-	-h  帮助
-	-i  忽略状态
-	-l  注册文件
-	-o  完整输出
-	-q  退出
-	-p  路径
-	-v  显示方式或版本
-
-## 查看功能键编码
+### 查看功能键编码
 
 使用cat可以查看对应功能键的表示方式
 
 	cat -v
 	//输入F1等功能键
 
-## 颜色 
+### 颜色 
 
 注意:如果没有后面的m，表示光标跳转到对应的行和列
 
@@ -630,23 +875,23 @@ getopts
 	| 白色 | 37         | 47         |
 
 
-## 进制转换
+### 进制转换
 
-	echo $((16#a));将十六进制数a转换为十进制数表示出来 
-	echo $((5#3));将5进制数3转换为十进制数表示出来 
+	echo $((16##a));将十六进制数a转换为十进制数表示出来 
+	echo $((5##3));将5进制数3转换为十进制数表示出来 
 
-## 模式匹配 
+### 模式匹配 
 
-### 从头匹配 
+#### 从头匹配 
 
 从头开始扫描word，将匹配word正则表达的字符过滤掉
 
-	${parameter#word}
 	${parameter##word}
+	${parameter###word}
 
-	#为最短匹配，##为最长匹配
+	##为最短匹配，##为最长匹配
 
-### 从尾匹配 
+#### 从尾匹配 
 
 从尾开始扫描word，将匹配word正则表达式的字符过滤掉
 
@@ -655,7 +900,7 @@ getopts
 
 	%为最短匹配，%%为最长匹配
 
-### 替换 
+#### 替换 
 
 	${parameter/pattern/string}
 	${parameter//pattern/string}
@@ -664,7 +909,7 @@ getopts
 	/表示只替换一次
 	//表示全部替换
 
-## sar 
+### sar 
 
 http://www.cnblogs.com/jackyrong/archive/2008/08/02/1258835.html
 http://www.wuzesheng.com/?p=1657
@@ -675,10 +920,10 @@ http://www.wuzesheng.com/?p=1657
 
 查看网卡速率 
 
-	# 每秒钟统计一次，统计四次
+	## 每秒钟统计一次，统计四次
 	sar -n DEV 1 4
 
-## cut 
+### cut 
 
 剪切列或域
 
@@ -686,7 +931,7 @@ http://www.wuzesheng.com/?p=1657
 	-f n,m  剪切域n-m,从1开始编号
 	-c n,m  第n-m个字符，注意不能和-f一起使用
 
-## getopt
+### getopt
 
 getopt用来解析输入参数，例如下面的命令中：
 
@@ -700,7 +945,7 @@ getopt用来解析输入参数，例如下面的命令中：
 
 --将选项与非选项参数分开。
 
-## getopts
+### getopts
 
 注意getopts和getopt不是一回事，getopts从stdin每次读取一个参数并赋给指定变量。
 

@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes的Pod网络设置
 author: lijiaocn
 createdate: 2017/05/03 09:30:33
-changedate: 2017/05/03 13:29:05
+changedate: 2017/06/13 11:27:23
 categories: 项目
 tags: k8s
 keywords: kuberntes,pod,network

@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes的kubelet的工作过程
 author: lijiaocn
 createdate: 2017/05/02 10:03:20
-changedate: 2017/05/15 11:14:31
+changedate: 2017/06/13 17:01:24
 categories: 项目
 tags: k8s
 keywords: kubelet,kubelete,工作流程,源码走读
@@ -234,11 +234,6 @@ syncLoop中调用syncLoopIteration:
 	
 	        switch u.Op {
 	        case kubetypes.ADD:
-	            glog.V(2).Infof("SyncLoop (ADD, %q): %q", u.Source, format.Pods(u.Pods))
-	            // After restarting, kubelet will get all existing pods through
-	            // ADD as if they are new pods. These pods will then go through the
-	            // admission process and *may* be rejected. This can be resolved
-	            // once we have checkpointing.
 	            handler.HandlePodAdditions(u.Pods)
 
 传入参数handler就是kl，HandlePodAddtions也是struct Kubelet的成员函数。
@@ -322,7 +317,39 @@ k8s.io/kubernetes/pkg/kubelet/pod_workers.go:
 	   result := kl.containerRuntime.SyncPod(pod, apiPodStatus, podStatus, pullSecrets, kl.backOff)
 	    ...
 
-syncPod中内容比较多，这里重点提一下容器网络的设置
+syncPod中内容比较多。
+
+#### Volume设置
+
+pkg/kubelet/kubelet.go:
+
+	// Wait for volumes to attach/mount
+	if err := kl.volumeManager.WaitForAttachAndMount(pod); err != nil {
+		kl.recorder.Eventf(pod, v1.EventTypeWarning, events.FailedMountVolume, "Unable to mount volumes for pod %q: %v", format.Pod(pod), err)
+		glog.Errorf("Unable to mount volumes for pod %q: %v; skipping pod", format.Pod(pod), err)
+		return err
+	}
+
+volumeManager在创建kubelet的时候设置的：
+
+pkg/kubelet/kubelet.go:
+
+	func NewMainKubelet(kubeCfg *componentconfig.KubeletConfiguration, kubeDeps *KubeletDeps, standaloneMode bool) (*Kubelet, error) {
+		...
+		// setup volumeManager
+		klet.volumeManager, err = volumemanager.NewVolumeManager(
+			kubeCfg.EnableControllerAttachDetach,
+			nodeName,
+			klet.podManager,
+			klet.statusManager,
+			klet.kubeClient,
+			klet.volumePluginMgr,
+			klet.containerRuntime,
+			kubeDeps.Mounter,
+			klet.getPodsDir(),
+			kubeDeps.Recorder,
+			kubeCfg.ExperimentalCheckNodeCapabilitiesBeforeMount,
+			kubeCfg.KeepTerminatedPodVolumes)
 
 #### 容器网络的设置
 

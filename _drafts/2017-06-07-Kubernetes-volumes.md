@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes的volumes
 author: lijiaocn
 createdate: 2017/06/07 10:00:24
-changedate: 2017/06/08 17:23:09
+changedate: 2017/06/13 13:08:07
 categories: 项目
 tags: kubernetes 
 keywords: k8s
@@ -378,6 +378,7 @@ key通过这条命令获取:
 	}
 
 ## 源码
+
 
 ## 参考
 

@@ -3,7 +3,7 @@ layout: default
 title: linux的iptables使用
 author: lijiaocn
 createdate: 2014/04/16 10:16:55
-changedate: 2017/05/17 10:10:55
+changedate: 2017/06/14 09:34:51
 categories: 技巧
 tags: iptables linuxnet
 keywords:  linux iptables
@@ -113,7 +113,6 @@ iptables的规则按照“表(table)->规则链(chain)->规则(rule)”的层次
 
 	raw.OUTPUT -> mangle.OUTPUT -> nat.OUTPUT -> filter.OUTPUT -> mangle.POSTROUTING -> nat.POSTROUTING
 
-
 ![nf-packet-flow]({{ site.imglocal }}/nf-packet-flow.png )
 
 ### filter表
@@ -150,6 +149,174 @@ raw表用于配置连接跟踪的例外情况
 ### security表
 
 waiting
+
+## 规则格式
+
+	rule-specification = [matches...] [target]
+	match = -m matchname [per-match-options]
+	target = -j targetname [per-target-options]
+
+可以使用的规则参数:
+
+	-4, --ipv4
+	-6, --ipv6
+	[!] -p, --protocol protocol
+	     可以使用:
+	       1. tcp, udp, udplite, icmp, icmpv6,esp, ah, sctp, mh or the special keyword "all"
+	       2. 协议号，0等同于"all"
+	       3. /etc/protocols中列出的协议名
+	[!] -s, --source address[/mask][,...]
+	     Address can be either:
+	         a network name, a hostname, a network IP address (with /mask), or a plain IP address.
+	         Multiple addresses can be specified, but this will expand to multiple rules (when
+	         adding with -A), or will cause multiple rules to be deleted (with -D).
+	[!] -d, --destination address[/mask][,...]
+	-m, --match match
+	     不同的模块有不同的参数，在下一节中单独讨论
+	-j, --jump target
+	-g, --goto chain
+	      Unlike the --jump option return will not continue processing in this chain but instead 
+	      in the chain that called us via --jump
+	[!] -i, --in-interface name
+	[!] -o, --out-interface name
+	[!] -f, --fragment
+	      This means that the rule only refers to second and further IPv4 fragments of fragmented packets.
+	      Since there is no way to tell the source or destination ports of  such  a  packet  (or ICMP type), 
+	      such a packet will not match any rules which specify them.  
+	      When the "!" argument precedes the "-f" flag, the rule will only match head fragments, or unfragmented packets.
+	      This option is IPv4 specific, it is not available in ip6tables.
+	-c, --set-counters packets bytes
+	      This enables the administrator to initialize the packet and byte counters of a rule 
+	      (during INSERT, APPEND, REPLACE operations).
+
+### iptables-extensions
+
+iptables-extensions由多个mach module和多个target module组成，每个module都有自己的参数。
+
+在`man iptables-extensions`中可以看到所有的支持的module。
+
+#### match module
+
+通过`-m name [module-options...]`指定，标准的iptables包括下列match module:
+
+	addrtype
+	ah (IPv6-specific)
+	ah (IPv4-specific)
+	bpf
+	cgroup
+	cluster
+	comment
+	connbytes
+	connlabel
+	connlimit
+	connmark
+	conntrack
+	cpu
+	dccp
+	devgroup
+	dscp
+	dst (IPv6-specific)
+	ecn
+	esp
+	eui64 (IPv6-specific)
+	frag (IPv6-specific)
+	hashlimit
+	hbh (IPv6-specific)
+	helper
+	hl (IPv6-specific)
+	icmp (IPv4-specific)
+	icmp6 (IPv6-specific)
+	iprange
+	ipv6header (IPv6-specific)
+	ipvs
+	length
+	limit
+	mac
+	mark
+	mh (IPv6-specific)
+	multiport
+	nfacct
+	osf
+	owner
+	physdev
+	pkttype
+	policy
+	quota
+	rateest
+	realm (IPv4-specific)
+	recent
+	rpfilter
+	rt (IPv6-specific)
+	sctp
+	set
+	socket
+	state
+	statistic
+	string
+	tcp
+	tcpmss
+	time
+	tos
+	ttl (IPv4-specific)
+	u32
+	udp
+	unclean (IPv4-specific)
+
+##### set
+
+set模块监测是否命中ipset。ipset是用命令`ipset`管理的，可以查看:
+
+	yum install -y ipset
+	man ipset
+
+##### mark
+
+
+
+#### target modules
+
+target modules是通过`-j modulename` 指定，标准的iptables中包括以下target modules:
+
+	AUDIT
+	CHECKSUM
+	CLASSIFY
+	CLUSTERIP (IPv4-specific)
+	CONNMARK
+	CONNSECMARK
+	CT
+	DNAT
+	DNPT (IPv6-specific)
+	DSCP
+	ECN (IPv4-specific)
+	HL (IPv6-specific)
+	HMARK
+	IDLETIMER
+	LED
+	LOG
+	MARK
+	MASQUERADE
+	MIRROR (IPv4-specific)
+	NETMAP
+	NFLOG
+	NFQUEUE
+	NOTRACK
+	RATEEST
+	REDIRECT
+	REJECT (IPv6-specific)
+	REJECT (IPv4-specific)
+	SAME (IPv4-specific)
+	SECMARK
+	SET
+	SNAT
+	SNPT (IPv6-specific)
+	TCPMSS
+	TCPOPTSTRIP
+	TEE
+	TOS
+	TPROXY
+	TRACE
+	TTL (IPv4-specific)
+	ULOG (IPv4-specific)
 
 ## 调试方法
 
