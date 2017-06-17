@@ -3,7 +3,7 @@ layout: default
 title: Openwrt系统编译构建
 author: lijiaocn
 createdate: 2017/06/03 17:32:28
-changedate: 2017/06/04 22:22:47
+changedate: 2017/06/10 21:42:22
 categories: 项目
 tags: openwrt
 keywords: openwrt,code,build,构建
@@ -51,7 +51,7 @@ master分支是开发中的代码，已经发布的版本打上了对应的tag�
 
 	git checkout -b v15.05.1 v15.05.1
 
-## 安装OpenWrt feeds
+## 安装feeds
 
 [openwrt feeds][7]是一组可以编译到openwrt系统中的package。这些package的代码不在openwrt项目中，而是有各自的repo。
 
@@ -73,11 +73,10 @@ openwrt目录根目录下的`feeds.conf.default`文件中配置了默认的feeds
 
 使用`./scripts/feeds install`安装package:
 
-	./scripts/feeds install -a    安装所有的package
+	./scripts/feeds install -a                安装所有的package
+	./scripts/feeds install -p packages tor   安装packages中的tor
 
-安装之后，在后面的`make menuconfig`时，会看到已经安装的package。
-
-./scripts/feeds都以下面这些子命令，可以通过`./scripts/feeds -h`查看使用说明：
+./scripts/feeds都有下面这些子命令，可以通过`./scripts/feeds -h`查看使用说明：
 
 	./scripts/feeds clean       删除下载的feeds
 	./scripts/feeds update      下载可用的feeds，并生成一个索引文件，供list和search时使用
@@ -108,21 +107,81 @@ openwrt目录根目录下的`feeds.conf.default`文件中配置了默认的feeds
 	Build system settings    编译设置
 	Kernel modules           内核模块
 
+### Target System
+
+Openwrt能够在多种硬件平台上运行:
+
+    Target System (x86)  --->
+    Subtarget (Generic)  --->
+
+目标系统位于target/linux目录中，选择了Target System还需要选择Subtarget。
+
+譬如：
+
+	Target System: Ralink RT288x/RT3xx
+	Subtarget: MT7621 based boards
+
+### 选择软件包
+
+在下面的配置项中可以选择将哪些软件打包进编译后的镜像，哪些编译成模块:
+
+	 Base system  --->
+	 Administration  --->
+	 Boot Loaders  ----  
+	 Development  --->   
+	 Extra packages  ----
+	 Firmware  --->      
+	 Fonts  --->         
+	 Kernel modules  --->
+	 Languages  --->     
+	 Libraries  --->     
+	 LuCI  --->          
+	 Mail  --->          
+	 Multimedia  --->    
+	 Network  --->       
+	 Sound  --->         
+	 Utilities  --->     
+	 Xorg  --->
+
+例如，在Network中，选择将tor编译：
+
+	-*- tor........................... An anonymous Internet communication system
+	<*> tor-gencert................................... Tor certificate generation
+	<*> tor-geoip............................................... GeoIP db for tor
+	<*> tor-resolve......................................... tor hostname resolve
+
 ### 通过config diff文件保留配置
 
-`./scripts/diffconfig.sh`可以一个config的diff文件，记录与默认配置的不同：
+`./scripts/diffconfig.sh`可以生成config的diff文件，记录与默认配置的不同配置：
 
 	./scripts/diffconfig.sh > diffconfig 
 
 以后可以使用这个diffconfig文件恢复配置：
 
 	cp diffconfig .config 
-	或者:
-	cat diffconfig >> .config
-	
 	make defconfig
 
 将diffconfig复制为文件.config或者将其中的内容追加到.config文件中后，执行`make defconfig`会自动补齐其它的默认配置。
+
+## 开始编译
+
+编译全部:
+
+	make -j1 V=s
+
+编译过程中会将需要的源码包下载dl目录中。
+
+单独编译package:
+
+	make package/cups/compile V=s
+
+编译得到镜像位于:
+
+	./bin/XXX
+
+编译得到package位于:
+
+	./bin/XXX/packages
 
 ### 其他
 
@@ -137,6 +196,57 @@ openwrt目录根目录下的`feeds.conf.default`文件中配置了默认的feeds
 	Note that make kernel_menuconfig modifies the Kernel configuration templates of the build tree and clearing the build_dir will not revert them. 
 	CONFIG_TARGET allows you to select which config you want to edit. possible options: target, subtarget, env. 
 
+## 升级系统
+
+编译后会在bin/XXX目录下生成XXX-sysupdate.bin文件，将文件上传的openwrt系统。
+
+通过命令[sysupgrade][12]可以对openwrt进行系统升级。
+
+	sysupgrade  -b backup.tar.gz     //备份配置文件
+	sysupgrade --test openwrt-ramips-mt7621-mt7621-squashfs-sysupgrade.bin   //检查bin文件
+	sysupgrade -d 10 openwrt-ramips-mt7621-mt7621-squashfs-sysupgrade.bin    //开始升级
+
+升级后会自动重启。
+
+## 单独编译package
+
+可以通过[openwrt sdk][9]单独编译指定的package。
+
+可以在[openwrt download][10]中下载对应版本和架构的SDK，例如：
+
+	OpenWrt-SDK-15.05-ramips-mt7621_gcc-4.8-linaro_uClibc-0.9.33.2.Linux-x86_64.tar.bz2
+
+或者自己在openwrt中编译，在make menuconfig时勾选:
+
+	[*]Build the OpenWrt SDK
+
+将其解压以后，进入，在feeds.conf中配置feed源，然后更新:
+
+	./scripts/feeds update -a
+	./scripts/feeds install -a   //或者安装需要的报文
+
+编译过程分为四步，这里以编译名为tor的package为例:
+
+	./scripts/feeds install -p packages tor
+	make -j1 V=s package/tor/download
+	make -j1 V=s package/tor/prepare
+	make -j1 V=s package/tor/compile
+
+编译过程中使用的是`package/feeds/packages/tor/Makefile`。
+
+编译后的ipk文件在bin/package目录中，通过file命令可以看到ipk文件就是gzip格式的压缩文件：
+
+	$file tor_0.2.7.6-1_ramips.ipk
+	tor_0.2.7.6-1_ramips.ipk: gzip compressed data, from Unix
+
+可以通过下面的命令，将package目录做成本地源：
+
+	make package/index
+
+清理编译中产生的文件:
+
+	make -j1 V=s package/tor/clean
+
 ## 参考
 
 1. [openwrt git][1]
@@ -147,6 +257,10 @@ openwrt目录根目录下的`feeds.conf.default`文件中配置了默认的feeds
 6. [support devices][6]
 7. [openwrt feeds][7]
 8. [openwrt patches][8]
+9. [openwrt sdk][9]
+10. [openwrt download][10]
+11. [ash file not found][11]
+12. [sysupgrade][12]
 
 [1]: https://github.com/openwrt/openwrt "openwrt git"
 [2]: https://wiki.openwrt.org/about/toolchain "openwrt build about"
@@ -156,3 +270,7 @@ openwrt目录根目录下的`feeds.conf.default`文件中配置了默认的feeds
 [6]: https://wiki.openwrt.org/toh/start "support devices"
 [7]: https://wiki.openwrt.org/doc/devel/feeds "openwrt feeds"
 [8]: https://wiki.openwrt.org/doc/devel/patches "openwrt patches"
+[9]: https://wiki.openwrt.org/doc/howto/obtain.firmware.sdk "openwrt sdk"
+[10]: https://downloads.openwrt.org "openwrt download"
+[11]: https://stackoverflow.com/questions/31385121/elf-file-exists-in-usr-bin-but-turns-out-ash-file-not-found "elf-file-exists-in-usr-bin-but-turns-out-ash-file-not-found"
+[12]: https://wiki.openwrt.org/doc/techref/sysupgrade "sysupgrade"
