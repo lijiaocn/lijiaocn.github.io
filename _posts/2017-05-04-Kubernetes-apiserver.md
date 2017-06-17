@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes的Apiserver的工作过程
 author: lijiaocn
 createdate: 2017/05/04 16:28:23
-changedate: 2017/05/10 16:24:34
+changedate: 2017/06/09 15:56:39
 categories: 项目
 tags: k8s
 keywords: Kubernetes,k8s,Kubernetes的apiserver,请求处理
@@ -16,7 +16,7 @@ description: kubernetes的apiserver的实现挺复杂，理解了kubernetes-styl
 
 ## kubernetes-style apiserver
 
-不得不说，k8s的apiserver实现的还是有点复杂的，美其名约[kubernetes-style apiserver][1]。
+不得不说，k8s的apiserver实现的还是有点复杂的，k8s自称为[kubernetes-style apiserver][1]。
 
 从kubernetes主代码中剥离出来的工作还没有完成：
 
@@ -28,7 +28,7 @@ description: kubernetes的apiserver的实现挺复杂，理解了kubernetes-styl
 
 kubernetes-style apiserver的核心是`GenericAPIServer`，GenericAPIServer的`InstallAPIGroup()`方法，根据输入参数`APIGroupInfo`中的storage，自动生成url路由，和REST请求的Handler。
 
-k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/genericapiserver.go，`GenericAPIServer`:
+`GenericAPIServer`，k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/genericapiserver.go:
 
 	-+GenericAPIServer : struct
 	    [fields]
@@ -54,7 +54,7 @@ k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/genericapiserver.go，
 	   +RequestContextMapper() : apirequest.RequestContextMapper
 	   +UnprotectedHandler() : http.Handler
 
-k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/genericapiserver.go，`APIGroupInfo`:
+`APIGroupInfo`，k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/genericapiserver.go: 
 
 	-+APIGroupInfo : struct
 	    [fields]
@@ -67,7 +67,8 @@ k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/genericapiserver.go，
 	   +SubresourceGroupVersionKind : map[string]schema.GroupVersionKind
 	   +VersionedResourcesStorageMap : map[string]map[string]rest.Storage
 	    [functions]
-	   +NewDefaultAPIGroupInfo(group string, registry *registered.APIRegistrationManager, scheme *runtime.Scheme, parameterCodec runtime.ParameterCodec, codecs serializer.CodecFactory) : APIGroupInfo
+	   +NewDefaultAPIGroupInfo(group string, registry *registered.APIRegistrationManager, \
+	        scheme *runtime.Scheme, parameterCodec runtime.ParameterCodec, codecs serializer.CodecFactory) : APIGroupInfo
 
 storage都存放在APIGroupInfo的名为`VersionedResourcesStorageMap`的成员变量中。
 
@@ -396,7 +397,7 @@ k8s.io/kubernetes/pkg/master/master.go:
 		}
 		...
 
-可以看到InstallAPIs()的功能就是将所有的apiGroup转载到GenericAPIServer中。
+可以看到InstallAPIs()的功能就是将所有的apiGroup装载到GenericAPIServer中。
 
 ### InstallAPIGroup()
 

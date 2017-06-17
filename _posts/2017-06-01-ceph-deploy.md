@@ -3,7 +3,7 @@ layout: default
 title: Ceph集群的部署
 author: lijiaocn
 createdate: 2017/06/01 13:13:26
-changedate: 2017/06/06 15:44:22
+changedate: 2017/06/08 13:19:31
 categories: 项目
 tags: ceph
 keywords: ceph,ceph-deploy
@@ -460,26 +460,26 @@ cn.ceph.com是ceph的中国区[镜像][3]。
 	mon initial members = master
 	mon host = 192.168.40.10
 
-执行下列操作:
+初始化monmap：
 
-	#Create a keyring for your cluster and generate a monitor secret key.
+	//创建用户`mon.`的keystring
 	ceph-authtool --create-keyring /tmp/ceph.mon.keyring --gen-key -n mon. --cap mon 'allow *'
 	
-	#Generate an administrator keyring, generate a client.admin user and add the user to the keyring.
+	//创建用户`ceph.client.admin`的keystring
 	ceph-authtool --create-keyring /etc/ceph/ceph.client.admin.keyring --gen-key -n client.admin --set-uid=0 --cap mon 'allow *' --cap osd 'allow *' --cap mds 'allow'
-	
-	#Add the client.admin key to the ceph.mon.keyring.
+
+	//将ceph.client.admin的key导入到mon的keystring中
 	ceph-authtool /tmp/ceph.mon.keyring --import-keyring /etc/ceph/ceph.client.admin.keyring
-	
-	#Generate a monitor map using the hostname(s), host IP address(es) and the FSID. Save it as /tmp/monmap:
+
+	//生成monmap，将第一个mon加入到monmap
 	monmaptool --create --add master 192.168.0.1 --fsid a7f64266-0894-4f1e-a635-d0aeaca0e993 /tmp/monmap
-	
-	#prepare monitor data directory
+
+	//准备mon的data目录
 	mkdir /var/lib/ceph/mon/ceph-master
 	chown -R /var/lib/ceph
-	
-	#Populate the monitor daemon(s) with the monitor map and keyring.
-	sudo -u ceph ceph-mon --mkfs -i master --monmap /tmp/monmap --keyring /tmp/ceph.mon.keyring
+
+	//初始化mon的data
+	ceph-mon --mkfs -i master --monmap /tmp/monmap --keyring /tmp/ceph.mon.keyring
 
 在/etc/ceph/ceph.conf中添加其它的配置项:
 
@@ -498,7 +498,7 @@ cn.ceph.com是ceph的中国区[镜像][3]。
 	osd pool default pgp num = 333
 	osd crush chooseleaf type = 1
 
-启动
+启动:
 
 	systemctl status ceph-mon@master
 
@@ -526,7 +526,7 @@ ceph-mon@master实质就是启动下面的进程，master作为ID传入，ceph-m
 
 可以看到当前只有1个monitor，0个osd。
 
-查看monitor——master的版本:
+查看mon.master的版本:
 
 	$ceph daemon mon.master version
 	{"version":"11.2.0"}
@@ -932,17 +932,15 @@ PG ID格式为： `{pool ID}.{PG ID in this pool}`，例如:
 
 
 
-#### 用户管理
+#### user manage
 
-用户通过提交`keystring`进行身份认证，默认用户是`client.admin`，keystring是`/etc/ceph/ceph.client.admin.keyring`:
-
-	ceph -n client.admin --keyring=/etc/ceph/ceph.client.admin.keyring health
+##### 命名格式
 
 用户名格式:
 
 	{TYPE}.{ID}
 	例如：  client.admin，client.user1，mds.master
-
+	
 	A Ceph Storage Cluster user is not the same as a Ceph Object Storage user or a Ceph Filesystem user.
 	The Ceph Object Gateway uses a Ceph Storage Cluster user to communicate between the gateway daemon 
 	and the storage cluster, but the gateway has its own user management functionality for end users. 
@@ -956,7 +954,35 @@ PG ID格式为： `{pool ID}.{PG ID in this pool}`，例如:
 	mon 'allow rwx'
 	mon 'allow profile osd'
 
-[ceph user management][20]中列出了所有的权限选项。
+daemon-type类型有: mon、mds、osd，[ceph user management][20]中列出了所有的权限选项。
+
+访问ceph集群的时候，需要提交用户的key来完成身份认证，用户的key保存在本地的keystring中，ceph client会自动解读keystring文件。
+
+keystring文件格式如下，可以包含多个用户的key：
+
+	[client.admin]
+	    key = AQBW0S9ZkAD+IBAAxriXLrP0MJ/Can8cr4D2CQ==
+	    auid = 0
+	    caps mds = "allow"
+	    caps mon = "allow *"
+	    caps osd = "allow *"
+
+ceph client默认用户是client.admin，会按照下面的顺序寻找当前用户的keyring:
+
+	/etc/ceph/$cluster.$name.keyring           //只包含名为name的用户的key
+	/etc/ceph/$cluster.keyring
+	/etc/ceph/keyring
+	/etc/ceph/keyring.bin
+
+也可以直接指定用户和keystring，例如：
+
+	ceph -n client.admin --keyring=/etc/ceph/ceph.client.admin.keyring health
+
+可以将一个keyring中的用户导入到另一个keyring:
+
+	ceph-authtool /etc/ceph/ceph.keyring --import-keyring /etc/ceph/ceph.client.admin.keyring
+
+##### 查看用户
 
 查看所有用户:
 
@@ -990,53 +1016,54 @@ PG ID格式为： `{pool ID}.{PG ID in this pool}`，例如:
 	Status:
 	 exported keyring for client.admin
 
-ceph client按照下面的顺序寻找keyring，keyring中可以有多个用户:
+##### 创建用户
 
-	/etc/ceph/$cluster.$name.keyring
-	/etc/ceph/$cluster.keyring
-	/etc/ceph/keyring
-	/etc/ceph/keyring.bin
+直接创建用户，自动生成key:
 
-创建一个空的keyring:
+	ceph auth add client.kube mon 'allow r' osd 'allow rw pool=kube'
+	ceph auth get-or-create client.kube mon 'allow r' osd 'allow rw pool=kube'
 
-	ceph-authtool --create-keyring /tmp/keyring
+除了直接创建用户，也可以通过`ceph auth import`将keystring中的用户导入。
 
-将一个keyring中的用户导入到另一个keyring:
+	ceph auth import -i /tmp/keyring
 
-	ceph-authtool /etc/ceph/ceph.keyring --import-keyring /etc/ceph/ceph.client.admin.keyring
+如果用户已经存在，覆盖同名用户的原先配置。
 
-添加用户:
+##### keystring的管理
 
-	ceph auth add client.john mon 'allow r' osd 'allow rw pool=liverpool'
-	ceph auth get-or-create client.paul mon 'allow r' osd 'allow rw pool=liverpool'
-	ceph auth get-or-create client.george mon 'allow r' osd 'allow rw pool=liverpool' -o george.keyring
-	ceph auth get-or-create-key client.ringo mon 'allow r' osd 'allow rw pool=liverpool' -o ringo.key
+ceph-authtool用来管理keystring。
 
-添加了用户之后，还需要将用户导入到keyring：
+首先需要通过ceph auth获取已有用户的keystring:
 
-	ceph auth add client.ringo -i /etc/ceph/ceph.keyring
+	ceph auth get client.kube -o /tmp/keystring
 
-创建用户的同时将用户添加到keyring中：
+或者直接创建一个keystring（这一步只是创建了keystring，不会创建user）:
 
-	ceph-authtool -n client.ringo --cap osd 'allow rwx' --cap mon 'allow rwx' /etc/ceph/ceph.keyring
+	ceph-authtool --create-keyring /tmp/keyring --gen-key -n client.test --cap mon 'allow *' --cap osd 'allow *' --cap mds 'allow'
 
-修改用户权限:
+可以通过ceph-authool直接修改keystring中的内容:
 
-	ceph auth caps USERTYPE.USERID {daemon} 'allow [r|w|x|*|...] [pool={pool-name}] [namespace={namespace-name}]' 
+	ceph-authtool -n client.test --cap osd 'allow rwx' --cap mon 'allow rwx' /tmp/keyring
 
-删除用户:
+将keystring中的用户导入系统，如果已经存在，覆盖同名用户的原先配置:
+
+	ceph auth import -i /tmp/keyring
+
+##### 删除用户
 
 	ceph auth del {TYPE}.{ID}
+
+##### 修改用户
 
 打印用户key:
 
 	ceph auth print-key {TYPE}.{ID}
 
-导入用户，如果已经存在，覆盖原先的配置:
+修改用户权限:
 
-	ceph auth import -i /path/to/keyring
+	ceph auth caps USERTYPE.USERID {daemon} 'allow [r|w|x|*|...] [pool={pool-name}] [namespace={namespace-name}]' 
 
-修改用户：
+也可以通过修改keystring，然后重新导入的方式修改:
 
 	ceph-authtool /etc/ceph/ceph.keyring -n client.ringo --cap osd 'allow rwx' --cap mon 'allow rwx'
 	ceph auth import -i /etc/ceph/ceph.keyring

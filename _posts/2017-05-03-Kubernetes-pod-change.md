@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes的Pod变更过程
 author: lijiaocn
 createdate: 2017/05/03 17:09:37
-changedate: 2017/05/08 13:47:52
+changedate: 2017/06/13 11:37:41
 categories: 项目
 tags: k8s
 keywords: kubernete,pod,receive,变更通知
@@ -14,19 +14,20 @@ description: kubelet是如何接收到pod的变更通知的？
 * auto-gen TOC:
 {:toc}
 
-在之前的分析中，发现Kubelet的方法syncLoop()中监听pod信息，将任务发送到podWorkers:
+Kubelet的syncLoop()方法中会监听pod信息，将任务发送到podWorkers:
 
-k8s.io/kubernetes/pkg/kubelet/kubelet.go:
+pkg/kubelet/kubelet.go:
 
-	func (kl *Kubelet) syncLoop(updates <-chan kubetypes.PodUpdate, handler SyncHandler) {
-	
+	func (kl *Kubelet) Run(updates <-chan kubetypes.PodUpdate) {
+		...
+		kl.syncLoop(updates, kl)
 	}
 
 那么chan updates中的内容是如何写入的？
 
 ## kubelet的启动过程回顾
 
-k8s.io/kubernetes/cmd/kubelet/app/server.go:
+cmd/kubelet/app/server.go:
 
 	func Run(s *options.KubeletServer, kubeDeps *kubelet.KubeletDeps) error {
 		if err := run(s, kubeDeps); err != nil {
@@ -35,7 +36,7 @@ k8s.io/kubernetes/cmd/kubelet/app/server.go:
 		return nil
 	}
 
-k8s.io/kubernetes/cmd/kubelet/app/server.go:
+cmd/kubelet/app/server.go:
 
 	func run(s *options.KubeletServer, kubeDeps *kubelet.KubeletDeps) (err error) {
 		// TODO: this should be replaced by a --standalone flag
@@ -46,7 +47,7 @@ k8s.io/kubernetes/cmd/kubelet/app/server.go:
 		}
 		...
 
-k8s.io/kubernetes/cmd/kubelet/app/server.go:
+cmd/kubelet/app/server.go:
 
 	func RunKubelet(kubeCfg *componentconfig.KubeletConfiguration, kubeDeps *kubelet.KubeletDeps, runOnce bool, standaloneMode bool) error {
 		hostname := nodeutil.GetHostname(kubeCfg.HostnameOverride)
@@ -84,7 +85,7 @@ k8s.io/kubernetes/cmd/kubelet/app/server.go:
 		}
 		return nil
 
-k8s.io/kubernetes/cmd/kubelet/app/server.go:
+cmd/kubelet/app/server.go:
 
 	func startKubelet(k kubelet.KubeletBootstrap, podCfg *config.PodConfig, kubeCfg *componentconfig.KubeletConfiguration, kubeDeps *kubelet.KubeletDeps) {
 		// start the kubelet
@@ -105,7 +106,7 @@ k的类型是Kubelet，k8s.io/kubernetes/pkg/kubelet/kubelet.go:
 
 ## k的创建
 
-k8s.io/kubernetes/cmd/kubelet/app/server.go:
+cmd/kubelet/app/server.go:
 
 	func RunKubelet(kubeCfg *componentconfig.KubeletConfiguration, kubeDeps *kubelet.KubeletDeps, runOnce bool, standaloneMode bool) error {
 		hostname := nodeutil.GetHostname(kubeCfg.HostnameOverride)
@@ -133,7 +134,7 @@ k8s.io/kubernetes/cmd/kubelet/app/server.go:
 
 从上下文代码中可以看到，builder是CreateAndInitKubelet，`k`和`kubeDeps.PodConfig`都在这里面创建、设置。
 
-k8s.io/kubernetes/cmd/kubelet/app/server.go:
+cmd/kubelet/app/server.go:
 
 	func CreateAndInitKubelet(kubeCfg *componentconfig.KubeletConfiguration, kubeDeps *kubelet.KubeletDeps, standaloneMode bool) (k kubelet.KubeletBootstrap, err error) {
 		// TODO: block until all sources have delivered at least one update to the channel, or break the sync loop
@@ -153,7 +154,7 @@ k8s.io/kubernetes/cmd/kubelet/app/server.go:
 
 ## PodConfig的创建
 
-k8s.io/kubernetes/pkg/kubelet/kubelet.go, NewMainKubelet():
+pkg/kubelet/kubelet.go, NewMainKubelet():
 
 	if kubeDeps.PodConfig == nil {
 		var err error
@@ -172,7 +173,7 @@ PodConfig的Updates()方法，直接返回c.updates，看一下初始化时候�
 		return c.updates
 	}
 
-k8s.io/kubernetes/pkg/kubelet/kubelet.go，makePodSourceConfig():
+pkg/kubelet/kubelet.go，makePodSourceConfig():
 
 	...
 	
@@ -208,7 +209,7 @@ k8s.io/kubernetes/pkg/kubelet/kubelet.go，makePodSourceConfig():
 
 在这里创建了一个lw，lw实现了ListerWatcher接口，cache相关的内容见前面的文章"Kubernetes-Client-Cache"。
 
-k8s.io/kubernetes/pkg/kubelet/config/apiserver.go:
+pkg/kubelet/config/apiserver.go:
 
 	// newSourceApiserverFromLW holds creates a config source that watches and pulls from the apiserver.
 	func newSourceApiserverFromLW(lw cache.ListerWatcher, updates chan<- interface{}) {
@@ -228,7 +229,7 @@ k8s.io/kubernetes/pkg/kubelet/config/apiserver.go:
 
 ## PodConfig的更新传递
 
-k8s.io/kubernetes/pkg/kubelet/config/config.go:
+pkg/kubelet/config/config.go:
 
 	type PodConfig struct {
 		pods *podStorage

@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes的Apiserver的storage使用
 author: lijiaocn
 createdate: 2017/05/10 11:12:12
-changedate: 2017/05/11 17:03:02
+changedate: 2017/06/09 15:19:29
 categories: 项目
 tags: k8s
 keywords: kubernetes,etcd,apiserver
@@ -14,20 +14,29 @@ description: Kubernetes中只有apiserver会直接使用etcd，其它的组件�
 * auto-gen TOC:
 {:toc}
 
-Kubernetes中只有apiserver会直接使用etcd，其它的组件与apiserver交互，不会直接访问etcd。
-
 在[Kubernetes-apiserver][1]中介绍过，apiserver使用的kubernetes-style apiserver:
 
 	1. 在APIGroupInfo中装载各类的storage
 	2. GenericAPIServer依据传入的APIGroupInfo中的storage，自动生成REST handler。
 
-这里探究一下每个storage中怎样创建的，又是怎样与etcd关联上的。
+apiserver在存取资源时，最终是通过各个storage完成，这里探究一下storage怎样创建的，又是怎样与etcd关联上的。
 
-## 代码组织结构
+注意v1.6.4版本的代码发生了一些变化，主要是apiserver启动时config初始化的代码统一放置在了BuildMasterConfig()中，代码更为清晰了。
 
-提前剧透一下源码的组织结构，后续看起代码来会更清晰
+	func Run(s *options.ServerRunOptions) error {
+	    config, sharedInformers, err := BuildMasterConfig(s)
+	    if err != nil {
+	        return err
+	    }
+	
+	    return RunServer(config, sharedInformers, wait.NeverStop)
+	}
 
-`registry`目录下收录的就是kubernetes的每类资源的实现代码。
+storage的机制没有变化，下面的分析过程依然适用于v1.6.4。
+
+## 代码结构
+
+`registry`目录下收录的就是kubernetes的每类资源的REST实现代码。
 
 	k8s.io/kubernetes/pkg/registry/
 	▾ apps/
@@ -40,7 +49,7 @@ Kubernetes中只有apiserver会直接使用etcd，其它的组件与apiserver交
 	▸ batch/
 	▸ cachesize/
 	▸ certificates/
-	▸ core/            //  core/rest中实现了NewLegacyRESTStorage()
+	▸ core/             #core/rest中实现了NewLegacyRESTStorage()
 	▸ extensions/
 	▸ policy/
 	▸ rbac/
@@ -50,7 +59,7 @@ Kubernetes中只有apiserver会直接使用etcd，其它的组件与apiserver交
 
 每类资源目录下都有一个rest目录，其中实现了各自的storage。例如`apps/rest`中的代码定义了可以提供给GenericAPIServer的storage。
 
-## 启动
+## 设置过程
 
 k8s.io/kubernetes/cmd/kube-apiserver/app/server.go:
 
@@ -66,9 +75,36 @@ k8s.io/kubernetes/cmd/kube-apiserver/app/server.go:
 		kubeAPIServer, err := kubeAPIServerConfig.Complete().New()
 		...
 
-记住这里的kubeAPIServerConfig，还会回来找它的！
+记住这里的`kubeAPIServerConfig`，还会回来找它的！
 
-## storage的创建
+storage在kubeAPIServerConfig.Complete().New()中完成了设置。
+
+v1.6.4中这部代码做了更改，结构更为清晰了：
+
+cmd/kube-apiserver/app/server.go:
+
+	func Run(s *options.ServerRunOptions) error {
+		//在BuildMasterConfig中创建了config
+		config, sharedInformers, err := BuildMasterConfig(s)
+		if err != nil {
+			return err
+		}
+		
+		return RunServer(config, sharedInformers, wait.NeverStop)
+	}
+	
+	func RunServer(config *master.Config, sharedInformers informers.SharedInformerFactory, stopCh <-chan struct{}) error {
+		//在config.Complete().New()中完成所有的设置，包括storage的设置。
+		m, err := config.Complete().New()
+		if err != nil {
+			return err
+		}
+		
+		sharedInformers.Start(stopCh)
+		return m.GenericAPIServer.PrepareRun().Run(stopCh)
+	}
+
+## storage的设置
 
 k8s.io/kubernetes/pkg/master/master.go:
 
@@ -110,7 +146,7 @@ k8s.io/kubernetes/pkg/master/master.go:
 
 留意这里创建的`legacyRESTStorageProvider`和`restStorageProviders`，通过接下来的过程可以看到storage最终是由它们创建的。
 
-先看一下`InstallLegacyAPI()`和`InstallAPIs()`，XXProviders的实现单独分析。
+## m.InstallLegacyAPI()
 
 k8s.io/kubernetes/pkg/master/master.go:
 
@@ -124,35 +160,9 @@ k8s.io/kubernetes/pkg/master/master.go:
 
 可以看到，这里生成了一个apiGroupInfo，然后将其装载到了`m.GenericAPIServer`中，与GenericAPIServer的工作方式衔接上了。
 
-k8s.io/kubernetes/pkg/master/master.go，`m.InstallAPIs()`:
-
-	func (m *Master) InstallAPIs(apiResourceConfigSource serverstorage.APIResourceConfigSource, restOptionsGetter generic.RESTOptionsGetter, restStorageProviders ...RESTStorageProvider) {
-		...
-		apiGroupInfo, enabled := restStorageBuilder.NewRESTStorage(apiResourceConfigSource, restOptionsGetter)
-		...
-		for i := range apiGroupsInfo {
-			if err := m.GenericAPIServer.InstallAPIGroup(&apiGroupsInfo[i]); err != nil {
-				glog.Fatalf("Error in registering group versions: %v", err)
-			}
-		}
-
-`m.InstallAPIs()`的工作过程类似，也是完成了对m.GenericAPIServer的装载。装载过程的发生了哪些事情，已经在《kubernetes的apiserver的工作过程》中介绍了，这篇文章中关心的每个storage是如何生成的，又是怎样和etcd关联上的。
-
 ## legacyRESTStorageProvider
 
-legacyRESTStorageProvider提供的是存取pod、servcice等主要资源的storaga。
-
-k8s.io/kubernetes/pkg/master/master.go:
-
-	func (m *Master) InstallLegacyAPI(c *Config, restOptionsGetter generic.RESTOptionsGetter, legacyRESTStorageProvider corerest.LegacyRESTStorageProvider) {
-		legacyRESTStorage, apiGroupInfo, err := legacyRESTStorageProvider.NewLegacyRESTStorage(restOptionsGetter)
-		...
-		if err := m.GenericAPIServer.InstallLegacyAPIGroup(genericapiserver.DefaultLegacyAPIPrefix, &apiGroupInfo); err != nil {
-			glog.Fatalf("Error in registering group versions: %v", err)
-		}
-		...
-
-`NewLegacyRESTStorage`又是一个很长的函数，关键过程都在这里了，需要好好阅读一下。它返回的`apiGroupInfo`中装载了各类资源的storage。
+在上面的代码中看到，apiGroupInfo是通过调用`legacyRESTStorageProvider.NewLegacyRESTStorage()`创建的。
 
 k8s.io/kubernetes/pkg/registry/core/rest/storage_core.go
 
@@ -166,7 +176,9 @@ k8s.io/kubernetes/pkg/registry/core/rest/storage_core.go
 			SubresourceGroupVersionKind: map[string]schema.GroupVersionKind{},
 		}
 		restStorage := LegacyRESTStorage{}
-		
+		...
+		nodeStorage, err := nodestore.NewStorage(restOptionsGetter, c.KubeletClientConfig, c.ProxyTransport)
+		...
 		//按资源创建了Storage
 		podTemplateStorage := podtemplatestore.NewREST(restOptionsGetter)
 		eventStorage := eventstore.NewREST(restOptionsGetter, uint64(c.EventTTL.Seconds()))
@@ -186,6 +198,8 @@ k8s.io/kubernetes/pkg/registry/core/rest/storage_core.go
 			"pods/attach":      podStorage.Attach,
 			"pods/status":      podStorage.Status,
 			"pods/log":         podStorage.Log,
+			...
+			"nodes":        nodeStorage.Node,
 		...
 		//restStorageMap被装载到了apiGroupInfo
 		apiGroupInfo.VersionedResourcesStorageMap["v1"] = restStorageMap
@@ -195,12 +209,7 @@ k8s.io/kubernetes/pkg/registry/core/rest/storage_core.go
 
 ### nodeStorage 
 
-k8s.io/kubernetes/pkg/registry/core/rest/storage_core.go
-
-	func (c LegacyRESTStorageProvider) NewLegacyRESTStorage(restOptionsGetter generic.RESTOptionsGetter) (LegacyRESTStorage, genericapiserver.APIGroupInfo, error) {
-		...
-		nodeStorage, err := nodestore.NewStorage(restOptionsGetter, c.KubeletClientConfig, c.ProxyTransport)
-		...
+在上面的代码中可以看到nodeStorage是通过调用`nodestore.NewStorage`创建的。
 
 k8s.io/kubernetes/pkg/registry/core/node/storage/storage.go:
 
@@ -215,7 +224,7 @@ k8s.io/kubernetes/pkg/registry/core/node/storage/storage.go:
 		}, nil
 		...
 
-NodeStorage的成员变量`Status`实现了Get()、New()、Update()。
+NodeStorage的成员变量`Status`实现了Get()、New()、Update(), Status类型是｀StatusREST`。
 
 	-+StatusREST : struct
 	    [fields]
@@ -225,13 +234,13 @@ NodeStorage的成员变量`Status`实现了Get()、New()、Update()。
 	   +New() : runtime.Object
 	   +Update(ctx genericapirequest.Context, name string, objInfo rest.UpdatedObjectInfo) : runtime.Object, bool, error
 
-`Status.Get()`:
+`StatusREST.Get()`:
 
 	func (r *StatusREST) Get(ctx genericapirequest.Context, name string, options *metav1.GetOptions) (runtime.Object, error) {
 		return r.store.Get(ctx, name, options)
 	}
 
-现在开始回溯，找到变量`r.store`创建的地方。
+回到创建NodeStorage的函数中，找到变量`StatusREST.store`的创建。
 
 k8s.io/kubernetes/pkg/registry/core/node/storage/storage.go:
 
@@ -253,6 +262,10 @@ k8s.io/kubernetes/pkg/registry/core/node/storage/storage.go:
 			ExportStrategy: node.Strategy,
 		}
 		...
+		statusStore := *store
+		statusStore.UpdateStrategy = node.StatusStrategy
+		...
+		//r.store就是statusStore
 		statusREST := &StatusREST{store: &statusStore}
 		...
 		return &NodeStorage{
@@ -263,9 +276,9 @@ k8s.io/kubernetes/pkg/registry/core/node/storage/storage.go:
 		}, nil
 	}
 
-可以看到，`r.store`类型为`*genericregistry.Store`。
+可以看到，`StatusREST.store`是`genericregistry.Store`。
 
-`genericregistry.Store`中包含了NewFunc、NewListFunc等函数变量，应当是最后的storage了。
+`genericregistry.Store`中包含了NewFunc、NewListFunc等函数变量，需要看一下genericregistry.Store的Get等方法是怎样实现的。
 
 #### genericregistry.Store
 
@@ -357,9 +370,26 @@ k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/registry/generic/registry/sto
 
 `e.NewFunc()`是创建时传入的变量，对于NodeStorage而言是:
 
-	NewFunc:     func() runtime.Object { return &api.Node{} },
+	 store := &genericregistry.Store{
+	    Copier:      api.Scheme,
+	    NewFunc:     func() runtime.Object { return &api.Node{} },
+	    NewListFunc: func() runtime.Object { return &api.NodeList{} },
+	    ObjectNameFunc: func(obj runtime.Object) (string, error) {
+	        return obj.(*api.Node).Name, nil
+	    },
+	    PredicateFunc:     node.MatchNode,
+	    QualifiedResource: api.Resource("nodes"),
+	    WatchCacheSize:    cachesize.GetWatchCacheSizeByResource("nodes"),
+	
+	    CreateStrategy: node.Strategy,
+	    UpdateStrategy: node.Strategy,
+	    DeleteStrategy: node.Strategy,
+	    ExportStrategy: node.Strategy,
+	}
 
-创建的动作还需要通过`e.Storage.Create(ctx, key, obj, out, ttl)`，需要继续回溯找到创建`e.Storage`的地方:
+创建时在调用了e.NewFunc()之后，又调用了`e.Storage.Create(ctx, key, obj, out, ttl)`，需要继续回溯找到创建`e.Storage`的地方。
+
+创建store时，传入参数中没有e.Storage，所以应该是store建立后再设置的e.Storage。
 
 k8s.io/kubernetes/pkg/registry/core/node/storage/storage.go:
 
@@ -373,7 +403,7 @@ k8s.io/kubernetes/pkg/registry/core/node/storage/storage.go:
 		}
 		...
 
-回溯代码的时候，发现了`store.CompleteWithOptions()`，kubernetes的代码中经常会用这种方式来补全一个变量。
+回溯代码的时候，发现了`store.CompleteWithOptions()`，kubernetes的代码中经常会用这种方式来补全一个结构体的成员变量。
 
 k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/registry/generic/registry/store.go:
 
@@ -400,9 +430,15 @@ k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/registry/generic/registry/sto
 		}
 		...
 
-不出所料，e.Storage就是在这里创建的，还需要继续回溯，找到`opts.Decorator()`的实现
+不出所料，e.Storage就是在这里创建的，还需要继续回溯，找到`opts.Decorator()`的实现。
 
-opts是通过`options.RESTOptions.GetRESTOptions()`创建的，options的创建:
+##### opts.Decorator()
+
+要找到opts.Decorator()的实现，看它是如何创建了e.Storage。
+
+在上面的代码中可以看到opts是通过`options.RESTOptions.GetRESTOptions()`创建的。
+
+而options则是在NewStorage中调用store.CompletWithOptions之前创建的，如下所示：
 
 k8s.io/kubernetes/pkg/registry/core/node/storage/storage.go:
 
@@ -410,13 +446,14 @@ k8s.io/kubernetes/pkg/registry/core/node/storage/storage.go:
 		store := &genericregistry.Store{
 			Copier:      api.Scheme,
 		...
+		//options的创建
 		options := &generic.StoreOptions{RESTOptions: optsGetter, AttrFunc: node.GetAttrs, TriggerFunc: node.NodeNameTriggerFunc}
 		if err := store.CompleteWithOptions(options); err != nil {
 			return nil, err
 		}
 		...
 
-RESTOptions就是变量optsGetter，继续回溯，找到`optsGetter`的实现：
+options.RESTOptions就是变量optsGetter，继续回溯，找到`optsGetter`的实现：
 
 k8s.io/kubernetes/pkg/master/master.go:
 
@@ -428,10 +465,11 @@ k8s.io/kubernetes/pkg/master/master.go:
 		if c.APIResourceConfigSource.AnyResourcesForVersionEnabled(apiv1.SchemeGroupVersion) {
 			...
 			//装载pod、service的资源操作的REST api
+			//参数2就是optsGetter
 			m.InstallLegacyAPI(c.Config, c.Config.GenericConfig.RESTOptionsGetter, legacyRESTStorageProvider)
 		}
 
-`c.Config.GenericConfig.RESTOptionsGetter`就是`optsGetter`，继续回溯，这里的c.Config就是一开始就提醒要记住的`kubeAPIServerConfig`
+c.Config.GenericConfig.RESTOptionsGetter就是optsGetter，而c.Config就是一开始就提醒要记住的`kubeAPIServerConfig`:
 
 k8s.io/kubernetes/cmd/kube-apiserver/app/server.go:
 
@@ -439,10 +477,13 @@ k8s.io/kubernetes/cmd/kube-apiserver/app/server.go:
 		kubeAPIServerConfig, sharedInformers, insecureServingOptions, err := CreateKubeAPIServerConfig(runOptions)
 		...
 
+要找到`kubeAPIServerConfig.GenericConfig.RESTOptionsGetter`。
+
 src/k8s.io/kubernetes/cmd/kube-apiserver/app/server.go:
 
 	func CreateKubeAPIServerConfig(s *options.ServerRunOptions) (*master.Config, informers.SharedInformerFactory, *kubeserver.InsecureServingInfo, error) {
-
+	
+		//genericConfig在这里创建
 		genericConfig, sharedInformers, insecureServingOptions, err := BuildGenericConfig(s)
 		...
 		config := &master.Config{
@@ -479,15 +520,17 @@ k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/config.go, `NewConfig(
 		}
 	}
 
-在kubeAPIServerConfig的创建过程中，没有设置RESTOptionsGetter，回溯继续找。
+kubeAPIServerConfig的创建过程中，没有设置RESTOptionsGetter，回溯继续找。
 
 k8s.io/kubernetes/cmd/kube-apiserver/app/server.go
 
 	func Run(runOptions *options.ServerRunOptions, stopCh <-chan struct{}) error {
+		//这里没有设置RESTOptionsGetter
 		kubeAPIServerConfig, sharedInformers, insecureServingOptions, err := CreateKubeAPIServerConfig(runOptions)
 		if err != nil {
 			return err
 		}
+		//到这里看一下
 		kubeAPIServer, err := CreateKubeAPIServer(kubeAPIServerConfig, sharedInformers, stopCh)
 		if err != nil {
 			return err
@@ -501,7 +544,7 @@ k8s.io/kubernetes/cmd/kube-apiserver/app/server.go:
 		kubeAPIServer, err := kubeAPIServerConfig.Complete().New()
 		...
 
-这里有一个Complete()函数，看到这个该开心了，因为kubernetes中通常都是在这个方法中设置必须设置的变量。
+这里又有一个Complete()函数，看到这个就开心了，因为kubernetes中通常都是在Complete()中设置必须设置的变量。
 
 k8s.io/kubernetes/pkg/master/master.go:
 
@@ -509,7 +552,9 @@ k8s.io/kubernetes/pkg/master/master.go:
 		c.GenericConfig.Complete()
 		...
 
-而`c.GenericConfig`是在kubeAPIServerConfig的创建过程中创建的：
+我们现在要找的是`kubeAPIServerConfig.GenericConfig.RESTOptionsGetter`，在c.GenericConfig的Complete()方法没有发现设置RESTOptionsGetter。
+
+回到创建c.GenericConfig的地方，继续寻找。
 
 k8s.io/kubernetes/cmd/kube-apiserver/app/server.go:
 
@@ -521,23 +566,12 @@ k8s.io/kubernetes/cmd/kube-apiserver/app/server.go:
 			GenericConfig: genericConfig,
 		...
 
-k8s.io/kubernetes/cmd/kube-apiserver/app/server.go:
-
-	func BuildGenericConfig(s *options.ServerRunOptions) (*genericapiserver.Config, informers.SharedInformerFactory, *kubeserver.InsecureServingInfo, error) {
-		...
-		genericConfig := genericapiserver.NewConfig(api.Codecs)
-		...
-
-k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/config.go:
-
-	func (c *Config) Complete() completedConfig {
-		...
-
-很遗憾也没有找到，只能到代码中搜索`RESTOptionsGetter`，最后终于发现，在前面见过的`BuildGenericConfig()`中还有一行代码:
+c.GenericConfig是在BuildGenericConfig中创建的。
 
 k8s.io/kubernetes/cmd/kube-apiserver/app/server.go, `BuildGenericConfig()`:
 
 	func BuildGenericConfig(s *options.ServerRunOptions) (*genericapiserver.Config, informers.SharedInformerFactory, *kubeserver.InsecureServingInfo, error) {
+		//这里没有设置RESTOptionsGetter
 		genericConfig := genericapiserver.NewConfig(api.Codecs)
 		...
 		if err := s.Etcd.ApplyWithStorageFactoryTo(storageFactory, genericConfig); err != nil {
@@ -553,23 +587,9 @@ k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/options/etcd.go:
 		return nil
 	}
 
-回顾一下我们目标，`RESTOptions.GetRESTOptions()`和`opts.Decorator()`:
+而且注意s的类型是EtcdOptions!
 
-k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/registry/generic/registry/store.go:
-
-	func (e *Store) CompleteWithOptions(options *generic.StoreOptions) error {
-		...
-		opts, err := options.RESTOptions.GetRESTOptions(e.QualifiedResource)
-		...
-		if e.Storage == nil {
-			capacity := DefaultWatchCacheSize
-			if e.WatchCacheSize != 0 {
-				capacity = e.WatchCacheSize
-			}
-			e.Storage, e.DestroyFunc = opts.Decorator(
-				e.Copier,
-				opts.StorageConfig,
-				capacity,
+要找的目标是e.Storage -> opts.Decorator -> opts -> options.RESTOptions.GetRESTOptions。
 
 k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/options/etcd.go:
 
@@ -592,6 +612,14 @@ k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/options/etcd.go:
 
 		return ret, nil
 	}
+
+找到Decorator了，e.Storage就是通过调用这个函数实现的，也就是genericregistry.StorageWithCacher:
+
+##### genericregistry.StorageWithCacher()
+
+别忘了NodeStorage最终落实到e.Storage，而e.Storage是通过opts.Decorator()创建的。
+
+opt.Decorator就是genericregistry.StorageWithCacher()
 
 k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/registry/generic/registry/storage_factory.go:
 
@@ -625,13 +653,17 @@ k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/registry/generic/registry/sto
 		cacher.Stop()
 		d()
 	}
-
+	
 	return cacher, destroyFunc
 	}
 
-好吧，总算看到了storage，篇幅有限，storage是如何运作的放在下一篇中分析。
+StorageWithCache又是一个很复杂的过程，它会与etcd通信。
 
-## authenticationrest.RESTStorageProvider
+## m.InstallAPIs()
+
+m.InstallAPIS()装载了其它个api组
+
+### authenticationrest.RESTStorageProvider
 
 k8s.io/kubernetes/pkg/master/master.go:
 
@@ -679,4 +711,4 @@ k8s.io/kubernetes/pkg/registry/authentication/rest/storage_authentication.go，`
 
 1. [Kubernetes-apiserver][1]
 
-[1]: http://www.lijiaocn.com/2017/05/04/Kubernetes-apiserver.html  "Kubernetes-apiserver" 
+[1]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2017/05/04/Kubernetes-apiserver.html "Kubernetes-apiserver" 
