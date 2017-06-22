@@ -3,7 +3,7 @@ layout: default
 title: LDAP解决方案
 author: lijiaocn
 createdate: 2017/04/01 17:41:15
-changedate: 2017/05/15 18:38:00
+changedate: 2017/06/21 10:22:55
 categories: 手册
 tags: ldap
 keywords:
@@ -327,6 +327,7 @@ github上ldap的go代码库不多，go-ldap是功能相对比较完善的一个�
 14. [OPENLDAP Initialize a New LDAP Directory][14]
 15. [install-and-configure-openldap-on-centos-5][15]
 16. [http://www.openldap.org/"][16]
+19. [config openladp][19]
 
 [1]:  http://www.rfc-editor.org/info/rfc4510 "LDAP: Technical Specification Road Map, June 2006"
 [2]:  http://www.rfc-editor.org/info/rfc4511 "LDAP: The Protocol, June 2006"
@@ -345,5 +346,5 @@ github上ldap的go代码库不多，go-ldap是功能相对比较完善的一个�
 [15]: https://www.howtoforge.com/install-and-configure-openldap-on-centos-5 "install-and-configure-openldap-on-centos-5"
 [16]: http://www.openldap.org/ "http://www.openldap.org/"
 [17]: http://www.openldap.org/doc/admin24/slapdconf2.html "http://www.openldap.org/doc/admin24/slapdconf2.html"
-
 [18]: http://www.openldap.org/lists/openldap-technical/201112/msg00032.html "http://www.openldap.org/lists/openldap-technical/201112/msg00032.html"
+[19]: http://www.server-world.info/en/note?os=Fedora_21&p=openldap "config openldap"

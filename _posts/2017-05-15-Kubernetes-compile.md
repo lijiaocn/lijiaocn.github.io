@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes的编译、打包、发布
 author: lijiaocn
 createdate: 2017/05/15 15:25:04
-changedate: 2017/05/26 16:48:13
+changedate: 2017/06/21 17:05:07
 categories: 项目
 tags: k8s
 keywords: k8s,kubernetes,compile,编译
@@ -13,6 +13,10 @@ description: kubernetes编译有两种方式，直接编译和在docker中编译
 
 * auto-gen TOC:
 {:toc}
+
+## 说明
+
+[k8s release binary][8]中可以直接下载已经变好的二进制文件。
 
 kubernetes编译有两种方式，直接编译和在docker中编译。
 
@@ -976,6 +980,7 @@ make all的输出：
 5. [k8s的第三方包的使用][5]
 6. [k8s build local][6]
 7. [k8s release][7]
+8. [k8s release binary][8]
 
 [1]: https://github.com/kubernetes/community/blob/master/contributors/devel/development.md "k8s development"
 [2]: https://github.com/kubernetes/kubernetes/blob/885ddcc1389bf744f00e7a5f96fbff5515423022/build/README.md "Building Kubernetes"
@@ -984,3 +989,4 @@ make all的输出：
 [5]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2017/05/12/Kubernetes-third-party.html "k8s third party"
 [6]: https://github.com/lijiaocn/k8s-build-local "k8s build local"
 [7]: https://github.com/kubernetes/release "k8s release"
+[8]: https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG.md  "k8s release binay"
