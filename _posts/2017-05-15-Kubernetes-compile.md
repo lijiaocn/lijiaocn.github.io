@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes的编译、打包、发布
 author: lijiaocn
 createdate: 2017/05/15 15:25:04
-changedate: 2017/06/23 16:27:30
+changedate: 2017/06/23 18:41:13
 categories: 项目
 tags: k8s
 keywords: k8s,kubernetes,compile,编译
@@ -21,18 +21,6 @@ description: kubernetes编译有两种方式，直接编译和在docker中编译
 直接编译:
 
 	KUBE_BUILD_PLATFORMS=linux/amd64 make all 
-
-打包：
-
-	git clone https://github.com/lijiaocn/k8s-build-local.git
-
-将k8s-build-local移动到kubernetes项目根目录下，然后在kubernetes项目根目录中执行：
-
-	./k8s-build-local/release.sh
-
-[k8s-build-local][9]在kubernetes/build的基础上做了修改，执行过程中不需要启动容器。
-
->release.sh现在还不能很好的工作。
 
 ### 用官方容器编译
 
@@ -70,6 +58,52 @@ TAG在文件build-image/cross/VERSION中:
 	kube::build::copy_output
 	kube::release::package_tarballs
 	kube::release::package_hyperkube
+
+### Release（打包）
+
+将编译后的得到的二进制文件打包、制作成docker镜像。
+
+提前准备好镜像，build/common.sh中指定了一个作为base的docker镜像:
+
+	kube::build::get_docker_wrapped_binaries() {
+	  debian_iptables_version=v7
+		...
+		 kube-proxy,gcr.io/google-containers/debian-iptables-amd64:${debian_iptables_version}
+
+可以从docker.io上获取他人上传的镜像:
+
+	docker pull googlecontainer/debian-iptables-amd64:v7
+	docker tag googlecontainer/debian-iptables-amd64:v7  gcr.io/google-containers/debian-iptables-amd64:v7
+	
+	docker pull googlecontainer/debian-iptables-arm:v7
+	docker tag googlecontainer/debian-iptables-arm:v7  gcr.io/google-containers/debian-iptables-arm:v7
+	
+	docker pull googlecontainer/debian-iptables-arm64:v7
+	docker tag googlecontainer/debian-iptables-arm64:v7  gcr.io/google-containers/debian-iptables-arm64:v7
+	
+	docker pull googlecontainer/debian-iptables-ppc64le:v7
+	docker tag googlecontainer/debian-iptables-ppc64le:v7  gcr.io/google-containers/debian-iptables-ppc64le:v7
+	
+	docker pull googlecontainer/debian-iptables-s390x:v7
+	docker tag googlecontainer/debian-iptables-s390x:v7  gcr.io/google-containers/debian-iptables-s390x:v7
+
+并且把build/lib/release.sh中的：
+
+	 "${DOCKER[@]}" build --pull -q -t "${docker_image_tag}" ${docker_build_path} >/dev/null
+
+修改为：
+
+	 "${DOCKER[@]}" build  -q -t "${docker_image_tag}" ${docker_build_path} >/dev/null
+
+开始打包：
+
+	make release
+
+现在release.sh会调用编译过程进行编译，并且会编译所有的平台。如果不想编译，可以注释掉release.sh中的代码。
+
+生成的docker images位于：
+
+	find ./_output/release-stage/ -name "*.tar"
 
 ## 说明
 
