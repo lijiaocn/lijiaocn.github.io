@@ -1,9 +1,9 @@
 ---
 layout: default
-title: DockerImage存储方案
+title: docker image的存储管理
 author: lijiaocn
 createdate: 2017/04/01 16:39:28
-changedate: 2017/05/17 10:24:36
+changedate: 2017/07/05 10:56:17
 categories: 项目
 tags: docker
 keywords: Docker,image,Registry
