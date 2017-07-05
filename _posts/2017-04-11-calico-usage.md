@@ -3,7 +3,7 @@ layout: default
 title: Calico网络的原理、组网方式与使用
 author: lijiaocn
 createdate: 2017/04/11 10:58:34
-changedate: 2017/05/17 10:48:02
+changedate: 2017/06/29 10:21:07
 categories: 项目
 tags: sdn calico
 keywords:
@@ -650,7 +650,6 @@ Calico系统组成:
 
 ### bgpPeer
 
-
 	apiVersion: v1
 	kind: bgpPeer
 	metadata:
@@ -661,24 +660,6 @@ Calico系统组成:
 	  asNumber: 63400
 	  
 bgpPeer的scope可以是node、global。
-
-### hostEndpoint
-
-	apiVersion: v1
-	kind: hostEndpoint
-	metadata:
-	  name: eth0
-	  node: myhost
-	  labels:
-	    type: production
-	spec:
-	  interfaceName: eth0
-	  expectedIPs:
-	  - 192.168.0.1
-	  - 192.168.0.2
-	  profiles:
-	  - profile1
-	  - profile2
 
 ### ipPool
 
@@ -748,9 +729,10 @@ A Profile resource (profile) represents a set of rules which are applied to the 
 	      selector: profile == 'profile1'
 	  egress:
 	  - action: allow 
-	  
 
 ### workloadEndpoint
+
+A Workload Endpoint resource (workloadEndpoint) represents an interface connecting a Calico networked container or VM to its host.
 
 	apiVersion: v1
 	kind: workloadEndpoint
@@ -769,8 +751,24 @@ A Profile resource (profile) represents a set of rules which are applied to the 
 	  - 192.168.0.0/16
 	  profiles:
 	  - profile1
-	  
-A Workload Endpoint resource (workloadEndpoint) represents an interface connecting a Calico networked container or VM to its host.
+
+### hostEndpoint
+
+	apiVersion: v1
+	kind: hostEndpoint
+	metadata:
+	  name: eth0
+	  node: myhost
+	  labels:
+	    type: production
+	spec:
+	  interfaceName: eth0
+	  expectedIPs:
+	  - 192.168.0.1
+	  - 192.168.0.2
+	  profiles:
+	  - profile1
+	  - profile2
 
 ## 部署
 
@@ -1095,17 +1093,17 @@ endpoints.yaml
 为namespace"default"设置的policy，namespace内部互通。
 
 	apiVersion: v1
-	    kind: policy
-	    metadata:
-	      name: namespace-default
-	    spec:
+	kind: policy
+	metadata:
+	  name: namespace-default
+	spec:
+	  selector: namespace == 'default'
+	  ingress:
+	  - action: allow
+	    source:
 	      selector: namespace == 'default'
-	      ingress:
-	      - action: allow
-	        source:
-	          selector: namespace == 'default'
-	      egress:
-	      - action: allow
+	  egress:
+	  - action: allow
 
 ### profile
 

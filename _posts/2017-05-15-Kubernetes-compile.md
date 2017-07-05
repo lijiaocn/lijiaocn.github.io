@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes的编译、打包、发布
 author: lijiaocn
 createdate: 2017/05/15 15:25:04
-changedate: 2017/06/23 18:41:13
+changedate: 2017/06/26 10:00:57
 categories: 项目
 tags: k8s
 keywords: k8s,kubernetes,compile,编译
@@ -101,9 +101,47 @@ TAG在文件build-image/cross/VERSION中:
 
 现在release.sh会调用编译过程进行编译，并且会编译所有的平台。如果不想编译，可以注释掉release.sh中的代码。
 
-生成的docker images位于：
+服务端的程序以镜像的形式发布在:
 
-	find ./_output/release-stage/ -name "*.tar"
+	$cd ./_output/
+	$find ./release-stage/ -name "*.tar"
+	./release-stage/server/linux-amd64/kubernetes/server/bin/kube-aggregator.tar
+	./release-stage/server/linux-amd64/kubernetes/server/bin/kube-apiserver.tar
+	./release-stage/server/linux-amd64/kubernetes/server/bin/kube-controller-manager.tar
+	./release-stage/server/linux-amd64/kubernetes/server/bin/kube-proxy.tar
+	./release-stage/server/linux-amd64/kubernetes/server/bin/kube-scheduler.tar
+	./release-stage/server/linux-arm/kubernetes/server/bin/kube-aggregator.tar
+	./release-stage/server/linux-arm/kubernetes/server/bin/kube-apiserver.tar
+	./release-stage/server/linux-arm/kubernetes/server/bin/kube-controller-manager.tar
+	./release-stage/server/linux-arm/kubernetes/server/bin/kube-proxy.tar
+	./release-stage/server/linux-arm/kubernetes/server/bin/kube-scheduler.tar
+	./release-stage/server/linux-arm64/kubernetes/server/bin/kube-aggregator.tar
+	./release-stage/server/linux-arm64/kubernetes/server/bin/kube-apiserver.tar
+	./release-stage/server/linux-arm64/kubernetes/server/bin/kube-controller-manager.tar
+	./release-stage/server/linux-arm64/kubernetes/server/bin/kube-proxy.tar
+	./release-stage/server/linux-arm64/kubernetes/server/bin/kube-scheduler.tar
+	./release-stage/server/linux-ppc64le/kubernetes/server/bin/kube-aggregator.tar
+	./release-stage/server/linux-ppc64le/kubernetes/server/bin/kube-apiserver.tar
+	./release-stage/server/linux-ppc64le/kubernetes/server/bin/kube-controller-manager.tar
+	./release-stage/server/linux-ppc64le/kubernetes/server/bin/kube-proxy.tar
+	./release-stage/server/linux-ppc64le/kubernetes/server/bin/kube-scheduler.tar
+	./release-stage/server/linux-s390x/kubernetes/server/bin/kube-aggregator.tar
+	./release-stage/server/linux-s390x/kubernetes/server/bin/kube-apiserver.tar
+	./release-stage/server/linux-s390x/kubernetes/server/bin/kube-controller-manager.tar
+	./release-stage/server/linux-s390x/kubernetes/server/bin/kube-proxy.tar
+	./release-stage/server/linux-s390x/kubernetes/server/bin/kube-scheduler.tar
+
+客户端以压缩包的形式发布在:
+
+	$ls release-tars/
+	kubernetes-client-darwin-386.tar.gz    kubernetes-client-windows-386.tar.gz
+	kubernetes-client-darwin-amd64.tar.gz  kubernetes-client-windows-amd64.tar.gz
+	kubernetes-client-linux-386.tar.gz     kubernetes-manifests.tar.gz
+	kubernetes-client-linux-amd64.tar.gz   kubernetes-node-linux-amd64.tar.gz
+	kubernetes-client-linux-arm.tar.gz     kubernetes-node-linux-arm.tar.gz
+	kubernetes-client-linux-arm64.tar.gz   kubernetes-salt.tar.gz
+	kubernetes-client-linux-ppc64le.tar.gz kubernetes-server-linux-amd64.tar.gz
+	kubernetes-client-linux-s390x.tar.gz   kubernetes-src.tar.gz
 
 ## 说明
 
@@ -1016,7 +1054,7 @@ src/k8s.io/kubernetes/build/release.sh:
 get_docker_wrapped_binaries在build/common.sh中定义:
 
 	kube::build::get_docker_wrapped_binaries() {
-	  debian_iptables_version=v7
+	  debian_tables_version=v7
 	  case $1 in
 	    "amd64")
 	        local targets=(
@@ -1050,11 +1088,11 @@ Dockerfile:
 
 	"${DOCKER[@]}" save ${docker_image_tag} > ${binary_dir}/${binary_name}.tar
 
-	./_output/release-stage/server/linux-amd64/kubernetes/server/bin/kube-controller-manager.tar
-	./_output/release-stage/server/linux-amd64/kubernetes/server/bin/kube-scheduler.tar
-	./_output/release-stage/server/linux-amd64/kubernetes/server/bin/kube-proxy.tar
-	./_output/release-stage/server/linux-amd64/kubernetes/server/bin/kube-apiserver.tar
-	./_output/release-stage/server/linux-amd64/kubernetes/server/bin/kube-aggregator.tar
+	./_output/elease-stage/server/linux-amd64/kubernetes/server/bin/kube-controller-manager.tar
+	./_output/elease-stage/server/linux-amd64/kubernetes/server/bin/kube-scheduler.tar
+	./_output/elease-stage/server/linux-amd64/kubernetes/server/bin/kube-proxy.tar
+	./_output/elease-stage/server/linux-amd64/kubernetes/server/bin/kube-apiserver.tar
+	./_output/elease-stage/server/linux-amd64/kubernetes/server/bin/kube-aggregator.tar
 
 ##### kube::release::package_final_tarball 
 

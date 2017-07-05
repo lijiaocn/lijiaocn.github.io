@@ -3,7 +3,7 @@ layout: default
 title: Shell编程
 author: lijiaocn
 createdate: 2014/04/30 16:33:01
-changedate: 2017/06/16 16:51:04
+changedate: 2017/06/26 15:52:03
 categories: 编程
 tags: shell
 keywords:
@@ -84,6 +84,7 @@ pipelines通过下面保留字符拼接：
 
 ### Compound Commands
 
+
 命令有以下几种组合方式：
 
 	( list )
@@ -143,6 +144,10 @@ pipelines通过下面保留字符拼接：
 	      
 	while list; do list; done
 	until list; do list; done
+
+注意`[ expr ]`不是compound commands，而是shell内置命令，作用和test命令相同。
+
+expr是CONDITIONAL EXPRESSIONS。
 
 ### function 函数定义
 
