@@ -1,9 +1,9 @@
 ---
 layout: default
-title: k8s,rbd image is locked by other nodes
+title: "k8s: rbd image is locked by other nodes"
 author: lijiaocn
 createdate: 2017/07/13 15:03:27
-changedate: 2017/07/13 15:53:09
+changedate: 2017/07/13 15:54:30
 categories: 问题
 tags: k8s
 keywords: k8s,rbd,ceph,locked
