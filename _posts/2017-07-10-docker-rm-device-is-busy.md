@@ -3,11 +3,11 @@ layout: default
 title: docker unable to remove filesystem for 526c82...
 author: lijiaocn
 createdate: 2017/07/10 15:43:46
-changedate: 2017/07/13 15:01:32
+changedate: 2017/07/13 15:51:12
 categories: 问题
 tags: docker
 keywords: docker,删除容器,失败,device
-description: Unable to remove filesystem for 526c82...shm: device or resource busy
+description: "Unable to remove filesystem for 526c82... shm: device or resource busy"
 
 ---
 
