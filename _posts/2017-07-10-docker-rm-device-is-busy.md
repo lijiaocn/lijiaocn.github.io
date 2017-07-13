@@ -3,7 +3,7 @@ layout: default
 title: docker unable to remove filesystem for 526c82...
 author: lijiaocn
 createdate: 2017/07/10 15:43:46
-changedate: 2017/07/11 09:44:06
+changedate: 2017/07/13 15:01:32
 categories: 问题
 tags: docker
 keywords: docker,删除容器,失败,device
@@ -36,7 +36,7 @@ docker版本v1.12.6:
 	[450074.512932] device-mapper: thin: Deletion of thin device 86 failed.
 	[450104.512541] device-mapper: thin: Deletion of thin device 86 failed.
 
-## 解决
+## 调查过程
 
 在[github issue 27381][1]中深入讨论了该问题。
 

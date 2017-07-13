@@ -3,7 +3,7 @@ layout: default
 title: lvm的使用
 author: lijiaocn
 createdate: 2017/07/05 11:30:18
-changedate: 2017/07/05 14:36:51
+changedate: 2017/07/12 12:43:56
 categories: 技巧
 tags: lvm linuxtool
 keywords: lvm,lvm-how-to
@@ -198,6 +198,14 @@ LE到PE之间的映射可以是线性(linear)分布或者条带(striped)分布�
 对LV进行扩容/缩容操作之后，还需要调整LV上的文件系统。
 
 [extend lv][3]和[reduce lv][4]中介绍了几种文件系统的设置方法。
+
+## lv device file missing
+
+lvs可以看到lv，当时/dev/mapper中没有对应的设备文件。
+
+	lvm
+	lvm> vgscan        ## scan for volume groups
+	lvm> vgchange -a y ## activates the volume groups
 
 ## 参考
 

@@ -3,7 +3,7 @@ layout: default
 title: Ceph集群的部署
 author: lijiaocn
 createdate: 2017/06/01 13:13:26
-changedate: 2017/06/08 13:19:31
+changedate: 2017/07/12 14:35:07
 categories: 项目
 tags: ceph
 keywords: ceph,ceph-deploy
@@ -930,6 +930,15 @@ PG ID格式为： `{pool ID}.{PG ID in this pool}`，例如:
 
 	ceph pg dump_stuck [unclean|inactive|stale|undersized|degraded]
 
+[pg states][29]中介绍了pg的状态含义:
+
+	active:        pg可用
+	clean:         数据同步完成
+	degraded:      数据同步尚为完成，或者备份数不足
+	recovering:    osd重新上线，数据同步中
+	back filling:  新增的osd正在同步要承担的数据
+	remapped:      正在选取新的Acting Set
+	stale:         monitor没有收到primary osd的状态信息
 
 
 #### user manage
@@ -1289,6 +1298,7 @@ with the --size option.
 26. [thin provisioning][26]
 27. [RADOS: A Scalable, Reliable Storage Service for Petabyte-scale Storage Clusters][27]
 28. [CRUSH: Controlled, Scalable, Decentralized Placement of Replicated Data][28]
+29. [pg states][29]
 
 [1]: http://docs.ceph.com/docs/master/start/  "ceph-deploy" 
 [2]: http://docs.ceph.com/docs/master/releases/ "ceph-release"
@@ -1318,3 +1328,4 @@ with the --size option.
 [26]: https://en.wikipedia.org/wiki/Thin_provisioning "thin provisioning"
 [27]: https://ceph.com/wp-content/uploads/2016/08/weil-rados-pdsw07.pdf "RADOS: A Scalable, Reliable Storage Service for Petabyte-scale Storage Clusters"
 [28]: https://ceph.com/wp-content/uploads/2016/08/weil-crush-sc06.pdf "CRUSH: Controlled, Scalable, Decentralized Placement of Replicated Data"
+[29]: http://docs.ceph.com/docs/master/rados/operations/monitoring-osd-pg/?highlight=active#monitoring-placement-group-states  "pg states"
