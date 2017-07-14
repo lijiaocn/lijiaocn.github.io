@@ -3,7 +3,7 @@ layout: default
 title: 监控系统prometheus的使用
 author: lijiaocn
 createdate: 2017/07/11 10:04:34
-changedate: 2017/07/12 18:52:10
+changedate: 2017/07/13 17:28:48
 categories: 项目
 tags: prometheus 
 keywords: prometheus,监控
@@ -86,6 +86,8 @@ Metric有四种类型，当前这四种类型只是在客户端library中标记�
 
 这里只配置了一个监控目标，就是localhost:9090，prometheus自身。
 
+static_configs是job中发现target的一种方式，[prometheus configuration][8]提供了多种发现方式。
+
 ### 启动
 
 默认将数据存放在./data目录中，可以通过-storage.local.path进行配置。
@@ -106,6 +108,11 @@ client向pushgateway中推送数据，在prometheus中配置job，轮询pushgate
 
 [exporter][6]用于在不改动目标程序的情况下，将已有的程序的监控指标转换为prometheus的格式，导入到prometheus中。
 
+### HAProxy Exporter
+
+	go get github.com/prometheus/haproxy_exporter
+	cd $GOPATH/src/github.com/prometheus/haproxy_exporter
+
 ## 参考
 
 1. [getting_started][1]
@@ -114,6 +121,8 @@ client向pushgateway中推送数据，在prometheus中配置job，轮询pushgate
 4. [querying example][4]
 5. [push gateway][5]
 6. [exporters][6]
+7. [haproxy exporter][7]
+8. [prometheus configuration][8]
 
 [1]: https://prometheus.io/docs/introduction/getting_started/  "getting_started" 
 [2]: https://github.com/prometheus/prometheus "prometheus github"
@@ -121,3 +130,5 @@ client向pushgateway中推送数据，在prometheus中配置job，轮询pushgate
 [4]: https://prometheus.io/docs/querying/examples/ "querying example"
 [5]: https://github.com/prometheus/pushgateway/blob/master/README.md "push gateway"
 [6]: https://prometheus.io/docs/instrumenting/exporters/ "exports"
+[7]: https://github.com/prometheus/haproxy_exporter  "haproxy exporter"
+[8]: https://prometheus.io/docs/operating/configuration/ "prometheus configuration"
