@@ -3,9 +3,9 @@ layout: default
 title: Vim使用手册
 author: lijiaocn
 createdate: 2017/04/01 11:00:33
-changedate: 2017/05/15 18:35:22
-categories: 手册
-tags: vim
+changedate: 2017/07/05 10:19:44
+categories: 技巧
+tags: linuxtool
 keywords: vim
 description: vim的使用手册，包含常用的扩展方法，和一些非常有用的小技巧。
 

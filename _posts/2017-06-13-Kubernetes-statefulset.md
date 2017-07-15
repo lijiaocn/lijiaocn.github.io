@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Kubernetes中部署有状态复杂的分布式系统
+title: Kubernetes中部署有状态的复杂分布式系统
 author: lijiaocn
 crjiaob patch pod mongo-petset-0 -p '{"metadata":{"annotations":{"pod.alpha.kubernetes.io/initialized":"true"}}}'eatedate: 2017/06/13 17:02:14
-changedate: 2017/06/16 19:25:59
+changedate: 2017/06/21 13:14:53
 categories: 项目
 tags: k8s
 keywords: kubernetes,petset,statefulset
@@ -21,7 +21,7 @@ description: 在kubernetes可以通过statefulset(1.4版本中是petset)部署�
 	The StatefulSet feature assigns persistent DNS names to pods and allows us to re-attach the 
 	needed storage volume to another machine where the pod migrated to, at any time.
 
-## StatefulSet原理：
+## StatefulSet原理
 
 StatefulSet由Service和volumeClaimTemplates组成。Service中的多个Pod将会被分别编号，并挂载volumeClaimTemplates中声明的PV。
 
@@ -120,7 +120,7 @@ mongodb的集群原理比较简单，[mongodb replication][6]就是从多个mong
 
 ## 使用petset部署mongodb集群
 
-因为使用的k8s集群是1.4，所有这里使用的是petset。
+因为使用的k8s集群是1.4，所有这里使用的是petset。在[k8s-mongo-petset][11]中给出一个已经验证过的petset。
 
 在[cvallance/mongo-k8s-sidecar][9]的基础上做了一些小的修改[lijiaocn/mongo-k8s-sidecar][10]。
 
@@ -222,6 +222,53 @@ cavallance提供的[cvallance/mongo-k8s-sidecar][9]是通过调用k8s的api来�
 
 	Replica set configuration contains 10 voting members, but must be at least 1 and no more than 7
 
+## 源码走读
+
+cmd/kube-controller-manager/app/controllermanager.go:
+
+	func Run(s *options.CMServer) error {
+		...
+		err := StartControllers(newControllerInitializers(), s, rootClientBuilder, clientBuilder, stop)
+		...
+
+StatefulSet是众多controller中的一个：
+
+cmd/kube-controller-manager/app/controllermanager.go:
+
+	func newControllerInitializers() map[string]InitFunc {
+		controllers := map[string]InitFunc{}
+		...
+		controllers["statefuleset"] = startStatefulSetController
+		...
+		return controllers
+	}
+
+cmd/kube-controller-manager/app/apps.go:
+
+	func startStatefulSetController(ctx ControllerContext) (bool, error) {
+		if !ctx.AvailableResources[schema.GroupVersionResource{Group: "apps", Version: "v1beta1", Resource: "statefulsets"}] {
+			return false, nil
+		}
+		go statefulset.NewStatefulSetController(
+			ctx.InformerFactory.Core().V1().Pods(),
+			ctx.InformerFactory.Apps().V1beta1().StatefulSets(),
+			ctx.InformerFactory.Core().V1().PersistentVolumeClaims(),
+			ctx.ClientBuilder.ClientOrDie("statefulset-controller"),
+		).Run(1, ctx.Stop)
+		return true, nil
+	}
+
+pkg/controller/statefulset/stateful_set.go:
+
+	func NewStatefulSetController(
+		podInformer coreinformers.PodInformer,
+		setInformer appsinformers.StatefulSetInformer,
+		pvcInformer coreinformers.PersistentVolumeClaimInformer,
+		kubeClient clientset.Interface,
+	) *StatefulSetController {
+		...
+
+StatuefulSet的实现代码结构很清晰，阅读`pkg/controller/statefulset/stateful_set.go`即可。
 ## 参考
 
 1. [petset][1]
@@ -245,3 +292,4 @@ cavallance提供的[cvallance/mongo-k8s-sidecar][9]是通过调用k8s的api来�
 [8]: https://github.com/kubernetes/kubernetes/issues/25618 "PetSet not launching more than one pod"
 [9]: https://github.com/cvallance/mongo-k8s-sidecar "cvallance/mongo-k8s-sidecar"
 [10]: https://github.com/lijiaocn/mongo-k8s-sidecar "lijiaocn/mongo-k8s-sidecar"
+[11]: https://github.com/lijiaocn/k8s-mongo-petset "k8s-mongo-petset"

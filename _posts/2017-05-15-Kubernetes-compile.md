@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes的编译、打包、发布
 author: lijiaocn
 createdate: 2017/05/15 15:25:04
-changedate: 2017/05/26 16:48:13
+changedate: 2017/06/26 10:00:57
 categories: 项目
 tags: k8s
 keywords: k8s,kubernetes,compile,编译
@@ -13,6 +13,139 @@ description: kubernetes编译有两种方式，直接编译和在docker中编译
 
 * auto-gen TOC:
 {:toc}
+
+## 快速开始
+
+### 使用本地环境编译
+
+直接编译:
+
+	KUBE_BUILD_PLATFORMS=linux/amd64 make all 
+
+### 用官方容器编译
+
+在容器中编译，先在本地准备好docker镜像:
+
+	gcr.io/google_containers/kube-cross:KUBE_BUILD_IMAGE_CROSS_TAG
+
+TAG在文件build-image/cross/VERSION中:
+
+	$cat build-image/cross/VERSION
+	v1.7.5-2
+
+因为gcr.io镜像需要翻墙获取，可以使用docker.io中他人上传的cross镜像，例如:
+
+	docker pull tacylee/kube-cross:v1.7.5-2
+	docker tag tacylee/kube-cross:v1.7.5-2  gcr.io/google_containers/kube-cross:v1.7.5-2
+
+开始编译:
+
+	KUBE_BUILD_PLATFORMS=linux/amd64 build/run.sh make all
+
+打包:
+
+	build/release.sh
+
+现在releas.sh在执行的时候，还会进行编译，可以自行修改build/release.sh:
+
+	kube::build::verify_prereqs
+	kube::build::build_image
+	kube::build::run_build_command make cross
+	if [[ $KUBE_RELEASE_RUN_TESTS =~ ^[yY]$ ]]; then
+	  kube::build::run_build_command make test
+	  kube::build::run_build_command make test-integration
+	fi
+	kube::build::copy_output
+	kube::release::package_tarballs
+	kube::release::package_hyperkube
+
+### Release（打包）
+
+将编译后的得到的二进制文件打包、制作成docker镜像。
+
+提前准备好镜像，build/common.sh中指定了一个作为base的docker镜像:
+
+	kube::build::get_docker_wrapped_binaries() {
+	  debian_iptables_version=v7
+		...
+		 kube-proxy,gcr.io/google-containers/debian-iptables-amd64:${debian_iptables_version}
+
+可以从docker.io上获取他人上传的镜像:
+
+	docker pull googlecontainer/debian-iptables-amd64:v7
+	docker tag googlecontainer/debian-iptables-amd64:v7  gcr.io/google-containers/debian-iptables-amd64:v7
+	
+	docker pull googlecontainer/debian-iptables-arm:v7
+	docker tag googlecontainer/debian-iptables-arm:v7  gcr.io/google-containers/debian-iptables-arm:v7
+	
+	docker pull googlecontainer/debian-iptables-arm64:v7
+	docker tag googlecontainer/debian-iptables-arm64:v7  gcr.io/google-containers/debian-iptables-arm64:v7
+	
+	docker pull googlecontainer/debian-iptables-ppc64le:v7
+	docker tag googlecontainer/debian-iptables-ppc64le:v7  gcr.io/google-containers/debian-iptables-ppc64le:v7
+	
+	docker pull googlecontainer/debian-iptables-s390x:v7
+	docker tag googlecontainer/debian-iptables-s390x:v7  gcr.io/google-containers/debian-iptables-s390x:v7
+
+并且把build/lib/release.sh中的：
+
+	 "${DOCKER[@]}" build --pull -q -t "${docker_image_tag}" ${docker_build_path} >/dev/null
+
+修改为：
+
+	 "${DOCKER[@]}" build  -q -t "${docker_image_tag}" ${docker_build_path} >/dev/null
+
+开始打包：
+
+	make release
+
+现在release.sh会调用编译过程进行编译，并且会编译所有的平台。如果不想编译，可以注释掉release.sh中的代码。
+
+服务端的程序以镜像的形式发布在:
+
+	$cd ./_output/
+	$find ./release-stage/ -name "*.tar"
+	./release-stage/server/linux-amd64/kubernetes/server/bin/kube-aggregator.tar
+	./release-stage/server/linux-amd64/kubernetes/server/bin/kube-apiserver.tar
+	./release-stage/server/linux-amd64/kubernetes/server/bin/kube-controller-manager.tar
+	./release-stage/server/linux-amd64/kubernetes/server/bin/kube-proxy.tar
+	./release-stage/server/linux-amd64/kubernetes/server/bin/kube-scheduler.tar
+	./release-stage/server/linux-arm/kubernetes/server/bin/kube-aggregator.tar
+	./release-stage/server/linux-arm/kubernetes/server/bin/kube-apiserver.tar
+	./release-stage/server/linux-arm/kubernetes/server/bin/kube-controller-manager.tar
+	./release-stage/server/linux-arm/kubernetes/server/bin/kube-proxy.tar
+	./release-stage/server/linux-arm/kubernetes/server/bin/kube-scheduler.tar
+	./release-stage/server/linux-arm64/kubernetes/server/bin/kube-aggregator.tar
+	./release-stage/server/linux-arm64/kubernetes/server/bin/kube-apiserver.tar
+	./release-stage/server/linux-arm64/kubernetes/server/bin/kube-controller-manager.tar
+	./release-stage/server/linux-arm64/kubernetes/server/bin/kube-proxy.tar
+	./release-stage/server/linux-arm64/kubernetes/server/bin/kube-scheduler.tar
+	./release-stage/server/linux-ppc64le/kubernetes/server/bin/kube-aggregator.tar
+	./release-stage/server/linux-ppc64le/kubernetes/server/bin/kube-apiserver.tar
+	./release-stage/server/linux-ppc64le/kubernetes/server/bin/kube-controller-manager.tar
+	./release-stage/server/linux-ppc64le/kubernetes/server/bin/kube-proxy.tar
+	./release-stage/server/linux-ppc64le/kubernetes/server/bin/kube-scheduler.tar
+	./release-stage/server/linux-s390x/kubernetes/server/bin/kube-aggregator.tar
+	./release-stage/server/linux-s390x/kubernetes/server/bin/kube-apiserver.tar
+	./release-stage/server/linux-s390x/kubernetes/server/bin/kube-controller-manager.tar
+	./release-stage/server/linux-s390x/kubernetes/server/bin/kube-proxy.tar
+	./release-stage/server/linux-s390x/kubernetes/server/bin/kube-scheduler.tar
+
+客户端以压缩包的形式发布在:
+
+	$ls release-tars/
+	kubernetes-client-darwin-386.tar.gz    kubernetes-client-windows-386.tar.gz
+	kubernetes-client-darwin-amd64.tar.gz  kubernetes-client-windows-amd64.tar.gz
+	kubernetes-client-linux-386.tar.gz     kubernetes-manifests.tar.gz
+	kubernetes-client-linux-amd64.tar.gz   kubernetes-node-linux-amd64.tar.gz
+	kubernetes-client-linux-arm.tar.gz     kubernetes-node-linux-arm.tar.gz
+	kubernetes-client-linux-arm64.tar.gz   kubernetes-salt.tar.gz
+	kubernetes-client-linux-ppc64le.tar.gz kubernetes-server-linux-amd64.tar.gz
+	kubernetes-client-linux-s390x.tar.gz   kubernetes-src.tar.gz
+
+## 说明
+
+[k8s release binary][8]中可以直接下载已经变好的二进制文件。
 
 kubernetes编译有两种方式，直接编译和在docker中编译。
 
@@ -53,7 +186,7 @@ release的时候，被打包到client包里的程序。
 	readonly KUBE_NODE_TARGETS=($(kube::golang::node_targets))
 	readonly KUBE_NODE_BINARIES=("${KUBE_NODE_TARGETS[@]##*/}")
 
-## 可以编译的目标
+## 编译的目标
 
 直接用`WHAT`指定编译目标，通过GOFLAGS和GOGCFLAGS传入编译时参数:
 
@@ -64,6 +197,8 @@ release的时候，被打包到client包里的程序。
 ### 目标平台
 
 通过环境变量KUBE_BUILD_PLATFORMS指定目标平台，格式为`GOOS/GOARCH`:
+
+	KUBE_BUILD_PLATFORMS=linux/amd64 
 
 GOOS选项:
 
@@ -89,7 +224,7 @@ GOARCH选项:
 	  targets=("${KUBE_ALL_TARGETS[@]}")
 	fi
 
-相关变量也在src/k8s.io/kubernetes/hack/lib/golang.sh中定义：
+相关变量也在hack/lib/golang.sh中定义：
 
 	KUBE_SERVER_TARGETS:
 		cmd/kube-proxy
@@ -125,7 +260,7 @@ GOARCH选项:
 	
 	cmd/gke-certificates-controller
 
-## 在容器中编译
+### 在容器中编译
 
 [Building Kubernetes][2]中给出了在容器中编译的方法。
 
@@ -133,7 +268,7 @@ GOARCH选项:
 
 	build/run.sh make all
 
-build/run.sh运行时会构建编译使用的容器镜像。
+build/run.sh运行时会构建编译时使用的容器镜像。
 
 	▾ build/
 	  ▾ build-image/
@@ -142,36 +277,112 @@ build/run.sh运行时会构建编译使用的容器镜像。
 	      rsyncd.sh*
 	      VERSION
 
-makefile的工作过程在《Kubernetes的makefile的工作原理》中说明。
-
-### build/run.sh
+#### build/run.sh
 
 在容器中编译时，会有data、rsync、build三个容器参与。
 
-run.sh运行时，会以`gcr.io/google_containers/kube-cross:KUBE_BUILD_IMAGE_CROSS_TAG`为基础镜像，创建一个kube-build镜像。
+build/run.sh:
 
-然后创建一个名为`${KUBE_DATA_CONTAINER_NAME}`的data容器:
+	...
+	kube::build::verify_prereqs
+	kube::build::build_image
+	kube::build::run_build_command "$@"
+	...
+
+#### 构建镜像
+
+kube::build::build_image在build/common.sh中实现:
+
+	function kube::build::build_image() {
+	  ...
+	  cp /etc/localtime "${LOCAL_OUTPUT_BUILD_CONTEXT}/"
+	  cp build/build-image/Dockerfile "${LOCAL_OUTPUT_BUILD_CONTEXT}/Dockerfile"
+	  cp build/build-image/rsyncd.sh "${LOCAL_OUTPUT_BUILD_CONTEXT}/"
+	  dd if=/dev/urandom bs=512 count=1 2>/dev/null | LC_ALL=C tr -dc 'A-Za-z0-9' | dd bs=32 count=1 2>/dev/null > "${LOCAL_OUTPUT_BUILD_CONTEXT}/rsyncd.password"
+	  chmod go= "${LOCAL_OUTPUT_BUILD_CONTEXT}/rsyncd.password"
+	  kube::build::update_dockerfile
+	  kube::build::docker_build "${KUBE_BUILD_IMAGE}" "${LOCAL_OUTPUT_BUILD_CONTEXT}" 'false'
+	  ...
+
+构建的镜像名称为:
+
+	${KUBE_BUILD_IMAGE}
+	==>  ${KUBE_BUILD_IMAGE_REPO}:${KUBE_BUILD_IMAGE_TAG}
+	==>  kube-build:${KUBE_BUILD_IMAGE_TAG_BASE}-${KUBE_BUILD_IMAGE_VERSION}
+	==>  kube-build:build-${KUBE_ROOT_HASH}-${KUBE_BUILD_IMAGE_VERSION_BASE}-${KUBE_BUILD_IMAGE_CROSS_TAG}
+
+KUBE_ROOT_HASH是根据HOSTNAME和KUBE_ROOT生成的。
+
+KUBE_BUILD_IMAGE_VERSION_BASE在build/build-image/VERSION中定义。
+
+KUBE_BUILD_IMAGE_CROSS_TAG在build/build-image/cross/VERSION中定义。
+
+Dockerfile在build/build-image中:
+
+	FROM gcr.io/google_containers/kube-cross:KUBE_BUILD_IMAGE_CROSS_TAG
+	...
+
+可以看到是以`gcr.io/google_containers/kube-cross:KUBE_BUILD_IMAGE_CROSS_TAG`为基础镜像。
+
+编译时需要翻墙获取的就是这个镜像。
+
+#### 启动data容器
+
+镜像构建完成后，会调用kube::build::ensure_data_container，创建一个data容器。
+
+	function kube::build::build_image() {
+	  ...
+	  kube::build::ensure_data_container
+	  kube::build::sync_to_container
+	  ...
+
+创建一个名为`${KUBE_DATA_CONTAINER_NAME}`的data容器:
 
 src/k8s.io/kubernetes/build/common.sh
 
 	function kube::build::ensure_data_container() {
-	..
+	...
+	local -ra docker_cmd=(
+	  "${DOCKER[@]}" run
 	  --volume "${REMOTE_ROOT}"   # white-out the whole output dir
 	  --volume /usr/local/go/pkg/linux_386_cgo
 	  --volume /usr/local/go/pkg/linux_amd64_cgo
 	  --volume /usr/local/go/pkg/linux_arm_cgo
 	  --volume /usr/local/go/pkg/linux_arm64_cgo
-	  ...
+	  --volume /usr/local/go/pkg/linux_ppc64le_cgo
+	  --volume /usr/local/go/pkg/darwin_amd64_cgo
+	  --volume /usr/local/go/pkg/darwin_386_cgo
+	  --volume /usr/local/go/pkg/windows_amd64_cgo
+	  --volume /usr/local/go/pkg/windows_386_cgo
+	  --name "${KUBE_DATA_CONTAINER_NAME}"
+	  --hostname "${HOSTNAME}"
+	  "${KUBE_BUILD_IMAGE}"
+	  chown -R ${USER_ID}:${GROUP_ID}
+	    "${REMOTE_ROOT}"
+	    /usr/local/go/pkg/
+	)
+	"${docker_cmd[@]}"
 
-data容器中准备了好volume，rsync和build容器都会通过`--volume-from`共享data容器的所有volume。
+其中：
 
-之后，启动rsync容器，将KUBE_ROOT中的文件同步到rysnc容器的HOME目录:
+	REMOTE_ROOT="/go/src/${KUBE_GO_PACKAGE}"
+	
+	KUBE_DATA_CONTAINER_NAME
+	==>${KUBE_DATA_CONTAINER_NAME_BASE}-${KUBE_BUILD_IMAGE_VERSION}
+	==>kube-build-data-${KUBE_ROOT_HASH}-${KUBE_BUILD_IMAGE_VERSION}
+
+在上面启动的data容器中准备了好volume，将来的rsync和build容器会通过`--volume-from`使用data容器的volume。
+
+#### 启动rsync容器
+
+启动rsync容器，将KUBE_ROOT中的文件同步到rysnc容器的HOME目录:
 
 src/k8s.io/kubernetes/build/common.sh
 
 	function kube::build::sync_to_container() {
 	  kube::log::status "Syncing sources to container"
 	  ...
+	  kube::build::start_rsyncd_container
 	  kube::build::rsync \
 		--delete \
 		--filter='+ /staging/**' \
@@ -184,19 +395,36 @@ src/k8s.io/kubernetes/build/common.sh
 		--filter='- generated.proto' \
 		"${KUBE_ROOT}/" "rsync://k8s@${KUBE_RSYNC_ADDR}/k8s/"
 
-k8s.io/kubernetes/build/build-image/Dockerfile:
+rsync容器启动的时候会挂载data容器的volume:
 
-	ENV HOME /go/src/k8s.io/kubernetes
-	WORKDIR ${HOME}
+	function kube::build::run_build_command_ex() {
+		...
+		local -a docker_run_opts=(
+			"--name=${container_name}"
+			"--user=$(id -u):$(id -g)"
+			"--hostname=${HOSTNAME}"
+			"${DOCKER_MOUNT_ARGS[@]}"
+		)
+		...
+
+变量DOCKER_MOUNT_ARGS:
+
+	DOCKER_MOUNT_ARGS=(--volumes-from "${KUBE_DATA_CONTAINER_NAME}")
+
+#### 执行编译命令
 
 同步完成之后，启动build容器，在buid容器的HOME目录下执行编译命令。执行完成后，再将buid容器中的文件同步到本地。
 
-	# Copy all build results back out.
+	function kube::build::run_build_command() {
+	  kube::log::status "Running build command..."
+	  kube::build::run_build_command_ex "${KUBE_BUILD_CONTAINER_NAME}" -- "$@"
+	}
+
 	function kube::build::copy_output() {
 	  kube::log::status "Syncing out of container"
 	...
 
-## 直接编译 
+### 直接编译 
 
 [Development Guide][1]中给出了直接编译的方法。
 
@@ -665,6 +893,11 @@ update-staging-client-go.sh目的是更新staging/src/k8s.io/client-go/中的文
 
 ## make release
 
+make release直接执行build/releash.sh脚本：
+
+	release:
+		build/release.sh
+
 如果变量KUBE_FASTBUILD为“true”，只发布linux/amd64，否则发布所有平台。
 
 hack/lib/golang.sh:
@@ -821,7 +1054,7 @@ src/k8s.io/kubernetes/build/release.sh:
 get_docker_wrapped_binaries在build/common.sh中定义:
 
 	kube::build::get_docker_wrapped_binaries() {
-	  debian_iptables_version=v7
+	  debian_tables_version=v7
 	  case $1 in
 	    "amd64")
 	        local targets=(
@@ -855,11 +1088,11 @@ Dockerfile:
 
 	"${DOCKER[@]}" save ${docker_image_tag} > ${binary_dir}/${binary_name}.tar
 
-	./_output/release-stage/server/linux-amd64/kubernetes/server/bin/kube-controller-manager.tar
-	./_output/release-stage/server/linux-amd64/kubernetes/server/bin/kube-scheduler.tar
-	./_output/release-stage/server/linux-amd64/kubernetes/server/bin/kube-proxy.tar
-	./_output/release-stage/server/linux-amd64/kubernetes/server/bin/kube-apiserver.tar
-	./_output/release-stage/server/linux-amd64/kubernetes/server/bin/kube-aggregator.tar
+	./_output/elease-stage/server/linux-amd64/kubernetes/server/bin/kube-controller-manager.tar
+	./_output/elease-stage/server/linux-amd64/kubernetes/server/bin/kube-scheduler.tar
+	./_output/elease-stage/server/linux-amd64/kubernetes/server/bin/kube-proxy.tar
+	./_output/elease-stage/server/linux-amd64/kubernetes/server/bin/kube-apiserver.tar
+	./_output/elease-stage/server/linux-amd64/kubernetes/server/bin/kube-aggregator.tar
 
 ##### kube::release::package_final_tarball 
 
@@ -976,6 +1209,9 @@ make all的输出：
 5. [k8s的第三方包的使用][5]
 6. [k8s build local][6]
 7. [k8s release][7]
+8. [k8s release binary][8]
+9. [k8s build local][9]
+10. [k8s build in docker][10]
 
 [1]: https://github.com/kubernetes/community/blob/master/contributors/devel/development.md "k8s development"
 [2]: https://github.com/kubernetes/kubernetes/blob/885ddcc1389bf744f00e7a5f96fbff5515423022/build/README.md "Building Kubernetes"
@@ -984,3 +1220,6 @@ make all的输出：
 [5]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2017/05/12/Kubernetes-third-party.html "k8s third party"
 [6]: https://github.com/lijiaocn/k8s-build-local "k8s build local"
 [7]: https://github.com/kubernetes/release "k8s release"
+[8]: https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG.md  "k8s release binay"
+[9]: https://github.com/lijiaocn/k8s-build-local "k8s build local"
+[10]: https://github.com/kubernetes/kubernetes/blob/475f175e687154ae25cfc21de478e880d1abab5f/build/README.md "k8s build in docker"

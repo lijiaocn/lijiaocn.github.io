@@ -3,9 +3,9 @@ layout: default
 title: HTTP与curl使用手册
 author: lijiaocn
 createdate: 2017/04/26 17:18:17
-changedate: 2017/05/15 18:40:19
-categories: 手册
-tags: curl
+changedate: 2017/07/05 10:22:07
+categories: 技巧
+tags: curl linuxtool
 keywords: curl使用手册,http
 description: curl是一个看似简单、实则强大的命令，看它的参数有多少就知道了。
 
