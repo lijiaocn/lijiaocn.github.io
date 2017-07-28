@@ -3,7 +3,7 @@ layout: default
 title: linux的cgroup的使用
 author: lijiaocn
 createdate: 2017/07/26 10:29:51
-changedate: 2017/07/27 17:07:23
+changedate: 2017/07/28 15:56:50
 categories: 技巧
 tags:  linuxtool cgroup
 keywords: cgroup的使用
@@ -69,24 +69,6 @@ pids用来限制一个进程可以派生出的进程数量。
 将当前的shell进程关联到cgroup:
 
 	echo $$ > /sys/fs/cgroup/pids/parent/cgroup.procs
-
-## cgroup in systemd
-
-[The New Control Group Interfaces][6]中介绍了systemd和cgroup的关系，以及如何通过systemd设置cgroup。
-
-systemd将进程按照service、scope和slice分组:
-
-	service: 由systemd通过.service文件启动创建的进程
-	scopes:  任意一个进程创建的进程，被通过dbus接口注册到了PID1
-	slices:  slices中包含service、scopes或者继续包含slices
-
-每个进程组在/sys/fs/cgroup有对应的cgroup目录，可以通过`systemd-cgls`查看。
-
-可以在unit的文件中设置unit可以用的资源，[systemd.resource-control][5]给出了可以设置的项目。
-
-已经存在的进程组，可以通过set-property设置:
-
-	systemctl set-property httpd.service CPUShares=500 MemoryLimit=500M
 
 ## 参考
 

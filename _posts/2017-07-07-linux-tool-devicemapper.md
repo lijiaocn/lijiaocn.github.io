@@ -3,7 +3,7 @@ layout: default
 title: linux的device mapper原理与使用
 author: lijiaocn
 createdate: 2017/07/07 14:02:42
-changedate: 2017/07/14 14:44:25
+changedate: 2017/07/25 13:18:40
 categories: 技巧
 tags: devicemapper linuxtool
 keywords: linux,device mapper
@@ -41,14 +41,14 @@ Device mapper是linux的内核用来将块设备映射到虚拟块设备的frame
 device mapper提供了多种target_type:
 
 	linear destination_device start_sector
-		The traditional linear mapping.
+	    The traditional linear mapping.
 	striped num_stripes chunk_size [destination start_sector]...
-		Creates a striped area.
-		e.g. striped 2 32 /dev/hda1 0 /dev/hdb1 0 will map the first chunk (16k) as follows:
-		LV chunk 1 -> hda1, chunk 1
-		LV chunk 2 -> hdb1, chunk 1
-		LV chunk 3 -> hda1, chunk 2
-		LV chunk 4 -> hdb1, chunk 2
+	    Creates a striped area.
+	    e.g. striped 2 32 /dev/hda1 0 /dev/hdb1 0 will map the first chunk (16k) as follows:
+	    LV chunk 1 -> hda1, chunk 1
+	    LV chunk 2 -> hdb1, chunk 1
+	    LV chunk 3 -> hda1, chunk 2
+	    LV chunk 4 -> hdb1, chunk 2
 	error     Errors any I/O that goes to this area.  Useful for testing or for creating devices with holes in them.
 	zero      Returns blocks of zeroes on reads.  Any data written is discarded silently.  
 	          This is a block-device equivalent of the /dev/zero character-device data sink described in null(4).
@@ -63,7 +63,7 @@ device mapper提供了多种target_type:
 	raid      Offers an interface to the kernel's software raid driver, md.
 	snapshot  Supports  snapshots of devices.
 	thin, thin-pool
-		Supports thin provisioning of devices and also provides a better snapshot support.
+	    Supports thin provisioning of devices and also provides a better snapshot support.
 
 在kernel源码目录[Documentation/device-mapper][2]中介绍了每一类target。
 

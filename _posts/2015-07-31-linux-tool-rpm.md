@@ -1,16 +1,18 @@
 ---
 layout: default
-title: RPM
-categories: 杂项
+title: rpm与rpm软件包的构建使用
+author: lijiaocn
+createdate: 2015/07/31 10:31:03
+changedate: 2017/07/18 10:36:28
+categories: 技巧
+tags: linuxtool rpm
+keywords: rpm,centos,linux
+description:  rpm软件包的构建方法
 
 ---
 
-# RPM
-创建时间: 2015/07/31 10:37:40  修改时间: 2016/12/06 00:32:31 作者:lijiao
-
-----
-
-## 摘要
+* auto-gen TOC:
+{:toc}
 
 ## RPM
 
@@ -136,4 +138,4 @@ section中的脚本可以使用下面约定的变量:
 
 ## 文献
 
-1. Maximum RPM  http://www.rpm.org/max-rpm/
+[1]: http://www.rpm.org/max-rpm/  "Maximum RPM"

@@ -3,7 +3,7 @@ layout: default
 title: Golang的跨平台编译
 author: lijiaocn
 createdate: 2017/03/28 16:17:36
-changedate: 2017/05/18 16:06:09
+changedate: 2017/07/28 13:29:42
 categories: 编程
 tags: golang
 keywords: golang编译
@@ -24,7 +24,7 @@ description:  可以在一台机器上同时编译能够在其它系统、其它
 
 编译在linux上运行amd64程序：
 
-	export GOARCH=amd64; export GOOS=linux;go build
+	GOARCH=amd64 GOOS=linux go build
 
 ## 参考
 
