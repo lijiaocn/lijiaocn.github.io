@@ -3,8 +3,8 @@ layout: default
 title: systemd的使用
 author: lijiaocn
 createdate: 2017/07/26 15:00:20
-changedate: 2017/07/28 16:33:06
-categories: linuxtool
+changedate: 2017/08/03 15:18:31
+categories: 技巧
 tags: linuxtool systemd cgroup
 keywords: systemd,cgroup
 description: systemd的使用

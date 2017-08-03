@@ -3,7 +3,7 @@ layout: default
 title: 监控系统prometheus的使用
 author: lijiaocn
 createdate: 2017/07/11 10:04:34
-changedate: 2017/07/13 17:28:48
+changedate: 2017/07/31 17:22:36
 categories: 项目
 tags: prometheus 
 keywords: prometheus,监控
@@ -50,9 +50,7 @@ Metric有四种类型，当前这四种类型只是在客户端library中标记�
 
 [querying example][4]
 
-## 部署
-
-### 编译
+## 编译
 
 	go get github.com/prometheus/prometheus
 	cd $GOPATHsrc/github.com/prometheus/prometheus
@@ -60,7 +58,7 @@ Metric有四种类型，当前这四种类型只是在客户端library中标记�
 	git checkout  v1.7.1
 	go build
 
-### 配置
+## 配置
 
 编辑配置文件prometheus.yml:
 
@@ -88,7 +86,29 @@ Metric有四种类型，当前这四种类型只是在客户端library中标记�
 
 static_configs是job中发现target的一种方式，[prometheus configuration][8]提供了多种发现方式。
 
-### 启动
+	<scrape_config>
+	<tls_config>
+	<azure_sd_config>
+	<consul_sd_config>
+	<dns_sd_config>
+	<ec2_sd_config>
+	<openstack_sd_config>
+	<file_sd_config>
+	<gce_sd_config>
+	<kubernetes_sd_config>
+	<marathon_sd_config>
+	<nerve_sd_config>
+	<serverset_sd_config>
+	<triton_sd_config>
+	<static_config>
+	<relabel_config>
+	<metric_relabel_configs>
+	<alert_relabel_configs>
+	<alertmanager_config>
+	<remote_write>
+	<remote_read>
+
+## 启动
 
 默认将数据存放在./data目录中，可以通过-storage.local.path进行配置。
 
@@ -98,7 +118,7 @@ static_configs是job中发现target的一种方式，[prometheus configuration][
 
 ## push网关
 
-prometheus本身只支持pull的方式，如果要使用push的方式，需要在部署一个pushgateway。
+prometheus本身只支持pull的方式，如果要使用push的方式，需要部署一个pushgateway。
 
 client向pushgateway中推送数据，在prometheus中配置job，轮询pushgateway的数据。
 
