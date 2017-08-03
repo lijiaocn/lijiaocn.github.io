@@ -3,7 +3,7 @@ layout: default
 title: linux的iptables使用
 author: lijiaocn
 createdate: 2014/04/16 10:16:55
-changedate: 2017/06/14 09:34:51
+changedate: 2017/06/17 16:05:49
 categories: 技巧
 tags: iptables linuxnet
 keywords:  linux iptables
@@ -189,7 +189,7 @@ waiting
 	      This enables the administrator to initialize the packet and byte counters of a rule 
 	      (during INSERT, APPEND, REPLACE operations).
 
-### iptables-extensions
+## iptables-extensions
 
 iptables-extensions由多个mach module和多个target module组成，每个module都有自己的参数。
 
@@ -423,8 +423,10 @@ iptables的日志信息是kernal日志，可以通过dmesg查看，为了方便�
 4. [iptables-debugging][4]
 5. [iptables-contents][5]
 6. man iptables-extensions
+7. [target REDIRECT][7]
 
 [2]: http://www.iptables.info/en/structure-of-iptables.html "structure-of-iptables"
 [3]: http://flymanhi.blog.51cto.com/1011558/1276331 "利用raw表实现iptables调试"
 [4]: http://adminberlin.de/iptables-debugging/ "iptables-debugging"
 [5]: http://www.iptables.info/en/iptables-contents.html "iptables-contents"
+[7]: https://www.frozentux.net/iptables-tutorial/chunkyhtml/x4529.html "target REDIRECT"
