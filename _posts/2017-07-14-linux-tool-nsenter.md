@@ -3,7 +3,7 @@ layout: default
 title: 使用nsenter进入另一个进程的namespace
 author: lijiaocn
 createdate: 2017/07/14 14:54:49
-changedate: 2017/07/14 17:29:13
+changedate: 2017/08/03 17:01:40
 categories: 技巧
 tags: linuxtool
 keywords: nsenter,namespace,process
