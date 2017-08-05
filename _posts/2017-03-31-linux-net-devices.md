@@ -1,9 +1,8 @@
----
-layout: default
+--- layout: default
 title: Linux的常用的网络设备
 author: lijiaocn
 createdate: 2017/03/31 18:47:12
-changedate: 2017/05/19 20:35:22
+changedate: 2017/08/05 19:15:02
 categories: 技巧
 tags: linuxnet
 keywords: tun设备,tap设备,tun/tap,veth,虚拟设备

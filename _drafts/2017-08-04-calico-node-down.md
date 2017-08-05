@@ -3,7 +3,7 @@ layout: default
 title: Calico的workloadEndpoint无法访问网络的问题调查
 author: lijiaocn
 createdate: 2017/08/04 10:22:14
-changedate: 2017/08/04 15:32:33
+changedate: 2017/08/05 18:34:00
 categories: 问题
 tags: calico
 keywords: calico,k8s,workloadEndpoint
@@ -70,6 +70,12 @@ pod中的route信息与其它正常的pod的route信息相同：
 
 问题来了，为什么arp请求没有被回应。
 
+## 解决
+
+阅读[felix][4]的代码，发现在创建workloadEndpoint的时候，会设置一个静态的arp:
+
+
+
 ## calico的node原理
 
 在[Calico网络的原理、组网方式与使用][1]中粗略地分析过calico的原理，但是没有分析通信的详细过程，现在需要补上这一课了。
@@ -115,6 +121,7 @@ pod中的route信息与其它正常的pod的route信息相同：
 [confd][3]是用来管理配置文件的。
 
 [felix][4]是calico的组件，用来设置所在node的上的网络。
+
 
 ## 参考
 

@@ -3,7 +3,7 @@ layout: default
 title: arp相关的命令
 author: lijiaocn
 createdate: 2017/05/26 09:28:32
-changedate: 2017/05/26 10:26:32
+changedate: 2017/08/05 19:15:05
 categories: 技巧
 tags: linuxtool
 keywords: arp arping
@@ -14,12 +14,15 @@ description:  管理的本地的arp记录和发送arp请求。
 * auto-gen TOC:
 {:toc}
 
+## ip neigh
+
+arp命令已经不推荐使用，推荐使用`ip neigh`
+
 ## arp - 管理本地的arp记录
 
 arp - manipulate the system ARP cache
 
 	Arp manipulates or displays the kernel's IPv4 network neighbour cache. It can add entries to the table, delete one or display the current content.
-	
 	This program is obsolete. For replacement check ip neigh. (man 8 ip-neighbour)
 
 手册：
@@ -39,7 +42,8 @@ arp - manipulate the system ARP cache
 	-e: 显示格式，Use default Linux style output format (with fixed columns).
 	hostname: 过滤条件，查看该IP地址或主机名的arp entry
 
-	#查看所有arp entry
+查看所有arp entry
+
 	[root@localhost ~]# arp 
 	Address                  HWtype  HWaddress           Flags Mask            Iface
 	localhost                ether   00:0c:29:81:35:6c   C                     eno50332208
@@ -49,12 +53,20 @@ arp - manipulate the system ARP cache
 	localhost                ether   00:50:56:f3:1f:8b   C                     eno16777736
 	localhost                ether   00:50:56:fd:02:ef   C                     eno16777736
 
-	#查看指定主机的的arp entry
+Flags Mask说明:
+
+	C:  complete entry
+	M:  permanent entry
+	P:  published entry
+
+查看指定主机的的arp entry
+
 	[root@localhost ~]# arp -n 10.10.64.151
 	Address                  HWtype  HWaddress           Flags Mask            Iface
 	10.10.64.151             ether   00:0c:29:81:35:6c   C                     eno50332208
 
-	#查看指定网口上的arp entry
+查看指定网口上的arp entry
+
 	[root@localhost ~]# arp -n -i eno50332208
 	Address                  HWtype  HWaddress           Flags Mask            Iface
 	10.10.64.151             ether   00:0c:29:81:35:6c   C                     eno50332208

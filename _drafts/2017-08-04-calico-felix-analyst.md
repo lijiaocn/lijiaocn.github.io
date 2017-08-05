@@ -3,7 +3,7 @@ layout: default
 title: calico的felix组件分析
 author: lijiaocn
 createdate: 2017/08/04 15:46:27
-changedate: 2017/08/04 18:06:41
+changedate: 2017/08/05 18:17:45
 categories: 项目
 tags: calico
 keywords: felix,calico,源码分析,原理说明
@@ -43,3 +43,4 @@ description: felix是calico的关键组件，负责设置所在node上的calico�
 1. [felix][1]
 
 [1]: https://github.com/projectcalico/felix  "felix"
+
