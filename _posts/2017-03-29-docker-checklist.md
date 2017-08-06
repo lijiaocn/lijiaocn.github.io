@@ -3,7 +3,7 @@ layout: default
 title: docker使用前的检查清单
 author: lijiaocn
 createdate: 2017/03/29 11:11:53
-changedate: 2017/07/27 17:27:32
+changedate: 2017/08/06 23:08:40
 categories: 项目
 tags: docker
 keywords: docker,使用手册,docker的使用手册
@@ -99,6 +99,36 @@ docker 1.12.6可以通过下面的脚本设置所有已经运行的容器的pids
 
 代码合入以后，可以通过`--pids-limit`参数限制每个容器的最大进程数。
 
+## 代理设置
+
+如果让docker通过代理去获取镜像:
+
+如果是centos7:
+
+	mkdir  /etc/systemd/system/docker.service.d/
+	touch /etc/systemd/system/docker.service.d/http-proxy.conf
+
+在http-proxy.conf中添加:
+
+	Service]
+	Environment="HTTP_PROXY=http://proxy.ip.com:80"
+	Environment="HTTPS_PROXY=https://proxy.ip.com:80"
+
+然后重启:
+
+	systemctl daemon-reload
+	systemctl restart docker
+
+检查变量是否加载:
+
+	systemctl show docker --property Environment
+
+## 添加镜像源
+
+在/etc/sysconfig/docker的OPTION中添加:
+
+	--registry-mirror=https://pee6w651.mirror.aliyuncs.com
+
 ## 参考
 
 1. [Fork bomb prevention][1]
@@ -107,6 +137,7 @@ docker 1.12.6可以通过下面的脚本设置所有已经运行的容器的pids
 4. [cgroup pid][4]
 5. [docker-forkbomb-fix][5]
 6. [Add pids-limit support in docker update][6]
+7. [docker proxy][7]
 
 [1]: https://github.com/moby/moby/issues/6479  "Fork bomb prevention" 
 [2]: https://docs.docker.com/engine/reference/commandline/dockerd/#default-ulimits "default-ulimits"
@@ -114,3 +145,4 @@ docker 1.12.6可以通过下面的脚本设置所有已经运行的容器的pids
 [4]: https://www.kernel.org/doc/Documentation/cgroup-v1/pids.txt "cgroups pid"
 [5]: https://github.com/lijiaocn/docker-forkbomb-fix.git  "docker-forkbomb-fix"
 [6]:  https://github.com/moby/moby/pull/32519   "Add pids-limit support in docker update" 
+[7]: https://my.oschina.net/tinkercloud/blog/638960  "docker proxy"

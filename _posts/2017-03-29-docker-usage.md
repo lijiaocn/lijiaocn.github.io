@@ -3,7 +3,7 @@ layout: default
 title: docker的基础使用
 author: lijiaocn
 createdate: 2017/03/29 11:11:53
-changedate: 2017/07/05 10:56:01
+changedate: 2017/08/06 17:08:11
 categories: 项目
 tags: docker
 keywords: docker,使用手册,docker的使用手册
@@ -571,7 +571,7 @@ docker rm删除镜像:
 
 这里配置的参数，将会作为docker daemon的启动参数，通过"ps |grep docker"可以看到：
 
-	/usr/bin/dockerd-current --add-runtime docker-runc=/usr/libexec/docker/docker-runc-current --default-runtime=docker-runc --exec-opt native.cgroupdriver=systemd --userland-proxy-path=/usr/libexec/docker/docker-proxy-current --selinux-enabled --log-driver=journald --signature-verification=false --registry-mirror=https://pee6w651.mirror.aliyunc
+	/usr/bin/dockerd-current --add-runtime docker-runc=/usr/libexec/docker/docker-runc-current --default-runtime=docker-runc --exec-opt native.cgroupdriver=systemd --userland-proxy-path=/usr/libexec/docker/docker-proxy-current --selinux-enabled --log-driver=journald --signature-verification=false --registry-mirror=https://pee6w651.mirror.aliyuncs.com
 
 ### 方式2，在/etc/docker/daemon.json中配置
 
