@@ -3,7 +3,7 @@ layout: default
 title: calico网络的原理、组网方式与使用
 author: lijiaocn
 createdate: 2017/04/11 10:58:34
-changedate: 2017/08/07 21:04:31
+changedate: 2017/08/07 21:12:02
 categories: 项目
 tags: sdn calico
 keywords:
@@ -119,7 +119,8 @@ AS内部的BGP Speaker之间有两种互联方式:
 
 calico默认使用全互联的方式，扩展性比较差，只能支持小规模集群:
 
-	say 50 nodes - although this limit is not set in stone and Calico has been deployed with over 100 nodes in a full mesh topology
+	say 50 nodes - although this limit is not set in stone and 
+	Calico has been deployed with over 100 nodes in a full mesh topology
 
 可以打开/关闭全互联模式：
 
@@ -128,11 +129,11 @@ calico默认使用全互联的方式，扩展性比较差，只能支持小规�
 
 ### BGP Speaker RR模式
 
-RR模式，就是在网络中指定一个或多个BGP Speaker作为Router Reflection，RR与所有的BGP Speaker建立bgp连接。
+RR模式，就是在网络中指定一个或多个BGP Speaker作为Router Reflection，RR与所有的BGP Speaker建立BGP连接。
 
 每个BGP Speaker只需要与RR交换路由信息，就可以得到全网路由信息。
 
-RR必须与所有的BGP Speaker建立BGP连接，以保证能够得到全网路由信息。
+RR则必须与所有的BGP Speaker建立BGP连接，以保证能够得到全网路由信息。
 
 在calico中可以通过Global Peer实现RR模式。
 
@@ -147,7 +148,7 @@ Global Peer是一个BGP Speaker，需要手动在calico中创建，所有的node
 
 calico中也可以通过node Peer手动构建BGP Speaker（也就是node）之间的BGP连接。
 
-node Peer也是手动创建的BGP Speaker，但只有指定的node会与其建立连接。
+node Peer就是手动创建的BGP Speaker，只有指定的node会与其建立连接。
 
 	A BGP peer can also be added at the node scope, meaning only a single specified node 
 	will peer with it. BGP peer resources of this nature must specify a node to inform 
@@ -223,11 +224,11 @@ calico网络对底层的网络的要求很少，只要求node之间能够通过I
 
 TOR交换机之间可以是接入到同一个核心交换机二层可达的，也可以只是IP可达的。
 
-TOR二层可达:
+TOR二层联通:
 
 ![calico-l3-fabric-diagrams-as-rack-l2-spine]({{ site.imglocal }}/calico-l3-fabric-diagrams-as-rack-l2-spine.png)
 
-TOR三层可达：
+TOR三层联通：
 
 ![calico-l3-fabric-diagrams-as-rack-l3-spine]({{ site.imglocal }}/calico-l3-fabric-diagrams-as-rack-l3-spine.png)
 
@@ -249,11 +250,17 @@ endpoints之间的通信过程:
 
 这种方式消耗了大量的AS，[RFC 4893 - BGP Support for Four-octet AS Number Space][16]中考虑将AS号增加到32位。
 
+不是特别明白这种方式的好处在哪里。
+
+TOR二层联通:
+
 ![calico-l3-fabric-diagrams-as-server-l2-spine]({{ site.imglocal }}/calico-l3-fabric-diagrams-as-server-l2-spine.png)
+
+TOR三层联通:
 
 ![calico-l3-fabric-diagrams-as-server-l3-spine]({{ site.imglocal }}/calico-l3-fabric-diagrams-as-server-l3-spine.png)
 
-### 优化：使用“Downward Default model”减少需要记录的路由
+### 优化：“Downward Default model”减少需要记录的路由
 
 Downward Default Model在上面的几种组网方式的基础上，优化了路由的管理。
 
