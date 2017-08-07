@@ -1,50 +1,50 @@
 ---
 layout: default
-title: Calico网络的原理、组网方式与使用
+title: calico网络的原理、组网方式与使用
 author: lijiaocn
 createdate: 2017/04/11 10:58:34
-changedate: 2017/06/29 10:21:07
+changedate: 2017/08/07 21:04:31
 categories: 项目
 tags: sdn calico
 keywords:
-description: Calico是一个比较有趣的SDN解决方案，完全利用路由规则在实现动态组网，通过BGP协议通告路由。
+description: calico是一个比较有趣的SDN解决方案，完全利用路由规则在实现动态组网，通过BGP协议通告路由。
 
 ---
 
 * auto-gen TOC:
 {:toc}
 
-## Calico
+## calico
 
-Calico是一个比较有趣的SDN解决方案，完全利用路由规则实现动态组网，通过BGP协议通告路由。
+calico是一个比较有趣的虚拟网络解决方案，完全利用路由规则实现动态组网，通过BGP协议通告路由。
 
-Calico的好处是endpoints组成的网络构建在二层网络（一个AS）或三层网络上（多个AS），报文的流向完全通过路由规则控制，没有Overlay带来的开销。
+calico的好处是endpoints组成的网络是单纯的三层网络，报文的流向完全通过路由规则控制，没有overlay等额外开销。
 
-Calico的endpoint可以漂移，并且支持ACL，在特定场景下是一个比较理想的PAAS网络方案。
+calico的endpoint可以漂移，并且实现了acl。
 
-Calico的缺点是路由的数量与容器数量相同，非常容易超过路由器、三层交换、甚至node的处理能力，从而限制了整个网络的扩张。
+calico的缺点是路由的数目与容器数目相同，非常容易超过路由器、三层交换、甚至node的处理能力，从而限制了整个网络的扩张。
 
-Calico的每个node上会设置大量（海量!)的iptables规则、路由条目，可以有隐患，并且运维、排障难度大。
+calico的每个node上会设置大量（海量)的iptables规则、路由，运维、排障难度大。
 
-Calico的的原理决定了它不可能支持VPC，每个容器的IP都来自相同的IP地址池，不同租户的容器也不能使用相同的IP，而私有的IPv4地址的数量有限。
+calico的原理决定了它不可能支持VPC，容器只能从calico设置的网段中获取ip。
 
-Calico目前的实现没有流量控制的功能，会出现抢占node带宽的情况。
+calico目前的实现没有流量控制的功能，会出现少数容器抢占node多数带宽的情况。
 
-我目前还没有见到Calio的大规模成功应用案例，有知道的朋友，可以留言，或者mailto: lijiaocn@foxmail.com。[抱拳]
+calico的网络规模受到BGP网络规模的限制。
 
 ## 名词解释
 
-	endpoint:  接入到网络中的设备称为endpoint
-	AS:        网络自治系统，一个完全自治的网络，通过BGP协议与其它AS交换路由信息。
+	endpoint:  接入到calico网络中的网卡称为endpoint
+	AS:        网络自治系统，通过BGP协议与其它AS网络交换路由信息
 	ibgp:      AS内部的BGP Speaker，与同一个AS内部的ibgp、ebgp交换路由信息。
 	ebgp:      AS边界的BGP Speaker，与同一个AS内部的ibgp、其它AS的ebgp交换路由信息。
 	
-	workloadEndpoint:  Calico网络中的分配虚拟机、容器使用的endpoint。
-	hostEndpoints:     Calico网络中的物理机(node)的地址。
+	workloadEndpoint:  虚拟机、容器使用的endpoint
+	hostEndpoints:     物理机(node)的地址
 
 ## 组网原理
 
-Calico组网的核心原理就是IP路由，每个容器或者虚拟机会分配一个workload-endpoint(wl)。
+calico组网的核心原理就是IP路由，每个容器或者虚拟机会分配一个workload-endpoint(wl)。
 
 从nodeA上的容器A内访问nodeB上的容器B时:
 
@@ -84,41 +84,49 @@ Calico组网的核心原理就是IP路由，每个容器或者虚拟机会分配
 
 通过这种方式每个node知晓了每个workload-endpoint的下一跳地址。
 
-### BGP与AS
+## BGP与AS
 
 BGP是路由器之间的通信协议，主要用于AS（Autonomous System,自治系统）之间的互联。
 
-AS，自治系统，是一个自治的网络，拥有独立的交换机、路由器等，可以独立运转。
+AS是一个自治的网络，拥有独立的交换机、路由器等，可以独立运转。
 
-每个AS拥有一个全球统一分配的16位的ID号，其中64512到65535共1023个AS号码被预留用于本地或者私用。
+每个AS拥有一个全球统一分配的16位的ID号，64512到65535共1023个AS号码可以用于私有网络。
 
-	calico默认使用的AS号是64512，可以修改：
+calico默认使用的AS号是64512，可以修改：
+
 	calicoctl config get asNumber         //查看
 	calicoctl config set asNumber 64512   //设置
 
-AS内部有多个BGP speaker，分为ibgp、ebgp，ebgp还与其它的AS中的ebgp建立BGP连接。
+AS内部有多个BGP speaker，分为ibgp、ebgp，ebgp与其它AS中的ebgp建立BGP连接。
 
 AS内部的BGP speaker通过BGP协议交换路由信息，最终每一个BGP speaker拥有整个AS的路由信息。
 
-BGP speaker一般是网络中的物理路由器，calico将node改造成了一个路由器（软件bird)，node上的虚拟机、容器等就是接入这个路由器的设备。
+BGP speaker一般是网络中的物理路由器，可以形象的理解为:
 
-AS内部的Bgp Speaker之间有两种互联方式:
+	calico将node改造成了一个软路由器（通过软路由软件bird)
+	node上的运行的虚拟机或者容器通过node与外部沟通
 
-	全互联模式
-	Router reflection(RR)模式
+AS内部的BGP Speaker之间有两种互联方式:
 
-#### BGP Speaker全互联模式
+	Mesh: BGP Speaker之间全互联，网络成网状
+	RR:   Router reflection模式，BGP Speaker连接到一个或多个中心BGP Speaker，网络成星状
 
-全互联模式，就是一个BGP Speaker需要与其它所有的BGP Speaker建立bgp连接（形成一个bgp mesh）。
+### BGP Speaker 全互联模式(node-to-node mesh)
+
+全互联模式，就是一个BGP Speaker需要与其它所有的BGP Speaker建立bgp连接(形成一个bgp mesh)。
 
 网络中bgp总连接数是按照O(n^2)增长的，有太多的BGP Speaker时，会消耗大量的连接。
 
-Calico默认使用全互联的方式，扩展性比较差，只能支持小规模集群，可以打开/关闭全互联模式：
+calico默认使用全互联的方式，扩展性比较差，只能支持小规模集群:
+
+	say 50 nodes - although this limit is not set in stone and Calico has been deployed with over 100 nodes in a full mesh topology
+
+可以打开/关闭全互联模式：
 
 	calicoctl config set nodeTonodeMesh off
 	calicoctl config set nodeTonodeMesh on
 
-#### BGP Speaker RR模式
+### BGP Speaker RR模式
 
 RR模式，就是在网络中指定一个或多个BGP Speaker作为Router Reflection，RR与所有的BGP Speaker建立bgp连接。
 
@@ -126,41 +134,303 @@ RR模式，就是在网络中指定一个或多个BGP Speaker作为Router Reflec
 
 RR必须与所有的BGP Speaker建立BGP连接，以保证能够得到全网路由信息。
 
-在Calico中可以通过Global Peer实现RR模式。
+在calico中可以通过Global Peer实现RR模式。
 
-Global Peer是一个BGP Speaker，需要手动在Calico中创建，所有的node都会与Global peer建立BGP连接。
+Global Peer是一个BGP Speaker，需要手动在calico中创建，所有的node都会与Global peer建立BGP连接。
 
-	A global BGP peer is a BGP agent that peers with every Calico node in the network. A typical use case for a global peer might be a mid-scale deployment where all of the Calico nodes are on the same L2 network and are each peering with the same Route Reflector (or set of Route Reflectors).
+	A global BGP peer is a BGP agent that peers with every calico node in the network. 
+	A typical use case for a global peer might be a mid-scale deployment where all of
+	the calico nodes are on the same L2 network and are each peering with the same Route
+	Reflector (or set of Route Reflectors).
 
-关闭了全互联模式后，再将RR作为Global Peers添加到Calico中，Calico网络就切换到了RR模式，可以支撑容纳更多的node。
+关闭了全互联模式后，再将RR作为Global Peers添加到calico中，calico网络就切换到了RR模式，可以支撑容纳更多的node。
 
-Calico中也可以通过node Peer手动构建BGP Speaker（也就是node）之间的BGP连接。
+calico中也可以通过node Peer手动构建BGP Speaker（也就是node）之间的BGP连接。
 
 node Peer也是手动创建的BGP Speaker，但只有指定的node会与其建立连接。
 
-	A BGP peer can also be added at the node scope, meaning only a single specified node will peer with it. BGP peer resources of this nature must specify a node to inform Calico which node this peer is targeting.
+	A BGP peer can also be added at the node scope, meaning only a single specified node 
+	will peer with it. BGP peer resources of this nature must specify a node to inform 
+	calico which node this peer is targeting.
 
 因此，可以为每一个node指定不同的BGP Peer，实现更精细的规划。
 
 例如当集群规模进一步扩大的时候，可以使用[AS Per Pack model][10]:
 
-	node只与所在机架TOR交换机建立BGP连接，每个机架是一个AS。
-	TOR交换机之间作为各自的ebgp全互联。
+	每个机架是一个AS
+	node只与所在机架TOR交换机建立BGP连接
+	TOR交换机之间作为各自的ebgp全互联
 
-## 报文处理过程
+## calico网络的部署
+
+calico网络对底层的网络的要求很少，只要求node之间能够通过IP联通。
+
+	Any technology that is capable of transporting IP packets can be used as the interconnect fabric in a Calico network.
+
+在calico中，全网路由的数目和endpoints的数目一致，通过为node分配网段，可以减少路由数目，但不会改变数量级。
+
+如果有1万个endpoints，那么就至少要有一台能够处理1万条路由的设备。
+
+无论用哪种方式部署始终会有一台设备上存放着calico全网的路由。
+
+当要部署calico网络的时候，第一步就是要确认，网络中处理能力最强的设备最多能设置多少条路由。
+
+### 在二层(Ethernet)网络中部署calico网络
+
+[calico over an Ethernet interconnect fabric][11]中介绍了在二层网络中部署calico网络方案。
+
+在二层网络中部署calico网络的意思是: 
+
+	所有的node都已经接入了二层网，还没有配置三层网络。
+
+![calico-l2-rr-spine-planes]({{ site.imglocal }}/calico-l2-rr-spine-planes.png)
+
+为了保证链路可靠，图中设计了四个并列的二层网，每个二层网占用一个三层网段。
+
+每个node同时接入四个二层网络，对应拥有四个不同网段的IP。
+
+在每个二层网络中，node与node之间用RR模式建立BGP通信链路:
+
+	一个node做为RR，其余的node连接到做为RR的node
+	整个网络中最终有四个RR，分别负责四个网络中的BGP
+
+当从node上去访问另一个node上的endpoint的时候，会有四条下一跳为不同网段的等价路由。
+
+根据[ECMP][13]协议，报文将会平均分配给这四个等价路由，提高了可靠性的同时增加了网络的吞吐能力。
+
+为每个二层网络设置了IP之后，二层网络就成为了三层网络，每个二层网络中的calico的部署也可以参考下一节。
+
+### 在三层(IP)网络中部署calico网络
+
+在三层网络中部署calico网络的意思是，[calico over ip fabrics][14]:
+
+	所有的node已经接入到了一个三层网络中，在此基础上部署calico网络。
+
+已经部署好的三层网络应当是可靠的，calico可以直接在上面部署。
+
+剩下的关键点就是怎样设计BGP网络，[calico over ip fabrics][14]中给出两种设计方式:
+
+	1. AS per rack:   每个rack(机架)组成一个AS，每个rack的TOR交换机与核心交换机组成一个AS
+	2. AS per server: 每个node做为一个AS，TOR交换机组成一个transit AS
+
+这两种方式采用的是[Use of BGP for routing in large-scale data centers][15]中的建议。
+
+#### AS per rack
+
+	1. 一个机架作为一个AS，分配一个AS号，node是ibgp，TOR交换机是ebgp
+	2. node只与TOR交换机建立BGP连接，TOR交换机与机架上的所有node建立BGP连接 
+	3. 所有TOR交换机之间以node-to-node mesh方式建立BGP连接
+
+TOR交换机之间可以是接入到同一个核心交换机二层可达的，也可以只是IP可达的。
+
+TOR二层可达:
+
+![calico-l3-fabric-diagrams-as-rack-l2-spine]({{ site.imglocal }}/calico-l3-fabric-diagrams-as-rack-l2-spine.png)
+
+TOR三层可达：
+
+![calico-l3-fabric-diagrams-as-rack-l3-spine]({{ site.imglocal }}/calico-l3-fabric-diagrams-as-rack-l3-spine.png)
+
+每个机架上node的数目是有限的，BGP压力转移到了TOR交换机。当机架数很多，TOR交换机组成BGP mesh压力会过大。
+
+endpoints之间的通信过程:
+
+	EndpointA发出报文  --> nodeA找到了下一跳地址nodeB --> 报文送到TOR交换机A --> 报文送到核心交换机
+	                                                                                      |
+	                                                                                      v
+	EndpointB收到了报文 <--  nodeB收到了报文 <-- TOR交换机B收到了报文 <--  核心交换机将报文送达TOR交换机B
+
+#### AS per server
+
+	1. 每个TOR交换机占用一个AS
+	2. 每个node占用一个AS
+	3. node与TOR交换机交换BGP信息
+	3. 所有的TOR交换机组成BGP mesh，交换BGP信息
+
+这种方式消耗了大量的AS，[RFC 4893 - BGP Support for Four-octet AS Number Space][16]中考虑将AS号增加到32位。
+
+![calico-l3-fabric-diagrams-as-server-l2-spine]({{ site.imglocal }}/calico-l3-fabric-diagrams-as-server-l2-spine.png)
+
+![calico-l3-fabric-diagrams-as-server-l3-spine]({{ site.imglocal }}/calico-l3-fabric-diagrams-as-server-l3-spine.png)
+
+### 优化：使用“Downward Default model”减少需要记录的路由
+
+Downward Default Model在上面的几种组网方式的基础上，优化了路由的管理。
+
+在上面的三种方式中，每个node、每个TOR交换机、每个核心交换机都需要记录全网路由。
+
+"Downward Default model"模式中:
+
+	1. 每个node向上(TOR)通告所有路由信息，而TOR向下(node)只通告一条默认路由
+	2. 每个TOR向上(核心交换机)通告所有路由，核心交换机向下(TOR)只通告一条默认路由
+	3. node只知晓本地的路由
+	4. TOR只知道接入到自己的所有node上的路由
+	5. 核心交换机知晓所有的路由
+
+这种模式减少了TOR交换机和node上的路由数量，但缺点是，发送到无效IP的流量必须到达核心交换机以后，才能被确定为无效。
+
+endpoints之间的通信过程:
+
+	EndpointA发出报文  --> nodeA默认路由到TOR交换机A --> TOR交换机A默认路由到核心交换机 --+
+	                                                                                      |
+	                                                                                      v
+	EndpointB收到了报文 <--  nodeB收到了报文 <-- TOR交换机B收到了报文 <-- 核心交换机找到了下一跳地址nodeB
+
+## calico系统结构
+
+calico系统组成:
+
+	1. Felix, the primary calico agent that runs on each machine that hosts endpoints.
+	2. etcd, the data store.
+	3. BIRD, a BGP client that distributes routing information.
+	4. BGP Route Reflector (BIRD), an optional BGP route reflector for higher scale.
+	5. The Orchestrator plugin, orchestrator-specific code that tightly integrates calico into that orchestrator.
+
+[Felix][3]负责管理设置node，
+
+[bird][12]是一个开源的软路由，支持多种路由协议。
+
+## calico中的概念
+
+[calicoctl resource definitions][7]介绍了每类资源的格式。
+
+### bgpPeer
+
+	apiVersion: v1
+	kind: bgpPeer
+	metadata:
+	  scope: node
+	  node: rack1-host1
+	  peerIP: 192.168.1.1
+	spec:
+	  asNumber: 63400
+	  
+bgpPeer的scope可以是node、global。
+
+### ipPool
+
+	apiVersion: v1
+	kind: ipPool
+	metadata:
+	  cidr: 10.1.0.0/16
+	spec:
+	  ipip:
+	    enabled: true
+	    mode: cross-subnet
+	  nat-outgoing: true
+	  disabled: false
+
+### node
+
+	apiVersion: v1
+	kind: node
+	metadata:
+	  name: node-hostname
+	spec:
+	  bgp:
+	    asNumber: 64512
+	    ipv4Address: 10.244.0.1/24
+	    ipv6Address: 2001:db8:85a3::8a2e:370:7334/120
+
+### policy
+
+A Policy resource (policy) represents an ordered set of rules which are applied to a collection of endpoints which match a label selector.
+
+Policy resources can be used to define network connectivity rules between groups of calico endpoints and host endpoints, and take precedence over Profile resources if any are defined.
+
+	apiVersion: v1
+	kind: policy
+	metadata:
+	  name: allow-tcp-6379
+	spec:
+	  selector: role == 'database'
+	  ingress:
+	  - action: allow
+	    protocol: tcp
+	    source:
+	      selector: role == 'frontend'
+	    destination:
+	      ports:
+	      - 6379
+	  egress:
+	  - action: allow
+
+### profile
+
+A Profile resource (profile) represents a set of rules which are applied to the individual endpoints to which this profile has been assigned.
+
+	apiVersion: v1
+	kind: profile
+	metadata:
+	  name: profile1
+	  labels:
+	    profile: profile1 
+	spec:
+	  ingress:
+	  - action: deny
+	    source:
+	      net: 10.0.20.0/24
+	  - action: allow
+	    source:
+	      selector: profile == 'profile1'
+	  egress:
+	  - action: allow 
+
+### workloadEndpoint
+
+A Workload Endpoint resource (workloadEndpoint) represents an interface connecting a calico networked container or VM to its host.
+
+	apiVersion: v1
+	kind: workloadEndpoint
+	metadata:
+	  name: eth0 
+	  workload: default.frontend-5gs43
+	  orchestrator: k8s
+	  node: rack1-host1
+	  labels:
+	    app: frontend
+	    calico/k8s_ns: default
+	spec:
+	  interfaceName: cali0ef24ba
+	  mac: ca:fe:1d:52:bb:e9 
+	  ipNetworks:
+	  - 192.168.0.0/16
+	  profiles:
+	  - profile1
+
+### hostEndpoint
+
+	apiVersion: v1
+	kind: hostEndpoint
+	metadata:
+	  name: eth0
+	  node: myhost
+	  labels:
+	    type: production
+	spec:
+	  interfaceName: eth0
+	  expectedIPs:
+	  - 192.168.0.1
+	  - 192.168.0.2
+	  profiles:
+	  - profile1
+	  - profile2
+
+## node的报文处理过程
 
 报文处理过程中使用的标记位：
 
 	一共使用了3个标记位，0x7000000对应的标记位
-	0x1000000:  报文的处理动作，置1表示放行，默认0表示拒绝。
-	0x2000000:  是否已经经过了policy规则检测，置1表示已经过。
+	0x1000000:  报文的处理动作，置1表示放行，默认0表示拒绝
+	0x2000000:  是否已经经过了policy规则检测，置1表示已经过
 	0x4000000:  报文来源，置1，表示来自host-endpoint
 
 流入报文来源:
 
-	1. 以cali+命名的网卡收到的报文，这部分报文是本node上的endpoint发出的
-	2. 其他网卡接收的报文，这部分报文可能是其它node发送过来
-	                     , 也可能是node上本地进程发出的
+	1. 以cali+命名的网卡收到的报文，这部分报文是node上的endpoint发出的
+	   (k8s中，容器的内发出的所有报文都会发送到对应的cali网卡上)
+	   (通过在容器内添加静态arp，将容器网关的IP映射到cali网卡的MAC上实现)
+	2. 其他网卡接收的报文，这部分报文是其它node发送或者在node本地发出的
 
 流入的报文去向：
 
@@ -173,6 +443,10 @@ node Peer也是手动创建的BGP Speaker，但只有指定的node会与其建�
 
 	raw.PREROUTING -> mangle.PREROUTING -> nat.PREROUTING -> mangle.INPUT -> filter.INPUT 
 	raw.PREROUTING -> mangle.PREROUTING -> nat.PREROUTING -> mangle.FORWARD -> filter.FORWARD -> mangle.POSTROUTING -> nat.POSTROUTING
+
+>这里分析的calico的版本比较老，和最新版中的规则有一些出入，但是原理相同。
+
+>新版本的calico的iptables规则可读性更好，可以直接阅读规则。
 
 报文处理流程（全):
 
@@ -188,7 +462,7 @@ node Peer也是手动创建的BGP Speaker，但只有指定的node会与其建�
 	                   |          (-i cali+)             |        |
 	                   +--- (from workload endpoint) ----+        |
 	                                                              |
-	                                                     cali-fip-dnat@nat
+	            (dest  may be container's floating ip)   cali-fip-dnat@nat
 	                                                              |
 	                                                     (rotuer decision)
 	                                                              |
@@ -203,31 +477,29 @@ node Peer也是手动创建的BGP Speaker，但只有指定的node会与其建�
 	         |                         < END >           |            |             |
 	         |                                           |   cali-to-host-endpoint  |
 	         |                                           |         @filter          |
-	         |                                           |         < END >          |
-	         |                                           |                          |
+	         |                     will return to nat's  |         < END >          |
+	         |                       cali-POSTROUTING    |                          |
 	 cali-from-wl-dispatch@filter  <---------------------+   cali-to-wl-dispatch@filter
-	 (-i cali+)           |        ----------------+         (-o cali+)    |
+	                      |         \--------------+                       |
 	          +-----------------------+            |           +----------------------+
 	          |                       |            |           |                      |
-	 cali-fw-cali0ef24b1     cali-fw-cali0ef24b2   |  cali-tw-cali03f24b1   cali-tw-cali03f24b2
-	      @filter                 @filter          |      @filter                  @filter
+	 cali-fw-cali0ef24b1     cali-fw-cali0ef24b2   |  cali tw-cali03f24b1   cali-tw-cali03f24b2
+	      @filter                 @filter          |       filter                  @filter
 	  (-i cali0ef24b1)          (-i cali0ef24b2)   |   (-o cali0ef24b1)        (-o cali0ef24b2)
 	          |                       |            |           |                      |
 	          +-----------------------+            |           +----------------------+
 	                      |                        |                       |
-	                cali-po-[POLICY]               |               cali-pi-[POLICY]
-	                   @filter                     |                    @filter
+	           cali-po-[POLICY]@filter             |            cali-pi-[POLICY]@filter
 	                      |                        |                       |
-	               cali-pro-[PROFILE]              |              cali-pri-[PROFILE]
-	                   @filter                     |                   @filter
+	          cali-pro-[PROFILE]@filter            |           cali-pri-[PROFILE]@filter
 	                      |                        |                       |
-	                   < END >                     +-----> |----> cali-POSTROUTING@nat
-	                                               +-----> |              |
+	                   < END >                     +------------> cali-POSTROUTING@nat
+	                                               +---------->/           |
 	                                               |                cali-fip-snat@nat
 	                                               |                       |
 	                                               |              cali-nat-outgoing@nat
 	                                               |                       |
-	                                               |       (if dip is local: send to lookup)       
+	                                               |       (if dip is local: send to lookup)
 	                                     +---------+--------+   (else: send to nic's qdisc)
 	                                     |                  |           < END >    
 	                     cali-to-host-endpoint@filter       | 
@@ -533,244 +805,7 @@ nat.cali-POSTROUTING:
 	-A cali-POSTROUTING -m comment --comment "cali:nYKhEzDlr11Jccal" -j cali-nat-outgoing
 
 
-## 组网方式
-
-Calico网络对底层的网络的要求很少，只要求node之间能够通过IP联通。
-
-需要注意的是，无论采用下面哪种组网方式，一定会有一个设备存放全网路由。在Calico中，全网路由的数目和endpoints的数目一致（可以有有优化措施，但不会改变最坏情况）
-
-如果有1万个endpoints，那么就至少要有处理1万条路由的能力，路由数量过多时，很可能会超过这台设备(专用网络设备或者服务器)的处理能力。
-
-这台设备的处理能力，决定了Calico网络规模的上限。
-
-### 全网一个AS的RR模式
-
-	1. RR和所有的node使用同一个AS
-	2. 被指定为RR的设备与所有的node建立BGP连接
-
-node数量太多时，RR需要维持太多的BGP连接。
-
-这种组网方式能够实现的网络规模最小，每个node都需要与RR建立一个BGP连接，很容易就超出RR的处理能力，不仅全网路由数目是个问题，RR能够保持的BGP连接数也是问题。
-
-除非能够开发一个分布式部署、可以水平扩展的RR系统，就是因为缺少一个这样的RR系统，才会有后续的三种组网方式，它们试图将全网路由的处理压力、BGP连接的保持压力，分散到TOR交换机和核心交换机。
-
-#### 在同一个LAN内，四条链路
-
-![calico-l2-rr-spine-planes]({{ site.imglocal }}/calico-l2-rr-spine-planes.png)
-
-每个node接入了四个独立的二层网络，每个二层网络内部使用RR模式，node根据ECMP（等价路由协议）决定使用哪一个二层网络。
-
-使用了四个二层网络是为了提高容灾能力，只要有一个二层网没有瘫痪，就可以运转。
-
-endpoints之间的通信过程:
-
-	EndpointA发出报文  --> nodeA找到了下一跳地址nodeB --> 报文送到TOR交换机
-	                                                              |
-	EndpointB收到了报文 <-- TOR交换机将报文转发给nodeB  <---------+
-
-注意:
-
-同一个广播域的二层网(LAN)承受不了太多的接入点，大量广播包会占用大量带宽，如果接入点频繁变化（有大量容器和虚拟机接入的二层网中这种情况很常见），情况会更糟糕，会导致交换机疲于更新链路信息（生成树协议）。
-
-Calico通过将endpoint的广播域限制在node中，容器或者虚拟机的二层报文不会走出node，从而杜绝了这种情况。
-
-#### 在不同的network中
-
-应该是可行的，但规划起来可能会有些麻烦，因为不同的network使用了不同网段地址，可以会有一些细节需要处理。
-
-### 每个机架一个AS，TOR交换机作为ebgp，所有TOR交换机全互联模式
-
-	1. 一个机架作为一个AS，分配一个AS号，node是ibgp，TOR交换机是ebgp
-	2. node只与TOR交换机建立BGP连接，TOR交换机与机架上的所有node建立BGP连接 
-	3. 所有TOR交换机在一个LAN中，互相建立BGP连接
-
-每个机架上node的数目是有限的，但机架数量可能很多。
-
-当机架数很多，TOR交换机数量太多时，每个TOR交换机还是需要维持太多的BGP连接。
-
-![calico-l3-fabric-diagrams-as-rack-l2-spine]({{ site.imglocal }}/calico-l3-fabric-diagrams-as-rack-l2-spine.png)
-
-endpoints之间的通信过程:
-
-	EndpointA发出报文  --> nodeA找到了下一跳地址nodeB --> 报文送到TOR交换机A --> 报文送到核心交换机
-	                                                                                      |
-	                                                                                      v
-	EndpointB收到了报文 <--  nodeB收到了报文 <-- TOR交换机B收到了报文 <--  核心交换机将报文送达TOR交换机B
-
-### 每个机架一个AS，TOR交换机作为ebgp，所有TOR交换机RR模式互联
-
-	1. 一个机架作为一个AS，分配一个AS号，node是ibgp，TOR交换机是ebgp
-	2. node只与TOR交换机建立BGP连接，TOR交换机与机架上的所有node建立BGP连接 
-	3. 所有TOR交换机与核心交换机在一个LAN中，TOR与核心交换机建立BGP连接
-
-TOR交换机数量太多时，核心交换机同样需要维持太多的BGP连接。
-
-![calico-l3-fabric-diagrams-as-rack-l3-spine]({{ site.imglocal }}/calico-l3-fabric-diagrams-as-rack-l3-spine.png)
-
-endpoints之间的通信过程与上一个组网方式中的过程相同。
-
-### 优化：使用“Downward Default model”减少需要记录的路由
-
-Downward Default Model只是在上面的几种组网方式的基础上，优化了路由的管理。
-
-在上面的三种方式中，每个node、每个TOR交换机、每个核心交换机都需要记录全网路由。
-
-以上面第三种组网模式下的优化为例，启用了"Downward Default model"模式后:
-
-	1. 每个node只记录自己所承担的endpoint的路由，默认路由设置为TOR
-	2. 每个TOR只记录连接到自己所属的AS中的路由，默认路由设置为核心交换机
-	3. 核心交换机依然需要记录全网路由
-
-这种模式减少了TOR交换机和node上的路由数量，但缺点是，发送到无效IP的流量必须到达核心交换机以后，才能被确定为无效。
-
-endpoints之间的通信过程:
-
-	EndpointA发出报文  --> nodeA默认路由到TOR交换机A --> TOR交换机A默认路由到核心交换机 --+
-	                                                                                      |
-	                                                                                      v
-	EndpointB收到了报文 <--  nodeB收到了报文 <-- TOR交换机B收到了报文 <-- 核心交换机找到了下一跳地址nodeB
-
-## 组成
-
-Calico系统组成:
-
-	1. Felix, the primary Calico agent that runs on each machine that hosts endpoints.
-	2. etcd, the data store.
-	3. BIRD, a BGP client that distributes routing information.
-	4. BGP Route Reflector (BIRD), an optional BGP route reflector for higher scale.
-	5. The Orchestrator plugin, orchestrator-specific code that tightly integrates Calico into that orchestrator.
-
-[Felix][3]负责管理设置node，
-
-[bird][12]是一个开源的软路由，支持多种路由协议。
-
-## 概念
-
-[calicoctl resource definitions][7]介绍了每类资源的格式。
-
-### bgpPeer
-
-	apiVersion: v1
-	kind: bgpPeer
-	metadata:
-	  scope: node
-	  node: rack1-host1
-	  peerIP: 192.168.1.1
-	spec:
-	  asNumber: 63400
-	  
-bgpPeer的scope可以是node、global。
-
-### ipPool
-
-	apiVersion: v1
-	kind: ipPool
-	metadata:
-	  cidr: 10.1.0.0/16
-	spec:
-	  ipip:
-	    enabled: true
-	    mode: cross-subnet
-	  nat-outgoing: true
-	  disabled: false
-
-### node
-
-	apiVersion: v1
-	kind: node
-	metadata:
-	  name: node-hostname
-	spec:
-	  bgp:
-	    asNumber: 64512
-	    ipv4Address: 10.244.0.1/24
-	    ipv6Address: 2001:db8:85a3::8a2e:370:7334/120
-
-### policy
-
-A Policy resource (policy) represents an ordered set of rules which are applied to a collection of endpoints which match a label selector.
-
-Policy resources can be used to define network connectivity rules between groups of Calico endpoints and host endpoints, and take precedence over Profile resources if any are defined.
-
-	apiVersion: v1
-	kind: policy
-	metadata:
-	  name: allow-tcp-6379
-	spec:
-	  selector: role == 'database'
-	  ingress:
-	  - action: allow
-	    protocol: tcp
-	    source:
-	      selector: role == 'frontend'
-	    destination:
-	      ports:
-	      - 6379
-	  egress:
-	  - action: allow
-
-### profile
-
-A Profile resource (profile) represents a set of rules which are applied to the individual endpoints to which this profile has been assigned.
-
-	apiVersion: v1
-	kind: profile
-	metadata:
-	  name: profile1
-	  labels:
-	    profile: profile1 
-	spec:
-	  ingress:
-	  - action: deny
-	    source:
-	      net: 10.0.20.0/24
-	  - action: allow
-	    source:
-	      selector: profile == 'profile1'
-	  egress:
-	  - action: allow 
-
-### workloadEndpoint
-
-A Workload Endpoint resource (workloadEndpoint) represents an interface connecting a Calico networked container or VM to its host.
-
-	apiVersion: v1
-	kind: workloadEndpoint
-	metadata:
-	  name: eth0 
-	  workload: default.frontend-5gs43
-	  orchestrator: k8s
-	  node: rack1-host1
-	  labels:
-	    app: frontend
-	    calico/k8s_ns: default
-	spec:
-	  interfaceName: cali0ef24ba
-	  mac: ca:fe:1d:52:bb:e9 
-	  ipNetworks:
-	  - 192.168.0.0/16
-	  profiles:
-	  - profile1
-
-### hostEndpoint
-
-	apiVersion: v1
-	kind: hostEndpoint
-	metadata:
-	  name: eth0
-	  node: myhost
-	  labels:
-	    type: production
-	spec:
-	  interfaceName: eth0
-	  expectedIPs:
-	  - 192.168.0.1
-	  - 192.168.0.2
-	  profiles:
-	  - profile1
-	  - profile2
-
-## 部署
+## calico系统的部署
 
 ### CentOS上安装
 
@@ -778,7 +813,7 @@ A Workload Endpoint resource (workloadEndpoint) represents an interface connecti
 
 #### 安装calicoctl
 
-calicoctl是Calico的管理工具:
+calicoctl是calico的管理工具:
 
 	wget https://github.com/projectcalico/calicoctl/releases/download/v1.1.0/calicoctl
 	chmod +x calicoctl
@@ -814,7 +849,7 @@ By default calicoctl looks for a configuration file at /etc/calico/calicoctl.cfg
 或者在每个节点上单独安装felix，创建文件/etc/yum.repos.d/calico.repo，并添加内容:
 
 	[calico]
-	name=Calico Repository
+	name=calico Repository
 	baseurl=http://binaries.projectcalico.org/rpm/calico-2.1/
 	enabled=1
 	skip_if_unavailable=0
@@ -876,11 +911,11 @@ By default calicoctl looks for a configuration file at /etc/calico/calicoctl.cfg
 	Created default IPv6 pool (fd80:24e2:f998:72d6::/64) with NAT outgoing enabled. IPIP mode: off
 	Using node name: compile
 	Starting libnetwork service
-	Calico node started successfully
+	calico node started successfully
 
 从日志中可以看到，容器使用的是host net、通过-e传入环境变量。
 
-## 使用
+## calico的使用
 
 在calico中，IP被称为Endpoint，宿主机上的容器IP称为workloadEndpoint，物理机IP称为hostEndpoint。ipPool等一同被作为资源管理。
 
@@ -897,10 +932,10 @@ By default calicoctl looks for a configuration file at /etc/calico/calicoctl.cfg
 
 	calicoctl node <command> [<args>...]
 	
-	    run          Run the Calico node container image.
-	    status       View the current status of a Calico node.
-	    diags        Gather a diagnostics bundle for a Calico node.
-	    checksystem  Verify the compute host is able to run a Calico node instance.
+	    run          Run the calico node container image.
+	    status       View the current status of a calico node.
+	    diags        Gather a diagnostics bundle for a calico node.
+	    checksystem  Verify the compute host is able to run a calico node instance.
 
 ### 运行时设置
 
@@ -942,8 +977,8 @@ By default calicoctl looks for a configuration file at /etc/calico/calicoctl.cfg
 
 	calicoctl ipam <command> [<args>...]
 	
-	  release      Release a Calico assigned IP address.         
-	  show         Show details of a Calico assigned IP address.
+	  release      Release a calico assigned IP address.         
+	  show         Show details of a calico assigned IP address.
 
 ## 测试环境
 
@@ -1128,28 +1163,36 @@ endpoints.yaml
 
 ## 参考
 
-1. [洪强宁：宜信PaaS平台基于Calico的容器][1]
+1. [洪强宁：宜信PaaS平台基于calico的容器][1]
 2. [calico architecture][2]
 3. [felix code][3]
 4. [felix bare-metal-install][4]
 5. [calicoctl][5]
 6. [calicoctl config][6]
 7. [calicoctl resource definitions][7]
-8. [Battlefield-Calico-Flannel-Weave-and-Docker-Overlay-Network][8]
+8. [Battlefield-calico-Flannel-Weave-and-Docker-Overlay-Network][8]
 9. [calico bgpPeer][9]
 10. [AS Per Rack model][10]
-11. [Calico over an Ethernet interconnect fabric][11]
+11. [calico over an Ethernet interconnect fabric][11]
 12. [bird][12]
+13. [ECMP][13]
+14. [calico over ip fabrics][14]
+15. [Use of BGP for routing in large-scale data centers][15]
+16. [RFC 4893 - BGP Support for Four-octet AS Number Space][16]
 
-[1]: http://mt.sohu.com/20160225/n438516745.shtml "洪强宁：宜信PaaS平台基于Calico的容器"
+[1]: http://mt.sohu.com/20160225/n438516745.shtml "洪强宁：宜信PaaS平台基于calico的容器"
 [2]: http://docs.projectcalico.org/master/reference/architecture/ "calico architecture"
 [3]: https://github.com/projectcalico/felix  "felix code"
 [4]: http://docs.projectcalico.org/v2.1/getting-started/bare-metal/bare-metal-install "felix bare-metal-install"
 [5]: http://docs.projectcalico.org/v2.1/reference/calicoctl/ "calicoctl"
 [6]: http://docs.projectcalico.org/v2.1/reference/calicoctl/commands/config "calicoctl config"
 [7]: http://docs.projectcalico.org/v2.1/reference/calicoctl/resources/ "calicoctl resource definitions"
-[8]: http://chunqi.li/2015/11/15/Battlefield-Calico-Flannel-Weave-and-Docker-Overlay-Network/ "Battlefield-Calico-Flannel-Weave-and-Docker-Overlay-Network"
+[8]: http://chunqi.li/2015/11/15/Battlefield-calico-Flannel-Weave-and-Docker-Overlay-Network/ "Battlefield-calico-Flannel-Weave-and-Docker-Overlay-Network"
 [9]: http://docs.projectcalico.org/v2.1/usage/configuration/bgp "cacilo bgpPeer"
 [10]: http://docs.projectcalico.org/v2.1/reference/private-cloud/l3-interconnect-fabric#the-as-per-rack-model "AS Per Rack model"
-[11]: http://docs.projectcalico.org/v2.1/reference/private-cloud/l2-interconnect-fabric "Calico over an Ethernet interconnect fabric"
+[11]: http://docs.projectcalico.org/v2.1/reference/private-cloud/l2-interconnect-fabric "calico over an Ethernet interconnect fabric"
 [12]: http://bird.network.cz/ "bird"
+[13]: https://en.wikipedia.org/wiki/Equal-cost_multi-path_routing  "ECMP"
+[14]: https://docs.projectcalico.org/v2.1/reference/private-cloud/l3-interconnect-fabric  "calico over ip fabrics"
+[15]: https://tools.ietf.org/html/draft-ietf-rtgwg-bgp-routing-large-dc-11  "Use of BGP for routing in large-scale data centers"
+[16]: http://www.faqs.org/rfcs/rfc4893.html  "RFC 4893 - BGP Support for Four-octet AS Number Space"
