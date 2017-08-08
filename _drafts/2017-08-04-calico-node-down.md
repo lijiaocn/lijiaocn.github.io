@@ -3,7 +3,7 @@ layout: default
 title: Calico的workloadEndpoint无法访问网络的问题调查
 author: lijiaocn
 createdate: 2017/08/04 10:22:14
-changedate: 2017/08/05 18:34:00
+changedate: 2017/08/08 14:31:12
 categories: 问题
 tags: calico
 keywords: calico,k8s,workloadEndpoint
@@ -121,7 +121,6 @@ pod中的route信息与其它正常的pod的route信息相同：
 [confd][3]是用来管理配置文件的。
 
 [felix][4]是calico的组件，用来设置所在node的上的网络。
-
 
 ## 参考
 
