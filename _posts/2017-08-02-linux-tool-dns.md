@@ -3,7 +3,7 @@ layout: default
 title: linux中dns相关的工具
 author: lijiaocn
 createdate: 2017/08/02 18:57:12
-changedate: 2017/08/02 19:51:17
+changedate: 2017/08/09 15:15:26
 categories: 技巧
 tags: linuxtool dns
 keywords: linux,dns,linuxtool
@@ -61,11 +61,3 @@ example:
 	;; SERVER: 114.114.114.114#53(114.114.114.114)
 	;; WHEN: Wed Aug  2 18:59:47 2017
 	;; MSG SIZE  rcvd: 90
-
-## 参考
-
-1. [文献1][1]
-2. [文献2][2]
-
-[1]: 1.com  "文献1" 
-[2]: 2.com  "文献1" 

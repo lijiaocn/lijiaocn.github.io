@@ -3,7 +3,7 @@ layout: default
 title: networkmanger
 author: lijiaocn
 createdate: 2017/08/03 15:44:44
-changedate: 2017/08/03 17:01:43
+changedate: 2017/08/09 15:16:05
 categories: 技巧
 tags: linuxtook networkmanager
 keywords:  networkmanger,netconfig
