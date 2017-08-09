@@ -3,11 +3,11 @@ layout: default
 title: calico路由丢失问题的调查
 author: lijiaocn
 createdate: 2017/08/08 14:32:12
-changedate: 2017/08/08 18:50:53
+changedate: 2017/08/09 10:30:24
 categories: 问题
 tags: calico k8s
-keywords:
-description: 
+keywords: calico
+description: kubernetes中的一个pod访问一个service的时候，时不时的出现timeout，经查发现是BGP连接故障，路由缺失。
 
 ---
 
@@ -165,10 +165,6 @@ node(10.39.1.231)上的bird日志：
 
 可以看到231发出的icmp报文送达了219，219的icmp回应包却没有能够回到231。
 
-## 参考
+查看一下两台机器的Iptables规则没有发现问题，将iptables规则都清空后，网络情况没有变化。
 
-1. [文献1][1]
-2. [文献2][2]
-
-[1]: 1.com  "文献1" 
-[2]: 2.com  "文献1" 
+猜测可能不是calico的原因，因为这两台机器是IaaS上的虚拟机，估计是IaaS的问题。
