@@ -3,7 +3,7 @@ layout: default
 title: Calico的workloadEndpoint无法访问网络的问题调查
 author: lijiaocn
 createdate: 2017/08/04 10:22:14
-changedate: 2017/08/09 11:13:41
+changedate: 2017/08/10 20:13:04
 categories: 问题
 tags: calico
 keywords: calico,k8s,workloadEndpoint
@@ -138,6 +138,32 @@ node上的对应的网卡、路由和arp:
 有可能是fliex和cni-plugin的某种错误，使得容器中的arp记录丢失，但也不能完全排除是docker或者linux的问题。
 
 当再次遇到此问题，或者成功复现后，再做分析。
+
+## 现场来了
+
+运气太好，得到了一个现场！
+
+出问题的容器是基于alpine，在其中执行ip neigh直接段错误。
+
+到容器所在的node上，利用nsenter进去容器的网络namespace:
+
+	$nsenter -t 13110 -n /bin/sh
+	sh-4.2# ip neigh
+	169.254.1.1 dev eth0  FAILED
+
+果然arp不存在。
+
+node上的arp记录是存在的:
+
+	$ip neigh |grep "d7:46:8f:34"
+	192.168.42.25 dev cali933d88d7b8a lladdr 4e:fe:d7:46:8f:34 STALE
+
+但是ping的时候：
+
+	$ping 192.168.42.25
+	connect: Invalid argument
+
+
 
 ## 参考
 

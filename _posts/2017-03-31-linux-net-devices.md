@@ -1,8 +1,8 @@
 --- layout: default
-title: Linux的常用的网络设备
+title: linux上的物理网卡与虚拟网络设备
 author: lijiaocn
 createdate: 2017/03/31 18:47:12
-changedate: 2017/08/05 19:15:02
+changedate: 2017/08/10 15:43:42
 categories: 技巧
 tags: linuxnet
 keywords: tun设备,tap设备,tun/tap,veth,虚拟设备
@@ -13,121 +13,39 @@ description: 介绍了Linux中的网络设备，重点是tun、tap、veth等虚�
 * auto-gen TOC:
 {:toc}
 
-## namespace
+## 物理网卡
 
-namespace是一个独立的网络协议栈，通过namespace，可以将网络设备分隔开，设置独立的路由规则、防火墙规则等。
+![物理网卡工作原理]({{ site.imglocal }}/nic-work.png)
 
-一个设备只能属于一个namespace。
+## link device type
 
-	man ip-netns
+通过`ip link add`可以创建多种类型的虚拟网络设备，在`man ip link`中可以得知有以下类型的device:
 
-可以通过`ip netns [NAMESPACE] [CMD...] `在指定的namespace中操作，例如：
+	bridge - Ethernet Bridge device
+	can - Controller Area Network interface
+	dummy - Dummy network interface
+	ifb - Intermediate Functional Block device
+	ipoib - IP over Infiniband device
+	macvlan - Virtual interface base on link layer address (MAC)
+	vcan - Virtual Local CAN interface
+	veth - Virtual ethernet interface
+	vlan - 802.1q tagged virtual LAN interface
+	vxlan - Virtual eXtended LAN
+	ip6tnl - Virtual tunnel interface IPv4|IPv6 over IPv6
+	ipip - Virtual tunnel interface IPv4 over IPv4
+	sit - Virtual tunnel interface IPv6 over IPv4
 
-	//查看名为AAA的ns中的网络设备
-	ip netns AAA ip link
+## VEPA
 
-### 基本操作
+Virtual Ethernet Port Aggregator。它是HP在虚拟化支持领域对抗Cisco的VN-Tag的技术。
 
-创建ns1:
-
-	ip netns add ns1
-
-查看ns1中的设备:
-
-	ip netns exec ns1 ip link
-	1: lo: <LOOPBACK> mtu 65536 qdisc noop state DOWN mode DEFAULT qlen 1
-	    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-
-将网卡eth1添加到ns1中:
-
-	$ip link set eth1 netns ns1
-	
-	$ip netns exec ns1 ip link
-	1: lo: <LOOPBACK> mtu 65536 qdisc noop state DOWN mode DEFAULT qlen 1
-	    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-	3: eth1: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN mode DEFAULT qlen 1000
-	    link/ether 08:00:27:b3:6c:38 brd ff:ff:ff:ff:ff:ff
-
-将网卡eth1重新添加到默认的ns中:
-
-	ip netns exec ns1 ip link set eth1 netns 1
-
-注意必须在ns1中设置，最后一个1表示，进程1所在的namespace。
-
-删除netns：
-
-	ip netns delete ns1
-
-[文献3][3]中给出了一个利用veth连接两个namespace的例子。
-
-### 利用veth连接两个namespace
-
-	ip netns add net0
-	ip netns add net1
-	ip link add type veth
-
-	ip link set veth0 netns net0
-	ip link set veth1 netns net1
-
-	ip netns exec net0 ip link set veth0 up
-	ip netns exec net0 ip address add 10.0.1.1/24 dev veth0
-
-	ip netns exec net1 ip link set veth1 up
-	ip netns exec net1 ip address add 10.0.1.2/24 dev veth1
-
-	ip netns exec net1 ping 10.0.1.1
-	PING 10.0.1.1 (10.0.1.1) 56(84) bytes of data.
-	64 bytes from 10.0.1.1: icmp_seq=1 ttl=64 time=0.036 ms
-	64 bytes from 10.0.1.1: icmp_seq=2 ttl=64 time=0.066 ms
-
-### 两个namespace连接到bridge
-
-![ns连接到网桥]({{ site.imglocal }}/ns-bridge.png)
-
-创建三个ns，并利用veth连接:
-
-	ip netns add net0
-	ip netns add net1
-	ip netns add bridge
-	ip link add type veth
-	ip link set dev veth0 name net0-bridge netns net0       //重新命名
-	ip link set dev veth1 name bridge-net0 netns bridge
-	ip link add type veth
-	ip link set dev veth0 name net1-bridge netns net1
-	ip link set dev veth1 name bridge-net1 netns bridge
-
-配置bridge，将另外两个ns的对端veth设备接入bridge:
-
-	ip netns exec bridge brctl addbr br
-	ip netns exec bridge ip link set dev br up
-	ip netns exec bridge ip link set dev bridge-net0 up
-	ip netns exec bridge ip link set dev bridge-net1 up
-	ip netns exec bridge brctl addif br bridge-net0
-	ip netns exec bridge brctl addif br bridge-net1
-
-配置两个ns中的veth设备:
-
-	ip netns exec net0 ip link set dev net0-bridge up
-	ip netns exec net0 ip address add 10.0.1.1/24 dev net0-bridge
-
-	ip netns exec net1 ip link set dev net1-bridge up
-	ip netns exec net1 ip address add 10.0.1.2/24 dev net1-bridge
-
-
-## VEPA技术
-
-Virtual Ethernet Port Aggregator。它是HP在虚拟化支持领域对抗Cisco的VN-Tag的技术。解决了虚拟机之间网络通信的问题，特别是位于同一个宿主机内的虚拟机之间的网络通信问题。
+解决了虚拟机之间网络通信的问题，特别是位于同一个宿主机内的虚拟机之间的网络通信问题。
 
 VN-Tag在标准的协议头中增加了一个全新的字段，VEPA则是通过修改网卡驱动和交换机，通过发夹弯技术回注报文。
 
 ![vepa工作原理]({{ site.imglocal }}/vepa-work.jpeg)
 
-## 物理网卡
-
-![物理网卡工作原理]({{ site.imglocal }}/nic-work.png)
-
-
-## TUN设备
+## TUN
 
 TUN是Linux系统里的虚拟网络设备，它的原理和使用在[Kernel Doc][1]和[Wiki][2]做了比较清楚的说明。
 
@@ -227,7 +145,7 @@ TUN设备模拟网络层设备(network layer)，处理三层报文，IP报文等
 
 使用open/write等文件操作函数从fd中进行读取操作，就是在收取报文，向fd中写入数据，就是在发送报文。
 
-## TAP设备
+## TAP
 
 TAP是Linux系统里的虚拟网络设备，它的原理和使用在[Kernel Doc][1]和[Wiki][2]做了比较清楚的说明。
 
@@ -300,8 +218,6 @@ MACVTAP 是对 MACVLAN的改进，把 MACVLAN 与 TAP 设备的特点综合一�
 
 由于 MACVLAN 是工作在 MAC 层的，所以 MACVTAP 也只能工作在 MAC 层，不会有 MACVTUN 这样的设备。
 
-[采摘][4]
-
 ## ipvlan
 
 ipvlan和macvlan的区别在于它在ip层进行流量分离而不是基于mac地址，同属于一块宿主以太网卡的所有ipvlan虚拟网卡的mac地址都是一样的。
@@ -329,37 +245,9 @@ veth设备是成对创建的：
 
 [veth设备理解][6]
 
-## 通过ip link add添加的虚拟设备
+## ifb
 
-命令`ip link add ...`可以创建多种类型的虚拟网络设备。
-
-在手册：
-
-	ip link help add
-
-中可以看到，可以创建以下几种类型的device:
-
-	TYPE := { vlan | veth | vcan | dummy | ifb | macvlan | macvtap |
-	          bridge | bond | ipoib | ip6tnl | ipip | sit | vxlan |
-	          gre | gretap | ip6gre | ip6gretap | vti | nlmon |
-	          bond_slave | geneve | macsec }
-
-可以通过`ip link help [TYPE]`的方式查看每种类型设备的使用，例如:
-
-	$ip link help vlan
-	Usage: ... vlan [ protocol VLANPROTO ] id VLANID                [ FLAG-LIST ]
-	                [ ingress-qos-map QOS-MAP ] [ egress-qos-map QOS-MAP ]
-	
-	VLANPROTO: [ 802.1Q / 802.1ad ]
-	VLANID := 0-4095
-	FLAG-LIST := [ FLAG-LIST ] FLAG
-	FLAG := [ reorder_hdr { on | off } ] [ gvrp { on | off } ] [ mvrp { on | off } ]
-	        [ loose_binding { on | off } ]
-	QOS-MAP := [ QOS-MAP ] QOS-MAPPING
-	QOS-MAPPING := FROM:TO
-
-### vlan
-
+Intermediate Functional Block device，连接[ifb][7]中做了很详细的介绍。
 
 ## 参考
 
@@ -369,6 +257,7 @@ veth设备是成对创建的：
 4. [TUN/TAP MACVLAN MACVTAP][4]
 5. [图解几个与Linux网络虚拟化相关的虚拟网卡][5]
 6. [veth设备理解][6]
+7. [ifb][7]
 
 [1]: https://www.kernel.org/doc/Documentation/networking/tuntap.txt  "kernel doc tuntap.txt" 
 [2]: https://en.wikipedia.org/wiki/TUN/TAP "wiki TUN/TAP"
@@ -376,3 +265,4 @@ veth设备是成对创建的：
 [4]: https://blog.kghost.info/2013/03/27/linux-network-tun/ "TUN/TAP MACVLAN MACVTAP"
 [5]: http://blog.csdn.net/dog250/article/details/45788279 "图解几个与Linux网络虚拟化相关的虚拟网卡"
 [6]: https://segmentfault.com/a/1190000009251098 "veth设备理解"
+[7]: https://wiki.linuxfoundation.org/networking/ifb "ifb"

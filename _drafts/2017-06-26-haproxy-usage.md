@@ -3,7 +3,7 @@ layout: default
 title: HAProxy的使用
 author: lijiaocn
 createdate: 2017/06/26 10:40:02
-changedate: 2017/07/03 18:10:20
+changedate: 2017/08/11 16:59:40
 categories: 项目
 tags: lb
 keywords:  haproxy,lb 
@@ -13,6 +13,8 @@ description:  负载均衡器haproxy的使用
 
 * auto-gen TOC:
 {:toc}
+
+## 配置文件
 
 ## 重新加载配置
 

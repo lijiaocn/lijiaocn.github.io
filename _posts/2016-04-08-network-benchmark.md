@@ -1,13 +1,13 @@
 ---
 layout: default
-title: 网络质量测量
+title: iperf、netperf等网络性能测试工具的使用
 author: lijiaocn
 createdate: 2016/04/08 19:54:59
-changedate: 2017/05/19 19:58:45
+changedate: 2017/08/10 16:09:23
 categories: 技巧
 tags: network
 keywords: 网络指令,netperf,iperf
-description: 测试两台机器之间的网络质量。
+description: iperf、netperf等网络性能测试工具的使用。
 
 ---
 
