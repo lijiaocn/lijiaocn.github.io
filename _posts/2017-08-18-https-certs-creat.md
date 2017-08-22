@@ -3,7 +3,7 @@ layout: default
 title: https证书的制作
 author: lijiaocn
 createdate: 2017/08/18 17:57:09
-changedate: 2017/08/22 14:34:05
+changedate: 2017/08/22 14:46:03
 categories: 技巧
 tags: cryptography
 keywords: https,cert
@@ -82,6 +82,13 @@ firefox:
 	openssl x509 -req -days 365 -in server.csr -CA root.crt -CAkey root.key -CAcreateserial -out server.crt
 
 注意用根证书签署证书时的命令和自签署时的命令是不同的，根证书签署时使用的是`-CA，-CAkey`，自签署时使用的是`-signkey`。
+
+## 如果绑定的是IP，并且有多个
+
+通过-extfile，设置subjectAltName属性：
+
+	$echo "subjectAltName = IP:10.42.0.1,IP:127.0.0.1" > /tmp/extfile
+	$openssl x509 -req -days 365 -in server.csr -CA root.crt -CAkey root.key -CAcreateserial -out server.crt  -extfile /tmp/extfile
 
 ## 参考
 
