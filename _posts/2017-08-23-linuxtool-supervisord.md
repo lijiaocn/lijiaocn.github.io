@@ -1,9 +1,9 @@
 ---
 layout: default
-title: 2017-08-23-linuxtool-supervisord
+title: 进程管理工具supervisord
 author: lijiaocn
 createdate: 2017/08/23 13:48:02
-changedate: 2017/08/23 14:15:56
+changedate: 2017/08/23 16:08:07
 categories: 技巧
 tags: supervisord
 keywords: supervisord,进程管理
