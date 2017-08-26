@@ -3,7 +3,7 @@ layout: default
 title: HAProxy的使用
 author: lijiaocn
 createdate: 2017/06/26 10:40:02
-changedate: 2017/08/11 16:59:40
+changedate: 2017/08/22 09:25:37
 categories: 项目
 tags: lb
 keywords:  haproxy,lb 
@@ -94,6 +94,39 @@ description:  负载均衡器haproxy的使用
 	  set timeout    : change a timeout setting
 	  show env [var] : dump environment variables known to the process
 	  show tls-keys [id|*]: show tls keys references or dump tls ticket keys when id specified
+
+## 配置https证书
+
+在bind后面可以用crt命令指定证书：
+
+	frontend LB
+	    mode http
+	    option forwardfor       except 127.0.0.0/8
+	    errorfile 503 /etc/haproxy/errors/503.http
+	    bind 10.39.0.140:443 ssl crt /etc/sslkeys/default.pem crt /etc/sslkeys/lijiao.pem
+	    acl lijiaob-space-nginx-nginx-0 hdr(host) -i  test.lijiaocn.com server1.ca.lijiaocn
+	    use_backend lijiaob-space-nginx-nginx-0 if lijiaob-space-nginx-nginx-0 { ssl_fc_sni test.lijiaocn.com server1.ca.lijiaocn }
+
+每个pem文件是一对证书的证书文件和key文件，例如:
+
+	-----BEGIN CERTIFICATE-----
+	MIIHYjCCBUqgAwIBAgICEAIwDQYJKoZIhvcNAQELBQAwgYQxCzAJBgNVBAYTAkNO
+	MRAwDgYDVQQIDAdCZWlKaW5nMREwDwYDVQQKDAhsaWppYW9jbjERMA8GA1UECwwI
+	QWhraNeeufoP0u/0H2sJCAweKkaQeKIyt3RPnw9r5U1obadhQa0cP16jLSpY7iK4
+	...(省略)...
+	d4F0kKt/7D/h6VZOYQmoTbfLCy114A==
+	-----END CERTIFICATE-----
+	-----BEGIN RSA PRIVATE KEY-----
+	MIIJKwIBAAKCAgEAtfAWQqsYZ/M9xAJQhWNhofiincF1F204FGmGsHaeq7OzcBfY
+	Zhi5L1tXPvMHXYSJgIN6dwN51FIejL6uLCRMKGba/1vxZYcarQPPL1TecmerZxF3
+	...(省略)...
+	b7RrvbvS+8xUnlXQFjAcZWTG7dGZ1JnxJkzNCAo3EOBNioLR51tg2fY8h7WzDbIn
+	yH1UaA/vCx7kqKDp5U1vmWwPMF0614NK3cnbAZbwu87eqVnSv0hvxC5prTzB13s=
+	-----END RSA PRIVATE KEY-----
+
+指定多个证书的时候，每个证书会有不同的CommonName，haproxy会根据请求头的host，选择对应的证书。
+
+如果没有和host匹配的证书，使用第一个证书。
 
 ## 开启统计
 
