@@ -3,7 +3,7 @@ layout: default
 title: haproxy返回的http头中没有keep-alive
 author: lijiaocn
 createdate: 2017/08/11 16:59:57
-changedate: 2017/08/11 23:56:38
+changedate: 2017/08/26 16:31:57
 categories: 问题
 tags: haproxy
 keywords: haproxy,keep-alive
