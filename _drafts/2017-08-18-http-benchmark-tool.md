@@ -3,7 +3,7 @@ layout: default
 title: HTTP的压力测试工具
 author: lijiaocn
 createdate: 2017/08/18 15:12:29
-changedate: 2017/08/18 15:41:43
+changedate: 2017/08/24 10:58:39
 categories: 问题
 tags: benchmark
 keywords: http,benchmark,压力测试,tool
@@ -20,11 +20,10 @@ ab是apache的一个压力测试工具，可以并发发出指定数量的http�
 
 但是ab只支持http 1.0。
 
-
 ## 参考
 
 1. [ab][1]
-2. [文献2][2]
+2. [siege][2]
 
 [1]: https://httpd.apache.org/docs/2.4/programs/ab.html  "ab" 
 [2]: https://www.joedog.org/siege-home/  "siege" 

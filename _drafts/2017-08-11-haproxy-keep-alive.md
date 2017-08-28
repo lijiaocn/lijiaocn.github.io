@@ -3,7 +3,7 @@ layout: default
 title: haproxy返回的http头中没有keep-alive
 author: lijiaocn
 createdate: 2017/08/11 16:59:57
-changedate: 2017/08/18 15:10:13
+changedate: 2017/08/26 16:31:57
 categories: 问题
 tags: haproxy
 keywords: haproxy,keep-alive
@@ -61,7 +61,12 @@ haproxy有两个规则，指向的是相同的backend，nginx服务器。
 
 通过`api-icome.enncloud.cn`访问，得到的http头中，没有"keep-alive":
 
-	curl -I http://api-icome.enncloud.cn
+	$ curl -I http://api-icome.enncloud.cn
+	HTTP/1.1 404 Not Found
+	Server: nginx/1.13.1
+	Date: Fri, 11 Aug 2017 15:43:08 GMT
+	Content-Type: text/html
+	Content-Length: 169
 
 ## 调查
 
@@ -134,6 +139,9 @@ haproxy配置:
 	    balance roundrobin
 	    server  lb2-1 nginx:80 maxconn 500
 
+访问结果如下:
+
+mode http:
 
 	~ # curl -I 127.0.0.1:5001
 	HTTP/1.1 200 OK
@@ -144,6 +152,8 @@ haproxy配置:
 	Last-Modified: Tue, 30 May 2017 17:15:54 GMT
 	ETag: "592da8ca-264"
 	Accept-Ranges: bytes
+
+mode tcp: 
 
 	~ # curl -I 127.0.0.1:5002
 	HTTP/1.1 200 OK
@@ -156,11 +166,106 @@ haproxy配置:
 	ETag: "592da8ca-264"
 	Accept-Ranges: bytes
 
+看起来好像是因为mode的原因，但是在抓包的时候，又发现了新情况！
+
+## 抓包验证
+
+执行`ab -n 100000 -k http://api-icome.enncloud.cn/`时，抓取的报文内容:
+
+	GET / HTTP/1.0
+	Connection: Keep-Alive
+	Host: api-icome.enncloud.cn
+	User-Agent: ApacheBench/2.3
+	Accept: */*
+
+	HTTP/1.1 404 Not Found
+	Server: nginx/1.13.1
+	Date: Fri, 11 Aug 2017 14:57:57 GMT
+	Content-Type: text/html
+	Content-Length: 169
+	Connection: keep-alive
+
+	<html>
+	<head><title>404 Not Found</title></head>
+	<body bgcolor="white">
+	<center><h1>404 Not Found</h1></center>
+	<hr><center>nginx/1.13.1</center>
+	</body>
+	</html>
+
+可以很明确的看到，返回的头中有`Connection: keep-alive`。但是用curl访问时，却没有。
+
+执行`curl -v -X GET -H "Connection: Keep-Alive"  http://api-icome.enncloud.cn/`，抓取的报文:
+
+	GET / HTTP/1.1
+	Host: api-icome.enncloud.cn
+	User-Agent: curl/7.51.0
+	Accept: */*
+	Connection: Keep-Alive
+
+	HTTP/1.1 404 Not Found
+	Server: nginx/1.13.1
+	Date: Fri, 11 Aug 2017 15:31:48 GMT
+	Content-Type: text/html
+	Content-Length: 169
+
+	<html>
+	<head><title>404 Not Found</title></head>
+	<body bgcolor="white">
+	<center><h1>404 Not Found</h1></center>
+	<hr><center>nginx/1.13.1</center>
+	</body>
+	</html>
+
+仔细比对后会发现，curl使用的协议是`HTTP/1.1`，而ab中则是`HTTP/1.0`。
+
+强制curl使用HTTP1.0，执行`curl -v -0 -X GET -H "Connection: Keep-Alive"  http://api-icome.enncloud.cn/`得到:
+
+	GET / HTTP/1.0
+	Host: api-icome.enncloud.cn
+	User-Agent: curl/7.51.0
+	Accept: */*
+	Connection: Keep-Alive
+
+	HTTP/1.1 404 Not Found
+	Server: nginx/1.13.1
+	Date: Fri, 11 Aug 2017 15:34:28 GMT
+	Content-Type: text/html
+	Content-Length: 169
+	Connection: keep-alive
+
+	<html>
+	<head><title>404 Not Found</title></head>
+	<body bgcolor="white">
+	<center><h1>404 Not Found</h1></center>
+	<hr><center>nginx/1.13.1</center>
+	</body>
+	</html>
+
+可以看到返回头中有keep-alive。
+
+## 结论
+
+对于haproxy而言，有两种情况可以在响应头中看到keep-alive:
+
+	1.  mode tcp，backend返回的响应头中带有keep-alive
+	2.  mode http的时候，client使用http1.1，并且请求头中包含`Connection: Keep-Alive`
+
+另外还可以通过[http-reponse][3]指令，强行插入响应头，例如:
+
+	listen lb1
+	    bind *:5001
+	    mode http
+	    balance roundrobin
+	    http-response add-header Connection keep-alive
+	    server  lb1-1 nginx:80 maxconn 500
 
 ## 参考
 
 1. [option http-keep-alive][1]
 2. [haproxy-doesnt-keep-alive-http-connection][2]
+3. [haproxy http-response][3]
 
 [1]: http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#option%20http-keep-alive  "option http-keep-alive" 
 [2]: https://serverfault.com/questions/655061/haproxy-doesnt-keep-alive-http-connection "haproxy-doesnt-keep-alive-http-connection"
+[3]: http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#4-http-response "haproxy http-response"

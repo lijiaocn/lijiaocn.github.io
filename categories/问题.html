@@ -1,15 +1,15 @@
 ---
 layout: category
-title: 问题 
-keywords:  问题,问题解决
-description: 记录工作中遇到的一些问题以及解决方法。
+title: 问题
+keywords:  问题,遇到的问题
+description: 记录遇到的各种问题
 
 ---
 
-{% for tag in site.tags %}
-	{% if tag[0] == page.title %}
+{% for cate in site.categories %}
+	{% if cate[0] == page.title %}
 		<div class="postlist">
-		{% for post in tag[1] %}
+		{% for post in cate[1] %}
 			<h2><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>
 			<div class="postinfo" >
 				<p><span>{{ post.tags }} / {{ post.author }} / {{ post.createdate }}</span></p>
