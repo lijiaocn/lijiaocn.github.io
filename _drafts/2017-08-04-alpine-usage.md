@@ -3,7 +3,7 @@ layout: default
 title: alpine系统的使用
 author: lijiaocn
 createdate: 2017/08/04 11:22:58
-changedate: 2017/08/04 12:32:58
+changedate: 2017/08/29 18:29:16
 categories: 项目
 tags: alpine
 keywords: alpine,usage
@@ -31,6 +31,12 @@ apk info可以查看已经安装的package:
 	apk info
 	apk info -vv
 
+## 设置时区
+
+alpine默认没有时区文件，需要安装：
+
+	apk update && apk add tzdata && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+
 ## telnet
 
 在alpine中用telnet判断网络时联通的时候需要特别注意。
@@ -46,10 +52,10 @@ apk info可以查看已经安装的package:
 	^C
 	Console escape. Commands are:
 	
-	 l	go to line mode
-	 c	go to character mode
-	 z	suspend telnet
-	 e	exit telnet
+	 l  go to line mode
+	 c  go to character mode
+	 z  suspend telnet
+	 e  exit telnet
 	
 	Entering character mode
 	Escape character is '^]'.

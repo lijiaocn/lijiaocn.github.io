@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Shell编程
+title: Shell(bash)编程
 author: lijiaocn
 createdate: 2014/04/30 16:33:01
-changedate: 2017/06/26 15:52:03
+changedate: 2017/09/01 14:53:56
 categories: 编程
 tags: shell
 keywords:
@@ -22,6 +22,24 @@ description:  积累的一些shell用法。
 
 这里使用的是bash，bash兼容sh，并且吸收了ksh和csh的一些特性，`man bash`是最好的文档。
 
+## BASH BUILTIN COMMANDS
+
+### exec
+
+	exec [-cl] [-a name] [command [arguments]]
+	
+	If command is specified, it replaces the shell.  No new process is created.
+	-l: the shell places  a  dash  at the  beginning of  the  zeroth argument passed to command
+	-c: causes command to be executed with an empty environment
+	-a: passes name as the zeroth argument to the executed command
+
+### eval
+
+	eval [arg ...]
+	
+	The args are read and concatenated together into a single command.
+	This command is then read and executed by the shell, and its exit status is returned as the value of eval.  If there are no args, or only null arguments, eval returns 0
+
 ## Bash Options
 
 bash有自己的运行时配置，这里只列举常用的一些参数：
@@ -36,6 +54,14 @@ bash有自己的运行时配置，这里只列举常用的一些参数：
 除了上面的列出的这些，bash还有大量运行时配置，这些配置使用`set`命令设置，例如:
 
 	set [--abefhkmnptuvxBCHP] [-o option] [arg ...]
+
+## ARGUMENTS
+
+## INVOCATION
+
+## DEFINITIONS
+
+## RESERVED WORDS
 
 ## GRAMMER
 
@@ -149,7 +175,7 @@ pipelines通过下面保留字符拼接：
 
 expr是CONDITIONAL EXPRESSIONS。
 
-### function 函数定义
+### Shell Function Definitions
 
 	[ function ] name () compound-command [redirection]
 
@@ -166,6 +192,8 @@ redirection将函数运行是的输入输出做了重定向。
 funciton命令的返回值是0，除非有语法错误或者函数重名。
 
 执行function时，返回的是最后一个命令的退出状态。
+
+## COMMENTS
 
 ## QUOTING (字符转义)
 
@@ -209,11 +237,11 @@ funciton命令的返回值是0，除非有语法错误或者函数重名。
 	readonly
 	local
 
-### 位置变量
+### Positional Parameters
 
 	When a positional parameter consisting of more than a single digit is expanded, it must be enclosed in braces (see EXPANSION below)
 
-### 特殊变量
+### Special Parameters
 
 	*:    如果位于双引号中(例如"$*")，value是将位置参数用$IFS链接起来后结果，整体是一个word
 	@:    如果位于双引号中(例如"$@")，每个位置参数被解读为一个word，是多个word
@@ -246,6 +274,41 @@ Shell的变量比较多，这里不列出
 
 ## EXPANSION
 
+### Brace Expansion
+
+### Tilde Expansion
+
+### Parameter Expansion
+
+	${parameter:-word}:  Use Default Values.
+	${parameter:=word}:  Assign  Default  Values.
+	${parameter:?word}:  Display Error if Null or Unset.
+	${parameter:+word}:  Use Alternate Value.
+	${parameter:offset}:        Substring  Expansion.
+	${parameter:offset:length}: Substring  Expansion.
+	${!prefix*}:   Expands to the names of variables whose names begin with prefix
+	               separated by the first character of the IFS special variable.
+	${!prefix@}:   Expands to the names of variables whose names begin with prefix
+	               separated by the first character of the IFS special variable.
+	${!name[@]}
+	${!name[*]}
+	${#parameter}
+	${parameter#word}
+	${parameter##word}
+	${parameter%word}
+	${parameter%%word}
+	${parameter/pattern/string}
+
+
+### Command Substitution
+
+### Arithmetic Expansion
+
+### Process Substitution
+
+### Word Splitting
+
+### Pathname Expansion
 
 ## REDIRECTION (重定向)
 
