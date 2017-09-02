@@ -1,9 +1,9 @@
 ---
 layout: default
-title: OpenWrt的使用
+title: OpenWrt的使用和管理
 author: lijiaocn
 createdate: 2014/04/25 19:06:24
-changedate: 2017/06/10 13:54:25
+changedate: 2017/09/02 15:21:38
 categories: 项目
 tags: openwrt
 keywords: openwrt

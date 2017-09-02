@@ -3,7 +3,7 @@ layout: default
 title: 在OpenWRT上使用tor
 author: lijiaocn
 createdate: 2017/06/12 21:57:40
-changedate: 2017/06/18 18:14:03
+changedate: 2017/09/02 19:00:11
 categories: 项目
 tags: openwrt tor
 keywords: openwrt,tor,匿名网络,暗网
@@ -16,22 +16,17 @@ description: 将tor内置在Openwrt中，Wi-Fi连接后直接进入tor网络。
 
 ## 安装tor 
 
-可以自己编译openwrt的时候，将tor写在固件里，也可以用opkg安装:
+可以直接用opkg安装:
 
+	opkg update
 	opkg install tor
 
-## 启动tor
+源在/etc/opkg目录下的文件中配置:
 
-	/etc/init.d/tor enable
-	/etc/init.d/tor start
+	$ls /etc/opkg
+	customfeeds.conf  distfeeds.conf    keys
 
-tor的配置文件是/etc/tor/torrc，一般不需要更改，使用默认配置即刻。
-
-默认情况下tor启动后，会在本地创建一个代理:
-
-	127.0.0.1:9050
-
-目标就是将流量从这个代理发出去。
+如果所使用的固件的源中没有tor，只能自己制作固件，参考[Openwrt固件制作][14]。
 
 ## 创建bridge
 
@@ -141,17 +136,32 @@ eth0.3表示是eth0网卡虚拟出的第三个网卡，执行`/etc/init.d/networ
 	iptables -t nat -A PREROUTING -i br-tor -p udp --dport 53 -j REDIRECT --to-ports 9053 
 	iptables -t nat -A POSTROUTING -o br-tor -p udp -s 192.168.10.1 --sport 9053 -j SNAT --to 192.168.10.1:53
 
+或者只允许http和https:
+
+	iptables -t nat -A PREROUTING -i br-tor ! -d 192.168.10.1 -p tcp  --dport 80 --syn -j REDIRECT --to-ports 9040
+	iptables -t nat -A PREROUTING -i br-tor ! -d 192.168.10.1 -p tcp  --dport 443 --syn -j REDIRECT --to-ports 9040
+	iptables -t nat -A PREROUTING -i br-tor -p udp --dport 53 -j REDIRECT --to-ports 9053
+	iptables -t nat -A POSTROUTING -o br-tor -p udp -s 192.168.10.1 --sport 9053 -j SNAT --to 192.168.10.1:53
+
 ## 配置tor
 
 [tor config][5]中介绍了tor的配置项。
 
-配置透明代理和匿名DNS解析:
+tor的配置文件是/etc/tor/torrc，一般不需要更改，使用默认配置即刻。
+
+默认情况下tor启动后，会在本地创建一个代理:
+
+	127.0.0.1:9050
+
+目标就是将流量从这个代理发出去。
+
+可以参考的配置，注意这里配置了透明代理和匿名DNS：
 
 	TransPort 9040
 	TransListenAddress 192.168.10.1
 	DNSPort 9053
 	DNSListenAddress 192.168.10.1
-	VirtualAddrNetwork 10.192.0.0/10 
+	VirtualAddrNetwork 10.192.0.0/10
 	AutomapHostsOnResolve 1
 
 ### 配置Bridge
@@ -217,7 +227,7 @@ eth0.3表示是eth0网卡虚拟出的第三个网卡，执行`/etc/init.d/networ
 
 ### 编译meek
 
-按照上面的张杰准备好go命令后，到meek目录中编译meek:
+按照上面的章节准备好go命令后，到meek目录中编译meek:
 
 	cd meek/meek-client
 	GOPATH=~/GOPATH/ GOARCH=mips32le GOOS=linux go get
@@ -230,10 +240,11 @@ eth0.3表示是eth0网卡虚拟出的第三个网卡，执行`/etc/init.d/networ
 	$file meek-client
 	meek-client: ELF 32-bit LSB executable, MIPS, MIPS32 rel2 version 1 (SYSV), statically linked, not stripped
 
-将其上传的哦openwrt上后，在torrc中添加:
+将其上传到openwrt上后，在torrc中添加:
 
 	ClientTransportPlugin meek exec /root/meek-client --log /var/log/tor/meek-client.log
 	Bridge meek 0.0.2.0:2 B9E7141C594AF25699E0079C1F0146F409495296 url=https://d2cly7j4zqgua7.cloudfront.net/ front=a0.awsstatic.com
+	+Bridge meek 0.0.2.0:3 97700DFE9F483596DDA6264C4D7DF7641E1E39CE url=https://meek.azureedge.net/ front=ajax.aspnetcdn.com
 
 可以在[meek addr][11]中找到可用的meek地址。
 
@@ -257,6 +268,21 @@ eth0.3表示是eth0网卡虚拟出的第三个网卡，执行`/etc/init.d/networ
 
 [install certs on openwrt][13]给出了手动添加证书的方法。
 
+## 启动tor
+
+	/etc/init.d/tor enable
+	/etc/init.d/tor start
+
+如果需要调试，可以在/etc/tor/torc中打开日志:
+
+	Log notice file /var/log/tor/notices.log
+	## Send every possible message to /var/log/tor/debug.log
+	#Log debug file /var/log/tor/debug.log
+	## Use the system log instead of Tor's logfiles
+	Log notice syslog
+	## To send all messages to stderr:
+	#Log debug stderr
+
 ## 参考
 
 1. [Here is the Tor firmware][1]
@@ -272,6 +298,7 @@ eth0.3表示是eth0网卡虚拟出的第三个网卡，执行`/etc/init.d/networ
 11. [meek addr][11]
 12. [go-mips32 compile][12]
 13. [install certs on openwrt][13]
+14. [Openwrt固件制作][14]
 
 [1]: http://www.gl-inet.com/here-is-the-tor-firmware/?lang=en  "Here is the Tor firmware" 
 [2]: https://forum.openwrt.org/viewtopic.php?id=27354 "HOWTO: Transparent TOR proxy" 
@@ -286,3 +313,4 @@ eth0.3表示是eth0网卡虚拟出的第三个网卡，执行`/etc/init.d/networ
 [11]: https://gitweb.torproject.org/builders/tor-browser-bundle.git/tree/Bundle-Data/PTConfigs/bridge_prefs.js "meek addr"
 [12]: https://github.com/xtaci/kcptun/issues/79 "go-mips32 compile"
 [13]: https://wiki.openwrt.org/doc/howto/wget-ssl-certs "install certs on openwrt"
+[14]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2017/06/03/openwrt-build.html  "openwrt固件制作"
