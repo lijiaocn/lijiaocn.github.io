@@ -84,10 +84,6 @@ div.center h2 a{
 }
 
 div.center pre{
-/*
-	font-size: 13px;
-	overflow: auto;
-*/
 	font-family: Inconsolata, Consolas, "DEJA VU SANS MONO", "DROID SANS MONO", Proggy, monospace;
 	font-size: 90%;
 	border: solid 1px lightgrey;
@@ -97,7 +93,7 @@ div.center pre{
 	-webkit-overflow-scrolling:touch;
 	display: block;
 	word-wrap: normal;
-	overflow:scroll;
+	overflow: auto;
 }
 
 div.center pre code{
