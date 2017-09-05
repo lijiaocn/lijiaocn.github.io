@@ -3,7 +3,7 @@ layout: default
 title: 服务器存在较多的FIN_WAIT1和TIME_WAIT状态的连接
 author: lijiaocn
 createdate: 2017/09/05 17:08:50
-changedate: 2017/09/05 18:24:57
+changedate: 2017/09/05 18:34:02
 categories: 问题
 tags: linuxnet
 keywords: FIN_WAIT1,tcp,linux
@@ -49,6 +49,8 @@ description: 发现linux服务器上的FIN_WAIT1状态的连接持续很长时�
 	sysctl -p
 
 ## 附录：参数说明
+
+[linux上TCP连接的状态、超时时间和状态观察][1]中有更详细的介绍，这里只摘取了一部分。
 
 ### tcp_tw_recycle
 
