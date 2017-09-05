@@ -3,7 +3,7 @@ layout: default
 title: HAProxy的使用
 author: lijiaocn
 createdate: 2017/06/26 10:40:02
-changedate: 2017/08/22 09:25:37
+changedate: 2017/09/04 15:36:46
 categories: 项目
 tags: lb
 keywords:  haproxy,lb 
@@ -14,7 +14,13 @@ description:  负载均衡器haproxy的使用
 * auto-gen TOC:
 {:toc}
 
-## 配置文件
+## 启动
+
+[haproxy management guide][10]中详细说明了如何运行haproxy。
+
+## haproxy的时间配置
+
+haproxy
 
 ## 重新加载配置
 
@@ -200,6 +206,7 @@ description:  负载均衡器haproxy的使用
 7. [haproxy with datadog][7]
 8. [haproxy proxy keywords][8]
 9. [unix socket cmds][9]
+10. [haproxy management guide][10]
 
 [1]: http://www.haproxy.org/  "haproxy site" 
 [2]: http://www.haproxy.org/#doc1.7 "haproxy doc v1.7"
@@ -210,3 +217,4 @@ description:  负载均衡器haproxy的使用
 [7]: https://www.datadoghq.com/blog/monitor-haproxy-with-datadog/ "haproxy with datadog"
 [8]: http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#4.1 "haproxy proxy keywords"
 [9]: http://cbonte.github.io/haproxy-dconv/1.7/management.html#9.3 "unix socket cmds"
+[10]: http://cbonte.github.io/haproxy-dconv/1.7/management.html
