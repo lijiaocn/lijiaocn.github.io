@@ -1,13 +1,13 @@
 ---
 layout: default
-title: haproxy监听端口偶尔连接失败的问题调查
+title: 连接haproxy间歇性失败的问题调查
 author: lijiaocn
 createdate: 2017/09/04 09:39:54
-changedate: 2017/09/05 09:35:18
+changedate: 2017/09/05 09:44:41
 categories: 问题
 tags: haproxy
 keywords: haproxy，
-description: 发现运行一端时间后会出现client连接haproxy的监听端口间歇性失败的情况，重启haproxy后恢复
+description: 运行一端时间后会出现client连接haproxy间歇性失败的情况，重启haproxy后恢复
 
 ---
 
@@ -18,7 +18,11 @@ description: 发现运行一端时间后会出现client连接haproxy的监听端
 
 haproxy运行在容器中，一个agent会管理haproxy，频繁地设置规则，频繁地对haproxy进行reload操作。
 
-发现运行一端时间后会出现client连接haproxy的监听端口间歇性失败的情况，重启haproxy后恢复。
+发现运行一端时间后会出现client连接haproxy的间歇性失败的情况，重启haproxy后恢复。
+
+抓包观察时发现，client向haproxy发起连接后一直在等待，而haproxy并没有与backend建立连接。
+
+因现场丢失，下面的调查是在还未出现故障的环境中进行的。
 
 ## 准备
 
