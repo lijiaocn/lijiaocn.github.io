@@ -3,7 +3,7 @@ layout: default
 title: linux上TCP连接的状态、超时时间和状态观察
 author: lijiaocn
 createdate: 2017/09/04 19:24:20
-changedate: 2017/09/05 17:28:55
+changedate: 2017/09/05 18:11:12
 categories: 技巧
 tags: linuxnet
 keywords: tcp,linux,timeout,tcp连接状态
@@ -586,6 +586,12 @@ Default: 0x1
 
 	RFC 1122 recommends at least 100 seconds for the timeout,
 	which corresponds to a value of at least 8.
+
+#### tcp_tw_recycle
+
+开启tcp连接中TIME-WAIT的socket的快速回收功能，默认为0，表示关闭。
+
+注: 内核文档没有介绍这个参数.
 
 ## 参考
 

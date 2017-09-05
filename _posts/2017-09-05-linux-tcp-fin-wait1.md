@@ -1,9 +1,9 @@
 ---
 layout: default
-title: 服务器存在较多的FIN_WAIT1状态的连接
+title: 服务器存在较多的FIN_WAIT1和TIME_WAIT状态的连接
 author: lijiaocn
 createdate: 2017/09/05 17:08:50
-changedate: 2017/09/05 17:38:39
+changedate: 2017/09/05 18:24:57
 categories: 问题
 tags: linuxnet
 keywords: FIN_WAIT1,tcp,linux
@@ -29,7 +29,7 @@ description: 发现linux服务器上的FIN_WAIT1状态的连接持续很长时�
 	    280 TIME_WAIT
 	   1548 ESTABLISHED
 
-## 解决
+## FIN_WAIT1的解决
 
 有三个内核参数会影响到FIN_WAIT1状态的连接的存在：`tcp_max_orphans`，`tcp_retries2`，`tcp_orphan_retries`。
 
@@ -40,7 +40,32 @@ description: 发现linux服务器上的FIN_WAIT1状态的连接持续很长时�
 	echo "net.ipv4.tcp_orphan_retries=1" >> /etc/sysctl.conf
 	sysctl -p
 
+## TIME_WAIT的解决
+
+按照TCP的协议TIME_WAIT等待的时间为2MSL，可以设置参数快速回收处于TIME_WAIT状态的socket。
+
+	echo "net.ipv4.tcp_tw_reuse=1"   >>/etc/sysctl.conf
+	echo "net.ipv4.tcp_tw_recycle=1" >>/etc/sysctl.conf
+	sysctl -p
+
 ## 附录：参数说明
+
+### tcp_tw_recycle
+
+开启tcp连接中TIME-WAIT的socket的快速回收功能，默认为0，表示关闭。
+
+注: 内核文档没有介绍这个参数.
+
+### tcp_tw_reuse
+
+	Allow to reuse TIME-WAIT sockets for new connections when it is
+	safe from protocol viewpoint. Default value is 0.
+	It should not be changed without advice/request of technical
+	experts.
+
+允许重用位于TIME-WAIT状态的socket，默认关闭。
+
+注意：打开这个选项，可以减少TIME-WAIT状态的连接。
 
 ### tcp_max_orphans
 
@@ -55,7 +80,7 @@ description: 发现linux服务器上的FIN_WAIT1状态的连接持续很长时�
 	more aggressively. Let me to remind again: each orphan eats
 	up to ~64K of unswappable memory.
 
-#### tcp_retries2
+### tcp_retries2
 
 	This value influences the timeout of an alive TCP connection,
 	when RTO retransmissions remain unacknowledged.
@@ -71,7 +96,7 @@ description: 发现linux服务器上的FIN_WAIT1状态的连接持续很长时�
 	RFC 1122 recommends at least 100 seconds for the timeout,
 	which corresponds to a value of at least 8.
 
-#### tcp_orphan_retries
+### tcp_orphan_retries
 
 	This value influences the timeout of a locally closed TCP connection,
 	when RTO retransmissions remain unacknowledged.

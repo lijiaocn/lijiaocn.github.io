@@ -3,7 +3,7 @@ layout: default
 title: 连接haproxy间歇性失败的问题调查
 author: lijiaocn
 createdate: 2017/09/04 09:39:54
-changedate: 2017/09/05 17:28:34
+changedate: 2017/09/05 18:18:15
 categories: 问题
 tags: haproxy
 keywords: haproxy，
@@ -158,6 +158,12 @@ CLOSE_WAIT和FIN_WAIT2的连接基本是一一对应的关系，可以推测：
 调整内核参数：
 
 	echo "net.ipv4.tcp_orphan_retries=1" >> /etc/sysctl.conf
+	sysctl -p
+
+调整内核参数，快速回收TIME_WAIT状态的socket：
+
+	echo "net.ipv4.tcp_tw_reuse=1"   >>/etc/sysctl.conf
+	echo "net.ipv4.tcp_tw_recycle=1" >>/etc/sysctl.conf
 	sysctl -p
 
 ## 结论
