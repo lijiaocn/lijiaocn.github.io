@@ -3,9 +3,9 @@ layout: default
 title: yeoman的初次使用
 author: lijiaocn
 createdate: 2015/11/26 13:50:55
-changedate: 2017/05/20 15:58:28
-categories: 前端
-tags: yeoman
+changedate: 2017/09/04 21:45:14
+categories: 技巧
+tags: 前端
 keywords:
 description: yeoman是一套前端工作中用到的脚手架，在了解前端技术时遇到的。
 
