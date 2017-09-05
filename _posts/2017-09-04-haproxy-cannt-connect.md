@@ -3,7 +3,7 @@ layout: default
 title: 连接haproxy间歇性失败的问题调查
 author: lijiaocn
 createdate: 2017/09/04 09:39:54
-changedate: 2017/09/05 09:44:41
+changedate: 2017/09/05 17:28:34
 categories: 问题
 tags: haproxy
 keywords: haproxy，
@@ -139,6 +139,26 @@ CLOSE_WAIT和FIN_WAIT2的连接基本是一一对应的关系，可以推测：
 通过查阅[haproxy configuration][4]手册，得知haproxy使用配置项`timeout client-fin`设置FIN_WAIT的时间。
 
 在调查的目标环境中，没有设置这个配置项，默认使用`timeout client`，而目标环境中的timeout时间是一天。
+
+## 调查2
+
+调整了超时时间后，再次观察，发现系统中处于`FIN_WAIT1`状态的连接有几十个，并且持续时间很长。
+
+	$netstat -nat|awk '{print awk $NF}'|sort|uniq -c|sort -n
+	      1 CLOSE_WAIT
+	      1 FIN_WAIT2
+	      1 State
+	      1 established)
+	      3 LAST_ACK
+	     30 FIN_WAIT1
+	    151 LISTEN
+	    280 TIME_WAIT
+	   1548 ESTABLISHED
+
+调整内核参数：
+
+	echo "net.ipv4.tcp_orphan_retries=1" >> /etc/sysctl.conf
+	sysctl -p
 
 ## 结论
 

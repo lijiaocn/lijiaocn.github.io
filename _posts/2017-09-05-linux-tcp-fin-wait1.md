@@ -1,0 +1,109 @@
+---
+layout: default
+title: 服务器存在较多的FIN_WAIT1状态的连接
+author: lijiaocn
+createdate: 2017/09/05 17:08:50
+changedate: 2017/09/05 17:29:49
+categories: 问题
+tags: linuxnet
+keywords: FIN_WAIT1,tcp,linux
+description: 发现linux服务器上的FIN_WAIT1状态的连接持续很长时间
+
+---
+
+* auto-gen TOC:
+{:toc}
+
+## 现象 
+
+发现linux服务器上的FIN_WAIT1状态的连接持续很长时间。
+
+	$netstat -nat|awk '{print awk $NF}'|sort|uniq -c|sort -n
+	      1 CLOSE_WAIT
+	      1 FIN_WAIT2
+	      1 State
+	      1 established)
+	      3 LAST_ACK
+	     30 FIN_WAIT1
+	    151 LISTEN
+	    280 TIME_WAIT
+	   1548 ESTABLISHED
+
+## 解决
+
+有三个内核参数会影响到FIN_WAIT1状态的连接的存在：`tcp_max_orphans`，`tcp_retries2`，`tcp_orphan_retries`。
+
+注意，参数`tcp_fin_timeout`对FIN_WAIT1状态的连接无影响，它设置的是FIN_WAIT2状态的等待时间。
+
+将`tcp_orphan_retries`设置为1:
+
+	echo "net.ipv4.tcp_orphan_retries=1" >> /etc/sysctl.conf
+	sysctl -p
+
+## 附录：参数说明
+
+### tcp_max_orphans
+
+	Maximal number of TCP sockets not attached to any user file handle,
+	held by system.	If this number is exceeded orphaned connections are
+	reset immediately and warning is printed. This limit exists
+	only to prevent simple DoS attacks, you _must_ not rely on this
+	or lower the limit artificially, but rather increase it
+	(probably, after increasing installed memory),
+	if network conditions require more than default value,
+	and tune network services to linger and kill such states
+	more aggressively. Let me to remind again: each orphan eats
+	up to ~64K of unswappable memory.
+
+#### tcp_retries2
+
+	This value influences the timeout of an alive TCP connection,
+	when RTO retransmissions remain unacknowledged.
+	Given a value of N, a hypothetical TCP connection following
+	exponential backoff with an initial RTO of TCP_RTO_MIN would
+	retransmit N times before killing the connection at the (N+1)th RTO.
+
+	The default value of 15 yields a hypothetical timeout of 924.6
+	seconds and is a lower bound for the effective timeout.
+	TCP will effectively time out at the first RTO which exceeds the
+	hypothetical timeout.
+
+	RFC 1122 recommends at least 100 seconds for the timeout,
+	which corresponds to a value of at least 8.
+
+#### tcp_orphan_retries
+
+	This value influences the timeout of a locally closed TCP connection,
+	when RTO retransmissions remain unacknowledged.
+	See tcp_retries2 for more details.
+	
+	The default value is 8.
+	If your machine is a loaded WEB server,
+	you should think about lowering this value, such sockets
+	may consume significant resources. Cf. tcp_max_orphans.
+
+注意： 0表示默认值，也就是8。
+
+	/* Calculate maximal number or retries on an orphaned socket. */
+	static int tcp_orphan_retries(struct sock *sk, int alive)
+	{
+	         int retries = sysctl_tcp_orphan_retries; /* May be zero. */
+	 
+	         /* We know from an ICMP that something is wrong. */
+	         if (sk->sk_err_soft && !alive)
+	                 retries = 0;
+	 
+	         /* However, if socket sent something recently, select some safe
+	          * number of retries. 8 corresponds to >100 seconds with minimal
+	          * RTO of 200msec. */
+	         if (retries == 0 && alive)
+	                 retries = 8;
+	         return retries;
+	}
+## 参考
+
+1. [文献1][1]
+2. [文献2][2]
+
+[1]: 1.com  "文献1" 
+[2]: 2.com  "文献1" 
