@@ -3,7 +3,7 @@ layout: default
 title: 服务器存在较多的FIN_WAIT1状态的连接
 author: lijiaocn
 createdate: 2017/09/05 17:08:50
-changedate: 2017/09/05 17:29:49
+changedate: 2017/09/05 17:38:39
 categories: 问题
 tags: linuxnet
 keywords: FIN_WAIT1,tcp,linux
@@ -100,10 +100,11 @@ description: 发现linux服务器上的FIN_WAIT1状态的连接持续很长时�
 	                 retries = 8;
 	         return retries;
 	}
+
 ## 参考
 
-1. [文献1][1]
-2. [文献2][2]
+1. [linux上TCP连接的状态、超时时间和状态观察][1]
+2. [What does tcp_orphan_retries set to 0 mean?][2]
 
-[1]: 1.com  "文献1" 
-[2]: 2.com  "文献1" 
+[1]: http://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2017/09/04/linux-net-tcp.html  "linux上TCP连接的状态、超时时间和状态观察" 
+[2]: https://serverfault.com/questions/274212/what-does-tcp-orphan-retries-set-to-0-mean/408882#408882 "What does tcp_orphan_retries set to 0 mean?"

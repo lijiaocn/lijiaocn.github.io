@@ -3,9 +3,9 @@ layout: default
 title: HAProxy的使用
 author: lijiaocn
 createdate: 2017/06/26 10:40:02
-changedate: 2017/09/04 15:36:46
-categories: 项目
-tags: lb
+changedate: 2017/09/05 18:06:47
+categories: 技巧
+tags: haproxy
 keywords:  haproxy,lb 
 description:  负载均衡器haproxy的使用
 
