@@ -3,7 +3,7 @@ layout: default
 title: postgres数据库的基本使用
 author: lijiaocn
 createdate: 2017/08/31 09:43:20
-changedate: 2017/09/01 15:56:39
+changedate: 2017/09/08 14:26:42
 categories: 技巧
 tags: database
 keywords: posgres,postgresql,database
@@ -21,6 +21,12 @@ postgresql是一个老牌的数据库，它的文档[postgresql manuals][1]中�
 ## 命令行psql
 
 posgresql的client是psql，通过`psql --help`可以查看具体用法。
+
+在mac上可以用brew安装psql:
+
+	 brew install pgcli
+	 echo 'export PATH="/usr/local/opt/libpq/bin:$PATH"' >> ~/.bash_profile
+	 source ~/.bash_profile
 
 登录数据库:
 
@@ -72,9 +78,131 @@ posgresql的client是psql，通过`psql --help`可以查看具体用法。
 
 通过查看镜像docker.io/postgres可以知道，容器的entrypoint是镜像中的脚本`docker-entrypoint.sh`。该脚本运行的时候会自动创建用户，并执行目录`/docker-entrypoint-initdb.d`中的.sh、.sql和.sql.gz文件。
 
+## SQL基本操作
+
+### ROLE
+
+创建role，postgres的中的`role`比`user`的包含更多的内容，user是可以login的role。
+
+	CREATE ROLE name;
+	DROP ROLE name;
+
+所有的role信息存放在`pg_roles`表中：
+
+	SELECT rolname FROM pg_roles;
+
+为了方便，pg支持了下面的命令:
+
+	createuser name
+	dropuser name
+
+默认会有一个名为`postgres`的`superuser`。
+
+[create role][3]的语法：
+
+	CREATE ROLE name [ [ WITH ] option [ ... ] ]
+	
+	where option can be:
+	
+	      SUPERUSER | NOSUPERUSER
+	    | CREATEDB | NOCREATEDB
+	    | CREATEROLE | NOCREATEROLE
+	    | CREATEUSER | NOCREATEUSER
+	    | INHERIT | NOINHERIT
+	    | LOGIN | NOLOGIN
+	    | REPLICATION | NOREPLICATION
+	    | CONNECTION LIMIT connlimit
+	    | [ ENCRYPTED | UNENCRYPTED ] PASSWORD 'password'
+	    | VALID UNTIL 'timestamp'
+	    | IN ROLE role_name [, ...]
+	    | IN GROUP role_name [, ...]
+	    | ROLE role_name [, ...]
+	    | ADMIN role_name [, ...]
+	    | USER role_name [, ...]
+	    | SYSID uid
+
+可以设置role的属性:
+
+	login privilege:         CREATE ROLE name LOGIN;
+	superuser status:        CREATE ROLE name SUPERUSER;
+	database creation:       CREATE ROLE name CREATEDB;
+	role creation:           CREATE ROLE name CREATEROLE;
+	initiating replication:  CREATE ROLE name REPLICATION LOGIN;
+	password:                CREATE ROLE name PASSWORD 'string';
+
+使用[alter role][2]修改role的属性。
+
+	ALTER ROLE name [ [ WITH ] option [ ... ] ]
+	
+	where option can be:
+	
+	      SUPERUSER | NOSUPERUSER
+	    | CREATEDB | NOCREATEDB
+	    | CREATEROLE | NOCREATEROLE
+	    | CREATEUSER | NOCREATEUSER
+	    | INHERIT | NOINHERIT
+	    | LOGIN | NOLOGIN
+	    | REPLICATION | NOREPLICATION
+	    | CONNECTION LIMIT connlimit
+	    | [ ENCRYPTED | UNENCRYPTED ] PASSWORD 'password'
+	    | VALID UNTIL 'timestamp'
+	
+	ALTER ROLE name RENAME TO new_name
+	
+	ALTER ROLE { name | ALL } [ IN DATABASE database_name ] SET configuration_parameter { TO | = } { value | DEFAULT }
+	ALTER ROLE { name | ALL } [ IN DATABASE database_name ] SET configuration_parameter FROM CURRENT
+	ALTER ROLE { name | ALL } [ IN DATABASE database_name ] RESET configuration_parameter
+	ALTER ROLE { name | ALL } [ IN DATABASE database_name ] RESET ALL
+
+### database 
+
+连接postgres数据库的时候必须指定目标数据库，因此第一个database是用`initdb`命令创建的。
+
+	The first database is always created by the initdb command when the data storage area is initialized. 
+
+postgres支持数据库模版，数据库可以从模版创建，如果模版修改了，所有从这个模版创建的数据库都会随之修改。
+
+数据库的创建语法:
+
+	CREATE DATABASE name
+	    [ [ WITH ] [ OWNER [=] user_name ]
+	           [ TEMPLATE [=] template ]
+	           [ ENCODING [=] encoding ]
+	           [ LC_COLLATE [=] lc_collate ]
+	           [ LC_CTYPE [=] lc_ctype ]
+	           [ TABLESPACE [=] tablespace_name ]
+	           [ CONNECTION LIMIT [=] connlimit ] ]
+
+创建数据库：
+
+	create database secured;
+
+修改数据库:
+
+	ALTER DATABASE mydb SET geqo TO off;
+	ALTER DATABASE dbname RESET varname
+
+删除数据库:
+
+	DROP DATABASE name;
+
+用`grant`赋予role操作database的权限：
+
+	GRANT { { CREATE | CONNECT | TEMPORARY | TEMP } [, ...] | ALL [ PRIVILEGES ] }
+	    ON DATABASE database_name [, ...]
+	    TO { [ GROUP ] role_name | PUBLIC } [, ...] [ WITH GRANT OPTION ]
+
+## 执行脚本
+
+
 ## 参考
 
 1. [postgresql manuals][1]
+2. [alter role][2]
+3. [create role][3]
+4. [sql commands][4]
 
 [1]: https://www.postgresql.org/docs/manuals/  "postgresql manuals" 
-
+[2]: https://www.postgresql.org/docs/9.4/static/sql-alterrole.html  "alter role"
+[3]: https://www.postgresql.org/docs/9.4/static/sql-createrole.html "create role"
+[4]: https://www.postgresql.org/docs/9.4/static/sql-commands.html "postgres sql commands"
