@@ -3,7 +3,7 @@ layout: default
 title: 连接haproxy间歇性失败的问题调查
 author: lijiaocn
 createdate: 2017/09/04 09:39:54
-changedate: 2017/09/05 18:43:37
+changedate: 2017/09/06 13:41:24
 categories: 问题
 tags: haproxy
 keywords: haproxy，
@@ -35,7 +35,7 @@ haproxy运行在容器中，一个agent会管理haproxy，频繁地设置规则�
 haproxy在启动时候可以用`-sf`和`-st`指定一组进程号：
 
 	-sf:  新启动的haproxy将向指定的进程发送SIGUSR1信号，目标haproxy graceful stop
-	-st:  新启动的haproxy将向指定的进程发送SIGUSR1信号，目标haproxy直接退出
+	-st:  新启动的haproxy将向指定的进程发送SIGTERM信号，目标haproxy直接退出
 
 [stopping and restarting haproxy][2]详细介绍了haproxy的启动过程：
 
@@ -59,6 +59,8 @@ haproxy在启动时候可以用`-sf`和`-st`指定一组进程号：
 对于窗口2，可以通过在reload操作前1s中的时候，设置防火墙规则，禁止SYN报文通过，使client端重传报文。
 
 这两个时间窗口导致连接失败的概率大概是：在1秒内，每10000个新建连接，会出现1次失败。
+
+yelp在这方面做过一些工作：[True Zero Downtime HAProxy Reloads][6]。
 
 ## 调查1
 
@@ -273,9 +275,11 @@ haproxy1.7中有11个以`timeout`开头的[配置][5]。
 3. [tcp状态][3]
 4. [haproxy configuration][4]
 5. [haproxy keywords matrix][5]
+6. [True Zero Downtime HAProxy Reloads][6]
 
 [1]: http://cbonte.github.io/haproxy-dconv/1.7/management.html  "haproxy management guide" 
 [2]: http://cbonte.github.io/haproxy-dconv/1.7/management.html#4 "stopping and restarting haproxy"
 [3]: http://www.cnblogs.com/qlee/archive/2011/07/12/2104089.html "tcp状态"
 [4]: http://cbonte.github.io/haproxy-dconv/1.7/configuration.html  "haproxy configuration"
 [5]: http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#4.1 "haproxy proxy keywords matrix"
+[6]: https://engineeringblog.yelp.com/2015/04/true-zero-downtime-haproxy-reloads.html "True Zero Downtime HAProxy Reloads"
