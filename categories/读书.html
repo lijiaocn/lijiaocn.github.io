@@ -1,0 +1,23 @@
+---
+layout: category
+title:  读书
+keywords:  读书,好书精选,读书笔记
+description: 读书笔记，优质好书的读书笔记。
+
+---
+
+{% for cate in site.categories %}
+	{% if cate[0] == page.title %}
+		<div class="postlist">
+		{% for post in cate[1] %}
+			<h2><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>
+			<div class="postinfo" >
+				<p><span>{{ post.tags }} / {{ post.author }} / {{ post.createdate }}</span></p>
+			</div>
+			<div class="postdesc">
+				<p>{{ post.description }}... <a href="{{ site.baseurl }}{{ post.url }}">more</a><p>
+			</div>
+		{% endfor %}
+		</div>
+	{% endif %}
+{% endfor %}
