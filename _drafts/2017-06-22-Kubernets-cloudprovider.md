@@ -5,7 +5,7 @@ author: lijiaocn
 createdate: 2017/06/22 14:05:20
 changedate: 2017/06/23 10:11:29
 categories: 项目
-tags: k8s
+tags: kubernetes
 keywords:cloudprivider,kubernetes
 description:  k8s自身定位为容器管理、编排系统，可以支持多个IaaS平台。
 

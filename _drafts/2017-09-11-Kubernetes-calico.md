@@ -1,12 +1,12 @@
 ---
 layout: default
-title: 代理抓包工具
+title: Kubernetes与calico的衔接过程
 author: lijiaocn
-createdate: 2017/05/05 10:21:07
-changedate: 2017/05/05 10:58:40
-categories:
-tags: kubernetes
-keywords: 代理抓包
+createdate: 2017/09/11 16:45:48
+changedate: 2017/09/11 16:46:33
+categories: 项目
+tags: kubernetes calico
+keywords: k8s,kubernets,calico
 description: 
 
 ---
@@ -14,9 +14,7 @@ description:
 * auto-gen TOC:
 {:toc}
 
-## 代理抓包与wireshark的区别
-
-代理抓包工具
+# 
 
 文献是这样引用的: [文献1][1]、[文献2][2]。
 

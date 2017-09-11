@@ -5,7 +5,7 @@ author: lijiaocn
 createdate: 2017/05/24 09:39:25
 changedate: 2017/05/24 09:47:21
 categories: 项目
-tags: k8s
+tags: kubernetes
 keywords: minikube,kubernetes,k8s
 description: minikube是社区维护的一个用于在本地运行kubernetes的工具。
 

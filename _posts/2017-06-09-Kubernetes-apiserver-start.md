@@ -5,7 +5,7 @@ author: lijiaocn
 createdate: 2017/06/09 15:57:36
 changedate: 2017/06/13 11:20:42
 categories: 项目
-tags: k8s
+tags: kubernetes
 keywords: kubernetes,apiserver
 description: v1.6.4的版本对apiserver的启动过程的代码做了大量修改，结构更为清晰
 

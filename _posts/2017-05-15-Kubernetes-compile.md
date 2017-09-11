@@ -5,7 +5,7 @@ author: lijiaocn
 createdate: 2017/05/15 15:25:04
 changedate: 2017/06/26 10:00:57
 categories: 项目
-tags: k8s
+tags: kubernetes
 keywords: k8s,kubernetes,compile,编译
 description: kubernetes编译有两种方式，直接编译和在docker中编译。
 

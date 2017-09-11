@@ -3,7 +3,7 @@ layout: default
 title: linux系统的负载查看
 author: lijiaocn
 createdate: 2017/09/05 18:45:46
-changedate: 2017/09/05 19:15:03
+changedate: 2017/09/11 16:44:41
 categories: 技巧
 tags: linux
 keywords: linux,load,top
@@ -36,7 +36,6 @@ load average分别是最近1分钟、5分钟、15分钟的系统平均负载。
 系统负载是系统中处于`running`和`runnable`状态进程数量，平均负载就是指定时间范围内的平均数量。
 
 系统load为CPU核心数目的70%比较合适，如果超过CPU核心数，意味着任务过多，CPU不足。
-
 
 ## 参考
 

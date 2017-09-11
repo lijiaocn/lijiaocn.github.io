@@ -5,7 +5,7 @@ author: lijiaocn
 createdate: 2017/03/06 11:59:43
 changedate: 2017/04/26 16:52:52
 categories: 项目
-tags: k8s
+tags: kubernetes
 keywords: kubernetes,业务编排,centos
 description: 介绍了如何在CentOS上部署kubernetes系统。
 

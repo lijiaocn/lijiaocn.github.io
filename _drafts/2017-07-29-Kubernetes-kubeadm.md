@@ -5,7 +5,7 @@ author: lijiaocn
 createdate: 2017/07/29 18:04:34
 changedate: 2017/08/06 17:01:30
 categories: 项目
-tags: k8s 
+tags: kubernetes 
 keywords: kubeadm,k8s
 description:  使用kubeadm部署kubernetes系统
 

@@ -5,7 +5,7 @@ author: lijiaocn
 createdate: 2017/06/09 09:37:14
 changedate: 2017/06/09 11:14:59
 categories: 项目
-tags: k8s
+tags: kubernetes
 keywords: kubernetes,api
 description:  kubernetes的api资源的定义，和使用方式。
 

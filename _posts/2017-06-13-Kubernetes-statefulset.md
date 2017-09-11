@@ -5,7 +5,7 @@ author: lijiaocn
 crjiaob patch pod mongo-petset-0 -p '{"metadata":{"annotations":{"pod.alpha.kubernetes.io/initialized":"true"}}}'eatedate: 2017/06/13 17:02:14
 changedate: 2017/06/21 13:14:53
 categories: 项目
-tags: k8s
+tags: kubernetes
 keywords: kubernetes,petset,statefulset
 description: 在kubernetes可以通过statefulset(1.4版本中是petset)部署有状态的复杂的分布式系统
 

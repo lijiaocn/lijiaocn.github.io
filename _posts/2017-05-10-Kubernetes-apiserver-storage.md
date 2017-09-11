@@ -5,7 +5,7 @@ author: lijiaocn
 createdate: 2017/05/10 11:12:12
 changedate: 2017/06/09 15:19:29
 categories: 项目
-tags: k8s
+tags: kubernetes
 keywords: kubernetes,etcd,apiserver
 description: Kubernetes中只有apiserver会直接使用etcd，其它的组件与apiserver交互，不会直接访问etcd。
 

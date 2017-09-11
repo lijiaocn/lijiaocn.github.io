@@ -5,7 +5,7 @@ author: lijiaocn
 createdate: 2017/05/24 09:11:37
 changedate: 2017/06/23 17:03:04
 categories: 项目
-tags: k8s
+tags: kubernetes
 keywords: kubernetes,k8s,kubeadm,deploy
 description: kubeadm是k8s社区维护的一个自动部署kubernetes的工具。
 

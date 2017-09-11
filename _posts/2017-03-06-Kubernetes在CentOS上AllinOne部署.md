@@ -5,7 +5,7 @@ author: lijiaocn
 createdate: 2017/03/27 18:50:37
 changedate: 2017/04/10 09:34:47
 categories: 项目
-tags: k8s
+tags: kubernetes
 keywords: kubernets部署,centos,allinone
 description: 记录了部署一个All IN ONE的Kuberntes集群的过程，操作系统为CentOS。
 

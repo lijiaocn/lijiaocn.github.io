@@ -5,7 +5,7 @@ author: lijiaocn
 createdate: 2017/05/03 17:09:37
 changedate: 2017/06/13 11:37:41
 categories: 项目
-tags: k8s
+tags: kubernetes
 keywords: kubernete,pod,receive,变更通知
 description: kubelet是如何接收到pod的变更通知的？
 

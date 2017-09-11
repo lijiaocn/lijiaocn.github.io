@@ -5,7 +5,7 @@ author: lijiaocn
 createdate: 2017/05/02 10:03:20
 changedate: 2017/06/22 13:09:03
 categories: 项目
-tags: k8s
+tags: kubernetes
 keywords: kubelet,kubelete,工作流程,源码走读
 description: kubernetes中pod的创建过程，kubelet从启动到运行
 

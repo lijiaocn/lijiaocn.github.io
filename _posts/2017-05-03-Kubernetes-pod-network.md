@@ -5,7 +5,7 @@ author: lijiaocn
 createdate: 2017/05/03 09:30:33
 changedate: 2017/06/13 11:27:23
 categories: 项目
-tags: k8s
+tags: kubernetes
 keywords: kuberntes,pod,network
 description: kubernetes的pod网络设置过程分析,pod的网络由kubelet负责在pod创建时设置。
 

@@ -5,7 +5,7 @@ author: lijiaocn
 createdate: 2017/08/11 15:07:39
 changedate: 2017/08/11 16:16:32
 categories: 见解
-tags: k8s network
+tags: kubernetes network
 keywords: kubernetes,network
 description: kubernetes的一种网络部署方式
 

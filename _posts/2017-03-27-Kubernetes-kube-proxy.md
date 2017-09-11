@@ -5,7 +5,7 @@ author: lijiaocn
 createdate: 2017/03/27 10:16:55
 changedate: 2017/05/10 11:22:22
 categories: 项目
-tags: k8s
+tags: kubernetes
 keywords: kube-proxy转发规则分析
 description:  kube-proxy转发规则分析
 

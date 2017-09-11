@@ -5,7 +5,7 @@ author: lijiaocn
 createdate: 2017/08/08 10:16:21
 changedate: 2017/08/11 15:07:20
 categories: 项目
-tags: k8s
+tags: kubernetes
 keywords: kubernetes,产品化
 description: docker公司的docker-ee，coreos公司的tectonic、mesosphere公司的dc/os和rancher、hyper公司的产品大概是现在最能引领容器管理平台潮流的作品了。
 
