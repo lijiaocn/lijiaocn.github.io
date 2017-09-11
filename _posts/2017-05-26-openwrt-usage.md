@@ -3,8 +3,8 @@ layout: default
 title: OpenWrt的使用和管理
 author: lijiaocn
 createdate: 2014/04/25 19:06:24
-changedate: 2017/09/02 15:21:38
-categories: 项目
+changedate: 2017/09/11 16:18:05
+categories: 技巧
 tags: openwrt
 keywords: openwrt
 description: Openwrt是开源的路由器系统，可以安装在多种硬件平台上。

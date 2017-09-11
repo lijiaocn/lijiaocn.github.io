@@ -3,8 +3,8 @@ layout: default
 title: 在OpenWRT上使用tor
 author: lijiaocn
 createdate: 2017/06/12 21:57:40
-changedate: 2017/09/02 19:00:11
-categories: 项目
+changedate: 2017/09/11 16:18:18
+categories: 技巧
 tags: openwrt tor
 keywords: openwrt,tor,匿名网络,暗网
 description: 将tor内置在Openwrt中，Wi-Fi连接后直接进入tor网络。

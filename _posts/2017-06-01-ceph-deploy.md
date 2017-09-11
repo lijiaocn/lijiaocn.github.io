@@ -3,8 +3,8 @@ layout: default
 title: Ceph集群的部署
 author: lijiaocn
 createdate: 2017/06/01 13:13:26
-changedate: 2017/07/19 19:54:24
-categories: 项目
+changedate: 2017/09/11 16:17:03
+categories: 技巧
 tags: ceph
 keywords: ceph,ceph-deploy
 description: ceph的部署相对复杂，如果不了解ceph的工作原理操作起来会更困难，ceph-deploy是ceph的一个集群部署工具
