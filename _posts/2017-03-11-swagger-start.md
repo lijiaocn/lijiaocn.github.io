@@ -3,8 +3,8 @@ layout: default
 title: Swagger初次使用
 author: lijiaocn
 createdate: 2017/03/11 19:06:24
-changedate: 2017/05/17 09:40:39
-categories: 项目
+changedate: 2017/09/11 16:14:45
+categories: 技巧
 tags: swagger
 keywords: swagger,restful
 description: Swagger是一种描述RESTful APIs的方法（Specification）。它对REST API做了系统的整理，提出一套完整的描述方式。配套的UI工具（swagger-ui）和代码生成器器
