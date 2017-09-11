@@ -3,9 +3,9 @@ layout: default
 title: 《一本书读懂财报》
 author: lijiaocn
 createdate: 2017/09/09 18:47:08
-changedate: 2017/09/12 00:07:06
+changedate: 2017/09/12 00:21:24
 categories: 读书
-tags:　证券投资
+tags: 证券投资
 keywords: 财务报表,读懂财报,一本书读懂
 description:  这是清华大学经济管理学院会计系系主任肖星教授在2014年完成著作，当时肖星教授在清华为MBA学生讲授财务报表分析课已经整整16年。
 
@@ -466,4 +466,3 @@ description:  这是清华大学经济管理学院会计系系主任肖星教授
 [1]: https://www.amazon.cn/gp/product/B00LIHW81S/ref=as_li_ss_tl?ie=UTF8&camp=536&creative=3132&creativeASIN=B00LIHW81S&linkCode=as2&tag=znrio-23 "亚马逊购买地址" 
 [2]: https://c.duomai.com/track.php?k=Hdo1Ddm42YvFWaqlGb9QWa1VmJxYTPklWYmIDO0QjMy0DZp9VZ0l2cmYCbtRHauEDN3QTO0ETMGJTJt92YuQmau0WZ0lmRyUiRyUSQzUycwR　"京东购买地址"
 [3]: https://c.duomai.com/track.php?k=BNTJwRHdo1Ddm42YvFWaqlGb9QWa1VmJ0YTPklWYmAjMzUjMy0DZp9VZ0l2cmYiJs1Gdo5iN2ADMxUzMyYkMl02bj5yZuFGZn5WYk5CdjVHZvJHcGJTJGJTJ "当当购买地址"
-
