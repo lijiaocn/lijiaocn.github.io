@@ -3,8 +3,8 @@ layout: default
 title: docker的基础使用
 author: lijiaocn
 createdate: 2017/03/29 11:11:53
-changedate: 2017/08/06 17:08:11
-categories: 项目
+changedate: 2017/09/11 16:20:40
+categories: 技巧
 tags: docker
 keywords: docker,使用手册,docker的使用手册
 description: docker的使用手册，配置docker deamon运行参数等。

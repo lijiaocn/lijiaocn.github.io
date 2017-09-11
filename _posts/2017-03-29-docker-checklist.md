@@ -3,8 +3,8 @@ layout: default
 title: docker使用前的检查清单
 author: lijiaocn
 createdate: 2017/03/29 11:11:53
-changedate: 2017/08/06 23:08:40
-categories: 项目
+changedate: 2017/09/11 16:20:32
+categories: 技巧
 tags: docker
 keywords: docker,使用手册,docker的使用手册
 description: 使用docker时的检查清单。

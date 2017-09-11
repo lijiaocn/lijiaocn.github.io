@@ -1,9 +1,9 @@
 ---
 layout: default
-title: glusterfs的架构
+title: Glusterfs的架构
 author: lijiaocn
 createdate: 2017/05/27 10:20:13
-changedate: 2017/05/27 11:34:25
+changedate: 2017/09/11 16:21:39
 categories: 项目
 tags: glusterfs 存储
 keywords: glusterfs，架构
