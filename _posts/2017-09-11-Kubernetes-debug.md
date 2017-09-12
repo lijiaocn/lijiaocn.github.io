@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes的调试方法
 author: lijiaocn
 createdate: 2017/09/11 16:24:30
-changedate: 2017/09/11 16:39:58
+changedate: 2017/09/12 10:11:02
 categories: 项目
 tags:  k8s
 keywords: Kubernetes,debug
@@ -114,6 +114,37 @@ pkg/apis:
 	    ▸ settings/
 	    ▸ storage/
 	    ...
+
+## 在代码中找到对输入参数的处理
+
+到cmd目录中找到目标子目录，例如kubelet，main函数中调用的`AddFlags`中完成输入参数的设置。
+
+cmd/kubelet/kubelet.go:
+
+	...
+	s := options.NewKubeletServer()
+	s.AddFlags(pflag.CommandLine)
+	
+	flag.InitFlags()
+	logs.InitLogs()
+	...
+
+例如:
+
+cmd/kubelet/app/options/options.go:
+
+	fs.StringVar(&s.CNIConfDir, "cni-conf-dir", s.CNIConfDir, "<Warning: Alpha feature> The full path of the directory in which to search for CNI config files. Default: /etc/cni/net.d")
+
+包含所有参数的信息的`s`，被传入`app.Run()`:
+
+cmd/kubelet/kubelet.go:
+
+	...
+	if err := app.Run(s, nil); err != nil {
+		fmt.Fprintf(os.Stderr, "error: %v\n", err)
+		os.Exit(1)
+	}
+	...
 
 ## 参考
 

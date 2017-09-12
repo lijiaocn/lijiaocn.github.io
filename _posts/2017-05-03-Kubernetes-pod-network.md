@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Kubernetes的Pod网络设置
+title: Kubernetes的CNI插件初始化与Pod网络设置
 author: lijiaocn
 createdate: 2017/05/03 09:30:33
-changedate: 2017/06/13 11:27:23
+changedate: 2017/09/12 13:49:18
 categories: 项目
 tags: kubernetes
 keywords: kuberntes,pod,network
@@ -49,7 +49,34 @@ k8s.io/kubernetes/cmd/kubelet/app/plugins.go:
 	    return allPlugins
 	}
 
-## 网络插件加载
+这里将所有的插件都存放在了`NetworkPlugin`中。
+
+第一个插件是`cni.ProbeNetworkPlugins()`创建的`cniNetworkPlugin`，pkg/kubelet/network/cni/cni.go:
+
+	func probeNetworkPluginsWithVendorCNIDirPrefix(pluginDir, binDir, vendorCNIDirPrefix string) []network.NetworkPlugin {
+		...
+		plugin := &cniNetworkPlugin{
+			defaultNetwork:     nil,
+			loNetwork:          getLoNetwork(binDir, vendorCNIDirPrefix),
+			execer:             utilexec.New(),
+			pluginDir:          pluginDir,
+			binDir:             binDir,
+			vendorCNIDirPrefix: vendorCNIDirPrefix,
+		}
+
+		plugin.syncNetworkConfig()
+		return []network.NetworkPlugin{plugin}
+	}
+
+第二个是`kubenet.NewPlugin()`创建的`kubenetNetworkPlugin`，pkg/kubelet/network/kubenet/kubenet_unsupported.go：
+
+	func NewPlugin(networkPluginDir string) network.NetworkPlugin {
+		return &kubenetNetworkPlugin{}
+	}
+
+这里主要分析第一个插件，也就是CNI插件加载和使用，记住它的类型是`cniNetworkPlugin`。
+
+## CNI网络插件的加载
 
 k8s.io/kubernetes/pkg/kubelet/network/cni/cni.go:
 
@@ -76,7 +103,7 @@ k8s.io/kubernetes/pkg/kubelet/network/cni/cni.go，probeNetworkPluginsWithVendor
 		return []network.NetworkPlugin{plugin}
 	}
 
-## 读取cni配置文件，设置默认网络
+## 加载CNI插件的配置
 
 k8s.io/kubernetes/pkg/kubelet/network/cni/cni.go:
 
@@ -89,29 +116,49 @@ k8s.io/kubernetes/pkg/kubelet/network/cni/cni.go:
 		plugin.setDefaultNetwork(network)
 	}
 
-k8s.io/kubernetes/pkg/kubelet/network/cni/cni.go, getDefaultCNINetwork():
+加载配置文件，k8s.io/kubernetes/pkg/kubelet/network/cni/cni.go:
 
-	//从pluginDir目录中读取所有.conf文件
-	files, err := libcni.ConfFiles(pluginDir)
-	...
-	for _, confFile := range files {
-		conf, err := libcni.ConfFromFile(confFile)
-		if err != nil {
-			glog.Warningf("Error loading CNI config file %s: %v", confFile, err)
-			continue
+	func getDefaultCNINetwork(pluginDir, binDir, vendorCNIDirPrefix string) (*cniNetwork, error) {
+		...
+		//从pluginDir目录中读取所有.conf文件
+		files, err := libcni.ConfFiles(pluginDir)
+		...
+		for _, confFile := range files {
+			conf, err := libcni.ConfFromFile(confFile)
+			if err != nil {
+				glog.Warningf("Error loading CNI config file %s: %v", confFile, err)
+				continue
+			}
+			vendorDir := vendorCNIDir(vendorCNIDirPrefix, conf.Network.Type)
+			cninet := &libcni.CNIConfig{
+				Path: []string{binDir, vendorDir},
+			}
+			network := &cniNetwork{name: conf.Network.Name, NetworkConfig: conf, CNIConfig: cninet}
+			return network, nil
 		}
-		// Search for vendor-specific plugins as well as default plugins in the CNI codebase.
-		vendorDir := vendorCNIDir(vendorCNIDirPrefix, conf.Network.Type)
-		cninet := &libcni.CNIConfig{
-			Path: []string{binDir, vendorDir},
-		}
-		network := &cniNetwork{name: conf.Network.Name, NetworkConfig: conf, CNIConfig: cninet}
-		return network, nil
+		...
+
+注意上面的for循环中，找到一个可用的插件即返回，`vendorDir`指定了插件程序的路径。
+
+	VendorCNIDirTemplate = "%s/opt/%s/bin"   //第一个%s是前缀，第二个%s是conf.Network.Type
+
+得到的插件的类型是`cniNetwork`，pkg/kubelet/network/cni/cni.go
+
+	type cniNetwork struct {
+		name          string
+		NetworkConfig *libcni.NetworkConfig
+		CNIConfig     libcni.CNI
 	}
-	...
 
-配置文件的格式为:
+## CNI的配置文件
 
+Bytes是配置文件的原始内容，Network是从配置文件中解读出的，vendor/github.com/containernetworking/cni/libcni/api.go：
+
+	type NetworkConfig struct {
+		Network *types.NetConf
+		Bytes   []byte
+	}
+	
 	type NetConf struct {
 		Name string `json:"name,omitempty"`
 		Type string `json:"type,omitempty"`
@@ -128,6 +175,8 @@ k8s.io/kubernetes/pkg/kubelet/network/cni/cni.go, getDefaultCNINetwork():
 		Options     []string `json:"options,omitempty"`
 	}
 
+这是在[cni][1]项目中定义的，配置文件的内容保存在Bytes中，因此具体的CNI插件可能会再次解读配置文件。
+
 ## 网络插件初始化
 
 前面的过程结束后，kubeDeps.NetworkPlugins中就设置好了指定的插件。
@@ -143,11 +192,24 @@ k8s.io/kubernetes/pkg/kubelet/network/cni/cni.go, getDefaultCNINetwork():
 
 k8s.io/kubernetes/pkg/kubelet/network/plugins.go, InitNetworkPlugin()
 
-	chosenPlugin := pluginMap[networkPluginName]
-	if chosenPlugin != nil {
-		err := chosenPlugin.Init(host, hairpinMode, nonMasqueradeCIDR, mtu)
+	func InitNetworkPlugin(plugins []NetworkPlugin, networkPluginName string, host Host, hairpinMode componentconfig.HairpinMode, nonMasqueradeCIDR string, mtu int) (NetworkPlugin, error) {
+		...
+		chosenPlugin := pluginMap[networkPluginName]
+		if chosenPlugin != nil {
+			err := chosenPlugin.Init(host, hairpinMode, nonMasqueradeCIDR, mtu)
+		...
 
-直接调用的`cniNetworkPlugin`的Init()函数:
+这里的`networkPluginName`，也就是`kubeCfg.NetworkPluginName`，是kubelet的配置参数中指定的，`cniNetworkPlugin`的name是`cni`，pkg/kubelet/network/cni/cni.go:
+
+	...
+	CNIPluginName        = "cni"
+	...
+	
+	func (plugin *cniNetworkPlugin) Name() string {
+		return CNIPluginName
+	}
+
+这里只分析cni插件，`chosenPlugin.Init()`实际上是`cniNetworkPlugin.Init()`，pkg/kubelet/network/cni/cni.go：
 
 	func (plugin *cniNetworkPlugin) Init(host network.Host, hairpinMode componentconfig.HairpinMode, nonMasqueradeCIDR string, mtu int) error {
 		var err error
@@ -161,7 +223,9 @@ k8s.io/kubernetes/pkg/kubelet/network/plugins.go, InitNetworkPlugin()
 		return nil
 	}
 
-## 网络插件的使用
+这里设置了命令`nsenter`的路径和host，最后执行的`plugin.syncNetworkConfig()`其实在前面创建插件的时候已经调用过一次，应当是可以去掉的。
+
+## CNI网络插件的使用
 
 cniNetworkPlugin的定义:
 
@@ -295,3 +359,9 @@ k8s.io/kubernetes/vendor/github.com/containernetworking/cni/libcni/api.go:
 invoke.FindInPath在c.Path目录下寻找名为net.Network.Type的文件，返回文件的完整路径pluginPath
 
 最后，直接使用plugin的子命令`ADD`，将容器添加到指定网络中。
+
+## 参考
+
+1. [cni][1]
+
+[1]: cni "https://github.com/containernetworking/cni/blob/master/pkg/types/types.go#L7"
