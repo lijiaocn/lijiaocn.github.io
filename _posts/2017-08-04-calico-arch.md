@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Calico的架构与工作过程
+title: Calico的架构设计与组件交互过程
 author: lijiaocn
 createdate: 2017/08/04 15:46:27
-changedate: 2017/09/11 16:22:12
+changedate: 2017/09/13 12:09:01
 categories: 项目
 tags: calico
 keywords: felix,calico,源码分析,原理说明
@@ -134,11 +134,24 @@ calico-cni-plugin中将k8s场景下的使用和非k8s场景下的使用分离开
 	// 2) Configure the Calico endpoint
 	// 3) Create the veth, configuring it on both the host and container namespace.
 
-过程很简单，获取IP，配置endpoint，在host上创建veth设备，host端命令默认以"caliXX"，容器端命名指定的ifname.
+过程很简单，首先查看calico是中是否已经存在了同名的endpoint，如果不存在则创建。
+
+然后在host上创建veth设备，host端命令默认以"caliXX"，容器端命名指定的ifname.
+
+最后更新endpoint的信息，并提交到calico中。
+
+cni-plugin/k8s/k8s.go:
+
+	...
+	if _, err := calicoClient.WorkloadEndpoints().Apply(endpoint); err != nil {
+		// Cleanup IP allocation and return the error.
+		utils.ReleaseIPAllocation(logger, conf.IPAM.Type, args.StdinData)
+		return nil, err
+	...
 
 ### k8s
 
-如果是k8s下使用，主要是添加对k8s注解的解读，实现人为指定IP等功能。
+如果是在k8s下使用，主要是添加对k8s注解的解读，实现指定IP等功能。
 
 github.com/projectcalico/cni-plugin/k8s/k8s.go:
 

@@ -3,7 +3,7 @@ layout: default
 title: linux的iptables使用
 author: lijiaocn
 createdate: 2014/04/16 10:16:55
-changedate: 2017/06/17 16:05:49
+changedate: 2017/09/12 16:16:13
 categories: 技巧
 tags: iptables linuxnet
 keywords:  linux iptables
@@ -107,11 +107,13 @@ iptables的规则按照“表(table)->规则链(chain)->规则(rule)”的层次
 
 经主机转发的报文:
 
-	raw.PREROUTING -> mangle.PREROUTING -> nat.PREROUTING -> mangle.FORWARD -> filter.FORWARD -> mangle.POSTROUTING -> nat.POSTROUTING
+	raw.PREROUTING -> mangle.PREROUTING -> nat.PREROUTING -> mangle.FORWARD -> filter.FORWARD
+	-> mangle.POSTROUTING -> nat.POSTROUTING
 
 主机发出的报文:
 
-	raw.OUTPUT -> mangle.OUTPUT -> nat.OUTPUT -> filter.OUTPUT -> mangle.POSTROUTING -> nat.POSTROUTING
+	raw.OUTPUT -> mangle.OUTPUT -> nat.OUTPUT -> filter.OUTPUT -> mangle.POSTROUTING 
+	->nat.POSTROUTING
 
 ![nf-packet-flow]({{ site.imglocal }}/nf-packet-flow.png )
 

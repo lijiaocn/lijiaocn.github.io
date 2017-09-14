@@ -1,9 +1,9 @@
 ---
 layout: default
-title: golang使用二进制包，binary-only package
+title: Golang使用二进制包，binary-only package
 author: lijiaocn
 createdate: 2017/08/23 15:17:53
-changedate: 2017/08/23 16:05:58
+changedate: 2017/09/12 15:06:32
 categories: 编程
 tags: golang
 keywords: golang,binary-only,package

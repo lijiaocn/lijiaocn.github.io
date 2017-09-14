@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes的CNI插件初始化与Pod网络设置
 author: lijiaocn
 createdate: 2017/05/03 09:30:33
-changedate: 2017/09/12 13:49:18
+changedate: 2017/09/12 14:46:40
 categories: 项目
 tags: kubernetes
 keywords: kuberntes,pod,network
@@ -13,6 +13,23 @@ description: kubernetes的pod网络设置过程分析,pod的网络由kubelet负�
 
 * auto-gen TOC:
 {:toc}
+
+## 说明
+
+CNI插件的加载是由kubelet完成的。
+
+kubelet默认在`/etc/cni/net.d`目录寻找配置文件，在`/opt/bin/`目录中寻找二进制程序文件。
+
+	kubelet \
+		...
+		--network-plugin=cni 
+		--cni-conf-dir=/etc/cni/net.d 
+		--cni-bin-dir=/opt/cni/bin 
+		...
+
+通过`--network-plugin`指定要使用的网络插件类型。
+
+kubelet在启动容器的时候调用CNI插件，完成容器网络的设置。
 
 ## 网络插件加载前
 
@@ -269,70 +286,55 @@ k8s.io/kubernetes/pkg/kubelet/dockertools/docker_manager.go:
 	// If we should create infra container then we do it first.
 	podInfraContainerID := containerChanges.InfraContainerId
 	if containerChanges.StartInfraContainer && (len(containerChanges.ContainersToStart) > 0) {
-		glog.V(4).Infof("Creating pod infra container for %q", format.Pod(pod))
-		startContainerResult := kubecontainer.NewSyncResult(kubecontainer.StartContainer, PodInfraContainerName)
-		result.AddSyncResult(startContainerResult)
-		var msg string
+		...
 		podInfraContainerID, err, msg = dm.createPodInfraContainer(pod)
-		if err != nil {
-			startContainerResult.Fail(err, msg)
-			glog.Errorf("Failed to create pod infra container: %v; Skipping pod %q: %s", err, format.Pod(pod), msg)
-			return
-		}
-
-		setupNetworkResult := kubecontainer.NewSyncResult(kubecontainer.SetupNetwork, kubecontainer.GetPodFullName(pod))
-		result.AddSyncResult(setupNetworkResult)
+		...
 		if !kubecontainer.IsHostNetworkPod(pod) {
 			if err := dm.network.SetUpPod(pod.Namespace, pod.Name, podInfraContainerID.ContainerID(), pod.Annotations); err != nil {
 				setupNetworkResult.Fail(kubecontainer.ErrSetupNetwork, err.Error())
 				glog.Error(err)
 
 				// Delete infra container
-	......
+	...
 
-所以在SetUpPod中设置好podInfraContainerID的网络即可。
+在SetUpPod中为podInfraContainerID设置网络。
 
-## 将容器加入指定网络的实现
+## 将容器加入指定网络
 
-每个plugin都有一个类型为`defaultNetwork`的成员cniNetwork,k8s.io/kubernetes/pkg/kubelet/network/cni/cni.go:
+每个plugin都有一个类型为`defaultNetwork`的成员cniNetwork, pkg/kubelet/network/cni/cni.go:
 
 	defaultNetwork *cniNetwork
 
-加入、推出网络都是调用defaultNetwork的成员函数，k8s.io/kubernetes/pkg/kubelet/network/cni/cni.go
+这个类型为`cniNetwork`的`defaultNetwork`，就是前面在加载CNI配置文件时候创建的。
+
+容器网络的设置的工作，是由`plugin.getDefaultNetwork()`得到的`defaultNetwork`完成的，pkg/kubelet/network/cni/cni.go
 
 	func (plugin *cniNetworkPlugin) SetUpPod(namespace string, name string, id kubecontainer.ContainerID, annotations map[string]string) error {
-		if err := plugin.checkInitialized(); err != nil {
-			return err
-		}
+		...
 		netnsPath, err := plugin.host.GetNetNS(id.ID)
-		if err != nil {
-			return fmt.Errorf("CNI failed to retrieve network namespace path: %v", err)
-		}
-
+		...
 		_, err = plugin.loNetwork.addToNetwork(name, namespace, id, netnsPath)
-		if err != nil {
-			glog.Errorf("Error while adding to cni lo network: %s", err)
-			return err
-		}
-
+		...
 		_, err = plugin.getDefaultNetwork().addToNetwork(name, namespace, id, netnsPath)
-		if err != nil {
-			glog.Errorf("Error while adding to cni network: %s", err)
-			return err
-		}
-
+		...
 		return err
 	}
 
-k8s.io/kubernetes/pkg/kubelet/network/cni/cni.go，addToNetwork:
+pkg/kubelet/network/cni/cni.go，addToNetwork():
 
+	func (network *cniNetwork) addToNetwork(podName string, podNamespace string, \
+	podInfraContainerID kubecontainer.ContainerID, podNetnsPath string) (*cnitypes.Result, error) {
+	...
 	netconf, cninet := network.NetworkConfig, network.CNIConfig
 	glog.V(4).Infof("About to run with conf.Network.Type=%v", netconf.Network.Type)
 	res, err := cninet.AddNetwork(netconf, rt)
+	...
 
-可以看到最终使用的是成员CNIConfig的AddNetwork()完成的。
+可以看到使用的是成员`cniNetwork.CNIConfig.AddNetwork()`。
 
-`defaultNetwork`在k8s.io/kubernetes/pkg/kubelet/network/cni/cni.go，getDefaultCNINetwork()中创建:
+回顾一下前面cniNetwork的创建过程：
+
+`defaultNetwork`在pkg/kubelet/network/cni/cni.go，getDefaultCNINetwork()中创建:
 
 		vendorDir := vendorCNIDir(vendorCNIDirPrefix, conf.Network.Type)
 		cninet := &libcni.CNIConfig{
@@ -341,24 +343,41 @@ k8s.io/kubernetes/pkg/kubelet/network/cni/cni.go，addToNetwork:
 		network := &cniNetwork{name: conf.Network.Name, NetworkConfig: conf, CNIConfig: cninet}
 		return network, nil
 
-cninet的类型是libcni.CNIConfig:
+可以看到成员CNIConfig类型为`libcni.CNIConfig`，并且包括两个路径`binDir`和`vendorDir`。
+
+在下面可以看到，`Addnetwork()`回到路径下寻找与网络类型同名的二进制程序，并用来完成最后的操作。
 
 ## libcni.CNIConfig
 
-k8s.io/kubernetes/vendor/github.com/containernetworking/cni/libcni/api.go:
+vendor/github.com/containernetworking/cni/libcni/api.go:
 
 	func (c *CNIConfig) AddNetwork(net *NetworkConfig, rt *RuntimeConf) (*types.Result, error) {
 		pluginPath, err := invoke.FindInPath(net.Network.Type, c.Path)
-		if err != nil {
-			return nil, err
-		}
-		
+		...
 		return invoke.ExecPluginWithResult(pluginPath, net.Bytes, c.args("ADD", rt))
 	}
 
-invoke.FindInPath在c.Path目录下寻找名为net.Network.Type的文件，返回文件的完整路径pluginPath
+invoke.FindInPath在c.Path目录下寻找名为net.Network.Type的二进制文件，返回文件的完整路径pluginPath。
 
-最后，直接使用plugin的子命令`ADD`，将容器添加到指定网络中。
+最后，直接运行程序文件，运行时参数为`ADD XXX`。
+
+## CNI支持的网络
+
+[cni][1]中列出了支持的网络类型:
+
+	Project Calico - a layer 3 virtual network
+	Weave - a multi-host Docker network
+	Contiv Networking - policy networking for various use cases
+	SR-IOV
+	Cilium - BPF & XDP for containers
+	Infoblox - enterprise IP address management for containers
+	Multus - a Multi plugin
+	Romana - Layer 3 CNI plugin supporting network policy for Kubernetes
+	CNI-Genie - generic CNI network plugin
+	Nuage CNI - Nuage Networks SDN plugin for network policy kubernetes support
+	Silk - a CNI plugin designed for Cloud Foundry
+	Linen - a CNI plugin designed for overlay networks with Open vSwitch and fit 
+            in SDN/OpenFlow network environment
 
 ## 参考
 
