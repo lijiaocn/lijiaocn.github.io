@@ -3,7 +3,7 @@ layout: default
 title: Calico的felix组件的工作过程
 author: lijiaocn
 createdate: 2017/09/13 12:10:54
-changedate: 2017/09/14 20:05:21
+changedate: 2017/09/15 16:49:08
 categories: 项目
 tags: calico
 keywords: felix,calico,工作过程
@@ -725,7 +725,7 @@ calc/event_sequencer.go:
 				},
 		...
 
-Flush()的刷新顺序：
+注意Flush()中的刷新顺序：
 
 	func (buf *EventSequencer) Flush() {
 		buf.flushReadyFlag()
@@ -979,6 +979,208 @@ dataplane中的managers是在初始化的时候注册的，intdataplane/int_data
 		for _, t := range dp.iptablesRawTables {
 			dp.allIptablesTables = append(dp.allIptablesTables, t)
 		}
+		...
+
+#### ipSetsManager
+
+intdataplane/ipsets_mgr.go:
+
+	--ipSetsManager : struct
+	    [fields]
+	   -ipsetsDataplane : ipsetsDataplane
+	   -maxSize : int
+	    [methods]
+	   +CompleteDeferredWork() : error
+	   +OnUpdate(msg interface{})
+
+	func newIPSetsManager(ipsets ipsetsDataplane, maxIPSetSize int) *ipSetsManager {
+		return &ipSetsManager{
+			ipsetsDataplane: ipsets,
+			maxSize:         maxIPSetSize,
+		}
+	}
+
+`ipSetsManager.OnUpdate()`中完成IpSet的更新:
+
+	func (m *ipSetsManager) OnUpdate(msg interface{}) {
+		switch msg := msg.(type) {
+		case *proto.IPSetDeltaUpdate:
+			...
+			m.ipsetsDataplane.AddMembers(msg.Id, msg.AddedMembers)
+			m.ipsetsDataplane.RemoveMembers(msg.Id, msg.RemovedMembers)
+		case *proto.IPSetUpdate:
+			...
+			m.ipsetsDataplane.AddOrReplaceIPSet(metadata, msg.Members)
+		case *proto.IPSetRemove:
+			...
+			m.ipsetsDataplane.RemoveIPSet(msg.Id)
+		}
+	}
+
+m.ipsetsDataplane是通过`ipsets.NewIPSets()`创建的：
+
+	...
+	ipSetsConfigV4 := config.RulesConfig.IPSetConfigV4
+	ipSetsV4 := ipsets.NewIPSets(ipSetsConfigV4)
+	...
+	dp.RegisterManager(newIPSetsManager(ipSetsV4, config.MaxIPSetSize))
+
+ipsets/ipsets.go:
+
+	-+IPSets : struct
+	    [fields]
+	   +IPVersionConfig : *IPVersionConfig
+	   -dirtyIPSetIDs : set.Set
+	   -existingIPSetNames : set.Set
+	   -gaugeNumIpsets : prometheus.Gauge
+	   -ipSetIDToIPSet : map[string]*ipSet
+	   -logCxt : *log.Entry
+	   -mainIPSetNameToIPSet : map[string]*ipSet
+	   -newCmd : cmdFactory
+	   -pendingIPSetDeletions : set.Set
+	   -restoreInCopy : bytes.Buffer
+	   -resyncRequired : bool
+	   -sleep : func(time.Duration)
+	   -stderrCopy : bytes.Buffer
+	   -stdoutCopy : bytes.Buffer
+	    [methods]
+	   +AddMembers(setID string, newMembers []string)
+	   +AddOrReplaceIPSet(setMetadata IPSetMetadata, members []string)
+	   +ApplyDeletions()
+	   +ApplyUpdates()
+	   +QueueResync()
+	   +RemoveIPSet(setID string)
+	   +RemoveMembers(setID string, removedMembers []string)
+	   ...
+
+IPSets中将更新过的ipset添加到`dirtyIPSetIDs`中：
+
+	func (s *IPSets) AddMembers(setID string, newMembers []string) {
+		ipSet := s.ipSetIDToIPSet[setID]
+		setType := ipSet.Type
+		...
+		s.dirtyIPSetIDs.Add(setID)
+		...
+
+IpSets.ApplyUpdates()会将标记为dirty的IPSet更新：
+
+	func (s *IPSets) ApplyUpdates() {
+	...
+		if err := s.tryUpdates(); err != nil {
+		...
+
+在tryUpdates中直接调用`ipset restore`命令：
+
+	func (s *IPSets) tryUpdates() error {
+		...
+		cmd := s.newCmd("ipset", "restore")
+		rawStdin, err := cmd.StdinPipe()
+		...
+		stdin := io.MultiWriter(&s.restoreInCopy, rawStdin)
+		err = cmd.Start()
+		...
+		s.dirtyIPSetIDs.Iter(func(item interface{}) error {
+			ipSet := s.ipSetIDToIPSet[item.(string)]
+			writeErr = s.writeUpdates(ipSet, stdin)
+			...
+
+s.newCmd是`newRealCmd`，felix/ipsets/ipsets.go：
+
+	func NewIPSets(ipVersionConfig *IPVersionConfig) *IPSets {
+		return NewIPSetsWithShims(
+			ipVersionConfig,
+			newRealCmd,
+			time.Sleep,
+		)
+	}
+	...
+	func newRealCmd(name string, arg ...string) CmdIface {
+		cmd := exec.Command(name, arg...)
+		return (*cmdAdapter)(cmd)
+	}
+
+在s.writeUpdates()中输入的参数ipSet被转换为`ip restore`的参数，写入stdin，也就是s.newCmd的输入，ipsets/ipsets.go:
+
+	func (s *IPSets) writeUpdates(ipSet *ipSet, w io.Writer) error {
+		...
+			return s.writeDeltas(ipSet, w, logCxt)
+		...
+		return s.writeFullRewrite(ipSet, w, logCxt)
+
+#### policyManager
+
+policyManager将policy和profile转换成iptables规则，intdataplane/policy_mgr.go:
+
+	--policyManager : struct
+	    [fields]
+	   -filterTable : iptablesTable
+	   -ipVersion : uint8
+	   -mangleTable : iptablesTable
+	   -rawTable : iptablesTable
+	   -ruleRenderer : policyRenderer
+	    [methods]
+	   +CompleteDeferredWork() : error
+	   +OnUpdate(msg interface{})
+
+	func (m *policyManager) OnUpdate(msg interface{}) {
+		switch msg := msg.(type) {
+		case *proto.ActivePolicyUpdate:
+			chains := m.ruleRenderer.PolicyToIptablesChains(msg.Id, msg.Policy, m.ipVersion)
+			m.rawTable.UpdateChains(chains)
+			m.mangleTable.UpdateChains(chains)
+			m.filterTable.UpdateChains(chains)
+		case *proto.ActivePolicyRemove:
+			...
+		case *proto.ActiveProfileUpdate:
+			chains := m.ruleRenderer.ProfileToIptablesChains(msg.Id, msg.Profile, m.ipVersion)
+			m.filterTable.UpdateChains(chains)
+		case *proto.ActiveProfileRemove:
+			...
+		}
+	}
+
+`m.ruleRenderer`完成到iptables规则的转换:
+
+	...
+	ruleRenderer := config.RuleRendererOverride
+	if ruleRenderer == nil {
+		ruleRenderer = rules.NewRenderer(config.RulesConfig)
+	}
+
+	func NewRenderer(config Config) RuleRenderer {
+		log.WithField("config", config).Info("Creating rule renderer.")
+		return &DefaultRuleRenderer{
+			Config:             config,
+			inputAcceptActions: inputAcceptActions,
+			filterAllowAction:  filterAllowAction,
+			mangleAllowAction:  mangleAllowAction,
+		}
+	...
+	dp.RegisterManager(newPolicyManager(rawTableV4, mangleTableV4, filterTableV4, ruleRenderer, 4))
+	...
+
+`DefaultRuleRenderer`在`rules/`中实现，例如对policy的处理，是在`rules/policy.go`中实现的:
+
+	func (r *DefaultRuleRenderer) PolicyToIptablesChains(policyID *proto.PolicyID, policy *proto.Policy, ipVersion uint8) []*iptables.Chain {
+		inbound := iptables.Chain{
+			Name:  PolicyChainName(PolicyInboundPfx, policyID),
+			Rules: r.ProtoRulesToIptablesRules(policy.InboundRules, ipVersion),
+		}
+		outbound := iptables.Chain{
+			Name:  PolicyChainName(PolicyOutboundPfx, policyID),
+			Rules: r.ProtoRulesToIptablesRules(policy.OutboundRules, ipVersion),
+		}
+		return []*iptables.Chain{&inbound, &outbound}
+	}
+	
+	func (r *DefaultRuleRenderer) ProtoRulesToIptablesRules(protoRules []*proto.Rule, ipVersion uint8) []iptables.Rule {
+		var rules []iptables.Rule
+		for _, protoRule := range protoRules {
+			rules = append(rules, r.ProtoRuleToIptablesRules(protoRule, ipVersion)...)
+		}
+		return rules
+	
+	func (r *DefaultRuleRenderer) ProtoRuleToIptablesRules(pRule *proto.Rule, ipVersion uint8) []iptables.Rule {
 		...
 
 ## 参考

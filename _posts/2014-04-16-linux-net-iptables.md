@@ -3,9 +3,9 @@ layout: default
 title: linux的iptables使用
 author: lijiaocn
 createdate: 2014/04/16 10:16:55
-changedate: 2017/09/12 16:16:13
+changedate: 2017/09/15 14:45:09
 categories: 技巧
-tags: iptables linuxnet
+tags: linuxnet
 keywords:  linux iptables
 description: 介绍了iptables的原理、表之间的关系、报文处理时经过规则链的顺序。以及iptables的调试方法和比较有意思的应用。
 
@@ -417,7 +417,7 @@ iptables的日志信息是kernal日志，可以通过dmesg查看，为了方便�
 	eth1接收的目的地址为172.19.1.10的包，目的地址被改写为192.168.1.10
 		iptables -t nat -A PREROUTING -i eth1 -d 172.19.1.10 -j DNAT --to 192.168.1.10
 
-## 文献
+## 参考
 
 1. man iptables
 2. [sturcture of iptables][2]
