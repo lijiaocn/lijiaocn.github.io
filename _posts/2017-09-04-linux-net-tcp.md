@@ -1,9 +1,9 @@
 ---
 layout: default
-title: linux上TCP连接的状态、超时时间和状态观察
+title: linux的tcp连接
 author: lijiaocn
 createdate: 2017/09/04 19:24:20
-changedate: 2017/09/05 18:11:12
+changedate: 2017/09/16 15:58:23
 categories: 技巧
 tags: linuxnet
 keywords: tcp,linux,timeout,tcp连接状态
