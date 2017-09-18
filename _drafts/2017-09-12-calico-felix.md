@@ -3,7 +3,7 @@ layout: default
 title: Calico的felix组件的工作过程
 author: lijiaocn
 createdate: 2017/09/13 12:10:54
-changedate: 2017/09/15 16:49:08
+changedate: 2017/09/16 22:17:16
 categories: 项目
 tags: calico
 keywords: felix,calico,工作过程
@@ -523,6 +523,78 @@ activeRulesCalc类型为ActiveRulesCalculator，calc/active_rules_calculator.go�
 					arc.sendPolicyUpdate(key)
 				}
 	...
+
+##### arc.labelIndex
+
+arc.labelIndex是用来记录hostendpoint、workloadpoint和profile三者之间的label关系的。
+
+`arc.labelIndex`在创建activeRulesCalc的时候创建的，calc/active_rules_calculator.go：
+
+	func NewActiveRulesCalculator() *ActiveRulesCalculator {
+		arc := &ActiveRulesCalculator{
+			...
+		arc.labelIndex = labelindex.NewInheritIndex(arc.onMatchStarted, arc.onMatchStopped)
+		...
+
+arc.labelIndex类型为`InheritIndex`，是在`labelindex/label_inheritance_index.go`中实现的。
+
+InheritIndex中维持五个map，对应五个关联关系:
+
+	type InheritIndex struct {
+		itemDataByID         map[interface{}]*itemData          //iterm，对应workloadendpoint、hostendpoint
+		parentDataByParentID map[string]*parentData             //parent，对应profile
+		selectorsById        map[interface{}]selector.Selector  //每个policy的selector
+		selIdsByLabelId map[interface{}]set.Set        //每个label满足的selectors
+		labelIdsBySelId map[interface{}]set.Set        //每个selector选中的labels
+		...
+
+当label与selector匹配的时候，回调，传入的参数labelID是iterm的key：
+
+		idx.OnMatchStarted(selId, labelId)
+
+当label与selector不再匹配了，回调：
+
+		idx.OnMatchStopped(selId, labelId)
+
+这两个回调函数是在ActiveRulesCalculator中实现的:
+
+	func NewActiveRulesCalculator() *ActiveRulesCalculator {
+		arc := &ActiveRulesCalculator{
+			...
+		arc.labelIndex = labelindex.NewInheritIndex(arc.onMatchStarted, arc.onMatchStopped)
+		...
+
+	func (arc *ActiveRulesCalculator) onMatchStarted(selID, labelId interface{}) {
+		polKey := selID.(model.PolicyKey)
+		...
+		arc.policyIDToEndpointKeys.Put(selID, labelId)
+		...
+		arc.PolicyMatchListener.OnPolicyMatch(polKey, labelId)
+
+	func (arc *ActiveRulesCalculator) onMatchStopped(selID, labelId interface{}) {
+		polKey := selID.(model.PolicyKey)
+		arc.policyIDToEndpointKeys.Discard(selID, labelId)
+		...
+		arc.PolicyMatchListener.OnPolicyMatchStopped(polKey, labelId)
+
+而PolicyMatchListener则是:
+
+	func NewCalculationGraph(callbacks PipelineCallbacks, hostname string) (allUpdDispatcher *dispatcher.Dispatcher) {
+		...
+		polResolver := NewPolicyResolver()
+		activeRulesCalc.PolicyMatchListener = polResolver
+		...
+
+	func (pr *PolicyResolver) OnPolicyMatch(policyKey model.PolicyKey, endpointKey interface{}) {
+		...
+		pr.dirtyEndpoints.Add(endpointKey)
+		pr.maybeFlush()
+		...
+
+	func (pr *PolicyResolver) maybeFlush() {
+		...
+		pr.dirtyEndpoints.Iter(pr.sendEndpointUpdate)
+		...
 
 ##### arc.updateEndpointProfileIDs()
 
