@@ -3,7 +3,7 @@ layout: default
 title: Calico的felix组件的工作过程
 author: lijiaocn
 createdate: 2017/09/13 12:10:54
-changedate: 2017/09/16 22:17:16
+changedate: 2017/09/19 14:36:55
 categories: 项目
 tags: calico
 keywords: felix,calico,工作过程
@@ -50,7 +50,7 @@ felix/felix.go:
 		}
 		...
 
-datastore连接成功之后，再去加载dataplaneDriver。dataplaneDriver是负责iptables等数据面设置的。可以直接使用fleix中实现的driver，也可以使用外部的driver。
+datastore连接成功之后，再去加载dataplaneDriver。dataplaneDriver是负责iptables等数据平面设置的。可以直接使用fleix中实现的driver，也可以使用外部的driver。
 
 	...
 	var dpDriver dataplaneDriver
@@ -68,7 +68,7 @@ datastore连接成功之后，再去加载dataplaneDriver。dataplaneDriver是�
 
 dpDriver设置完成后，开始连接datastore与dpDriver。
 
-首先一个`Syncer`协程负责监听datastore中的更新，并将更新的内容通过channel发送给`Validator`协程。Validator完成校验后，将其发送给`Calc graph`协程。Calc graph完成计算后，将需要进行的数据面设置操作发送给dataplane协程。最后dataplane完成数据面设置。
+首先一个`Syncer`协程负责监听datastore中的更新，并将更新的内容通过channel发送给`Validator`协程。Validator完成校验后，将其发送给`Calc graph`协程。Calc graph完成计算后，将需要进行的数据平面设置操作发送给dataplane协程。最后dataplane完成数据平面设置。
 
 	...
 	dpConnector := newConnector(configParams, datastore, dpDriver, failureReportChan)
@@ -100,7 +100,7 @@ dpDriver设置完成后，开始连接datastore与dpDriver。
 
 	monitorAndManageShutdown(failureReportChan, dpDriverCmd, stopSignalChans)
 
-## Syncer协程监听datastore中的更新
+## 数据更新的监听：Syncer协程
 
 在felix.go的main函数中，可以看到:
 
@@ -208,7 +208,7 @@ libcalico-go/lib/backend/etcd/syncer.go:
 
 	syncerToValidator := calc.NewSyncerCallbacksDecoupler()
 
-## syncerToValidator将更新传递给validator
+## 检查更新：syncerToValidator将更新传递给validator
 
 syncerToValidator一端作为回调，收到更新的数据，另一端将收到的内容转发出去。
 
@@ -273,7 +273,7 @@ calc/async_decoupler.go:
 
 可以看到然后又调用`validate.OnStatusUpdated()`等。
 
-## validator检查后传送给asyncCalcGraph
+## 提交更新：validator检查后传送给asyncCalcGraph
 
 	...
 	asyncCalcGraph := calc.NewAsyncCalcGraph(configParams, dpConnector.ToDataplane, healthAggregator)
@@ -297,7 +297,7 @@ validator中完成检查后，回调`asyncCalcGraph.OnUpdates`，calc/validation
 		v.sink.OnUpdates(filteredUpdates)
 	}
 
-## asyncCalcGraph分析更新，以protobuf的形式传递给dataplane
+## 下发到数据平面：asyncCalcGraph分析更新，以protobuf的形式传递给dataplane
 
 asyncCalcGraph类型为`AsyncCalcGraph`。
 
@@ -309,7 +309,7 @@ asyncCalcGraph类型为`AsyncCalcGraph`。
 calc/async_calc_graph.go:
 
 	-+AsyncCalcGraph : struct
-		[fields]
+	   [fields]
 	   +Dispatcher : *dispatcher.Dispatcher
 	   -beenInSync : bool
 	   -dirty : bool
@@ -321,7 +321,7 @@ calc/async_calc_graph.go:
 	   -needToSendInSync : bool
 	   -outputEvents : chan interface{}
 	   -syncStatusNow : api.SyncStatus
-		[methods]
+	   [methods]
 	   +OnStatusUpdated(status api.SyncStatus)
 	   +OnUpdates(updates []api.Update)
 	   +Start()
@@ -392,7 +392,7 @@ calc/async_calc_graph.go:
 		}
 		...
 
-### Dispatcher
+### 任务分发Dispatcher
 
 Dispathcer中注册了多种类型资源的处理函数，将收到的更新交由对应的函数处理。
 
@@ -433,7 +433,7 @@ dispatcher/dispatcher.go:
 
 在这里完成所有的handler的注册。
 
-### Dispatcher中的handlers
+### 执行任务的handlers
 
 allUpdDispatcher除了handler之外，还注册了localEndpointDispatcher，用来做二次分发。
 
@@ -596,6 +596,43 @@ InheritIndex中维持五个map，对应五个关联关系:
 		pr.dirtyEndpoints.Iter(pr.sendEndpointUpdate)
 		...
 
+polResolver的sendEndpointUpdate继续传递需要更新的endpoint：
+
+	func (pr *PolicyResolver) sendEndpointUpdate(endpointID interface{}) error {
+		endpoint, ok := pr.endpoints[endpointID.(model.Key)]
+			...
+		tier := pr.sortedTierData
+		...
+		for _, polKV := range tier.OrderedPolicies {
+			...
+			if pr.endpointIDToPolicyIDs.Contains(endpointID, polKV.Key) {
+				tierMatches = true
+				filteredTier.OrderedPolicies = append(filteredTier.OrderedPolicies,polKV)
+				...
+			applicableTiers = append(applicableTiers, filteredTier)
+			...
+		pr.Callbacks.OnEndpointTierUpdate(endpointID.(model.Key), endpoint, applicableTiers)
+		...
+
+polResolver的回调函数：
+
+	func NewAsyncCalcGraph(conf *config.Config, outputEvents chan<- interface{}, healthAggregator *health.HealthAggregator) *AsyncCalcGraph {
+		eventBuffer := NewEventBuffer(conf)
+		disp := NewCalculationGraph(eventBuffer, conf.FelixHostname)
+		...
+		
+	func NewCalculationGraph(callbacks PipelineCallbacks, hostname string) (allUpdDispatcher *dispatcher.Dispatcher) {
+		...
+		polResolver := NewPolicyResolver()
+		...
+		activeRulesCalc.PolicyMatchListener = polResolver
+		polResolver.Callbacks = callbacks
+		...
+
+eventBuffer与后面章节中的`Dispatcher的callback-eventBuffer`是相同的。
+
+polResolver在后面的章节中分析。
+
 ##### arc.updateEndpointProfileIDs()
 
 输入参数为endpoint的key，与endpoint绑定的profiles。
@@ -655,7 +692,7 @@ calc/active_rules_calculator.go:
 
 调用arc.RuleScanner处理profile的规则。
 
-#### arc.sendPolicyUpdate()
+##### arc.sendPolicyUpdate()
 
 arc中存放有所有的policy。
 
@@ -676,7 +713,7 @@ calc/active_rules_calculator.go:
 
 调用arc.RuleScanner处理policy。
 
-#### arc.RuleScanner
+##### arc.RuleScanner
 
 calc/calc_graph.go:
 
@@ -715,6 +752,101 @@ RuleScanner对profile和policy做了处理之后，使用回调`rs.RulesUpdateCa
 		parsedRules := rs.updateRules(key, policy.InboundRules, policy.OutboundRules, policy.DoNotTrack, policy.PreDNAT)
 		rs.RulesUpdateCallbacks.OnPolicyActive(key, parsedRules)
 	}
+
+#### polResolver
+
+polResolver即作为handler，处理endpoint和policy，calc/policy_resolver.go:
+
+	func (pr *PolicyResolver) OnUpdate(update api.Update) (filterOut bool) {
+		policiesDirty := false
+		switch key := update.Key.(type) {
+		case model.WorkloadEndpointKey, model.HostEndpointKey:
+			...
+			pr.endpoints[key] = update.Value
+			pr.dirtyEndpoints.Add(key)
+			...
+		case model.PolicyKey:
+			policiesDirty = pr.policySorter.OnUpdate(update)
+			pr.markEndpointsMatchingPolicyDirty(key)
+			...
+		...
+		pr.maybeFlush()
+
+同时提供了`OnPolicyMatch()`和`OnPolicyMatchStopped()`作为arch.labelIndex中的回调:
+
+	func (pr *PolicyResolver) OnPolicyMatch(policyKey model.PolicyKey, endpointKey interface{}) {
+		...
+		pr.policyIDToEndpointIDs.Put(policyKey, endpointKey)
+		pr.endpointIDToPolicyIDs.Put(endpointKey, policyKey)
+		pr.dirtyEndpoints.Add(endpointKey)
+		pr.maybeFlush()
+
+	func (pr *PolicyResolver) OnPolicyMatchStopped(policyKey model.PolicyKey, endpointKey interface{}) {
+		...
+		pr.policyIDToEndpointIDs.Discard(policyKey, endpointKey)
+		pr.endpointIDToPolicyIDs.Discard(endpointKey, policyKey)
+		pr.dirtyEndpoints.Add(endpointKey)
+		pr.maybeFlush()
+
+可以看到，在polResolver中记录了policy和endpoint的关联关系。
+
+polResolver会将endpoint和关联的policy一起送出：
+
+	func (pr *PolicyResolver) maybeFlush() {
+		...
+		pr.dirtyEndpoints.Iter(pr.sendEndpointUpdate)
+		...
+		
+	func (pr *PolicyResolver) sendEndpointUpdate(endpointID interface{}) error {
+		endpoint, ok := pr.endpoints[endpointID.(model.Key)]
+			...
+		tier := pr.sortedTierData
+		...
+		for _, polKV := range tier.OrderedPolicies {
+			...
+			if pr.endpointIDToPolicyIDs.Contains(endpointID, polKV.Key) {
+				tierMatches = true
+				filteredTier.OrderedPolicies = append(filteredTier.OrderedPolicies,polKV)
+				...
+			applicableTiers = append(applicableTiers, filteredTier)
+			...
+		pr.Callbacks.OnEndpointTierUpdate(endpointID.(model.Key), endpoint, applicableTiers)
+		...
+
+pr.Callbacks是后续章节中的eventbuffer：
+
+	func (buf *EventSequencer) OnEndpointTierUpdate(key model.Key,
+		endpoint interface{},
+		filteredTiers []tierInfo,
+	) {
+		...
+		buf.pendingEndpointUpdates[key] = endpoint
+		buf.pendingEndpointTierUpdates[key] = filteredTiers
+		...
+
+在Flush()将其发出:
+
+	func (buf *EventSequencer) Flush() {
+		...
+		buf.flushEndpointTierUpdates()
+		...
+		
+	func (buf *EventSequencer) flushEndpointTierUpdates() {
+		for key, endpoint := range buf.pendingEndpointUpdates {
+			tiers, untrackedTiers, preDNATTiers := tierInfoToProtoTierInfo(buf.pendingEndpointTierUpdates[key])
+			switch key := key.(type) {
+			case model.WorkloadEndpointKey:
+				wlep := endpoint.(*model.WorkloadEndpoint)
+				buf.Callback(&proto.WorkloadEndpointUpdate{
+					Id: &proto.WorkloadEndpointID{
+						OrchestratorId: key.OrchestratorID,
+						WorkloadId:     key.WorkloadID,
+						EndpointId:     key.EndpointID,
+					},
+					Endpoint: ModelWorkloadEndpointToProto(wlep, tiers),
+				})
+			case model.HostEndpointKey:
+				...
 
 #### localEndpointFilter
 
@@ -853,9 +985,9 @@ g.onEvent()将传入的参数直接写入channel `outputEvents`：
 
 asyncCalcGraph将收到的更新处理、转换后，以protobuf定义的格式发送给了dpConnector.ToDataplane。
 
-控制面的工作至此结束。
+控制平面的工作至此结束。
 
-## dpConnector的启动
+## 连接控制平面和数据平面：dpConnector的启动
 
 	...
 	dpConnector := newConnector(configParams, datastore, dpDriver, failureReportChan)
@@ -915,7 +1047,7 @@ fc.dataplane是dpconnector创建是传入的dpDriver:
 	...
 	dpConnector := newConnector(configParams, datastore, dpDriver, failureReportChan)
 
-## dataplane的工作
+## 数据平面的工作：dataplane
 
 dataplane的Start()中启动了四个协程，第一个负责完成一些设置，后三个是一直工作的协程。
 
@@ -935,37 +1067,18 @@ dataplane的Start()中启动了四个协程，第一个负责完成一些设置�
 		select {
 		case msg := <-d.toDataplane:
 			processMsgFromCalcGraph(msg)
-		msgLoop1:
-			for i := 0; i < msgPeekLimit; i++ {
-				select {
-				case msg := <-d.toDataplane:
-					processMsgFromCalcGraph(msg)
-					batchSize++
-				...
-			}
+			...
 			d.dataplaneNeedsSync = true
 			...
 		case ifaceUpdate := <-d.ifaceUpdates:
 			...
 			processIfaceUpdate(ifaceUpdate)
-		msgLoop2:
-			for i := 0; i < msgPeekLimit; i++ {
-				select {
-				case ifaceUpdate := <-d.ifaceUpdates:
-					processIfaceUpdate(ifaceUpdate)
-				...
-			}
+			...
 			d.dataplaneNeedsSync = true
 		case ifaceAddrsUpdate := <-d.ifaceAddrUpdates:
 			...
 			processAddrsUpdate(ifaceAddrsUpdate)
-		msgLoop3:
-			for i := 0; i < msgPeekLimit; i++ {
-				select {
-				case ifaceAddrsUpdate := <-d.ifaceAddrUpdates:
-					processAddrsUpdate(ifaceAddrsUpdate)
-				...
-			}
+			...
 			d.dataplaneNeedsSync = true
 		case <-ipSetsRefreshC:
 		...
@@ -1006,7 +1119,7 @@ dataplane的Start()中启动了四个协程，第一个负责完成一些设置�
 
 可以看到除了processIfaceUpdate还会操作routeTable外，都是调用`d.allManagers`成员的`OnUpdate()`来处理收到的消息。
 
-### d.allManagers
+## d.allManagers
 
 dataplane中的managers是在初始化的时候注册的，intdataplane/int_dataplane.go
 
@@ -1053,7 +1166,33 @@ dataplane中的managers是在初始化的时候注册的，intdataplane/int_data
 		}
 		...
 
-#### ipSetsManager
+总共有6个manager，分别处理以下内容：
+
+	ipSetsManager:     proto.IPSetDeltaUpdate
+	                   proto.IPSetUpdate
+	                   proto.IPSetRemove
+	
+	policyManager:     proto.ActivePolicyUpdate
+	                   proto.ActivePolicyRemove
+	                   proto.ActiveProfileUpdate
+	                   proto.ActiveProfileRemove
+	
+	endpointManager:   proto.WorkloadEndpointUpdate
+	                   proto.WorkloadEndpointRemove
+	                   proto.HostEndpointUpdate
+	                   proto.HostEndpointRemove
+	                   ifaceUpdate
+	                   ifaceAddrsUpdate
+	
+	floatingIPManager: proto.WorkloadEndpointUpdate
+	                   proto.WorkloadEndpointRemove
+	
+	masqManager:       proto.IPAMPoolUpdate
+	                   proto.IPAMPoolRemove
+	ipipManager:       proto.HostMetadataUpdate
+	                   proto.HostMetadataRemove
+
+### ipSetsManager
 
 intdataplane/ipsets_mgr.go:
 
@@ -1179,7 +1318,7 @@ s.newCmd是`newRealCmd`，felix/ipsets/ipsets.go：
 		...
 		return s.writeFullRewrite(ipSet, w, logCxt)
 
-#### policyManager
+### policyManager
 
 policyManager将policy和profile转换成iptables规则，intdataplane/policy_mgr.go:
 
@@ -1254,6 +1393,440 @@ policyManager将policy和profile转换成iptables规则，intdataplane/policy_mg
 	
 	func (r *DefaultRuleRenderer) ProtoRuleToIptablesRules(pRule *proto.Rule, ipVersion uint8) []iptables.Rule {
 		...
+
+### endpointManager
+
+intdataplane/endpoint_mgr.go:
+
+	func (m *endpointManager) OnUpdate(protoBufMsg interface{}) {
+		switch msg := protoBufMsg.(type) {
+		case *proto.WorkloadEndpointUpdate:
+			m.pendingWlEpUpdates[*msg.Id] = msg.Endpoint
+		case *proto.WorkloadEndpointRemove:
+			m.pendingWlEpUpdates[*msg.Id] = nil
+		case *proto.HostEndpointUpdate:
+			...
+			m.rawHostEndpoints[*msg.Id] = msg.Endpoint
+			m.hostEndpointsDirty = true
+			m.epIDsToUpdateStatus.Add(*msg.Id)
+		case *proto.HostEndpointRemove:
+			...
+			m.hostEndpointsDirty = true
+			m.epIDsToUpdateStatus.Add(*msg.Id)
+		case *ifaceUpdate:
+			...
+			m.pendingIfaceUpdates[msg.Name] = msg.State
+		case *ifaceAddrsUpdate:
+			...
+
+调用CompleteDeferredWork的时候，刷新更新：
+
+	func (m *endpointManager) CompleteDeferredWork() error {
+		...
+		m.resolveWorkloadEndpoints()
+		...
+
+	func (m *endpointManager) resolveWorkloadEndpoints() {
+		...
+		for id, workload := range m.pendingWlEpUpdates {
+			...
+			if len(workload.Tiers) > 0 {
+				ingressPolicyNames = workload.Tiers[0].IngressPolicies
+				egressPolicyNames = workload.Tiers[0].EgressPolicies
+			}
+			...
+			adminUp := workload.State == "active"
+			chains := m.ruleRenderer.WorkloadEndpointToIptablesChains(
+				workload.Name,
+				adminUp,
+				ingressPolicyNames,
+				egressPolicyNames,
+				workload.ProfileIds,
+			)
+			m.filterTable.UpdateChains(chains)
+			m.activeWlIDToChains[id] = chains
+			...
+			m.routeTable.SetRoutes(workload.Name, routeTargets)
+			m.wlIfaceNamesToReconfigure.Add(workload.Name)
+			m.activeWlEndpoints[id] = workload
+			m.activeWlIfaceNameToID[workload.Name] = id
+			...
+
+## ruleRenderer
+
+intdataplane/int_dataplane.go:
+
+	...
+	ruleRenderer := config.RuleRendererOverride
+	if ruleRenderer == nil {
+		ruleRenderer = rules.NewRenderer(config.RulesConfig)
+	}
+
+ruleRenderer的方法在目录rules/下文件中实现:
+
+	  dispatch.go
+	  endpoints.go
+	  nat.go
+	  policy.go
+	  rule_defs.go
+	  static.go
+
+## policy与endpoint的关联过程
+
+policy中通过selector选择要作用的endpoint：
+
+	apiVersion: v1
+	kind: policy
+	metadata:
+	  name: allow-tcp-6379
+	spec:
+	  selector: role == 'database'
+	  ingress:
+	  - action: allow
+	    protocol: tcp
+	    source:
+	      selector: role == 'frontend'
+	    destination:
+	      ports:
+	      - 6379
+	  egress:
+	  - action: allow
+
+endpoint带有设置的标签:
+
+	apiVersion: v1
+	kind: workloadEndpoint
+	metadata:
+	  name: eth0 
+	  workload: default.frontend-5gs43
+	  orchestrator: k8s
+	  node: rack1-host1
+	  labels:
+	    app: frontend
+	    calico/k8s_ns: default
+	spec:
+	  interfaceName: cali0ef24ba
+	  mac: ca:fe:1d:52:bb:e9 
+	  ipNetworks:
+	  - 192.168.0.0/16
+	  profiles:
+	  - profile1
+
+endpoint除了自带标签外，还会继承绑定的profiles中的标签：
+
+	apiVersion: v1
+	kind: profile
+	metadata:
+	  name: profile1
+	  labels:
+	    profile: profile1 
+	spec:
+	  ingress:
+	  - action: deny
+	    source:
+	      net: 10.0.20.0/24
+	  - action: allow
+	    source:
+	      selector: profile == 'profile1'
+	  egress:
+	  - action: allow 
+
+因此如果endpoint绑定的profiles的标签命中了policy的selector，policy也会对其发生作用。
+
+### profile的更新处理
+
+
+profile的更新时activeRulesCalc处理的:
+
+	activeRulesCalc:           PolicyKey
+	                           ProfileRulesKey
+	                           ProfileLabelsKey
+	                           ProfileTagsKey
+	
+	activeSelectorIndex:       ProfileTagsKey
+	                           ProfileLabelsKey
+	
+	func (arc *ActiveRulesCalculator) OnUpdate(update api.Update) (_ bool) {
+		...
+		case model.ProfileLabelsKey:
+			arc.labelIndex.OnUpdate(update)
+		case model.ProfileRulesKey:
+			if update.Value != nil {
+				rules := update.Value.(*model.ProfileRules)
+				arc.allProfileRules[key.Name] = rules
+				...
+					arc.sendProfileUpdate(key.Name)
+				...
+
+	func (arc *ActiveRulesCalculator) sendProfileUpdate(profileID string) {
+		...
+		rules, known := arc.allProfileRules[profileID]
+			...
+			arc.RuleScanner.OnProfileActive(key, rules)
+		...
+
+	...
+	ruleScanner := NewRuleScanner()
+	activeRulesCalc.RuleScanner = ruleScanner
+	ruleScanner.RulesUpdateCallbacks = callbacks
+	...
+
+	func (rs *RuleScanner) OnProfileActive(key model.ProfileRulesKey, profile *model.ProfileRules) {
+		parsedRules := rs.updateRules(key, profile.InboundRules, profile.OutboundRules, false, false)
+		rs.RulesUpdateCallbacks.OnProfileActive(key, parsedRules)
+	}
+
+	func (rs *RuleScanner) updateRules(key interface{}, inbound, outbound []model.Rule, untracked, preDNAT bool) (parsedRules *ParsedRules) {
+		...
+		addedUids.Iter(func(item interface{}) error {
+				...
+				rs.OnSelectorActive(sel)
+				...
+		rs.uidsToRulesIDs.Put(uid, key)
+
+在RuleScanner中保存了所有的selector，并记录了规则与selector的关联关系:
+
+	type RuleScanner struct {
+		selectorsByUID map[string]selector.Selector    //所有的selector
+		rulesIDToUIDs multidict.IfaceToString          //rule的selector
+		uidsToRulesIDs multidict.StringToIface         //selector关联到rules
+		...
+
+rs.RulesUpdateCallbacks是eventBuffer:
+
+		eventBuffer := NewEventBuffer(conf)
+		disp := NewCalculationGraph(eventBuffer, conf.FelixHostname)
+		g := &AsyncCalcGraph{
+			inputEvents:      make(chan interface{}, 10),
+			outputEvents:     outputEvents,
+			Dispatcher:       disp,
+			eventBuffer:      eventBuffer,
+			healthAggregator: healthAggregator,
+		}
+		eventBuffer.Callback = g.onEvent
+
+接下来就是送到数据平面，更新了profiles中的规则：
+
+	func (buf *EventSequencer) OnProfileActive(key model.ProfileRulesKey, rules *ParsedRules) {
+		buf.pendingProfileDeletes.Discard(key)
+		buf.pendingProfileUpdates[key] = rules
+	}
+	
+	func (buf *EventSequencer) Flush() {
+		...
+		buf.flushProfileUpdates()
+		...
+	
+	func (buf *EventSequencer) flushProfileUpdates() {
+		for key, rulesOrNil := range buf.pendingProfileUpdates {
+			buf.Callback(&proto.ActiveProfileUpdate{
+				Id: &proto.ProfileID{
+					Name: key.Name,
+				},
+				Profile: &proto.Profile{
+					InboundRules: parsedRulesToProtoRules(
+						rulesOrNil.InboundRules,
+						"prof-in-"+key.Name,
+					),
+					OutboundRules: parsedRulesToProtoRules(
+						rulesOrNil.OutboundRules,
+						"prof-out-"+key.Name,
+					),
+				},
+			})
+		...
+
+eventBuffer的callback是g.onEvent():
+
+calc/event_sequencer.go:
+
+	func NewAsyncCalcGraph(conf *config.Config, outputEvents chan<- interface{}, healthAggregator *health.HealthAggregator) *AsyncCalcGraph {
+		...
+		g := &AsyncCalcGraph{
+			...
+			outputEvents:     outputEvents,
+			Dispatcher:       disp,
+			eventBuffer:      eventBuffer,
+			healthAggregator: healthAggregator,
+		}
+		eventBuffer.Callback = g.onEvent
+		...
+
+g.onEvent()将传入的参数直接写入channel `outputEvents`：
+
+	func (acg *AsyncCalcGraph) onEvent(event interface{}) {
+		log.Debug("Sending output event on channel")
+		acg.outputEvents <- event
+		countOutputEvents.Inc()
+		log.Debug("Sent output event on channel")
+	}
+
+而outputEvents就是最开始在felix.go中创建的`dpConnector.ToDataplane`:
+
+	asyncCalcGraph := calc.NewAsyncCalcGraph(configParams, dpConnector.ToDataplane, healthAggregator)
+
+dpConnector的协程将更新通过dpDriver发出：
+
+	func (fc *DataplaneConnector) sendMessagesToDataplaneDriver() {
+		defer func() {
+			fc.shutDownProcess("Failed to send messages to dataplane")
+		}()
+		
+		var config map[string]string
+		for {
+			msg := <-fc.ToDataplane
+			...
+			if err := fc.dataplane.SendMessage(msg); err != nil {
+				...
+			}
+
+fc.dataplane是dpconnector创建时传入的dpDriver:
+
+	var dpDriver dataplaneDriver
+	...
+	intDP := intdataplane.NewIntDataplaneDriver(dpConfig)
+	intDP.Start()
+	dpDriver = intDP
+	...
+	dpConnector := newConnector(configParams, datastore, dpDriver, failureReportChan)
+	
+	
+	func (d *InternalDataplane) SendMessage(msg interface{}) error {
+		d.toDataplane <- msg
+		return nil
+	}
+
+在dpDriver中，协程`d.loopUpdatingDataplane()`处理收到的信息：
+
+	for {
+		select {
+		case msg := <-d.toDataplane:
+			processMsgFromCalcGraph(msg)
+		...
+
+由注册的manager进行处理:
+
+	processMsgFromCalcGraph := func(msg interface{}) {
+		...
+		for _, mgr := range d.allManagers {
+			mgr.OnUpdate(msg)
+		...
+	}
+
+ActiveProfileUpdate是由policyManager处理的：
+
+	policyManager:     proto.ActivePolicyUpdate
+	                   proto.ActivePolicyRemove
+	                   proto.ActiveProfileUpdate
+	                   proto.ActiveProfileRemove
+	
+	func (m *policyManager) OnUpdate(msg interface{}) {
+		switch msg := msg.(type) {
+			...
+		case *proto.ActiveProfileUpdate:
+			...
+			chains := m.ruleRenderer.ProfileToIptablesChains(msg.Id, msg.Profile, m.ipVersion)
+			m.filterTable.UpdateChains(chains)
+
+rulerenderer.ProfileToIptablesChains在rules/policy.go中实现：
+
+	func (r *DefaultRuleRenderer) ProfileToIptablesChains(profileID *proto.ProfileID, profile *proto.Profile, ipVersion uint8) []*iptables.Chain {
+		inbound := iptables.Chain{
+			Name:  ProfileChainName(ProfileInboundPfx, profileID),
+			Rules: r.ProtoRulesToIptablesRules(profile.InboundRules, ipVersion),
+		}
+		outbound := iptables.Chain{
+			Name:  ProfileChainName(ProfileOutboundPfx, profileID),
+			Rules: r.ProtoRulesToIptablesRules(profile.OutboundRules, ipVersion),
+		}
+
+	func (r *DefaultRuleRenderer) ProtoRulesToIptablesRules(protoRules []*proto.Rule, ipVersion uint8) []iptables.Rule {
+		var rules []iptables.Rule
+		for _, protoRule := range protoRules {
+			rules = append(rules, r.ProtoRuleToIptablesRules(protoRule, ipVersion)...)
+		}
+		return rules
+	}
+
+下面是最关键的转换过程，将Rule转换成iptables的规则:
+
+	func (r *DefaultRuleRenderer) ProtoRuleToIptablesRules(pRule *proto.Rule, ipVersion uint8) []iptables.Rule {
+		ruleCopy := *pRule
+		ruleCopy.SrcNet, filteredAll = filterNets(pRule.SrcNet, ipVersion)
+		...
+
+先看一下policy的更新过程，然后再分析rule怎样转换成iptables规则的。
+
+### policy的更新处理
+
+policy由activeRulesCalc和polResolver处理。
+
+	activeRulesCalc:           PolicyKey
+	                           ProfileRulesKey
+	                           ProfileLabelsKey
+	                           ProfileTagsKey
+	polResolver:               PolicyKey
+
+更新处理:
+
+	func (arc *ActiveRulesCalculator) OnUpdate(update api.Update) (_ bool) {
+		switch key := update.Key.(type) {
+		case model.PolicyKey:
+			if update.Value != nil {
+				...
+				policy := update.Value.(*model.Policy)
+				arc.allPolicies[key] = policy
+				...
+				sel, err := selector.Parse(policy.Selector)
+				arc.labelIndex.UpdateSelector(key, sel)
+					...
+					arc.sendPolicyUpdate(key)
+				...
+
+calc/active_rules_calculator.go:
+
+	func (arc *ActiveRulesCalculator) sendPolicyUpdate(policyKey model.PolicyKey) {
+		policy, known := arc.allPolicies[policyKey]
+		active := arc.policyIDToEndpointKeys.ContainsKey(policyKey)
+		if active {
+			...
+			arc.RuleScanner.OnPolicyActive(policyKey, policy)
+		} else {
+			arc.RuleScanner.OnPolicyInactive(policyKey)
+		}
+	}
+
+调用arc.RuleScanner处理policy。
+
+	func (rs *RuleScanner) OnPolicyActive(key model.PolicyKey, policy *model.Policy) {
+		parsedRules := rs.updateRules(key, policy.InboundRules, policy.OutboundRules, policy.DoNotTrack, policy.PreDNAT)
+		rs.RulesUpdateCallbacks.OnPolicyActive(key, parsedRules)
+	}
+
+接下来的工程与profile的更新过程类似， 直到在数据层面由policyManager负责处理;
+
+	func (m *policyManager) OnUpdate(msg interface{}) {
+		switch msg := msg.(type) {
+		case *proto.ActivePolicyUpdate:
+			chains := m.ruleRenderer.PolicyToIptablesChains(msg.Id, msg.Policy, m.ipVersion)
+			m.rawTable.UpdateChains(chains)
+			m.mangleTable.UpdateChains(chains)
+			m.filterTable.UpdateChains(chains)
+		...
+
+	func (r *DefaultRuleRenderer) PolicyToIptablesChains(policyID *proto.PolicyID, policy *proto.Policy, ipVersion uint8) []*iptables.Chain {
+		inbound := iptables.Chain{
+			Name:  PolicyChainName(PolicyInboundPfx, policyID),
+			Rules: r.ProtoRulesToIptablesRules(policy.InboundRules, ipVersion),
+		}
+		outbound := iptables.Chain{
+			Name:  PolicyChainName(PolicyOutboundPfx, policyID),
+			Rules: r.ProtoRulesToIptablesRules(policy.OutboundRules, ipVersion),
+		}
+		...
+	}
+
+接下来的过程与profile相同。
 
 ## 参考
 

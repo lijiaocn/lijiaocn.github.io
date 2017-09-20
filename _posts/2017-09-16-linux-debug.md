@@ -3,7 +3,7 @@ layout: default
 title: linux中疑难问题的调查方法
 author: lijiaocn
 createdate: 2017/09/16 16:05:43
-changedate: 2017/09/16 17:00:11
+changedate: 2017/09/18 16:25:47
 categories: 技巧
 tags: linuxtool
 keywords: linux,疑难杂症,奇葩问题
@@ -65,10 +65,30 @@ dmesg命令多个命令选项，可以查看`man dmesg`。
 	      7 36.98.102.22
 	     12 192.168.237.249
 
+## 查看文件系统的inode
+
+分区剩余空间足够，但是无法创建文件：
+
+	$ df -h
+	Filesystem      Size  Used Avail Use% Mounted on
+	/dev/vda1        20G   14G  5.3G  72% /
+
+或许是inode耗尽了：
+
+	# df -i
+	Filesystem      Inodes   IUsed   IFree IUse% Mounted on
+	/dev/vda1      1310720 1310720       0  100% /
+
+查看目录占用的inode情况:
+
+	find . -printf "%h\n" | cut -d/ -f-2 | sort | uniq -c | sort -rn
+
+或者:
+
+	for d in `find -maxdepth 1 -type d |cut -d\/ -f2 |grep -xv . |sort`; do c=$(find $d |wc -l) ; printf "$c\t\t- $d\n" ; done ; printf "Total: \t\t$(find $(pwd) | wc -l)\n"
+
 ## 参考
 
-1. [文献1][1]
-2. [文献2][2]
+1. [How to count INODE usage in Linux][1]
 
-[1]: 1.com  "文献1" 
-[2]: 2.com  "文献1" 
+[1]: https://www.2daygeek.com/how-to-count-inode-usage-in-linux/#  "How to count INODE usage in Linux" 

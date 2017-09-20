@@ -3,7 +3,7 @@ layout: default
 title: "k8s: rbd image is locked by other nodes"
 author: lijiaocn
 createdate: 2017/07/13 15:03:27
-changedate: 2017/07/13 15:54:30
+changedate: 2017/09/18 16:37:29
 categories: 问题
 tags: kubernetes
 keywords: k8s,rbd,ceph,locked
@@ -88,11 +88,16 @@ docker-containerd-shim后面就是容器的id，通过`docker ps |grep fd93380`�
 
 将容器重启后，就可以进行成功将rbd image unmap。
 
-## 分析
+## 结论
 
-后来发现，在一个系统容器中将node的/var/lib/kubelet目录以hostpath的方式挂载到了容器中。
+上面的现象是可能因为更改了docker的`--live-restore`参数后，重启docker，导致已有的容器没有得到正确处理。
 
-参考文献中描述的情况，可能和该问题有关。
+另一个经常遇到的情况是，k8s中用于采集日志的容器，以hostpath的方式挂载了node的/var/lib/kubelet，rbd设备的挂载被一同加载到了容器中。
+
+在容器中看到rbd的挂载点：
+
+	/dev/rbd1     10288404      4580  10267440   0% /var/lib/kubelet/plugins/kubernetes.io/rbd/rbd/tenx-pool-image-qateam.CID-ca4135da3326.aaaa
+	/dev/rbd1     10288404      4580  10267440   0% /var/lib/kubelet/pods/867c51a5-8eed-11e7-a37d-5254eec04736/volumes/kubernetes.io~rbd/volume-0
 
 ## 参考
 

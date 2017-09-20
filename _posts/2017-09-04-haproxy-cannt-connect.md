@@ -3,10 +3,10 @@ layout: default
 title: 连接haproxy间歇性失败的问题调查
 author: lijiaocn
 createdate: 2017/09/04 09:39:54
-changedate: 2017/09/06 13:41:24
+changedate: 2017/09/20 15:53:16
 categories: 问题
 tags: haproxy
-keywords: haproxy，
+keywords: haproxy,间歇性失败,重启haproxy
 description: 运行一端时间后会出现client连接haproxy间歇性失败的情况，重启haproxy后恢复
 
 ---
