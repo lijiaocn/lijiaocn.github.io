@@ -3,10 +3,10 @@ layout: default
 title: "linux的traffic control"
 author: lijiaocn
 createdate: 2017/08/10 15:44:17
-changedate: 2017/08/18 10:37:57
+changedate: 2017/09/21 19:25:08
 categories: 技巧
-tags:  traffic-control
-keywords:  tc,trickle,dummynet,流量控制,限速,traffic control
+tags: linuxnet
+keywords: tc,trickle,dummynet,流量控制,限速,traffic control
 description: "收集几种linux上的限速工具: tc、hashlimit、dummynet、trickle、wondershaper、pyshaper。"
 
 ---

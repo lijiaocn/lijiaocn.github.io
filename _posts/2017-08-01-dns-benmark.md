@@ -3,9 +3,9 @@ layout: default
 title: DNS的benchmark工具
 author: lijiaocn
 createdate: 2017/08/01 16:00:12
-changedate: 2017/08/09 15:14:38
+changedate: 2017/09/21 19:26:39
 categories: 技巧
-tags: dns
+tags: linuxnet
 keywords: dns,benchmark,namebench
 description: 用来测试dns服务器性能的benchmark工具。
 

@@ -1,11 +1,11 @@
 ---
 layout: default
-title: networkmanger
+title: centos7的networkmanger
 author: lijiaocn
 createdate: 2017/08/03 15:44:44
-changedate: 2017/08/09 15:16:05
+changedate: 2017/09/21 19:24:19
 categories: 技巧
-tags: linuxtook networkmanager
+tags: centos
 keywords:  networkmanger,netconfig
 description: NetworkManager的管理工具，该更新知识储备了。
 
