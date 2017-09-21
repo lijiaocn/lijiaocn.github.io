@@ -1,9 +1,9 @@
 ---
 layout: default
-title: 本地的配置管理工具confd
+title: 本地配置文件的管理工具confd
 author: lijiaocn
 createdate: 2017/09/21 16:00:08
-changedate: 2017/09/21 16:58:07
+changedate: 2017/09/21 19:32:27
 categories: 技巧
 tags: linuxtool
 keywords: confd,配置管理
