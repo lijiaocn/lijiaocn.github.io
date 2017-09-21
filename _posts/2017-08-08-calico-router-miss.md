@@ -3,9 +3,9 @@ layout: default
 title: calico路由丢失问题的调查
 author: lijiaocn
 createdate: 2017/08/08 14:32:12
-changedate: 2017/08/09 10:30:24
+changedate: 2017/09/21 19:19:20
 categories: 问题
-tags: calico k8s
+tags: calico
 keywords: calico
 description: kubernetes中的一个pod访问一个service的时候，时不时的出现timeout，经查发现是BGP连接故障，路由缺失。
 

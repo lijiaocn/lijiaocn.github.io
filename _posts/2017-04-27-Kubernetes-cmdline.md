@@ -3,9 +3,9 @@ layout: default
 title: Kuberntes的Cmdline实现
 author: lijiaocn
 createdate: 2017/04/27 14:39:12
-changedate: 2017/05/16 08:52:47
+changedate: 2017/09/21 19:19:51
 categories: 项目
-tags:  k8s
+tags:  kubernetes
 keywords: kubernetes命令行的实现
 description: 了解kubernetes命令行的实现，是打开kuberntes源码大门的第一步。
 

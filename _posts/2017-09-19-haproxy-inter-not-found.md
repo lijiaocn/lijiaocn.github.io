@@ -3,7 +3,7 @@ layout: default
 title: 访问haproxy的监听地址间歇性"503"的问题调查
 author: lijiaocn
 createdate: 2017/09/19 16:09:12
-changedate: 2017/09/21 10:10:41
+changedate: 2017/09/21 10:25:06
 categories: 问题
 tags: haproxy
 keywords: haproxy,间歇性失败,重启haproxy
@@ -74,7 +74,7 @@ description: 运行一端时间后会出现client连接haproxy间歇性失败的
 
 用ab建立长连接，持续访问haproxy的监听地址：
 
-	ab -n 100000 -c 1 -k http://webshell-lijiaob-space.odev.enncloud.cn/
+	ab -n 100000 -c 1 -k http://webshell-lijiaob-space.odev.xxxcloud.cn/
 
 ## 现场观察
 
@@ -132,7 +132,7 @@ ab建立了长连接以后，haproxy频繁reload，预期会有较多的haproxy�
 
 	1. 用ab建立长链接:
 	
-	   ab -n 100000 -c 1 -k http://webshell-lijiaob-space.odev.enncloud.cn/
+	   ab -n 100000 -c 1 -k http://webshell-lijiaob-space.odev.xxxcloud.cn/
 	
 	2. 频繁进行reload操作，当旧的haproxy稳定存在后，停止reload的操作
 	
@@ -159,7 +159,7 @@ ab建立了长连接以后，haproxy频繁reload，预期会有较多的haproxy�
 
 用curl访问新的监听器，注意，`需要用curl`，浏览器可能将多次请求在同一个tcp连接中发送。
 
-	curl http://webshell3-lijiaob-space.odev.enncloud.cn/
+	curl http://webshell3-lijiaob-space.odev.xxxcloud.cn/
 
 `重复30次，访问成功9次，失败20次`，此时系统中一共3个haproxy进程，成功的概率接近1/3。
 
@@ -243,7 +243,7 @@ ab建立了长连接以后，haproxy频繁reload，预期会有较多的haproxy�
 
 用ab建立一个长链接:
 
-	ab -n 100000 -c 1 -k http://webshell-lijiaob-space.odev.enncloud.cn/
+	ab -n 100000 -c 1 -k http://webshell-lijiaob-space.odev.xxxcloud.cn/
 
 对haproxy进行一次reload操作，这时候系统中有两个haproxy进程：
 
@@ -257,7 +257,7 @@ ab建立了长连接以后，haproxy频繁reload，预期会有较多的haproxy�
 
 在当前环境下，再建立一个长链接，这时候其中一个haproxy进程上会有连接:
 
-	ab -n 100000 -c 1 -k http://webshell-lijiaob-space.odev.enncloud.cn/
+	ab -n 100000 -c 1 -k http://webshell-lijiaob-space.odev.xxxcloud.cn/
 
 手动做haproxy reload，在-sf后面指定当前存在的所有的haproxy进程的进程号：
 
@@ -268,7 +268,7 @@ ab建立了长连接以后，haproxy频繁reload，预期会有较多的haproxy�
 	 7097 haproxy    0:00 haproxy -f /etc/haproxy/haproxy.cfg -db -sf 6954 7090
 	 7107 haproxy    0:00 haproxy -f /etc/haproxy/haproxy.cfg -db -sf 7090
 
-断开长连接后，这时现存的两个haproxy上都没有了连接，手动reload:
+断开长连接后，现存的两个haproxy上都没有了连接，这时再次手动reload:
 
 	haproxy -f /etc/haproxy/haproxy.cfg -db -sf 7097 7107
 
@@ -277,8 +277,8 @@ ab建立了长连接以后，haproxy频繁reload，预期会有较多的haproxy�
 	7111 haproxy    0:00 haproxy -f /etc/haproxy/haproxy.cfg -db -sf 7097 7107
 
 有理由相信，当进行reload的时候，如果haproxy进程上还有连接存在，haproxy进程不会退出。
-当存在连接断开的时候，对应的haproxy进程应该主动退出，但是因为`还未知的原因`，
-这个进程没有退出。重新对它发送一个`SIGUSR1`信号后，应当早已退出的进程才最终退出。
+残存的连接断开后，对应的haproxy进程应该主动退出，但是因为`还未知的原因`，这个进程
+没有退出。重新对它发送一个`SIGUSR1`信号后，才最终退出。
 
 ## 解决方法
 
