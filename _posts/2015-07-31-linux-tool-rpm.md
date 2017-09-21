@@ -3,9 +3,9 @@ layout: default
 title: rpm与rpm软件包的构建使用
 author: lijiaocn
 createdate: 2015/07/31 10:31:03
-changedate: 2017/07/18 10:36:28
+changedate: 2017/09/21 19:30:03
 categories: 技巧
-tags: linuxtool rpm
+tags: linuxtool centos
 keywords: rpm,centos,linux
 description:  rpm软件包的构建方法
 

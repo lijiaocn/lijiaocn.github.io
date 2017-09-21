@@ -3,9 +3,9 @@ layout: default
 title: linux的device mapper原理与使用
 author: lijiaocn
 createdate: 2017/07/07 14:02:42
-changedate: 2017/07/25 13:18:40
+changedate: 2017/09/21 19:29:09
 categories: 技巧
-tags: devicemapper linuxtool
+tags: linuxtool
 keywords: linux,device mapper
 description: device mapper是linux的内核用来将块设备映射到虚拟快设备的framework。
 

@@ -3,9 +3,9 @@ layout: default
 title: lvm的使用
 author: lijiaocn
 createdate: 2017/07/05 11:30:18
-changedate: 2017/07/31 15:32:06
+changedate: 2017/09/21 19:28:47
 categories: 技巧
-tags: lvm linuxtool
+tags: linuxtool
 keywords: lvm,lvm-how-to
 description: LVM是"Logical Volume Management"的简称，[lvm-howto][1]中做了详细介绍。
 
