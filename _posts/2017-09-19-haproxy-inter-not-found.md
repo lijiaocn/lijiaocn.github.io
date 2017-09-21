@@ -3,7 +3,7 @@ layout: default
 title: 访问haproxy的监听地址间歇性"503"的问题调查
 author: lijiaocn
 createdate: 2017/09/19 16:09:12
-changedate: 2017/09/20 20:55:36
+changedate: 2017/09/21 09:47:29
 categories: 问题
 tags: haproxy
 keywords: haproxy,间歇性失败,重启haproxy
@@ -261,6 +261,20 @@ ab建立了长连接以后，haproxy频繁reload，预期会有较多的haproxy�
 
 	CHPIDS=`ps aux|grep "haproxy -f"|grep -v grep|awk '{print $1}'`
 	EXT_CMD="-sf $CHPIDS"
+
+并且发现，不再出现多个haproxy监听同一个端口的情况：
+
+	$netstat -lnpt |grep haproxy
+	tcp        0      0 10.39.0.140:80          0.0.0.0:*               LISTEN      1068/haproxy
+	tcp        0      0 0.0.0.0:8889            0.0.0.0:*               LISTEN      1068/haproxy
+	tcp        0      0 10.39.0.140:443         0.0.0.0:*               LISTEN      1068/haproxy
+	tcp        0      0 10.39.0.140:22560       0.0.0.0:*               LISTEN      1068/haproxy
+	tcp        0      0 10.39.0.140:16481       0.0.0.0:*               LISTEN      1068/haproxy
+	tcp        0      0 10.39.0.140:17953       0.0.0.0:*               LISTEN      1068/haproxy
+	
+	$ ps aux|grep haproxy
+	823 haproxy    0:00 haproxy -f /etc/haproxy/haproxy.cfg -db -sf 788 788
+	1068 haproxy   0:00 haproxy -f /etc/haproxy/haproxy.cfg -db -sf 1047 823 1047
 
 而[Truly Seamless Reloads with HAProxy – No More Hacks!][4]描述的现象则需要haproxy1.8版本，或者
 参考连接中给出的方法，例如[github的做法][6]。
