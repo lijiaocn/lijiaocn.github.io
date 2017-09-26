@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes的编译、打包、发布
 author: lijiaocn
 createdate: 2017/05/15 15:25:04
-changedate: 2017/09/26 20:22:27
+changedate: 2017/09/26 20:29:15
 categories: 项目
 tags: kubernetes
 keywords: k8s,kubernetes,compile,编译
@@ -37,7 +37,7 @@ kubernetes对golang的版本有要求，具体情况见[k8s development Guide][1
 	cd $GOPATH/src/k8s.io/kubernetes
 	KUBE_BUILD_PLATFORMS=linux/amd64 make all 
 
-### 官方容器编译
+### 使用官方容器编译
 
 要在容器中编译，因为墙的缘故，需要先在本地准备好docker镜像:
 
@@ -65,7 +65,7 @@ TAG在文件build-image/cross/VERSION中:
 
 	build/shell.sh
 
-### 一步完成编译、打镜像
+#### 一步完成编译、打镜像
 
 因为墙的缘故，先准备好build/common.sh中指定的base镜像:
 
