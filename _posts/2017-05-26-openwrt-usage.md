@@ -3,7 +3,7 @@ layout: default
 title: OpenWrt的使用和管理
 author: lijiaocn
 createdate: 2014/04/25 19:06:24
-changedate: 2017/09/11 16:18:05
+changedate: 2017/09/23 23:31:45
 categories: 技巧
 tags: openwrt
 keywords: openwrt
@@ -140,6 +140,36 @@ luci是用lua脚本开发的, lua的lib库位于/usr/lib/lua目录
 	Using Tor can help you anonymiz e web browsing and publishing, instant messaging, IRC, SSH, and more. 
 	Tor also provides a platform on which software developers can build new applications with built-in anonymi ty, safety, and privacy features. 
 	This package contains the tor daemon.
+
+### 开机启动
+
+openwrt的服务通过`/etc/init.d`中的脚本进行启停，也通过这个脚本设置开机启动，例如:
+
+	$ /etc/init.d/openvpn -h
+	Syntax: /etc/init.d/openvpn [command]
+	
+	Available commands:
+	    start     Start the service
+	    stop      Stop the service
+	    restart   Restart the service
+	    reload    Reload configuration files (or restart if that fails)
+	    enable    Enable service autostart
+	    disable   Disable service autostart
+
+### 升级固件
+
+将固件上传到openwrt系统，使用命令[sysupgrade][12]进行系统升级。
+
+	sysupgrade -b backup.tar.gz     //备份配置文件
+	sysupgrade --test openwrt-ramips-mt7621-mt7621-squashfs-sysupgrade.bin   //检查bin文件
+	sysupgrade -d 10 openwrt-ramips-mt7621-mt7621-squashfs-sysupgrade.bin    //开始升级
+
+升级过程中需要保留的文件，在`/etc/sysupgrade.conf`中指定，例如:
+
+	/etc/openvpn/
+	/etc/tor/
+
+升级完成后会自动重启。
 
 ## 参考
 

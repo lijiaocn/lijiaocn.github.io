@@ -3,7 +3,7 @@ layout: default
 title: linux的iptables使用
 author: lijiaocn
 createdate: 2014/04/16 10:16:55
-changedate: 2017/09/15 14:45:09
+changedate: 2017/09/24 12:58:22
 categories: 技巧
 tags: linuxnet
 keywords:  linux iptables
@@ -319,6 +319,24 @@ target modules是通过`-j modulename` 指定，标准的iptables中包括以下
 	TRACE
 	TTL (IPv4-specific)
 	ULOG (IPv4-specific)
+
+## 修改规则
+
+`man iptables`。
+
+追加、检查、删除规则：
+
+	iptables [-t table] {-A|-C|-D} chain rule-specification    
+
+插入规则:
+
+	iptables [-t table] -I chain [rulenum] rule-specification
+
+替换规则:
+
+	iptables [-t table] -I chain [rulenum] rule-specification
+
+插入和替换规则时，rule编号从1开始。
 
 ## 调试方法
 

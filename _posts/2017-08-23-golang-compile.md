@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Golang使用二进制包，binary-only package
+title: Golang的编译过程、选项、以及二进制包
 author: lijiaocn
 createdate: 2017/08/23 15:17:53
-changedate: 2017/09/12 15:06:32
+changedate: 2017/09/26 21:41:34
 categories: 编程
 tags: golang
 keywords: golang,binary-only,package
@@ -14,7 +14,7 @@ description: binary-only-package特性，使二进制的形式发布代码库成
 * auto-gen TOC:
 {:toc}
 
-## 说明
+## binary-only-package
 
 [Binary-Only Packages][1]是golang1.7增加的特性:
 
@@ -26,7 +26,7 @@ description: binary-only-package特性，使二进制的形式发布代码库成
 	comment, to separate it from the package documentation. Unlike build constraints, this 
 	comment is only recognized in non-test Go source files. 
 
-## 例子
+### 例子
 
 [example code][2]:
 
@@ -66,10 +66,74 @@ main.go中引用了p:
 
 注意，中间的空行必须存在，否则报错。
 
+## 禁用CGO
+
+Golang实现了自己的runtime，也支持调用C的runtime，默认启动CGO：
+
+	CGO_ENABLED=1
+
+启动用CGO后，编译的程序可能需要连接外部的.so，可以将CGO禁用以得到静态连接的程序:
+
+	CGO_ENABLED=0 go build
+
+[也谈Go的可移值性][2]中做了很好的介绍。
+
+## 跨平台编译
+
+Golang适应的平台非常广泛，可以通过`go tool dist list`查看支持的平台:
+
+	$ go tool dist list
+	android/386
+	android/amd64
+	android/arm
+	android/arm64
+	darwin/386
+	darwin/amd64
+	darwin/arm
+	darwin/arm64
+	dragonfly/amd64
+	freebsd/386
+	freebsd/amd64
+	freebsd/arm
+	linux/386
+	linux/amd64
+	linux/arm
+	linux/arm64
+	linux/mips
+	linux/mips64
+	linux/mips64le
+	linux/mipsle
+	linux/ppc64
+	linux/ppc64le
+	linux/s390x
+	nacl/386
+	nacl/amd64p32
+	nacl/arm
+	netbsd/386
+	netbsd/amd64
+	netbsd/arm
+	openbsd/386
+	openbsd/amd64
+	openbsd/arm
+	plan9/386
+	plan9/amd64
+	plan9/arm
+	solaris/amd64
+	windows/386
+	windows/amd64
+
+编译的时候通过环境变量`GOARCH`和`GOOS`指定目标平台，例如:
+
+	GOARCH=amd64 GOOS=linux go build
+
 ## 参考
 
 1. [Binary-Only Packages][1]
 2. [example code][2]
+3. [也谈Go的可移植性][3]
+4. [golang enviroment var][4]
 
 [1]: https://tip.golang.org/pkg/go/build/#hdr-Binary_Only_Packages  "Binary-Only Packages" 
 [2]: https://github.com/lijiaocn/study-Golang/tree/master/study/binary-only-pkg  "example code"
+[3]: http://tonybai.com/2017/06/27/an-intro-about-go-portability/ "也谈Go的可移植性"
+[4]: https://golang.org/cmd/go/#hdr-Environment_variables "golang enviroment var"

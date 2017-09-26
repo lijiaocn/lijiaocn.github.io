@@ -3,7 +3,7 @@ layout: default
 title: Linux的Network Tunnel技术
 author: lijiaocn
 createdate: 2017/04/01 14:33:46
-changedate: 2017/05/17 09:53:23
+changedate: 2017/09/26 22:07:32
 categories: 技巧
 tags: linuxnet
 keywords: tunnel,ipip,gre,vxlan,linux
@@ -170,6 +170,8 @@ ipip tunnel是最简单的一种，将ipv4报文封装在ip协议中送出，一
 
 1. [linux tunneling][1]
 2. [Network Namespaces][2]
+3. [linux ipip隧道及实现][3]
 
 [1]: https://wiki.linuxfoundation.org/networking/tunneling  "linux tunneling" 
 [2]: https://lwn.net/Articles/580893/ "Network Namespaces"
+[3]: http://www.361way.com/linux-tunnel/5199.html  "linux ipip隧道及实现"

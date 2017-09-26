@@ -3,7 +3,7 @@ layout: default
 title: 在OpenWRT上使用tor
 author: lijiaocn
 createdate: 2017/06/12 21:57:40
-changedate: 2017/09/11 16:18:18
+changedate: 2017/09/24 18:24:44
 categories: 技巧
 tags: openwrt tor
 keywords: openwrt,tor,匿名网络,暗网
@@ -23,7 +23,7 @@ description: 将tor内置在Openwrt中，Wi-Fi连接后直接进入tor网络。
 
 源在/etc/opkg目录下的文件中配置:
 
-	$ls /etc/opkg
+	$ ls /etc/opkg
 	customfeeds.conf  distfeeds.conf    keys
 
 如果所使用的固件的源中没有tor，只能自己制作固件，参考[Openwrt固件制作][14]。
@@ -176,18 +176,18 @@ tor的配置文件是/etc/tor/torrc，一般不需要更改，使用默认配置
 
 在torrc中，添加bridges: 
 
-	UseBridges 1
-	Bridge  obfs4 45.56.125.64:9443 8F188C976653ED2697BBBB14D83FAB7038D30242 cert=8+HYXC2jIvLlD9WZhmPy+Zdx72xho/Z9FNTpzXP+p5eVi/vOFDUUpvzf4BtyJXj3dwsACg iat-mode=0
-	+Bridge obfs4 35.185.195.251:9443 17D02DEF6BD6A4251EDA338D6FAD185ADD4DD362 cert=jdJ3b6/+W3zPYgRROI33TWk6Q5JWcaSX5dGRZkhacy6qwmUBHNykbWYs7S1dtDdlMs4PGg iat-mode=0
-	+Bridge obfs4 104.153.209.217:25447 D28E0345809AE4BAC903EF7FC78CAAF111A63C58 cert=DtNNYXeRG4ds+iTM7sdbJHJgH7RmxDb1lt8JR17BiT7eHnORyn+4y+RcoqAI65XGvhXKJg iat-mode=0
-	+Bridge fte 194.132.208.167:3629 B532A3961CD658A75A9B2BF1C70970FD358B2CC2
-	+Bridge fte 194.132.208.63:30990 E824F547C900B2082418CC4FF71045BA32F91A8F
-	+Bridge obfs3 194.132.209.16:45753 D07A31AE11B8D81027E839E449ECE075A2D7416C
-	+Bridge obfs3 194.132.208.167:43166 B532A3961CD658A75A9B2BF1C70970FD358B2CC2
-	+Bridge obfs3 176.56.237.144:88 0A94AAA5BAB7CCA6F94B0ACA97870FAF28CD3643
-	+Bridge scramblesuit 85.159.237.97:3690 FF7030283C326B0AF40546409E88C8612B8EF48A password=T6DFT3BAR4GLX5BRX7XPRXQ3PCMOIBQE
-	+Bridge scramblesuit 194.132.209.16:42739 D07A31AE11B8D81027E839E449ECE075A2D7416C password=XC5PTSV7ASLPMUUG7N2A4I7U2ZGONEOA
-	+Bridge scramblesuit 194.132.208.167:37707 B532A3961CD658A75A9B2BF1C70970FD358B2CC2 password=VM2YDXPMPEON4THOBZWDNRCOZ5O36APZ
+UseBridges 1
+Bridge  obfs4 45.56.125.64:9443 8F188C976653ED2697BBBB14D83FAB7038D30242 cert=8+HYXC2jIvLlD9WZhmPy+Zdx72xho/Z9FNTpzXP+p5eVi/vOFDUUpvzf4BtyJXj3dwsACg iat-mode=0
++Bridge obfs4 35.185.195.251:9443 17D02DEF6BD6A4251EDA338D6FAD185ADD4DD362 cert=jdJ3b6/+W3zPYgRROI33TWk6Q5JWcaSX5dGRZkhacy6qwmUBHNykbWYs7S1dtDdlMs4PGg iat-mode=0
++Bridge obfs4 104.153.209.217:25447 D28E0345809AE4BAC903EF7FC78CAAF111A63C58 cert=DtNNYXeRG4ds+iTM7sdbJHJgH7RmxDb1lt8JR17BiT7eHnORyn+4y+RcoqAI65XGvhXKJg iat-mode=0
++Bridge fte 194.132.208.167:3629 B532A3961CD658A75A9B2BF1C70970FD358B2CC2
++Bridge fte 194.132.208.63:30990 E824F547C900B2082418CC4FF71045BA32F91A8F
++Bridge obfs3 194.132.209.16:45753 D07A31AE11B8D81027E839E449ECE075A2D7416C
++Bridge obfs3 194.132.208.167:43166 B532A3961CD658A75A9B2BF1C70970FD358B2CC2
++Bridge obfs3 176.56.237.144:88 0A94AAA5BAB7CCA6F94B0ACA97870FAF28CD3643
++Bridge scramblesuit 85.159.237.97:3690 FF7030283C326B0AF40546409E88C8612B8EF48A password=T6DFT3BAR4GLX5BRX7XPRXQ3PCMOIBQE
++Bridge scramblesuit 194.132.209.16:42739 D07A31AE11B8D81027E839E449ECE075A2D7416C password=XC5PTSV7ASLPMUUG7N2A4I7U2ZGONEOA
++Bridge scramblesuit 194.132.208.167:37707 B532A3961CD658A75A9B2BF1C70970FD358B2CC2 password=VM2YDXPMPEON4THOBZWDNRCOZ5O36APZ
 
 注意从第二个Bridge开始前面要有`+`表示追加，bridge后跟随的第一个字段是插件名称，用于流量变形，防止被识别。
 
@@ -201,7 +201,7 @@ tor的配置文件是/etc/tor/torrc，一般不需要更改，使用默认配置
 
 ### golang1.8
 
-如果目标架构是mips，并且支持FPU(浮点运算指令集) ,可以直接golang1.8以及以上的版本编译:
+如果目标架构是mips，并且支持FPU(浮点运算指令集) ,可以直接用1.8及以上的golang编译:
 
 ### go-mips32
 
@@ -222,7 +222,7 @@ tor的配置文件是/etc/tor/torrc，一般不需要更改，使用默认配置
 
 查看一下默认的go命令的路径是否正确：
 
-	$which go
+	$ which go
 	/usr/local/go/bin/go
 
 ### 编译meek
@@ -230,8 +230,8 @@ tor的配置文件是/etc/tor/torrc，一般不需要更改，使用默认配置
 按照上面的章节准备好go命令后，到meek目录中编译meek:
 
 	cd meek/meek-client
-	GOPATH=~/GOPATH/ GOARCH=mips32le GOOS=linux go get
-	GOPATH=~/GOPATH/ GOARCH=mips32le GOOS=linux go build
+	CGO_ENABLED=0 GOPATH=~/GOPATH/ GOARCH=mips32le GOOS=linux go get
+	CGO_ENABLED=0 GOPATH=~/GOPATH/ GOARCH=mips32le GOOS=linux go build
 	
 	GOARGH可以是mips、mipsle、mips64、mips64le
 
@@ -264,7 +264,7 @@ tor的配置文件是/etc/tor/torrc，一般不需要更改，使用默认配置
 
 说明openwrt上缺少root证书，上传一个：
 
-	scp /etc/ssl/certs/ca-bundle.crt root@192.168.9.1:/etc/certs/ca-certificates.crt
+	scp /etc/ssl/certs/ca-bundle.crt root@192.168.9.1:/etc/ssl/certs/ca-certificates.crt
 
 [install certs on openwrt][13]给出了手动添加证书的方法。
 
