@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes的编译、打包、发布
 author: lijiaocn
 createdate: 2017/05/15 15:25:04
-changedate: 2017/09/26 20:29:15
+changedate: 2017/09/26 20:32:34
 categories: 项目
 tags: kubernetes
 keywords: k8s,kubernetes,compile,编译
@@ -16,6 +16,12 @@ description: kubernetes编译有两种方式，直接编译和在docker中编译
 
 ## 快速开始
 
+[k8s release binary][8]中可以直接下载已经变好的二进制文件。
+
+参考: [To start developing Kubernetes][6]
+
+### 使用本地环境编译
+
 kubernetes对golang的版本有要求，具体情况见[k8s development Guide][1]:
 
 	Kubernetes   requires Go
@@ -23,8 +29,6 @@ kubernetes对golang的版本有要求，具体情况见[k8s development Guide][1
 	1.3, 1.4       1.6
 	1.5, 1.6       1.7 - 1.7.5
 	1.7+           1.8.1
-
-### 使用本地环境编译
 
 如果是在MAC上操作，因为MAC的shell命令是BSD风格的，因此需要安装[GNU command tools][3]。
 
@@ -153,10 +157,8 @@ TAG在文件build-image/cross/VERSION中:
 
 ## 开始分析
 
-[k8s release binary][8]中可以直接下载已经变好的二进制文件。
-
 kubernetes编译有两种方式，直接编译和在docker中编译。
-
+ 
 如果是在MAC上操作，因为MAC的shell命令是BSD风格的，因此需要安装[GNU command tools][3]。
 
 	brew install coreutils
@@ -1287,6 +1289,7 @@ make all的输出：
 3. [Install and Use GNU Command Line Tools on macOS/OS X][3] 
 4. [gengo][4]
 5. [k8s的第三方包的使用][5]
+6. [To start developing Kubernetes][6]
 7. [k8s release][7]
 8. [k8s release binary][8]
 9. [k8s build local][9]
@@ -1297,6 +1300,7 @@ make all的输出：
 [3]: https://www.topbug.net/blog/2013/04/14/install-and-use-gnu-command-line-tools-in-mac-os-x/ "Install and Use GNU Command Line Tools on macOS/OS X"
 [4]: https://github.com/kubernetes/gengo "gengo" 
 [5]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2017/05/12/Kubernetes-third-party.html "k8s third party"
+[6]: https://github.com/kubernetes/kubernetes "To start developing Kubernetes"
 [7]: https://github.com/kubernetes/release "k8s release"
 [8]: https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG.md  "k8s release binay"
 [9]: https://github.com/lijiaocn/k8s-build-local "k8s build local"
