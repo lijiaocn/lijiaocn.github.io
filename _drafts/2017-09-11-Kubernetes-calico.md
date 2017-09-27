@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes与calico的衔接过程
 author: lijiaocn
 createdate: 2017/09/11 16:45:48
-changedate: 2017/09/12 16:35:08
+changedate: 2017/09/27 10:58:23
 categories: 项目
 tags: kubernetes calico
 keywords: k8s,kubernets,calico
