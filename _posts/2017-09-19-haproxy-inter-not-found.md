@@ -3,7 +3,7 @@ layout: default
 title: 访问haproxy的监听地址间歇性"503"的问题调查
 author: lijiaocn
 createdate: 2017/09/19 16:09:12
-changedate: 2017/09/21 10:25:06
+changedate: 2017/09/27 13:40:24
 categories: 问题
 tags: haproxy
 keywords: haproxy,间歇性失败,重启haproxy
@@ -29,6 +29,8 @@ description: 运行一端时间后会出现client连接haproxy间歇性失败的
 	        重启haproxy后恢复。
 
 这里找到了`现象1`的根源，`现象2`还在尝试复现。
+
+>2017-09-27 13:40:20 压测时复现出了现象2，是因为haproxy发起的到backend连接超过设置的最大连接数，新连接一直等待得不到响应。
 
 ## 复现过程
 

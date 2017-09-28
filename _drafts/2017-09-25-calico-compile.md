@@ -3,7 +3,7 @@ layout: default
 title:  calico的编译构建
 author: lijiaocn
 createdate: 2017/09/25 13:42:38
-changedate: 2017/09/26 12:48:28
+changedate: 2017/09/27 10:56:50
 categories: 项目
 tags: calico
 keywords:
@@ -20,7 +20,7 @@ description:
 
 [Calico releases][2]中列出每个release版本中的各组件的版本号。
 
-[Calico release notes][3]中给出了每个release版本的说明。
+[Calico release notes][3]中给出了每个release版本的说明，提供了下载。
 
 calico/node中需要：felix、confd、calico-bgp-daemon、bird、libnetwork-plugin。
 
