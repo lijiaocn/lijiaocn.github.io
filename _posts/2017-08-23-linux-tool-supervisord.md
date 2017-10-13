@@ -3,7 +3,7 @@ layout: default
 title: 进程管理工具supervisord
 author: lijiaocn
 createdate: 2017/08/23 13:48:02
-changedate: 2017/09/21 13:38:28
+changedate: 2017/09/29 18:44:56
 categories: 技巧
 tags: linuxtool
 keywords: supervisord,进程管理

@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Calico的workloadEndpoint无法访问网络的问题调查
+title: calico的workloadEndpoint无法访问网络的问题调查
 author: lijiaocn
 createdate: 2017/08/04 10:22:14
-changedate: 2017/08/10 20:13:04
+changedate: 2017/09/27 13:47:25
 categories: 问题
 tags: calico
 keywords: calico,k8s,workloadEndpoint

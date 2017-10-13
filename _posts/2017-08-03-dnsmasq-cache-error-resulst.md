@@ -1,11 +1,11 @@
 ---
 layout: default
-title: dnsmasq缓存无法访问域名的问题调查
+title: kubernetes的pod偶尔无法访问域名的问题调查
 author: lijiaocn
 createdate: 2017/08/03 14:22:43
-changedate: 2017/09/21 19:27:26
+changedate: 2017/09/27 13:46:15
 categories: 问题
-tags: linuxnet kubernetes
+tags: kubernetes
 keywords: dnsmasq,kube-dns,k8s
 description: 在kubernete的pod中，访问域名`repo1.maven.org`的时候，发现无法访问。
 

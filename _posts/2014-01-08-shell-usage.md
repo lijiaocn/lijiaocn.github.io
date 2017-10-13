@@ -3,7 +3,7 @@ layout: default
 title: Shell(bash)编程
 author: lijiaocn
 createdate: 2014/04/30 16:33:01
-changedate: 2017/09/01 14:53:56
+changedate: 2017/09/30 10:15:28
 categories: 编程
 tags: shell
 keywords:
@@ -138,6 +138,7 @@ pipelines通过下面保留字符拼接：
 	             表达式匹配的字符串存放在数组BASH_REMATCH
 	             BASH_REMATCH[0]: 整个表达式匹配的字符串
 	             BASH_REMATCH[n]: 第n个括号中的表达式匹配的字符串
+	   注意右侧的正则应当这么写:  if [[ "aaaa" == "a"* ]]
 	
 	for name [ in word ] ; do list ; done
 	     如果没有`in word`，就遍历位置参数(positional parameter)

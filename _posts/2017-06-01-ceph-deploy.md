@@ -3,7 +3,7 @@ layout: default
 title: Ceph集群的部署
 author: lijiaocn
 createdate: 2017/06/01 13:13:26
-changedate: 2017/09/11 16:17:03
+changedate: 2017/09/29 16:16:25
 categories: 技巧
 tags: ceph
 keywords: ceph,ceph-deploy
@@ -1255,6 +1255,29 @@ with the --size option.
 	rbd rm {image-name}
 
 [ceph-block-device][15]中列出rbd相关的更多操作。
+
+#### rbd扩容
+
+可以在rbd被挂载的情况下进行扩容操作，操作之前先备份数据。
+
+	# rbd showmapped
+	id pool image snap device   
+	0  rbd  foo   -    /dev/rbd0
+
+将大小设置为20G，--size指定数值单位是MB。
+
+	# rbd resize --size 20480 foo
+
+对于ext4文件系统：
+
+	# blockdev --getsize64 /dev/rbd0
+	# resize2fs /dev/rbd0
+
+对于xfs文件系统，/mnt是挂载点：
+
+	xfs_growfs /mnt
+
+这时候用df查看，可以看到磁盘空间大小已经为20G。
 
 ### ceph filesystem
 

@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Kuberntes通过物理机网卡无法访问Service
+title: kuberntes的node无法通过物理机网卡访问Service
 author: lijiaocn
 createdate: 2017/03/31 16:26:56
-changedate: 2017/05/20 16:02:17
+changedate: 2017/09/27 13:46:56
 categories: 问题
 tags: kubernetes
 keywords:  
