@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes自动部署工具kubeadm的使用
 author: lijiaocn
 createdate: 2017/07/29 18:04:34
-changedate: 2017/08/06 17:01:30
+changedate: 2017/09/28 21:05:44
 categories: 项目
 tags: kubernetes 
 keywords: kubeadm,k8s
@@ -67,7 +67,7 @@ docker:
 
 	The kubelet is now restarting every few seconds, as it waits in a crashloop for kubeadm to tell it what to do.
 
-直到下面使用kubeadm准备好了相关的文件之后，kubelet才能成功启动:
+直到在下面的操作中使用kubeadm准备好了相关的文件之后，kubelet才能成功启动:
 
 	$ls /etc/kubernetes/manifests/
 	etcd.yaml  kube-apiserver.yaml  kube-controller-manager.yaml  kube-scheduler.yaml
