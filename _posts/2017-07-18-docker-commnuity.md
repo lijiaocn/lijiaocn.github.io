@@ -3,7 +3,7 @@ layout: default
 title: Moby、docker-ce与docker-ee
 author: lijiaocn
 createdate: 2017/07/18 13:06:43
-changedate: 2017/09/11 16:22:30
+changedate: 2017/09/29 18:26:07
 categories: 项目
 tags: docker
 keywords: docker,community
@@ -58,6 +58,11 @@ yum源文件和rpm包都在网页[download.docker.com][2]中，可以自己下�
 	wget https://download.docker.com/linux/centos/docker-ce.repo
 	mv docker-ce.repo /etc/yum.repos.d
 	yum install -y docker-ce
+
+或者直接下载rpm安装:
+
+	wget https://download.docker.com/linux/centos/7/x86_64/stable/Packages/docker-ce-17.09.0.ce-1.el7.centos.x86_64.rpm
+	yum localinstall docker-ce-17.09.0.ce-1.el7.centos.x86_64.rpm
 
 ## 参考
 
