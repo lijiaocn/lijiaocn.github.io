@@ -3,7 +3,7 @@ layout: default
 title: Golang的依赖包管理
 author: lijiaocn
 createdate: 2017/03/28 13:05:05
-changedate: 2017/05/17 19:18:50
+changedate: 2017/10/20 14:11:38
 categories: 编程
 tags: golang
 keywords: Go编程,依赖包
@@ -15,6 +15,10 @@ description:  Golang依赖包管理，Golang可以自由地引用Git仓库中的
 {:toc}
 
 Golang可以自由地引用Git仓库中的代码，这样就带来了依赖包版本管理的问题。
+
+## go get 设置代理
+
+	HTTP_PROXY=127.0.0.1:53100 HTTPS_PROXY=127.0.0.1:53100 go get golang.org/x/text
 
 ## Godep
 

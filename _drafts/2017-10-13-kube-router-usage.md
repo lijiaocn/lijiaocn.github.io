@@ -3,7 +3,7 @@ layout: default
 title: kube-router的使用
 author: lijiaocn
 createdate: 2017/10/13 17:28:23
-changedate: 2017/10/13 17:35:17
+changedate: 2017/10/20 10:07:22
 categories: 项目
 tags: kube-router
 keywords: 
@@ -21,6 +21,14 @@ description:
 ## 编译
 
 [kube-router developer guild][2]很详细的介绍了编译的过程。
+
+## 原理
+
+使用ipvs，将访问service的流量分发给pod。
+
+使用iptables、ipset实现network policy。
+
+使用gobgp实现pod的网络。
 
 ## 参考
 
