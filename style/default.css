@@ -32,22 +32,32 @@
 	margin-left:0px;
 }
 
+div.center .author{
+	font-size:15px;
+	font-family: 楷体;
+	text-align:center;
+}
+
 div.center p{
 	font-size:16px;
 	font-family: 宋体;
 	line-height: 180%;
 	padding:0px;
 }
+
 div.center img{
 	max-width:100%;
 	-webkit-box-shadow: 0 0 10px #555;
 }
+
 div.center h1 {
 	font-size:26px;
 	font-family: 宋体;
 	font-weight:bold;
 	color:black;
+	text-align:center;
 }
+
 div.center h2 {
 	font-size:24px;
 	font-family: 宋体;
@@ -121,15 +131,24 @@ div.postdesc p{
 	float:left;
 }
 
+div.mainbottomleft h2{
+	text-align:center;
+}
+
 .mainbottomright{
 	padding-top:10px;
 	float:right;
 	text-align:center;
 }
 
+div.mainbottomright h2{
+	text-align:center;
+}
+
 .rsidebar{
 	text-align:center;
 }
+
 div.rsidebar img{
 	-webkit-box-shadow: 0 0 10px #555;
 }
@@ -140,11 +159,13 @@ div.rsidebar img{
 	border-radius:4px;
 	margin-top: 10px;
 }
+
 div.rsidebar-title p{
 	border-radius:4px;
 	background-image:-webkit-linear-gradient(to bottom, #e8e8e8, #ffffff);
 	background-image:linear-gradient(to bottom,#e8e8e8,#ffffff);
 }
+
 .rsidebar-content{
 }
 

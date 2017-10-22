@@ -3,7 +3,7 @@ layout: default
 title: 本地配置文件的管理工具confd
 author: lijiaocn
 createdate: 2017/09/21 16:00:08
-changedate: 2017/09/21 19:32:27
+changedate: 2017/10/22 16:07:25
 categories: 技巧
 tags: linuxtool
 keywords: confd,配置管理
@@ -43,6 +43,7 @@ confd支持一下backends:
 
 在/etc/confd/conf.d/中创建`应用模版`：
 
+{% raw %}
 	[template]
 	prefix = "/myapp"
 	src = "nginx.tmpl"
@@ -53,11 +54,13 @@ confd支持一下backends:
 	  "/subdomain",
 	  "/upstream",
 	]
-	check_cmd = "/usr/sbin/nginx -t -c {{.src}}"
+	check_cmd = "/usr/sbin/nginx -t -c {{.src }}"
 	reload_cmd = "/usr/sbin/service nginx reload"
+{% endraw %}
 
 在/etc/confd/templates中创建`配置模版`：
 
+{% raw %}
 	upstream {{getv "/subdomain"}} {
 	{{range getvs "/upstream/*"}}
 	    server {{.}};
@@ -74,6 +77,7 @@ confd支持一下backends:
 	        proxy_set_header  X-Forwarded-For  $proxy_add_x_forwarded_for;
 	   }
 	}
+{% endraw %}
 
 启动confd之后，confd就会监听etcd中的key，根据`应用模版`中的内容，从`配置模版`生成`配置文件`。
 
