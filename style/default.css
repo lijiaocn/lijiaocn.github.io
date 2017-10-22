@@ -1,7 +1,6 @@
 .topnav{
 	border-radius: 0px;  
 	margin-bottom: 0px;
-	height: 50px;
 }
 
 .body {
@@ -24,7 +23,7 @@
 }
 
 .searchbarLinks{
-	padding-top:0px;
+	padding-top:5px;
 	padding-bottom:0px;
 	height:30px;
 }
