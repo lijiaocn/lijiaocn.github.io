@@ -130,6 +130,9 @@ div.postdesc p{
 .rsidebar{
 	text-align:center;
 }
+div.rsidebar img{
+	-webkit-box-shadow: 0 0 10px #555;
+}
 
 .rsidebar-title{
 	height:40px;
