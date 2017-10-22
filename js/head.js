@@ -7,7 +7,6 @@ var _hmt = _hmt || [];
   s.parentNode.insertBefore(hm, s);
 })();
 
-
 /*百度自动收录*/
 (function(){
     var bp = document.createElement('script');
@@ -35,5 +34,3 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 ga('create', 'UA-105389858-1', 'auto');
 ga('send', 'pageview');
-
-/*Google adsense 位于_includes/head.html中*/
