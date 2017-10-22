@@ -3,7 +3,7 @@ layout: default
 title: linux的iptables使用
 author: lijiaocn
 createdate: 2014/04/16 10:16:55
-changedate: 2017/09/24 12:58:22
+changedate: 2017/10/22 17:23:21
 categories: 技巧
 tags: linuxnet
 keywords:  linux iptables
@@ -115,7 +115,7 @@ iptables的规则按照“表(table)->规则链(chain)->规则(rule)”的层次
 	raw.OUTPUT -> mangle.OUTPUT -> nat.OUTPUT -> filter.OUTPUT -> mangle.POSTROUTING 
 	->nat.POSTROUTING
 
-![nf-packet-flow]({{ site.imglocal }}/nf-packet-flow.png )
+![nf-packet-flow]({{ site.imglocal }}/iptables/nf-packet-flow.png )
 
 ### filter表
 

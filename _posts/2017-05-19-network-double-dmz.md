@@ -3,7 +3,7 @@ layout: default
 title: 部署多DMZ区的安全企业网
 author: lijiaocn
 createdate: 2017/05/19 10:46:21
-changedate: 2017/05/19 11:11:13
+changedate: 2017/10/22 17:25:49
 categories: 技巧
 tags: network  security
 keywords: DMZ,安全企业网,双DMZ
@@ -20,7 +20,7 @@ description: 部署多DMZ区的安全企业网络，通过设置多重防火墙�
 
 一些中小企业利用传统的三宿主防火墙（DMZ屏蔽子网内部的防火墙）构建企业网络结构如图:
 
-![单DMZ网络]({{ site.imglocal }}/net-single-dmz.png)
+![单DMZ网络]({{ site.imglocal }}/double-dmz/net-single-dmz.png)
 
 防火墙分别和三个独立的网络相连（因此需要三个网卡），这三个网络如下所述：
 
@@ -36,7 +36,7 @@ description: 部署多DMZ区的安全企业网络，通过设置多重防火墙�
 
 部署双DMZ区的企业网络结构，数据库服务器由两个防火墙（或支持双重防御的单个防火墙）来提供防护。一个防火墙可以监控内网、DMZ和Internet之间的通信，另外一个防火墙可以监控DMZ和DMZ2之间的通信，如图所示。
 
-![双重DMZ网络]({{ site.imglocal }}/net-double-dmz.png)
+![双重DMZ网络]({{ site.imglocal }}/double-dmz/net-double-dmz.png)
 
 部署需求如下：
 
@@ -72,7 +72,7 @@ description: 部署多DMZ区的安全企业网络，通过设置多重防火墙�
 
 公网路由器与第一重防御防火墙间部署蜜罐系统，具有一定程度的入侵搜集、捕获与取证能力。
 
-![双重DMZ网络安全]({{ site.imglocal }}/net-double-dmz-security.png)
+![双重DMZ网络安全]({{ site.imglocal }}/double-dmz/net-double-dmz-security.png)
 
 利用两个支持单DMZ区的防火墙搭建四区域的网络结构，实现双重防御。
 
@@ -121,4 +121,4 @@ description: 部署多DMZ区的安全企业网络，通过设置多重防火墙�
 
 ## 双重DMZ安全企业网的模拟部署
 
-![双重DMZ网络部署示例]({{ site.imglocal }}/net-double-dmz-security-example.png)
+![双重DMZ网络部署示例]({{ site.imglocal }}/double-dmz/net-double-dmz-security-example.png)

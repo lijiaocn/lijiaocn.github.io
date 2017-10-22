@@ -3,7 +3,7 @@ layout: default
 title: Calico网络的原理、组网方式与使用
 author: lijiaocn
 createdate: 2017/04/11 10:58:34
-changedate: 2017/09/11 16:21:24
+changedate: 2017/10/22 20:57:52
 categories: 项目
 tags: sdn calico
 keywords:
@@ -184,7 +184,7 @@ calico网络对底层的网络的要求很少，只要求node之间能够通过I
 
 	所有的node都已经接入了二层网，还没有配置三层网络。
 
-![calico-l2-rr-spine-planes]({{ site.imglocal }}/calico-l2-rr-spine-planes.png)
+![calico-l2-rr-spine-planes]({{ site.imglocal }}/calico-usage/calico-l2-rr-spine-planes.png)
 
 为了保证链路可靠，图中设计了四个并列的二层网，每个二层网占用一个三层网段。
 
@@ -226,11 +226,11 @@ TOR交换机之间可以是接入到同一个核心交换机二层可达的，�
 
 TOR二层联通:
 
-![calico-l3-fabric-diagrams-as-rack-l2-spine]({{ site.imglocal }}/calico-l3-fabric-diagrams-as-rack-l2-spine.png)
+![calico-l3-fabric-diagrams-as-rack-l2-spine]({{ site.imglocal }}/calico-usage/calico-l3-fabric-diagrams-as-rack-l2-spine.png)
 
 TOR三层联通：
 
-![calico-l3-fabric-diagrams-as-rack-l3-spine]({{ site.imglocal }}/calico-l3-fabric-diagrams-as-rack-l3-spine.png)
+![calico-l3-fabric-diagrams-as-rack-l3-spine]({{ site.imglocal }}/calico-usage/calico-l3-fabric-diagrams-as-rack-l3-spine.png)
 
 每个机架上node的数目是有限的，BGP压力转移到了TOR交换机。当机架数很多，TOR交换机组成BGP mesh压力会过大。
 
@@ -254,11 +254,11 @@ endpoints之间的通信过程:
 
 TOR二层联通:
 
-![calico-l3-fabric-diagrams-as-server-l2-spine]({{ site.imglocal }}/calico-l3-fabric-diagrams-as-server-l2-spine.png)
+![calico-l3-fabric-diagrams-as-server-l2-spine]({{ site.imglocal }}/calico-usage/calico-l3-fabric-diagrams-as-server-l2-spine.png)
 
 TOR三层联通:
 
-![calico-l3-fabric-diagrams-as-server-l3-spine]({{ site.imglocal }}/calico-l3-fabric-diagrams-as-server-l3-spine.png)
+![calico-l3-fabric-diagrams-as-server-l3-spine]({{ site.imglocal }}/calico-usage/calico-l3-fabric-diagrams-as-server-l3-spine.png)
 
 ### 优化：“Downward Default model”减少需要记录的路由
 

@@ -3,7 +3,7 @@ layout: default
 title: linux的网络namespace
 author: lijiaocn
 createdate: 2017/08/10 14:16:11
-changedate: 2017/08/10 14:21:35
+changedate: 2017/10/22 17:24:26
 categories: 技巧
 tags: linuxnet
 keywords: network,namespace,linux
@@ -83,7 +83,7 @@ namespace是一个独立的网络协议栈，通过namespace，可以将网络�
 
 ### 两个namespace连接到bridge
 
-![ns连接到网桥]({{ site.imglocal }}/ns-bridge.png)
+![ns连接到网桥]({{ site.imglocal }}/namespace/ns-bridge.png)
 
 创建三个ns，并利用veth连接:
 

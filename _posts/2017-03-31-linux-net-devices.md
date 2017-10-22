@@ -2,7 +2,7 @@
 title: linux上的物理网卡与虚拟网络设备
 author: lijiaocn
 createdate: 2017/03/31 18:47:12
-changedate: 2017/08/10 15:43:42
+changedate: 2017/10/22 17:29:14
 categories: 技巧
 tags: linuxnet
 keywords: tun设备,tap设备,tun/tap,veth,虚拟设备
@@ -15,7 +15,7 @@ description: 介绍了Linux中的网络设备，重点是tun、tap、veth等虚�
 
 ## 物理网卡
 
-![物理网卡工作原理]({{ site.imglocal }}/nic-work.png)
+![物理网卡工作原理]({{ site.imglocal }}/net-devices/nic-work.png)
 
 ## link device type
 
@@ -43,7 +43,7 @@ Virtual Ethernet Port Aggregator。它是HP在虚拟化支持领域对抗Cisco�
 
 VN-Tag在标准的协议头中增加了一个全新的字段，VEPA则是通过修改网卡驱动和交换机，通过发夹弯技术回注报文。
 
-![vepa工作原理]({{ site.imglocal }}/vepa-work.jpeg)
+![vepa工作原理]({{ site.imglocal }}/net-devices/vepa-work.jpeg)
 
 ## TUN
 
@@ -51,11 +51,11 @@ TUN是Linux系统里的虚拟网络设备，它的原理和使用在[Kernel Doc]
 
 TUN设备模拟网络层设备(network layer)，处理三层报文，IP报文等，用于将报文注入到网络协议栈。
 
-![TUN设备工作原理]({{ site.imglocal }}/tun-work.png)
+![TUN设备工作原理]({{ site.imglocal }}/net-devices/tun-work.png)
 
 应用程序(app)可以从物理网卡上读写报文，经过处理后通过TUN回送，或者从TUN读取报文处理后经物理网卡送出。
 
-![利用TUN实现VPN]({{ site.imglocal }}/tun-app-work.png)
+![利用TUN实现VPN]({{ site.imglocal }}/net-devices/tun-app-work.png)
 
 ### TUN设备创建
 
@@ -180,13 +180,13 @@ TAP设备与TUN设备的区别在于:
 
 有时我们可能需要一块物理网卡绑定多个 IP 以及多个 MAC 地址，虽然绑定多个 IP 很容易，但是这些 IP 会共享物理网卡的 MAC 地址，可能无法满足我们的设计需求，所以有了 MACVLAN 设备，其工作方式如下：
 
-![macvlan工作原理]({{ site.imglocal }}/macvlan-work.png)
+![macvlan工作原理]({{ site.imglocal }}/net-devices/macvlan-work.png)
 
 MACVLAN 会根据收到包的目的 MAC 地址判断这个包需要交给哪个虚拟网卡。单独使用 MACVLAN 好像毫无意义，但是配合之前介绍的 network namespace 使用，我们可以构建这样的网络：
 
-![macvlan工作原理2]({{ site.imglocal }}/macvlan-work2.png)
+![macvlan工作原理2]({{ site.imglocal }}/net-devices/macvlan-work2.png)
 
-![macvlan的工作原理3]({{ site.imglocal }}/macvlan-work3.jpeg)
+![macvlan的工作原理3]({{ site.imglocal }}/net-devices/macvlan-work3.jpeg)
 
 [采摘][4]
 
@@ -198,15 +198,15 @@ MACVLAN 会根据收到包的目的 MAC 地址判断这个包需要交给哪个�
 
 macvlan支持三种模式，bridge、vepa、private，在创建的时候设置“mode XXX”:
 
-![macvlan brige模式]({{ site.imglocal }}/macvlan-bridge.jpeg)
+![macvlan brige模式]({{ site.imglocal }}/net-devices/macvlan-bridge.jpeg)
 
 bridge模式，macvlan网卡和物理网卡直接可以互通，类似于接入到同一个bridge。
 
-![macvlan vepa模式]({{ site.imglocal }}/macvlan-vepa.jpeg)
+![macvlan vepa模式]({{ site.imglocal }}/net-devices/macvlan-vepa.jpeg)
 
 vepa模式下，两个macvlan网卡直接不能直接通信，必须通过外部的支持“发夹弯”交换机才能通信。
 
-![macvlan vepa模式]({{ site.imglocal }}/macvlan-private.jpeg)
+![macvlan vepa模式]({{ site.imglocal }}/net-devices/macvlan-private.jpeg)
 
 private模式下，macvlan发出的广播包（arp等）被丢弃，即使接入了支持“发夹弯”的交换机也不能发现其它macvlan网卡，除非手动设置mac。
 
@@ -214,7 +214,7 @@ private模式下，macvlan发出的广播包（arp等）被丢弃，即使接入
 
 MACVTAP 是对 MACVLAN的改进，把 MACVLAN 与 TAP 设备的特点综合一下，使用 MACVLAN 的方式收发数据包，但是收到的包不交给 network stack 处理，而是生成一个 /dev/tapX 文件，交给这个文件：
 
-![macvtap工作原理]({{ site.imglocal }}/macvtap-work.png)
+![macvtap工作原理]({{ site.imglocal }}/net-devices/macvtap-work.png)
 
 由于 MACVLAN 是工作在 MAC 层的，所以 MACVTAP 也只能工作在 MAC 层，不会有 MACVTUN 这样的设备。
 
@@ -222,13 +222,13 @@ MACVTAP 是对 MACVLAN的改进，把 MACVLAN 与 TAP 设备的特点综合一�
 
 ipvlan和macvlan的区别在于它在ip层进行流量分离而不是基于mac地址，同属于一块宿主以太网卡的所有ipvlan虚拟网卡的mac地址都是一样的。
 
-![ipvlan工作原理]({{ site.imglocal }}/ipvlan-work.png)
+![ipvlan工作原理]({{ site.imglocal }}/net-devices/ipvlan-work.png)
 
 	ip link add link <master-dev> <slave-dev> type ipvlan mode { l2 | L3 }
 
 ## veth
 
-![veth工作原理]({{ site.imglocal }}/veth-work.jpeg)
+![veth工作原理]({{ site.imglocal }}/net-devices/veth-work.jpeg)
 
 veth设备是成对创建的：
 
