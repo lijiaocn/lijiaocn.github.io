@@ -1,9 +1,9 @@
 ---
 layout: default
-title: 怎样选择开源源代码的license?
+title: 怎样选择开源项目的license?
 author: lijiaocn
 createdate: 2017/10/22 20:09:47
-changedate: 2017/10/22 21:38:41
+changedate: 2017/10/24 14:42:53
 categories: 方法
 tags: IT方法
 keywords: license,opensource
