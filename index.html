@@ -27,7 +27,7 @@ description: lijiaocn的技术博客，深度原创内容，亲身经历实践�
 
 <!-- 分页链接 -->
 {% if paginator.total_pages > 1 %}
-<div class="pagination">
+<div class="pageination">
   {% if paginator.previous_page %}
     <a href="{{ '/index.html' | prepend: paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">&laquo; 上一页</a>
   {% else %}

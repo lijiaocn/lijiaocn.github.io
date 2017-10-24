@@ -1,6 +1,6 @@
-.topnav{
-	border-radius: 0px;  
-	margin-bottom: 0px;
+.row {
+	margin-left: 0;
+	margin-right: 0;
 }
 
 .body {
@@ -11,41 +11,128 @@
 	-ms-overflow-style: scrollbar;
 }
 
-.main{
-	padding-top:0px;
+.topnav {
+	border-radius: 0px; 
+	margin-bottom: 0px;
+}
+
+.noticerow {
+
+}
+
+.main {
+	margin: 0 auto;
+	padding: 0px;
 	background-color: #ffffff;
 }
 
-.searchbar{
-	padding-top:5px;
-	padding-bottom:5px;
-	height: 80px;
+.foot {
+	margin-top: 20px;
+	padding-top:10px;
+	text-align:center;
+	background-color: #5a5a5a;
 }
 
-.searchbarLinks{
-	padding-top:5px;
-	padding-bottom:0px;
-	height:30px;
+.lsidebar {
+	text-align:left;
+	margin: 0px;
+	padding: 15px 0px 0px 0px;
 }
 
-.center{
-	margin-left:0px;
+.rsidebar {
+	margin: 0px;
+	padding: 0px;
+	text-align:center;
+	width:300px;
 }
 
-div.center .author{
+.center {
+	padding:0px;
+	margin:0px;
+}
+
+.mainbottomleft {
+	padding-top:10px;
+	float:left;
+}
+
+.mainbottomright {
+	padding-top:10px;
+	float:right;
+	text-align:center;
+}
+
+.rsidebar-element {
+
+}
+
+.rsidebar-content {
+
+}
+
+.rsidebar-title {
+	height:40px;
+	line-height:40px;
+	border-radius:4px;
+	margin-top: 10px;
+}
+
+.content {
+	padding:0px;
+	margin:0px;
+}
+
+.pageheader {
+	padding:0px;
+	margin:0px;
+}
+
+.postlist {
+	padding:0px;
+	margin:0px;
+}
+
+.postinfo {
+
+}
+
+.postdesc {
+
+}
+
+.pageination {
+
+}
+
+div.lsidebar ul {
+	margin:0px;
+	padding:0px;
+}
+
+div.lsidebar li {
+	margin:0px;
+	padding:0px;
+	display:block;
+}
+
+div.lsidebar span {
+	display: block;
+	float: left;
+}
+
+div.center .author {
 	font-size:15px;
 	font-family: 楷体;
 	text-align:center;
 }
 
-div.center p{
+div.center p {
 	font-size:16px;
 	font-family: 宋体;
 	line-height: 180%;
-	padding:0px;
 }
 
-div.center img{
+div.center img {
 	max-width:100%;
 	-webkit-box-shadow: 0 0 10px #555;
 }
@@ -63,6 +150,9 @@ div.center h2 {
 	font-family: 宋体;
 	font-weight:bold;
 	color:black;
+}
+div.center h2 a {
+	color: #000000;
 }
 div.center h3 {
 	font-size:22px;
@@ -88,11 +178,8 @@ div.center h6 {
 	font-weight:bold;
 	color:black;
 }
-div.center h2 a{
-	color: #000000;
-}
 
-div.center pre{
+div.center pre {
 	font-family: Inconsolata, Consolas, "DEJA VU SANS MONO", "DROID SANS MONO", Proggy, monospace;
 	font-size: 90%;
 	border: solid 1px lightgrey;
@@ -104,80 +191,86 @@ div.center pre{
 	overflow: auto;
 }
 
-div.center pre code{
+div.center pre code {
 	white-space: pre;
 }
 
-div.postlist p{
+div.postlist p {
 	line-height:130%;
 	padding-top:5px;
 	padding-left:0px
 }
 
-div.postinfo p{
+div.postinfo p {
 	font-size:13px;
 	padding-top:0px;
 	padding-left:3px
 }
 
-div.postdesc p{
+div.postdesc p {
 	padding-top:0px;
 	padding-left:1px;
 	color: #888;
 }
 
-.mainbottomleft{
-	padding-top:10px;
-	float:left;
-}
-
-div.mainbottomleft h2{
+div.mainbottomleft h2 {
 	text-align:center;
 }
 
-.mainbottomright{
-	padding-top:10px;
-	float:right;
+div.mainbottomright h2 {
 	text-align:center;
 }
 
-div.mainbottomright h2{
-	text-align:center;
-}
-
-.rsidebar{
-	text-align:center;
-	width:300px;
-}
-
-div.rsidebar img{
+div.rsidebar img {
 	-webkit-box-shadow: 0 0 10px #555;
 }
 
-.rsidebar-title{
-	height:40px;
-	line-height:40px;
-	border-radius:4px;
-	margin-top: 10px;
-}
-
-div.rsidebar-title p{
+div.rsidebar-title p {
 	border-radius:4px;
 	background-image:-webkit-linear-gradient(to bottom, #e8e8e8, #ffffff);
 	background-image:linear-gradient(to bottom,#e8e8e8,#ffffff);
 }
 
-.rsidebar-content{
+@media (min-width: 1200px) {
+	.main {
+		width:1200px
+	}
+	.lsidebar {
+		width:150px;
+	}
+	.center {
+		width:750px;
+	}
+	.rsidebar {
+		width:300px;
+	}
 }
 
-.rsidebar-element{
-	padding-left:0px;
-	padding-bottom:0px;
+@media (min-width: 970px) and (max-width: 1200px) {
+	.main {
+		width:970px
+	}
+	.lsidebar {
+		width:100px;
+	}
+	.center {
+		width:650px;
+	}
+	.rsidebar {
+		width:220px;
+	}
 }
-
-.foot{
-	margin-top: 20px;
-	padding-top:10px;
-	text-align:center;
-	background-color: #5a5a5a;
+@media (min-width: 970px) and (max-width: 1200px) {
+	.main {
+		width:970px
+	}
+	.lsidebar {
+		width:100px;
+	}
+	.center {
+		width:650px;
+	}
+	.rsidebar {
+		width:220px;
+	}
 }
