@@ -3,7 +3,7 @@ layout: default
 title: 怎样用beego开发服务端应用？
 author: lijiaocn
 createdate: 2017/10/23 14:01:13
-changedate: 2017/10/24 10:45:58
+changedate: 2017/10/24 18:56:08
 categories: 方法
 tags: IT方法
 keywords: beego
@@ -103,13 +103,13 @@ description: beego是国内团队开源的golang开发框架,是一个关注度�
 
 	bee generate docs
 
-## 深入了解 
+## 开发文档 
 
 [beego开发文档][3]中对beego做了很详细的说明。
 
 ![beego执行逻辑](https://beego.me/docs/images/flow.png)
 
-### 目录结构说明
+## 目录结构说明
 
 	.
 	|____hello
@@ -131,9 +131,7 @@ description: beego是国内团队开源的golang开发框架,是一个关注度�
 	| |____views          <- 页面模版，controller中可以直接渲染对应的tpl文件
 	| | |____index.tpl
 
-
-
-### 使用配置文件
+## 使用配置文件
 
 [beego参数配置][4]中讲解如何使用配置文件、如何配置参数。
 
@@ -191,7 +189,7 @@ beego.Appconfig包含多个方法:
 	beego.LoadAppConfig("ini", "conf/app2.conf")
 	beego.LoadAppConfig("ini", "conf/app3.conf")
 
-### beego默认参数
+## beego默认参数
 
 beego的默认参数全部保存在`beego.BConfig`中。，可以访问、修改所有的配置信息。
 
@@ -272,11 +270,11 @@ Log配置:
 	beego.BConfig.Log.FileLineNum = true
 	beego.BConfig.Log.Outputs = map[string]string{"console": ""}
 
-### 路由设置
+## 路由设置
 
 beego支持三种路由: 基础路由、正则路由、自动路由。
 
-#### 路由的表述方式
+### 路由的表述方式
 
 支持用正则的方式书写路由，参考了`sinatra`的路由实现。
 
@@ -303,7 +301,7 @@ beego支持三种路由: 基础路由、正则路由、自动路由。
 	this.Ctx.Input.Param(":path")
 	this.Ctx.Input.Param(":ext")
 
-#### 直接设置路由
+### 直接设置路由
 
 在`routers/router.go`中设置，可以使用下面的基础函数直接设置路由:
 
@@ -327,7 +325,7 @@ beego支持三种路由: 基础路由、正则路由、自动路由。
 		 ctx.Output.Body([]byte("bar"))
 	})
 
-#### 以注册handler的设置路由
+### 以注册handler的方式设置路由
 
 也可以使用`beego.Handler(router, http.Handler)`设置路由的handler:
 
@@ -351,11 +349,11 @@ beego.Handler默认是`完全匹配`，不是前缀匹配。可以自定义http�
 	options: OPTIONS 请求
 	head: HEAD 请求
 
-#### 自动注册路由
+### 自动注册路由
 
 另外还有`beego.AutoRouter($controllers.ObjectController{})`，会自动通过反射为Object中的方法生成路由。
 
-#### 通过注解路由
+### 通过注解注册路由
 
 在controller的方法上面加上router注释，router.go中通过`beego.Include(&Controller)`引入controller的时候会自动注册路由。
 
@@ -387,7 +385,7 @@ beego.Handler默认是`完全匹配`，不是前缀匹配。可以自定义http�
 
 beego会自动进行源码分析，如果是`dev模式`，会在routers/commentXXX.go文件。
 
-#### 使用namespace管理路由
+### 使用namespace管理路由
 
 namespace支持前套，并且可以对包含其中对路由进行前置过滤、条件判断。
 
@@ -454,7 +452,7 @@ namespace接口如下:
 	GET /v1/shop/123
 	GET /v1/cms/ 对应 MainController、CMSController、BlockController 中得注解路由
 
-### 需要特别注意的NSAfter()
+## 需要特别注意的NSAfter()
 
 NSAfter()注册的filter函数会在请求处理结束的时候被调用，但是要注意在bee 1.9.0中：
 
@@ -466,6 +464,71 @@ NSAfter()注册的filter函数会在请求处理结束的时候被调用，但�
 [controller.ServeJSON should work will with beego.NSAfter][6]
 
 可以用[github: study-beego][7]里的的代码试验一下。
+
+## 使用数据库
+
+beego仿照Digango ORM和SQLAlchemy实现beego ORM，当前支持三个驱动：
+
+	MySQL：github.com/go-sql-driver/mysql
+	PostgreSQL：github.com/lib/pq
+	Sqlite3：github.com/mattn/go-sqlite3
+
+beego生成的model文件中，会自动将model注册到orm，例如：
+
+	bee generate model user -fields="name:string,age:int"
+
+生成的代码`models/user.go`中会在init()中注册:
+
+	func init() {
+		orm.RegisterModel(new(User))
+	}
+
+因此只需要手工书写orm初始化的代码，譬如在main.go中:
+
+	func init() {
+		orm.RegisterDataBase("default", "mysql", "root:@tcp(127.0.0.1:3306)/mysql?charset=utf8", 30)
+	}
+
+## 数据库迁移(migration)
+
+数据库迁移功能可以数据库进行升级、回滚操作。
+
+生成迁移文件，`user`是表名，`fields`是表结构:
+
+	bee generate migration user -driver=mysql -fields="name:string,age:int"
+
+运行后，生成了文件:
+
+	|____database
+	| |____migrations
+	| | |____20171024_154037_user.go
+
+在数据库中创建了名为`study-beego`的数据库后，执行下面的命令：
+
+	bee migrate -driver=mysql -conn="root:@tcp(127.0.0.1:3306)/study-beego"
+
+study-beego中的表将会被创建或者更新，并在名为`migrations`的表中记录更新。
+
+![bee migrate]({{ site.imglocal }}/study-beego/01-database-migrate.png)
+
+>migrate的子命令`refresh`、`rollback`执行失败，原因不明。
+
+## beego.Controller处理http请求
+
+注意，在1.9.0中，需要在配置中设置`copyrequestbody=true`以后，c.Ctx.Input.RequestBody中才有数据。
+
+	func (c *UserController) Post() {
+		var v models.User
+		json.Unmarshal(c.Ctx.Input.RequestBody, &v)
+		fmt.Println(v)
+		if _, err := models.AddUser(&v); err == nil {
+			c.Ctx.Output.SetStatus(201)
+			c.Data["json"] = v
+		} else {
+			c.Data["json"] = err.Error()
+		}
+		c.ServeJSON()
+	}
 
 ## 参考
 
