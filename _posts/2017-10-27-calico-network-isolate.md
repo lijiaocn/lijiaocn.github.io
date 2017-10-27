@@ -1,11 +1,11 @@
 ---
 layout: default
-title: calico的hostendpoint无法访问workloadendpoint的问题调查
+title: 在kubernetes的node上无法访问pod的问题调查
 author: lijiaocn
 createdate: 2017/10/27 14:45:26
-changedate: 2017/10/27 17:06:50
+changedate: 2017/10/27 17:12:54
 categories: 问题
-tags: calico
+tags: calico kubernetes
 keywords: calico,hostendpoint,workloadendpoint,网络隔离
 description: 在calico上开启policy后，node无法访问pod
 
@@ -26,7 +26,7 @@ workloadendpoint就是虚拟接口，在k8s中对应的就是分配给pod的接�
 
 如果想在node(hostendpoint)上直接访问pod(workloadendpoint)，需要创建带有合适标签的hostendpoint。
 
-集群中创建的一个policy如下:
+例如在集群中创建的一个policy如下:
 
 	$ calicoctl get policy lijiaocn-space.isolation-access-rules -o yaml
 	- apiVersion: v1
