@@ -3,7 +3,7 @@ layout: default
 title: 在kubernetes的node上无法访问pod的问题调查
 author: lijiaocn
 createdate: 2017/10/27 14:45:26
-changedate: 2017/10/27 17:12:54
+changedate: 2017/10/27 19:26:55
 categories: 问题
 tags: calico kubernetes
 keywords: calico,hostendpoint,workloadendpoint,网络隔离
@@ -135,6 +135,8 @@ node的ip地址是10.39.0.113，带有标签`calico/k8s_ns: kube-system`，符�
 
 脚本1，为kubernetes的所有的pod创建hostendpoint：
 
+{% raw %} 
+
 	#!/bin/bash
 	for i in `kubectl get node  -o go-template="{{ range .items }} {{ index .status.addresses 1 \"address\" }} {{end}}"`
 	do
@@ -156,10 +158,13 @@ node的ip地址是10.39.0.113，带有标签`calico/k8s_ns: kube-system`，符�
 	EOF
 	calicoctl create -f /tmp/hostendpoint.yaml
 	done
+{% endraw %}
 
 这个脚本在master上执行，可以一次性为所有的node的创建hostendpoint。
 
 脚本2，生成每个node上的tunl0对应的hostendpoint：
+
+{% raw %}
 
 	#!/bin/bash
 	IP=`ip addr |grep tunl0 |grep inet|awk '{print $2}'|sed -e 's@/32@@'`
@@ -180,11 +185,12 @@ node的ip地址是10.39.0.113，带有标签`calico/k8s_ns: kube-system`，符�
 	  profiles:
 	  - k8s_ns.kube-system
 	EOF
+{% endraw %}
 
 这个脚本在每个node上执行，生成这个node上的tunl0对应的hostendpoint文件。
 之后还需要手动的创建:
 
-	calicoctl create -f hostendpoint-tunl0.yaml
+	$ calicoctl create -f hostendpoint-tunl0.yaml
 
 ## 参考
 
