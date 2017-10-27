@@ -3,7 +3,7 @@ layout: default
 title: 在kubernetes的node上无法访问pod的问题调查
 author: lijiaocn
 createdate: 2017/10/27 14:45:26
-changedate: 2017/10/27 19:26:55
+changedate: 2017/10/27 19:31:41
 categories: 问题
 tags: calico kubernetes
 keywords: calico,hostendpoint,workloadendpoint,网络隔离
@@ -45,25 +45,6 @@ workloadendpoint就是虚拟接口，在k8s中对应的就是分配给pod的接�
 	        selector: calico/k8s_ns in { "kube-system", "lijiaocn-space" }
 	    order: 1000
 	    selector: calico/k8s_ns == 'lijiaocn-space'
-	#!/bin/bash
-	IP=`ip addr |grep tunl0 |grep inet|awk '{print $2}'|sed -e 's@/32@@'`
-	NAME=`ip addr |grep eth0  |grep inet|awk '{print $2}'|sed -e 's@/24@@'`
-	
-	cat >./hostendpoint-tunl0.yaml <<EOF
-	apiVersion: v1
-	kind: hostEndpoint
-	metadata:
-	  name: tunl0
-	  node: $NAME
-	  labels:
-	    calico/k8s_ns: kube-system
-	spec:
-	  interfaceName: tunl0
-	  expectedIPs:
-	  - $IP
-	  profiles:
-	  - k8s_ns.kube-system
-	EOF
 
 这个policy允许带有`calico/k8s_ns=kube-system`或者`calico/k8s_ns=lijiaocn-space`标签的ip访问。
 
