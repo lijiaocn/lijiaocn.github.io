@@ -3,7 +3,7 @@ layout: default
 title: linux的iptables使用
 author: lijiaocn
 createdate: 2014/04/16 10:16:55
-changedate: 2017/10/22 17:23:21
+changedate: 2017/10/28 12:34:11
 categories: 技巧
 tags: linuxnet
 keywords:  linux iptables
@@ -13,6 +13,8 @@ description: 介绍了iptables的原理、表之间的关系、报文处理时�
 
 * auto-gen TOC:
 {:toc}
+
+## 说明
 
 iptables是linux自带的防火墙，这里做系统的介绍。完全不懂iptables的，可以到[iptables-contents][5]中从头学习。
 

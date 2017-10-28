@@ -3,9 +3,9 @@ layout: default
 title: 怎样用MySQL Workbench设计数据库？
 author: lijiaocn
 createdate: 2017/10/24 18:59:04
-changedate: 2017/10/25 20:01:17
+changedate: 2017/10/28 12:11:48
 categories: 方法
-tags: IT方法
+tags: database
 keywords: mysqlworkbench,数据库设计,database
 description: MySQL WorkBench是mysql社区提供一个数据库设计软件。
 

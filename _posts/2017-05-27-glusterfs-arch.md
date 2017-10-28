@@ -3,9 +3,9 @@ layout: default
 title: Glusterfs的架构
 author: lijiaocn
 createdate: 2017/05/27 10:20:13
-changedate: 2017/09/11 16:21:39
+changedate: 2017/10/28 12:08:21
 categories: 项目
-tags: glusterfs 存储
+tags: glusterfs
 keywords: glusterfs，架构
 description: glusterfs是redhat支持、维护的分布式存储系统。
 

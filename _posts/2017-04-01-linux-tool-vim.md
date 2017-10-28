@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Vim使用手册
+title: vim使用手册
 author: lijiaocn
 createdate: 2017/04/01 11:00:33
-changedate: 2017/07/05 10:19:44
+changedate: 2017/10/28 12:25:05
 categories: 技巧
 tags: linuxtool
 keywords: vim

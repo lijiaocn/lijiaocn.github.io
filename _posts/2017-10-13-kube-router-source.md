@@ -3,9 +3,9 @@ layout: default
 title: kube-router的源码走读
 author: lijiaocn
 createdate: 2017/10/13 17:28:23
-changedate: 2017/10/27 19:28:20
+changedate: 2017/10/28 12:09:34
 categories: 项目
-tags: kube-router
+tags: kubernetes
 keywords:  kube-router源码走读,kube-router源码分析,kubernetes
 description: kube-router是一个挺有想法的项目，兼备了calico和kube-proxy的功能，代码也很整洁。
 

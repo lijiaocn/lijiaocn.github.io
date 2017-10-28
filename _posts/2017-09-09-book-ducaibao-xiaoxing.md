@@ -3,9 +3,9 @@ layout: default
 title: 怎样读懂财报报表?
 author: lijiaocn
 createdate: 2017/09/09 18:47:08
-changedate: 2017/10/28 11:46:57
+changedate: 2017/10/28 12:20:02
 categories: 投资
-tags: 投资方法
+tags: financial-report
 keywords: 财务报表,读懂财报,一本书读懂
 description:  这是清华大学经济管理学院会计系系主任肖星教授在2014年完成著作，当时肖星教授在清华为MBA学生讲授财务报表分析课已经整整16年。
 

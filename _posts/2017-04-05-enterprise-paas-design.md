@@ -3,9 +3,9 @@ layout: default
 title: 怎样设计一个企业级的PaaS平台？
 author: lijiaocn
 createdate: 2017/04/05 13:07:40
-changedate: 2017/10/28 11:38:24
+changedate: 2017/10/28 12:12:55
 categories: 方法
-tags: paas IT方法
+tags: paas
 keywords: PaaS,paas,企业级
 description: 对企业用PaaS的一些理解
 

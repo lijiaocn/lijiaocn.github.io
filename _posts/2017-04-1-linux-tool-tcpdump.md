@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Tcpdump使用手册
+title: tcpdump使用手册
 author: lijiaocn
 createdate: 2017/04/01 10:39:05
-changedate: 2017/07/05 10:16:34
+changedate: 2017/10/28 12:24:51
 categories: 技巧
 tags: linuxtool
 keywords: tcpdump使用，抓包规则

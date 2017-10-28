@@ -3,7 +3,7 @@ layout: default
 title: yeoman的初次使用
 author: lijiaocn
 createdate: 2015/11/26 13:50:55
-changedate: 2017/09/04 21:45:14
+changedate: 2017/10/28 12:37:08
 categories: 技巧
 tags: 前端
 keywords:

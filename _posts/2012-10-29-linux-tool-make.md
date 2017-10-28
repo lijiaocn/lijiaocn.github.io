@@ -1,15 +1,18 @@
 ---
 layout: default
-title: Makefile
+title: makefile
 author: lijiaocn
 createdate: 2012/10/29 10:24:34
-changedate: 2017/07/05 10:23:33
+changedate: 2017/10/28 12:39:16
 categories: 技巧
-tags: make linuxtool
+tags: make 
 keywords: makefile,linux,make
 description: 收集了在一些项目中遇到的Makefile的语法、变量、函数等。
 
 ---
+
+* auto-gen TOC:
+{:toc}
 
 ## 摘要
 

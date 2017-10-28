@@ -3,9 +3,9 @@ layout: default
 title: crond定时任务的使用
 author: lijiaocn
 createdate: 2017/07/28 13:32:55
-changedate: 2017/07/28 15:46:35
+changedate: 2017/10/28 12:09:02
 categories: 技巧
-tags: linuxtool  crond
+tags: linuxtool
 keywords: crond定时任务的使用
 description:  crond定时任务的使用
 

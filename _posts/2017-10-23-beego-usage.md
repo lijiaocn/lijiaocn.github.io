@@ -3,9 +3,9 @@ layout: default
 title: 怎样用beego开发服务端应用？
 author: lijiaocn
 createdate: 2017/10/23 14:01:13
-changedate: 2017/10/24 18:56:08
+changedate: 2017/10/28 12:12:01
 categories: 方法
-tags: IT方法
+tags: beego
 keywords: beego
 description: beego是国内团队开源的golang开发框架,是一个关注度和使用量都比价高的项目。
 

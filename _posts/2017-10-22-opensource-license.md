@@ -3,9 +3,9 @@ layout: default
 title: 怎样选择开源项目的license?
 author: lijiaocn
 createdate: 2017/10/22 20:09:47
-changedate: 2017/10/24 14:42:53
+changedate: 2017/10/28 12:12:20
 categories: 方法
-tags: IT方法
+tags: opensource
 keywords: license,opensource
 description: 在发布源代码的时候需要选择合适的license，在使用开源代码的时候更是要注意所用代码的license。
 

@@ -3,7 +3,7 @@ layout: default
 title: Golang的依赖包管理
 author: lijiaocn
 createdate: 2017/03/28 13:05:05
-changedate: 2017/10/20 14:11:38
+changedate: 2017/10/28 12:37:51
 categories: 编程
 tags: golang
 keywords: Go编程,依赖包
@@ -13,6 +13,8 @@ description:  Golang依赖包管理，Golang可以自由地引用Git仓库中的
 
 * auto-gen TOC:
 {:toc}
+
+## 说明
 
 Golang可以自由地引用Git仓库中的代码，这样就带来了依赖包版本管理的问题。
 
