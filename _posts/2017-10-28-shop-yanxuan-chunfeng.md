@@ -3,7 +3,7 @@ layout: default
 title: 网易严选推出了情趣用品，看得我面红耳燥，不敢转
 author: lijiaocn
 createdate: 2017/10/28 14:38:01
-changedate: 2017/10/28 16:24:41
+changedate: 2017/10/28 16:31:04
 categories: 好货
 tags: 好货
 keywords: 严选春风,女性情趣,情趣用品,网易情趣
@@ -34,7 +34,7 @@ description: 如果你还不满十八岁，请你闭上眼。
 
 室外还有一场盛大的敏感词大趴...
 
-食色性也，继未央黑猪肉之后，网易的筒子们又有了新的福利...
+食色性也，继[未央黑猪肉][6]之后，网易的筒子们又有了新的福利...
 
 ## 听说，严选上的评论很那个...
 
@@ -42,7 +42,7 @@ description: 如果你还不满十八岁，请你闭上眼。
 
 第一批春风产品一共有9款，2款飞机杯、2款按摩器、5款避孕套。
 
-我都没有见过，我也不会用。
+很认真的看遍了，我都没有见过，我也不会用。
 
 [![情趣用品超薄避孕套1,网易严选春风]( {{ site.imglocal}}/yanxuan-chunfeng/1-2.png )][2]
 [![飞机杯与女性情趣用品1,网易严选春风]( {{ site.imglocal}}/yanxuan-chunfeng/3-4.png )][2]
@@ -93,9 +93,11 @@ description: 如果你还不满十八岁，请你闭上眼。
 3. [在云端][3]
 4. [鱼儿乐][4]
 5. [小白兔飞机杯][5]
+6. [未央黑猪肉][6]
 
 [1]: https://news.futunn.com/market/60575 "丁磊大叔关于猪和春风的事儿" 
 [2]: https://c.duomai.com/track.php?k=jL19WeGJTJGJTJBNTJwRHdo1DdmA3boNnbj9WYppWas1DZpVXZmcDOwMTPklWYmAjMzUjMy0DZp9VZ0l2cmYiJFhTNyUyMBVjMlkTR1ITJ1EUNyUCO5UjMlYTR1ITJENTJkJ3b3lXZrZ0Mlg2YyFWZzZkMl02bj5yM2E "严选春风"
 [3]: https://c.duomai.com/track.php?k=BNTJwRHdo1DdmA3boNnbj9WYppWas1DZpVXZmcDOwMTPklWYmAjMzUjMy0DZp9VZ0l2cmYiJ1ADM0MzMxQ0MlQWaGNTJslWY0VGZGJTJtVGdpZkMl02bj5yM2EjL19WeGJTJGJTJ "在云端"
 [4]: https://c.duomai.com/track.php?k=BNTJwRHdo1DdmA3boNnbj9WYppWas1DZpVXZmcDOwMTPklWYmAjMzUjMy0DZp9VZ0l2cmYiJzADM0MzMxQ0MlQWaGNTJslWY0VGZGJTJtVGdpZkMl02bj5yM2EjL19WeGJTJGJTJ "鱼儿乐"
 [5]: https://c.duomai.com/track.php?k=BNTJwRHdo1DdmA3boNnbj9WYppWas1DZpVXZmcDOwMTPklWYmAjMzUjMy0DZp9VZ0l2cmYiJzADMzMzMxQ0MlQWaGNTJslWY0VGZGJTJtVGdpZkMl02bj5yM2EjL19WeGJTJGJTJ "小白兔飞机杯"
+[6]: https://c.duomai.com/track.php?k=GJTJGJTJBNTJwRHdo1Ddm0DZpVXZmcDOwMTPklWYmAjMzUjMy0DZp9VZ0l2cmYiJ1IDM0IzMxQ0MlQWaGNTJslWY0VGZGJTJtVGdpZkMl02bj5yM2EjL19We "未央黑猪肉"
