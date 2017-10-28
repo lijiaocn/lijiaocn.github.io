@@ -3,7 +3,7 @@ layout: default
 title: 网易严选推出了情趣用品，看得我面红耳燥，不敢转
 author: lijiaocn
 createdate: 2017/10/28 14:38:01
-changedate: 2017/10/28 17:35:50
+changedate: 2017/10/28 18:37:37
 categories: 好货
 tags: 好货
 keywords: 严选春风,女性情趣,情趣用品,网易情趣
@@ -62,7 +62,7 @@ description: 如果你还不满十八岁，请你闭上眼。
 
 ## 网易的文案是真心的好
 
-早就听说，网易的产品牛，文案好。看完后，感觉真的很嗨。
+早就听说，网易的产品牛，文案好。看完后，真的很嗨。
 
 [![女性情趣自慰棒1，鱼儿欢，网易严选春风]( {{ site.imglocal}}/yanxuan-chunfeng/12-yuerhuan.png )][4]
 
