@@ -260,17 +260,14 @@ div.rsidebar-title p {
 		width:220px;
 	}
 }
-@media (min-width: 970px) and (max-width: 1200px) {
+@media (max-width: 970px) {
 	.main {
-		width:970px
 	}
 	.lsidebar {
-		width:100px;
 	}
 	.center {
-		width:650px;
+		padding: 0px 15px 0px 15px;
 	}
 	.rsidebar {
-		width:220px;
 	}
 }

@@ -1,14 +1,15 @@
 ---
 layout: default
-title: WordPress
-categories: 杂项
+title: WordPress的安装部署
+author: lijiaocn
+createdate: 2017/01/14 15:04:23
+changedate: 2017/10/28 11:30:56
+categories: 项目
+tags:  wordpress
+keywords: 
+description: 
 
 ---
-
-# WordPress
-创建时间: 2017/01/14 15:04:23  修改时间: 2017/01/15 00:28:03 作者:lijiao
-
-----
 
 ## 摘要
 

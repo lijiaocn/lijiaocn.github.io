@@ -1,14 +1,15 @@
 ---
 layout: default
-title: OpenVSwitch
-categories: 杂项
+title: OpenVSwitch的使用
+author: lijiaocn
+createdate: 2016/11/08 11:33:15
+changedate: 2017/10/28 11:28:43
+categories: 项目
+tags: ovs
+keywords:
+description: 
 
 ---
-
-# OpenVSwitch
-创建时间: 2016/11/08 11:33:15  修改时间: 2016/12/14 15:47:50 作者:lijiao
-
-----
 
 ## 摘要
 

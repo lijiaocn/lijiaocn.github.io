@@ -1,10 +1,10 @@
 ---
 layout: default
-title: 部署多DMZ区的安全企业网
+title: 怎样规划多DMZ区的安全企业网?
 author: lijiaocn
 createdate: 2017/05/19 10:46:21
-changedate: 2017/10/22 17:25:49
-categories: 技巧
+changedate: 2017/10/28 11:44:36
+categories: 方法
 tags: network  security
 keywords: DMZ,安全企业网,双DMZ
 description: 部署多DMZ区的安全企业网络，通过设置多重防火墙（或支持多重防御的防火墙）实现多重防御

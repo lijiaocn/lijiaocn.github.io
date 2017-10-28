@@ -1,18 +1,17 @@
 ---
 layout: default
-title: OpenStack
-categories: 杂项
+title: Openstack的代码走读记录
+author: lijiaocn
+createdate: 2015/12/16 10:40:29
+changedate: 2017/10/28 11:23:27
+categories: 项目
+tags: openstack
+keywords:
+description: 需要参考复用OpenStack的一些组件，需要浏览她的代码
 
 ---
 
-# OpenStack
-创建时间: 2015/12/16 10:40:29  修改时间: 2016/06/02 20:08:16 作者:lijiao
-
-----
-
 ## 摘要
-
-2015-12-16 10:43:15
 
 需要参考复用OpenStack的一些组件，需要浏览她的代码。这是代码走读笔记，留作以后速查。
 
@@ -827,4 +826,3 @@ Neutron同样是通过paste.ini设置workflow:
 
 [oslo.config](http://docs.openstack.org/developer/oslo.config/)
 
-## 文献

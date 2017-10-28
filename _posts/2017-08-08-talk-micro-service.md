@@ -1,10 +1,10 @@
 ---
 layout: default
-title: 浅谈kubernetes、微服务
+title: 怎样理解kubernetes以及微服务?
 author: lijiaocn
 createdate: 2017/08/08 20:23:39
-changedate: 2017/08/08 20:32:57
-categories: 见解
+changedate: 2017/10/28 11:39:59
+categories: 方法
 tags: kubernetes
 keywords: kubernetes,微服务
 description: 云计算带出了弹性云，k8s等调度系统带火了微服务，微服务又反过来了给k8s等系统加了一把火。

@@ -1,20 +1,22 @@
 ---
 layout: default
-title: OpenStack
-categories: 杂项
+title: OpenStack的入门使用
+author: lijiaocn
+createdate: 2014/08/17 12:35:56
+changedate: 2017/10/28 10:51:55
+categories: 项目
+tags: openstack
+keywords: openstack,入门
+description: 最早接触到OpenStack是在2012年的样子, 那时候正是大肆推广的阶段
 
 ---
-
-# OpenStack
-创建时间: 2014/08/17 12:35:56  修改时间: 2016/12/06 00:19:49 作者:lijiao
-
-----
 
 ## 摘要
 
 最早接触到OpenStack是在2012年的样子, 那时候正是大肆推广的阶段，到处都能看到。那时新浪正将其落地。只是当时基础不足，仅仅是下载后无脑的安装了下, 很多事情都不清楚。
 
 因最近找工作, 面试了一个岗位是OpenStack相关，因此拾起来继续学习下。看了下最新的icehouse版本的安装手册, 明显的比两年前的版本更加丰富、条理, SDN相关的内容也被引入了。(2014-08-17 12:43:15)
+
 
 ## 资料
 
@@ -1330,7 +1332,6 @@ KeyStone提供认证服务, 先理清KeyStone的作用, 可以方便后续的组
 
 	yum install python-sqlite2 python-lxml python-greenlet-devel python-ldap python-devel libxml2-devel libxslt-devel
 
-## 文献
 
 1. http://xxx  "Name"
 
