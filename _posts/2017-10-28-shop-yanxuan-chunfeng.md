@@ -3,7 +3,7 @@ layout: default
 title: 网易严选推出了情趣用品，看得我面红耳燥，不敢转
 author: lijiaocn
 createdate: 2017/10/28 14:38:01
-changedate: 2017/10/28 17:26:45
+changedate: 2017/10/28 17:35:50
 categories: 好货
 tags: 好货
 keywords: 严选春风,女性情趣,情趣用品,网易情趣
@@ -84,7 +84,7 @@ description: 如果你还不满十八岁，请你闭上眼。
 
 <p style="text-align:center">最牛推荐，不见不散～</p>
 
-[![最牛推荐]( {{ site.imglocal}}/z7z8day.png )][4]
+![最牛推荐]( {{ site.imglocal}}/z7z8day.png )
 
 ## 参考
 
