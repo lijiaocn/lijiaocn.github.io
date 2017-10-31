@@ -3,7 +3,7 @@ layout: default
 title: 怎样用beego开发服务端应用？
 author: lijiaocn
 createdate: 2017/10/23 14:01:13
-changedate: 2017/10/28 12:12:01
+changedate: 2017/10/30 11:29:03
 categories: 方法
 tags: beego
 keywords: beego
@@ -21,6 +21,8 @@ description: beego是国内团队开源的golang开发框架,是一个关注度�
 ## Quick Start
 
 [beego快速入门][2]中给出一个很简单的例子。
+
+建议先阅读[bee工具的使用][8]。
 
 ### 安装
 
@@ -465,13 +467,76 @@ NSAfter()注册的filter函数会在请求处理结束的时候被调用，但�
 
 可以用[github: study-beego][7]里的的代码试验一下。
 
-## 使用数据库
+## 自动生成
+
+### 从数据库一键生成代码
+
+	bee generate appcode [-tables=""] [-driver=mysql] [-conn="root:@tcp(127.0.0.1:3306)/test"] [-level=3]
+	    generate appcode based on an existing database
+	    -tables: a list of table names separated by ',', default is empty, indicating all tables
+	    -driver: [mysql | postgres | sqlite], the default is mysql
+	    -conn:   the connection string used by the driver.
+	             default for mysql:    root:@tcp(127.0.0.1:3306)/test
+	             default for postgres: postgres://postgres:postgres@127.0.0.1:5432/postgres
+	    -level:  [1 | 2 | 3], 1 = models; 2 = models,controllers; 3 = models,controllers,router
+
+例如为数据库中所有的表生成models、controllers、router:
+
+	bee generate appcode -driver=mysql -conn="root:@tcp(127.0.0.1:3306)/kube-loadbalance" -level=3
+
+	$ ls models/
+	backend.go      listener.go     object.go       resource.go     user.go
+	cluster.go      loadbalancer.go pool.go         template.go
+	
+	$ ls controllers/
+	backend.go      listener.go     object.go       resource.go     user.go
+	cluster.go      loadbalancer.go pool.go         template.go
+
+routers/routers.go中也自动生成了路由:
+
+	func init() {
+	    ns := beego.NewNamespace("/v1",
+	
+	        beego.NSNamespace("/backend",
+	            beego.NSInclude(
+	                &controllers.BackendController{},
+	            ),
+	        ),
+	
+	        beego.NSNamespace("/cluster",
+	            beego.NSInclude(
+	                &controllers.ClusterController{},
+	            ),
+	        ),
+	...
+
+### 生成文档
+
+自动创建swagge文件:
+
+	$ bee generate docs
+
+启动后访问`/swagger`查看api:
+
+	func main() {
+		if beego.BConfig.RunMode == "dev" {
+			beego.BConfig.WebConfig.DirectoryIndex = true
+			beego.BConfig.WebConfig.StaticDir["/swagger"] = "swagger"
+		}
+		beego.Run()
+	}
+
+注意，如果是第一次运行，带上`-downdoc=true`：
+
+	bee run -downdoc=true
+
+## 连接数据库
 
 beego仿照Digango ORM和SQLAlchemy实现beego ORM，当前支持三个驱动：
 
-	MySQL：github.com/go-sql-driver/mysql
+	MySQL：     github.com/go-sql-driver/mysql
 	PostgreSQL：github.com/lib/pq
-	Sqlite3：github.com/mattn/go-sqlite3
+	Sqlite3：   github.com/mattn/go-sqlite3
 
 beego生成的model文件中，会自动将model注册到orm，例如：
 
@@ -503,7 +568,7 @@ beego生成的model文件中，会自动将model注册到orm，例如：
 	| |____migrations
 	| | |____20171024_154037_user.go
 
-在数据库中创建了名为`study-beego`的数据库后，执行下面的命令：
+执行下面的命令：
 
 	bee migrate -driver=mysql -conn="root:@tcp(127.0.0.1:3306)/study-beego"
 
@@ -539,6 +604,7 @@ study-beego中的表将会被创建或者更新，并在名为`migrations`的表
 5. [注解路由无法进入NSBefore][5]
 6. [controller.ServeJSON should work will with beego.NSAfter][6]
 7. [github: study-beego][7]
+8. [bee工具的使用][8]
 
 [1]: https://beego.me/ "beego主页" 
 [2]: https://beego.me/quickstart "beego快速入门"
@@ -547,3 +613,4 @@ study-beego中的表将会被创建或者更新，并在名为`migrations`的表
 [5]: https://github.com/astaxie/beego/issues/679 "注解路由无法进入NSBefore"
 [6]: https://github.com/astaxie/beego/issues/679  "controller.ServeJSON should work will with beego.NSAfter"
 [7]: https://github.com/lijiaocn/study-beego/blob/master/hello/routers/router.go "github: study-beego"
+[8]: https://beego.me/docs/install/bee.md "bee工具的使用"

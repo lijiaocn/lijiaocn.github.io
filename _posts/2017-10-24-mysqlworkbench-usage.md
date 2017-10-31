@@ -3,7 +3,7 @@ layout: default
 title: 怎样用MySQL Workbench设计数据库？
 author: lijiaocn
 createdate: 2017/10/24 18:59:04
-changedate: 2017/10/28 12:11:48
+changedate: 2017/10/30 10:41:30
 categories: 方法
 tags: database
 keywords: mysqlworkbench,数据库设计,database
@@ -63,6 +63,30 @@ description: MySQL WorkBench是mysql社区提供一个数据库设计软件。
 	key5: n:m Identifying Relationship      创建一张新表记录parent与child的`多对多`关系
 
 需要注意`key1和key2`, `key3和key4`，虽然分别是1:1和1:n，但是生成的数据库表其实并没有区别。
+
+## 导出的mysql
+
+EER图设计完之后，可以直接导出到mysql数据库：
+
+	Database -> Synchronize Model
+
+## 记录的修改时间
+
+在如果一个列的类型为`TIMESTAMP`，创建得到的表中，这个列的定义将如下:
+
+	`updatetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+创建、修改记录的时候，都会更新时间。
+
+如果要只在创建的时候，自动写入创建时间，可以将创建一个类型`DATETIME`的列，默认值设置为`now()`:
+
+![自动写入创建时间]({{ site.imglocal }}/mysql-workbench/09-createtime.png )
+
+生成的数据库表中定义:
+
+	`createtime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+>注意，必须勾选not null。
 
 ## 参考
 

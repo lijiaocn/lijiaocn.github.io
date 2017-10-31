@@ -3,13 +3,16 @@ layout: default
 title: The Go Programming Language Specification
 author: lijiaocn
 createdate: 2017/04/28 18:01:57
-changedate: 2017/05/17 10:38:17
+changedate: 2017/10/30 13:41:49
 categories: 编程
 tags: golang
 keywords:  Specification,Go,golang
 description: 查阅一个语言的Specification，其实是一个特别有效的方法。
 
 ---
+
+* auto-gen TOC:
+{:toc}
 
 ## 到哪里找？
 

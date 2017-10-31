@@ -4,24 +4,26 @@ title: 全站列表
 author:
 keywords: kubernetes,k8s,linux,golang,calico,openwrt
 description: lijiaocn的技术博客，深度原创内容，亲身经历实践记录，面向kubernetes、K8S、linux、golang、calico、openwrt
-
+notinclude: 好货
 ---
 
 <div class="postlist">
 	<!-- 遍历分页后的文章 -->
 	{% for post in paginator.posts %}
-	<h2><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>
-	<div class="postinfo" >
-		<p><span><a href="{{ site.baseurl }}/categories/{{ post.categories }}.html">{{ post.categories }}</a> / {{ post.author }} / {{ post.createdate }} 
-		{% for tag in post.tags offset:1 %}
-		<a href="{{ site.baseurl }}/tags/{{ tag }}.html">{{ tag }} </a>
-		{% endfor %} 
-		<span></p>
-	</div>
-	<div class="postdesc">
-		<p>{{ post.description }}... <a href="{{ site.baseurl }}{{ post.url }}">more</a><p>
-	</div>
-	<hr>
+		{% if  post.categories[0] != page.notinclude %}
+			<h2><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>
+			<div class="postinfo" >
+				<p><span><a href="{{ site.baseurl }}/categories/{{ post.categories }}.html">{{ post.categories }}</a> / {{ post.author }} / {{ post.createdate }} 
+				{% for tag in post.tags offset:1 %}
+				<a href="{{ site.baseurl }}/tags/{{ tag }}.html">{{ tag }} </a>
+				{% endfor %} 
+				<span></p>
+			</div>
+			<div class="postdesc">
+				<p>{{ post.description }}... <a href="{{ site.baseurl }}{{ post.url }}">more</a><p>
+			</div>
+			<hr>
+		{% endif %}
 	{% endfor %}
 </div>
 
