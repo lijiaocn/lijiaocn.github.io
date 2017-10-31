@@ -3,7 +3,7 @@ layout: default
 title: Ceph集群的部署
 author: lijiaocn
 createdate: 2017/06/01 13:13:26
-changedate: 2017/09/29 16:16:25
+changedate: 2017/10/31 20:43:45
 categories: 技巧
 tags: ceph
 keywords: ceph,ceph-deploy
@@ -620,11 +620,13 @@ ceph-mon@master实质就是启动下面的进程，master作为ID传入，ceph-m
 
 	ceph-disk prepare --cluster ceph --cluster-uuid 4aead7ee-d530-49f5-80b1-8f0c43f25146 --fs-type xfs /dev/sdb
 
-这里使用xfs，如果使用其它格式例如ext4，启动时可能报错：ERROR: osd init failed: (36) File name too long
+这里使用xfs，如果使用其它格式例如ext4，启动时可能报错：
+
+	ERROR: osd init failed: (36) File name too long
 
 这里直接使用的是/dev/sdb，/dev/sdb会被分区自动格式化，并设置为active。
 
-	$ceph-disk list
+	$ ceph-disk list
 	/dev/dm-0 other, ext4, mounted on /
 	/dev/dm-1 swap, swap
 	/dev/sda :
@@ -639,6 +641,10 @@ ceph-mon@master实质就是启动下面的进程，master作为ID传入，ceph-m
 通过df命令，可以看到/dev/sdb1已经被挂载：
 
 	/dev/sdb1                         7092708     32340   6677036   1% /var/lib/ceph/osd/ceph-1
+
+如果没有挂载，手动激活:
+
+	$ ceph-disk activate /dev/sdb
 
 ceph-1中的1就是OSD的在ceph中分配到的ID号。
 
