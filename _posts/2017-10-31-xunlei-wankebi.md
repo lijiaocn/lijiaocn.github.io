@@ -1,13 +1,13 @@
 ---
 layout: default
-title: 迅雷的玩客币是否有投资价值？是否能代替被禁止交易的比特币？
+title: 迅雷的玩客币是否有投资价值？
 author: lijiaocn
 createdate: 2017/10/31 22:50:43
-changedate: 2017/11/01 01:17:11
-categories: 投资
-tags: 机遇
+changedate: 2017/11/01 01:24:13
+categories: 好货
+tags: 好货
 keywords:
-description: 
+description: 迅雷的玩客币是否有投资价值？是否能代替被禁止交易的比特币？
 
 ---
 
