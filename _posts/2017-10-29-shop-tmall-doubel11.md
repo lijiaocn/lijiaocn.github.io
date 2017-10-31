@@ -1,13 +1,13 @@
 ---
 layout: default
-title: 重磅！天猫双十一4277件商品曝光
+title: 2017天猫双十一4277件商品折扣详情
 author: lijiaocn
 createdate: 2017/10/29 01:13:06
-changedate: 2017/10/29 12:52:57
+changedate: 2017/11/01 01:29:41
 categories: 好货
 tags: 好货
 keywords: 天猫双十一,2017双十一,双十一,11.11,天猫
-description: 双十一即将来临，天猫双十一活动的商品名单确被提前泄漏，总计4277件！ 
+description: 2017天猫双十一活动4277商品的折扣详情被曝光，详细名单下载
 
 ---
 
