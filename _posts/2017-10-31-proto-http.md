@@ -3,7 +3,7 @@ layout: default
 title: HTTP协议要点记录
 author: lijiaocn
 createdate: 2017/10/31 11:33:09
-changedate: 2017/10/31 20:51:00
+changedate: 2017/11/02 16:44:08
 categories: 编程
 tags: protocol
 keywords: HTTP协议,http,rfc
@@ -22,7 +22,7 @@ Http是最重要的应用层协议。
 
 ## Response Status Codes
 
-来自[RFC7231-HTTP-1.1-Semantics-and-Content][2]。
+来自[RFC7231-HTTP-1.1-Semantics-and-Content][2]。lib库中一般都定义了这些Status Codes，例如[golang的net/http][3]。
 
 	6. Response Status Codes ..........................................47
 	      6.1. Overview of Status Codes ..................................48
@@ -72,6 +72,8 @@ Http是最重要的应用层协议。
 
 1. [HTTP协议的RFC文档][1]
 2. [RFC7231-HTTP-1.1-Semantics-and-Content][2]
+3. [golang的net/http中status code][3]
 
 [1]: https://github.com/lijiaocn/Material/tree/master/RFC  "HTTP协议的RFC文档" 
 [2]: https://github.com/lijiaocn/Material/blob/master/RFC/rfc7231-HTTP-1.1-Semantics-and-Content.txt "RFC7231-HTTP-1.1-Semantics-and-Content"
+[3]: http://golang.org/pkg/net/http/#pkg-constants "golang的net/http中status code"

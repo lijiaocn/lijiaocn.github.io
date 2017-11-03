@@ -3,7 +3,7 @@ layout: default
 title: Shell(bash)编程
 author: lijiaocn
 createdate: 2014/04/30 16:33:01
-changedate: 2017/09/30 10:15:28
+changedate: 2017/11/01 17:22:59
 categories: 编程
 tags: shell
 keywords:
@@ -22,7 +22,9 @@ description:  积累的一些shell用法。
 
 这里使用的是bash，bash兼容sh，并且吸收了ksh和csh的一些特性，`man bash`是最好的文档。
 
-## BASH BUILTIN COMMANDS
+## BASH内置命令与语法 
+
+### BASH BUILTIN COMMANDS
 
 ### exec
 
@@ -40,7 +42,7 @@ description:  积累的一些shell用法。
 	The args are read and concatenated together into a single command.
 	This command is then read and executed by the shell, and its exit status is returned as the value of eval.  If there are no args, or only null arguments, eval returns 0
 
-## Bash Options
+### Bash Options
 
 bash有自己的运行时配置，这里只列举常用的一些参数：
 
@@ -55,15 +57,15 @@ bash有自己的运行时配置，这里只列举常用的一些参数：
 
 	set [--abefhkmnptuvxBCHP] [-o option] [arg ...]
 
-## ARGUMENTS
+### ARGUMENTS
 
-## INVOCATION
+### INVOCATION
 
-## DEFINITIONS
+### DEFINITIONS
 
-## RESERVED WORDS
+### RESERVED WORDS
 
-## GRAMMER
+### GRAMMER
 
 ### Simple Commands
 
@@ -194,9 +196,9 @@ funciton命令的返回值是0，除非有语法错误或者函数重名。
 
 执行function时，返回的是最后一个命令的退出状态。
 
-## COMMENTS
+### COMMENTS
 
-## QUOTING (字符转义)
+### QUOTING (字符转义)
 
 反斜线`\`是转移字符，更改后面的字符含义。
 
@@ -218,7 +220,7 @@ funciton命令的返回值是0，除非有语法错误或者函数重名。
 	\xHH   the eight-bit character whose value is the hexadecimal value HH (one or two hex digits)
 	\cx    a control-x character
 
-## PARAMETERS(参数/变量)
+### PARAMETERS(参数/变量)
 
 参数就是可以存储值的变量：
 
@@ -273,7 +275,7 @@ funciton命令的返回值是0，除非有语法错误或者函数重名。
 
 Shell的变量比较多，这里不列出
 
-## EXPANSION
+### EXPANSION
 
 ### Brace Expansion
 
@@ -311,41 +313,51 @@ Shell的变量比较多，这里不列出
 
 ### Pathname Expansion
 
-## REDIRECTION (重定向)
+### REDIRECTION (重定向)
 
-## ALIASES (别名)
+### ALIASES (别名)
 
-## FUNCTIONS
+### FUNCTIONS
 
-## ARITHMETIC EVALUATION
+### ARITHMETIC EVALUATION
 
-## CONDITIONAL EXPRESSIONS
+### CONDITIONAL EXPRESSIONS
 
-## SIMPLE COMMAND EXPANSION
+### SIMPLE COMMAND EXPANSION
 
-## COMMAND EXECUTION
+### COMMAND EXECUTION
 
-## COMMAND EXECUTION ENVIRONMENT
+### COMMAND EXECUTION ENVIRONMENT
 
-## ENVIRONMENT
+### ENVIRONMENT
 
-## EXIT STATUS
+### EXIT STATUS
 
-## SIGNALS
+### SIGNALS
 
-## JOB CONTRO
+### JOB CONTRO
 
-## PROMPTING
+### PROMPTING
 
-## READLINE
+### READLINE
 
-## HISTORY
+### HISTORY
 
-## HISTORY EXPANSION
+### HISTORY EXPANSION
 
-## SHELL BUILTIN COMMANDS
+### SHELL BUILTIN COMMANDS
 
-## RESTRICTED SHELL
+### RESTRICTED SHELL
+
+## 常用的linux命令
+
+这些命令虽然不是shell的命令，但是shell主要就是组合linux命令，所以应当列在这里。
+
+### awk
+
+不处理第一行：
+
+	kubectl get ns | awk '{ if(NR>1) print $1 }
 
 ## 以往遗留的，未整理的内容
 

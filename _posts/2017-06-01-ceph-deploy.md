@@ -3,7 +3,7 @@ layout: default
 title: Ceph集群的部署
 author: lijiaocn
 createdate: 2017/06/01 13:13:26
-changedate: 2017/10/31 20:43:45
+changedate: 2017/11/01 17:13:08
 categories: 技巧
 tags: ceph
 keywords: ceph,ceph-deploy
@@ -1085,11 +1085,13 @@ ceph-authtool用来管理keystring。
 
 #### pools
 
-查看：
+[ceph pools operations][21]
+
+#### 查看
 
 	ceph osd lspools
 
-创建:
+##### 创建
 
 	ceph osd pool create {pool-name} {pg-num} [{pgp-num}] [replicated] \
 	     [crush-ruleset-name] [expected-num-objects]
@@ -1097,6 +1099,37 @@ ceph-authtool用来管理keystring。
 	     [erasure-code-profile] [crush-ruleset-name] [expected_num_objects]
 
 可以选择`replicated`模式、`erasure`模式。
+
+创建pool的时候需要指定`pg-num`和`pgp-num`，这两个数值需要特别注意，它们会影响到增添osd时的数据迁移数量。
+
+[Ceph Placement Groups][31]中介绍了pg与osd的关系，简单概括就是pool中的obj映射到pg，pg再映射到osd。
+
+![Ceph pool pg osd](http://docs.ceph.com/docs/master/_images/ditaa-1fde157d24b63e3b465d96eb6afea22078c85a90.png)
+
+Ceph文档中，推荐pg_num下面的设置:
+
+	Less than 5 OSDs set pg_num to 128
+	Between 5 and 10 OSDs set pg_num to 512
+	Between 10 and 50 OSDs set pg_num to 1024
+	If you have more than 50 OSDs, you need to understand the tradeoffs and how to calculate the pg_num value by yourself
+	For calculating pg_num value by yourself please take help of pgcalc tool
+
+[Ceph pooll pgp][30]中介绍了pgp，简单概括就是pgp_num需要与pg_num相等，只有更新了pgp_num之后，才会开始数据重新分布。
+
+引用一段来自《Learning Ceph》中关于PGP的介绍：
+
+	PGP is Placement Group for Placement purpose, which should be kept equal to the total 
+	number of placement groups (pg_num). For a Ceph pool, if you increase the number of 
+	placement groups, that is, pg_num, you should also increase pgp_num to the same integer
+	value as pg_num so that the cluster can start rebalancing. The undercover rebalancing 
+	mechanism can be understood in the following way.The pg_num value defines the number of 
+	placement groups, which are mapped to OSDs. When pg_num is increased for any pool, every 
+	PG of this pool splits into half, but they all remain mapped to their parent OSD. Until 
+	this time, Ceph does not start rebalancing. Now, when you increase the pgp_num value for 
+	the same pool, PGs start to migrate from the parent to some other OSD, and cluster 
+	rebalancing starts. In this way, PGP plays an important role in cluster rebalancing.
+
+##### 设置
 
 设置quota:
 
@@ -1147,6 +1180,10 @@ ceph-authtool用来管理keystring。
 	ceph osd tier set-overlay {storagepool} {cachepool}
 
 [cache tiering][23]中列出了cache tiering的所有配置项。
+
+#### Placement Groups
+
+
 
 #### crush map
 
@@ -1328,6 +1365,8 @@ with the --size option.
 27. [RADOS: A Scalable, Reliable Storage Service for Petabyte-scale Storage Clusters][27]
 28. [CRUSH: Controlled, Scalable, Decentralized Placement of Replicated Data][28]
 29. [pg states][29]
+30. [Ceph PG与PGP的关系][30]
+31. [Ceph Placement Groups][31]
 
 [1]: http://docs.ceph.com/docs/master/start/  "ceph-deploy" 
 [2]: http://docs.ceph.com/docs/master/releases/ "ceph-release"
@@ -1358,3 +1397,5 @@ with the --size option.
 [27]: https://ceph.com/wp-content/uploads/2016/08/weil-rados-pdsw07.pdf "RADOS: A Scalable, Reliable Storage Service for Petabyte-scale Storage Clusters"
 [28]: https://ceph.com/wp-content/uploads/2016/08/weil-crush-sc06.pdf "CRUSH: Controlled, Scalable, Decentralized Placement of Replicated Data"
 [29]: http://docs.ceph.com/docs/master/rados/operations/monitoring-osd-pg/?highlight=active#monitoring-placement-group-states  "pg states"
+[30]: http://www.99cloud.net/html/2016/jiuzhouyuanchuang_0929/233.html  "Ceph PG与PGP的关系"
+[31]: http://docs.ceph.com/docs/master/rados/operations/placement-groups/  "Ceph Placement Groups"
