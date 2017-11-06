@@ -3,7 +3,7 @@ layout: default
 title: 理解golang的反射reflection
 author: lijiaocn
 createdate: 2017/11/06 15:34:13
-changedate: 2017/11/06 19:47:08
+changedate: 2017/11/06 19:56:57
 categories: 编程
 tags: golang
 keywords: reflection,反射,go语言,go编程
@@ -32,10 +32,9 @@ golang的变量类型是静态的，在创建变量的时候就已经确定，�
 
 	(value, type)
 	
-	value是实际变量值
-	type是实际变量的类型
+	value是实际变量值，type是实际变量的类型
 
-例如，创建类型为`*os.File`的变量，然后将其赋给一个接口变量：
+例如，创建类型为`*os.File`的变量，然后将其赋给一个接口变量`r`：
 
 	tty, err := os.OpenFile("/dev/tty", os.O_RDWR, 0)
 	
@@ -46,7 +45,7 @@ golang的变量类型是静态的，在创建变量的时候就已经确定，�
 
 	(tty, *os.File)
 
-这个pair在接口变量的连续赋值过程中是不变的，例如将接口变了r再赋给另一个接口变量w，:
+这个pair在接口变量的连续赋值过程中是不变的，将接口变量r赋给另一个接口变量w:
 
 	var w io.Writer
 	w = r.(io.Writer)
@@ -57,11 +56,11 @@ golang的变量类型是静态的，在创建变量的时候就已经确定，�
 
 即使w是空接口类型，pair也是不变的。
 
-pair的存在，是golang中实现反射的前提。
+pair的存在，是golang中实现反射的前提，理解了pair，就更容易理解反射。
 
 ## 从接口变量中获取value和type信息
 
-`reflect.TypeOf()`就是获取pair中的type，`reflect.ValueOf()`获取pair中的value，例如：
+`reflect.TypeOf()`是获取pair中的type，`reflect.ValueOf()`获取pair中的value：
 
 	package main
 	import (
@@ -79,7 +78,7 @@ pair的存在，是golang中实现反射的前提。
 	type:  float64
 	type:  3.4
 
-pair中的value和type在reflect中对应的类型是: reflect.Value和reflect.Type。
+pair中的value和type用类型`reflect.Value`和`reflect.Type`描述。
 
 [package: reflect][2]中有很详细的信息，例如Kind()返回的类型：
 
@@ -113,19 +112,21 @@ pair中的value和type在reflect中对应的类型是: reflect.Value和reflect.T
 		UnsafePointer
 	)
 
-## 从变量的值中获取接口信息
+## 从Value中获取接口信息
 
-这里变量的值对应的是reflect中的"relfect.Value"，通过下面的方法可以获得接口变量：
+类型为"relfect.Value"变量，通过下面的方法可以获得接口变量：
 
 	func (v Value) Interface() interface{}
 
-当收到一个类型为reflect.Value类型的变量时，首先将它转换对应的接口变量:
+当收到一个类型为reflect.Value类型的变量时，用下面方式将它转换对应的接口变量，然后进行类型判断：
 
 	y := v.Interface().(float64)
 
-## 通过reflect.Value直接设置变量的值
+之后就可以使用y的成员和方法。
 
-reflect.Value都是通过reflect.ValueOf(X)获得的，只有X是指针的时候，才可以通过返回的reflec.Value修改X中值。
+## 通过reflect.Value设置实际变量的值
+
+reflect.Value是通过reflect.ValueOf(X)获得的，只有当X是指针的时候，才可以通过reflec.Value修改实际变量X的值。
 
 例如:
 
