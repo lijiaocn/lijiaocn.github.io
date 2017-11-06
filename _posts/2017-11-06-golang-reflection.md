@@ -3,7 +3,7 @@ layout: default
 title: 理解golang的反射reflection
 author: lijiaocn
 createdate: 2017/11/06 15:34:13
-changedate: 2017/11/06 19:36:19
+changedate: 2017/11/06 19:47:08
 categories: 编程
 tags: golang
 keywords: reflection,反射,go语言,go编程
@@ -28,45 +28,38 @@ description: go语言支持reflection，这里go语言的反射机制的学习�
 
 golang的变量类型是静态的，在创建变量的时候就已经确定，反射主要与golang的interface类型相关。
 
-在golang的实现中，每个interface变量都有一个对应pair，pair中记录了这个变量的值和类型:
+在golang的实现中，每个interface变量都有一个对应pair，pair中记录了实际变量的值和类型:
 
-	 (value, type)
+	(value, type)
+	
+	value是实际变量值
+	type是实际变量的类型
 
-value是具体的值，type是value的static type，注意这个type不是intreface。
-
-创建一个变量tty，类型为`*os.File`：
+例如，创建类型为`*os.File`的变量，然后将其赋给一个接口变量：
 
 	tty, err := os.OpenFile("/dev/tty", os.O_RDWR, 0)
-
-将tty赋给接口变量r:
-
+	
 	var r io.Reader
 	r = tty
 
-这时候，接口变量r的pair中记录的是:
+接口变量r的pair中将记录如下信息：
 
 	(tty, *os.File)
 
-将r赋给另一个接口变量w:
+这个pair在接口变量的连续赋值过程中是不变的，例如将接口变了r再赋给另一个接口变量w，:
 
 	var w io.Writer
 	w = r.(io.Writer)
 
-这时候，接口变量w的pair中记录的也是:
+接口变量w的pair与r的pair相同，都是:
 
 	(tty, *os.File)
 
-即使将r赋给一个空接口变量，内部的pair也是:
+即使w是空接口类型，pair也是不变的。
 
-	(tty, *os.File)
+pair的存在，是golang中实现反射的前提。
 
-这个pair的存在，是golang中实现反射的前提。
-
-## package: reflect
-
-reflect是golang中进行反射操作的package。
-
-### 从接口变量中获取value和type信息
+## 从接口变量中获取value和type信息
 
 `reflect.TypeOf()`就是获取pair中的type，`reflect.ValueOf()`获取pair中的value，例如：
 
@@ -145,7 +138,7 @@ reflect.Value都是通过reflect.ValueOf(X)获得的，只有X是指针的时候
 
 传入的是`* float64`，需要用p.Elem()获取所指向的Value。v.CantSet()输出的是true，因此可以用`v.SetFloat()`修改x的值。
 
-## 如果是结构体
+## 收到reflect.Value变量后
 
 如果得到了一个类型为reflect.Value的变量，可以通过下面的方式，获得变量的信息。
 
