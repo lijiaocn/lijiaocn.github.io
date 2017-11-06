@@ -3,11 +3,11 @@ layout: default
 title: golang中使用websocket
 author: lijiaocn
 createdate: 2017/11/03 10:24:16
-changedate: 2017/11/03 14:52:59
+changedate: 2017/11/06 09:57:28
 categories: 编程
 tags: golang
 keywords: websocket,golang,编程,example
-description: 
+description: websocket协议提供了一种在客户端与浏览器之间建立双向连接的方法,rfc6455
 
 ---
 
@@ -16,7 +16,7 @@ description:
 
 ## 说明
 
-Websocket协议提供了一种在客户端与浏览器之间建立双向连接的方法：[RFC6455:  The WebSocket Protocol][1]。
+websocket协议提供了一种在客户端与浏览器之间建立双向连接的方法：[RFC6455:  The WebSocket Protocol][1]。
 
 [golang.org/x/net/websocket][2]是一个golang的websocket库。
 
