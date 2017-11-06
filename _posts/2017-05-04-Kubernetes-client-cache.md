@@ -1,13 +1,13 @@
 ---
 layout: default
-title: Kubernetes的Client端Cache
+title: kubernetes的Client端Cache
 author: lijiaocn
 createdate: 2017/05/04 10:06:47
 changedate: 2017/05/17 13:21:57
 categories: 项目
 tags: kubernetes
 keywords: client-go,kubernetes,cache
-description: Kubernetes的client端使用一个名为cache的库, 在本地缓存pod等信息,减少对服务端的请求。
+description: kubernetes的client端使用一个名为cache的库, 在本地缓存pod等信息,减少对服务端的请求。
 
 ---
 
@@ -16,7 +16,7 @@ description: Kubernetes的client端使用一个名为cache的库, 在本地缓�
 
 ## 作用
 
-Kubernetes的client端使用一个名为cache的库, 在本地缓存pod等信息,减少对服务端的请求。
+kubernetes的client端使用一个名为cache的库, 在本地缓存pod等信息,减少对服务端的请求。
 
 k8s.io/client-go/tools/cache/doc.go:
 

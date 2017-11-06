@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Kubernetes的Pod变更过程
+title: kubernetes的Pod变更过程
 author: lijiaocn
 createdate: 2017/05/03 17:09:37
 changedate: 2017/06/13 11:37:41
@@ -207,7 +207,7 @@ pkg/kubelet/kubelet.go，makePodSourceConfig():
 		newSourceApiserverFromLW(lw, updates)
 	}
 
-在这里创建了一个lw，lw实现了ListerWatcher接口，cache相关的内容见前面的文章"Kubernetes-Client-Cache"。
+在这里创建了一个lw，lw实现了ListerWatcher接口，cache相关的内容见前面的文章"kubernetes-Client-Cache"。
 
 pkg/kubelet/config/apiserver.go:
 

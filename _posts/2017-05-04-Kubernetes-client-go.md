@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Kubernetes的Client-go的使用与实现
+title: kubernetes的Client-go的使用与实现
 author: lijiaocn
 createdate: 2017/05/04 15:13:00
 changedate: 2017/05/10 11:15:54

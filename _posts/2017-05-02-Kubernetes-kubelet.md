@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Kubernetes的kubelet的工作过程
+title: kubernetes的kubelet的工作过程
 author: lijiaocn
 createdate: 2017/05/02 10:03:20
 changedate: 2017/09/12 10:36:49
@@ -883,7 +883,7 @@ pkg/kubelet/volumemanager/cache/actual_state_of_world.go
 
 ## CNI插件的初始化与Pod网络的设置
 
-见[Kubernetes的CNI插件的初始化与Pod的网络设置][2]。
+见[kubernetes的CNI插件的初始化与Pod的网络设置][2]。
 
 ## Event Recorder
 
@@ -896,7 +896,7 @@ k8s.io/kubernetes/cmd/kubelet/app/server.go:772
 ## 参考
 
 1. [calico-cni-plugin][1]
-2. [Kubernetes的CNI插件的初始化与Pod的网络设置][2]
+2. [kubernetes的CNI插件的初始化与Pod的网络设置][2]
 
 [1]: calico-cni-plugin  "https://github.com/projectcalico/cni-plugin" 
-[2]: Kubernetes的CNI插件的初始化与Pod的网络设置 "http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2017/05/03/Kubernetes-pod-network.html"
+[2]: kubernetes的CNI插件的初始化与Pod的网络设置 "http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2017/05/03/kubernetes-pod-network.html"

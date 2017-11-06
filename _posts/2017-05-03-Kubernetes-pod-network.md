@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Kubernetes的CNI插件初始化与Pod网络设置
+title: kubernetes的CNI插件初始化与Pod网络设置
 author: lijiaocn
 createdate: 2017/05/03 09:30:33
 changedate: 2017/09/12 14:46:40
@@ -372,7 +372,7 @@ invoke.FindInPath在c.Path目录下寻找名为net.Network.Type的二进制文�
 	Cilium - BPF & XDP for containers
 	Infoblox - enterprise IP address management for containers
 	Multus - a Multi plugin
-	Romana - Layer 3 CNI plugin supporting network policy for Kubernetes
+	Romana - Layer 3 CNI plugin supporting network policy for kubernetes
 	CNI-Genie - generic CNI network plugin
 	Nuage CNI - Nuage Networks SDN plugin for network policy kubernetes support
 	Silk - a CNI plugin designed for Cloud Foundry

@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Kubernetes中部署有状态的复杂分布式系统
+title: kubernetes中部署有状态的复杂分布式系统
 author: lijiaocn
 crjiaob patch pod mongo-petset-0 -p '{"metadata":{"annotations":{"pod.alpha.kubernetes.io/initialized":"true"}}}'eatedate: 2017/06/13 17:02:14
 changedate: 2017/06/21 13:14:53
@@ -273,8 +273,8 @@ StatuefulSet的实现代码结构很清晰，阅读`pkg/controller/statefulset/s
 
 1. [petset][1]
 2. [statefulset][2]
-3. [Run a MongoDb Replica Set on Kubernetes][3]
-4. [Running MongoDB on Kubernetes with StatefulSets][4]
+3. [Run a MongoDb Replica Set on kubernetes][3]
+4. [Running MongoDB on kubernetes with StatefulSets][4]
 5. [mongodb introduction][5]
 6. [mongodb replication][6]
 7. [mongodb replication deploy][7]
@@ -284,8 +284,8 @@ StatuefulSet的实现代码结构很清晰，阅读`pkg/controller/statefulset/s
 
 [1]: https://kubernetes.io/docs/concepts/workloads/controllers/petset/ "petset"
 [2]: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/  "statefulset" 
-[3]: https://www.linkedin.com/pulse/how-run-mongodb-replica-set-kubernetes-petset-oleg-chunikhin "Run a MongoDb Replica Set on Kubernetes"
-[4]: http://blog.kubernetes.io/2017/01/running-mongodb-on-kubernetes-with-statefulsets.html "Running MongoDB on Kubernetes with StatefulSets"
+[3]: https://www.linkedin.com/pulse/how-run-mongodb-replica-set-kubernetes-petset-oleg-chunikhin "Run a MongoDb Replica Set on kubernetes"
+[4]: http://blog.kubernetes.io/2017/01/running-mongodb-on-kubernetes-with-statefulsets.html "Running MongoDB on kubernetes with StatefulSets"
 [5]: https://docs.mongodb.com/manual/introduction/ "mongodb introduction"
 [6]: https://docs.mongodb.com/manual/replication/ "mongodb replication"
 [7]: https://docs.mongodb.com/manual/administration/replica-sets/ "mongodb replication deploy"

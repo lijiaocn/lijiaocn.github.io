@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Ceph出现"1 full osd(s)"，整个集群不可用的问题调查
+title: "ceph：1 full osd(s)，整个集群不可用的问题"
 author: lijiaocn
 createdate: 2017/10/31 19:53:40
-changedate: 2017/10/31 20:49:41
+changedate: 2017/11/06 15:28:59
 categories: 问题
 tags: ceph
 keywords: osd is full, ceph,osd

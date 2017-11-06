@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Kubernetes的Kube-proxy的转发规则分析
+title: kubernetes的Kube-proxy的转发规则分析
 author: lijiaocn
 createdate: 2017/03/27 10:16:55
 changedate: 2017/05/10 11:22:22
@@ -21,7 +21,7 @@ kube-proxy是kubernetes中设置转发规则的组件，通过iptables修改报�
 以下是在一台kubernetes node节点上观察到的结果，kube-proxy是一个独立的组件，下面的观察结果适用于运行在其它地方的kube-proxy。
 
 	$kube-proxy --version
-	Kubernetes v1.5.2
+	kubernetes v1.5.2
 
 通过“iptables -L -t [iptables表名]”可以看到，kube-proxy只修改了filter和nat表。
 
@@ -123,7 +123,7 @@ Chain KUBE-SEP-IIXSAVQWZXISB6RA (1 references)
 
 最后在KUBE-SEP-XX中完整了最终的DNAT，将目的地址转换成了POD的IP和端口。
 
-这里的KUBE-MARK-MASQ为报文打上了标记，表示这个报文是由Kubernetes管理的，Kuberntes将会对它进行NAT转换。
+这里的KUBE-MARK-MASQ为报文打上了标记，表示这个报文是由kubernetes管理的，Kuberntes将会对它进行NAT转换。
 
 	Chain KUBE-MARK-MASQ (3 references)
 	target     prot opt source               destination

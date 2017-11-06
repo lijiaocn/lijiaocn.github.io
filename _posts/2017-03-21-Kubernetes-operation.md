@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Kubernetes的基本操作
+title: kubernetes的基本操作
 author: lijiaocn
 createdate: 2017/03/21 15:32:31
 changedate: 2017/05/10 11:23:02

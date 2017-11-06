@@ -3,7 +3,7 @@ layout: default
 title: 分布式任务队列machinery的使用
 author: lijiaocn
 createdate: 2017/11/06 09:58:56
-changedate: 2017/11/06 14:58:39
+changedate: 2017/11/06 15:10:51
 categories: 编程
 tags: golang
 keywords: golang,async task,分布式任务队列,machinery
@@ -18,7 +18,9 @@ description: 分布式任务队列是大型系统中经常用的技术方案，�
 
 分布式任务队列是大型系统中经常用的技术方案，是一种高效、可靠性高，能够承受海量并发的技术方案。
 
-目前有个名为[machinery][1]的开源项目，用go语言开发了一个分布式任务框架。 @2017-11-06 10:06:50
+目前有个名为[machinery][1]的开源项目，是用go语言开发了一个分布式任务框架。
+
+学习代码位于[machinery study code][4]
 
 ## 快速体验machinery
 
@@ -201,7 +203,9 @@ machinery支持task编排，即workflow，支持以下几种workflow：
 1. [github: machinery][1]
 2. [在mac上部署redis][2]
 3. [在mac上部署rabbitmq][3]
+4. [machinery study code][4]
 
 [1]: https://github.com/RichardKnop/machinery  "github machinery" 
 [2]: http://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2017/11/06/mac-redis-server.html  "在mac上部署redis" 
 [3]: http://www.lijiaocn.com/技巧/2017/11/06/mac-rabbitmq.html "在mac上部署rabbitmq"
+[4]: https://github.com/lijiaocn/study-golang/tree/master/study/machinery  "machinery study code"

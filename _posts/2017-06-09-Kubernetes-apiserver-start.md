@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Kubernetes的apiserver的启动过程
+title: kubernetes的apiserver的启动过程
 author: lijiaocn
 createdate: 2017/06/09 15:57:36
 changedate: 2017/06/13 11:20:42

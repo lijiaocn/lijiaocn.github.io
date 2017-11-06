@@ -1,13 +1,13 @@
 ---
 layout: default
-title: Kubernetes的调试方法
+title: kubernetes的调试方法
 author: lijiaocn
 createdate: 2017/09/11 16:24:30
 changedate: 2017/09/21 19:19:01
 categories: 项目
 tags:  kubernetes
-keywords: Kubernetes,debug
-description: 持续更新的Kubernetes的调试方法
+keywords: kubernetes,debug
+description: 持续更新的kubernetes的调试方法
 
 ---
 

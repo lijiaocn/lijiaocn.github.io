@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Kubernetes的编译、打包、发布
+title: kubernetes的编译、打包、发布
 author: lijiaocn
 createdate: 2017/05/15 15:25:04
 changedate: 2017/09/29 14:22:07
@@ -18,13 +18,13 @@ description: kubernetes编译有两种方式，直接编译和在docker中编译
 
 [k8s release binary][8]中可以直接下载已经变好的二进制文件。
 
-参考: [To start developing Kubernetes][6]
+参考: [To start developing kubernetes][6]
 
 ### 使用本地环境编译
 
 kubernetes对golang的版本有要求，具体情况见[k8s development Guide][1]:
 
-	Kubernetes   requires Go
+	kubernetes   requires Go
 	1.0 - 1.2      1.4.2
 	1.3, 1.4       1.6
 	1.5, 1.6       1.7 - 1.7.5
@@ -244,7 +244,7 @@ GOARCH选项:
 
 ## 在容器中编译
 
-[Building Kubernetes][2]中给出了在容器中编译的方法。
+[Building kubernetes][2]中给出了在容器中编译的方法。
 
 `build/run.sh`、`build/copy-out.sh`、`build/make-clean.sh`和`build/shell.sh`是在容器中编译时直接使用的脚本。
 
@@ -527,7 +527,7 @@ release的时候，被打包到client包里的程序。
 
 kubernetes对golang的版本有要求，编译时需要注意:
 
-	Kubernetes   requires Go
+	kubernetes   requires Go
 	1.0 - 1.2      1.4.2
 	1.3, 1.4       1.6
 	1.5, 1.6       1.7 - 1.7.5
@@ -774,7 +774,7 @@ build.sh用来编译具体的目标。
 	}
 	
 	# Prints the value that needs to be passed to the -ldflags parameter of go build
-	# in order to set the Kubernetes based on the git tree status.
+	# in order to set the kubernetes based on the git tree status.
 	kube::version::ldflags() {
 	  kube::version::get_version_vars
 	
@@ -1285,22 +1285,22 @@ make all的输出：
 ## 参考
 
 1. [k8s development Guide][1]
-2. [Building Kubernetes][2]
+2. [Building kubernetes][2]
 3. [Install and Use GNU Command Line Tools on macOS/OS X][3] 
 4. [gengo][4]
 5. [k8s的第三方包的使用][5]
-6. [To start developing Kubernetes][6]
+6. [To start developing kubernetes][6]
 7. [k8s release][7]
 8. [k8s release binary][8]
 9. [k8s build local][9]
 10. [k8s build in docker][10]
 
 [1]: https://github.com/kubernetes/community/blob/master/contributors/devel/development.md "k8s development"
-[2]: https://github.com/kubernetes/kubernetes/blob/885ddcc1389bf744f00e7a5f96fbff5515423022/build/README.md "Building Kubernetes"
+[2]: https://github.com/kubernetes/kubernetes/blob/885ddcc1389bf744f00e7a5f96fbff5515423022/build/README.md "Building kubernetes"
 [3]: https://www.topbug.net/blog/2013/04/14/install-and-use-gnu-command-line-tools-in-mac-os-x/ "Install and Use GNU Command Line Tools on macOS/OS X"
 [4]: https://github.com/kubernetes/gengo "gengo" 
-[5]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2017/05/12/Kubernetes-third-party.html "k8s third party"
-[6]: https://github.com/kubernetes/kubernetes "To start developing Kubernetes"
+[5]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2017/05/12/kubernetes-third-party.html "k8s third party"
+[6]: https://github.com/kubernetes/kubernetes "To start developing kubernetes"
 [7]: https://github.com/kubernetes/release "k8s release"
 [8]: https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG.md  "k8s release binay"
 [9]: https://github.com/lijiaocn/k8s-build-local "k8s build local"

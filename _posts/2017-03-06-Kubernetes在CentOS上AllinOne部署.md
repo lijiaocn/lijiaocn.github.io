@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Kubernetes在CentOS上的All In One部署
+title: kubernetes在CentOS上的All In One部署
 author: lijiaocn
 createdate: 2017/03/27 18:50:37
 changedate: 2017/04/10 09:34:47

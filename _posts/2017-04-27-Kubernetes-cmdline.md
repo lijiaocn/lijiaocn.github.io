@@ -56,9 +56,9 @@ cobra的命令设置就是三步:
 
 	cmds := &cobra.Command{
 	    Use:   "kubectl",
-	    Short: i18n.T("kubectl controls the Kubernetes cluster manager"),
+	    Short: i18n.T("kubectl controls the kubernetes cluster manager"),
 	    Long: templates.LongDesc(`
-	kubectl controls the Kubernetes cluster manager.
+	kubectl controls the kubernetes cluster manager.
 	
 	Find more information at https://github.com/kubernetes/kubernetes.`),
 	    Run: runHelp,

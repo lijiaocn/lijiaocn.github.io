@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Kubernetes的Storage的实现
+title: kubernetes的Storage的实现
 author: lijiaocn
 createdate: 2017/05/11 17:23:22
 changedate: 2017/05/12 10:12:01
@@ -14,7 +14,7 @@ description: kubernetes的Apiserver没有直接使用etcd,而是通过storage访
 * auto-gen TOC:
 {:toc}
 
-在[Kubernetes-apiserver-storage][1]中已经说明了kuberapiserver是如何创建了storage的，这一篇章看一下storage的实现与使用。
+在[kubernetes-apiserver-storage][1]中已经说明了kuberapiserver是如何创建了storage的，这一篇章看一下storage的实现与使用。
 
 ## 回顾
 
@@ -182,6 +182,6 @@ k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/storage/cacher.go:
 
 ## 参考
 
-1. [Kubernetes-apiserver-storage][1]
+1. [kubernetes-apiserver-storage][1]
 
-[1]: http://www.lijiaocn.com/2017/05/10/Kubernetes-apiserver-storage.html  "Kubernetes-apiserver-storage" 
+[1]: http://www.lijiaocn.com/2017/05/10/kubernetes-apiserver-storage.html  "kubernetes-apiserver-storage" 

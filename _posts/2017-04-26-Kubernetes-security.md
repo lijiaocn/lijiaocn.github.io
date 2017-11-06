@@ -1,13 +1,13 @@
 ---
 layout: default
-title: Kubernetes的安全性考虑
+title: kubernetes的安全性考虑
 author: lijiaocn
 createdate: 2017/04/26 17:32:58
 changedate: 2017/04/27 13:23:49
 categories: 项目
 tags: kubernetes
 keywords: kubernetes,安全性
-description: Kubernetes的安全方面的考虑，例如访问控制，从容器内访问apiserver等。
+description: kubernetes的安全方面的考虑，例如访问控制，从容器内访问apiserver等。
 
 ---
 

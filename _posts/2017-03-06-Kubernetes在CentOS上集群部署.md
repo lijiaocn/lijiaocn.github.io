@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Kubernetes在CentOS上的集群部署
+title: kubernetes在CentOS上的集群部署
 author: lijiaocn
 createdate: 2017/03/06 11:59:43
 changedate: 2017/10/28 12:38:24

@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Ceph集群的部署
+title: ceph集群的部署
 author: lijiaocn
 createdate: 2017/06/01 13:13:26
-changedate: 2017/11/01 17:13:08
+changedate: 2017/11/06 15:28:18
 categories: 技巧
 tags: ceph
 keywords: ceph,ceph-deploy

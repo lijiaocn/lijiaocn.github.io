@@ -1,20 +1,20 @@
 ---
 layout: default
-title: Kubernetes的Apiserver的storage使用
+title: kubernetes的Apiserver的storage使用
 author: lijiaocn
 createdate: 2017/05/10 11:12:12
 changedate: 2017/06/09 15:19:29
 categories: 项目
 tags: kubernetes
 keywords: kubernetes,etcd,apiserver
-description: Kubernetes中只有apiserver会直接使用etcd，其它的组件与apiserver交互，不会直接访问etcd。
+description: kubernetes中只有apiserver会直接使用etcd，其它的组件与apiserver交互，不会直接访问etcd。
 
 ---
 
 * auto-gen TOC:
 {:toc}
 
-在[Kubernetes-apiserver][1]中介绍过，apiserver使用的kubernetes-style apiserver:
+在[kubernetes-apiserver][1]中介绍过，apiserver使用的kubernetes-style apiserver:
 
 	1. 在APIGroupInfo中装载各类的storage
 	2. GenericAPIServer依据传入的APIGroupInfo中的storage，自动生成REST handler。
@@ -709,6 +709,6 @@ k8s.io/kubernetes/pkg/registry/authentication/rest/storage_authentication.go，`
 
 ## 参考
 
-1. [Kubernetes-apiserver][1]
+1. [kubernetes-apiserver][1]
 
-[1]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2017/05/04/Kubernetes-apiserver.html "Kubernetes-apiserver" 
+[1]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2017/05/04/kubernetes-apiserver.html "kubernetes-apiserver" 

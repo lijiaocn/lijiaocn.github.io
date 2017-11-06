@@ -1,24 +1,24 @@
 ---
 layout: default
-title: Kubernetes的第三方包的使用
+title: kubernetes的第三方包的使用
 author: lijiaocn
 createdate: 2017/05/12 10:25:44
 changedate: 2017/05/18 10:38:21
 categories: 项目
 tags: kubernetes
 keywords: k8s,kubernetes,third party,第三方包
-description: 不同的是，Kubernetes同时也会将项目中的部分代码以独立项目的形式再次发布出去。
+description: 不同的是，kubernetes同时也会将项目中的部分代码以独立项目的形式再次发布出去。
 
 ---
 
 * auto-gen TOC:
 {:toc}
 
-[Kubernetes][1]也和其它Go开发项目一样，会引用第三方包，不同的是，Kubernetes同时也会将项目中的部分代码以独立项目的形式再次发布出去。
+[kubernetes][1]也和其它Go开发项目一样，会引用第三方包，不同的是，kubernetes同时也会将项目中的部分代码以独立项目的形式再次发布出去。
 
 ## 使用Godep管理
 
-[Golang的依赖包管理][2]中介绍过Golang的依赖包管理方式。Kubernetes使用Godep管理第三方包。
+[Golang的依赖包管理][2]中介绍过Golang的依赖包管理方式。kubernetes使用Godep管理第三方包。
 
 第三方包的版本信息:
 
@@ -70,7 +70,7 @@ Godeps.json:
 
 ## 以第三方包方式引用的项目代码
 
-Kubernetes项目中的一些代码会被导出为独立的repo，譬如[client-go][3]，
+kubernetes项目中的一些代码会被导出为独立的repo，譬如[client-go][3]，
 
 虽然代码就在repo中，但k8s用引用第三方包的方式引用这些代码，。
 

@@ -1,12 +1,12 @@
 ---
 layout: default
-title: Kubernetes的Apiserver的工作过程
+title: kubernetes的Apiserver的工作过程
 author: lijiaocn
 createdate: 2017/05/04 16:28:23
 changedate: 2017/06/09 15:56:39
 categories: 项目
 tags: kubernetes
-keywords: Kubernetes,k8s,Kubernetes的apiserver,请求处理
+keywords: kubernetes,k8s,kubernetes的apiserver,请求处理
 description: kubernetes的apiserver的实现挺复杂，理解了kubernetes-style的apiserver后, 原理就清晰了。
 
 ---
@@ -581,7 +581,7 @@ k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/endpoints/installer.go，`reg
 
 ## unsecure模式
 
-GenericAPIServer创建完成后，就可以启动了，Kubernetes的apiserver提供了两个服务端口，一个是unsecure模式，没有认证授权等过程，另一个是secure模式。
+GenericAPIServer创建完成后，就可以启动了，kubernetes的apiserver提供了两个服务端口，一个是unsecure模式，没有认证授权等过程，另一个是secure模式。
 
 ### unsecure mode下的REST请求传递过程
 
