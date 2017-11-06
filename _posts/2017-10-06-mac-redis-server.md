@@ -3,7 +3,7 @@ layout: default
 title: 在mac上部署redis服务
 author: lijiaocn
 createdate: 2017/11/06 10:14:25
-changedate: 2017/11/06 10:41:16
+changedate: 2017/11/06 11:27:11
 categories: 技巧
 tags: mac
 keywords: mac,redis-server,brew,
@@ -75,8 +75,6 @@ mac上的reids-cli会自动给出提示。
 
 ## 参考
 
-1. [文献1][1]
-2. [文献2][2]
+1. [百度经验：怎样在mac上部署redis服务][1]
 
-[1]: 1.com  "文献1" 
-[2]: 2.com  "文献1" 
+[1]: http://jingyan.baidu.com/article/d5a880ebdbed2113f047cc4e.html  "百度经验：怎样在mac上部署redis服务" 

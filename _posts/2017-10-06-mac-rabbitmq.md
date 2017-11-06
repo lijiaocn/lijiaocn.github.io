@@ -3,7 +3,7 @@ layout: default
 title: 在mac上部署rabbitmq
 author: lijiaocn
 createdate: 2017/11/06 10:54:40
-changedate: 2017/11/06 11:22:35
+changedate: 2017/11/06 12:40:47
 categories: 技巧
 tags: mac
 keywords: mac,rabbitmq,开发环境,软件开发
@@ -55,3 +55,15 @@ description: 可以直接在mac上部署rabbitmq，方便开发调试
 	echo  'export PATH="/usr/local/opt/rabbitmq/sbin/:$PATH"' >> ~/.bash_profile
 	soruce ~/.bash_profile
 	brew services start rabbitmq
+
+访问：
+
+	$ rabbitmqctl   list_vhosts
+	Listing vhosts
+	/
+
+## 参考
+
+1. [百度经验：怎样在mac上部署rabbitmq服务][1]
+
+[1]:   "百度经验：怎样在mac上部署rabbitmq服务" 
