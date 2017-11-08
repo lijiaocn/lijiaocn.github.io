@@ -1,9 +1,9 @@
 ---
 layout: default
-title: 理解golang的反射reflection
+title: 理解go的反射机制reflection
 author: lijiaocn
 createdate: 2017/11/06 15:34:13
-changedate: 2017/11/06 19:56:57
+changedate: 2017/11/08 13:50:43
 categories: 编程
 tags: golang
 keywords: reflection,反射,go语言,go编程
