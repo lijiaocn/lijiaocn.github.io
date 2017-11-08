@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Golang项目的开发过程
+title: go项目的开发过程
 author: lijiaocn
 createdate: 2017/05/18 16:38:29
 changedate: 2017/05/18 16:58:53

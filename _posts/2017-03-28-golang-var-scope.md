@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Golang的变量作用域，局部变量的存放位置是？
+title: go的变量作用域，局部变量的存放位置是？
 author: lijiaocn
 createdate: 2017/05/18 16:18:01
 changedate: 2017/05/20 16:07:26

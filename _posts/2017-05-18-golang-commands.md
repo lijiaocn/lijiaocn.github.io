@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Golang的子命令与工具
+title: go的子命令与工具
 author: lijiaocn
 createdate: 2017/05/18 16:00:04
 changedate: 2017/05/18 19:47:04

@@ -1,6 +1,6 @@
 ---
 layout: default
-title: golang的json库反序列化时，会忽略未知的字段
+title: go的json库反序列化时，会忽略未知的字段
 author: lijiaocn
 createdate: 2017/11/02 15:00:58
 changedate: 2017/11/02 16:27:02

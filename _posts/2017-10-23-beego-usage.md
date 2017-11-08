@@ -3,7 +3,7 @@ layout: default
 title: 怎样用beego开发服务端应用？
 author: lijiaocn
 createdate: 2017/10/23 14:01:13
-changedate: 2017/11/07 11:31:17
+changedate: 2017/11/08 13:41:51
 categories: 方法
 tags: beego
 keywords: beego
@@ -271,6 +271,47 @@ Log配置:
 	beego.BConfig.Log.AccessLogs = false
 	beego.BConfig.Log.FileLineNum = true
 	beego.BConfig.Log.Outputs = map[string]string{"console": ""}
+
+## 日志处理
+
+学习一个框架，应当首先学习它的日志，了解它是如何管理日志的，合理使用日志，可以节省非常多的时间。
+
+一般可以直接使用下面的方式，输出不同级别的日志:
+
+	beego.Emergency("this is emergency")
+	beego.Alert("this is alert")
+	beego.Critical("this is critical")
+	beego.Error("this is error")
+	beego.Warning("this is warning")
+	beego.Notice("this is notice")
+	beego.Informational("this is informational")
+	beego.Debug("this is debug")
+
+可以设置为输出到文件中:
+
+	beego.SetLogger("file", `{"filename":"logs/test.log"}`)
+
+如果不想输出到console:
+
+	beego.BeeLogger.DelLogger("console")
+
+设置日志显示的级别:
+
+	beego.SetLevel(beego.LevelInformational)
+	
+	可以选择下面的级别:
+	LevelEmergency
+	LevelAlert
+	LevelCritical
+	LevelError
+	LevelWarning
+	LevelNotice
+	LevelInformational
+	LevelDebug
+
+输出文件名和行号:
+
+	beego.SetLogFuncCall(true)
 
 ## 路由设置
 
@@ -617,6 +658,7 @@ study-beego中的表将会被创建或者更新，并在名为`migrations`的表
 6. [controller.ServeJSON should work will with beego.NSAfter][6]
 7. [github: study-beego][7]
 8. [bee工具的使用][8]
+9. [beego日志处理][9]
 
 [1]: https://beego.me/ "beego主页" 
 [2]: https://beego.me/quickstart "beego快速入门"
@@ -626,3 +668,4 @@ study-beego中的表将会被创建或者更新，并在名为`migrations`的表
 [6]: https://github.com/astaxie/beego/issues/679  "controller.ServeJSON should work will with beego.NSAfter"
 [7]: https://github.com/lijiaocn/study-beego/blob/master/hello/routers/router.go "github: study-beego"
 [8]: https://beego.me/docs/install/bee.md "bee工具的使用"
+[9]: https://beego.me/docs/mvc/controller/logs.md "beego的日志处理"
