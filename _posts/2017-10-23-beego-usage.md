@@ -3,7 +3,7 @@ layout: default
 title: 怎样用beego开发服务端应用？
 author: lijiaocn
 createdate: 2017/10/23 14:01:13
-changedate: 2017/10/30 11:29:03
+changedate: 2017/11/07 11:31:17
 categories: 方法
 tags: beego
 keywords: beego
@@ -509,6 +509,18 @@ routers/routers.go中也自动生成了路由:
 	            ),
 	        ),
 	...
+
+### 生成controller
+
+	bee generate controller user
+
+### 生成models
+
+	bee generate model user -fields="name:string,age:int"
+
+### 生成view
+
+	bee generate view user
 
 ### 生成文档
 
