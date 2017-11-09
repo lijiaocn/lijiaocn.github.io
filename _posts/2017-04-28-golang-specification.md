@@ -3,11 +3,11 @@ layout: default
 title: The Go Programming Language Specification
 author: lijiaocn
 createdate: 2017/04/28 18:01:57
-changedate: 2017/10/30 13:41:49
+changedate: 2017/11/08 15:55:18
 categories: 编程
 tags: golang
 keywords:  Specification,Go,golang
-description: 查阅一个语言的Specification，其实是一个特别有效的方法。
+description: 查阅一个语言的Specification，其实是一个痛苦但是效果好的方法。
 
 ---
 
@@ -320,6 +320,17 @@ Go是用于系统编程的通用语言，强类型、有垃圾回收机制、对
 	0xc820074220
 	
 	Press ENTER or type command to continue
+
+### 可变参数
+
+go的函数支持传递可变参数，例如下面的who：
+
+	func Greeting(prefix string, who ...string)
+
+调用时：
+
+	Greeting("nobody")                           --> who is nil
+	Greeting("hello:", "Joe", "Anna", "Eileen")  --> who is []string
 
 ## 参考
 

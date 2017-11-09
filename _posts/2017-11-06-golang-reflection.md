@@ -3,7 +3,7 @@ layout: default
 title: 理解go的反射机制reflection
 author: lijiaocn
 createdate: 2017/11/06 15:34:13
-changedate: 2017/11/08 13:50:43
+changedate: 2017/11/08 21:19:49
 categories: 编程
 tags: golang
 keywords: reflection,反射,go语言,go编程
@@ -143,9 +143,17 @@ reflect.Value是通过reflect.ValueOf(X)获得的，只有当X是指针的时候
 
 如果得到了一个类型为reflect.Value的变量，可以通过下面的方式，获得变量的信息。
 
-如果知道v的真实类型，直接转化成对应的类型:
+如果知道v的真实类型，可先转换成interface{}，然后转化成对应的类型:
 
 	r := v.Interface().(已知的类型)
+
+除了interface{}，还可以转换成其它类型:
+
+	func (v Value) Bool() bool
+	func (v Value) Bytes() []byte
+	func (v Value) Int() int64
+	func (v Value) Uint() uint64
+	...
 
 如果不知道v的真实类型，获取它的Type，然后遍历Type的Field，和v的Field:
 
