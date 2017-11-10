@@ -3,7 +3,7 @@ layout: default
 title: 容器内部的go程序没有使用/etc/hosts中记录的地址
 author: lijiaocn
 createdate: 2017/11/09 20:31:14
-changedate: 2017/11/09 21:12:26
+changedate: 2017/11/10 11:36:41
 categories: 问题
 tags: golang
 keywords: hosts,nsswitch.conf,go,docker,alpine
@@ -16,7 +16,7 @@ description: 运行在容器内的go程序发起http请求的时候，没有使�
 
 ## 现象
 
-一个用go语言开发程序，运行时会使用"net/http"中的方法请求一个url。
+一个用go语言开发程序，运行时会使用"net/http"中的方法"http.Client.Do()"发起http请求：
 
 	http://www.XXX.com
 
@@ -24,7 +24,7 @@ url中的域名对应的ip地址配置在了/etc/hosts中:
 
 	1.1.1.1  www.XXX.com
 
-预期go程序会使用/hosts中配置的域名，但实际使用的却是从dns中查询到ip。
+预期go程序会使用/hosts中配置的IP，但实际使用的却是从dns server中查询到的ip。
 
 ## 调查
 
@@ -33,9 +33,9 @@ url中的域名对应的ip地址配置在了/etc/hosts中:
 
 [net.Dial seems to ignore /etc/hosts if I don't provide GODEBUG=netdns=(c)go][1]中提到了nsswitch.conf文件。
 
-查看容器(基于alpine 3.5)，发现容器中没有这个文件。
+查看出现的容器(基于alpine 3.5)，发现容器中没有这个文件。将宿主机(centos7.2)的`/etc/nsswitch.conf`复制到容器中，问题解决。
 
-将宿主机(centos7.2)的`/etc/nsswitch.conf`复制到容器中，问题解决:
+复制到容器中的nsswitch.conf中明确指定了地址解析顺序：
 
 	$ cat /etc/nsswitch.conf|grep host
 	hosts:      files dns myhostname
@@ -45,13 +45,13 @@ url中的域名对应的ip地址配置在了/etc/hosts中:
 	export GODEBUG=netdns=go    # force pure Go resolver
 	export GODEBUG=netdns=cgo   # force cgo resolver
 
-经验证可行。
+经验证可行，但这种方式不好，还是应当用nsswitch.conf明确规定地址解析顺序。
 
-另一个环境中不存在这个问题，是因为它使用的url中域名，在它使用的dns中查询不到，所以使用了/etc/hosts中的地址。
+另一个环境中不存在这个问题是因为它的dns server中查询不到目标域名，所以使用了/etc/hosts中的地址。
 
-## 解决
+## 经验
 
-在容器中运行go程序中，要检查下容器中是否已经在/etc/nsswitch.conf中指定了域名的解析顺序。
+在使用容器的时候，要检查下容器中的/etc/nsswitch.conf文件是否存在，是否指定了解析顺序。
 
 ## 参考
 
