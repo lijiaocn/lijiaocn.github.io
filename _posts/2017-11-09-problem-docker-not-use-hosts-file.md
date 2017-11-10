@@ -3,7 +3,7 @@ layout: default
 title: 容器内部的go程序没有使用/etc/hosts中记录的地址
 author: lijiaocn
 createdate: 2017/11/09 20:31:14
-changedate: 2017/11/10 11:36:41
+changedate: 2017/11/10 11:38:16
 categories: 问题
 tags: golang
 keywords: hosts,nsswitch.conf,go,docker,alpine
@@ -33,7 +33,7 @@ url中的域名对应的ip地址配置在了/etc/hosts中:
 
 [net.Dial seems to ignore /etc/hosts if I don't provide GODEBUG=netdns=(c)go][1]中提到了nsswitch.conf文件。
 
-查看出现的容器(基于alpine 3.5)，发现容器中没有这个文件。将宿主机(centos7.2)的`/etc/nsswitch.conf`复制到容器中，问题解决。
+查看出现的问题的容器(基于alpine 3.5)，发现容器中没有这个文件。将宿主机(centos7.2)的`/etc/nsswitch.conf`复制到容器中，问题解决。
 
 复制到容器中的nsswitch.conf中明确指定了地址解析顺序：
 
