@@ -3,11 +3,11 @@ layout: default
 title:  微信时代降临？小程序的意图与掘金思路
 author: lijiaocn
 createdate: 2017/11/07 20:22:18
-changedate: 2017/11/08 10:23:18
+changedate: 2017/11/12 15:23:35
 categories: 好货
 tags: 好货
-keywords: 小程序,微信时代，掘金思路
-description: 这篇文章计划有五个章节，原本想一次性完成后发出，无奈时间精力有限
+keywords: 小程序,微信时代,掘金思路
+description: 巨头守护的新草莽时代，你准备好了吗？
 
 ---
 
