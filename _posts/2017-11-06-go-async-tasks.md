@@ -3,7 +3,7 @@ layout: default
 title: 分布式任务队列machinery的使用
 author: lijiaocn
 createdate: 2017/11/06 09:58:56
-changedate: 2017/11/06 15:10:51
+changedate: 2017/11/09 15:32:48
 categories: 编程
 tags: golang
 keywords: golang,async task,分布式任务队列,machinery
@@ -59,6 +59,27 @@ result backend目前支持:
 启动send:
 
 	go run example/machinery.go send
+
+## 支持的数据类型
+
+machinery将任务编码成json后发送，task执行的结果也以json的方式保存到backend。当前只支持一下类型:
+
+	bool
+	int
+	int8
+	int16
+	int32
+	int64
+	uint
+	uint8
+	uint16
+	uint32
+	uint64
+	float32
+	float64
+	string
+
+特别在写task函数的时候，需要注意task的返回值也必须是这些类型，除了最后一个error。
 
 ## 开发worker
 

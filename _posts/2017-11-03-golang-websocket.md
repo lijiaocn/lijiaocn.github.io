@@ -1,6 +1,6 @@
 ---
 layout: default
-title: golang中使用websocket
+title: go中使用websocket
 author: lijiaocn
 createdate: 2017/11/03 10:24:16
 changedate: 2017/11/06 09:57:28

@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Golang的常用package
+title: go的常用package
 author: lijiaocn
 createdate: 2017/05/18 17:05:34
 changedate: 2017/05/18 17:08:58

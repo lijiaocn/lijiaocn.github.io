@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "Go Library: spf13/cobra(用于命令行程序)"
+title: "go Library: spf13/cobra(用于命令行程序)"
 author: lijiaocn
 createdate: 2017/04/27 10:03:27
-changedate: 2017/05/17 11:22:46
+changedate: 2017/11/08 13:49:19
 categories: 编程
 tags: golang
 keywords: golang,cli,cobra
