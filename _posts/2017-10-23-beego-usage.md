@@ -3,7 +3,7 @@ layout: default
 title: 怎样用beego开发服务端应用？
 author: lijiaocn
 createdate: 2017/10/23 14:01:13
-changedate: 2017/11/08 13:41:51
+changedate: 2017/11/10 14:40:53
 categories: 方法
 tags: beego
 keywords: beego
@@ -563,7 +563,7 @@ routers/routers.go中也自动生成了路由:
 
 	bee generate view user
 
-### 生成文档
+## 生成文档
 
 自动创建swagge文件:
 
@@ -582,6 +582,8 @@ routers/routers.go中也自动生成了路由:
 注意，如果是第一次运行，带上`-downdoc=true`：
 
 	bee run -downdoc=true
+
+文档的语法参考[beego: API自动化文档][10]。
 
 ## 连接数据库
 
@@ -659,6 +661,7 @@ study-beego中的表将会被创建或者更新，并在名为`migrations`的表
 7. [github: study-beego][7]
 8. [bee工具的使用][8]
 9. [beego日志处理][9]
+10. [beego: API自动化文档][10]
 
 [1]: https://beego.me/ "beego主页" 
 [2]: https://beego.me/quickstart "beego快速入门"
@@ -669,3 +672,4 @@ study-beego中的表将会被创建或者更新，并在名为`migrations`的表
 [7]: https://github.com/lijiaocn/study-beego/blob/master/hello/routers/router.go "github: study-beego"
 [8]: https://beego.me/docs/install/bee.md "bee工具的使用"
 [9]: https://beego.me/docs/mvc/controller/logs.md "beego的日志处理"
+[10]: https://beego.me/docs/advantage/docs.md "beego: API自动化文档"

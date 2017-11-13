@@ -1,10 +1,10 @@
 ---
 layout: default
-title: Linux内核知识汇总
+title: Linux内核知识手册
 author: lijiaocn
 createdate: 2014/06/30 14:26:15
-changedate: 2017/10/28 12:35:16
-categories: 编程
+changedate: 2017/11/13 10:54:51
+categories: 技巧
 tags: 基础知识
 keywords: linux内核知识
 description: 虽然很多时候我们可能没有感受到，但是Linux内核确实是在不停的发展着的。
@@ -16,7 +16,11 @@ description: 虽然很多时候我们可能没有感受到，但是Linux内核�
 
 ## 摘要
 
-虽然很多时候我们可能没有感受到，但是Linux内核确实是在不停的发展着的。内核里涉及到了多少技术，我也不清楚。这里遇到一项，记录一项。
+虽然我们可能没有感受到，但是Linux内核确实是在不停的发展着的。内核里有多少技术，我也不清楚。这里遇到一项，记录一项。
+
+## 内核文档
+
+[kernel documentation][1]是非常非常丰富的。
 
 ## device-mapper
 
@@ -68,7 +72,6 @@ kdump是用于内核调试的工具，可以在内核panic后，将内存数据�
 [libcgroups](http://libcg.sourceforge.net/html/index.html)是一套操作cgroup的C Library。
 
 cgroup的每个Controller都有一套不同的虚拟文件, 有的用于显示状态信息和统计数据、有的用于设置cgroup参数。
-
 
 ## namespace
 
@@ -478,3 +481,9 @@ umzip.sh:
 查看:
 	[root@b]# file vmlinuz-2.6.32-504.8.1.el6.x86_64.debug 
 	vmlinuz-2.6.32-504.8.1.el6.x86_64.debug: Linux kernel x86 boot executable bzImage, version 2.6.32-504.8.1.el6.x86_64.debug, RO-rootFS, swap_dev 0x4, Normal VGA
+
+## 参考
+
+1. [kernel documentation][1]
+
+[1]: https://www.kernel.org/doc/Documentation/  "kernel documentation"

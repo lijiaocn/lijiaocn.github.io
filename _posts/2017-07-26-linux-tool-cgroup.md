@@ -3,7 +3,7 @@ layout: default
 title: linux的cgroup的使用
 author: lijiaocn
 createdate: 2017/07/26 10:29:51
-changedate: 2017/07/28 15:56:50
+changedate: 2017/11/13 10:51:49
 categories: 技巧
 tags:  linuxtool cgroup
 keywords: cgroup的使用
@@ -72,9 +72,9 @@ pids用来限制一个进程可以派生出的进程数量。
 
 ## 参考
 
-1. [cgroup-v1][1]
-2. [cgroup-v2][2]
-3. [systemd.cgroup][3]
+1. [kernel documentation: cgroup-v1][1]
+2. [kernel documentation: cgroup-v2][2]
+3. [linux manual: systemd.cgroup][3]
 4. [how-to-manage-processes-with-cgroup-on-systemd][4]
 5. [systemd.resource-control][5]
 6. [The New Control Group Interfaces][6]
