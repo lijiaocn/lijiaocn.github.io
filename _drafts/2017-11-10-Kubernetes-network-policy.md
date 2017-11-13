@@ -3,7 +3,7 @@ layout: default
 title: kubernetes的网络隔离策略
 author: lijiaocn
 createdate: 2017/11/10 10:47:51
-changedate: 2017/11/10 11:08:55
+changedate: 2017/11/13 09:40:26
 categories: 项目
 tags: kubernetes
 keywords: kubernetes,network policy,isolation
@@ -52,6 +52,30 @@ NetworkPolicy使用的白名单策略，即只允许选定的目标访问指定�
 可以看到，network policy是归属于namespace的资源。
 
 访问来源有`ipBlock`、`namespaceSelector`、`podSelector`三种表达方式，这三者是`或`的关系。
+
+## Default Policy
+
+可以灵活使用NetworkPolicy，设置默认规则。
+
+默认不允许访问：
+
+	apiVersion: networking.k8s.io/v1
+	kind: NetworkPolicy
+	metadata:
+	  name: default-deny
+	  spec:
+	    podSelector:
+
+默认允许访问：
+
+	apiVersion: networking.k8s.io/v1
+	kind: NetworkPolicy
+	metadata:
+	  name: allow-all
+	spec:
+	  podSelector:
+	  ingress:
+	  - {}
 
 ## 参考
 
