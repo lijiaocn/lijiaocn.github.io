@@ -1,9 +1,9 @@
 ---
 layout: default
-title: 我收藏的几本好书（持续更新)
+title: 我收藏的几本好书
 author: lijiaocn
 createdate: 2017/11/14 15:46:29
-changedate: 2017/11/14 21:46:29
+changedate: 2017/11/14 22:59:07
 categories: 好货
 tags: 好货
 keywords: 好书,阅读,书籍,值得看,新书
@@ -94,7 +94,7 @@ description: 这是我收藏的几本好书，分享给你
 8. [《经济学原理(第7版)》][8]
 9. [《聪明的投资者（第四版）》][9]
 10. [《证券分析（第六版）》][10]
-11. [金融炼金术][11]
+11. [《金融炼金术》][11]
 12. [《经济解释（二〇一四增订本）》][12]
 
 [1]: https://www.amazon.cn/s/ref=as_li_ss_tl?_encoding=UTF8&camp=536&creative=3132&field-keywords=%E5%85%9A%E7%9A%84%E5%8D%81%E4%B9%9D%E5%A4%A7&linkCode=ur2&tag=znrio-23&url=search-alias%3Daps "《党的十九大报告辅导读本》"
