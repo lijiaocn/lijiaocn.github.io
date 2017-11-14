@@ -107,6 +107,7 @@
 div.lsidebar ul {
 	margin:0px;
 	padding:0px;
+	position: fixed;
 }
 
 div.lsidebar li {
