@@ -3,7 +3,7 @@ layout: default
 title: 我收藏的几本好书（持续更新)
 author: lijiaocn
 createdate: 2017/11/14 15:46:29
-changedate: 2017/11/14 21:03:34
+changedate: 2017/11/14 21:13:40
 categories: 好货
 tags: 好货
 keywords: 好书,阅读,书籍,值得看,新书
@@ -52,6 +52,10 @@ description: 这是我收藏的几本好书，分享给你
 
 [![《手把手教你读财报》](https://images-cn.ssl-images-amazon.com/images/I/51KFtjE%2B3bL._SX398_BO1,204,203,200_.jpg)][3]
 
+[《一本书读懂财报》][7]：如果上面那本老唐的书读起来很吃力，不妨先看看这本。清华大学经济管理学院会计系系主任肖星教授在2014年完成此书，当时她已经为清华的MBA学生讲授财务报表分析课整整16年。
+
+[![《一本书读懂财报》](https://images-cn.ssl-images-amazon.com/images/I/51mBH0YABZL._SX371_BO1,204,203,200_.jpg)][7]
+
 ## 参考 
 
 1. [《党的十九大报告辅导读本》][1]
@@ -60,6 +64,7 @@ description: 这是我收藏的几本好书，分享给你
 4. [《全球通史:从史前史到21世纪》][4]
 5. [《浪潮之巅》][5]
 6. [《毛泽东选集》][6]
+7. [《怎样读懂财务报表》][7]
 
 [1]: https://www.amazon.cn/s/ref=as_li_ss_tl?_encoding=UTF8&camp=536&creative=3132&field-keywords=%E5%85%9A%E7%9A%84%E5%8D%81%E4%B9%9D%E5%A4%A7&linkCode=ur2&tag=znrio-23&url=search-alias%3Daps "《党的十九大报告辅导读本》"
 [2]: https://www.amazon.cn/s/ref=as_li_ss_tl?_encoding=UTF8&camp=536&creative=3132&field-keywords=%E8%85%BE%E8%AE%AF%E4%BC%A0&linkCode=ur2&rh=i%3Aaps%2Ck%3A%E8%85%BE%E8%AE%AF%E4%BC%A0&tag=znrio-23&url=search-alias%3Daps "《腾讯传》"
@@ -67,3 +72,4 @@ description: 这是我收藏的几本好书，分享给你
 [4]: https://www.amazon.cn/s/ref=as_li_ss_tl?_encoding=UTF8&camp=536&creative=3132&field-keywords=%E5%85%A8%E7%90%83%E9%80%9A%E5%8F%B2&linkCode=ur2&tag=znrio-23&url=search-alias%3Daps "《全球通史:从史前史到21世纪》"
 [5]: https://www.amazon.cn/s/ref=as_li_ss_tl?_encoding=UTF8&camp=536&creative=3132&field-keywords=%E6%B5%AA%E6%BD%AE%20%E5%90%B4%E5%86%9B&linkCode=ur2&rh=i%3Aaps%2Ck%3A%E6%B5%AA%E6%BD%AE%20%E5%90%B4%E5%86%9B&tag=znrio-23&url=search-alias%3Daps "《浪潮之巅》"
 [6]: https://www.amazon.cn/s/ref=as_li_ss_tl?_encoding=UTF8&camp=536&creative=3132&field-keywords=%E6%AF%9B%E6%B3%BD%E4%B8%9C%E6%96%87%E9%80%89&linkCode=ur2&rh=i%3Aaps%2Ck%3A%E6%AF%9B%E6%B3%BD%E4%B8%9C%E6%96%87%E9%80%89&tag=znrio-23&url=search-alias%3Daps "《毛泽东选集》"
+[7]: https://www.amazon.cn/gp/product/B00LIHW81S/ref=as_li_ss_tl?ie=UTF8&camp=536&creative=3132&creativeASIN=B00LIHW81S&linkCode=as2&tag=znrio-23 "《一本书读懂财务报表》"
