@@ -3,7 +3,7 @@ layout: default
 title: 怎样获取linux kernel相关的知识？
 author: lijiaocn
 createdate: 2017/11/13 10:55:50
-changedate: 2017/11/13 18:03:58
+changedate: 2017/11/14 10:57:21
 categories: 方法
 tags: linux
 keywords: kernel,linux,获取知识,documention
@@ -52,6 +52,11 @@ Kernnel的[Documentation/sysctl][12]目录汇聚了所有内核参数。
 
 [Where is my memory?][11]
 
+[LDD3，chapter8 Allocating Memory][13]
+
+[LAB5: memory management][14]
+
+[Kmalloc Internals: Exploring Linux Kernel Memory Allocation][15]
 
 可以用命令`slabtop`查看kernel memory的使用情况，或者直接查看`/proc/slabinfo`。
 
@@ -73,6 +78,9 @@ Kernnel的[Documentation/sysctl][12]目录汇聚了所有内核参数。
 10. [Documentation/vm][10]
 11. [Where is my memory?][11]
 12. [Documentation/sysctl][12]
+13. [LDD3，chapter8 Allocating Memory][13]
+14. [lab: memory management][14]
+15. [Kmalloc Internals: Exploring Linux Kernel Memory Allocation][15]
 
 [1]: https://www.kernel.org/doc/Documentation/  "linux kernel documentation" 
 [2]: https://www.kernel.org/doc/Documentation/networking/ "Documentation/networking"
@@ -86,4 +94,6 @@ Kernnel的[Documentation/sysctl][12]目录汇聚了所有内核参数。
 [10]: https://www.kernel.org/doc/Documentation/vm/  "Documentation/vm"
 [11]: https://www.dedoimedo.com/computers/slabinfo.html  "Where is my memory?"
 [12]: https://www.kernel.org/doc/Documentation/sysctl/  "Documentation/sysctl"
-
+[13]: https://static.lwn.net/images/pdf/LDD3/ch08.pdf "LDD3，chapter8 Allocating Memory"
+[14]: http://www.cs.otago.ac.nz/cosc440/labs/lab05.pdf "lab: memory management"
+[15]: http://www.jikos.cz/jikos/Kmalloc_Internals.html "Kmalloc Internals: Exploring Linux Kernel Memory Allocation"

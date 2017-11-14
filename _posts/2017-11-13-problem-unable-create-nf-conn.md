@@ -3,7 +3,7 @@ layout: default
 title: "Unable to create nf_conn slab cache导致容器启动失败"
 author: lijiaocn
 createdate: 2017/11/13 09:42:36
-changedate: 2017/11/13 18:20:34
+changedate: 2017/11/14 11:41:04
 categories: 问题
 tags: nf_conn,runtime,error,kubernetes
 keywords: kubernets,容器,启动失败,内核错误
@@ -120,7 +120,9 @@ kubernetes集群的一台node上容器启动失败，日志显示：
 
 ## 调查
 
-### 第一阶段：关于slabs
+提示：因为我对kernel不熟悉，所以调查的过程有些曲折，你可以跳过前两个阶段，直接阅读第三阶段。
+
+### 第一阶段
 
 用`slabtop`命令查看kernel memory的使用情况:
 
@@ -141,9 +143,9 @@ kubernetes集群的一台node上容器启动失败，日志显示：
 
 ![Use of the cache_sizes array](http://www.secretmango.com/jimb/Whitepapers/slabs/cache_sizes.gif)
 
-[Very high SLAB usage, hard to understand][3]中遇到了slab占用过多问题，提供了一些参考。
+[Very high SLAB usage, hard to understand][3]中遇到了slab占用过多问题，提供了一些参考。但是他的问题是文件系统的bug导致的，与我遇到情况不相同。
 
-查看每个cache中的slab的数量（第五列）:
+但是知道了如何查看cache中的slab数量，`slabtop -s l`显示的第五列:
 
 	  OBJS ACTIVE  USE OBJ SIZE  SLABS OBJ/SLAB CACHE SIZE NAME
 	10676412 10490318  98%    0.11K 296567       36   1186268K sysfs_dir_cache
@@ -161,9 +163,11 @@ kubernetes集群的一台node上容器启动失败，日志显示：
 
 查看其它能正常创建容器的node的状态，发现slab的使用情况也是100%，因此将slab使用率100%的影响排除。
 
+不过为什么slab都保持在100%呢？这个问题以后再研究。
+
 ### 第二阶段
 
-在第一阶段的调查受挫，需要调查。在查看node的/proc/slabinfo时发现了不同。
+在第一阶段的调查受挫，继续调查，在查看node的/proc/slabinfo时发现了不同。
 
 出现问题的node上的以nf_conntrack开头的cache总共有8个：
 
@@ -178,7 +182,7 @@ kubernetes集群的一台node上容器启动失败，日志显示：
 	nf_conntrack_ffff8803ff2bce00    375    375    320   25    2 : tunables    0    0    0 : slabdata     15     15      0
 	nf_conntrack_ffff8802e47f6180    925   1000    320   25    2 : tunables    0    0    0 : slabdata     40     40      0
 
-而slab同样占用了100%，但是它的chache只有3个：
+而没有问题的node上slab同样使用了100%，但是它的nf_conntrack_XXX只有3个：
 
 	slabinfo - version: 2.1
 	# name            <active_objs> <num_objs> <objsize> <objperslab> <pagesperslab> : tunables <limit> <batchcount> <sharedfactor> : slabdata <active_slabs> <num_slabs> <sharedavail>
@@ -186,12 +190,17 @@ kubernetes集群的一台node上容器启动失败，日志显示：
 	nf_conntrack_ffff8801fda4ce00    825    825    320   25    2 : tunables    0    0    0 : slabdata     33     33      0
 	nf_conntrack_ffff8800a4afa700      0      0    320   25    2 : tunables    0    0    0 : slabdata      0      0      0
 
-追查netfilter的内核参数：[Documentation/networking/nf_conntrack-sysctl.txt][4]，/proc/sys/net/netfilter
+追查netfilter的内核参数[Documentation/networking/nf_conntrack-sysctl.txt][4]，没有收获。
 
-依然没有什么收获，只好下载3.10的内核代码，根据CallTrace查看一下都发生什么事情。
+	/proc/sys/net/netfilter
+
+下载3.10的内核代码，根据CallTrace查看一下都发生什么事情。
 
 在linux-3.10.108/mm/slab_common.c的168行找到kmem_cache_create_memcg的实现，除了得知返回-ENOMEM的错误之外，没有更多收获。
 
+	    ...
+	    err = ENOMEM
+	    ...
 	    if (err) {
 	
 	        if (flags & SLAB_PANIC)
@@ -206,14 +215,16 @@ kubernetes集群的一台node上容器启动失败，日志显示：
 	        return NULL;
 	    }
 
-如果内核状态是正确的，内核确实认为已经没有内存可以分配了，再次回去查看日志，仔细看
+会不会是内核确实认为已经没有内存可以分配了呢？
+
+再次回去查看日志：
 
 	Nov 12 15:15:41 kernel: Node 0 Normal free:311184kB min:55536kB low:69420kB high:83304kB active_anon:139360kB inactive_anon:164952kB active_file:37528kB inactive_file:30384kB 
 	                        unevictable:316372kB isolated(anon):104kB isolated(file):0kB present:13631488kB managed:13367020kB mlocked:316372kB dirty:8kB writeback:520kB mapped:50376kB
 	                        shmem:5080kB slab_reclaimable:6416164kB slab_unreclaimable:5682152kB kernel_stack:10752kB pagetables:18380kB unstable:0kB bounce:0kB free_pcp:128kB 
 	                        local_pcp:0kB free_cma:0kB writeback_tmp:0kB pages_scanned:0 all_unreclaimable? no
 
-发现其中有一个`slab_reclaimable:6416164kB`，有没有办法回收呢？去查看一下vm相关的内核参数。
+发现其中有一个`slab_reclaimable:6416164kB`，有没有办法回收呢？尝试到vm的内核参数中找回收办法。
 
 在[Documentation/sysctl/vm.txt][5]中搜索reclaim，找到下面几个与内存回收相关的参数:
 
@@ -225,9 +236,9 @@ kubernetes集群的一台node上容器启动失败，日志显示：
 	echo 2 > /proc/sys/vm/drop_caches
 	echo 4 > /proc/sys/vm/zone_reclaim_mode
 
-然后运行容器，但是发现只是偶尔能够创建成功，怀疑是恰好有内存回收回来的内存的时候，创建成功的。
+然后运行容器，但是发现只是偶尔能够启动，怀疑容器启动成功，是因为恰好有内存被回收。
 
-但问题是为什么`free -h`显示还有很多内存空余呢？slab和与通过free看到的内存有什么区别？是否可以调整到一个合适的值?
+但问题是为什么`free -h`显示还有很多内存空余呢？slab和与通过free看到的内存有什么区别？是否可以调整两者之间的关系?
 
 	$free -h
 	               total        used        free      shared  buff/cache   available
@@ -236,7 +247,66 @@ kubernetes集群的一台node上容器启动失败，日志显示：
 
 ### 第三阶段
 
-继续调查中..
+在[LDD3，chapter8 Allocating Memory][6]中了解了一下kmalloc的原理，可以得知:
+
+	kmalloc获得的是连续的物理内存。
+	kernel至少会感知到3个memory zone: DMA-capable memory，normal memory, high memory。
+
+[System unable to allocate memory even though memory is available][7]中遇到了同样的问题，得知可以从/proc/buddyinfo中查看内存信息：
+
+	$cat /proc/buddyinfo
+	Node 0, zone      DMA      1      0      0      1      2      1      1      0      1      1      3
+	Node 0, zone    DMA32   8409   8079   1340     74      6      0      0      0      0      0      0
+	Node 0, zone   Normal  40153  12774    302     17      0      0      0      0      0      0      0
+
+在[Documentation/filesystems/proc.txt][9]中搜索buddyinfo，得知了上面各列的含义:
+
+	> cat /proc/buddyinfo
+	Node 0, zone      DMA      0      4      5      4      4      3 ...
+	Node 0, zone   Normal      1      0      0      1    101      8 ...
+	Node 0, zone  HighMem      2      0      0      1      1      0 ...
+	
+	...
+	Each column represents the number of pages of a certain order which are 
+	available.  In this case, there are 0 chunks of 2^0*PAGE_SIZE available in 
+	ZONE_DMA, 4 chunks of 2^1*PAGE_SIZE in ZONE_DMA, 101 chunks of 2^4*PAGE_SIZE 
+	available in ZONE_NORMAL, etc... 
+
+也就是说，在我环境中，在Normal zone中，最大可以分配8个页面（2的三次方），到另一台可以正常启动容器的机器上，发现了明显的不同：
+
+	cat /proc/buddyinfo
+	Node 0, zone      DMA      1      0      0      1      2      1      1      0      1      1      3
+	Node 0, zone    DMA32    575   1361    326    105    159    533    203    124     47      0      0
+	Node 0, zone   Normal    108   1708    952   1064    957    690    285    145     12      1      0
+
+对比一下，可以发现无法启动容器的机器上，空余的内存几乎都是碎片：4万个单页（page），1.2万个双页（2page)。而正常的机器上单页很少,108个。
+
+结合评论中内容，可以知道了kernel日志打印出了CPU(Node0)的三个memory zone的状态:
+
+	...
+	Nov 12 15:15:41 kernel: Node 0 DMA free:15908kB min:64kB low:80kB high:96kB active_anon:0kB inactive_anon:0kB active_file:0kB inactive_file:0kB unevictable:0kB 
+	                        isolated(anon):0kB isolated(file):0kB present:15992kB managed:15908kB mlocked:0kB dirty:0kB writeback:0kB mapped:0kB shmem:0kB slab_reclaimable:0kB 
+	                        slab_unreclaimable:0kB kernel_stack:0kB pagetables:0kB unstable:0kB bounce:0kB free_pcp:0kB local_pcp:0kB free_cma:0kB writeback_tmp:0kB pages_scanned:0
+	                        all_unreclaimable? yes
+	...
+	Nov 12 15:15:41 kernel: Node 0 DMA32 free:127248kB min:11976kB low:14968kB high:17964kB active_anon:39688kB inactive_anon:44380kB active_file:15904kB inactive_file:11940kB
+	                        unevictable:95756kB isolated(anon):0kB isolated(file):0kB present:3129212kB managed:2884472kB mlocked:95756kB dirty:0kB writeback:0kB mapped:20416kB 
+	                        shmem:1648kB slab_reclaimable:1324384kB slab_unreclaimable:1154192kB kernel_stack:17904kB pagetables:2156kB unstable:0kB bounce:0kB free_pcp:0kB 
+	                        local_pcp:0kB free_cma:0kB writeback_tmp:0kB pages_scanned:0 all_unreclaimable? no
+	...
+	Nov 12 15:15:41 kernel: Node 0 Normal free:311184kB min:55536kB low:69420kB high:83304kB active_anon:139360kB inactive_anon:164952kB active_file:37528kB inactive_file:30384kB 
+	                        unevictable:316372kB isolated(anon):104kB isolated(file):0kB present:13631488kB managed:13367020kB mlocked:316372kB dirty:8kB writeback:520kB mapped:50376kB
+	                        shmem:5080kB slab_reclaimable:6416164kB slab_unreclaimable:5682152kB kernel_stack:10752kB pagetables:18380kB unstable:0kB bounce:0kB free_pcp:128kB 
+	                        local_pcp:0kB free_cma:0kB writeback_tmp:0kB pages_scanned:0 all_unreclaimable? no
+
+[kernel:min_free_kbytes][8]中介绍了min_free_kbytes的含义，根据其中的讲述，可以排除min_free_kbytes的影响。
+
+最后，问题的提问者调查发现，这可能是一个kernel bug：
+
+	Further investigation indicates that I'm probably hitting this kernel bug: OOM but no swap used. – Mark Feb 24 at 21:36
+	For anyone else who's experiencing this issue, the bug appears to have been fixed somewhere between 4.9.12 and 4.9.18. – Mark Apr 11 at 20:23
+
+感觉需要找一个熟悉内核的大牛来帮忙了...
 
 ## 参考
 
@@ -245,9 +315,17 @@ kubernetes集群的一台node上容器启动失败，日志显示：
 3. [Very high SLAB usage, hard to understand][3]
 4. [Documentation/networking/nf_conntrack-sysctl.txt][4]
 5. [Documentation/sysctl/vm.txt][5]
+6. [LDD3，chapter8 Allocating Memory][6]
+7. [System unable to allocate memory even though memory is available][7]
+8. [kernel:min_free_kbytes][8]
+9. [Documentation/filesystems/proc.txt][9]
 
 [1]: https://www.kernel.org/doc/gorman/html/understand/understand011.html  "Slab Allocator" 
 [2]: http://www.secretmango.com/jimb/Whitepapers/slabs/slab.html "Overview of Linux Memory Management Concepts: Slabs"
 [3]: https://www.linuxquestions.org/questions/linux-server-73/very-high-slab-usage-hard-to-understand-901323/  "Very high SLAB usage, hard to understand"
 [4]: https://www.kernel.org/doc/Documentation/networking/nf_conntrack-sysctl.txt "Documentation/networking/nf_conntrack-sysctl.txt"
 [5]: https://www.kernel.org/doc/Documentation/sysctl/vm.txt "Documentation/sysctl/vm.txt"
+[6]: https://static.lwn.net/images/pdf/LDD3/ch08.pdf  "LDD3，chapter8 Allocating Memory"
+[7]: https://unix.stackexchange.com/questions/346208/system-unable-to-allocate-memory-even-though-memory-is-available "System unable to allocate memory even though memory is available"
+[8]: https://web.archive.org/web/20080419012851/http://people.redhat.com/dduval/kernel/min_free_kbytes.html  "kernel:min_free_kbytes"
+[9]: https://www.kernel.org/doc/Documentation/filesystems/proc.txt  "Documentation/filesystems/proc.txt"
