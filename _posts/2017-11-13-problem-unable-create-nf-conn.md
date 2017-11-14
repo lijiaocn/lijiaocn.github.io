@@ -3,7 +3,7 @@ layout: default
 title: "Unable to create nf_conn slab cache导致容器启动失败"
 author: lijiaocn
 createdate: 2017/11/13 09:42:36
-changedate: 2017/11/14 11:41:04
+changedate: 2017/11/14 11:42:46
 categories: 问题
 tags: nf_conn,runtime,error,kubernetes
 keywords: kubernets,容器,启动失败,内核错误
@@ -18,8 +18,12 @@ description: kubernetes集群的一台node上容器启动失败，日志显示
 
 kubernetes集群的一台node上容器启动失败，日志显示：
 
-	Nov 12 15:15:41 slave-138 dockerd: time="2017-11-12T15:15:41.523932697+08:00" level=error msg="containerd: start container" error="oci runtime error: container_linux.go:247: starting container process caused \"process_linux.go:245: running exec setns process for init caused \\\"exit status 6\\\"\"\n" id=64bec16ba46d3973a0475cdc55a196381195d69bc73d2248e81a56bce1e12f0d
-	Nov 12 15:15:41 slave-138 dockerd: time="2017-11-12T15:15:41.656807742+08:00" level=error msg="Create container failed with error: invalid header field value \"oci runtime error: container_linux.go:247: starting container process caused \\\"process_linux.go:245: running exec setns process for init caused \\\\\\\"exit status 6\\\\\\\"\\\"\\n\"" 
+	Nov 12 15:15:41 slave-138 dockerd: time="2017-11-12T15:15:41.523932697+08:00" level=error msg="containerd: start container" 
+		error="oci runtime error: container_linux.go:247: starting container process caused \"process_linux.go:245: running exec 
+		setns process for init caused \\\"exit status 6\\\"\"\n" id=64bec16ba46d3973a0475cdc55a196381195d69bc73d2248e81a56bce1e12f0d
+	Nov 12 15:15:41 slave-138 dockerd: time="2017-11-12T15:15:41.656807742+08:00" level=error msg="Create container failed with error:
+		invalid header field value \"oci runtime error: container_linux.go:247: starting container process caused \\\"process_linux.go:245: 
+		running exec setns process for init caused \\\\\\\"exit status 6\\\\\\\"\\\"\\n\"" 
 
 直接docker run也报错：
 
