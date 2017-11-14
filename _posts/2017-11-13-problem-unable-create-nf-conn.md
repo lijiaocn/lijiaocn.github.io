@@ -3,7 +3,7 @@ layout: default
 title: "Unable to create nf_conn slab cache导致容器启动失败"
 author: lijiaocn
 createdate: 2017/11/13 09:42:36
-changedate: 2017/11/14 11:42:46
+changedate: 2017/11/14 15:16:28
 categories: 问题
 tags: nf_conn,runtime,error,kubernetes
 keywords: kubernets,容器,启动失败,内核错误
@@ -121,6 +121,11 @@ kubernetes集群的一台node上容器启动失败，日志显示：
 
 可以看到，两次Call Trace都与nf_conntrack有关。第一次Call Trace的后面打印出了Mem-info，但是里面的很多参数，一时搞不清楚它们的含义。
 只能揣测可能是与nf_conntrack相关的某个内核参数设置的数值过小，可能是与kernel memory相关的。
+
+内核版本:
+
+	$ uname -a
+	Linux 3.10.0-514.el7.x86_64 #1 SMP Tue Nov 22 16:42:41 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux
 
 ## 调查
 
@@ -285,7 +290,7 @@ kubernetes集群的一台node上容器启动失败，日志显示：
 
 对比一下，可以发现无法启动容器的机器上，空余的内存几乎都是碎片：4万个单页（page），1.2万个双页（2page)。而正常的机器上单页很少,108个。
 
-结合评论中内容，可以知道了kernel日志打印出了CPU(Node0)的三个memory zone的状态:
+结合评论中内容，可以知道了kernel日志打印出的CPU(Node0)的三个memory zone的状态:
 
 	...
 	Nov 12 15:15:41 kernel: Node 0 DMA free:15908kB min:64kB low:80kB high:96kB active_anon:0kB inactive_anon:0kB active_file:0kB inactive_file:0kB unevictable:0kB 
@@ -310,7 +315,57 @@ kubernetes集群的一台node上容器启动失败，日志显示：
 	Further investigation indicates that I'm probably hitting this kernel bug: OOM but no swap used. – Mark Feb 24 at 21:36
 	For anyone else who's experiencing this issue, the bug appears to have been fixed somewhere between 4.9.12 and 4.9.18. – Mark Apr 11 at 20:23
 
-感觉需要找一个熟悉内核的大牛来帮忙了...
+有没有办法减少内存碎片呢？
+
+### 第四阶段
+
+在[Documentation/sysctl/vm.txt][5]搜索`fragment`，发现了一个参数:
+
+	extfrag_threshold:
+	This parameter affects whether the kernel will compact memory or direct
+	reclaim to satisfy a high-order allocation.
+
+当/sys/kernel/debug/extfrag/extfrag_index中的index数值小于extfrag_threshold的时候，内核不会整理内存。
+
+	$ cat /sys/kernel/debug/extfrag/extfrag_index
+	Node 0, zone      DMA -1.000 -1.000 -1.000 -1.000 -1.000 -1.000 -1.000 -1.000 -1.000 -1.000 -1.000
+	Node 0, zone    DMA32 -1.000 -1.000 -1.000 -1.000 -1.000 -1.000 0.970 0.985 0.993 0.997 0.999
+	Node 0, zone   Normal -1.000 -1.000 -1.000 -1.000 -1.000 -1.000 -1.000 0.990 0.995 0.998 0.999
+
+	$ cat /proc/sys/vm/extfrag_threshold
+	500
+
+修改extfrag_threshold，发现不能设置为－1，设置为0以后，没有效果：
+
+	$ echo 0 > /proc/sys/vm/extfrag_threshold
+
+在[Documentation/sysctl/vm.txt][5]搜索`compatc`，发现了`compat_memory`:
+
+	compact_memory
+	Available only when CONFIG_COMPACTION is set. When 1 is written to the file,
+	all zones are compacted such that free memory is available in contiguous
+	blocks where possible. This can be important for example in the allocation of
+	huge pages although processes will also directly compact memory as required.
+
+查看内核配置文件，已经设置了CONFIG_COMPACTION。
+
+	$ cat /boot/config-3.10.0-514.el7.x86_64 |grep CONFIG_COMPACTION
+	CONFIG_COMPACTION=y
+
+[lwn.net: Memory compaction][10]中探讨了memory compaction的问题。[System-wide Memory Defragmenter Without Killing any application][11]中做了更详细的介绍。
+
+尝试修改内核参数`/proc/sys/vm/compact_memory`，奇怪的是没有权限读取这个参数，但是可以设置:
+
+	echo 1 >/proc/sys/vm/compact_memory
+
+设置之后，内存碎片的问题得到了一定程度的缓解:
+
+	$ cat /proc/buddyinfo
+	Node 0, zone      DMA      1      0      0      1      2      1      1      0      1      1      3
+	Node 0, zone    DMA32   6785   7725   1232    104      0      0      0      0      0      0      0
+	Node 0, zone   Normal  31163  14197   1102     88     27     22      1      0      0      0      0
+
+但是依然不能保证容器每次都可以运行成功，要彻底解决，只能调查一下是哪些进程因为什么导致了大量的碎片。
 
 ## 参考
 
@@ -323,6 +378,8 @@ kubernetes集群的一台node上容器启动失败，日志显示：
 7. [System unable to allocate memory even though memory is available][7]
 8. [kernel:min_free_kbytes][8]
 9. [Documentation/filesystems/proc.txt][9]
+10. [lwn.net: Memory compaction][10]
+11. [System-wide Memory Defragmenter Without Killing any application][11]
 
 [1]: https://www.kernel.org/doc/gorman/html/understand/understand011.html  "Slab Allocator" 
 [2]: http://www.secretmango.com/jimb/Whitepapers/slabs/slab.html "Overview of Linux Memory Management Concepts: Slabs"
@@ -333,3 +390,5 @@ kubernetes集群的一台node上容器启动失败，日志显示：
 [7]: https://unix.stackexchange.com/questions/346208/system-unable-to-allocate-memory-even-though-memory-is-available "System unable to allocate memory even though memory is available"
 [8]: https://web.archive.org/web/20080419012851/http://people.redhat.com/dduval/kernel/min_free_kbytes.html  "kernel:min_free_kbytes"
 [9]: https://www.kernel.org/doc/Documentation/filesystems/proc.txt  "Documentation/filesystems/proc.txt"
+[10]: https://lwn.net/Articles/368869/  "lwn.net: Memory compaction"
+[11]: http://events.linuxfoundation.org/sites/events/files/slides/%5BELC-2015%5D-System-wide-Memory-Defragmenter.pdf  "System-wide Memory Defragmenter Without Killing any application"
