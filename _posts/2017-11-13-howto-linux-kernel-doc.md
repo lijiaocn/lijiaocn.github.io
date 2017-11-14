@@ -3,7 +3,7 @@ layout: default
 title: 怎样获取linux kernel相关的知识？
 author: lijiaocn
 createdate: 2017/11/13 10:55:50
-changedate: 2017/11/14 15:21:02
+changedate: 2017/11/14 15:29:48
 categories: 方法
 tags: linux
 keywords: kernel,linux,获取知识,documention
@@ -64,34 +64,98 @@ Kernnel的[Documentation/sysctl][12]目录汇聚了所有内核参数。
 
 可以用命令`slabtop`查看kernel memory的使用情况，或者直接查看`/proc/slabinfo`。
 
-## networking
+## NUMA
 
-网络相关的文档位于[Documentation/networking][2]中。
+文档:
 
-## namespace
+	linux-3.2.12\Documentation\vm\numa
+	linux-3.2.12\Documentation\vm\numa_memory_policy.txt
+	linux-3.2.12\Documentation\vm\page_migration
 
-[namespace](https://www.kernel.org/doc/Documentation/namespaces/)
+NUMA和与硬件平台相关的. 简单讲就是有的硬件平台支持多个CPU, 多套内存。每一个这样的单位看作是一个cell, 每个cell有必须一个独立的处理器, cell可以有或者没有自己的内存.
 
-[namespaces overview](http://lwn.net/Articles/531114/)
+cell内部的处理器可以访问cell本地的内存，也可以访问另一个cell的内存, 前者的访问速度比后者快。
 
-类别:
+NUMA使多个cell并行的运行，内存的带宽可以随着具有本地内存的cell数量增加而增长. 同时也带来了一些需要考虑的问题:
 
-	Mount namespaces (CLONE_NEWNS,2.4.19): 文件系统挂载隔离
-	UTS namespaces (CLONE_NEWUTS,2.6.19): hostname、NIS domain name隔离
-	IPC namespaces (CLONE_NEWIPC,2.6.19): IPC资源隔离
-	PID namespaces (CLONE_NEWPID,2.6.24): 进程号隔离
-	Network namespaces (CLONE_NEWNT,2.6.24,2.6.29): 网络隔离 
-	User namespaces (CLONE_NEWUSER,2.6.23,3.8): 用户和组的隔离
+	1 cell上的执行进程申请内存的时候, 根据怎样的策略尽心内存分配?
+	2 进程是否可以在cell间迁移, 进程的资源是否可以在cell间迁移, 迁移的策略是怎样的?
+	3 应用程序要怎样利用numa获得较高的性能?
 
->with Linux3.8, unprivileged processes can create user namespaces in which they
- have full privileges.
+问题1和问题2在内核文档由详细介绍。
 
+问题3则是程序员需要考虑的, 可以想到以下几点:
 
-[namespaces API](http://lwn.net/Articles/531381/)
+	1 考虑将进程绑定到特定cell, 消除迁移开销
+	2 减少对其它cell的内存的访问
+	3 精细控制进程使用的内存，例如明确指定某块内存需要从cell本地获取(在做设计的时候就要考虑这一点)
 
-	clone():    创建namespace
-	setns():    将调用进程从当前namespace移动到另一个namespace
-	unshare():  创建namespace, 并将调用进程加入到新建的namespace
+### 关于NUMA环境下的内存分配策略:
+
+	linux-3.2.12\Documentation\vm\numa_memory_policy.txt
+
+可以通过linux的系统函数指定进程的某段地址空间的内存分配策略, 策略作用域如下图:
+
+	  +------------------------------------------------------------------+ 
+	  |    Default Policy                                                | 
+	  |                                                                  | 
+	  |    +--------------------------|   +--------------------------|   |
+	  |    |  Task/Process Policy     |   |  Task/Process Policy     |   |
+	  |    |                          |   |                          |   |
+	  |    |    +-----------------+   |   |    +-----------------+   |   |
+	  |    |    |  VMA  Policy    |   |   |    |  VMA  Policy    |   |   |
+	  |    |    +-----------------+   |   |    +-----------------+   |   |
+	  |    |                          |   |                          |   |
+	  |    |    +-----------------+   |   |    +-----------------+   |   |
+	  |    |    |  Shared Policy  |   |   |    |  Shared Policy  |   |   |   
+	  |    |    +-----------------+   |   |    +-----------------+   |   |
+	  |    |                          |   |                          |   |
+	  |    +--------------------------+   +--------------------------+   |
+	  |                                                                  |
+	  +------------------------------------------------------------------+
+
+	  1 Default Policy是 local allocation
+	  2 中心的Policy掩盖外围的Policy
+	  3 设置新Policy不影响设置之前已经使用旧Policy进行了实际内存分配的地址空间
+	  4 Task/Process Policy作用于单独的进程整个地址空间, 子进程继承父进程的Task/Process Policy, 
+	    子线程继承父线程的Task/Process，兄弟线程直接互不相干
+	  5 VMA Policy只作用于anonymous pages
+	    (栈、堆、使用MAP_ANONYMOUS标记并且没有MAP_SHARED标记的mmap空间)
+	  6 共用同一个虚拟地址空间的Tasks(例如线程)在该虚拟地址空间上使用同样的VMA Policy
+	  7 Shared Policy作用于进程间共享的内存, 共享此空间进程在这空间见到的同样的Shared Policy
+	    (shmget、使用MAP_SHARED标记的mmap空间 )
+	  8 Default Policy作用于整个系统
+	    Task/Process Policy作用于整个进程地址空间
+	    VMA Policy和Shared Policy作用于单独进程地址空间中的某段地址
+	    VMA Policy和Shared Policy的作用的地址空间可以分割
+	  9 /proc/XXX/numa_maps中可以看到整个进程Policy状态
+
+>NUMA环境下的内存分配策略比较复杂，看中文描述时容易出现一字之差谬之千里的情况, 所以强烈建议阅读英文版的内核文档
+
+Linux提供了三个系统调用用于控制NUMA的内存策略:
+
+	man 2 set_mempolicy    //set default NUMA memory policy for a process and its children
+	man 2 get_mempolicy    //Retrieve NUMA memory policy for a process
+	man 2 mbind            //set memory policy for a memory range
+
+在linux还可以使用numactl命令指定进程或者共享内存的分配策略
+
+	man numactl
+
+### 关于NUMA环境下的页面迁移:
+
+	linux-3.2.12\Documentation\vm\page_migration
+
+NUMA环境下，进程运行时，进程的虚拟地址空间没有发生变换，但对应的的物理内存可以在多个node之间迁移。
+
+>node是linux-3.2.12\Documentation\vm\page_migration中提到的词, 指的应该是拥有独立内存的cell
+
+当进程被调度到另一个node上执行时, 将该进程使用的物理页迁移到执行该进程的node上, 可以提高内存存取速率。
+
+进程迁移函数:
+
+	man 2 move_pages
+
 
 ## Hugepages
 
@@ -214,6 +278,10 @@ linux-3.2.12\Documentation\vm\中给出了两个使用示例:
 
 [configuring-huge-pages-for-oracle-on-linux-64](http://www.oracle-base.com/articles/linux/configuring-huge-pages-for-oracle-on-linux-64.php)
 
+## networking
+
+网络相关的文档位于[Documentation/networking][2]中。
+
 ## cgroup
 
 [cgroup](https://www.kernel.org/doc/Documentation/cgroups/)
@@ -291,102 +359,34 @@ x86平台上, UIO设备的ioport信息位于/sys/class/uio/uioX/portio目录中,
 [Generic PCI UIO driver](https://www.kernel.org/doc/htmldocs/uio-howto/uio_pci_generic.html)
 
 
+## namespace
+
+[namespace](https://www.kernel.org/doc/Documentation/namespaces/)
+
+[namespaces overview](http://lwn.net/Articles/531114/)
+
+类别:
+
+	Mount namespaces (CLONE_NEWNS,2.4.19): 文件系统挂载隔离
+	UTS namespaces (CLONE_NEWUTS,2.6.19): hostname、NIS domain name隔离
+	IPC namespaces (CLONE_NEWIPC,2.6.19): IPC资源隔离
+	PID namespaces (CLONE_NEWPID,2.6.24): 进程号隔离
+	Network namespaces (CLONE_NEWNT,2.6.24,2.6.29): 网络隔离 
+	User namespaces (CLONE_NEWUSER,2.6.23,3.8): 用户和组的隔离
+
+>with Linux3.8, unprivileged processes can create user namespaces in which they
+ have full privileges.
+
+
+[namespaces API](http://lwn.net/Articles/531381/)
+
+	clone():    创建namespace
+	setns():    将调用进程从当前namespace移动到另一个namespace
+	unshare():  创建namespace, 并将调用进程加入到新建的namespace
+
 ## AppArmor
 
 AppArmor用于控制Linux程序的操作权限。内核从2.6.36开始整合了AppArmor。
-
-## NUMA
-
-文档:
-
-	linux-3.2.12\Documentation\vm\numa
-	linux-3.2.12\Documentation\vm\numa_memory_policy.txt
-	linux-3.2.12\Documentation\vm\page_migration
-
-NUMA和与硬件平台相关的. 简单讲就是有的硬件平台支持多个CPU, 多套内存。每一个这样的单位看作是一个cell, 每个cell有必须一个独立的处理器, cell可以有或者没有自己的内存.
-
-cell内部的处理器可以访问cell本地的内存，也可以访问另一个cell的内存, 前者的访问速度比后者快。
-
-NUMA使多个cell并行的运行，内存的带宽可以随着具有本地内存的cell数量增加而增长. 同时也带来了一些需要考虑的问题:
-
-	1 cell上的执行进程申请内存的时候, 根据怎样的策略尽心内存分配?
-	2 进程是否可以在cell间迁移, 进程的资源是否可以在cell间迁移, 迁移的策略是怎样的?
-	3 应用程序要怎样利用numa获得较高的性能?
-
-问题1和问题2在内核文档由详细介绍。
-
-问题3则是程序员需要考虑的, 可以想到以下几点:
-
-	1 考虑将进程绑定到特定cell, 消除迁移开销
-	2 减少对其它cell的内存的访问
-	3 精细控制进程使用的内存，例如明确指定某块内存需要从cell本地获取(在做设计的时候就要考虑这一点)
-
-### 关于NUMA环境下的内存分配策略:
-
-	linux-3.2.12\Documentation\vm\numa_memory_policy.txt
-
-可以通过linux的系统函数指定进程的某段地址空间的内存分配策略, 策略作用域如下图:
-
-	  +------------------------------------------------------------------+ 
-	  |    Default Policy                                                | 
-	  |                                                                  | 
-	  |    +--------------------------|   +--------------------------|   |
-	  |    |  Task/Process Policy     |   |  Task/Process Policy     |   |
-	  |    |                          |   |                          |   |
-	  |    |    +-----------------+   |   |    +-----------------+   |   |
-	  |    |    |  VMA  Policy    |   |   |    |  VMA  Policy    |   |   |
-	  |    |    +-----------------+   |   |    +-----------------+   |   |
-	  |    |                          |   |                          |   |
-	  |    |    +-----------------+   |   |    +-----------------+   |   |
-	  |    |    |  Shared Policy  |   |   |    |  Shared Policy  |   |   |   
-	  |    |    +-----------------+   |   |    +-----------------+   |   |
-	  |    |                          |   |                          |   |
-	  |    +--------------------------+   +--------------------------+   |
-	  |                                                                  |
-	  +------------------------------------------------------------------+
-
-	  1 Default Policy是 local allocation
-	  2 中心的Policy掩盖外围的Policy
-	  3 设置新Policy不影响设置之前已经使用旧Policy进行了实际内存分配的地址空间
-	  4 Task/Process Policy作用于单独的进程整个地址空间, 子进程继承父进程的Task/Process Policy, 
-	    子线程继承父线程的Task/Process，兄弟线程直接互不相干
-	  5 VMA Policy只作用于anonymous pages
-	    (栈、堆、使用MAP_ANONYMOUS标记并且没有MAP_SHARED标记的mmap空间)
-	  6 共用同一个虚拟地址空间的Tasks(例如线程)在该虚拟地址空间上使用同样的VMA Policy
-	  7 Shared Policy作用于进程间共享的内存, 共享此空间进程在这空间见到的同样的Shared Policy
-	    (shmget、使用MAP_SHARED标记的mmap空间 )
-	  8 Default Policy作用于整个系统
-	    Task/Process Policy作用于整个进程地址空间
-	    VMA Policy和Shared Policy作用于单独进程地址空间中的某段地址
-	    VMA Policy和Shared Policy的作用的地址空间可以分割
-	  9 /proc/XXX/numa_maps中可以看到整个进程Policy状态
-
->NUMA环境下的内存分配策略比较复杂，看中文描述时容易出现一字之差谬之千里的情况, 所以强烈建议阅读英文版的内核文档
-
-Linux提供了三个系统调用用于控制NUMA的内存策略:
-
-	man 2 set_mempolicy    //set default NUMA memory policy for a process and its children
-	man 2 get_mempolicy    //Retrieve NUMA memory policy for a process
-	man 2 mbind            //set memory policy for a memory range
-
-在linux还可以使用numactl命令指定进程或者共享内存的分配策略
-
-	man numactl
-
-### 关于NUMA环境下的页面迁移:
-
-	linux-3.2.12\Documentation\vm\page_migration
-
-NUMA环境下，进程运行时，进程的虚拟地址空间没有发生变换，但对应的的物理内存可以在多个node之间迁移。
-
->node是linux-3.2.12\Documentation\vm\page_migration中提到的词, 指的应该是拥有独立内存的cell
-
-当进程被调度到另一个node上执行时, 将该进程使用的物理页迁移到执行该进程的node上, 可以提高内存存取速率。
-
-进程迁移函数:
-
-	man 2 move_pages
-
 
 ## SELinux
 
