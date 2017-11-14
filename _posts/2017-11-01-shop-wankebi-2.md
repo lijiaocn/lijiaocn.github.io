@@ -3,9 +3,9 @@ layout: default
 title:  暴涨3倍！迅雷怎样用稀缺性支付了工资?
 author: lijiaocn
 createdate: 2017/11/01 20:57:00
-changedate: 2017/11/03 12:29:48
-categories: 好货
-tags: 好货
+changedate: 2017/11/14 16:03:11
+categories: 投资
+tags: 投资
 keywords: 玩客币,迅雷,稀缺性,付工资
 description: 迅雷的玩客币，本质上实在用稀缺性作为支付手段
 
