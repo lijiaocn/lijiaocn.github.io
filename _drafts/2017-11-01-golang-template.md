@@ -1,11 +1,11 @@
 ---
 layout: default
-title: golang的template模版语法
+title: go的template模版语法
 author: lijiaocn
 createdate: 2017/11/01 17:23:42
-changedate: 2017/11/01 17:27:11
+changedate: 2017/11/15 10:45:31
 categories: 编程
-tags: golang
+tags: go
 keywords:
 description: 
 
@@ -16,7 +16,7 @@ description:
 
 ## 说明
 
-[golang模板语法简明教程][1]
+[go模板语法简明教程][1]
 
 ## 嵌套子模版 
 
@@ -25,6 +25,6 @@ description:
 
 ## 参考
 
-1. [golang模板语法简明教程][1]
+1. [go模板语法简明教程][1]
 
-[1]: http://www.cnblogs.com/Pynix/p/4154630.html "golang模板语法简明教程" 
+[1]: http://www.cnblogs.com/Pynix/p/4154630.html "go模板语法简明教程" 

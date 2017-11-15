@@ -1,9 +1,9 @@
 ---
 layout: default
-title: go的开发环境-基于Vim
+title: go的开发环境
 author: lijiaocn
 createdate: 2017/03/28 10:01:38
-changedate: 2017/08/06 17:01:18
+changedate: 2017/11/15 10:49:06
 categories: 编程
 tags: golang
 keywords: Go编程
