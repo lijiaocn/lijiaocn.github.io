@@ -3,7 +3,7 @@ layout: default
 title: kubernetes的网络隔离策略
 author: lijiaocn
 createdate: 2017/11/10 10:47:51
-changedate: 2017/11/13 09:40:26
+changedate: 2017/11/15 15:37:20
 categories: 项目
 tags: kubernetes
 keywords: kubernetes,network policy,isolation

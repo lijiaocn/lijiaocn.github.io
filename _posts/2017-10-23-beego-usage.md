@@ -3,7 +3,7 @@ layout: default
 title: 怎样用beego开发服务端应用？
 author: lijiaocn
 createdate: 2017/10/23 14:01:13
-changedate: 2017/11/14 18:32:53
+changedate: 2017/11/15 15:31:06
 categories: 方法
 tags: beego
 keywords: beego
@@ -583,7 +583,56 @@ routers/routers.go中也自动生成了路由:
 
 	bee run -downdoc=true
 
+### API自动文档语法
+
 文档的语法参考[beego: API自动化文档][10]。
+
+API自动化文档在routers/router.go和每个controller中设置。
+
+全局设置必须在router.go中，且在文件的最顶部：
+
+	// @APIVersion 1.0.0
+	// @Title mobile API
+	// @Description mobile has every tool to get any job done, so codename for the new mobile APIs.
+	// @Contact astaxie@gmail.com
+	// @TermsOfServiceUrl
+	// @License
+	// @LicenseUrl
+	package routers
+
+controler必须是以namespace+include的方式注册到路由中，否则controller中的文档注释不生效。
+
+	// @Title Get Product list
+	// @Description Get Product list by some info
+	// @Success 200 {object} models.ZDTProduct.ProductList
+	// @Param   category_id     query   int false       "category id"
+	// @Param   brand_id    query   int false       "brand id"
+	// @Param   query   query   string  false       "query of search"
+	// @Param   segment query   string  false       "segment"
+	// @Param   sort    query   string  false       "sort option"
+	// @Param   dir     query   string  false       "direction asc or desc"
+	// @Param   offset  query   int     false       "offset"
+	// @Param   limit   query   int     false       "count limit"
+	// @Param   price           query   float       false       "price"
+	// @Param   special_price   query   bool        false       "whether this is special price"
+	// @Param   size            query   string      false       "size filter"
+	// @Param   color           query   string      false       "color filter"
+	// @Param   format          query   bool        false       "choose return format"
+	// @Failure 400 no enough input
+	// @Failure 500 get products common error
+	// @router /products [get]
+	func (c *CMSController) Product() {
+	...
+	}
+
+Param后面的参数含义分别是:
+
+	参数名       输入方式               参数类型        是否必须   注释
+	        formData: post发送的数据    string           true
+	        query   : url参数           int              false
+	        path    : 路径参数          float
+	        body    : raw数据请求       PACKAGE.STRUCT
+	        header  : Header中的参数
 
 ## 连接数据库
 
