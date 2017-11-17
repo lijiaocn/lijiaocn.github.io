@@ -3,7 +3,7 @@ layout: default
 title: kubernetes的Client Libraries的使用
 author: lijiaocn
 createdate: 2017/11/15 15:37:33
-changedate: 2017/11/17 10:23:40
+changedate: 2017/11/17 16:18:46
 categories: 项目
 tags: kubernetes
 keywords: kubernetes
@@ -158,10 +158,46 @@ Clientset有以下的方法可供使用：
 
 	pods, err := clientset.CoreV1().Pods("lijiaocn").List(v1.ListOptions{})
 
+### Resource定义
+
+Resource的定义不在client-go中，而是在一个名为[api][3]的项目中，也就是前面获取的：
+
+	go get k8s.io/api
+
+api的目录结构如下：
+
+	▾ api/
+	  ▸ admission/
+	  ▸ admissionregistration/
+	  ▸ apps/
+	  ▸ authentication/
+	  ▸ authorization/
+	  ▸ autoscaling/
+	  ▸ batch/
+	  ▸ certificates/
+	  ▸ core/
+	  ▸ extensions/
+	  ▸ Godeps/
+	  ▸ imagepolicy/
+	  ▸ networking/
+	  ▸ policy/
+	  ▸ rbac/
+	  ▸ scheduling/
+	  ▸ settings/
+	  ▸ storage/
+	  ▸ vendor/
+	    LICENSE
+	    OWNERS
+	    README.md
+
 ## 参考
 
-1. [go: client-go][1]
+1. [kubernetes/client-go][1]
 2. [study-k8s-client][2]
+3. [kubernetes/api][3]
+4. [kubernetes/apimachinery][4]
 
-[1]: https://github.com/kubernetes/client-go  "go: client-go" 
+[1]: https://github.com/kubernetes/client-go  "kubernetes/client-go" 
 [2]: https://github.com/lijiaocn/study-k8s-client "study-k8s-client"
+[3]: https://github.com/kubernetes/api "kubernetes/api"
+[4]: https://github.com/kubernetes/apimachinery "kubernetes/apimachinery"

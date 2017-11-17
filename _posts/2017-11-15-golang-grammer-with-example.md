@@ -3,7 +3,7 @@ layout: default
 title: go语言语法实例
 author: lijiaocn
 createdate: 2017/11/15 10:49:40
-changedate: 2017/11/15 19:41:53
+changedate: 2017/11/17 15:45:59
 categories: 编程
 tags: go
 keywords: go语法,语法实例
@@ -168,7 +168,51 @@ struct中只有类型、没有名字的成员（field）被称为：anonymous fi
 
 	fmt.Printf("a.B.b=%s\n", a.B.b)
 
-go费了这么大周折最后就是实现了面向对象中的继承，感觉是一种倒退。
+这其实就是实现了面向对象中的继承，或许是go的发明人想引入继承，但又不想引入面对对象中的太多内容，所以用了这么一种曲折的方式。
+
+## 遍历 － For statements
+
+go语言的for语句有三种形态，[Go Spec: For statements][7]:
+
+	ForStmt = "for" [ Condition | ForClause | RangeClause ] Block .
+	Condition = Expression .
+
+`Condition`是表达式，表达式结果为true，就执行Block中的代码，例如:
+
+	for a < b {
+	    a *= 2
+	}
+
+`ForClause`类似C中的for的写法:
+
+	ForClause = [ InitStmt ] ";" [ Condition ] ";" [ PostStmt ] .
+	InitStmt = SimpleStmt .
+	PostStmt = SimpleStmt .
+
+例如:
+
+	for i := 0; i < 10; i++ {
+		f(i)
+	}
+
+`RangeClause`中引入了关键字`range`：
+
+	RangeClause = [ ExpressionList "=" | IdentifierList ":=" ] "range" Expression .
+
+用于遍历数组（array）、切片（slice）、字符串（string）、字典（map）、管道（channel），每次循环range会返回两个值，目标类型不同，返回的值的类型不同：
+
+	Range expression   (example)               |   1st value         |  2nd value
+	-------------------------------------------------------------------------------
+	array or slice     a  [n]E, *[n]E, or []E  |   index    i  int   |  a[i]      E
+	string             s  string type          |   index    i  int   |  see below rune
+	map                m  map[K]V              |   key      k  K     |  m[k]      V
+	channel            c  chan E, <-chan E     |   element  e  E     |
+
+对于array、slice、string，range返回的第一个值是index，类型为int，第二个值为index对应的值。
+
+对于map，range返回的第一个值是key，第二个值是对应的value。
+
+对于channel，只返回一个值，就是从channel中读取到的变量。
 
 ## 参考
 
@@ -178,6 +222,7 @@ go费了这么大周折最后就是实现了面向对象中的继承，感觉是
 4. [Go Spec: Address_operators][4]
 5. [Go Spec: Struct Type][5]
 6. [Go Spec: Types][6]
+7. [Go Spec: For statements][7]
 
 [1]: http://127.0.0.1:8080/ref/spec  "Go Language Specification"
 [2]: http://127.0.0.1:8080/ref/spec#Pointer_types  "Go Spec: Pointer Type" 
@@ -185,3 +230,4 @@ go费了这么大周折最后就是实现了面向对象中的继承，感觉是
 [4]: https://127.0.0.1:8080/ref/spec#Address_operators "Go Spec: Address operators"
 [5]: http://127.0.0.1:8080/ref/spec#Struct_types "Go Spec: Struct Type"
 [6]: http://127.0.0.1:8080/ref/spec#Types "Go Spec: Types"
+[7]: http://127.0.0.1:8080/ref/spec#For_statements "Go Spec: For statements"
