@@ -3,7 +3,7 @@ layout: default
 title: kubernetes的调试方法
 author: lijiaocn
 createdate: 2017/09/11 16:24:30
-changedate: 2017/09/21 19:19:01
+changedate: 2017/11/20 14:50:41
 categories: 项目
 tags:  kubernetes
 keywords: kubernetes,debug
@@ -20,7 +20,7 @@ description: 持续更新的kubernetes的调试方法
 
 ## 在代码中找到资源的定义
 
-譬如，在kubernetes的1.6.4版本中调试NetworkPolicy。
+譬如，在kubernetes的`1.6.4`版本中调试NetworkPolicy。
 
 定义的NetworkPolicy如下：
 
@@ -115,6 +115,8 @@ pkg/apis:
 	    ▸ storage/
 	    ...
 
+参考[kubernetes的api定义与装载][1]。
+
 ## 在代码中找到对输入参数的处理
 
 到cmd目录中找到目标子目录，例如kubelet，main函数中调用的`AddFlags`中完成输入参数的设置。
@@ -148,8 +150,6 @@ cmd/kubelet/kubelet.go:
 
 ## 参考
 
-1. [文献1][1]
-2. [文献2][2]
+1. [kubernetes的api定义与装载][1]
 
-[1]: 1.com  "文献1" 
-[2]: 2.com  "文献1" 
+[1]: http://www.lijiaocn.com/项目/2017/06/09/Kubernetes-api-def.html "kubernetes的api定义与装载" 

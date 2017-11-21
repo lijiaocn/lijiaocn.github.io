@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Kubernetes的api定义
+title: kubernetes的api定义与装载
 author: lijiaocn
 createdate: 2017/06/09 09:37:14
-changedate: 2017/06/09 11:14:59
+changedate: 2017/11/20 14:22:01
 categories: 项目
 tags: kubernetes
 keywords: kubernetes,api
@@ -14,11 +14,34 @@ description:  kubernetes的api资源的定义，和使用方式。
 * auto-gen TOC:
 {:toc}
 
-在[Kubernetes-apiserver][1]和[Kubernetes-apiserver-storage][2]中分析了apiserver是怎样工作、怎样实现了REST API的。这里分析一下api中资源的定义和使用方式。
+在[Kubernetes-apiserver][1]和[Kubernetes-apiserver-storage][2]中分析了apiserver是怎样工作、怎样实现了REST API的。
 
-## 定义与引用过程
+这里分析一下api中的定义的装载。
 
-资源的定义文件在`pkg/api/`和`pkg/apis`目录中, pkg/api目录中定义了pod等基本的资源自类型，pkg/apis中定义扩展的api中用的资源类型。
+## 都有哪些api
+
+`kubectl api-versions`可以看到集群支持的api：
+
+	$ kubectl api-versions
+	apps/v1beta1
+	authentication.k8s.io/v1beta1
+	authorization.k8s.io/v1beta1
+	autoscaling/v1
+	batch/v1
+	certificates.k8s.io/v1alpha1
+	extensions/v1beta1
+	policy/v1beta1
+	rbac.authorization.k8s.io/v1alpha1
+	storage.k8s.io/v1beta1
+	v1
+
+这个可以通过kube-apiserver的`--runtime-config`来设置：
+
+	--runtime-config=/api=true,api/all=true,apis=true,apis/v1=true
+
+## api在哪里定义的？
+
+api在`pkg/api/`和`pkg/apis`中定义, pkg/api目录中定义了pod等基础api，pkg/apis中定义的是扩展的api。
 
 	▾ api/
 	  ▸ annotations/
@@ -45,13 +68,31 @@ description:  kubernetes的api资源的定义，和使用方式。
 	  ▸ settings/
 	  ▸ storage/
 
-每组api资源中都有一个install目录，定义了一个名为install的pkg。
+## api是怎样被装载的？
 
-apiserver的实现代码cmd/kube-apiserver/app/server.go:67中导入了名为master的package:
+如果你仔细查看api/和apis/的子目录，会发现很多都有一个名为install的目录（不是全部)。
+
+这个目录中有一个名为install.go的文件，里面有这样一个`init()`函数：
+
+	func init() {
+		Install(api.GroupFactoryRegistry, api.Registry, api.Scheme)
+	}
+
+它调用的`Install()`函数，也在这个文件里实现：
+
+	func Install(groupFactoryRegistry announced.APIGroupFactoryRegistry, 
+			registry *registered.APIRegistrationManager, scheme *runtime.Scheme) {
+		...
+
+`Install()`将完成api的装载，但是这个过程比较复杂，在下一节中分析。
+
+问题是这些init()函数是什么时候给调用的？通过搜索、回溯代码发现了这个过程。
+
+kube-apiserver的代码`cmd/kube-apiserver/app/server.go:67`中导入了名为`master`的package:
 
 	"k8s.io/kubernetes/pkg/master"
 
-master的实现文件中pkg/master/import_known_versions.go中导入了每组api的install:
+master的代码`pkg/master/import_known_versions.go`中导入了api/和apis/子目录中的install:
 
 	// These imports are the API groups the API server will support.
 	import (
@@ -72,31 +113,15 @@ master的实现文件中pkg/master/import_known_versions.go中导入了每组api
 	    _ "k8s.io/kubernetes/pkg/apis/settings/install"
 	    _ "k8s.io/kubernetes/pkg/apis/storage/install"
 	)
-	
-	func init() {
-	    if missingVersions := api.Registry.ValidateEnvRequestedVersions(); len(missingVersions) != 0 {
-	        panic(fmt.Sprintf("KUBE_API_VERSIONS contains versions that are not installed: %q.", missingVersions))
-	    }
-	}
+	...
 
-这些install中完成对所在目录的资源的装载，`kubectl api-versions`中列出的api都有对应的install：
+因此init()函数得以执行，完成api的装载。
 
-	$kubectl api-versions
-	apps/v1beta1
-	authentication.k8s.io/v1beta1
-	authorization.k8s.io/v1beta1
-	autoscaling/v1
-	batch/v1
-	certificates.k8s.io/v1alpha1
-	extensions/v1beta1
-	policy/v1beta1
-	rbac.authorization.k8s.io/v1alpha1
-	storage.k8s.io/v1beta1
-	v1
+## api的装载过程
 
-## "k8s.io/kubernetes/pkg/api/install"
+这里以"k8s.io/kubernetes/pkg/api/install"为例。
 
-pkg/api/install/install.go中也实现了init()函数，用来装载pkg/api目录下定义的资源：
+pkg/api/install/install.go中实现了init()函数，用来装载pkg/api目录下定义的资源：
 
 	// Package install installs the v1 monolithic api, making it available as an
 	// option to all of the API encoding/decoding machinery.
@@ -146,17 +171,21 @@ pkg/api/install/install.go中也实现了init()函数，用来装载pkg/api目�
 
 	announced.NewGroupMetaFactory().Annouce().RegisterAndEnable()
 
-announced是`"k8s.io/apimachinery/pkg/apimachinery/announced"`，这里暂且不关心apimachinery的实现，通过走读代码，可以知道这里是将资源的定义注册到了"k8s.io/kubernetes/pkg/api"中的GroupFactoryRegistry中:
+announced是`"k8s.io/apimachinery/pkg/apimachinery/announced"`。
+
+通过走读代码，可以知道这里是将api的定义注册到了"k8s.io/kubernetes/pkg/api"中的`GroupFactoryRegistry`中:
 
 	var GroupFactoryRegistry = make(announced.APIGroupFactoryRegistry)
 
-其它apis分组目录下的资源都注册到了同一个GroupFactoryRegistry中。
+其它apis分组目录下的资源也注册到了这个GroupFactoryRegistry中。
 
-这里有三个参数需要关注
+有三个参数需要关注：
 
 	api.GroupName
 	api.AddToScheme
 	v1.SchemeGroupVersion.Version: v1.AddToScheme,
+
+>TODO：分析这个过程。
 
 ### v1.AddToScheme
 
@@ -210,8 +239,6 @@ api/v1中的addKnownTypes():
 	        &EventList{},
 	        &List{},
 	...
-
-## 
 
 ## 参考
 
