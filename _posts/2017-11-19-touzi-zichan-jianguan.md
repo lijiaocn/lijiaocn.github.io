@@ -3,11 +3,11 @@ layout: default
 title: "关于规范金融机构资产管理业务的指导意见（征求意见稿）与人民银行答记者问"
 author: lijiaocn
 createdate: 2017/11/19 19:52:55
-changedate: 2017/11/19 20:34:31
+changedate: 2017/11/22 17:18:12
 categories: 投资
 tags: 投资
 keywords: 金融机构,资产管理业务
-description: 
+description: 2017年11月17日下发，全文抄录在此。
 
 ---
 
