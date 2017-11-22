@@ -3,7 +3,7 @@ layout: default
 title: go语言语法实例
 author: lijiaocn
 createdate: 2017/11/15 10:49:40
-changedate: 2017/11/17 15:45:59
+changedate: 2017/11/21 16:16:56
 categories: 编程
 tags: go
 keywords: go语法,语法实例
@@ -214,6 +214,28 @@ go语言的for语句有三种形态，[Go Spec: For statements][7]:
 
 对于channel，只返回一个值，就是从channel中读取到的变量。
 
+## 字典 － map
+
+go语言支持map，[Go Spec: Map types][8]。
+
+	MapType     = "map" "[" KeyType "]" ElementType .
+	KeyType     = Type .
+
+map类型的变量必须用`make`创建：
+
+	make(map[string]int)         <-- 不设置map容量
+	make(map[string]int, 100)    <-- map容量为100
+
+从map中取value的语句，叫做`index表达式`，[Go Spec: Index expressions][9]，语法格式如下：
+
+	a[x]
+
+a可以是`array`,`pointer to array`,`slice`, `string`和`map`。
+
+如果a是map，x的类型必须与a的key的类型相同，表达返回两个值，第一个是key对应的value，第二个是是bool变量，表示key是否存在。
+
+	var v, ok = a[x]
+
 ## 参考
 
 1. [Go Language Specification][1]
@@ -223,6 +245,8 @@ go语言的for语句有三种形态，[Go Spec: For statements][7]:
 5. [Go Spec: Struct Type][5]
 6. [Go Spec: Types][6]
 7. [Go Spec: For statements][7]
+8. [Go Spec: Map types][8]
+9. [Go Spec: Index expressions][9]
 
 [1]: http://127.0.0.1:8080/ref/spec  "Go Language Specification"
 [2]: http://127.0.0.1:8080/ref/spec#Pointer_types  "Go Spec: Pointer Type" 
@@ -231,3 +255,5 @@ go语言的for语句有三种形态，[Go Spec: For statements][7]:
 [5]: http://127.0.0.1:8080/ref/spec#Struct_types "Go Spec: Struct Type"
 [6]: http://127.0.0.1:8080/ref/spec#Types "Go Spec: Types"
 [7]: http://127.0.0.1:8080/ref/spec#For_statements "Go Spec: For statements"
+[8]: http://127.0.0.1:8080/ref/spec#Map_types  "Go Spec: Map types"
+[9]: http://127.0.0.1:8080/ref/spec#Index_expressions  "Go Spec: Index expressions"

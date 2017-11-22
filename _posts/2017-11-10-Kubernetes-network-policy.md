@@ -3,7 +3,7 @@ layout: default
 title: kubernetes的网络隔离networkpolicy
 author: lijiaocn
 createdate: 2017/11/10 10:47:51
-changedate: 2017/11/21 13:21:59
+changedate: 2017/11/22 13:23:35
 categories: 项目
 tags: kubernetes
 keywords: kubernetes,network policy,isolation
@@ -19,6 +19,8 @@ description: kubernetes1.7，网络隔离的api变更为networking.k8s.io/v1
 kubernetes1.8中，网络隔离的api变更为networking.k8s.io/v1，并且增加了新特性。
 
 特别注意，虽然kubernetes提供了networkpolicy的api，但隔离要生效还需要kubernetes的网络插件的支持。
+
+例如如果使用calico，需要部署[calico: kube-controllers][2]。
 
 ## API
 
@@ -105,5 +107,7 @@ networkpolicy在pkg/apis/networking中定义。
 ## 参考
 
 1. [Kubernetes Network Policies][1]
+2. [calico: kube-controllers][2]
 
 [1]: https://kubernetes.io/docs/concepts/services-networking/network-policies/ "Kubernetes Network Policies" 
+[2]: https://github.com/projectcalico/kube-controllers "calico: kube-controllers"

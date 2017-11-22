@@ -3,7 +3,7 @@ layout: default
 title: 在kubernetes的node上无法访问pod的问题调查
 author: lijiaocn
 createdate: 2017/10/27 14:45:26
-changedate: 2017/10/27 19:31:41
+changedate: 2017/11/22 14:07:57
 categories: 问题
 tags: calico kubernetes
 keywords: calico,hostendpoint,workloadendpoint,网络隔离
@@ -18,13 +18,31 @@ description: 在calico上开启policy后，node无法访问pod
 
 kubernetes集群的网络组件是calico，在kubernetes中设置网络隔离后，在node上无法访问pod。
 
+## 更改一下calico的kube-policy-controller
+
+kubernetes中的networkpolicy没有考虑到node，虽然在1.8.x版本中支持IP，但还是很麻烦。
+
+因此，修改了calico的kube-policy-controller中的代码，在calico管理的每个policy中增加了一条规则。
+
+这里使用的[calico: kube-controllers][3]的v0.7.0版本，在`handlers/network_policy.py`中增加两行：
+
+	 50         extra_rule=Rule(action="allow", src_selector="calico/k8s_ns in { \"kube-system\" }")
+	 51         inbound_rules.append(extra_rule)
+
+这两行代码将会在calico的所有policy增加一条规则:
+
+	 - action: allow
+	   destination: {}
+	   source:
+	     selector: calico/k8s_ns in { "kube-system" }
+
 ## 未开启ipip模式的时候
 
-calico中的endpoint，也就是每个接入点，分为[workloadendpoint][2]和[hostendpoint][1]。
+calico中的endpoint，分为[workloadendpoint][2]和[hostendpoint][1]。
 
-workloadendpoint就是虚拟接口，在k8s中对应的就是分配给pod的接口，hostendpoint对应的是node的接口。
+workloadendpoint对应在k8s中对应的就是分配给pod的接口，hostendpoint对应的是node的接口。
 
-如果想在node(hostendpoint)上直接访问pod(workloadendpoint)，需要创建带有合适标签的hostendpoint。
+如果想在node上直接访问pod，需要为node创建带有合适标签的hostendpoint。
 
 例如在集群中创建的一个policy如下:
 
@@ -46,7 +64,7 @@ workloadendpoint就是虚拟接口，在k8s中对应的就是分配给pod的接�
 	    order: 1000
 	    selector: calico/k8s_ns == 'lijiaocn-space'
 
-这个policy允许带有`calico/k8s_ns=kube-system`或者`calico/k8s_ns=lijiaocn-space`标签的ip访问。
+这个policy允许带有`calico/k8s_ns=kube-system`或者`calico/k8s_ns=lijiaocn-space`标签的endpoint访问。
 
 为ip地址为10.39.0.113的node创建的hostendpoint如下：
 
@@ -67,7 +85,7 @@ workloadendpoint就是虚拟接口，在k8s中对应的就是分配给pod的接�
 
 node的ip地址是10.39.0.113，带有标签`calico/k8s_ns: kube-system`，符合policy的要求。
 
-在不使用ipip模式的情况，这时候在node10.39.0.113上就可以访问了pod。
+如果没有使用ipip，这时候在node10.39.0.113上就可以访问了pod。
 
 ## 如果开启了ipip模式
 
@@ -177,6 +195,8 @@ node的ip地址是10.39.0.113，带有标签`calico/k8s_ns: kube-system`，符�
 
 1. [calico hostendpoint][1]
 2. [calico workloadendpoint][2]
+3. [calico: kube-controllers][3]
 
 [1]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2017/04/11/calico-usage.html#hostendpoint  "calico hostendpoint" 
 [2]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2017/04/11/calico-usage.html#workloadendpoint "calico workloadendpoint"
+[3]: https://github.com/projectcalico/kube-controllers  "calico: kube-controllers"
