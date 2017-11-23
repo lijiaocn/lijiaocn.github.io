@@ -3,7 +3,7 @@ layout: default
 title: 怎样用beego开发服务端应用？
 author: lijiaocn
 createdate: 2017/10/23 14:01:13
-changedate: 2017/11/15 15:31:06
+changedate: 2017/11/23 19:42:06
 categories: 方法
 tags: beego
 keywords: beego
@@ -633,6 +633,12 @@ Param后面的参数含义分别是:
 	        path    : 路径参数          float
 	        body    : raw数据请求       PACKAGE.STRUCT
 	        header  : Header中的参数
+
+使用bee命令启动应用：
+
+	bee run --gendoc=true -downdoc=true
+
+现在就可以访问`http://127.0.0.1:8080/swagger/`查看api文档。
 
 ## 连接数据库
 
