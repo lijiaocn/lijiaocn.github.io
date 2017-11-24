@@ -3,13 +3,87 @@ layout: default
 title: kubernetes的基本操作
 author: lijiaocn
 createdate: 2017/03/21 15:32:31
-changedate: 2017/05/10 11:23:02
+changedate: 2017/11/24 16:12:59
 categories: 项目
 tags: kubernetes
 keywords: kubernetes,k8s
 description: 记录了kubernetes的基本操作
 
 ---
+
+* auto-gen TOC:
+{:toc}
+
+## 说明
+
+[kubernetes api reference v1.8][1]中列出了所有的api，但是还不完善，没有给出所有的操作示例。
+
+[kubernetes api reference v1.8][1]中将api分成了五组:
+
+	Workloads :  
+		Container
+		Cronjob
+		Daemonset
+		Deployment
+		Job
+		Pod
+		Replicaset
+		ReplicationController
+		StatefulSet
+	
+	Discovery & Load Balancing : 
+		Endpoints
+		Ingress
+		Service
+	
+	Config & Storage : 
+		ConfigMap
+		Secret
+		PersistentVolumeClaim
+		StorageClass
+		Volume
+	
+	Metadata : 
+		ControllerRevision
+		CustomResourceDefinition
+		Event
+		LimitRange
+		ExternalAdmissionHookConfiguration
+		HorizontalPodAutoscaler
+		InitializerConfiguration
+		PodTemplate
+		PodDistruptionBudget
+		priorityClass
+		PodPreset
+		PodSecurityPolicy
+	
+	Cluster:
+		APIService
+		Binding
+		CertificateSigningRequest
+		ClusterRole
+		ClusterRoleBinding
+		ComponentStatus
+		LocalSubjectAccessReview
+		Namespace
+		Node
+		PersistentVolume
+		ResourceQuata
+		Role
+		RoleBinding
+		SelfSubjecctAccessReview
+		SelfSubjectRulesReview
+		ServiceAccount
+		SubjectAccessReview
+		TokenReview
+		NetworkPolicy
+
+注意上面列出的资源不是所有都可以通过`kubectl get`获取的：
+
+	$ kubectl get LocalSubjectAccessReview
+	Error from server (MethodNotAllowed): the server does not allow this method on the requested resource
+
+[kubernetes api definition][2]中给出了所有资源的定义。
 
 ## 初始状态
 
@@ -160,3 +234,10 @@ pod-sshproxy的中运行sshd服务，可以通过ssh连接，用户"root"，密�
 	$ kubectl edit quota/first-quota -n first-namespace
 	在命令执行后得到的编辑器中，直接编辑。
 
+## 参考
+
+1. [kubernetes api reference v1.8][1]
+2. [kubernetes api definition][2]
+
+[1]: https://kubernetes.io/docs/api-reference/v1.8  "kubernetes api reference v1.8"
+[2]: https://kubernetes.io/docs/api-reference/v1.8/#-strong-definitions-strong-  "kubernetes api definition"
