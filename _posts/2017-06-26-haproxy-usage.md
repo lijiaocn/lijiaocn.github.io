@@ -1,9 +1,9 @@
 ---
 layout: default
-title: HAProxy的基本使用与常见实践
+title: haproxy的基本使用与常见实践
 author: lijiaocn
 createdate: 2017/06/26 10:40:02
-changedate: 2017/09/08 10:47:16
+changedate: 2017/11/28 14:56:27
 categories: 技巧
 tags: haproxy
 keywords:  haproxy,lb 
