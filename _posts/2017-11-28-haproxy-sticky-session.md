@@ -3,7 +3,7 @@ layout: default
 title: 使用haproxy进行会话保持
 author: lijiaocn
 createdate: 2017/11/28 14:56:49
-changedate: 2017/11/28 15:11:17
+changedate: 2017/11/28 16:00:03
 categories: 技巧
 tags: haproxy
 keywords: haproxy,会话保持,粘滞会话
@@ -22,15 +22,18 @@ http出口的负载均衡策略是roundrobin，部分业务系统将会话信息
 
 ## 方案说明
 
-haproxy可以使用多种方式做到会话保持。
+haproxy可以使用多种方式做到会话保持，可以在[balance][4]中指定均衡算法：
+
+	balance <algorithm> [ <arguments> ]
+	balance url_param <param> [check_post]
 
 `source`的方式将同一个源IP的请求转发给同一个backend server，可以作用于tcp和http。但是当某个源IP的请求量较大，或者用户请求经过NAT后到达，会导致backend server的负载严重不均衡。不采用。
 
 `url_param`的方式，需要业务在url中带有sessionid，适用于http。不采用。
 
-`stick-tables`的方式，设置复杂，且需要维护记录表。不采用。
+也可以使用`stick-tables`的方式。[stick-table][3]设置复杂，且需要维护记录表。不采用。
 
-`cookie`的方式本身也有多种策略，例如`insert`，`prefix`，`rewrite`等，适用于http。
+还可以使用`cookie`的方式。[cookie][2]本身也有多种策略，例如`insert`，`prefix`，`rewrite`等，适用于http。
 
 经过对比，决定采用以下方式：
 
@@ -79,5 +82,11 @@ cookie的值为处理post请求的backend server的ID。
 ## 参考
 
 1. [HAProxy的基本使用与常见实践][1]
+2. [haproxy cookie][2]
+3. [haproxy stick-table][3]
+4. [haproxy balance][4]
 
 [1]: http://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2017/06/26/haproxy-usage.html#%E4%BC%9A%E8%AF%9D%E4%BF%9D%E6%8C%81  "HAProxy的基本使用与常见实践" 
+[2]: http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#4-cookie "haproxy cookie"
+[3]: http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#4-stick-table "haproxy stick-table"
+[4]: http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#4.2-balance "haproxy balance"
