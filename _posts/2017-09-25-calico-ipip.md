@@ -3,9 +3,9 @@ layout: default
 title: 使用calico的ipip模式解决k8s的跨网段通信
 author: lijiaocn
 createdate: 2017/09/25 15:41:31
-changedate: 2017/10/11 09:54:55
+changedate: 2017/11/29 13:51:13
 categories: 项目
-tags: kubernetes
+tags: kubernetes  calico
 keywords: kubernetes,跨网段通信,calico
 description: 使用calico的ipip模式解决k8s的跨网段通信
 
@@ -87,10 +87,3 @@ node10.39.0.110上的tunl0设备:
 	16:41:08.884128 IP 10.39.0.110 > 10.39.3.75: IP 192.168.70.42 > 192.168.169.196: ICMP echo request, id 20142, seq 14, length 64 (ipip-proto-4)
 
 ## 参考
-
-1. [文献1][1]
-2. [文献2][2]
-
-[1]: 1.com  "文献1" 
-[2]: 2.com  "文献1" 
-

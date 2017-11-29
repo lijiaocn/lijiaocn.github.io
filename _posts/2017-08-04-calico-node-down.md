@@ -1,9 +1,9 @@
 ---
 layout: default
-title: 使用calico的kubernetes集群，在pod内部无法访问外部服务
+title: pod内部arp记录丢失，无法访问外部服务
 author: lijiaocn
 createdate: 2017/08/04 10:22:14
-changedate: 2017/11/29 11:02:05
+changedate: 2017/11/29 15:02:22
 categories: 问题
 tags: calico kubernetes
 keywords: calico,k8s,workloadEndpoint
@@ -320,6 +320,32 @@ kubernetes中也可以看到大量容器的IP冲突：
 
 将IP冲突的Pod删除重建后，IP不再冲突。
 
+## 继续调查
+
+走读calico的[cni-plugin][5]代码，发现endpoint的IP地址是用`/opt/cni/bin/calico-ipam`分配的：
+
+	# cat /etc/cni/net.d/10-calico.conf
+	{
+	    "name": "k8s-pod-network",
+	    "cniVersion": "0.1.0",
+	    "type": "calico",
+	    "etcd_endpoints": "https://10.39.0.113:2379",
+	    "etcd_key_file": "/etc/cni/net.d/calico-tls/etcd-key",
+	    "etcd_cert_file": "/etc/cni/net.d/calico-tls/etcd-cert",
+	    "etcd_ca_cert_file": "/etc/cni/net.d/calico-tls/etcd-ca",
+	    "log_level": "info",
+	    "mtu": 1500,
+	    "ipam": {
+	        "type": "calico-ipam"
+	    },
+	    "policy": {
+	        "type": "k8s",
+	        "k8s_api_root": "https://10.0.0.1:443",
+	...
+
+[calico-ipam][6]
+
+
 ## 参考
 
 1. [calico网络的原理、组网方式与使用][1]
@@ -327,9 +353,11 @@ kubernetes中也可以看到大量容器的IP冲突：
 3. [confd][3]
 4. [felix][4]
 5. [cni-plugin][5]
+6. [calico-ipam][6]
 
 [1]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2017/04/11/calico-usage.html  "calico网络的原理、组网方式与使用" 
 [2]: http://bird.network.cz/ "bird"
 [3]: http://www.confd.io/  "confd"
 [4]: https://github.com/projectcalico/felix  "felix"
 [5]: https://github.com/projectcalico/cni-plugin "calico cni-plugin"
+[6]: https://github.com/projectcalico/cni-plugin/tree/master/ipam  "calico-ipam"

@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes与calico的衔接过程
 author: lijiaocn
 createdate: 2017/09/11 16:45:48
-changedate: 2017/09/27 10:58:23
+changedate: 2017/11/29 14:14:34
 categories: 项目
 tags: kubernetes calico
 keywords: k8s,kubernets,calico
@@ -54,7 +54,7 @@ kubelet默认在`/etc/cni/net.d`目录寻找配置文件，在`/opt/bin/`目录�
 	$ls /opt/cni/bin/calico
 	/opt/cni/bin/calico
 
-## calico的cni-plugin
+## calico的cni-plugin的实现
 
 [calico cni-plugin][4]是一个独立的项目，这里分析的版本是`v1.5.0`。
 
@@ -68,7 +68,9 @@ kubelet默认在`/etc/cni/net.d`目录寻找配置文件，在`/opt/bin/`目录�
 
 calico的cni-plugin被运行的时候，在calico中创建或者删除workloadEndpoint，具体过程可以阅读[calico的架构设计与组件交互过程][5]中的cni-plugin一节。
 
-kubelet会将calico的配置传递给cni-plugin，cni-plugin依据传递来的信息连接calico，例如：
+kubelet会将从`/etc/cni/net.d/10-calico.conf`中读取到的calico的配置传递给cni-plugin。
+
+cni-plugin依据传递来的信息连接calico，例如：
 
 	{
 	  "name": "calico-k8s-network",
@@ -95,9 +97,13 @@ kubernetes 1.6.4支持networkpolicy，创建的networkpolicy存放在etcd的`*/n
 	/registry/networkpolicies/earth
 	/registry/networkpolicies/lijiaob-space2
 
-calico中ACL是通过profile和policy实现，profile相当于Openstack中的安全组，直接绑定到endpoint上的。policy相当于网络防火墙。对报文做准入检查时，先检查policy，然后检查profile。
+calico中ACL是通过profile和policy实现，profile相当于Openstack中的安全组，直接绑定到endpoint上的。
+
+policy相当于网络防火墙。对报文做准入检查时，先检查policy，然后检查profile。
 
 通过calico的cni-plugin创建的endpoint的默认绑定到了一个名为`k8s_ns.<NAMESPACE>`的profile。
+
+TODO
 
 ## 参考
 
