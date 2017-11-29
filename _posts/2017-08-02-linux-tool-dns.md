@@ -3,7 +3,7 @@ layout: default
 title: linux中dns相关的工具
 author: lijiaocn
 createdate: 2017/08/02 18:57:12
-changedate: 2017/11/29 18:37:41
+changedate: 2017/11/29 18:50:58
 categories: 技巧
 tags: linuxtool
 keywords: linux,dns,linuxtool
