@@ -3,9 +3,9 @@ layout: default
 title: calico的workloadEndpoint无法访问网络的问题调查
 author: lijiaocn
 createdate: 2017/08/04 10:22:14
-changedate: 2017/11/28 20:52:50
+changedate: 2017/11/29 09:51:40
 categories: 问题
-tags: calico
+tags: calico kubernetes
 keywords: calico,k8s,workloadEndpoint
 description: 遗憾的是丢失了现场，kubernetes中使用calico的pod断网的问题调查了一半。
 
@@ -318,7 +318,7 @@ kubernetes中也可以看到大量容器的IP冲突：
 
 	kubectl get pod -o wide --all-namespaces | awk '{print $7}' | grep -v "10.39" |sort | uniq -c | sort -n
 
-将IP冲突的Pod删除重建后，IP不在冲突。
+将IP冲突的Pod删除重建后，IP不再冲突。
 
 ## 参考
 
