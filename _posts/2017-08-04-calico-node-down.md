@@ -1,13 +1,13 @@
 ---
 layout: default
-title: calico的workloadEndpoint无法访问网络的问题调查
+title: 使用calico的kubernetes集群，在pod内部无法访问外部服务
 author: lijiaocn
 createdate: 2017/08/04 10:22:14
-changedate: 2017/11/29 09:51:40
+changedate: 2017/11/29 11:02:05
 categories: 问题
 tags: calico kubernetes
 keywords: calico,k8s,workloadEndpoint
-description: 遗憾的是丢失了现场，kubernetes中使用calico的pod断网的问题调查了一半。
+description: 使用calico的kubernetes集群中，pod断网的问题调查
 
 ---
 
@@ -165,25 +165,25 @@ node上的arp记录是存在的:
 
 ## 另一个现场
 
-	$ calicoctl get workloadendpoint --workload=xdgc-idesign-prdbackend.etcd-2 -o yaml
+	$ calicoctl get workloadendpoint --workload=olef-idalijn-adcbackend.etcd-2 -o yaml
 	- apiVersion: v1
 	  kind: workloadEndpoint
 	  metadata:
 	    labels:
-	      calico/k8s_ns: xdgc-idesign-prdbackend
+	      calico/k8s_ns: olef-idalijn-adcbackend
 	      tenxcloud.com/petsetName: etcd
 	      tenxcloud.com/petsetType: etcd
 	    name: eth0
 	    node: slave-140
 	    orchestrator: k8s
-	    workload: xdgc-idesign-prdbackend.etcd-2
+	    workload: olef-idalijn-adcbackend.etcd-2
 	  spec:
 	    interfaceName: calid3abf7c1be4
 	    ipNetworks:
 	    - 192.168.91.33/32
 	    mac: aa:0f:5b:3d:76:4a
 	    profiles:
-	    - k8s_ns.xdgc-idesign-prdbackend
+	    - k8s_ns.olef-idalijn-adcbackend
 
 在容器内手动设置arp：
 
@@ -260,63 +260,63 @@ node上的arp记录是存在的:
 找到这个多出arp条目对应的workloadendpoint：
 
 	$ calicoctl get workloadendpoint -o wide |grep calia3201341d16
-	slave-140     k8s     adqsd-dev.store-mysql-0     eth0   192.168.91.33/32       calia3201341d16   k8s_ns.adqsd-dev
-	slave-57      k8s     adqsd-dev.store-mysql-0     eth0   192.168.201.71/32      calia3201341d16   k8s_ns.adqsd-dev
+	slave-140     k8s     adqsdxadc.store-mysql-0     eth0   192.168.91.33/32       calia3201341d16   k8s_ns.adqsdxadc
+	slave-57      k8s     adqsdxadc.store-mysql-0     eth0   192.168.201.71/32      calia3201341d16   k8s_ns.adqsdxadc
 
-	$ calicoctl get workloadendpoint --node=slave-140 --workload=adqsd-dev.store-mysql-0 -o yaml
+	$ calicoctl get workloadendpoint --node=slave-140 --workload=adqsdxadc.store-mysql-0 -o yaml
 	- apiVersion: v1
 	  kind: workloadEndpoint
 	  metadata:
 	    labels:
-	      calico/k8s_ns: adqsd-dev
+	      calico/k8s_ns: adqsdxadc
 	      tenxcloud.com/petsetName: store-mysql
 	      tenxcloud.com/petsetType: mysql
 	    name: eth0
 	    node: slave-140
 	    orchestrator: k8s
-	    workload: adqsd-dev.store-mysql-0
+	    workload: adqsdxadc.store-mysql-0
 	  spec:
 	    interfaceName: calia3201341d16
 	    ipNetworks:
 	    - 192.168.91.33/32
 	    mac: c2:94:4b:7e:d0:fd
 	    profiles:
-	    - k8s_ns.adqsd-dev
+	    - k8s_ns.adqsdxadc
 
 这个workloadendpoint的IP也是192168.91.33！！！
 
 在node上再次查看一下，发现大量的重复IP！！！
 
 	$ calicoctl get workloadendpoint -o wide |grep 192.168.91.33
-	slave-140          k8s            bdadservice-dev.adqsd-meeting-web-1739418049-g6qes                eth0   192.168.91.33/32            calic49657a1e1a   k8s_ns.bdadservice-dev
-	slave-140          k8s            bdadservice-dev.grafana-1932004613-auazz                          eth0   192.168.91.33/32            cali61dda4e772c   k8s_ns.bdadservice-dev
-	slave-140          k8s            adqsd-dev.store-mysql-0                                           eth0   192.168.91.33/32            calia3201341d16   k8s_ns.adqsd-dev
+	slave-140          k8s            bdadservicexadc.adqsd-meeting-web-1739418049-g6qes                eth0   192.168.91.33/32            calic49657a1e1a   k8s_ns.bdadservicexadc
+	slave-140          k8s            bdadservicexadc.grafana-1932004613-auazz                          eth0   192.168.91.33/32            cali61dda4e772c   k8s_ns.bdadservicexadc
+	slave-140          k8s            adqsdxadc.store-mysql-0                                           eth0   192.168.91.33/32            calia3201341d16   k8s_ns.adqsdxadc
 	slave-140          k8s            adqsd-prod.fwf123-2                                               eth0   192.168.91.33/32            cali3ac2fb6f921   k8s_ns.adqsd-prod
 	slave-140          k8s            adqsd-study.es01-0                                                eth0   192.168.91.33/32            cali7bc527be618   k8s_ns.adqsd-study
 	slave-140          k8s            xxxxxxxxplatform.elastic-qa-0                                     eth0   192.168.91.33/32            cali102d89dd0fc   k8s_ns.xxxxxxxxplatform
 	slave-140          k8s            abcdw-prod.group-3899345145-v631u                                 eth0   192.168.91.33/32            cali5eb76b4e59d   k8s_ns.abcdw-prod
-	slave-140          k8s            taijianxin.etcd2-0                                                eth0   192.168.91.33/32            calidc70be659ad   k8s_ns.taijianxin
-	slave-140          k8s            tangjiand.fox-1                                                   eth0   192.168.91.33/32            calic0372e7228c   k8s_ns.tangjiand
-	slave-140          k8s            xdgc-idesign-prdbackend.etcd-2                                    eth0   192.168.91.33/32            calid3abf7c1be4   k8s_ns.xdgc-idesign-prdbackend
-	slave-140          k8s            zhouyongh.zhouyong-db-0                                           eth0   192.168.91.33/32            cali2b6bddc6647   k8s_ns.zhouyongh
+	slave-140          k8s            adfadddxin.etcd2-0                                                eth0   192.168.91.33/32            calidc70be659ad   k8s_ns.adfadddxin
+	slave-140          k8s            abcdjiand.fox-1                                                   eth0   192.168.91.33/32            calic0372e7228c   k8s_ns.abcdjiand
+	slave-140          k8s            olef-idalijn-adcbackend.etcd-2                                    eth0   192.168.91.33/32            calid3abf7c1be4   k8s_ns.olef-idalijn-adcbackend
+	slave-140          k8s            dlojyolgh.dlojyolg-db-0                                           eth0   192.168.91.33/32            cali2b6bddc6647   k8s_ns.dlojyolgh
 
 kubernetes中也可以看到大量容器的IP冲突：
 
 	$ kubectl get pod -o wide --all-namespaces |grep 192.168.91.33
-	bdadservice-dev                  adqsd-meeting-web-1739418049-g6qes             1/1       Running             0          20h       192.168.91.33     slave-140
-	bdadservice-dev                  grafana-1932004613-auazz                       1/1       Running             0          20h       192.168.91.33     slave-140
-	adqsd-dev                        store-mysql-0                                  1/1       Running             0          20h       192.168.91.33     slave-140
+	bdadservicexadc                  adqsd-meeting-web-1739418049-g6qes             1/1       Running             0          20h       192.168.91.33     slave-140
+	bdadservicexadc                  grafana-1932004613-auazz                       1/1       Running             0          20h       192.168.91.33     slave-140
+	adqsdxadc                        store-mysql-0                                  1/1       Running             0          20h       192.168.91.33     slave-140
 	adqsd-prod                       fwf123-2                                       1/1       Running             0          20h       192.168.91.33     slave-140
 	adqsd-study                      es01-0                                         0/1       Running             0          20h       192.168.91.33     slave-140
 	xxxxxxxxplatform                 elastic-qa-0                                   0/1       Running             0          20h       192.168.91.33     slave-140
 	abcdw-prod                       group-3899345145-v631u                         1/1       Running             0          20h       192.168.91.33     slave-140
-	taijianxin                       etcd2-0                                        0/1       Running             0          20h       192.168.91.33     slave-140
-	tangjiand                        fox-1                                          0/1       Init:1/2            0          20h       192.168.91.33     slave-140
-	zhouyongh                        zhouyong-db-0                                  0/1       Init:1/2            0          20h       192.168.91.33     slave-140
+	adfadddxin                       etcd2-0                                        0/1       Running             0          20h       192.168.91.33     slave-140
+	abcdjiand                        fox-1                                          0/1       Init:1/2            0          20h       192.168.91.33     slave-140
+	dlojyolgh                        dlojyolg-db-0                                  0/1       Init:1/2            0          20h       192.168.91.33     slave-140
 
 先进行紧急恢复，通过下面的命令找出所有的冲突IP
 
-	kubectl get pod -o wide --all-namespaces | awk '{print $7}' | grep -v "10.39" |sort | uniq -c | sort -n
+	kubectl get pod -o wide --all-namespaces | awk '{print $7}' |sort | uniq -c | sort -n
 
 将IP冲突的Pod删除重建后，IP不再冲突。
 
