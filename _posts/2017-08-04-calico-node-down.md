@@ -3,7 +3,7 @@ layout: default
 title: calico的workloadEndpoint无法访问网络的问题调查
 author: lijiaocn
 createdate: 2017/08/04 10:22:14
-changedate: 2017/09/27 13:47:25
+changedate: 2017/11/28 20:52:50
 categories: 问题
 tags: calico
 keywords: calico,k8s,workloadEndpoint
@@ -163,7 +163,162 @@ node上的arp记录是存在的:
 	$ping 192.168.42.25
 	connect: Invalid argument
 
+## 另一个现场
 
+	$ calicoctl get workloadendpoint --workload=xdgc-idesign-prdbackend.etcd-2 -o yaml
+	- apiVersion: v1
+	  kind: workloadEndpoint
+	  metadata:
+	    labels:
+	      calico/k8s_ns: xdgc-idesign-prdbackend
+	      tenxcloud.com/petsetName: etcd
+	      tenxcloud.com/petsetType: etcd
+	    name: eth0
+	    node: slave-140
+	    orchestrator: k8s
+	    workload: xdgc-idesign-prdbackend.etcd-2
+	  spec:
+	    interfaceName: calid3abf7c1be4
+	    ipNetworks:
+	    - 192.168.91.33/32
+	    mac: aa:0f:5b:3d:76:4a
+	    profiles:
+	    - k8s_ns.xdgc-idesign-prdbackend
+
+在容器内手动设置arp：
+
+	arp -s 169.254.1.1    ce:00:8d:99:39:ee
+
+无效。
+
+在node上ping容器的地址，可以ping通。
+
+	ping 192.168.91.33
+	PING 192.168.91.33 (192.168.91.33) 56(84) bytes of data.
+	64 bytes from 192.168.91.33: icmp_seq=1 ttl=64 time=0.548 ms
+	64 bytes from 192.168.91.33: icmp_seq=2 ttl=64 time=0.062 ms
+	64 bytes from 192.168.91.33: icmp_seq=3 ttl=64 time=0.053 ms
+	64 bytes from 192.168.91.33: icmp_seq=4 ttl=64 time=0.055 ms
+	64 bytes from 192.168.91.33: icmp_seq=5 ttl=64 time=0.029 ms
+	64 bytes from 192.168.91.33: icmp_seq=6 ttl=64 time=0.066 ms
+
+同时在容器内抓包：
+
+	tcpdump -i eth0
+	tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+	listening on eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
+	19:42:00.619029 IP slave-140.49319 > 10.0.0.10.domain: 46611+ SRV? etcd.svc.cluster.local. (40)
+
+可以ping通，但是在容器内却捕捉不到报文。
+
+在node查看路由：
+
+	$ ip route |grep 192.168.91.33
+	192.168.91.33 dev calia3201341d16  scope link
+
+发现问题，`calia3201341d16`不是对应容器的设备！192.168.91.33对应的应当前面workloadendpoint中的`calid3abf7c1be4`
+
+在node上查看arp，也发现问题：
+
+	$ arp  |grep 192.168.91.33
+	192.168.91.33            ether   9e:83:2f:5d:c5:1e   CM                    calic49657a1e1a
+	192.168.91.33            ether   4e:14:1c:51:f1:80   CM                    calic0372e7228c
+	192.168.91.33            ether   aa:0f:5b:3d:76:4a   CM                    calid3abf7c1be4
+	192.168.91.33            ether   22:cc:4e:58:fc:15   CM                    cali5eb76b4e59d
+	192.168.91.33            ether   a6:46:39:fa:db:9c   CM                    cali3ac2fb6f921
+	192.168.91.33            ether   f2:4f:de:48:06:11   CM                    cali102d89dd0fc
+	192.168.91.33            ether   c2:94:4b:7e:d0:fd   CM                    calia3201341d16
+	192.168.91.33            ether   46:86:58:88:2d:99   CM                    cali2b6bddc6647
+	192.168.91.33            ether   b2:de:2a:b6:e6:7a   CM                    cali61dda4e772c
+	192.168.91.33            ether   36:b5:98:66:09:6a   CM                    cali7bc527be618
+	192.168.91.33            ether   92:1b:61:f9:c1:9c   CM                    calidc70be659ad
+
+	$ ip neigh |grep 192.168.91.33
+	192.168.91.33 dev calic49657a1e1a lladdr 9e:83:2f:5d:c5:1e PERMANENT
+	192.168.91.33 dev calic0372e7228c lladdr 4e:14:1c:51:f1:80 PERMANENT
+	192.168.91.33 dev calid3abf7c1be4 lladdr aa:0f:5b:3d:76:4a PERMANENT
+	192.168.91.33 dev cali5eb76b4e59d lladdr 22:cc:4e:58:fc:15 PERMANENT
+	192.168.91.33 dev cali3ac2fb6f921 lladdr a6:46:39:fa:db:9c PERMANENT
+	192.168.91.33 dev cali102d89dd0fc lladdr f2:4f:de:48:06:11 PERMANENT
+	192.168.91.33 dev calia3201341d16 lladdr c2:94:4b:7e:d0:fd REACHABLE
+	192.168.91.33 dev cali2b6bddc6647 lladdr 46:86:58:88:2d:99 PERMANENT
+	192.168.91.33 dev cali61dda4e772c lladdr b2:de:2a:b6:e6:7a PERMANENT
+	192.168.91.33 dev cali7bc527be618 lladdr 36:b5:98:66:09:6a PERMANENT
+	192.168.91.33 dev calidc70be659ad lladdr 92:1b:61:f9:c1:9c PERMANENT
+
+将多余的arp删除：
+
+	$ ip neigh delete 192.168.91.33 dev calic0372e7228c
+	..
+
+还是不行，发现还是多出了一个arp条目：
+
+	$ ip neigh |grep 192.168.91.33
+	192.168.91.33 dev calid3abf7c1be4 lladdr aa:0f:5b:3d:76:4a PERMANENT
+	192.168.91.33 dev calia3201341d16 lladdr c2:94:4b:7e:d0:fd REACHABLE
+
+找到这个多出arp条目对应的workloadendpoint：
+
+	$ calicoctl get workloadendpoint -o wide |grep calia3201341d16
+	slave-140     k8s     adqsd-dev.store-mysql-0     eth0   192.168.91.33/32       calia3201341d16   k8s_ns.adqsd-dev
+	slave-57      k8s     adqsd-dev.store-mysql-0     eth0   192.168.201.71/32      calia3201341d16   k8s_ns.adqsd-dev
+
+	$ calicoctl get workloadendpoint --node=slave-140 --workload=adqsd-dev.store-mysql-0 -o yaml
+	- apiVersion: v1
+	  kind: workloadEndpoint
+	  metadata:
+	    labels:
+	      calico/k8s_ns: adqsd-dev
+	      tenxcloud.com/petsetName: store-mysql
+	      tenxcloud.com/petsetType: mysql
+	    name: eth0
+	    node: slave-140
+	    orchestrator: k8s
+	    workload: adqsd-dev.store-mysql-0
+	  spec:
+	    interfaceName: calia3201341d16
+	    ipNetworks:
+	    - 192.168.91.33/32
+	    mac: c2:94:4b:7e:d0:fd
+	    profiles:
+	    - k8s_ns.adqsd-dev
+
+这个workloadendpoint的IP也是192168.91.33！！！
+
+在node上再次查看一下，发现大量的重复IP！！！
+
+	$ calicoctl get workloadendpoint -o wide |grep 192.168.91.33
+	slave-140          k8s            bdadservice-dev.adqsd-meeting-web-1739418049-g6qes                eth0   192.168.91.33/32            calic49657a1e1a   k8s_ns.bdadservice-dev
+	slave-140          k8s            bdadservice-dev.grafana-1932004613-auazz                          eth0   192.168.91.33/32            cali61dda4e772c   k8s_ns.bdadservice-dev
+	slave-140          k8s            adqsd-dev.store-mysql-0                                           eth0   192.168.91.33/32            calia3201341d16   k8s_ns.adqsd-dev
+	slave-140          k8s            adqsd-prod.fwf123-2                                               eth0   192.168.91.33/32            cali3ac2fb6f921   k8s_ns.adqsd-prod
+	slave-140          k8s            adqsd-study.es01-0                                                eth0   192.168.91.33/32            cali7bc527be618   k8s_ns.adqsd-study
+	slave-140          k8s            xxxxxxxxplatform.elastic-qa-0                                     eth0   192.168.91.33/32            cali102d89dd0fc   k8s_ns.xxxxxxxxplatform
+	slave-140          k8s            abcdw-prod.group-3899345145-v631u                                 eth0   192.168.91.33/32            cali5eb76b4e59d   k8s_ns.abcdw-prod
+	slave-140          k8s            taijianxin.etcd2-0                                                eth0   192.168.91.33/32            calidc70be659ad   k8s_ns.taijianxin
+	slave-140          k8s            tangjiand.fox-1                                                   eth0   192.168.91.33/32            calic0372e7228c   k8s_ns.tangjiand
+	slave-140          k8s            xdgc-idesign-prdbackend.etcd-2                                    eth0   192.168.91.33/32            calid3abf7c1be4   k8s_ns.xdgc-idesign-prdbackend
+	slave-140          k8s            zhouyongh.zhouyong-db-0                                           eth0   192.168.91.33/32            cali2b6bddc6647   k8s_ns.zhouyongh
+
+kubernetes中也可以看到大量容器的IP冲突：
+
+	$ kubectl get pod -o wide --all-namespaces |grep 192.168.91.33
+	bdadservice-dev                  adqsd-meeting-web-1739418049-g6qes             1/1       Running             0          20h       192.168.91.33     slave-140
+	bdadservice-dev                  grafana-1932004613-auazz                       1/1       Running             0          20h       192.168.91.33     slave-140
+	adqsd-dev                        store-mysql-0                                  1/1       Running             0          20h       192.168.91.33     slave-140
+	adqsd-prod                       fwf123-2                                       1/1       Running             0          20h       192.168.91.33     slave-140
+	adqsd-study                      es01-0                                         0/1       Running             0          20h       192.168.91.33     slave-140
+	xxxxxxxxplatform                 elastic-qa-0                                   0/1       Running             0          20h       192.168.91.33     slave-140
+	abcdw-prod                       group-3899345145-v631u                         1/1       Running             0          20h       192.168.91.33     slave-140
+	taijianxin                       etcd2-0                                        0/1       Running             0          20h       192.168.91.33     slave-140
+	tangjiand                        fox-1                                          0/1       Init:1/2            0          20h       192.168.91.33     slave-140
+	zhouyongh                        zhouyong-db-0                                  0/1       Init:1/2            0          20h       192.168.91.33     slave-140
+
+先进行紧急恢复，通过下面的命令找出所有的冲突IP
+
+	kubectl get pod -o wide --all-namespaces | awk '{print $7}' | grep -v "10.39" |sort | uniq -c | sort -n
+
+将IP冲突的Pod删除重建后，IP不在冲突。
 
 ## 参考
 
