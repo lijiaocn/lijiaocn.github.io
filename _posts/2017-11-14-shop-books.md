@@ -3,7 +3,7 @@ layout: default
 title: 我收藏的几本好书
 author: lijiaocn
 createdate: 2017/11/14 15:46:29
-changedate: 2017/11/14 22:59:07
+changedate: 2017/12/02 17:48:30
 categories: 好货
 tags: 好货
 keywords: 好书,阅读,书籍,值得看,新书
@@ -16,11 +16,15 @@ description: 这是我收藏的几本好书，分享给你
 
 ## 说明
 
-这是我收藏的几本好书，分享给你，点击图片可以到亚马逊购买纸质版或kindle版。
+这是我收藏的几本好书，分享给你，**点击图片可以到亚马逊购买纸质版或kindle版**。
 
 你可以收藏此页，因为我会持续更新这里的内容。
 
-2017-11-14 21:44:15 创建，合计12本。
+## 思路
+
+[《你凭什么做好互联网？》][13]，嘿，问你呢。一个在互联网里爬滚了20多年的老油条写的书，你看不看？
+
+[![《你凭什么做好互联网？》](https://images-cn.ssl-images-amazon.com/images/I/515eWtImWBL.jpg)][13]
 
 ## 时政
 
@@ -96,6 +100,7 @@ description: 这是我收藏的几本好书，分享给你
 10. [《证券分析（第六版）》][10]
 11. [《金融炼金术》][11]
 12. [《经济解释（二〇一四增订本）》][12]
+13. [《你凭什么做好互联网？》][13]
 
 [1]: https://www.amazon.cn/s/ref=as_li_ss_tl?_encoding=UTF8&camp=536&creative=3132&field-keywords=%E5%85%9A%E7%9A%84%E5%8D%81%E4%B9%9D%E5%A4%A7&linkCode=ur2&tag=znrio-23&url=search-alias%3Daps "《党的十九大报告辅导读本》"
 [2]: https://www.amazon.cn/s/ref=as_li_ss_tl?_encoding=UTF8&camp=536&creative=3132&field-keywords=%E8%85%BE%E8%AE%AF%E4%BC%A0&linkCode=ur2&rh=i%3Aaps%2Ck%3A%E8%85%BE%E8%AE%AF%E4%BC%A0&tag=znrio-23&url=search-alias%3Daps "《腾讯传》"
@@ -109,3 +114,4 @@ description: 这是我收藏的几本好书，分享给你
 [10]: https://www.amazon.cn/s/ref=as_li_ss_tl?_encoding=UTF8&camp=536&creative=3132&field-keywords=%E8%AF%81%E5%88%B8%E5%88%86%E6%9E%90&linkCode=ur2&tag=znrio-23&url=search-alias%3Daps "《证券分析（第六版）》"
 [11]: https://www.amazon.cn/s/ref=as_li_ss_tl?_encoding=UTF8&camp=536&creative=3132&field-keywords=%E9%87%91%E8%9E%8D%E7%82%BC%E9%87%91%E6%9C%AF&linkCode=ur2&rh=i%3Aaps%2Ck%3A%E9%87%91%E8%9E%8D%E7%82%BC%E9%87%91%E6%9C%AF&tag=znrio-23&url=search-alias%3Daps "《金融炼金术》"
 [12]: https://www.amazon.cn/s/ref=as_li_ss_tl?_encoding=UTF8&camp=536&creative=3132&field-keywords=%E5%BC%A0%E4%BA%94%E5%B8%B8&linkCode=ur2&rh=i%3Aaps%2Ck%3A%E5%BC%A0%E4%BA%94%E5%B8%B8&tag=znrio-23&url=search-alias%3Daps "《经济解释（二〇一四增订本）》"
+[13]: https://www.amazon.cn/s/ref=as_li_ss_tl?_encoding=UTF8&camp=536&creative=3132&crid=11AJ8VPOWM9EM&field-keywords=%E4%BD%A0%E5%87%AD%E4%BB%80%E4%B9%88%E5%81%9A%E5%A5%BD%E4%BA%92%E8%81%94%E7%BD%91%20%E4%BB%8E%E6%8A%80%E6%9C%AF%E6%80%9D%E7%BB%B4%E5%88%B0%E5%95%86%E4%B8%9A%E9%80%BB%E8%BE%91&linkCode=ur2&sprefix=%E4%BD%A0%E5%87%AD%E4%BB%80%E4%B9%88%E5%81%9A%E5%A5%BD%2Caps%2C134&tag=znrio-23&url=search-alias%3Daps "《你凭什么做好互联网？》"
