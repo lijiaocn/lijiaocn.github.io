@@ -3,7 +3,7 @@ layout: default
 title: 我收藏的几本好书
 author: lijiaocn
 createdate: 2017/11/14 15:46:29
-changedate: 2017/12/02 17:48:30
+changedate: 2017/12/02 18:01:19
 categories: 好货
 tags: 好货
 keywords: 好书,阅读,书籍,值得看,新书
@@ -13,8 +13,6 @@ description: 这是我收藏的几本好书，分享给你
 
 * auto-gen TOC:
 {:toc}
-
-## 说明
 
 这是我收藏的几本好书，分享给你，**点击图片可以到亚马逊购买纸质版或kindle版**。
 
