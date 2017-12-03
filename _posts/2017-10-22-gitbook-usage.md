@@ -3,7 +3,7 @@ layout: default
 title: 怎样在gitbook上写一本书?
 author: lijiaocn
 createdate: 2017/10/22 16:50:56
-changedate: 2017/10/28 12:12:37
+changedate: 2017/12/03 23:10:13
 categories: 方法
 tags: gitbook
 keywords: gitbook,写书
@@ -95,6 +95,23 @@ gitbook支持将素材存放在github上。
 
 之后在github中的更新，都会被`自动同步`到gitbook中。
 
+## 绑定域名
+
+虽然gitbook上的所有的图书都可以通过地址`http://{author}.gitbooks.io/{book}/content`访问，
+但我们有时候还是希望将图书绑定我们自己的域名上。
+
+[Can I use a custom domain for my book?][6]中介绍了如何做成这件事。
+
+整个过程只需要三步，详细过程可以参考[][]。
+
+第一步，gitbook的网站上到目标图书的`setting`中设置要绑定的域名，比如设置为`go.lijiaocn.com`；
+
+第二步，到你的dns服务商那里，添加一条cname记录，将`go.lijiaocn.com`解析为`www.gitbooks.io`；
+
+第三步，就是等待域名解析记录在全球范围内生效，然后就可以直接通过`go.lijiaocn.com`阅读图书。
+
+等待的时候不是固定的，如果你等待了很久还是不能访问，不妨翻墙试一下。
+
 ## 参考
 
 1. [gitbook主页][1]
@@ -102,9 +119,13 @@ gitbook支持将素材存放在github上。
 3. [gitbook手册][3]
 4. [怎样在gitbook上写一本电子书？][4]
 5. [github: study-gitbook][5]
+6. [Can I use a custom domain for my book?][6]
+7. [gitbook图书绑定自定义的域名要怎样做？][7]
 
 [1]: https://www.gitbook.com/  "gitbook主页" 
 [2]: https://www.gitbook.com/about  "gitbook介绍" 
 [3]: https://help.gitbook.com/ "gitbook手册"
 [4]: https://jingyan.baidu.com/article/08b6a59182ffae14a9092272.html "怎样在gitbook上写一本电子书？"
 [5]: https://github.com/lijiaocn/study-gitbook "github: study-gitbook"
+[6]: https://help.gitbook.com/books/can-i-use-custom-domain.html "Can I use a custom domain for my book? "
+[7]:   "gitbook图书绑定自定义的域名要怎样做？"
