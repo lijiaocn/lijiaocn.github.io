@@ -3,7 +3,7 @@ layout: default
 title: go语言语法实例
 author: lijiaocn
 createdate: 2017/11/15 10:49:40
-changedate: 2017/11/21 16:16:56
+changedate: 2017/12/01 18:07:59
 categories: 编程
 tags: go
 keywords: go语法,语法实例

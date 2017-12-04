@@ -1,9 +1,9 @@
 ---
 layout: default
-title: pod内部arp记录丢失，无法访问外部服务
+title: calico分配的ip冲突，pod内部arp记录丢失，pod无法访问外部服务
 author: lijiaocn
 createdate: 2017/08/04 10:22:14
-changedate: 2017/11/29 15:02:22
+changedate: 2017/12/04 09:56:37
 categories: 问题
 tags: calico kubernetes
 keywords: calico,k8s,workloadEndpoint
