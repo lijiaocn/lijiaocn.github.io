@@ -3,7 +3,7 @@ layout: default
 title: Shell(bash)编程
 author: lijiaocn
 createdate: 2014/04/30 16:33:01
-changedate: 2017/11/01 17:22:59
+changedate: 2017/12/05 14:56:34
 categories: 编程
 tags: shell
 keywords:
@@ -358,6 +358,28 @@ Shell的变量比较多，这里不列出
 不处理第一行：
 
 	kubectl get ns | awk '{ if(NR>1) print $1 }
+
+### comm
+
+comm命令用来比较两个排好序的文件，用`-1`、`-2`、`-3`控制输出哪些内容：
+
+	comm [-123i] file1 file2
+	 -1      Suppress printing of column 1.         
+	 -2      Suppress printing of column 2.         
+	 -3      Suppress printing of column 3.         
+	 -i      Case insensitive comparison of lines.
+
+注意comm是逐行比较的！不是用来对value进行去重！
+
+### grep
+
+#### 反向匹配，找出一个文件相比另一个文件多出的内容
+
+下面的命令中，`-v`表示反向匹配，`-f file1`表示从file1中读取匹配模版：
+
+	grep -v -f file1 file2
+
+结果输出的是file2中有、file1中没有的内容。
 
 ## 以往遗留的，未整理的内容
 
