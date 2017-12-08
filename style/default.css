@@ -62,12 +62,15 @@
 	text-align:center;
 }
 
+.rsidebar-content {
+}
+
 .rsidebar-element {
 
 }
 
-.rsidebar-content {
-
+div.rsidebar-element img{
+	width: 100%;
 }
 
 .rsidebar-title {
