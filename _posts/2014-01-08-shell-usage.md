@@ -3,7 +3,7 @@ layout: default
 title: Shell(bash)编程
 author: lijiaocn
 createdate: 2014/04/30 16:33:01
-changedate: 2017/12/08 19:49:07
+changedate: 2017/12/11 15:56:08
 categories: 编程
 tags: shell
 keywords:
@@ -885,6 +885,12 @@ while
 	while  value
 	do
 	    command
+	done
+
+	i=0
+	while [ $i -lt 10 ];do
+		let i+=1
+		echo $i
 	done
 
 break 
