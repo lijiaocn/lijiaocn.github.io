@@ -3,7 +3,7 @@ layout: default
 title: cni插件使pod被重复删除，导致通过statefulset创建的pod被重新调度到同一个node上后，静态arp丢失，无法联通
 author: lijiaocn
 createdate: 2017/12/12 16:11:59
-changedate: 2017/12/13 15:03:55
+changedate: 2017/12/13 17:40:36
 categories: 问题
 tags: calico
 keywords:
@@ -93,10 +93,10 @@ description: 终于找到pod的网关静态arp丢失,calico中的workloadendpoin
 	Dec 12 20:21:27 slave-197 kubelet[11608]: time="2017-12-12T20:21:27+08:00" level=info msg="Populated endpoint" Workload=lijiaob.etcd1-0 endpoint=&\{workloadEndpoint v1} \{} eth0 lijiaob.etcd1-0 k8
 		s slave-197 map[]} {[192.168.252.66/32] [] <nil> <nil> [k8s_ns.lijiaob]  <nil>}}
 	Dec 12 20:21:27 slave-197 kubelet[11608]: time="2017-12-12T20:21:27+08:00" level=info msg="Fetched K8s labels" Workload=lijiaob.etcd1-0 labels=map[controller-revision-hash:etcd1-3950546577 tenxclo
-		ud.com/petsetName:etcd1 tenxcloud.com/petsetType:etcd calico/k8s_ns:lijiaob ClusterID:CID-516874818ed4 UserID:8]
+		ud.com/petsetName:etcd1 lijiaocn.com/petsetType:etcd calico/k8s_ns:lijiaob ClusterID:CID-516874818ed4 UserID:8]
 	Dec 12 20:21:27 slave-197 kubelet[11608]: Calico CNI using IPs: [192.168.252.66/32]
 	Dec 12 20:21:27 slave-197 kubelet[11608]: time="2017-12-12T20:21:27+08:00" level=info msg="Added Mac and interface name to endpoint" Workload=lijiaob.etcd1-0 endpoint=&\{workloadEndpoint v1} \{} e
-		th0 lijiaob.etcd1-0 k8s slave-197 map[ClusterID:CID-516874818ed4 UserID:8 controller-revision-hash:etcd1-3950546577 tenxcloud.com/petsetName:etcd1 tenxcloud.com/petsetType:etcd calico/k8s_ns:l
+		th0 lijiaob.etcd1-0 k8s slave-197 map[ClusterID:CID-516874818ed4 UserID:8 controller-revision-hash:etcd1-3950546577 lijiaocn.com/petsetName:etcd1 lijiaocn.com/petsetType:etcd calico/k8s_ns:l
 		ijiaob]} {[192.168.252.66/32] [] <nil> <nil> [k8s_ns.lijiaob] cali9118ebbb10b 7e:b0:97:cb:d0:81}}
 	Dec 12 20:21:27 slave-197 kubelet[11608]: time="2017-12-12T20:21:27+08:00" level=info msg="Wrote updated endpoint to datastore" Workload=lijiaob.etcd1-0
 
@@ -353,14 +353,14 @@ Pod内路由正确，arp丢失，与线上问题的现象一致：
 	Dec 13 10:27:49 dev-slave-107 kubelet[15567]: Calico CNI using IPs: [192.168.8.34/32]
 	Dec 13 10:27:49 dev-slave-107 kubelet[15567]: time="2017-12-13T10:27:49+08:00" level=debug msg="Found MAC for container veth" MAC="82:5b:71:af:af:84" Workload=lijiaob.stateful-new-pod-0
 	Dec 13 10:27:49 dev-slave-107 kubelet[15567]: time="2017-12-13T10:27:49+08:00" level=info msg="Added Mac and interface name to endpoint" Workload=lijiaob.stateful-new-pod-0 endpoint=&\{workloadEnd
-		point v1} \{} eth0 lijiaob.stateful-new-pod-0 k8s dev-slave-107 map[ClusterID:CID-f794208bc85f UserID:44 controller-revision-hash:stateful-new-pod-741587310 tenxcloud.com/petsetName:stateful-p
-		od tenxcloud.com/petsetType:etcd calico/k8s_ns:lijiaob]} {[192.168.8.34/32] [] <nil> <nil> [k8s_ns.lijiaob] cali91dded39638 82:5b:71:af:af:84}}
+		point v1} \{} eth0 lijiaob.stateful-new-pod-0 k8s dev-slave-107 map[ClusterID:CID-f794208bc85f UserID:44 controller-revision-hash:stateful-new-pod-741587310 lijiaocn.com/petsetName:stateful-p
+		od lijiaocn.com/petsetType:etcd calico/k8s_ns:lijiaob]} {[192.168.8.34/32] [] <nil> <nil> [k8s_ns.lijiaob] cali91dded39638 82:5b:71:af:af:84}}
 	Dec 13 10:27:49 dev-slave-107 kubelet[15567]: time="2017-12-13T10:27:49+08:00" level=debug msg="Setting KV in etcd" key=WorkloadEndpoint(node=dev-slave-107, orchestrator=k8s, workload=lijiaob.stat
 		eful-new-pod-0, name=eth0) options=&{ 0  0s false false false} rev=<nil> ttl=0s value=&{active cali91dded39638 82:5b:71:af:af:84 [k8s_ns.lijiaob] [192.168.8.34/32] [] [] [] map[UserID:44 contr
-		oller-revision-hash:stateful-new-pod-741587310 tenxcloud.com/petsetName:stateful-pod tenxcloud.com/petsetType:etcd calico/k8s_ns:lijiaob ClusterID:CID-f794208bc85f] <nil> <nil>}
+		oller-revision-hash:stateful-new-pod-741587310 lijiaocn.com/petsetName:stateful-pod lijiaocn.com/petsetType:etcd calico/k8s_ns:lijiaob ClusterID:CID-f794208bc85f] <nil> <nil>}
 	Dec 13 10:27:49 dev-slave-107 kubelet[15567]: time="2017-12-13T10:27:49+08:00" level=debug msg="Set succeeded" key=WorkloadEndpoint(node=dev-slave-107, orchestrator=k8s, workload=lijiaob.stateful-
 		new-pod-0, name=eth0) newRev=72540944 rev=<nil> ttl=0s value=&{active cali91dded39638 82:5b:71:af:af:84 [k8s_ns.lijiaob] [192.168.8.34/32] [] [] [] map[ClusterID:CID-f794208bc85f UserID:44 con
-		troller-revision-hash:stateful-new-pod-741587310 tenxcloud.com/petsetName:stateful-pod tenxcloud.com/petsetType:etcd calico/k8s_ns:lijiaob] <nil> <nil>}
+		troller-revision-hash:stateful-new-pod-741587310 lijiaocn.com/petsetName:stateful-pod lijiaocn.com/petsetType:etcd calico/k8s_ns:lijiaob] <nil> <nil>}
 	Dec 13 10:27:49 dev-slave-107 kubelet[15567]: time="2017-12-13T10:27:49+08:00" level=info msg="Wrote updated endpoint to datastore" Workload=lijiaob.stateful-new-pod-0
 
 继续看后面的日志，CNI又被调用了一次，要删除workloadendpint是`K8S_POD_NAMESPACE=lijiaob;K8S_POD_NAME=stateful-new-pod-0`，与前面新建的workoadendpoint同名:
