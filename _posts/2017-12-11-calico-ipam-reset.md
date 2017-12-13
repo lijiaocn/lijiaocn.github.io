@@ -3,7 +3,7 @@ layout: default
 title: calico的ipam的数据混乱，重建ipam记录
 author: lijiaocn
 createdate: 2017/12/11 21:40:50
-changedate: 2017/12/12 11:15:35
+changedate: 2017/12/12 16:10:38
 categories: 问题
 tags: calico
 keywords: calico,ipam
