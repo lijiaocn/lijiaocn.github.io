@@ -3,7 +3,7 @@ layout: default
 title: calico路由丢失问题的调查
 author: lijiaocn
 createdate: 2017/08/08 14:32:12
-changedate: 2017/09/21 19:19:20
+changedate: 2017/12/13 18:00:35
 categories: 问题
 tags: calico
 keywords: calico
@@ -18,58 +18,68 @@ description: kubernetes中的一个pod访问一个service的时候，时不时�
 
 kubernetes中的一个pod访问一个service的时候，时不时的出现timeout。
 
-	$kubectl -n XXX get endpoints nginx -o yaml
+	$kubectl -n lijiaocn get endpoints nginx -o yaml
 
 在这个pod上依次访问service的endpoint，发现是有一个endpoint(192.168.39.4)无法访问：
 
 	/opt # curl 192.168.39.4
 	^C
 
-在该pod所在的node上访问，也无法访问:
+在这个pod所在的node上访问endpoint，也无法访问:
 
-	/ # ping 192.168.4.39
-	PING 192.168.4.39 (192.168.4.39) 56(84) bytes of data.
+	/ # ping 192.168.39.4
+	PING 192.168.39.4 (192.168.39.4) 56(84) bytes of data.
 
-从其它的node以及其它node上的pod中则可以访问到192.168.4.39。
+从其它的node以及其它node上的pod中则可以访问到192.168.39.4。
 
-所以猜测是该endpoint以及所在的node(10.39.1.231)上存在问题。
+所以应该是发起访问的pod所在的node与endpoint所在的node之间出现了问题。
 
-## 调查node(10.39.1.231)
+## 调查过程
 
-endpoint(192.168.39.4)位于node(10.39.1.219)上，有问题的pod位于node(10.39.1.231)上。
+endpoint位于10.39.1.219上，发起访问的pod位于node10.39.1.231。
 
-在node(10.39.1.231)上查看路由，发现没有到219的路由：
+### 查看访问发起端的状态
+
+在10.39.1.231上查看路由，发现没有到10.39.1.219的路由：
 
 	/ # route |grep 10.39.1.219
 	/ #
 
-在node(10.39.1.231)上查看bird中的信息:
+在10.39.1.231上查看bird中的信息:
 
 	$birdcl -s /var/run/calico/bird.ctl show protocols  |grep 10.39.1.219
 	Mesh_10_39_1_219 BGP      master   start  2017-08-05  Connect       BGP Error: Hold timer expired
+
+可以看到是BGP Error，10.39.1.231到10.39.1.219的BGP连接：
 	
 	/ # netstat -nt |grep 10.39.1.219
 	tcp        0      1 10.39.1.231:52496       10.39.1.219:179         SYN_SENT
 
-在node(10.39.1.219)上看到的情况是:
+连接状态一直是SYN_SENT。
+
+### 查看被访问端的状态
+
+在10.39.1.219上看到的情况是:
 
 	/ # birdcl -s /var/run/calico/bird.ctl show  protocols |grep 10.39.1.231
 	Mesh_10_39_1_231 BGP      master   up     06:53:59    Established
-
+	
 	/ # birdcl -s /var/run/calico/bird.ctl show  protocols |grep 10.39.1.231
 	Mesh_10_39_1_231 BGP      master   start  06:54:04    Active        Socket: Connection closed
+
+BGP连接建立，但很快又被关闭。用netstat查看连接状态：
 
 	/ # netstat -nt | grep 10.39.1.231
 	tcp        0      0 10.39.1.219:179         10.39.1.231:38688       SYN_RECV
 	tcp        0      0 10.39.1.219:47617       10.39.1.231:179         ESTABLISHED
 
-可以看到node(10.39.1.231)与node(10.39.1.219)的BGP连接出现了问题。
+可以看到10.39.1.231与10.39.1.219的BGP连接出现了问题。
 
-node(10.39.1.231)向node(10.39.1.219)发起的连接一直停留在SYN_SENT的状态。
+10.39.1.231向10.39.1.219发起的连接一直停留在SYN_SENT的状态。
 
-node(10.39.1.219)向node(10.39.1.231)发起了BGP连接，但是建立后又立刻断开了。
+10.39.1.219向10.39.1.231发起了BGP连接，建立后又立刻断开了。
 
-node(10.39.1.231)上的bird日志：
+10.39.1.231上的bird日志：
 
 	/var/log/calico/bird # cat current |grep 10_39_1_219
 	2017-08-05_09:50:21.93291 bird: Adding protocol Mesh_10_39_1_219
@@ -109,7 +119,7 @@ node(10.39.1.231)上的bird日志：
 	2017-08-05_14:37:50.31990 bird: Mesh_10_39_1_219: Starting
 	2017-08-05_14:37:50.31991 bird: Mesh_10_39_1_219: State changed to start
 
-与此同时，node(10.39.1.219)上的bird中，频繁刷日志:
+与此同时，10.39.1.219上的bird中，频繁刷日志:
 
 	2017-08-05_19:23:00.10888 bird: Mesh_10_39_1_58: State changed to feed
 	2017-08-05_19:23:00.10889 bird: Mesh_10_39_1_58: State changed to up
@@ -122,7 +132,9 @@ node(10.39.1.231)上的bird日志：
 	2017-08-05_19:23:11.14042 bird: Mesh_10_39_1_58: State changed to start
 	2017-08-05_19:23:11.14441 bird: Mesh_10_39_1_231: State changed to feed
 
-发现在node(10.39.1.231)上无法ping通node(10.39.1.219):
+## 继续调查
+
+发现在10.39.1.231上无法ping通10.39.1.219:
 
 	[root@slave-231 ~]# ping -I eth0 10.39.1.219
 	PING 10.39.1.219 (10.39.1.219) from 10.39.1.231 eth0: 56(84) bytes of data.
@@ -138,9 +150,9 @@ node(10.39.1.231)上的bird日志：
 	64 bytes from 10.39.1.231: icmp_seq=2 ttl=64 time=0.164 ms
 	64 bytes from 10.39.1.231: icmp_seq=3 ttl=64 time=0.151 ms
 
-同时在node(10.39.1.231)和node(10.39.1.219)上用tcpdump抓包。
+同时在10.39.1.231和10.39.1.219上用tcpdump抓包。
 
-	# on node(10.39.1.231)
+	# 10.39.1.231
 	$tcpdump -n -i eth0 host 10.39.1.219 and icmp
 	tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 	listening on eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
@@ -149,7 +161,7 @@ node(10.39.1.231)上的bird日志：
 	16:41:45.571955 IP 10.39.1.231 > 10.39.1.219: ICMP echo request, id 19809, seq 41, length 64
 	16:41:46.571919 IP 10.39.1.231 > 10.39.1.219: ICMP echo request, id 19809, seq 42, length 64
 
-	# on node(10.39.1.219)
+	# 10.39.1.219
 	$tcpdump -n -i eth0 host 10.39.1.231 and icmp
 	tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 	listening on eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
@@ -165,6 +177,6 @@ node(10.39.1.231)上的bird日志：
 
 可以看到231发出的icmp报文送达了219，219的icmp回应包却没有能够回到231。
 
-查看一下两台机器的Iptables规则没有发现问题，将iptables规则都清空后，网络情况没有变化。
+查看了一下两台机器的Iptables规则没有发现问题，将iptables规则都清空后，情况没有变化。
 
-猜测可能不是calico的原因，因为这两台机器是IaaS上的虚拟机，估计是IaaS的问题。
+猜测可能不是calico的原因，因为这两台机器是IaaS上的虚拟机，估计是提供虚拟机的IaaS的问题。
