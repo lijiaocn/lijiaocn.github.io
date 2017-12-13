@@ -1,9 +1,9 @@
 ---
 layout: default
-title: cni插件使Pod被重复删除，导致通过statefulset创建的pod被重新调度到同一个node上后，静态arp丢失，无法联通
+title: cni插件使pod被重复删除，导致通过statefulset创建的pod被重新调度到同一个node上后，静态arp丢失，无法联通
 author: lijiaocn
 createdate: 2017/12/12 16:11:59
-changedate: 2017/12/13 15:02:44
+changedate: 2017/12/13 15:03:55
 categories: 问题
 tags: calico
 keywords:
