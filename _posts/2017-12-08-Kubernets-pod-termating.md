@@ -3,7 +3,7 @@ layout: default
 title: kubernetes的pod因为同名Sandbox的存在，一直无法删除
 author: lijiaocn
 createdate: 2017/12/08 16:58:13
-changedate: 2017/12/08 20:05:46
+changedate: 2017/12/13 17:39:17
 categories: 问题
 tags: kubernetes
 keywords: 删除pod,kubernetes,无法删除pod,docker,sandbox
@@ -21,6 +21,10 @@ kubernetes版本为1.7.6，用kubectl删除pod后，pod一直处于Terminating�
 	$ kubectl -n XXXXXXXX get pod -o wide dev-decv-0
 	NAME         READY     STATUS        RESTARTS   AGE	  IP        NODE
 	dev-decv-0   0/1       Terminating   1          3d        <none>    paas-slave-20-45
+
+该问题已经查明，是cni插件的导致的：
+
+[cni插件使pod被重复删除，导致通过statefulset创建的pod被重新调度到同一个node上后，静态arp丢失，无法联通][1]
 
 ## 分析
 
@@ -43,7 +47,7 @@ kubernetes版本为1.7.6，用kubectl删除pod后，pod一直处于Terminating�
 	Dec 08 16:41:26 paas-slave-20-45 kubelet[31640]: time="2017-12-08T16:41:26+08:00" level=info msg="Delete empty Key: /calico/v1/host/paas-slave-20-45/workload/k8s/XXXXXXXX.dev-decv-0"
 	Dec 08 16:41:26 paas-slave-20-45 kubelet[31640]: Calico CNI deleting device in netns /proc/2557/ns/net
 
-问题分析到一半，被其它事情打断，其它组的同事反馈:
+问题分析到一半，被其它事情打断，其他组的同事反馈:
 
 >使用node上存在同名的且已经是Exist或者Dead状态的sandbox容器（pause）。
 >kubelet在删除pod的时候，获取到的是错误的sandbox容器，所有迟迟无法成功删除。
@@ -56,3 +60,6 @@ kubernetes版本为1.7.6，用kubectl删除pod后，pod一直处于Terminating�
 
 ## 参考
 
+1. [cni插件使pod被重复删除，导致通过statefulset创建的pod被重新调度到同一个node上后，静态arp丢失，无法联通][1]
+
+[1]: http://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2017/12/12/Kubernetes-statefulset-lost-arp.html  "cni插件使pod被重复删除，导致通过statefulset创建的pod被重新调度到同一个node上后，静态arp丢失，无法联通"
