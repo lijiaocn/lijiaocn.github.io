@@ -3,7 +3,7 @@ layout: default
 title: Pod持续删除失败，导致通过statefulset创建的pod被重新调度到同一个node上后，网关静态arp丢失
 author: lijiaocn
 createdate: 2017/12/12 16:11:59
-changedate: 2017/12/13 12:20:20
+changedate: 2017/12/13 12:28:57
 categories: 问题
 tags: calico
 keywords:
