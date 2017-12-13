@@ -3,7 +3,7 @@ layout: default
 title: Pod持续删除失败，导致通过statefulset创建的pod被重新调度到同一个node上后，静态arp丢失，无法联通
 author: lijiaocn
 createdate: 2017/12/12 16:11:59
-changedate: 2017/12/13 13:11:56
+changedate: 2017/12/13 14:45:18
 categories: 问题
 tags: calico
 keywords:
@@ -409,7 +409,7 @@ Pod内路由正确，arp丢失，与线上问题的现象一致：
 
 但是线上的问题是怎样发生的？并没有人主动删除workloadenpoint。
 
-会想起线上环境曾经遇到的一个问题，docker日志中有大量的删除失败的记录：
+回想起线上环境曾经遇到的一个问题，docker日志中有大量的删除失败的记录：
 
 	Jul 14 15:22:06 slave-97 dockerd: time="2017-07-14T15:22:06.567346680+08:00" level=error msg="Handler for DELETE /containers/593d8a89ee37580673159eb34937654338786d1de8ea6e09cf794f5a4c9f410c
 		returned error: Unable to remove filesystem for 593d8a89ee37580673159eb34937654338786d1de8ea6e09cf794f5a4c9f410c: 
@@ -438,6 +438,42 @@ Pod内路由正确，arp丢失，与线上问题的现象一致：
 直接原因是在容器B以hostpath的方式将/var/lib/docker和/var/lib/kubelet目录挂载到了容器B中，具体情况见 [因为目录被其它的容器挂载使用，导致已经退出的容器无法被删除][4]。
 
 怀疑这些删不掉的容器虽然后来被手动清除，但是它们对应的Pod的删除事件一直都是执行失败的状态，kubelet还在不停执行删除操作，成为无缘无故删除workloadendpoint的元凶。
+
+## 升级CNI版本
+
+在复现环境中使用的calico的cni版本是1.5.0，该版本的cni在Pod的workloadendpoint不存在的时候，直接返回错误：
+
+	Dec 13 10:27:42 dev-slave-107 kubelet[15567]: time="2017-12-13T10:27:42+08:00" level=info msg="No config file specified, loading config from environment"
+	Dec 13 10:27:42 dev-slave-107 kubelet[15567]: time="2017-12-13T10:27:42+08:00" level=info msg="Datastore type: etcdv2"
+	Dec 13 10:27:42 dev-slave-107 kubelet[15567]: time="2017-12-13T10:27:42+08:00" level=debug msg="Using datastore type 'etcdv2'"
+	Dec 13 10:27:42 dev-slave-107 kubelet[15567]: time="2017-12-13T10:27:42+08:00" level=info msg="Delete Key: /calico/v1/host/dev-slave-107/workload/k8s/lijiaob.stateful-new-pod-0/endpoint/eth0"
+	Dec 13 10:27:42 dev-slave-107 kubelet[15567]: time="2017-12-13T10:27:42+08:00" level=debug msg="Key not found error"
+	Dec 13 10:27:42 dev-slave-107 kubelet[15567]: ERROR:1213 10:27:42.891750   15567 cni.go:312] Error deleting network: resource does not exist: WorkloadEndpoint(node=dev-slave-107, orchestrator=k8s,
+		workload=lijiaob.stateful-new-pod-0, name=eth0)
+	Dec 13 10:27:43 dev-slave-107 kubelet[15567]: ERROR:1213 10:27:43.029094   15567 remote_runtime.go:114] StopPodSandbox "41857f70ed13326dbc2c04e7d8e7c56c28f83df67e82e76d2fb4d74b7ab24659" from runti
+		me service failed: rpc error: code = 2 desc = NetworkPlugin cni failed to teardown pod "stateful-new-pod-0_lijiaob" network: resource does not exist: WorkloadEndpoint(node=dev-slave-107, orche
+		strator=k8s, workload=lijiaob.stateful-new-pod-0, name=eth0)
+	Dec 13 10:27:43 dev-slave-107 kubelet[15567]: ERROR
+	Dec 13 10:27:43 dev-slave-107 kubelet[15567]: ERROR:1213 10:27:43.029274   15567 kubelet.go:1530] error killing pod: failed to "KillPodSandbox" for "0bdc387d-dfac-11e7-9a8f-52549da43ad9" with Kill
+		PodSandboxError: "rpc error: code = 2 desc = NetworkPlugin cni failed to teardown pod \"stateful-new-pod-0_lijiaob\" network: resource does not exist: WorkloadEndpoint(node=dev-slave-107, orch
+		estrator=k8s, workload=lijiaob.stateful-new-pod-0, name=eth0)"
+
+而calico的cni1.10.0版本在Pod的workloadendpoint不存在的时候，不会报错：
+
+	Dec 13 14:19:24 dev-slave-107 kubelet[15567]: 2017-12-13 14:19:24.189 [INFO][14313] client.go 202: Loading config from environment
+	Dec 13 14:19:24 dev-slave-107 kubelet[15567]: 2017-12-13 14:19:24.189 [DEBUG][14313] client.go 31: Using datastore type 'etcdv2'
+	Dec 13 14:19:24 dev-slave-107 kubelet[15567]: 2017-12-13 14:19:24.190011 I | warning: ignoring ServerName for user-provided CA for backwards compatibility is deprecated
+	Dec 13 14:19:24 dev-slave-107 kubelet[15567]: 2017-12-13 14:19:24.190 [DEBUG][14313] validator.go 168: Validate namespacedname: eth0
+	Dec 13 14:19:24 dev-slave-107 kubelet[15567]: 2017-12-13 14:19:24.190 [DEBUG][14313] validator.go 168: Validate namespacedname: lijiaob.stateful-new-pod-0
+	Dec 13 14:19:24 dev-slave-107 kubelet[15567]: 2017-12-13 14:19:24.190 [DEBUG][14313] validator.go 168: Validate namespacedname: k8s
+	Dec 13 14:19:24 dev-slave-107 kubelet[15567]: 2017-12-13 14:19:24.190 [DEBUG][14313] validator.go 162: Validate name: dev-slave-107
+	Dec 13 14:19:24 dev-slave-107 kubelet[15567]: 2017-12-13 14:19:24.190 [DEBUG][14313] etcd.go 214: Get Key: /calico/v1/host/dev-slave-107/workload/k8s/lijiaob.stateful-new-pod-0/endpoint/eth0
+	Dec 13 14:19:24 dev-slave-107 kubelet[15567]: 2017-12-13 14:19:24.223 [DEBUG][14313] etcd.go 363: Key not found error
+	Dec 13 14:19:24 dev-slave-107 kubelet[15567]: 2017-12-13 14:19:24.223 [WARNING][14313] k8s.go 313: WorkloadEndpoint does not exist in the datastore, moving forward with the clean up Workload="lijiaob.stateful-new-pod-0" WorkloadEndpoint=api.WorkloadEndpointMetadata{ObjectMetadata:unversioned.ObjectMetadata{Revision:interface {}(nil)}, Name:"eth0", Workload:"lijiaob.stateful-new-pod-0", Orchestrator:"k8s", Node:"dev-slave-107", ActiveInstanceID:"", Labels:map[string]string(nil)}
+
+1.5.0版本中报错导致Pod的删除始终处于失败的状态，1.10.0中不报错，容器被顺利的删除，Pod的删除操作被认定成功，kubelet不再反复执行删除操作。
+
+将复现环境中的CNI版本升级到1.10.0后，删除workloadendpoint不再触发Pod的网关arp丢失的问题，问题解决。
 
 ## 参考
 
