@@ -3,7 +3,7 @@ layout: default
 title: Pod持续删除失败，导致通过statefulset创建的pod被重新调度到同一个node上后，静态arp丢失，无法联通
 author: lijiaocn
 createdate: 2017/12/12 16:11:59
-changedate: 2017/12/13 13:11:16
+changedate: 2017/12/13 13:11:56
 categories: 问题
 tags: calico
 keywords:
@@ -107,7 +107,7 @@ description: 终于找到pod的网关静态arp丢失,calico中的workloadendpoin
 	$ docker ps |grep 291716a39be9
 	291716a39be9        reg.lijiaocn.cn/lijiaocn/pause-amd64:3.0      "/pause"   40 minutes ago      Up 40 minutes        k8s_POD_etcd1-0_lijiaob_f8d1e7d4-df36-11e7-9d36-5254b24cbf5e_0
 
-解下来的日志揭示了问题：
+接下来的日志揭示了问题：
 
 	Dec 12 20:22:24 slave-197 kubelet[11608]: time="2017-12-12T20:22:24+08:00" level=info msg="Configured environment: [LANG=en_US.UTF-8 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin 
 		CNI_COMMAND=DEL CNI_CONTAINERID=94feeebc95fbcf081f75bdc9bad7a97e74903e847a80b51bf89a6fadafc3ae21 CNI_NETNS= CNI_ARGS=IgnoreUnknown=1;IgnoreUnknown=1;K8S_POD_NAMESPACE=lijiaob;K8S_POD_NAME=etcd1-0;
