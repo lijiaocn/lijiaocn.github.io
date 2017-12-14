@@ -3,7 +3,7 @@ layout: default
 title: 修改iterm窗口顶层显示的title
 author: lijiaocn
 createdate: 2017/12/14 16:55:57
-changedate: 2017/12/14 17:19:54
+changedate: 2017/12/14 18:21:16
 categories: 技巧
 tags: shell
 keywords: bash,xterm,terminal
@@ -30,7 +30,7 @@ iterm默认的窗口标题只显示当前正在运行的命令，信息太少。
 
 	PROMPT_COMMAND='echo -ne "\033]0;`basename $PWD`\007"'
 
-`033`和`\007`分别是控制键`ESC`和`BEL`的控制代码，可以用`man ascii`查看所有按键的控制码:
+`\033`和`\007`分别是控制键`ESC`和`BEL`的控制代码，可以用`man ascii`查看所有按键的控制码:
 
 	000 nul  001 soh  002 stx  003 etx  004 eot  005 enq  006 ack  007 bel
 	010 bs   011 ht   012 nl   013 vt   014 np   015 cr   016 so   017 si
