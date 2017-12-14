@@ -1,9 +1,9 @@
 ---
 layout: default
-title: 修改BASH窗口顶层显示的Title
+title: 修改iterm窗口顶层显示的title
 author: lijiaocn
 createdate: 2017/12/14 16:55:57
-changedate: 2017/12/14 17:17:40
+changedate: 2017/12/14 17:19:54
 categories: 技巧
 tags: shell
 keywords: bash,xterm,terminal
