@@ -3,7 +3,7 @@ layout: default
 title: calico-cni使pod的删除反复重试，statefulset创建的pod被调度到以往的node上后，静态arp丢失，无法联通
 author: lijiaocn
 createdate: 2017/12/12 16:11:59
-changedate: 2017/12/16 19:58:53
+changedate: 2017/12/16 20:03:21
 categories: 问题
 tags: calico
 keywords:
@@ -363,7 +363,7 @@ Pod内路由正确，arp丢失，与线上问题的现象一致：
 		troller-revision-hash:stateful-new-pod-741587310 lijiaocn.com/petsetName:stateful-pod lijiaocn.com/petsetType:etcd calico/k8s_ns:lijiaob] <nil> <nil>}
 	Dec 13 10:27:49 dev-slave-107 kubelet[15567]: time="2017-12-13T10:27:49+08:00" level=info msg="Wrote updated endpoint to datastore" Workload=lijiaob.stateful-new-pod-0
 
-继续看后面的日志，CNI又被调用了一次，要删除workloadendpint是`K8S_POD_NAMESPACE=lijiaob;K8S_POD_NAME=stateful-new-pod-0`，与前面新建的workoadendpoint同名:
+继续看后面的日志，CNI又被调用了一次，要删除workloadendpint是`K8S_POD_NAMESPACE=lijiaob`,`K8S_POD_NAME=stateful-new-pod-0`，与前面新建的workoadendpoint同名:
 
 	Dec 13 10:28:09 dev-slave-107 kubelet[15567]: time="2017-12-13T10:28:09+08:00" level=info msg="Configured environment: [LANG=en_US.UTF-8 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin CNI_
 	COMMAND=DEL CNI_CONTAINERID=41857f70ed13326dbc2c04e7d8e7c56c28f83df67e82e76d2fb4d74b7ab24659 CNI_NETNS= CNI_ARGS=IgnoreUnknown=1;IgnoreUnknown=1;K8S_POD_NAMESPACE=lijiaob;K8S_POD_NAME=stateful-new
