@@ -1,9 +1,9 @@
 ---
 layout: default
-title: 访问haproxy的监听地址间歇性"503"的问题调查
+title: 使用端口复用(SO_REUSEPORT)、反复对haproxy进行reload操作，导致访问haproxy间歇性返回"503"
 author: lijiaocn
 createdate: 2017/09/19 16:09:12
-changedate: 2017/09/27 13:40:24
+changedate: 2017/12/13 17:36:01
 categories: 问题
 tags: haproxy
 keywords: haproxy,间歇性失败,重启haproxy
