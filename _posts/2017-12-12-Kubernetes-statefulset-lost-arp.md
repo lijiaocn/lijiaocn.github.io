@@ -3,7 +3,7 @@ layout: default
 title: cni插件使pod被重复删除，导致通过statefulset创建的pod被重新调度到同一个node上后，静态arp丢失，无法联通
 author: lijiaocn
 createdate: 2017/12/12 16:11:59
-changedate: 2017/12/13 17:40:36
+changedate: 2017/12/16 19:52:08
 categories: 问题
 tags: calico
 keywords:
@@ -100,7 +100,7 @@ description: 终于找到pod的网关静态arp丢失,calico中的workloadendpoin
 		ijiaob]} {[192.168.252.66/32] [] <nil> <nil> [k8s_ns.lijiaob] cali9118ebbb10b 7e:b0:97:cb:d0:81}}
 	Dec 12 20:21:27 slave-197 kubelet[11608]: time="2017-12-12T20:21:27+08:00" level=info msg="Wrote updated endpoint to datastore" Workload=lijiaob.etcd1-0
 
-注意这时候Pod的IP已经申请分配了，对应的SandboxID为： 291716a39be97105e9169863bf847e714b3e7aed9a9add7a330e79f8a089b97b
+注意这时候Pod的IP已经申请分配了，对应的SandboxID为： 291716a39be97105e91698...
 
 在node上可以看到正在运行的sandbox容器：
 
