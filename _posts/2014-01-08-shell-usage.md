@@ -3,7 +3,7 @@ layout: default
 title: Shell(bash)编程
 author: lijiaocn
 createdate: 2014/04/30 16:33:01
-changedate: 2017/12/08 19:49:07
+changedate: 2017/12/09 16:38:47
 categories: 编程
 tags: shell
 keywords:
@@ -352,6 +352,51 @@ Shell的变量比较多，这里不列出
 ## 常用的linux命令
 
 这些命令虽然不是shell的命令，但是shell主要就是组合linux命令，所以应当列在这里。
+
+### jq
+
+`jq`是特别有用强大的一个命令，它可以直接解读json字符串。
+
+操作系统上一般默认没有安装，需要安装：
+
+	yum install -y jq
+
+#### filter 
+
+jq强大的地方在于它提供了很多filter命令，可以用读取json字符串指定位置的内容，并以管道的方式传递处理。
+
+在jq的手册中给出了filter的使用说明
+
+	BASIC FILTERS
+	   .
+	       The absolute simplest (and least interesting) filter is .. This is a filter that takes its input and produces it unchanged as output.
+	       Since jq by default pretty-prints all output, this trivial program can be a useful way of formatting JSON output from, say, curl.
+	           jq ´.´
+	              "Hello, world!"
+	           => "Hello, world!"
+
+`.`是最简单的一个filter，它将输入的json字符串格式化后输出：
+
+	$ echo '{"age":"13" ,"name": "li"}'  |jq "."
+	{
+	  "age": "13",
+	  "name": "li"
+	}
+
+`.XX`用来读取json中XX对应的值：
+
+	$ echo '{"age":"13" ,"name": "li"}'  |jq ".name"
+	"li"
+
+`.[index]`用来取出数组内指定范围的值：
+
+	jq ´.[]´
+	   [{"name":"JSON", "good":true}, {"name":"XML", "good":false}]
+	=> {"name":"JSON", "good":true}, {"name":"XML", "good":false}
+
+#### parameter
+
+另外还有jq的命令行参数也可以在`man jq`中找到，例如`-r`表示以原始方式输出value。
 
 ### awk
 
