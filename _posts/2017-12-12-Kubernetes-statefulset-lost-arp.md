@@ -3,7 +3,7 @@ layout: default
 title: cni插件使pod被重复删除，导致通过statefulset创建的pod被重新调度到同一个node上后，静态arp丢失，无法联通
 author: lijiaocn
 createdate: 2017/12/12 16:11:59
-changedate: 2017/12/16 19:52:08
+changedate: 2017/12/16 19:53:57
 categories: 问题
 tags: calico
 keywords:
@@ -92,8 +92,8 @@ description: 终于找到pod的网关静态arp丢失,calico中的workloadendpoin
 	Dec 12 20:21:27 slave-197 kubelet[11608]: time="2017-12-12T20:21:27+08:00" level=info msg="IPAM Result" Workload=lijiaob.etcd1-0 result.IP4=&\{192.168.252.66 ffffffff} <nil> []} result.IP6=<nil>
 	Dec 12 20:21:27 slave-197 kubelet[11608]: time="2017-12-12T20:21:27+08:00" level=info msg="Populated endpoint" Workload=lijiaob.etcd1-0 endpoint=&\{workloadEndpoint v1} \{} eth0 lijiaob.etcd1-0 k8
 		s slave-197 map[]} {[192.168.252.66/32] [] <nil> <nil> [k8s_ns.lijiaob]  <nil>}}
-	Dec 12 20:21:27 slave-197 kubelet[11608]: time="2017-12-12T20:21:27+08:00" level=info msg="Fetched K8s labels" Workload=lijiaob.etcd1-0 labels=map[controller-revision-hash:etcd1-3950546577 tenxclo
-		ud.com/petsetName:etcd1 lijiaocn.com/petsetType:etcd calico/k8s_ns:lijiaob ClusterID:CID-516874818ed4 UserID:8]
+	Dec 12 20:21:27 slave-197 kubelet[11608]: time="2017-12-12T20:21:27+08:00" level=info msg="Fetched K8s labels" Workload=lijiaob.etcd1-0 labels=map[controller-revision-hash:etcd1-3950546577 
+	lijiaocn.com/petsetName:etcd1 lijiaocn.com/petsetType:etcd calico/k8s_ns:lijiaob ClusterID:CID-516874818ed4 UserID:8]
 	Dec 12 20:21:27 slave-197 kubelet[11608]: Calico CNI using IPs: [192.168.252.66/32]
 	Dec 12 20:21:27 slave-197 kubelet[11608]: time="2017-12-12T20:21:27+08:00" level=info msg="Added Mac and interface name to endpoint" Workload=lijiaob.etcd1-0 endpoint=&\{workloadEndpoint v1} \{} e
 		th0 lijiaob.etcd1-0 k8s slave-197 map[ClusterID:CID-516874818ed4 UserID:8 controller-revision-hash:etcd1-3950546577 lijiaocn.com/petsetName:etcd1 lijiaocn.com/petsetType:etcd calico/k8s_ns:l
