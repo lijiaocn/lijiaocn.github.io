@@ -3,7 +3,7 @@ layout: default
 title: kubelet下载pod镜像时，docker口令文件的查找顺序
 author: lijiaocn
 createdate: 2017/12/19 11:34:51
-changedate: 2017/12/19 14:21:16
+changedate: 2017/12/19 14:23:35
 categories: 项目
 tags: kubernetes
 keywords: kubernetes,kubelet,image,secret
@@ -18,9 +18,9 @@ description: kubelet下载pod的镜像时，按照下面的顺序查找Image Sec
 
 kubernetes1.7.6中，kubelet拉取Pod的镜像时，首先使用Pod中指定的ImagePullSecrets。
 
-如果没有指定，先依次到"--root-dir(默认是/var/lib/kubelet)"、"./"，"$HOME/.docker/"、"/.docker/"中查找config.json文件。
+如果没有指定，先依次到"--root-dir(默认是/var/lib/kubelet)"、"./"，"$HOME/.docker/"、"/.docker/"中查找`config.json`文件。
 
-如果没有找到，再按照同样的顺序查找.dockercfg文件。
+如果没有找到config.json，再按照同样的顺序查找`.dockercfg`文件。
 
 ## 拉取镜像的过程
 
@@ -212,10 +212,3 @@ ReadDockerConfigJSONFile()读取config.json，ReadDockercfgFile()读取.dockercf
 
 	credentialprovider.SetPreferredDockercfgPath(kubeCfg.RootDirectory)
 
-## 参考
-
-1. [文献1][1]
-2. [文献2][2]
-
-[1]: 1.com  "文献1" 
-[2]: 2.com  "文献1" 
