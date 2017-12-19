@@ -1,9 +1,9 @@
 ---
 layout: default
-title: cni插件使pod被重复删除，导致通过statefulset创建的pod被重新调度到同一个node上后，静态arp丢失，无法联通
+title: calico-cni使pod的删除反复重试，statefulset创建的pod被调度到以往的node上后，静态arp丢失，无法联通
 author: lijiaocn
 createdate: 2017/12/12 16:11:59
-changedate: 2017/12/13 17:40:36
+changedate: 2017/12/16 20:03:21
 categories: 问题
 tags: calico
 keywords:
@@ -92,15 +92,15 @@ description: 终于找到pod的网关静态arp丢失,calico中的workloadendpoin
 	Dec 12 20:21:27 slave-197 kubelet[11608]: time="2017-12-12T20:21:27+08:00" level=info msg="IPAM Result" Workload=lijiaob.etcd1-0 result.IP4=&\{192.168.252.66 ffffffff} <nil> []} result.IP6=<nil>
 	Dec 12 20:21:27 slave-197 kubelet[11608]: time="2017-12-12T20:21:27+08:00" level=info msg="Populated endpoint" Workload=lijiaob.etcd1-0 endpoint=&\{workloadEndpoint v1} \{} eth0 lijiaob.etcd1-0 k8
 		s slave-197 map[]} {[192.168.252.66/32] [] <nil> <nil> [k8s_ns.lijiaob]  <nil>}}
-	Dec 12 20:21:27 slave-197 kubelet[11608]: time="2017-12-12T20:21:27+08:00" level=info msg="Fetched K8s labels" Workload=lijiaob.etcd1-0 labels=map[controller-revision-hash:etcd1-3950546577 tenxclo
-		ud.com/petsetName:etcd1 lijiaocn.com/petsetType:etcd calico/k8s_ns:lijiaob ClusterID:CID-516874818ed4 UserID:8]
+	Dec 12 20:21:27 slave-197 kubelet[11608]: time="2017-12-12T20:21:27+08:00" level=info msg="Fetched K8s labels" Workload=lijiaob.etcd1-0 labels=map[controller-revision-hash:etcd1-3950546577 
+	lijiaocn.com/petsetName:etcd1 lijiaocn.com/petsetType:etcd calico/k8s_ns:lijiaob ClusterID:CID-516874818ed4 UserID:8]
 	Dec 12 20:21:27 slave-197 kubelet[11608]: Calico CNI using IPs: [192.168.252.66/32]
 	Dec 12 20:21:27 slave-197 kubelet[11608]: time="2017-12-12T20:21:27+08:00" level=info msg="Added Mac and interface name to endpoint" Workload=lijiaob.etcd1-0 endpoint=&\{workloadEndpoint v1} \{} e
 		th0 lijiaob.etcd1-0 k8s slave-197 map[ClusterID:CID-516874818ed4 UserID:8 controller-revision-hash:etcd1-3950546577 lijiaocn.com/petsetName:etcd1 lijiaocn.com/petsetType:etcd calico/k8s_ns:l
 		ijiaob]} {[192.168.252.66/32] [] <nil> <nil> [k8s_ns.lijiaob] cali9118ebbb10b 7e:b0:97:cb:d0:81}}
 	Dec 12 20:21:27 slave-197 kubelet[11608]: time="2017-12-12T20:21:27+08:00" level=info msg="Wrote updated endpoint to datastore" Workload=lijiaob.etcd1-0
 
-注意这时候Pod的IP已经申请分配了，对应的SandboxID为： 291716a39be97105e9169863bf847e714b3e7aed9a9add7a330e79f8a089b97b
+注意这时候Pod的IP已经申请分配了，对应的SandboxID为： 291716a39be97105e91698...
 
 在node上可以看到正在运行的sandbox容器：
 
@@ -363,7 +363,7 @@ Pod内路由正确，arp丢失，与线上问题的现象一致：
 		troller-revision-hash:stateful-new-pod-741587310 lijiaocn.com/petsetName:stateful-pod lijiaocn.com/petsetType:etcd calico/k8s_ns:lijiaob] <nil> <nil>}
 	Dec 13 10:27:49 dev-slave-107 kubelet[15567]: time="2017-12-13T10:27:49+08:00" level=info msg="Wrote updated endpoint to datastore" Workload=lijiaob.stateful-new-pod-0
 
-继续看后面的日志，CNI又被调用了一次，要删除workloadendpint是`K8S_POD_NAMESPACE=lijiaob;K8S_POD_NAME=stateful-new-pod-0`，与前面新建的workoadendpoint同名:
+继续看后面的日志，CNI又被调用了一次，要删除workloadendpint是`K8S_POD_NAMESPACE=lijiaob`,`K8S_POD_NAME=stateful-new-pod-0`，与前面新建的workoadendpoint同名:
 
 	Dec 13 10:28:09 dev-slave-107 kubelet[15567]: time="2017-12-13T10:28:09+08:00" level=info msg="Configured environment: [LANG=en_US.UTF-8 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin CNI_
 	COMMAND=DEL CNI_CONTAINERID=41857f70ed13326dbc2c04e7d8e7c56c28f83df67e82e76d2fb4d74b7ab24659 CNI_NETNS= CNI_ARGS=IgnoreUnknown=1;IgnoreUnknown=1;K8S_POD_NAMESPACE=lijiaob;K8S_POD_NAME=stateful-new
