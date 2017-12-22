@@ -3,7 +3,7 @@ layout: default
 title: MAC上的SSH客户端工具
 author: lijiaocn
 createdate: 2017/03/29 18:50:52
-changedate: 2017/12/22 15:40:41
+changedate: 2017/12/22 15:42:20
 categories: 技巧
 tags: mac ssh
 keywords: MAC,SSH客户端,ZOC
@@ -83,5 +83,9 @@ Identityfile是登陆机的私钥，公钥追加写入到目标机器的~/.ssh/a
 ## 参考
 
 1. [ZOC download][1]
+2. [Mac 让 iTerm2 记住用户名密码 expect 脚本][2]
+3. [Create SSH Bookmarks in Terminal][3]
 
 [1]: http://www.emtec.com/download.html "ZOC download"
+[2]: http://blog.csdn.net/fenglailea/article/details/50895867 "Mac 让 iTerm2 记住用户名密码 expect 脚本"
+[3]: http://osxdaily.com/2012/06/03/create-ssh-bookmarks-in-terminal-for-mac-os-x/ "Create SSH Bookmarks in Terminal"
