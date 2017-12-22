@@ -3,7 +3,7 @@ layout: default
 title: 容器内部的go程序没有使用/etc/hosts中记录的地址
 author: lijiaocn
 createdate: 2017/11/09 20:31:14
-changedate: 2017/11/10 11:38:16
+changedate: 2017/12/22 16:06:50
 categories: 问题
 tags: golang
 keywords: hosts,nsswitch.conf,go,docker,alpine
@@ -24,11 +24,11 @@ url中的域名对应的ip地址配置在了/etc/hosts中:
 
 	1.1.1.1  www.XXX.com
 
-预期go程序会使用/hosts中配置的IP，但实际使用的却是从dns server中查询到的ip。
+预期go程序会使用/etc/hosts中配置的IP，但实际使用的却是从dns server中查询到的ip。
 
 ## 调查
 
-比较奇怪的是，同样的go程序，同样的容器，在另一个环境中运行的时候，没有这个问题。
+比较奇怪的是，同样的go程序，同样的容器，在另一个环境中运行的时候，没有这个问题，
 在宿主机中运行时也没有问题。
 
 [net.Dial seems to ignore /etc/hosts if I don't provide GODEBUG=netdns=(c)go][1]中提到了nsswitch.conf文件。
@@ -45,7 +45,7 @@ url中的域名对应的ip地址配置在了/etc/hosts中:
 	export GODEBUG=netdns=go    # force pure Go resolver
 	export GODEBUG=netdns=cgo   # force cgo resolver
 
-经验证可行，但这种方式不好，还是应当用nsswitch.conf明确规定地址解析顺序。
+经验证可行，不过最好还是用nsswitch.conf明确规定地址解析顺序。
 
 另一个环境中不存在这个问题是因为它的dns server中查询不到目标域名，所以使用了/etc/hosts中的地址。
 
