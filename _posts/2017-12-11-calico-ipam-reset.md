@@ -3,7 +3,7 @@ layout: default
 title: calico的ipam的数据混乱，重建ipam记录
 author: lijiaocn
 createdate: 2017/12/11 21:40:50
-changedate: 2017/12/13 13:17:13
+changedate: 2017/12/22 19:24:46
 categories: 问题
 tags: calico
 keywords: calico,ipam
@@ -85,5 +85,5 @@ ipam在etcd中记录的数据格式如上所示，attributes中有很多不存�
 1. [github: calico-ipam-reset][1]
 2. [github: calico-ipam.go][2]
 
-[1]: https://github.com/lijiaocn/calico-ipam-reset  "github: calico-ipam-reset" 
+[1]: https://github.com/lijiaocn/k8s-tools/tree/master/calico-ipam-reset  "github: calico-ipam-reset" 
 [2]: https://github.com/projectcalico/cni-plugin/tree/master/ipam "github: calico-ipam.go"
