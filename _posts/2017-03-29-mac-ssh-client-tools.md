@@ -3,7 +3,7 @@ layout: default
 title: MAC上的SSH客户端工具
 author: lijiaocn
 createdate: 2017/03/29 18:50:52
-changedate: 2017/12/22 15:42:20
+changedate: 2017/12/22 16:08:51
 categories: 技巧
 tags: mac ssh
 keywords: MAC,SSH客户端,ZOC
@@ -31,6 +31,8 @@ description:  mac上虽然有iterm等shell终端，可以直接ssh登陆，但�
 	brew search iterm
 
 ### 用iterm的profile保存远程地址
+
+详细的配置过程见：[Mac的iterm保存ssh登陆信息方法，类似SecureCRT][4]
 
 可以为每个远程地址创建一个profile，通过切换profile直接登陆对应的地址。
 
@@ -85,7 +87,9 @@ Identityfile是登陆机的私钥，公钥追加写入到目标机器的~/.ssh/a
 1. [ZOC download][1]
 2. [Mac 让 iTerm2 记住用户名密码 expect 脚本][2]
 3. [Create SSH Bookmarks in Terminal][3]
+4. [Mac的iterm保存ssh登陆信息方法，类似SecureCRT][4]
 
 [1]: http://www.emtec.com/download.html "ZOC download"
 [2]: http://blog.csdn.net/fenglailea/article/details/50895867 "Mac 让 iTerm2 记住用户名密码 expect 脚本"
 [3]: http://osxdaily.com/2012/06/03/create-ssh-bookmarks-in-terminal-for-mac-os-x/ "Create SSH Bookmarks in Terminal"
+[4]: https://jingyan.baidu.com/article/af9f5a2d72b16143140a459b.html  "Mac的iterm保存ssh登陆信息方法，类似SecureCRT"
