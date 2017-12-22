@@ -3,7 +3,7 @@ layout: default
 title: MAC上的SSH客户端工具
 author: lijiaocn
 createdate: 2017/03/29 18:50:52
-changedate: 2017/12/22 16:08:51
+changedate: 2017/12/22 17:50:51
 categories: 技巧
 tags: mac ssh
 keywords: MAC,SSH客户端,ZOC
@@ -38,7 +38,7 @@ description:  mac上虽然有iterm等shell终端，可以直接ssh登陆，但�
 
 如果要自动用密码登陆，可以创建一个可执行脚本：
 
-	#!/usr/bin/expect
+	#!/usr/bin/expect -f
 	
 	set timeout 30
 	spawn ssh -p [lindex $argv 0] [lindex $argv 1]
@@ -47,6 +47,8 @@ description:  mac上虽然有iterm等shell终端，可以直接ssh登陆，但�
 	        {send "yes\n";exp_continue}
 	        "password:"
 	        {send "[lindex $argv 2]\n"}
+	        "Last login"
+	        {interact}
 	}
 	interact
 
