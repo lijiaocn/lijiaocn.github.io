@@ -3,7 +3,7 @@ layout: default
 title: html、css、scss、js入门
 author: lijiaocn
 createdate: 2017/12/23 11:18:46
-changedate: 2017/12/23 17:18:51
+changedate: 2017/12/24 20:36:17
 categories: 编程
 tags: web
 keywords: html,css,scss,web,入门手册
@@ -145,6 +145,194 @@ w3c的HTML的标准托管在[github: w3c's html][5]，whatwg的标准：w[github
 	11. Obsolete features，过时的特性
 	12. IANA considerations， IANA的一些考虑
 
+其中第二章的难度相当大，看不懂可以跳过，毕竟不是所有人都需要实现html标准的。
+
+### 语法、结构和API
+
+Dom的api:
+
+	document.referrer 
+	document.cookie[=value]
+	document.lastModified
+	document.readyState
+	document.head
+	document.title[=value]
+	document.body[=value]
+	document.images
+	document.embeds
+	document.plugins
+	document.links
+	document.forms
+	document.scripts
+	collection = document.getElementsByName(name)
+	document.currentScript
+
+元素的定义包括以下几个方面的信息：
+
+	类别，Categories
+	在哪些上下文中可以使用，Contexts in which this element can be used
+	内容类型，Content model，可以包含哪些类型
+	标签是否可以省略，Tag omission in text/html
+	内容属性，Content attributes
+	允许的ARIA属性，Allowed ARIA role attribute values
+	允许的ARIA状态属性，Allowed ARIA state and property attributes
+	DOM接口，DOM interface
+
+元素的内容可以是以下几类：
+
+	Metadata content
+	Flow content
+	Sectioning content
+	Heading content
+	Phrasing content
+	Embedded content
+	Interactive content
+
+这些类别不是并列的，而是互相交合的，一个元素可以属于多个类别。
+
+![element cataery]({{ site.imglocal }}/html/html-mode-cate.png )
+
+类别内容如下：
+
+	Metadata content: 
+		base link meta noscript script style template title 
+	Flow content: 大多数元素都是流式的
+		a abbr address area (if it is a descendant of a map element) article aside audio b
+		bdi bdo blockquote br button canvas cite code data datalist del details dfn dialog 
+		div dl em embed fieldset figure footer form h1 h2 h3 h4 h5 h6 header hr i iframe img
+		input ins kbd label link (if it is allowed in the body) main map mark MathML math 
+		meter nav noscript object ol output p picture pre progress q ruby s samp script 
+		section select small span strong style sub sup SVG svg table template textarea time
+		u ul var video wbr text 
+	Sectioning content: 
+		article aside nav section 
+	Heading content:
+		h1 h2 h3 h4 h5 h6 
+	Phrasing content :
+		a abbr area (if it is a descendant of a map element) audio b bdi bdo br button canvas
+		cite code data datalist del dfn em embed i iframe img input ins kbd label link (if it
+		is allowed in the body) map mark MathML math meter noscript object output picture 
+		progress q ruby s samp script select small span strong sub sup SVG svg template textarea
+		time u var video wbr text 
+	Embedded content:
+		audio canvas embed iframe img MathML math object picture SVG svg video 
+	Interactive content:
+		a (if the href attribute is present) audio (if the controls attribute is present) button 
+		details embed iframe img (if the usemap attribute is present) input (if the type attribute 
+		is not in the Hidden state) label select textarea video (if the controls attribute is present) 
+	Palpable content:
+		a abbr address article aside audio (if the controls attribute is present) b bdi bdo 
+		blockquote button canvas cite code data details dfn div dl (if the element’s children
+		include at least one name-value group) em embed fieldset figure footer form h1 h2 h3 
+		h4 h5 h6 header i iframe img input (if the type attribute is not in the Hidden state) 
+		ins kbd label main map mark MathML math meter nav object ol (if the element’s children 
+		include at least one li element) output p pre progress q ruby s samp section select 
+		small span strong sub sup SVG svg table textarea time u ul (if the element’s children 
+		include at least one li element) var video text that is not inter-element white space 
+	Script-supporting elements:
+		 script template 
+
+元素的共有属性：
+
+	accesskey
+	class
+	contenteditable
+	dir
+	draggable
+	hidden
+	id
+	lang
+	spellcheck
+	style
+	tabindex
+	title
+	translate
+	data-foldername
+	data-msgid
+
+所有元素可用的事件：
+
+	onabort
+	onauxclick
+	onblur*
+	oncancel
+	oncanplay
+	oncanplaythrough
+	onchange
+	onclick
+	onclose
+	oncuechange
+	ondblclick
+	ondrag
+	ondragend
+	ondragenter
+	ondragexit
+	ondragleave
+	ondragover
+	ondragstart
+	ondrop
+	ondurationchange
+	onemptied
+	onended
+	onerror*
+	onfocus*
+	oninput
+	oninvalid
+	onkeydown
+	onkeypress
+	onkeyup
+	onload*
+	onloadeddata
+	onloadedmetadata
+	onloadend
+	onloadstart
+	onmousedown
+	onmouseenter
+	onmouseleave
+	onmousemove
+	onmouseout
+	onmouseover
+	onmouseup
+	onwheel
+	onpause
+	onplay
+	onplaying
+	onprogress
+	onratechange
+	onreset
+	onresize*
+	onscroll*
+	onseeked
+	onseeking
+	onselect
+	onshow
+	onstalled
+	onsubmit
+	onsuspend
+	ontimeupdate
+	ontoggle
+	onvolumechange
+	onwaiting
+
+元素的API:
+
+	element.dataset
+	element.innerText[=value]
+
+### 元素列表
+
+## CSS
+
+[w3c: Cascading Style Sheets][10]上定期发布[CSS][11]的标准。
+
+## SASS
+
+[sass][13]
+
+## JavaScript
+
+[What’s the difference between JavaScript and ECMAScript?][12]
+
 ## 参考
 
 1. [wikipedia: HTML][1]
@@ -156,6 +344,11 @@ w3c的HTML的标准托管在[github: w3c's html][5]，whatwg的标准：w[github
 7. [html Living Standard][7]
 8. [whatwg: html Living Standard(中文版)][8]
 9. [github: whatwg's html][9]
+10. [w3c: Cascading Style Sheets][10]
+11. [CSS Snapshot 2017][11]
+12. [What’s the difference between JavaScript and ECMAScript?][12]
+13. [sass][13]
+
 
 [1]: https://en.wikipedia.org/wiki/HTML  "wikipedia: HTML" 
 [2]: https://tools.ietf.org/html/rfc1866 " Hypertext Markup Language - 2.0"
@@ -166,3 +359,7 @@ w3c的HTML的标准托管在[github: w3c's html][5]，whatwg的标准：w[github
 [7]: https://html.spec.whatwg.org/ "whatwg: html Living Standard"
 [8]: https://whatwg-cn.github.io/html/ "whatwg: html Living Standard(中文版)`"
 [9]: https://github.com/whatwg/html "github: whatwg's html"
+[10]: https://www.w3.org/Style/CSS/Overview.en.html  "w3c: Cascading Style Sheets"
+[11]: https://www.w3.org/TR/css-2017/ "CSS Snapshot 2017"
+[12]: https://medium.freecodecamp.org/whats-the-difference-between-javascript-and-ecmascript-cba48c73a2b5 "What’s the difference between JavaScript and ECMAScript?"
+[13]: http://sass-lang.com/  "sass"
