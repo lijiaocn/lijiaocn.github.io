@@ -3,7 +3,7 @@ layout: default
 title: "怎样为软件的不同版本命名？"
 author: lijiaocn
 createdate: 2017/12/26 14:22:25
-changedate: 2017/12/26 15:06:40
+changedate: 2017/12/26 15:22:22
 categories: 方法
 tags: spec
 keywords: semver,版本命名
@@ -53,8 +53,24 @@ PATCH是补丁号，在兼容上一个版本API的前提下，修复了Bug。
 
 	1.0.0-alpha < 1.0.0-alpha.1 < 1.0.0-alpha.beta < 1.0.0-beta < 1.0.0-beta.2 < 1.0.0-beta.11 < 1.0.0-rc.1 < 1.0.0
 
+## 版本与开发分支
+
+可以参照[client-go][2]中的做法：
+
+	MAJOR或者MINOR更新的时候，创建对应的Branch和TAG
+	PATCH更新的时候，创建对应的TAG
+	Master是最新状态的代码
+
+具体的开发过程，可以参考[beego][3]的做法：
+
+![git project]({{ site.imglocal }}/git/01project.png )
+
 ## 参考
 
 1. [Semantic Versioning 2.0.0][1]
+2. [client-go][2]
+3. [beego git branch][3]
 
 [1]: https://semver.org/  "Semantic Versioning 2.0.0" 
+[2]: https://github.com/kubernetes/client-go "client-go"
+[3]: https://beego.me/docs/install/ "beego git branch"
