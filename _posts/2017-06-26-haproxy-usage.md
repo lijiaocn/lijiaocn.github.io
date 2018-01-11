@@ -3,7 +3,7 @@ layout: default
 title: haproxy的基本使用与常见实践
 author: lijiaocn
 createdate: 2017/06/26 10:40:02
-changedate: 2017/11/28 14:56:27
+changedate: 2018/01/04 10:47:10
 categories: 技巧
 tags: haproxy
 keywords:  haproxy,lb 
@@ -17,6 +17,60 @@ description:  负载均衡器haproxy的使用与常见的一些实践
 ## 启动
 
 [haproxy management guide][10]中详细说明了如何运行haproxy。
+
+## 配置文件格式
+
+haproxy的配置文件由四部分组成：
+
+	global
+	defaults
+	listen
+	frontend
+	backend
+
+global和defaults中配置的是haproxy的参数，其中global做的是全局设置，defaults中设置的是proxy参数，会被下一个defaults中的同名设置覆盖。
+
+frontend和backend分别配置监听地址和后端地址，listen中同时配置了监听地址和后端地址，相当于frontend和backend的融合。
+
+haproxy的全局配置参数很多：[Global parameters][22]
+
+haproxy的[Proxy keywords matrix][23]
+
+### example1
+
+	global
+	    daemon
+	    maxconn 256
+	
+	defaults
+	    mode http
+	    timeout connect 5000ms
+	    timeout client 50000ms
+	    timeout server 50000ms
+	
+	frontend http-in
+	    bind *:80
+	    default_backend servers
+	
+	backend servers
+	    server server1 127.0.0.1:8000 maxconn 32
+
+### example2
+
+	global
+	    daemon
+	    maxconn 256
+	
+	defaults
+	    mode http
+	    timeout connect 5000ms
+	    timeout client 50000ms
+	    timeout server 50000ms
+	
+	listen http-in
+	    bind *:80
+	    server server1 127.0.0.1:8000 maxconn 32
+
 
 
 ## socket命令
@@ -558,6 +612,8 @@ acl可用的flags:
 19. [haproxy pattern][19]
 20. [haproxy acls][20]
 21. [haproxy fetching samples][21]
+22. [Global parameters][22]
+23. [haproxy: Proxy keywords matrix][23]
 
 [1]: http://www.haproxy.org/  "haproxy site" 
 [2]: http://www.haproxy.org/#doc1.7 "haproxy doc v1.7"
@@ -580,3 +636,5 @@ acl可用的flags:
 [19]: http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#7.3  "haproxy pattern"
 [20]: http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#7 "haproxy acls"
 [21]: http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#7.3  "haproxy fetching samples"
+[22]: http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#3 "haproxy: Global parameters"
+[23]: http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#4.1 "haproxy: Proxy keywords matrix"
