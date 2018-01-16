@@ -3,7 +3,7 @@ layout: default
 title: 未在calico中创建hostendpoint，导致开启隔离后，在kubernetes的node上无法访问pod
 author: lijiaocn
 createdate: 2017/10/27 14:45:26
-changedate: 2017/12/04 09:55:30
+changedate: 2018/01/11 14:35:14
 categories: 问题
 tags: calico kubernetes
 keywords: calico,hostendpoint,workloadendpoint,网络隔离
@@ -132,7 +132,7 @@ node的ip地址是10.39.0.113，带有标签`calico/k8s_ns: kube-system`，符�
 
 提供几个用于方便操作的脚本。
 
-脚本1，为kubernetes的所有的pod创建hostendpoint：
+脚本1，为kubernetes的所有的node创建hostendpoint：
 
 {% raw %} 
 
