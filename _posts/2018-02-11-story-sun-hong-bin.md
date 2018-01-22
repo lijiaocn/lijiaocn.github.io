@@ -1,9 +1,9 @@
 ---
 layout: default
 title: 传奇人物孙宏斌
-author: lijiaocn
+author: 宁肯
 createdate: 2018/01/22 22:37:41
-changedate: 2018/01/22 22:44:30
+changedate: 2018/01/22 22:51:11
 categories: 故事
 tags: 孙宏斌
 keywords:
@@ -134,3 +134,7 @@ description: 1990年春天，柳传志召开了一期干部培训班，表面上
 但孙宏斌婉拒了柳传志，也婉拒了所有愿出钱帮他东山再起的朋友。他要从零做起。果然，没几年孙宏斌便东山再起，在房地产市场做得风生水起。柳传志佩服孙宏斌，孙宏斌是个山峰，也是险峰。柳传志看得清楚明白，他不惧险，但尽量避险；他欣赏华山，也曾亲临，但更愿坐在泰山上。
 
 ## 后来的事情，都知道了
+
+摘录自宁肯的《中关村笔记》，北京十月文艺出版社，第一版（2017年4月1)，[亚马逊图书有售][1]
+
+[1]: https://www.amazon.cn/s/ref=as_li_ss_tl?_encoding=UTF8&camp=536&creative=3132&field-keywords=%E4%B8%AD%E5%85%B3%E6%9D%91%E7%AC%94%E8%AE%B0&linkCode=ur2&tag=znrio-23&url=search-alias%3Daps"  "中关村笔记"
