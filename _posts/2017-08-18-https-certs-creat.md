@@ -3,7 +3,7 @@ layout: default
 title: https证书的制作
 author: lijiaocn
 createdate: 2017/08/18 17:57:09
-changedate: 2017/08/22 14:46:03
+changedate: 2018/01/18 18:33:11
 categories: 技巧
 tags: cryptography
 keywords: https,cert
@@ -89,6 +89,10 @@ firefox:
 
 	$echo "subjectAltName = IP:10.42.0.1,IP:127.0.0.1" > /tmp/extfile
 	$openssl x509 -req -days 365 -in server.csr -CA root.crt -CAkey root.key -CAcreateserial -out server.crt  -extfile /tmp/extfile
+
+## 校验证书
+
+	openssl verify  -CAfile /etc/kubernetes/pki/ca.pem /etc/cni/net.d/calico-tls/etcd-cert
 
 ## 参考
 
