@@ -1,13 +1,13 @@
 ---
 layout: default
-title: 2018刘鹤达沃斯论坛演讲]
+title: 2018刘鹤达沃斯论坛演讲全文
 author: lijiaocn
 createdate: 2018/01/24 21:09:52
-changedate: 2018/01/24 21:20:31
+changedate: 2018/01/24 21:23:46
 categories: 投资
 tags: 投资
 keywords:
-description: 
+description: 刘鹤，中央政治局委员，中央财经领导小组办公室主任，国家发展和改革委员会副主任、党组副书记。
 
 ---
 
