@@ -3,7 +3,7 @@ layout: default
 title: vim使用手册
 author: lijiaocn
 createdate: 2017/04/01 11:00:33
-changedate: 2017/10/28 12:25:05
+changedate: 2018/02/06 19:42:55
 categories: 技巧
 tags: linuxtool
 keywords: vim
@@ -582,7 +582,46 @@ YouCompleteMe支持的语言更为丰富。
 
 [Vim自动补全神器–YouCompleteMe](http://blog.marchtea.com/archives/161)
 
-这两个插件还没有尝试, 过于折腾...
+#### YouCompleteMe
+
+[https://github.com/Valloric/YouCompleteMe](https://github.com/Valloric/YouCompleteMe)
+
+YCM需要7.4的vim，在mac系统上可以通过下面的命令升级[Mac自带的Vim怎么升级？](https://www.zhihu.com/question/34113076)：
+
+	brew install vim --with-lua --with-override-system-vi
+
+更多参数通过`brew info vim`查看，例如支持python3：
+
+	—with-python3
+
+或者使用YCM推荐的macvim:
+
+	brew install macvim    //YCM推荐使用macvim
+
+在macOS上安装：
+
+	brew install cmake
+	cd .vim/bundle
+	git clone https://github.com/Valloric/YouCompleteMe.git
+
+如果要支持C系列语言：
+
+	cd ~/.vim/bundle/YouCompleteMe
+	git submodule update --init --recursive
+	./install.py --clang-completer
+
+否则：
+
+	cd ~/.vim/bundle/YouCompleteMe
+	./install.py
+
+如果需要支持其它语言，使用对应的参数：
+
+	--go-completer   //go
+	--js-completer   //js
+	--rust-completer //rust
+	--all            //所有支持的语言
+
 
 ## 自行设置配色
 
