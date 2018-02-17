@@ -1,8 +1,9 @@
---- layout: default
+--- 
+layout: default
 title: linux上的物理网卡与虚拟网络设备
 author: lijiaocn
 createdate: 2017/03/31 18:47:12
-changedate: 2017/10/22 17:29:14
+changedate: 2018/02/17 19:09:32
 categories: 技巧
 tags: linuxnet
 keywords: tun设备,tap设备,tun/tap,veth,虚拟设备
