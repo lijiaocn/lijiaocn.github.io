@@ -3,7 +3,7 @@ layout: default
 title:  Hyperledger Fabric的使用
 author: lijiaocn
 createdate: 2018/02/23 10:50:00
-changedate: 2018/02/23 18:14:53
+changedate: 2018/02/23 18:27:46
 categories: 项目
 tags: blockchain
 keywords: 区块链,Hyperledger,使用
@@ -85,6 +85,18 @@ Fabric的模型主要由一下几个部分组成：
 	cd /opt/fabric/1.0.6 
 	curl -sSL https://goo.gl/6wtTN5 | bash -s 1.0.6   #这个网址需要翻墙访问
 	export PATH=$PATH:/opt/fabric/1.0.6/bin
+
+上面的命令执行时还会下载9个镜像，这9个镜像组成了fabric系统。
+
+	hyperledger/fabric-tools    
+	hyperledger/fabric-orderer  
+	hyperledger/fabric-peer     
+	hyperledger/fabric-javaenv  
+	hyperledger/fabric-ca       
+	hyperledger/fabric-ccenv    
+	hyperledger/fabric-zookeeper
+	hyperledger/fabric-kafka    
+	hyperledger/fabric-couchdb  
 
 然后到fabric-samples/first-network/目录中执行`byfn.sh`，byfn.sh脚本可以用来创建一个由4个peer(分属2个组织)组成的网络
 
