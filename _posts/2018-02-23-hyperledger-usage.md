@@ -3,7 +3,7 @@ layout: default
 title:  Hyperledger Fabric的使用
 author: lijiaocn
 createdate: 2018/02/23 10:50:00
-changedate: 2018/02/23 18:27:46
+changedate: 2018/02/24 18:07:18
 categories: 项目
 tags: blockchain
 keywords: 区块链,Hyperledger,使用
@@ -52,9 +52,9 @@ Farbric的chaincode目前(2018-02-23 15:08:54)只支持Go语言，以后会支�
 
 达成共识的过程中，交易需要严格按照发生的顺序记录到账本中，Farbric提供了多种共识机制(SOLO、Kafka、SBFT...)，建立交易网络的时候根据实际需要选用共识机制。
 
-## 组成
+## 概念
 
-Fabric的模型主要由一下几个部分组成：
+Fabric的模型主要由一下几个概念组成：
 
 	Assets:           交易的资产
 	ChainCode:        描述交易逻辑的代码 
@@ -65,7 +65,9 @@ Fabric的模型主要由一下几个部分组成：
 	Security & Membership Services: 参与交易的用户都经过认证的可信用户
 	Consensus:  交易从发起到被提交到账本的过程中的检验
 
-## 建立网络
+## 部署示例
+
+下面使用的fabric提供的一个部署示例，这个例子中会创建一个由4个peer组成的fabric网络。
 
 部署要求：
 
@@ -86,7 +88,17 @@ Fabric的模型主要由一下几个部分组成：
 	curl -sSL https://goo.gl/6wtTN5 | bash -s 1.0.6   #这个网址需要翻墙访问
 	export PATH=$PATH:/opt/fabric/1.0.6/bin
 
-上面的命令执行时还会下载9个镜像，这9个镜像组成了fabric系统。
+执行结束后，在/opt/fabr	/1.0.6/bin目录中可以看到以下文件：
+
+	configtxgen             //用于生成配置文件，存放在channel-artifacts目录中
+	configtxlator
+	cryptogen               //用于为网络的参与者生成证书，存放在crypto-config目录中
+	get-byfn.sh
+	get-docker-images.sh
+	orderer
+	peer
+
+上面的命令执行时还会下载9个镜像，这9个镜像构成了fabric系统。
 
 	hyperledger/fabric-tools    
 	hyperledger/fabric-orderer  
@@ -98,7 +110,7 @@ Fabric的模型主要由一下几个部分组成：
 	hyperledger/fabric-kafka    
 	hyperledger/fabric-couchdb  
 
-然后到fabric-samples/first-network/目录中执行`byfn.sh`，byfn.sh脚本可以用来创建一个由4个peer(分属2个组织)组成的网络
+到fabric-samples/first-network/目录中执行`byfn.sh`，byfn.sh脚本可以用来创建一个由4个peer(分属2个组织)组成的网络
 
 	$./byfn.sh -h
 	Usage:
@@ -131,14 +143,56 @@ Fabric的模型主要由一下几个部分组成：
 
 创建网络：
 
-	./byfn.sh -m generate 
+	./byfn.sh -m generate      #准备证书文件等
+	./byfn.sh -m up            #启动网络
+
+执行完成后，会启动8个容器，6个用`first-network/docker-compose-cli.yaml`启动的容器：
+
+	orderer.example.com         # 用于形成共识 
+	peer0.org1.example.com      # 成员org1.example.com的第一个peer
+	peer1.org1.example.com      # 成员org1.example.com的第二个peer
+	peer0.org2.example.com      # 成员org2.example.com的第一个peer
+	peer1.org2.example.com      # 成员org2.example.com的第二个peer
+	cli                         # 命令行工具，启动后sleep一段时间后退出
+
+另外三个是运行智能合约的容器：
+
+	dev-peer1.org2.example.com-mycc-1.0
+	dev-peer0.org1.example.com-mycc-1.0
+	dev-peer0.org2.example.com-mycc-1.0
+	# 一个容器是在创建合约后，实例化时创建的
+	# 两个是指定peer进行查询、交易时，需要智能合约的时候创建的
+
+## 源码编译
+
+	go get github.com/hyperledger/fabric
+	cd $GOPATH/src/github.com/hyperledger/fabric
+	make 
+
+Fabric由多个二进制文件，最主要是order和peer。
+
+order([Hyperledger Fabric Ordering Service][4])是用来形成共识的，这里的共识就是交易的顺序，所以实际上形成一个统一的顺序。当前版本(1.0.6)支持三种共识方式：
+
+	Solo，只部署一个order，因为只有一个order，所以不需要形成共识，仅用于测试
+	Kafka-based，使用kafka的发布/订阅功能进行排序，可以形成共识，但是存在拜占庭将军问题(Byzantine failures)
+	PBFT，正在开发中，能够应对拜占庭将军问题
+
+每个order中都存放一份账本，当前版本(1.0.6)支持三种账本格式：
+
+	File Ledger，存放在本地的levelDB数据库文件中，可用于生产
+	RAM Ledger, 在内存中保留最近一端时间内的交易记录，可用于测试
+	JSON Ledger，以json文件的方式存放，正在开发中
+
+configtxgen是一个用来创建创世块已经相关配置的工具。
 
 ## 参考
 
 1. [Hyperledger][1]
 2. [Fabric][2]
 3. [Fabric: Building Your First Network][3]
+4. [Hyperledger Fabric Ordering Service][4]
 
 [1]: https://cn.hyperledger.org/ "Hyperledger" 
 [2]: https://hyperledger-fabric.readthedocs.io/en/latest/blockchain.html "Fabric"
 [3]: https://hyperledger-fabric.readthedocs.io/en/latest/build_network.html "Fabric: Building Your First Network"
+[4]: https://github.com/hyperledger/fabric/tree/release/orderer  "Hyperledger Fabric Ordering Service"
