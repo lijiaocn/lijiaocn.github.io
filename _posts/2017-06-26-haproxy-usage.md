@@ -3,7 +3,7 @@ layout: default
 title: haproxy的基本使用与常见实践
 author: lijiaocn
 createdate: 2017/06/26 10:40:02
-changedate: 2018/01/04 10:47:10
+changedate: 2018/03/02 10:54:25
 categories: 技巧
 tags: haproxy
 keywords:  haproxy,lb 
@@ -71,7 +71,23 @@ haproxy的[Proxy keywords matrix][23]
 	    bind *:80
 	    server server1 127.0.0.1:8000 maxconn 32
 
+## 记录日志
 
+haproxy的日志可以输出到rsyslog中，在配置文件中做如下配置：
+
+	global
+	    log 127.0.0.1 local2 info
+
+然后在添加文件/etc/rsyslog.d/haproxy.conf：
+
+	$ModLoad imudp
+	$UDPServerRun 514
+	local2.*    /var/log/haproxy.log
+	& stop
+
+重启rsyslog：
+
+	systemctl restart rsyslog
 
 ## socket命令
 
