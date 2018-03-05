@@ -1,7 +1,7 @@
 ---
 layout: default
 title: linux的man手册使用
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/06/17 10:50:21
 changedate: 2017/06/17 10:55:03
 categories: 技巧

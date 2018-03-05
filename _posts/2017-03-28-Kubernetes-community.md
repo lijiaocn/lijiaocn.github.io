@@ -1,7 +1,7 @@
 ---
 layout: default
 title: kubernetes的社区资源与项目参与方式
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/03/28 10:01:38
 changedate: 2017/05/17 09:21:39
 categories: 项目

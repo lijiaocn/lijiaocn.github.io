@@ -1,7 +1,7 @@
 ---
 layout: default
 title: vim使用手册
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/04/01 11:00:33
 changedate: 2018/02/06 19:42:55
 categories: 技巧

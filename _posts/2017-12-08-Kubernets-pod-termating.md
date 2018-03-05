@@ -1,7 +1,7 @@
 ---
 layout: default
 title: kubernetes的pod因为同名Sandbox的存在，一直无法删除
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/12/08 16:58:13
 changedate: 2017/12/13 17:39:17
 categories: 问题

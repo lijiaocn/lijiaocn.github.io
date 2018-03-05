@@ -1,7 +1,7 @@
 ---
 layout: default
 title: docker使用前的检查清单
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/03/29 11:11:53
 changedate: 2017/09/11 16:20:32
 categories: 技巧

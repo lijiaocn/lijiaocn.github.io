@@ -1,7 +1,7 @@
 ---
 layout: default
 title: go的开发环境
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/03/28 10:01:38
 changedate: 2017/11/15 10:49:06
 categories: 编程

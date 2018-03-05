@@ -1,7 +1,7 @@
 ---
 layout: default
 title: go的常用package
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/05/18 17:05:34
 changedate: 2017/05/18 17:08:58
 categories: 编程

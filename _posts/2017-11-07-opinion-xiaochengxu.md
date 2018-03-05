@@ -1,7 +1,7 @@
 ---
 layout: default
 title:  微信时代降临？小程序的意图与掘金思路
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/11/07 20:22:18
 changedate: 2017/11/14 16:02:22
 categories: 投资

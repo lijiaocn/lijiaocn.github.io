@@ -1,7 +1,7 @@
 ---
 layout: default
 title: WordPress的安装部署
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/01/14 15:04:23
 changedate: 2017/10/28 12:38:18
 categories: 项目

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: iperf、netperf等网络性能测试工具的使用
-author: lijiaocn
+author: 李佶澳
 createdate: 2016/04/08 19:54:59
 changedate: 2017/08/10 16:09:23
 categories: 技巧

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: ipvs的使用
-author: lijiaocn
+author: 李佶澳
 createdate: 2018/02/01 15:12:31
 changedate: 2018/02/02 21:03:35
 categories: 技巧

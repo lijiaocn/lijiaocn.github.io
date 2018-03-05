@@ -1,7 +1,7 @@
 ---
 layout: default
 title: linux中疑难问题的调查方法
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/09/16 16:05:43
 changedate: 2017/11/27 10:55:59
 categories: 技巧

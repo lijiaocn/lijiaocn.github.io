@@ -1,7 +1,7 @@
 ---
 layout: default
 title: kubelet升级，导致calico中存在多余的workloadendpoint，node上存在多余的veth设备
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/12/04 10:52:09
 changedate: 2017/12/08 20:21:17
 categories: 问题

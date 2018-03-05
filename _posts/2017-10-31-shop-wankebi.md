@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 迅雷的玩客币是否有投资价值？
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/10/31 22:50:43
 changedate: 2017/11/14 16:02:45
 categories: 投资

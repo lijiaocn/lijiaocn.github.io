@@ -1,7 +1,7 @@
 ---
 layout: default
 title: idea安装插件
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/03/27 17:38:05
 changedate: 2017/07/03 18:46:03
 categories: 技巧

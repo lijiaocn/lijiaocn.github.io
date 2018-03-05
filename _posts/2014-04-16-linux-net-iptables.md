@@ -1,7 +1,7 @@
 ---
 layout: default
 title: linux的iptables使用
-author: lijiaocn
+author: 李佶澳
 createdate: 2014/04/16 10:16:55
 changedate: 2017/10/28 12:34:11
 categories: 技巧

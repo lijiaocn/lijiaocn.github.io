@@ -1,7 +1,7 @@
 ---
 layout: default
 title: makefile
-author: lijiaocn
+author: 李佶澳
 createdate: 2012/10/29 10:24:34
 changedate: 2017/10/28 12:39:16
 categories: 技巧

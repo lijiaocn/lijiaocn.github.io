@@ -1,7 +1,7 @@
 ---
 layout: default
 title: OpenStack的入门使用
-author: lijiaocn
+author: 李佶澳
 createdate: 2014/08/17 12:35:56
 changedate: 2017/10/28 12:35:47
 categories: 项目

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: go程序的调试方法
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/05/18 16:24:37
 changedate: 2017/08/28 15:09:13
 categories: 编程

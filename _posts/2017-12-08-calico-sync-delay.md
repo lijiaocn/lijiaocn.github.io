@@ -1,7 +1,7 @@
 ---
 layout: default
 title: calico node重启时路由同步信息延迟高达4分钟
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/12/08 10:37:35
 changedate: 2017/12/08 20:06:05
 categories: 问题

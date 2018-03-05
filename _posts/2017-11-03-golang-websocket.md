@@ -1,7 +1,7 @@
 ---
 layout: default
 title: go中使用websocket
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/11/03 10:24:16
 changedate: 2017/11/06 09:57:28
 categories: 编程

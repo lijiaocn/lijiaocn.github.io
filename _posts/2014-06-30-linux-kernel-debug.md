@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Linux内核调试、修改
-author: lijiaocn
+author: 李佶澳
 createdate: 2014/06/30 14:26:15
 changedate: 2017/11/14 15:24:33
 categories: 技巧

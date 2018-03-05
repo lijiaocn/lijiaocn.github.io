@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Kubernetes与calico的衔接过程
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/09/11 16:45:48
 changedate: 2017/11/29 14:14:34
 categories: 项目

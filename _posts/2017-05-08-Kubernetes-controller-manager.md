@@ -1,7 +1,7 @@
 ---
 layout: default
 title: kubernetes的Controller-manager的工作过程
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/05/08 13:54:33
 changedate: 2017/05/10 11:16:08
 categories: 项目

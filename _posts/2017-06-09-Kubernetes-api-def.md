@@ -1,7 +1,7 @@
 ---
 layout: default
 title: kubernetes的api定义与装载
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/06/09 09:37:14
 changedate: 2017/11/20 14:22:01
 categories: 项目

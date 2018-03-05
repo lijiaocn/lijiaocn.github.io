@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 使用nsenter进入另一个进程的namespace
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/07/14 14:54:49
 changedate: 2017/08/03 17:01:40
 categories: 技巧

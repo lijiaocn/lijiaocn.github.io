@@ -1,7 +1,7 @@
 ---
 layout: default
 title: haproxy的基本使用与常见实践
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/06/26 10:40:02
 changedate: 2018/03/02 10:54:25
 categories: 技巧

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: docker的storage类型
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/07/17 13:34:40
 changedate: 2017/07/24 14:28:30
 categories: 项目

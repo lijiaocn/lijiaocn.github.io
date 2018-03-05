@@ -1,7 +1,7 @@
 ---
 layout: default
 title: MAC上的SSH客户端工具
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/03/29 18:50:52
 changedate: 2017/12/22 17:50:51
 categories: 技巧

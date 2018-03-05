@@ -1,7 +1,7 @@
 ---
 layout: default
 title: linux的cgroup的使用
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/07/26 10:29:51
 changedate: 2017/11/13 10:51:49
 categories: 技巧

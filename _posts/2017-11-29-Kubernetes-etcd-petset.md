@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 使用petset创建的etcd集群在kubernetes中运行失败
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/11/29 16:16:09
 changedate: 2017/11/29 23:21:50
 categories: 问题

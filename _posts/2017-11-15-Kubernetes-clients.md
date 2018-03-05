@@ -1,7 +1,7 @@
 ---
 layout: default
 title: kubernetes的Client Libraries的使用
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/11/15 15:37:33
 changedate: 2017/11/17 16:18:46
 categories: 项目

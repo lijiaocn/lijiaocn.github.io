@@ -1,7 +1,7 @@
 ---
 layout: default
 title: kubernetes的Apiserver的工作过程
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/05/04 16:28:23
 changedate: 2017/06/09 15:56:39
 categories: 项目

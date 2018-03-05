@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Linux的Network Tunnel技术
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/04/01 14:33:46
 changedate: 2017/09/28 20:35:17
 categories: 技巧

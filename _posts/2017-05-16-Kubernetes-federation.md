@@ -1,7 +1,7 @@
 ---
 layout: default
 title: kubernetes的federation部署，跨区Service
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/05/16 14:21:30
 changedate: 2017/05/17 13:22:41
 categories: 项目

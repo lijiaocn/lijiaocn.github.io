@@ -1,7 +1,7 @@
 ---
 layout: default
 title: docker image的存储管理
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/04/01 16:39:28
 changedate: 2017/12/14 18:49:51
 categories: 项目

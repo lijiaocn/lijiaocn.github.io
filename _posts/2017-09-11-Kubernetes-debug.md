@@ -1,7 +1,7 @@
 ---
 layout: default
 title: kubernetes的调试方法
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/09/11 16:24:30
 changedate: 2017/11/20 14:50:41
 categories: 项目

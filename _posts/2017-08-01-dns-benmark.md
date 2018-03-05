@@ -1,7 +1,7 @@
 ---
 layout: default
 title: DNS的benchmark工具
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/08/01 16:00:12
 changedate: 2017/09/21 19:26:39
 categories: 技巧

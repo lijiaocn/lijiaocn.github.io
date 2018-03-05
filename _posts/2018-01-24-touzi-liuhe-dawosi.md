@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 2018刘鹤达沃斯论坛演讲全文
-author: lijiaocn
+author: 李佶澳
 createdate: 2018/01/24 21:09:52
 changedate: 2018/01/24 21:31:29
 categories: 投资

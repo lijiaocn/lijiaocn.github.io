@@ -1,7 +1,7 @@
 ---
 layout: default
 title: go项目的开发过程
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/05/18 16:38:29
 changedate: 2017/05/18 16:58:53
 categories: 编程

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 修改iterm窗口顶层显示的title
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/12/14 16:55:57
 changedate: 2017/12/14 18:21:16
 categories: 技巧

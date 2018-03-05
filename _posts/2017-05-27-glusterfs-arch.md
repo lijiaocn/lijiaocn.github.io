@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Glusterfs的架构
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/05/27 10:20:13
 changedate: 2017/10/28 12:08:21
 categories: 项目

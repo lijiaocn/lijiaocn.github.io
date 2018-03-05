@@ -1,7 +1,7 @@
 ---
 layout: default
 title: kubernetes的kubelet的工作过程
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/05/02 10:03:20
 changedate: 2017/09/12 10:36:49
 categories: 项目

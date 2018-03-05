@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 怎样设计一个企业级的PaaS平台？
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/04/05 13:07:40
 changedate: 2017/10/28 12:12:55
 categories: 方法

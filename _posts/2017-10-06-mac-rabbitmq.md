@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 在mac上部署rabbitmq
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/11/06 10:54:40
 changedate: 2017/11/06 12:40:47
 categories: 技巧

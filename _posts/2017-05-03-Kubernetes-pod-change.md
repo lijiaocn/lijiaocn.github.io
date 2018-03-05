@@ -1,7 +1,7 @@
 ---
 layout: default
 title: kubernetes的Pod变更过程
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/05/03 17:09:37
 changedate: 2017/06/13 11:37:41
 categories: 项目

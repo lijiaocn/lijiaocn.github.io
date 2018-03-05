@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 怎样获取linux kernel相关的知识？
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/11/13 10:55:50
 changedate: 2017/11/14 15:29:48
 categories: 方法

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 进程管理工具supervisord
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/08/23 13:48:02
 changedate: 2017/09/29 18:44:56
 categories: 技巧

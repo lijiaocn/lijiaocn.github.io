@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "怎样为软件的不同版本命名？"
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/12/26 14:22:25
 changedate: 2017/12/26 15:22:22
 categories: 方法

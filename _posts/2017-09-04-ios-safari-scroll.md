@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "ios以及safari中的pre标签设置overflow后，不显示水平滚动条"
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/09/04 23:01:31
 changedate: 2017/09/04 23:23:50
 categories: 问题

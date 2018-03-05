@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 分布式任务队列machinery的使用
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/11/06 09:58:56
 changedate: 2017/11/09 15:32:48
 categories: 编程

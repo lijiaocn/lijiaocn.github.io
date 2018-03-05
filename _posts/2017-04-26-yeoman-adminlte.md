@@ -1,7 +1,7 @@
 ---
 layout: default
 title: yeoman-adminlte-折腾笔记
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/04/26 09:49:03
 changedate: 2017/09/04 21:44:53
 categories: 技巧

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: kubernetes的Storage的实现
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/05/11 17:23:22
 changedate: 2017/05/12 10:12:01
 categories: 项目

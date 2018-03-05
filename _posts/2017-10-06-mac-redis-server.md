@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 在mac上部署redis服务
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/11/06 10:14:25
 changedate: 2017/11/06 11:27:11
 categories: 技巧

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: go的变量作用域，局部变量的存放位置是？
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/05/18 16:18:01
 changedate: 2017/05/20 16:07:26
 categories: 编程

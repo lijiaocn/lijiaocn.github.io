@@ -1,7 +1,7 @@
 ---
 layout: default
 title: flarum轻论坛系统怎样搭建和使用?
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/11/21 22:25:26
 changedate: 2017/12/02 22:56:13
 categories: 方法

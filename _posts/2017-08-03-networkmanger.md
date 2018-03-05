@@ -1,7 +1,7 @@
 ---
 layout: default
 title: centos7的networkmanger
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/08/03 15:44:44
 changedate: 2017/09/21 19:24:19
 categories: 技巧

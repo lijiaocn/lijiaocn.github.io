@@ -1,7 +1,7 @@
 ---
 layout: default
 title: kubernetes的网络隔离networkpolicy
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/11/10 10:47:51
 changedate: 2017/11/22 13:23:35
 categories: 项目

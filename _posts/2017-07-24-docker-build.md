@@ -1,7 +1,7 @@
 ---
 layout: default
 title: docker、docker-ce、moby的编译
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/07/24 15:47:28
 changedate: 2017/12/14 19:03:53
 categories: 项目

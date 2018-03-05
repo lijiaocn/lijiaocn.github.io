@@ -1,7 +1,7 @@
 ---
 layout: default
 title: kubernetes的Apiserver的storage使用
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/05/10 11:12:12
 changedate: 2017/06/09 15:19:29
 categories: 项目

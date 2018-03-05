@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "go Library: spf13/cobra(用于命令行程序)"
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/04/27 10:03:27
 changedate: 2017/11/08 13:49:19
 categories: 编程

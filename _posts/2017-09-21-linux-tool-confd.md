@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 本地配置文件的管理工具confd
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/09/21 16:00:08
 changedate: 2017/10/22 16:07:25
 categories: 技巧

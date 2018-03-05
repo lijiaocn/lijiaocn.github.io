@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "人民日报：打好防范化解重大金融风险攻坚战-专访银监会主席郭树清"
-author: lijiaocn
+author: 李佶澳
 createdate: 2018/01/27 20:58:55
 changedate: 2018/01/27 21:24:58
 categories: 投资

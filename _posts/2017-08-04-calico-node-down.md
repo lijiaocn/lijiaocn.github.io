@@ -1,7 +1,7 @@
 ---
 layout: default
 title: calico分配的ip冲突，pod内部arp记录丢失，pod无法访问外部服务
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/08/04 10:22:14
 changedate: 2017/12/04 09:56:37
 categories: 问题

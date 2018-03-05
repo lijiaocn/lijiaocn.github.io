@@ -1,7 +1,7 @@
 ---
 layout: default
 title: lvm的使用
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/07/05 11:30:18
 changedate: 2017/09/21 19:28:47
 categories: 技巧

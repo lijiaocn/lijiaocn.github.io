@@ -1,7 +1,7 @@
 ---
 layout: default
 title: go语言语法实例
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/11/15 10:49:40
 changedate: 2017/12/01 18:07:59
 categories: 编程

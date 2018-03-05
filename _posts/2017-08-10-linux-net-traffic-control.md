@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "linux的traffic control"
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/08/10 15:44:17
 changedate: 2017/09/21 19:25:08
 categories: 技巧

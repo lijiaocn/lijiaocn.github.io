@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 在mac上使用docker
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/05/15 15:36:55
 changedate: 2017/07/05 10:56:23
 categories: 技巧

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: docker的基础使用
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/03/29 11:11:53
 changedate: 2017/09/11 16:20:40
 categories: 技巧

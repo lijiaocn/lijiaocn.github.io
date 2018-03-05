@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 怎样读懂财报报表?
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/09/09 18:47:08
 changedate: 2017/10/28 12:20:02
 categories: 投资

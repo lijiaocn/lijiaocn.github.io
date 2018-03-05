@@ -1,7 +1,7 @@
 ---
 layout: default
 title:  暴涨3倍！迅雷怎样用稀缺性支付了工资?
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/11/01 20:57:00
 changedate: 2017/11/14 16:03:11
 categories: 投资

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 使用haproxy进行会话保持
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/11/28 14:56:49
 changedate: 2017/11/28 16:00:03
 categories: 技巧

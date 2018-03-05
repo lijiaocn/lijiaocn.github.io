@@ -1,7 +1,7 @@
 ---
 layout: default
 title: tcpdump使用手册
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/04/01 10:39:05
 changedate: 2017/10/28 12:24:51
 categories: 技巧

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 连接haproxy间歇性失败的问题调查
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/09/04 09:39:54
 changedate: 2017/09/20 15:53:16
 categories: 问题

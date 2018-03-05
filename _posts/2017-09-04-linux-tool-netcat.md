@@ -1,7 +1,7 @@
 ---
 layout: default
 title: netcat的使用
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/09/04 16:32:45
 changedate: 2017/09/21 19:25:37
 categories: 技巧

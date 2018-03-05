@@ -1,7 +1,7 @@
 ---
 layout: default
 title: crond定时任务的使用
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/07/28 13:32:55
 changedate: 2017/10/28 12:09:02
 categories: 技巧

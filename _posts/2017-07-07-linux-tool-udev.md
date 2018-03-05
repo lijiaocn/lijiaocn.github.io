@@ -1,7 +1,7 @@
 ---
 layout: default
 title: udev的使用说明
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/07/07 09:22:42
 changedate: 2017/07/07 13:32:35
 categories: 技巧

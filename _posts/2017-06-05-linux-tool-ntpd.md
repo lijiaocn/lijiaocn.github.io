@@ -1,7 +1,7 @@
 ---
 layout: default
 title: ntpd同步系统时间
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/06/05 15:27:55
 changedate: 2017/06/06 15:29:45
 categories: 技巧

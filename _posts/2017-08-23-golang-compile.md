@@ -1,7 +1,7 @@
 ---
 layout: default
 title: go的编译过程、选项、以及二进制包
-author: lijiaocn
+author: 李佶澳
 createdate: 2017/08/23 15:17:53
 changedate: 2017/09/26 21:41:34
 categories: 编程

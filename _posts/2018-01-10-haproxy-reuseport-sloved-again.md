@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 容器中运行的haproxy的端口复用问题再解决
-author: lijiaocn
+author: 李佶澳
 createdate: 2018/01/10 13:51:44
 changedate: 2018/01/11 13:08:02
 categories: 问题
