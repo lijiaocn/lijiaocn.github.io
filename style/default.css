@@ -73,6 +73,11 @@ div.rsidebar-element img{
 	width: 100%;
 }
 
+.searchbar {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
 .rsidebar-title {
 	height:40px;
 	line-height:40px;
