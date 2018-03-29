@@ -3,7 +3,7 @@ layout: default
 title:  Hyperledger Fabric的使用
 author: 李佶澳
 createdate: 2018/02/23 10:50:00
-changedate: 2018/03/23 16:35:09
+changedate: 2018/03/29 18:44:36
 categories: 项目
 tags: blockchain
 keywords: 区块链,Hyperledger,使用
@@ -172,6 +172,197 @@ Fabric的模型主要由以下几个概念组成：
 	CORE_PEER_LOCALMSPID="Org1MSP"
 	CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
 
+## 使用方法
+
+上一节中通过byfn.sh脚本直接启动了一个fabric网络。这个过程隐藏了太多细节，需要有一个逐步说明的例子。
+
+### orderer的创世区块
+
+首先在启动orderer的时候，需要传入一个创世区块。创世区块中包含了将要参与的组织。
+
+	configtxgen -profile TwoOrgsOrdererGenesis -outputBlock $output/genesisblock
+
+下面是创世区块使用的profiles:
+
+	TwoOrgsOrdererGenesis:
+	    Orderer:
+	        <<: *OrdererDefaults
+	        Organizations:
+	            - *OrdererOrg
+	    Consortiums:
+	        SampleConsortium:
+	            Organizations:
+	                - *Org1
+	                - *Org2
+
+创世区块传递给orderer的方式有多种，在orderer.yml中配置：
+
+	GenesisMethod: file
+	GenesisProfile: SampleInsecureSolo
+	GenesisFile: ./genesisblock
+
+### 部署orderer和peer
+
+有了创世区块之后，就可以部署order和peer，完成fabric的部署。
+
+### 创建channel
+
+在使用fabric之前，需要先创建channel：
+
+	configtxgen -profile TwoOrgsChannel -outputCreateChannelTx $output/channel.tx -channelID $CHANNEL_NAME
+
+下面是channel的profile：
+
+    TwoOrgsChannel:
+        Consortium: SampleConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Org1
+                - *Org2
+
+通过一个peer，将channel.tx发送给order，完成channel创建：
+
+	peer channel create -o orderer.example.com:7050 -c $CHANNEL_NAME -f ./channel-artifacts/channel.tx --tls true --cafile ./tlsca.example.com-cert.pem
+
+创建成功后，会在本地生成一个名为$CHANNEL_NAME.block的文件。
+
+用`peer channel list`可以看到已经创建的channel。
+
+	[root@10-39-0-121 Admin-peer0.org1.example.com]# ./peer.sh channel list
+	2018-03-29 12:23:34.438 CST [channelCmd] InitCmdFactory -> INFO 003 Endorser and orderer connections initialized
+	Channels peers has joined:
+	mychannel
+	2018-03-29 12:23:34.440 CST [main] main -> INFO 006 Exiting.....
+
+### 将所有peer加入到channel
+
+需要分别将`所有需要交互的peer`加入到channel中，加入时要用到上一步生成的${CHANNEL_NAME}.block文件：
+
+	export CORE_PEER_LOCALMSPID=Org1MSP
+	export CORE_PEER_ADDRESS=peer0.org1.example.com:7051
+	peer channel join -b $CHANNEL_NAME.block
+
+用`peer channel list`可以看到当前使用的peer已经加入的channel:
+
+	$ ./peer.sh  channel list
+	Channels peers has joined:
+	mychannel
+
+### 指定每个组织的anchor peer
+
+需要在每个组织中指定一个anchor peer，需要先用configtxgen生成一个文件：
+
+	configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate $output/Org1MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org1MSP
+
+然后用生成的文件更新peer:
+
+	peer channel update -o orderer.example.com:7050 -c $CHANNEL_NAME -f ./channel-artifacts/${CORE_PEER_LOCALMSPID}anchors.tx --tls true --cafile ./tlsca.example.com-cert.pem
+
+### 开发合约
+
+合约就是一段代码， [fabirc samples chaincode][9]中给出了几个例子。
+
+### 安装合约
+
+安装合约就是将合约代码提交到fabric中。
+
+	peer chaincode install -n $NAME -v $VERSION -p $CODEPATH
+
+如果合约使用用Go语言开发的，CODEPATH应该是$GOPATH/src下的目录。安装时，会将所有依赖的文件打包。
+
+可以用`peer chaincode list --installed`查看已经安装的合约。
+
+	#./peer.sh chaincode list  --installed
+	Get installed chaincodes on peer:
+	Name: mycc, Version: 1.0, Path: chaincode_example02, Id: f34984a229c76f470fa24b6ecad6dc1a4876440f7213181265bdfbe6ad129371
+	2018-03-29 12:32:05.549 CST [main] main -> INFO 005 Exiting.....
+
+合约位于peer的data目录中一个名为chaincodes的子目录中：
+
+	$ ls /opt/app/fabric/peer/data/chaincodes/
+	mycc.1.0
+
+同一个合约，需要在每个peer上都安装，因为实测中发现用下面的命令只能看到目标peer上已经安装的合约：
+
+	./peer.sh chaincode list --installed
+
+### 合约实例化
+
+合约实例化就是在指定的peer上启动一个docker容器，并调用合约的方法Init方法。
+
+	peer chaincode instantiate -o orderer.example.com:7050 --tls true --cafile ./tlsca.example.com-cert.pem -C $CHANNEL_NAME -n $NAME -v $VERSION -c '{"Args":["init","a","100","b","200"]}' -P "OR ('Org1MSP.member','Org2MSP.member')"
+
+	-c:  传入合约的数据,  
+	       '{"Args":["init","a","100","b","200"]}'
+	-P:  该合约的背书策略，The endorsement policy associated to this chaincode
+	       "OR ('Org1MSP.member','Org2MSP.member')"
+
+上面`-c`的含义是初始化时，调用合约的init方法，传入参数是"a"、"100"、"b"、"200"。
+
+	func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
+		fmt.Println("ex02 Init")
+		_, args := stub.GetFunctionAndParameters()
+		
+		...
+		
+		//初始化
+		A = args[0]
+		Aval, err = strconv.Atoi(args[1])
+		B = args[2]
+		Bval, err = strconv.Atoi(args[3])
+		
+		...
+		
+		//写入账本
+		err = stub.PutState(A, []byte(strconv.Itoa(Aval)))
+		err = stub.PutState(B, []byte(strconv.Itoa(Bval)))
+
+在其它的peer上，能够看到已经实例化的合约：
+
+	./peer.sh chaincode list -C mychannel --instantiated
+	Get instantiated chaincodes on channel mychannel:
+	Name: mycc, Version: 1.0, Escc: escc, Vscc: vscc
+	2018-03-29 12:58:08.135 CST [main] main -> INFO 005 Exiting.....
+
+合约只需要实例化一次，当通过其它peer上使用合约时，会自动在目标peer上启动一个执行合约的容器。
+
+### 调用合约
+
+`peer chaincode invoke`用来调用合约的其它方法：
+
+	peer chaincode invoke -o orderer.example.com:7050  --tls true --cafile ./tlsca.example.com-cert.pem -C $CHANNEL_NAME -n $NAME -c '{"Args":["invoke","a","b","10"]}'
+
+上面的例子是调用合约的invoke方法：
+
+	func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
+		fmt.Println("ex02 Invoke")
+		function, args := stub.GetFunctionAndParameters()
+		if function == "invoke" {
+			// Make payment of X units from A to B
+			return t.invoke(stub, args)
+		} else if function == "delete" {
+			// Deletes an entity from its state
+			return t.delete(stub, args)
+		} else if function == "query" {
+			// the old "Query" is now implemtned in invoke
+			return t.query(stub, args)
+		}
+		return shim.Error("Invalid invoke function name. Expecting \"invoke\" \"delete\" \"query\"")
+	}
+
+### 查询合约
+
+`peer chaincode query`是用来直接从peer查询数据：
+
+	peer chaincode query -C $CHANNEL_NAME -n $NAME -c '{"Args":["query","a"]}'
+
+注意，如果在query命令调用合约里会修改账本的方法，那么修改是不会生效的，例如:
+
+	peer chaincode query -C $CHANNEL_NAME -n $NAME -c '{"Args":["invoke","a","b","10"]}'
+
+账本中的数据没有被修改。
+
 ## 源码编译
 
 编译的过程会联网，需要翻墙。
@@ -197,6 +388,22 @@ Fabric的模型主要由以下几个概念组成：
 将protoc-gen-go复制过去：
 
 	cp gotools/build/gopath/bin/protoc-gen-go   build/docker/gotools/bin/protoc-gen-go
+
+如果还是找不到protoc-gen-go文件，到`gotools`目录下执行make:
+
+	cd gotools/
+	make         //需要翻墙，会从golang.org下载代码golang.org/x/lint
+
+在linux上编译时如果报错找不到"ltdl.h"，需要安装ltdl。
+
+	# github.com/hyperledger/fabric/vendor/github.com/miekg/pkcs11
+	vendor/github.com/miekg/pkcs11/pkcs11.go:26:18: fatal error: ltdl.h: No such file or directory
+	 #include <ltdl.h>
+					  ^
+	compilation terminated.
+
+	yum install libtool-ltdl-devel
+	apt install libltdl3-dev
 
 如果在mac上遇到下面的错误：
 
@@ -248,7 +455,11 @@ Farbric的主体是由order和peer组成的，如下图所示:
 
 ![hyperleader fabric arch](https://hyperledger-fabric.readthedocs.io/en/latest/_images/flow-4.png)
 
-## cryptogen
+## 命令使用
+
+fabric命令使用
+
+### cryptogen
 
 cryptogen命令用来生成证书:
 
@@ -334,91 +545,11 @@ cryptogen命令用来生成证书:
 	│                   ├── server.crt
 	│                   └── server.key
 	└── peerOrganizations
-	    ├── org1.example.com
-	    │   ├── ca
-	    │   │   ├── 869dd5c17fc22592abf6d16db6c77a16f19e6d3e723fe6f7b734e82fc31c6818_sk
-	    │   │   └── ca.org1.example.com-cert.pem
-	    │   ├── msp
-	    │   │   ├── admincerts
-	    │   │   │   └── Admin@org1.example.com-cert.pem
-	    │   │   ├── cacerts
-	    │   │   │   └── ca.org1.example.com-cert.pem
-	    │   │   └── tlscacerts
-	    │   │       └── tlsca.org1.example.com-cert.pem
-	    │   ├── peers
-	    │   │   ├── peer0.org1.example.com
-	    │   │   │   ├── msp
-	    │   │   │   │   ├── admincerts
-	    │   │   │   │   │   └── Admin@org1.example.com-cert.pem
-	    │   │   │   │   ├── cacerts
-	    │   │   │   │   │   └── ca.org1.example.com-cert.pem
-	    │   │   │   │   ├── keystore
-	    │   │   │   │   │   └── 7f93d3cdfee4d51f572cd7a53e03bcf60e8fef014f2e0d3b343010b175fb448c_sk
-	    │   │   │   │   ├── signcerts
-	    │   │   │   │   │   └── peer0.org1.example.com-cert.pem
-	    │   │   │   │   └── tlscacerts
-	    │   │   │   │       └── tlsca.org1.example.com-cert.pem
-	    │   │   │   └── tls
-	    │   │   │       ├── ca.crt
-	    │   │   │       ├── server.crt
-	    │   │   │       └── server.key
-	    │   │   └── peer1.org1.example.com
-	    │   │       ├── msp
-	    │   │       │   ├── admincerts
-	    │   │       │   │   └── Admin@org1.example.com-cert.pem
-	    │   │       │   ├── cacerts
-	    │   │       │   │   └── ca.org1.example.com-cert.pem
-	    │   │       │   ├── keystore
-	    │   │       │   │   └── ab7fb5af179ead343bac23b3442d7a9a319682afeb2d208860a4df93705b7e5a_sk
-	    │   │       │   ├── signcerts
-	    │   │       │   │   └── peer1.org1.example.com-cert.pem
-	    │   │       │   └── tlscacerts
-	    │   │       │       └── tlsca.org1.example.com-cert.pem
-	    │   │       └── tls
-	    │   │           ├── ca.crt
-	    │   │           ├── server.crt
-	    │   │           └── server.key
-	    │   ├── tlsca
-	    │   │   ├── 1ac7e9ef82a641bba43aba4c6d3da5ccdcf02b2b01401eb05f559dd89ee126ef_sk
-	    │   │   └── tlsca.org1.example.com-cert.pem
-	    │   └── users
-	    │       ├── Admin@org1.example.com
-	    │       │   ├── msp
-	    │       │   │   ├── admincerts
-	    │       │   │   │   └── Admin@org1.example.com-cert.pem
-	    │       │   │   ├── cacerts
-	    │       │   │   │   └── ca.org1.example.com-cert.pem
-	    │       │   │   ├── keystore
-	    │       │   │   │   └── 06cb1e1bdc16b811353b84e25993822b1990b8fbdcab18552207b12d84761791_sk
-	    │       │   │   ├── signcerts
-	    │       │   │   │   └── Admin@org1.example.com-cert.pem
-	    │       │   │   └── tlscacerts
-	    │       │   │       └── tlsca.org1.example.com-cert.pem
-	    │       │   └── tls
-	    │       │       ├── ca.crt
-	    │       │       ├── server.crt
-	    │       │       └── server.key
-	    │       └── User1@org1.example.com
-	    │           ├── msp
-	    │           │   ├── admincerts
-	    │           │   │   └── User1@org1.example.com-cert.pem
-	    │           │   ├── cacerts
-	    │           │   │   └── ca.org1.example.com-cert.pem
-	    │           │   ├── keystore
-	    │           │   │   └── 98d5218ccb2dc8060e53e3bdb7ef27708d68099e65e3e9022f93641b5ded9063_sk
-	    │           │   ├── signcerts
-	    │           │   │   └── User1@org1.example.com-cert.pem
-	    │           │   └── tlscacerts
-	    │           │       └── tlsca.org1.example.com-cert.pem
-	    │           └── tls
-	    │               ├── ca.crt
-	    │               ├── server.crt
-	    │               └── server.key
 	...
 
-## configtxgen
+### configtxgen
 
-configtxgen用来生成第一个区块，fabric的channel、peer。
+configtxgen用来生成第一个区块，channel数据，以及anchorPeer。
 
 	configtxgen -profile TwoOrgsOrdererGenesis -outputBlock ./genesis.block
 	configtxgen -profile TwoOrgsChannel -outputCreateChannelTx ./channel.tx -channelID $CHANNEL_NAME
@@ -480,7 +611,7 @@ configtxgen默认从configtx.yaml读取配置，`-profile`指定将要从中读�
 	Application: &ApplicationDefaults
 	    Organizations:
 
-## orderer 
+### orderer 
 
 order配置文件格式如下：
 
@@ -498,7 +629,7 @@ order配置文件格式如下：
 	        ClientRootCAs:
 	    LogLevel: debug
 	
-	    GenesisMethod: file    //创世块获取方式
+	    GenesisMethod: file                  //创世块获取方式
 	    GenesisProfile: SampleSingleMSPSolo  //如果从文件获取创世块，忽略
 	    GenesisFile: genesis.block           //创世块内容
 	
@@ -553,7 +684,7 @@ order配置文件格式如下：
 	        #File: path/to/RootCAs
 	    Version:
 
-环境变量可以覆盖配置文件中的相关配置，下面是一个用docker-compose启动的order：
+环境变量可以覆盖配置文件中的相关配置，例如：
 
 	command: orderer
 	environment:
@@ -569,11 +700,16 @@ order配置文件格式如下：
 	  - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
 	  - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
 
-## peer node
+### peer node
 
 [Hyperledger Fabric: peer node][7]
 
-peer node启动是默认使用配置文件`$FABRIC_CFG_PATH/core.yaml`
+目前(2018-03-28 17:16:26)，peer node只有两个子命令:
+
+	peer node start
+	peer node status
+
+peer node start时默认使用配置文件`$FABRIC_CFG_PATH/core.yaml`
 
 fabric中提供了两个配置示例：
 
@@ -755,7 +891,150 @@ core.yaml文件格式如下，下面摘取了主要的配置：
 	  - CORE_PEER_LOCALMSPID=Org1MSP
 	command: peer node start
 
-## 
+查看node的状态
+
+### peer channel 
+
+生成的channel.tx可以用下面的命令解析：
+
+	configtxlator proto_decode --type common.Envelope   --input=output/staging/channel-artifacts/channel.tx
+
+查看channel:
+
+	./peer.sh  channel  getinfo -c mychannel
+
+查看peer加入的channel:
+
+	./peer.sh  channel  list
+
+### peer chaincode
+
+查看已经安装的chaincode:
+
+	./peer.sh chaincode  list --installed
+
+查看已经实例化的chaincode:
+
+	./peer.sh chaincode  list  --instantiated
+
+## 问题汇总
+
+遇到的一些问题以及解决方法。
+
+### /Channel/Application/Org2MSP but was in the read set
+
+创建channel时,orderer报错，断开连接：
+
+	Rejecting broadcast of config message from 10.4.108.90:56314 because of error:
+	error authorizing update: error validating ReadSet: existing config does not 
+	contain element for [Group]  /Channel/Application/Org2MSP but was in the read set
+
+[peer channel creation fails in Hyperledger Fabric][8]有说明。
+
+我遇到这个问题的原因是orderer的配置文件配置错误，
+
+	GenesisMethod: provisional          <-- 应该是file
+	GenesisProfile: SampleInsecureSolo
+	GenesisFile: ./genesisblock
+
+### premature execution - chaincode (mycc:1.0) is being launched - <nil>
+
+在每个peer上都安装了合约之后，在其中一个节点上实例化后，成功启动了合约容器。然后通过另一个peer使用合约的时候，另一个peer上合约迟迟不能启动。
+
+再次使用合约的时候，提示合约正在创建中：
+
+	Error: Error endorsing query: rpc error: code = Unknown desc = error executing chaincode: premature execution - chaincode (mycc:1.0) is being launched - <nil>
+
+查看目标peer上的docker日志，发现是找不到镜像：
+
+	Handler for POST /containers/dev-peer0.org2.example.com-mycc-1.0/stop returned error: No such container: dev-peer0.org2.example.com-mycc-1.0"
+	Handler for POST /containers/dev-peer0.org2.example.com-mycc-1.0/kill returned error: Cannot kill container dev-peer0.org2.example.com-mycc-1.0: No such container: dev-peer0.org2.example.com-mycc-1.0"
+	Handler for DELETE /containers/dev-peer0.org2.example.com-mycc-1.0 returned error: No such container: dev-peer0.org2.example.com-mycc-1.0"
+	Handler for POST /containers/create returned error: No such image: dev-peer0.org2.example.com-mycc-1.0-15b571b3ce849066b7ec74497da3b27e54e0df1345daff3951b94245ce09c42b:latest"
+	Handler for GET /images/hyperledger/fabric-ccenv:x86_64-1.1.0/json returned error: No such image: hyperledger/fabric-ccenv:x86_64-1.1.0"
+	Download failed, retrying: read tcp 10.39.0.127:35768->54.230.212.139:443: read: connection reset by peer"
+	Download failed, retrying: read tcp 10.39.0.127:41289->54.230.212.252:443: read: connection reset by peer"
+	Download failed, retrying: read tcp 10.39.0.127:58820->54.230.212.188:443: read: connection reset by peer"
+	Download failed, retrying: read tcp 10.39.0.127:48137->54.230.212.184:443: read: connection reset by peer"
+	Download failed, retrying: read tcp 10.39.0.127:41304->54.230.212.252:443: read: connection reset by peer"
+	Download failed, retrying: read tcp 10.39.0.127:35801->54.230.212.139:443: read: connection reset by peer"
+	Download failed, retrying: read tcp 10.39.0.127:48156->54.230.212.184:443: read: connection reset by peer"
+
+怀疑是`hyperledger/fabric-ccenv:x86_64-1.1.0`下载不下来，在/etc/docker/daemon.json中添加镜像源:
+
+	{"registry-mirror":["https://pee6w651.mirror.aliyuncs.com"],....}
+
+重启docker后，下载下面的镜像：
+
+	docker pull hyperledger/fabric-javaenv:latest
+	docker pull hyperledger/fabric-javaenv:x86_64-1.1.0
+	docker pull hyperledger/fabric-ccenv:latest
+	docker pull hyperledger/fabric-ccenv:x86_64-1.1.0
+
+### Failed to generate platform-specific docker build
+
+向一个还没有运行合约容器的peer发起访问时，报错：
+
+	Failed to generate platform-specific docker build: Error executing build: API error (500): {"message":"failed to initialize logging driver: dial tcp 127.0.0.1:24224: getsockopt: connection refused"}
+	 "Error attaching: dial tcp 127.0.0.1:24224: getsockopt: connection refused
+
+docker配置错误，配置了fluentd driver，但是fluentd不存在。
+
+### No such image: dev-peer0.org2.example.com
+
+向一个还没有运行合约容器的peer发起访问时，迟迟得不到相应，在peer上查看docker日志：
+
+	No such image: dev-peer0.org2.example.com-mycc-1.0-15b571b3ce849066b7ec74497da3b27e54e0df1345daff3951b94245ce09c42b:latest
+
+找不到合约容器的镜像。
+
+### 合约实例化不成功
+
+合约实例化时，长时间没有结果，peer日志现实如下：
+
+	2018-03-29 16:33:59.167 CST [sccapi] deploySysCC -> INFO 031^[[0m system chaincode qscc/mychannel(github.com/hyperledger/fabric/core/chaincode/qscc) deployed
+	2018-03-29 16:33:59.167 CST [nodeCmd] serve -> INFO 032^[[0m Starting peer with ID=[name:"peer1.org1.example.com" ], network ID=[dev], address=[10.39.0.122:7051]
+	2018-03-29 16:33:59.168 CST [nodeCmd] serve -> INFO 033^[[0m Started peer with ID=[name:"peer1.org1.example.com" ], network ID=[dev], address=[10.39.0.122:7051]
+	2018-03-29 16:33:59.168 CST [nodeCmd] func7 -> INFO 034^[[0m Starting profiling server with listenAddress = 0.0.0.0:6060
+	2018-03-29 16:34:05.564 CST [golang-platform] GenerateDockerBuild -> INFO 035^[[0m building chaincode with ldflagsOpt: '-ldflags "-linkmode external -extldflags '-static'"'
+	2018-03-29 16:34:05.564 CST [golang-platform] GenerateDockerBuild -> INFO 036^[[0m building chaincode with tags:
+
+查看代码，发现是卡在了构建合约镜像地方。
+
+	func DockerBuild(opts DockerBuildOptions) error {
+		   client, err := cutil.NewDockerClient()
+		   if err != nil {
+		   	   return fmt.Errorf("Error creating docker client: %s", err)
+		   }
+		   if opts.Image == "" {
+		   	   opts.Image = cutil.GetDockerfileFromConfig("chaincode.builder")
+		   	   if opts.Image == "" {
+		   	   	   return fmt.Errorf("No image provided and \"chaincode.builder\" default does not exist")
+		   	   }
+		   }
+
+		   logger.Debugf("Attempting build with image %s", opts.Image)
+	...
+
+“Attempting build with image”这行日志没有打印出来。
+
+查看core.yml文件，发现chaincode一节中指定了几个镜像：
+
+	chaincode:
+		peerAddress:
+		id:
+			path:
+			name:
+		builder: $(DOCKER_NS)/fabric-ccenv:$(ARCH)-$(PROJECT_VERSION)
+		golang:
+			runtime: $(BASE_DOCKER_NS)/fabric-baseos:$(ARCH)-$(BASE_VERSION)
+		car:
+			runtime: $(BASE_DOCKER_NS)/fabric-baseos:$(ARCH)-$(BASE_VERSION)
+		java:
+			Dockerfile:  |
+				from $(DOCKER_NS)/fabric-javaenv:$(ARCH)-$(PROJECT_VERSION)
+
+将fabirc-ccenv、fabric-baseos、fabric-javaenv三个镜像提前下载好以后，实例化成功。
 
 ## 参考
 
@@ -766,6 +1045,8 @@ core.yaml文件格式如下，下面摘取了主要的配置：
 5. [Hyperledger Fabric: Peer Commands][5]
 6. [Hyperledger Fabric: Architecture Explained][6]
 7. [Hyperledger Fabric: peer node][7]
+8. [peer channel creation fails in Hyperledger Fabric][8]
+9. [fabirc samples chaincode][9]
 
 [1]: https://cn.hyperledger.org/ "Hyperledger" 
 [2]: https://hyperledger-fabric.readthedocs.io/en/latest/blockchain.html "Fabric"
@@ -774,3 +1055,5 @@ core.yaml文件格式如下，下面摘取了主要的配置：
 [5]: https://hyperledger-fabric.readthedocs.io/en/latest/commands/peercommand.html  "Hyperledger Fabric: Peer Commands"
 [6]: https://hyperledger-fabric.readthedocs.io/en/latest/arch-deep-dive.html "Hyperledger Fabric: Architecture Explained"
 [7]: http://hyperledger-fabric.readthedocs.io/en/latest/commands/peernode.html  "Hyperledger Fabric: peer node"
+[8]: https://stackoverflow.com/questions/45726536/peer-channel-creation-fails-in-hyperledger-fabric "peer channel creation fails in Hyperledger Fabric"
+[9]: https://github.com/hyperledger/fabric-samples/tree/release-1.1/chaincode  "fabirc samples chaincode"
