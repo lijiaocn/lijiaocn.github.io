@@ -3,7 +3,7 @@ layout: default
 title:  Hyperledger Fabric的使用
 author: 李佶澳
 createdate: 2018/02/23 10:50:00
-changedate: 2018/03/29 18:44:36
+changedate: 2018/03/30 15:40:07
 categories: 项目
 tags: blockchain
 keywords: 区块链,Hyperledger,使用
@@ -172,6 +172,20 @@ Fabric的模型主要由以下几个概念组成：
 	CORE_PEER_LOCALMSPID="Org1MSP"
 	CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
 
+## fabric ca
+
+fabric ca用来管理fabric的用户，即用户证书的签署和撤销等。
+
+启动fabric ca server启动后，可以直接用fabirc-ca-client创建、撤销证书。
+
+	fabric-ca-server init -b admin:adminpw
+
+详情参考[hyperleader fabric-ca][12]。
+
+编译：
+
+	git clone https://github.com/hyperledger/fabric-ca.git
+
 ## 使用方法
 
 上一节中通过byfn.sh脚本直接启动了一个fabric网络。这个过程隐藏了太多细节，需要有一个逐步说明的例子。
@@ -287,6 +301,22 @@ Fabric的模型主要由以下几个概念组成：
 
 	./peer.sh chaincode list --installed
 
+### 合约分步安装
+
+上面的安装步骤可以分成三步进行。
+
+合约打包:
+
+	peer chaincode package ccpack.out -n $NAME -v $VERSION -s -S -p $CODEPATH
+
+合约签署:
+
+	peer chaincode signpackage ccpack.out signedccpack.out
+
+合约安装:
+
+	peer chaincode install ./signedccpack.out
+
 ### 合约实例化
 
 合约实例化就是在指定的peer上启动一个docker容器，并调用合约的方法Init方法。
@@ -363,7 +393,37 @@ Fabric的模型主要由以下几个概念组成：
 
 账本中的数据没有被修改。
 
-## 源码编译
+### 更新合约
+
+`peer chaincode upgrade`用来更新合约，更新合约相当于将合约重新实例化，并带有一个新的版本号。
+
+更新合约之前，需要在所有的peer上安装最新的合约，并使用新的版本号:
+
+	VERSION=1.1
+	peer chaincode install -n $NAME -v $VERSION -p $CODEPATH
+
+然后直接使用upgrade更新合约：
+
+	VERSION=1.1
+	peer chaincode upgrade -o orderer.example.com:7050 --tls true --cafile ./tlsca.example.com-cert.pem -C $CHANNEL_NAME -n $NAME -v $VERSION -c '{"Args":["init","a","1000","b","2000"]}' -P "OR ('Org1MSP.member','Org2MSP.member')"
+
+合约更新之后，对查询、调用等操作都将使用最新合约，老版本的合约还会存在，但是不再起作用。
+
+每个peer上安装的合约必须是相同的，否则
+
+### 合约启动与暂停
+
+目前，fabric不支持合约的启动与暂停。要暂停合约，只能到peer上手动删除容器。
+
+## fabric SDKs
+
+当前(2018-03-30 14:59:11)正式的[Hyperledger Fabric SDKs][10]只有Node和java。
+
+其它语言的sdk在开发中， 在[github hyperleader][11]中可以找到。
+
+sdk分为两部分，`fabric-client`用来调用fabric，`fabric-ca-client`用来与fabric-ca交互，逐层、撤销用户等。
+
+## fabric编译
 
 编译的过程会联网，需要翻墙。
 
@@ -986,7 +1046,7 @@ docker配置错误，配置了fluentd driver，但是fluentd不存在。
 
 	No such image: dev-peer0.org2.example.com-mycc-1.0-15b571b3ce849066b7ec74497da3b27e54e0df1345daff3951b94245ce09c42b:latest
 
-找不到合约容器的镜像。
+找不到合约容器的镜像，是因为peer上却少相关镜像，参考下面的“合约实例化不成功”。
 
 ### 合约实例化不成功
 
@@ -1036,6 +1096,7 @@ docker配置错误，配置了fluentd driver，但是fluentd不存在。
 
 将fabirc-ccenv、fabric-baseos、fabric-javaenv三个镜像提前下载好以后，实例化成功。
 
+
 ## 参考
 
 1. [Hyperledger][1]
@@ -1047,6 +1108,9 @@ docker配置错误，配置了fluentd driver，但是fluentd不存在。
 7. [Hyperledger Fabric: peer node][7]
 8. [peer channel creation fails in Hyperledger Fabric][8]
 9. [fabirc samples chaincode][9]
+10. [Hyperledger Fabric SDKs][10]
+11. [github hyperleader][11]
+12. [hyperleader fabric-ca][12]
 
 [1]: https://cn.hyperledger.org/ "Hyperledger" 
 [2]: https://hyperledger-fabric.readthedocs.io/en/latest/blockchain.html "Fabric"
@@ -1057,3 +1121,6 @@ docker配置错误，配置了fluentd driver，但是fluentd不存在。
 [7]: http://hyperledger-fabric.readthedocs.io/en/latest/commands/peernode.html  "Hyperledger Fabric: peer node"
 [8]: https://stackoverflow.com/questions/45726536/peer-channel-creation-fails-in-hyperledger-fabric "peer channel creation fails in Hyperledger Fabric"
 [9]: https://github.com/hyperledger/fabric-samples/tree/release-1.1/chaincode  "fabirc samples chaincode"
+[10]: http://hyperledger-fabric.readthedocs.io/en/latest/fabric-sdks.html "Hyperledger Fabric SDKs"
+[11]: https://github.com/hyperledger  "github hyperleader"
+[12]: https://github.com/hyperledger/fabric-ca  "hyperleader fabric-ca"
