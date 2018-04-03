@@ -1,0 +1,187 @@
+---
+layout: default
+title:  Hyperledger fabric的chaincode开发
+author: lijiaocn
+createdate: 2018/04/03 10:07:00
+changedate: 2018/04/03 12:21:21
+categories: 项目
+tags: blockchain
+keywords:
+description: 学习写一下chaincode
+
+---
+
+* auto-gen TOC:
+{:toc}
+
+## 说明
+
+Hyperledger fabric的chaincode可以使用Go、Node.js、Java等语言开发。
+
+Chaincode将会在一个独立的docker容器中运行，实现与背书节点进程之间的隔离。
+
+这里以用Go语言开发Chaincode为例。
+
+## ChainCode 接口
+
+接口在["github.com/hyperledger/fabric/core/chaincode/shim"][1]中的ChaincodeStubInterface中定义。
+
+	ChaincodeStubInterface : interface
+	    [methods]
+	   +CreateCompositeKey(objectType string, attributes []string) : string, error
+	   +DelState(key string) : error
+	   +GetArgs() : [][]byte
+	   +GetArgsSlice() : []byte, error
+	   +GetBinding() : []byte, error
+	   +GetChannelID() : string
+	   +GetCreator() : []byte, error
+	   +GetDecorations() : map[string][]byte
+	   +GetFunctionAndParameters() : string, []string
+	   +GetHistoryForKey(key string) : HistoryQueryIteratorInterface, error
+	   +GetQueryResult(query string) : StateQueryIteratorInterface, error
+	   +GetSignedProposal() : *pb.SignedProposal, error
+	   +GetState(key string) : []byte, error
+	   +GetStateByPartialCompositeKey(objectType string, keys []string) : StateQueryIteratorInterface, error
+	   +GetStateByRange(startKey, endKey string) : StateQueryIteratorInterface, error
+	   +GetStringArgs() : []string
+	   +GetTransient() : map[string][]byte, error
+	   +GetTxID() : string
+	   +GetTxTimestamp() : *timestamp.Timestamp, error
+	   +InvokeChaincode(chaincodeName string, args [][]byte, channel string) : pb.Response
+	   +PutState(key string, value []byte) : error
+	   +SetEvent(name string, payload []byte) : error
+	   +SplitCompositeKey(compositeKey string) : string, []string, error
+
+## chaincode代码结构
+
+chaincode的代码结构大体如下，直接调用shim.Start()启动chaincode，传入的结构是chaincode的数据。
+
+	package main
+	
+	import (
+		"github.com/hyperledger/fabric/core/chaincode/shim"
+	)
+	
+	// SimpleChaincode example simple Chaincode implementation
+	type SimpleChaincode struct {
+	}
+	
+	func main() {
+		err := shim.Start(new(SimpleChaincode))
+		if err != nil {
+			fmt.Printf("Error starting Simple chaincode: %s", err)
+		}
+	}
+
+## 开发chaincode接口
+
+为chaincode的结构体增加公开方法，chaincode部署到fabric中以后，这些方法可以通过fabic的peer结点进行调用。
+
+首先增加一个Init方法，这个方法将在chaincode初始化的时候调用，用来初始化chaincode。
+
+	func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
+		fmt.Println("ex02 Init")
+		_, args := stub.GetFunctionAndParameters()
+		var A, B string    // Entities
+		var Aval, Bval int // Asset holdings
+		var err error
+
+		if len(args) != 4 {
+			return shim.Error("Incorrect number of arguments. Expecting 4")
+		}
+
+		// Initialize the chaincode
+		A = args[0]
+		Aval, err = strconv.Atoi(args[1])
+		if err != nil {
+			return shim.Error("Expecting integer value for asset holding")
+		}
+		B = args[2]
+		Bval, err = strconv.Atoi(args[3])
+		if err != nil {
+			return shim.Error("Expecting integer value for asset holding")
+		}
+		fmt.Printf("Aval = %d, Bval = %d\n", Aval, Bval)
+
+		// Write the state to the ledger
+		err = stub.PutState(A, []byte(strconv.Itoa(Aval)))
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+
+		err = stub.PutState(B, []byte(strconv.Itoa(Bval)))
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+
+		return shim.Success(nil)
+	}
+
+### 获取传入参数
+
+传入参数通过`stub.GetFunctionAndParameters()`获取，得到的是一个数组，记录了所有传入参数。
+
+	func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
+		_, args := stub.GetFunctionAndParameters()
+		..
+		if len(args) != 4 {
+			return shim.Error("Incorrect number of arguments. Expecting 4")
+		}
+
+		// Initialize the chaincode
+		A = args[0]
+		...
+		}
+
+### 写入账本
+
+使用`stub.PutState()`方法以`key-value`的方式将数据写入账本：
+
+	//A:="a"
+	err = stub.PutState(A, []byte(strconv.Itoa(Aval)))
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+	//B:="a"
+	err = stub.PutState(B, []byte(strconv.Itoa(Bval)))
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+### 查询账本
+
+使用`stub.GetState()`方法查询区块：
+
+	//A:="a"
+	Avalbytes, err := stub.GetState(A)
+	if err != nil {
+		jsonResp := "{\"Error\":\"Failed to get state for " + A + "\"}"
+		return shim.Error(jsonResp)
+	}
+
+### 返回值
+
+使用`stub.Success()`或者`stub.Error()`将数据返回给调用者：
+
+	func Success(payload []byte) pb.Response {
+		return pb.Response{
+			Status:  OK,
+			Payload: payload,
+		}
+	}
+	
+	func Error(msg string) pb.Response {
+		return pb.Response{
+			Status:  ERROR,
+			Message: msg,
+		}
+	}
+
+## 参考
+
+1. [chaincode interface][1]
+2. [Hyperledger Fabric的使用][2]
+
+[1]: https://github.com/hyperledger/fabric/blob/release-1.1/core/chaincode/shim/interfaces_stable.go  "chaincode interface" 
+[2]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/02/23/hyperledger-fabric-usage.html  "Hyperledger Fabric的使用" 

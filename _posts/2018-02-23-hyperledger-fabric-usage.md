@@ -3,7 +3,7 @@ layout: default
 title:  Hyperledger Fabric的使用
 author: 李佶澳
 createdate: 2018/02/23 10:50:00
-changedate: 2018/03/30 15:40:07
+changedate: 2018/04/03 10:07:13
 categories: 项目
 tags: blockchain
 keywords: 区块链,Hyperledger,使用
@@ -185,6 +185,98 @@ fabric ca用来管理fabric的用户，即用户证书的签署和撤销等。
 编译：
 
 	git clone https://github.com/hyperledger/fabric-ca.git
+	cd fabric-ca
+	make
+
+启动fabric-ca-server:
+
+	$ fabric-ca-server init -b  admin:pass
+	$ fabric-ca-server start -b  admin:pass
+	2018/04/02 10:09:58 [INFO] Configuration file location: /opt/app/fabric/ca/fabric-ca-server-config.yaml
+	2018/04/02 10:09:58 [INFO] Starting server in home directory: /opt/app/fabric/ca
+	2018/04/02 10:09:58 [INFO] Server Version: 1.1.1-snapshot-d536f5a
+	2018/04/02 10:09:58 [INFO] Server Levels: &{Identity:1 Affiliation:1 Certificate:1}
+	2018/04/02 10:09:58 [INFO] The CA key and certificate already exist
+	2018/04/02 10:09:58 [INFO] The key is stored by BCCSP provider 'SW'
+	2018/04/02 10:09:58 [INFO] The certificate is at: /opt/app/fabric/ca/ca-cert.pem
+	2018/04/02 10:09:58 [INFO] Initialized sqlite3 database at /opt/app/fabric/ca/fabric-ca-server.db
+	2018/04/02 10:09:58 [INFO] Home directory for default CA: /opt/app/fabric/ca
+	2018/04/02 10:09:58 [INFO] Listening on http://0.0.0.0:7054
+
+注册用户admin，密码为pass：
+
+	export FABRIC_CA_CLIENT_HOME=/opt/app/fabric-ca/clients/admin
+	mkdir -p $FABRIC_CA_CLIENT_HOME
+	fabric-ca-client enroll -u http://admin:pass@localhost:7054
+
+用户注册后会在$FABRIC_CA_CLIENT_HOME目录中，生成该用户的msp文件。
+
+登记一个新的管理员admin2：
+
+	$ export FABRIC_CA_CLIENT_HOME=/opt/app/fabric-ca/clients/admin
+	$ fabric-ca-client register --id.name admin2 --id.affiliation org1.department1 --id.attrs 'hf.Revoker=true,admin=true:ecert'
+	2018/04/02 10:24:10 [INFO] Configuration file location: /opt/app/fabric-ca/clients/admin/fabric-ca-client-config.yaml
+	2018/04/02 10:24:11 [INFO] 127.0.0.1:37738 POST /register 201 0 "OK"
+	Password: yRPoQHgvRMfv
+
+admin2的密码为yRPoQHgvRMfv，用该密码注册admin2:
+
+	export FABRIC_CA_CLIENT_HOME=/opt/app/fabric-ca/clients/admin2
+	mkdir -p $FABRIC_CA_CLIENT_HOME
+	fabric-ca-client enroll -u http://admin2:yRPoQHgvRMfv@localhost:7054
+
+登记peer节点：
+
+	$ export FABRIC_CA_CLIENT_HOME=/opt/app/fabric-ca/clients/admin
+	$ fabric-ca-client register --id.name peer1 --id.type peer --id.affiliation org1.department1 --id.secret peer1pw
+	2018/04/02 10:29:19 [INFO] Configuration file location: /opt/app/fabric-ca/clients/admin/fabric-ca-client-config.yaml
+	2018/04/02 10:29:19 [INFO] 127.0.0.1:37742 POST /register 201 0 "OK"
+	Password: peerlpw
+
+注册peer节点:
+
+	$ export FABRIC_CA_CLIENT_HOME=/opt/app/fabric-ca/clients/peer1
+	$ mkdir -p $FABRIC_CA_CLIENT_HOME
+	$ fabric-ca-client enroll -u http://peer1:peer1pw@localhost:7054 
+	2018/04/02 10:31:33 [INFO] Created a default configuration file at /opt/app/fabric-ca/clients/peer1/fabric-ca-client-config.yaml
+	2018/04/02 10:31:33 [INFO] generating key: &{A:ecdsa S:256}
+	2018/04/02 10:31:33 [INFO] encoded CSR
+	2018/04/02 10:31:33 [INFO] signed certificate with serial number 466996778638269692226353529244210797413718475950
+	2018/04/02 10:31:33 [INFO] 127.0.0.1:37746 POST /enroll 201 0 "OK"
+	2018/04/02 10:31:33 [INFO] Stored client certificate at /opt/app/fabric-ca/clients/peer1/msp/signcerts/cert.pem
+	2018/04/02 10:31:33 [INFO] Stored root CA certificate at /opt/app/fabric-ca/clients/peer1/msp/cacerts/localhost-7054.pem
+	2018/04/02 10:31:33 [INFO] Stored intermediate CA certificates at /opt/app/fabric-ca/clients/peer1/msp/intermediatecerts/localhost-7054.pem
+
+重新获取用户的注册证书：
+
+	$ export FABRIC_CA_CLIENT_HOME=/opt/app/fabric-ca/clients/peer1
+	$ fabric-ca-client reenroll 
+	2018/04/02 10:32:45 [INFO] Configuration file location: /opt/app/fabric-ca/clients/peer1/fabric-ca-client-config.yaml
+	2018/04/02 10:32:45 [INFO] generating key: &{A:ecdsa S:256}
+	2018/04/02 10:32:45 [INFO] encoded CSR
+	2018/04/02 10:32:45 [INFO] signed certificate with serial number 597323218796588712462517843147119438988456740867
+	2018/04/02 10:32:45 [INFO] 127.0.0.1:37748 POST /reenroll 201 0 "OK"
+	2018/04/02 10:32:45 [INFO] Stored client certificate at /opt/app/fabric-ca/clients/peer1/msp/signcerts/cert.pem
+	2018/04/02 10:32:45 [INFO] Stored root CA certificate at /opt/app/fabric-ca/clients/peer1/msp/cacerts/localhost-7054.pem
+	2018/04/02 10:32:45 [INFO] Stored intermediate CA certificates at /opt/app/fabric-ca/clients/peer1/msp/intermediatecerts/localhost-7054.pem
+
+注销用户：
+
+	$ export FABRIC_CA_CLIENT_HOME=/opt/app/fabric-ca/clients/admin
+	$ fabric-ca-client revoke -e peer1
+	2018/04/02 10:34:23 [INFO] Configuration file location: /opt/app/fabric-ca/clients/admin/fabric-ca-client-config.yaml
+	2018/04/02 10:34:23 [INFO] 127.0.0.1:37750 POST /revoke 200 0 "OK"
+	2018/04/02 10:34:23 [INFO] Sucessfully revoked certificates: [{Serial:51ccdc1bda8e1aa36496fb7169864b44e932c4ae AKI:f32804a7210722c0d06a525f6f3b79cf4f4eba51} {Serial:68a0e64546a3e19a0654b7576c269be89b97c803 AKI:f32804a7210722c0d06a525f6f3b79cf4f4eba51}]
+
+获取fabric-ca的根证书：
+
+	$ export FABRIC_CA_CLIENT_HOME=/opt/app/fabric-ca/clients/cacerts
+	$ mkdir $FABRIC_CA_CLIENT_HOME
+	$ fabric-ca-client getcacert -u http://localhost:7054 -M $FABRIC_CA_CLIENT_HOME/msp 
+	2018/04/02 10:40:13 [INFO] Configuration file location: /opt/app/fabric-ca/clients/cacerts/fabric-ca-client-config.yaml
+	2018/04/02 10:40:13 [INFO] 127.0.0.1:37756 POST /cainfo 200 0 "OK"
+	2018/04/02 10:40:13 [INFO] Stored root CA certificate at /opt/app/fabric-ca/clients/cacerts/msp/cacerts/localhost-7054.pem
+	2018/04/02 10:40:13 [INFO] Stored intermediate CA certificates at /opt/app/fabric-ca/clients/cacerts/msp/intermediatecerts/localhost-7054.pem
 
 ## 使用方法
 
