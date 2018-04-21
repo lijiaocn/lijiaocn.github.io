@@ -3,7 +3,7 @@ layout: default
 title:  Hyperledger fabric的chaincode开发
 author: lijiaocn
 createdate: 2018/04/03 10:07:00
-changedate: 2018/04/03 12:21:21
+changedate: 2018/04/11 19:10:48
 categories: 项目
 tags: blockchain
 keywords:
@@ -73,9 +73,9 @@ chaincode的代码结构大体如下，直接调用shim.Start()启动chaincode�
 		}
 	}
 
-## 开发chaincode接口
+## 实现Init接口
 
-为chaincode的结构体增加公开方法，chaincode部署到fabric中以后，这些方法可以通过fabic的peer结点进行调用。
+chaincode部署到fabric中以后，这些方法可以通过fabic的peer结点进行调用。
 
 首先增加一个Init方法，这个方法将在chaincode初始化的时候调用，用来初始化chaincode。
 
@@ -117,12 +117,33 @@ chaincode的代码结构大体如下，直接调用shim.Start()启动chaincode�
 		return shim.Success(nil)
 	}
 
-### 获取传入参数
+## 实现Invoke接口
+
+通过Invoke接口，将调用请求转发给具体的方法。
+
+	func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
+	    fmt.Println("ex02 Invoke")
+	    function, args := stub.GetFunctionAndParameters()
+	    if function == "invoke" {
+	        // Make payment of X units from A to B
+	        return t.invoke(stub, args)
+	    } else if function == "delete" {
+	        // Deletes an entity from its state
+	        return t.delete(stub, args)
+	    } else if function == "query" {
+	        // the old "Query" is now implemtned in invoke
+	        return t.query(stub, args)
+	    }
+	
+	    return shim.Error("Invalid invoke function name. Expecting \"invoke\" \"delete\" \"query\"")
+	}
+
+## 获取传入参数
 
 传入参数通过`stub.GetFunctionAndParameters()`获取，得到的是一个数组，记录了所有传入参数。
 
 	func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
-		_, args := stub.GetFunctionAndParameters()
+		function, args := stub.GetFunctionAndParameters()
 		..
 		if len(args) != 4 {
 			return shim.Error("Incorrect number of arguments. Expecting 4")
@@ -149,7 +170,7 @@ chaincode的代码结构大体如下，直接调用shim.Start()启动chaincode�
 		return shim.Error(err.Error())
 	}
 
-### 查询账本
+## 查询账本
 
 使用`stub.GetState()`方法查询区块：
 
@@ -160,7 +181,7 @@ chaincode的代码结构大体如下，直接调用shim.Start()启动chaincode�
 		return shim.Error(jsonResp)
 	}
 
-### 返回值
+## 返回值
 
 使用`stub.Success()`或者`stub.Error()`将数据返回给调用者：
 

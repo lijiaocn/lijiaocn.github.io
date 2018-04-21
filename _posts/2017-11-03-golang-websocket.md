@@ -3,7 +3,7 @@ layout: default
 title: go中使用websocket
 author: 李佶澳
 createdate: 2017/11/03 10:24:16
-changedate: 2017/11/06 09:57:28
+changedate: 2018/03/07 19:30:01
 categories: 编程
 tags: golang
 keywords: websocket,golang,编程,example
@@ -21,6 +21,8 @@ websocket协议提供了一种在客户端与浏览器之间建立双向连接�
 [golang.org/x/net/websocket][2]是一个golang的websocket库。
 
 ## websocket协议了解
+
+websocket直接建立在tcp协议上，它与http协议唯一的关系是，连接建立请求使用的是http协议。
 
 ### 用途
 
@@ -62,7 +64,7 @@ close通过发送control frame完成。
 
 ### 安全模型
 
-Websocket使用`origin model`，通过依据`origin`判断某个网页是否具有访问websocket的权限。
+Websocket使用`origin model`，依据`origin`判断某个网页是否具有访问websocket的权限。
 
 如果是非浏览器客户端，origin model不起作用，client可以使用任意的origin。
 
@@ -155,7 +157,7 @@ websocket中使用frame传输数据，格式如下：
 		}
 	}
 
-可以看到，server可以直接读取ws中的数据，写入则就是回应给客户端。
+可以看到，server可以直接读取ws中的数据，以及向ws写入回应数据。
 
 ## websocket的client端
 
