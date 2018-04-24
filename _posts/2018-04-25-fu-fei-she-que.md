@@ -1,9 +1,9 @@
 ---
 layout: default
-title: 价格不高却回报超高的付费社区都有这些（知识星球）
+title: 不贵、回报超高的付费社区都有这些（知识星球）
 author: 李佶澳
 createdate: 2018/04/25 05:21:45
-changedate: 2018/04/25 06:00:43
+changedate: 2018/04/25 06:07:01
 categories: 好货
 tags:  community
 keywords: 付费社区,便宜,知识星球,小密圈
@@ -28,7 +28,7 @@ description: 现在，越来越多的好内容都只出现在付费社区里了
 
 而且这个星球，一旦加入，永久有效哦~~
 
-![小道消息和他的朋友们]({{ site.imglocal }}/xiaomiquan-xiaodao.png}})
+![小道消息和他的朋友们]({{ site.imglocal }}/xiaomiquan-xiaodao.png)
 
 ## caoz的小密圈
 
@@ -40,7 +40,16 @@ caoz估计也不必多说，他是前百度元老曹政维护的一个星球，�
 
 caoz本人在新加坡创业，他置顶声明可以随时找他退款。据我所知，几乎没有退出的~~
 
-![caoz的小密圈]({{ site.imglocal }}/xiaomiquan-xiaodao.png}})
+![caoz的小密圈]({{ site.imglocal }}/xiaomiquan-xiaodao.png)
+
+## 区块链实践分享 
+
+呃，这个星球是我维护的。目前区块链这个方向上鱼龙混杂，一些人在进行各种忽悠。那些不负责任的忽悠，真的会坑害很多人。轻则是金钱的损失，重则是投入了大量时间和精力，最后却发现做的都是一些无意义的事情。
+
+我希望能在这里与更多的人分享一些真正有意义的实践。
+
+
+![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.png)
 
 ## 复利学院
 
@@ -50,16 +59,8 @@ caoz本人在新加坡创业，他置顶声明可以随时找他退款。据我�
 
 这个星球主要关注企业价值，适合那些追求长期稳定收益的投资者，从他的名字就可以看出来了。
 
-![复利学院]({{ site.imglocal }}/xiaomiquan-fulixueyuan.png}})
+![复利学院]({{ site.imglocal }}/xiaomiquan-fulixueyuan.png)
 
-## 区块链实践分享 
-
-呃，这个星球是我维护的。目前区块链这个方向上鱼龙混杂，一些人在进行各种忽悠。那些不负责任的忽悠，真的会坑害很多人。轻则是金钱的损失，重则是投入了大量时间和精力，最后却发现做的都是一些无意义的事情。
-
-我希望能在这里与更多的人分享一些真正有意义的实践。
-
-
-![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.png}})
 
 ## 小程序淘金
 
@@ -67,7 +68,7 @@ caoz本人在新加坡创业，他置顶声明可以随时找他退款。据我�
 
 这是小程序刚开始发力的时候，建立的星球，聚集了第一批小程序弄潮儿，而且越来越多的小程序创业者在加入。
 
-![小程序淘金]({{ site.imglocal }}/xiaomiquan-xiaochengxu.png}})
+![小程序淘金]({{ site.imglocal }}/xiaomiquan-xiaochengxu.png)
 
 ## 创业直播间
 
@@ -75,4 +76,4 @@ caoz本人在新加坡创业，他置顶声明可以随时找他退款。据我�
 
 真心的，看过之后，你会发现，原来创业这么骨感。
 
-![创业直播间]({{ site.imglocal }}/xiaomiquan-chuangye.png}})
+![创业直播间]({{ site.imglocal }}/xiaomiquan-chuangye.png)
