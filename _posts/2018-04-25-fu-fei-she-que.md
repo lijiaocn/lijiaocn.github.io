@@ -3,9 +3,9 @@ layout: default
 title: 不贵、回报超高的付费社区都有这些（知识星球）
 author: 李佶澳
 createdate: 2018/04/25 05:21:45
-changedate: 2018/04/25 06:09:13
+changedate: 2018/04/25 06:11:45
 categories: 好货
-tags:  community
+tags:  好货
 keywords: 付费社区,不贵,知识星球,干货猛料,便宜
 description: 现在，越来越多的好内容都只出现在付费社区里了
 
