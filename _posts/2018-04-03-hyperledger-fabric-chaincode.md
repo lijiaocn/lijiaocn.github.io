@@ -3,7 +3,7 @@ layout: default
 title:  Hyperledger fabric的chaincode开发
 author: lijiaocn
 createdate: 2018/04/03 10:07:00
-changedate: 2018/04/11 19:10:48
+changedate: 2018/04/19 17:13:09
 categories: 项目
 tags: blockchain
 keywords:
@@ -82,6 +82,7 @@ chaincode部署到fabric中以后，这些方法可以通过fabic的peer结点�
 	func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 		fmt.Println("ex02 Init")
 		_, args := stub.GetFunctionAndParameters()
+
 		var A, B string    // Entities
 		var Aval, Bval int // Asset holdings
 		var err error
@@ -154,7 +155,7 @@ chaincode部署到fabric中以后，这些方法可以通过fabic的peer结点�
 		...
 		}
 
-### 写入账本
+## 写入账本
 
 使用`stub.PutState()`方法以`key-value`的方式将数据写入账本：
 
@@ -199,10 +200,20 @@ chaincode部署到fabric中以后，这些方法可以通过fabic的peer结点�
 		}
 	}
 
+## 并发问题
+
+[Hyperledger Fabric and how it isn’t concurrent out of the box.][3]
+
+[How hyperledger handle the Concurrent of “invoke” of the same Key-Value pair of chaincode?][4]
+
 ## 参考
 
 1. [chaincode interface][1]
-2. [Hyperledger Fabric的使用][2]
+2. [HyperledgerFabric的使用][2]
+3. [Hyperledger Fabric and how it isn’t concurrent out of the box.][3]
+4. [How hyperledger handle the Concurrent of “invoke” of the same Key-Value pair of chaincode?][4]
 
 [1]: https://github.com/hyperledger/fabric/blob/release-1.1/core/chaincode/shim/interfaces_stable.go  "chaincode interface" 
 [2]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/02/23/hyperledger-fabric-usage.html  "Hyperledger Fabric的使用" 
+[3]: https://medium.com/wearetheledger/hyperledger-fabric-concurrency-really-eccd901e4040 "Hyperledger Fabric and how it isn’t concurrent out of the box"
+[4]: https://stackoverflow.com/questions/37691994/how-hyperledger-handle-the-concurrent-of-invoke-of-the-same-key-value-pair-of?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa  "How hyperledger handle the Concurrent of “invoke” of the same Key-Value pair of chaincode?"
