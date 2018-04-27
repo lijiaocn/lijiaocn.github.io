@@ -1,9 +1,9 @@
 ---
 layout: default
-title:  hyperledge的cello项目的部署和使用
+title:  hyperledger的cello项目的部署和使用
 author: 李佶澳
 createdate: 2018/04/25 10:32:00
-changedate: 2018/04/25 11:10:56
+changedate: 2018/04/27 10:42:50
 categories: 方法
 tags: hyperledger
 keywords: 区块链,hyperledger,cello,blockchain
