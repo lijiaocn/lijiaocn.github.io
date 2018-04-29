@@ -3,11 +3,11 @@ layout: default
 title:  hyperledger的fabric项目的全手动部署
 author: lijiaocn
 createdate: 2018/04/28 18:45:00
-changedate: 2018/04/29 21:51:07
+changedate: 2018/04/29 21:54:14
 categories: 项目
 tags: blockchain
 keywords: 超级账本,hyperledger,fabric,逐步部署
-description: 
+description: 经历了诸多磨难之后，总算弄清楚了fabric的组件间关系与配置项。
 
 ---
 
@@ -18,7 +18,7 @@ description:
 
 虽然HyperLedger Fabric的文档中给出一套脚本[Building Your First Network][1]，通过docker-compose可以直接启动一个all-in-one的fabric。
 
-这种方式隐藏了太多的细节！只能让人对fabric有个模糊的认识，不仅让人对于生产环境中部署方式，依然不情不清楚，而且对配置文件中的配置项也完全不了解。
+这种方式隐藏了太多的细节！只能让人对fabric有个模糊的认识，不仅让人对于生产环境中部署方式，依然不清不楚，而且对配置文件中的配置项也完全不了解。
 
 通过反复阅读fabric的文档，以及[Building Your First Network][1]中的脚本，经历了诸多磨难之后，总算弄清楚了fabric的组件间关系与配置项。
 
