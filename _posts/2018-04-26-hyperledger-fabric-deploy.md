@@ -3,7 +3,7 @@ layout: default
 title:  hyperledger的fabric项目的全手动部署
 author: lijiaocn
 createdate: 2018/04/28 18:45:00
-changedate: 2018/04/29 21:54:14
+changedate: 2018/04/30 16:31:26
 categories: 项目
 tags: blockchain
 keywords: 超级账本,hyperledger,fabric,逐步部署
@@ -18,15 +18,11 @@ description: 经历了诸多磨难之后，总算弄清楚了fabric的组件间�
 
 虽然HyperLedger Fabric的文档中给出一套脚本[Building Your First Network][1]，通过docker-compose可以直接启动一个all-in-one的fabric。
 
-这种方式隐藏了太多的细节！只能让人对fabric有个模糊的认识，不仅让人对于生产环境中部署方式，依然不清不楚，而且对配置文件中的配置项也完全不了解。
+这种方式隐藏了太多的细节，只能让人对fabric有个模糊的认识，对于生产环境中部署方式，依然不清不楚，而且对配置文件中的配置项也完全不了解。
 
 通过反复阅读fabric的文档，以及[Building Your First Network][1]中的脚本，经历了诸多磨难之后，总算弄清楚了fabric的组件间关系与配置项。
 
-这里与大家分享一下，如何手动部署hyperledger fabric。
-
-这里创建了一个名为fabric-deploy的目录，用来存放部署过程使用到的文件。
-
-有问题可以到知识星球里进行交流：
+这里创建了一个名为fabric-deploy的目录，用来存放部署过程使用到的文件。有问题可以到知识星球里进行交流。
 
 ![知识星球区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
@@ -52,18 +48,23 @@ org2.example.com有一个peer:
 
 三台机器的IP，以及部署的组件如下：
 
-	10.39.0.121  部署:  orderer、peer0@org1
-	10.39.0.122  部署:  peer1@org1
-	10.39.0.127  部署： peer0@org2
+	192.168.88.10  部署:  orderer、peer0@org1
+	192.168.88.11  部署:  peer1@org1
+	192.168.88.12  部署： peer0@org2
 
 相应域名的IP分别为：
 
-	10.39.0.121 orderer.example.com
-	10.39.0.121 peer0.org1.example.com
-	10.39.0.122 peer1.org1.example.com
-	10.39.0.127 peer0.org2.example.com
+	192.168.88.10 orderer.example.com
+	192.168.88.10 peer0.org1.example.com
+	192.168.88.11 peer1.org1.example.com
+	192.168.88.12 peer0.org2.example.com
 
 将这四条记录添加到每台机器的/etc/hosts文件中。
+
+每台机器上还需要安装docker:
+
+	yum install -y docker 
+	systemctl start docker
 
 另外fabric的peer会调用docker，需要在所有peer上安装docker，并提前下载镜像：
 
@@ -533,37 +534,37 @@ fabric-ca的部署和详细用法见：[hyperledger的fabricCA的使用][4]
 
 部署之前，先确保已经在每台机器的/etc/hosts文件中添加下列的记录：
 
-	10.39.0.121 orderer.example.com
-	10.39.0.121 peer0.org1.example.com
-	10.39.0.122 peer1.org1.example.com
-	10.39.0.127 peer0.org2.example.com
+	192.168.88.10 orderer.example.com
+	192.168.88.10 peer0.org1.example.com
+	192.168.88.11 peer1.org1.example.com
+	192.168.88.12 peer0.org2.example.com
 
 注意根据你自己的环境情况修改。
 
-在10.39.0.121上创建目录:
+在192.168.88.10上创建目录:
 
 	mkdir -p /opt/app/fabric/{orderer,peer}
 
-将orderer.example.com和peer0.org1.exmaple.com中的内容复制到10.39.0.121:
+将orderer.example.com和peer0.org1.exmaple.com中的内容复制到192.168.88.10:
 
-	scp -r orderer.example.com/* root@10.39.0.121:/opt/app/fabric/orderer/
-	scp -r peer0.org1.example.com/* root@10.39.0.121:/opt/app/fabric/peer/
+	scp -r orderer.example.com/* root@192.168.88.10:/opt/app/fabric/orderer/
+	scp -r peer0.org1.example.com/* root@192.168.88.10:/opt/app/fabric/peer/
 
-在10.39.0.122上创建目录:
-
-	mkdir -p /opt/app/fabric/peer
-
-将peer1.org1.exmaple.com中的内容复制到10.39.0.122:
-
-	scp -r peer1.org1.example.com/* root@10.39.0.122:/opt/app/fabric/peer/
-
-在10.39.0.127上创建目录:
+在192.168.88.11上创建目录:
 
 	mkdir -p /opt/app/fabric/peer
 
-将peer0.org2.exmaple.com中的内容复制到10.39.0.127:
+将peer1.org1.exmaple.com中的内容复制到192.168.88.11:
 
-	scp -r peer0.org2.example.com/* root@10.39.0.127:/opt/app/fabric/peer/
+	scp -r peer1.org1.example.com/* root@192.168.88.11:/opt/app/fabric/peer/
+
+在192.168.88.12上创建目录:
+
+	mkdir -p /opt/app/fabric/peer
+
+将peer0.org2.exmaple.com中的内容复制到192.168.88.12:
+
+	scp -r peer0.org2.example.com/* root@192.168.88.12:/opt/app/fabric/peer/
 
 ## 启动前准备
 
@@ -640,9 +641,9 @@ order、peer都部署到位，但是对我这里示意的场景，需要的文�
 
 	./bin/configtxgen -profile TwoOrgsOrdererGenesis -outputBlock ./genesisblock
 
-将./genesisblock文件复制到10.39.0.121的/opt/app/fabric/orderer/目录中:
+将./genesisblock文件复制到192.168.88.10的/opt/app/fabric/orderer/目录中:
 
-	scp genesisblock root@10.39.0.121:/opt/app/fabric/orderer/
+	scp genesisblock root@192.168.88.10:/opt/app/fabric/orderer/
 
 ## 启动
 
