@@ -3,7 +3,7 @@ layout: default
 title:  两个互联网大牛的伊朗见闻
 author: 李佶澳
 createdate: 2018/05/01 01:53:00
-changedate: 2018/05/01 02:06:34
+changedate: 2018/05/01 02:11:39
 categories: 投资
 tags: 投资
 keywords: 伊朗,投资机会,互联网,新兴国家
@@ -116,7 +116,7 @@ description: 越来越多的人开始将目光投向海外了
 
 caoz的知识星球是“caoz的小密圈”：
 
-![caoz的小密圈]({{ site.imglocal }}/xiaomiquan-xiaodao.png)
+![caoz的小密圈]({{ site.imglocal }}/xiaomiquan-caoz.png)
 
 ## 参考
 

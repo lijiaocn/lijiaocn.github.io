@@ -3,7 +3,7 @@ layout: default
 title: 不贵、回报超高的，付费社区都有哪些?（知识星球）
 author: 李佶澳
 createdate: 2018/04/25 05:21:45
-changedate: 2018/05/01 02:05:18
+changedate: 2018/05/01 02:11:30
 categories: 好货
 tags:  好货
 keywords: 付费社区,不贵,知识星球,干货猛料,便宜
@@ -44,8 +44,7 @@ caoz估计也不必多说，他是前百度元老曹政维护的一个星球，�
 
 caoz本人在新加坡创业，他置顶声明可以随时找他退款。据我所知，几乎没有退出的~~
 
-
-![caoz的小密圈]({{ site.imglocal }}/xiaomiquan-xiaodao.png)
+![caoz的小密圈]({{ site.imglocal }}/xiaomiquan-caoz.png)
 
 ## 区块链实践分享 
 
