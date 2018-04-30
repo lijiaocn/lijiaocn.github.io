@@ -1,9 +1,9 @@
 ---
 layout: default
 title:  hyperledger的fabric项目的全手动部署
-author: lijiaocn
+author: 李佶澳
 createdate: 2018/04/28 18:45:00
-changedate: 2018/04/30 16:31:26
+changedate: 2018/04/30 16:38:55
 categories: 项目
 tags: blockchain
 keywords: 超级账本,hyperledger,fabric,逐步部署
