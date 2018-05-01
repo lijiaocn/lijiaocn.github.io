@@ -3,7 +3,7 @@ layout: default
 title: "[知识星球精华帖]: 从一个优惠券开始的一些发现"
 author: "阿彪@caoz的小密圈"
 createdate: 2018/05/01 11:53:25
-changedate: 2018/05/01 14:01:10
+changedate: 2018/05/02 07:46:03
 categories: 好货
 tags:  好货
 keywords: 知识星球精华,caoz的小密圈,Affiliate,telegram,优惠券营销
@@ -26,11 +26,11 @@ description: 无意中进了一个优惠券的Telegram的channel, 相当于公�
 
 无意中进了一个优惠券的Telegram的channel, 相当于公众号。专门发优惠券，带有aff链接。（图一）
 
-![优惠券图片1]({{ site.imglocal }}/cao-jinghua/youhui1.png)
+![优惠券图片1]({{ site.imglocal }}/caoz-jinghua/youhui1.png)
 
 然后谷歌搜一下，是专门的技术型博客，同时做各种VPS的affiliate.（见图二）。
 
-![优惠券图片2]({{ site.imglocal }}/cao-jinghua/youhui2.png)
+![优惠券图片2]({{ site.imglocal }}/caoz-jinghua/youhui2.png)
 
 留下疑惑1，是不是可以专门做个优惠券的telegram channel呢？ 
 
@@ -38,7 +38,7 @@ description: 无意中进了一个优惠券的Telegram的channel, 相当于公�
 
 稍微等等，由于职业习惯，那些网站给电报导流最多呢？（见图三）
 
-![优惠券图片3]({{ site.imglocal }}/cao-jinghua/youhui3.png)
+![优惠券图片3]({{ site.imglocal }}/caoz-jinghua/youhui3.png)
 
 第一个是俄罗斯的一个telegram channel导航站。第二三四是伊朗站点，没太清楚，和卖货有一定关系。第五个网站有意思，token空投提醒网站。
 
@@ -48,11 +48,11 @@ description: 无意中进了一个优惠券的Telegram的channel, 相当于公�
 
 再继续， 我们进入tgstat.ru, tgstat.com看看telegram channel导航站，看看sales分类，加了一些，发现都是导流到各个电商网站，aliexpress比较多。这个就和国内淘宝客一样。（见图四五六)
 
-![优惠券图片4]({{ site.imglocal }}/cao-jinghua/youhui4.png)
+![优惠券图片4]({{ site.imglocal }}/caoz-jinghua/youhui4.png)
 
-![优惠券图片5]({{ site.imglocal }}/cao-jinghua/youhui5.png)
+![优惠券图片5]({{ site.imglocal }}/caoz-jinghua/youhui5.png)
 
-![优惠券图片6]({{ site.imglocal }}/cao-jinghua/youhui6.png)
+![优惠券图片6]({{ site.imglocal }}/caoz-jinghua/youhui6.png)
 
 再看看数据， 一般，观看数/订阅数=50%左右，reach率比较高。远高于facebook和微信公众号。再看看每个链接的点击数，因为谷歌短链是每个人都可以看到该链接的点击数，选了四五条，算了一下点击率大概0.5%-2%左右。也就是20K粉丝，一条post大约10K观看，100个点击。一天好像可以发四五条post, 也就是400-500个点击。
 
