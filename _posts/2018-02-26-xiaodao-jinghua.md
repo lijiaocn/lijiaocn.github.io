@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "[知识星球精华贴]：如何提高信息素养?
+title: "[知识星球精华贴]：如何提高信息素养?"
 author: "冯大辉@小道消息"
 createdate: 2018/05/01 12:02:05
-changedate: 2018/05/01 14:01:57
+changedate: 2018/05/01 17:32:34
 categories: 好货
 tags:  好货
 keywords: 标题党,冯大辉,小道消息,信息素养,知识星球
