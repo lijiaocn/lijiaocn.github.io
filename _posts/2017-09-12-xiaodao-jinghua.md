@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "知识星球精华帖-如何运营企业类微信公众号, 心得以及建议"
+title: "[知识星球精华帖]：如何运营企业类微信公众号, 心得以及建议"
 author: "冯大辉@小道消息"
 createdate: 2018/05/01 11:53:25
-changedate: 2018/05/01 12:50:19
+changedate: 2018/05/01 13:58:49
 categories: 好货
 tags:  好货
 keywords: 知识星球精华,冯大辉,小道消息,微信公众号运营,企业微信

@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "知识星球精华帖-东南亚、中东COD（代收货款）业务模式相关讨论"
+title: "[知识星球精华帖]: 东南亚、中东COD（代收货款）业务模式相关讨论"
 author: "caoz的小密圈"
 createdate: 2018/05/01 11:53:25
-changedate: 2018/05/01 13:26:37
+changedate: 2018/05/01 13:59:41
 categories: 好货
 tags:  好货
 keywords: 知识星球精华,caoz的小密圈,Affiliate,telegram,优惠券营销
