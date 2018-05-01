@@ -3,7 +3,7 @@ layout: default
 title: "西部世界第二季迅雷下载(BT,720p高清，中英字幕)，westworld-s02"
 author: 李佶澳
 createdate: 2018/04/25 22:21:30
-changedate: 2018/04/25 22:32:21
+changedate: 2018/05/01 15:51:22
 categories: 好货
 tags: 好货
 keywords: 西部世界第二季,westworld,720p高清,中英字幕
@@ -18,9 +18,17 @@ description: 西部世界第二季(westworld)正式开播了，中英字幕已�
 
 (复制地址后，打开迅雷，自动下载)
 
-第01集.西部世界.Westworld.S02E01.中英字幕.HDTVrip.720p-人人影视-592美剧.mp4(861.39MB)
+BD双语：720p
 
 	ed2k://|file|[www.592meiju.com].西部世界.Westworld.S02E01.中英字幕.HDTVrip.720p-人人影视-592美剧.mp4|903236273|9e0d069937efdffc119ec0af78c182fb|h=wna32aqevffbqbodnscqfrlxisjnjdzn|/
+	ed2k://|file|[www.592meiju.com]西部世界.Westworld.S02E02.中英字幕.HDTVrip.720p-人人影视-592美剧.mp4|727683001|2a1ef24ffb436d10adf92d40e67609a0|h=aqnhyelyg34bxdbmoo6itiuw3l3hbpuj|/
+
+
+1080P:
+
+	magnet:?xt=urn:btih:7E895324EF8912CE4D92933A9B9F5F357C267A03
+	magnet:?xt=urn:btih:7E895324EF8912CE4D92933A9B9F5F357C267A03
+
 
 ## 西部世界介绍
 
