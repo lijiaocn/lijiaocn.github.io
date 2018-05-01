@@ -1,9 +1,9 @@
 ---
 layout: default
 title:  两个互联网大牛的伊朗见闻
-author: 李佶澳
+author: "冯大辉&曹政"
 createdate: 2018/05/01 01:53:00
-changedate: 2018/05/01 02:11:39
+changedate: 2018/05/01 11:56:48
 categories: 投资
 tags: 投资
 keywords: 伊朗,投资机会,互联网,新兴国家
