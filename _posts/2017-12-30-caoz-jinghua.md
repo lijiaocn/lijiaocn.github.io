@@ -3,7 +3,7 @@ layout: default
 title: "[知识星球精华帖]: 不要挑战人性，对区块链的一些看法"
 author: "caoz的小密圈"
 createdate: 2018/05/01 11:53:25
-changedate: 2018/05/01 15:01:10
+changedate: 2018/05/02 08:08:49
 categories: 好货
 tags: 好货
 keywords: 知识星球精华,caoz的小密圈,区块链,比特币,李笑来
@@ -115,6 +115,8 @@ Jason 回复 MMMMMCCLXXVII ：  目前企业内叫做联盟链，大企业可能
 Jason 回复 MMMMMCCLXXVII ：  其实所谓防伪溯源，很难做到真正防伪溯源
 
 Jason 回复 MMMMMCCLXXVII ：  比如 蚂蚁，其实我们本质上还是比较信任蚂蚁的。如果是不知名的小公司，号称自己做公益，用区块链，至少我还说不信任状态的
+
+![caoz的小密圈]({{ site.imglocal }}/xiaomiquan-caoz.png) 
 
 ## 参考
 

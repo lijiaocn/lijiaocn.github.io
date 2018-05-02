@@ -3,7 +3,7 @@ layout: default
 title: "[知识星球精华帖]: 新加坡这个国家的一些情况"
 author: "caoz的小密圈"
 createdate: 2018/05/01 11:53:25
-changedate: 2018/05/01 14:21:23
+changedate: 2018/05/02 08:09:37
 categories: 好货
 tags:  好货
 keywords: 知识星球精华,caoz的小密圈,新加坡,新加坡工作
@@ -72,6 +72,7 @@ caoz 回复 四爷 ：  ("▔㉨▔)汗 。外国人上学很不容易，有钱�
 
 另外 外国人进公立学校也很贵，(家属签可以享受两年优待费率)。补习英文几乎是必须的，要找私教也是很多的钱 尽早拿永居可以节省很大的开销。
 
+![caoz的小密圈]({{ site.imglocal }}/xiaomiquan-caoz.png) 
 
 ## 参考
 

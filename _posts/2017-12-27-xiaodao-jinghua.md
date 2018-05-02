@@ -3,7 +3,7 @@ layout: default
 title: "[知识星球精华帖]: 怎么写年终总结?"
 author: "冯大辉@小道消息"
 createdate: 2018/05/01 11:53:25
-changedate: 2018/05/01 14:01:25
+changedate: 2018/05/02 08:10:07
 categories: 好货
 tags:  好货
 keywords: 知识星球精华,冯大辉,小道消息,年终总结,晋升
@@ -96,6 +96,8 @@ description: 写好了，有助于说明自己的工作绩效，绩效好可以�
 刘伟TO ： 严重同意。写总结和写简历一样，越具体越好，越有重点越好。简洁但有内容。有结论，更要有论据。有数字，有层次。
 
 eriolchan ： 总结最好能提炼出工作任务对团队内外的成果和贡献，而不是简单的工作日志
+
+![小道消息和他的朋友们]({{ site.imglocal }}/xiaomiquan-xiaodao.png)
 
 ## 参考
 

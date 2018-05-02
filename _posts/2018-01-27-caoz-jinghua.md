@@ -3,7 +3,7 @@ layout: default
 title: "[知识星球精华帖]: 贺卡红包小程序的实践经历"
 author: "navysun@caoz的小密圈"
 createdate: 2018/05/01 11:53:25
-changedate: 2018/05/01 14:32:13
+changedate: 2018/05/02 08:09:23
 categories: 好货
 tags:  好货
 keywords: 知识星球精华,caoz的小密圈,微信小程序,贺卡,刷红包
@@ -65,6 +65,8 @@ caoz 回复 navysun ：  还有，在已领红包名单里惊现去年赚了几�
 
 匿名人士 ：  不过这个是银行卡方式付款的。。。直接微信发是做不到的。
 或者你们有没有90天以上的公众号，引导用户去公众号领红包
+
+![caoz的小密圈]({{ site.imglocal }}/xiaomiquan-caoz.png) 
 
 ## 参考
 

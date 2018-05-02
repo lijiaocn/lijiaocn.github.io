@@ -3,7 +3,7 @@ layout: default
 title: "[知识星球精华帖]: 分享一个适合做外贸的套路"
 author: "枫.二@caoz的小密圈"
 createdate: 2018/05/01 11:53:25
-changedate: 2018/05/01 14:40:09
+changedate: 2018/05/02 08:09:04
 categories: 好货
 tags:  好货
 keywords: 知识星球精华,caoz的小密圈,外贸套路,利基市场,变现
@@ -40,6 +40,7 @@ description: 既然我有找利基市场这个需求，那这些店铺的卖家�
 
 假装可爱 ：  居然真的有人做这件事哎，其实这件事我2个月之前做过，只是我比较懒，我只是小范围验证了一下思路是否可行，并没有如po主一样想这么多，寻找niche的思路是和po主一致的，通过挖掘店铺看产品。我当时就是shell下面抓了3万个店铺。按图上来看的话，要通过Google找出邮箱会很快触发recaptcha的吧，一般我就是去查whois信息了，不过现在很多域名都做了whois隐藏，这一招也不是很利索了。其实卖这份list的话太折损这个价值了吧，最次做些niche站挂Amazon也比这样强
 
+![caoz的小密圈]({{ site.imglocal }}/xiaomiquan-caoz.png) 
 
 ## 参考
 

@@ -3,7 +3,7 @@ layout: default
 title: "[知识星球精华帖]: 东南亚、中东COD（代收货款）业务模式相关讨论"
 author: "caoz的小密圈"
 createdate: 2018/05/01 11:53:25
-changedate: 2018/05/01 13:59:41
+changedate: 2018/05/02 08:10:37
 categories: 好货
 tags:  好货
 keywords: 知识星球精华,caoz的小密圈,Affiliate,telegram,优惠券营销
@@ -78,6 +78,8 @@ COD相对[Drop Shipping][3]的话，业务还是太重了。
 杨永歌Aff ： 为啥我做不到那么高签收率 [流泪] 最后降到40%+，没法做呀
 
 墨染流年 ： COD确实物流很重要，但是也要看国家地区，就比如泰国，已经被深圳布谷鸟搞烂了，你投放的广告都是泰国人在骂你
+
+![caoz的小密圈]({{ site.imglocal }}/xiaomiquan-caoz.png) 
 
 ## 参考
 
