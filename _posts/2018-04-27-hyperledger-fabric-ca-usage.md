@@ -3,7 +3,7 @@ layout: default
 title:  hyperledger的fabricCA的使用
 author: 李佶澳
 createdate: 2018/04/27 10:58:00
-changedate: 2018/04/28 18:45:12
+changedate: 2018/05/02 18:31:51
 categories: 项目
 tags: blockchain
 keywords: fabricCA,hyperledger,blockchain,区块链,联盟链
@@ -370,9 +370,11 @@ fabric-ca默认注册了几个联盟，可以用`affiliation list`查看：
 
 后续的很多操作都受到`权利范围`的约束。
 
-## 示范
+## example
 
 创建一个由两个组织`org1.example.com`和`org2.example.com`组成的名为`example`的联盟。
+
+联盟中的org1.example.com部署了一个`solo`模式的orderer。（多个orderer的使用，以后探讨）
 
 org1.example.com有两个peer:
 
@@ -383,76 +385,89 @@ org2.example.com有一个peer:
 
 	peer0.org2.example.com
 
-每个组织都有一个Admin用户，和一个普通的User1用户。
+每个组织都要有一个Admin用户，因此需要通过fabric-ca创建6个用户：
 
-联盟中的org1.example.com部署了一个`solo`模式的orderer。（多个orderer的使用，以后探讨）
+	org1.example.com:  org1admin  org1orderer1  org1peer0  org1peer1
+	org2.example.com:  org2admin  org2peer0 
 
-## 启动fabic-ca
+### 启动fabric-ca
 
-直接在本地上启动ca，第一个用户为admin，密码为pass。
+将fabric-ca部署在`/opt/app/fabric-ca/server`目录中：
 
-	$ fabric-ca-server start -b  admin:pass &
+	mkdir /opt/app/fabric-ca/server
+	cp -rf $GOPATH/src/github.com/hyperledger/fabric-ca/bin/*  /opt/app/fabric-ca/server
+	ln -s /opt/app/fabric-ca/server/fabric-ca-client  /usr/bin/fabric-ca-client
 
-并生成了凭证：
+直接启动ca，fabric-ca admin的名称为admin，密码为pass。(这里只是演示，生产中使用，你需要根据实际的情况配置)
+
+	cd /opt/app/fabric-ca/server
+	./fabric-ca-server start -b  admin:pass &
+
+如果有删除联盟和用户的需求，需要用下面的方式启动：
+
+	cd /opt/app/fabric-ca/server
+	./fabric-ca-server start -b admin:pass --cfg.affiliations.allowremove  --cfg.identities.allowremove &
+
+### fabric-ca admin的凭证
+
+这里将所有用户的凭证都存放`/opt/app/fabric-ca/clients/`目录中。
+
+生成fabric-ca admin的凭证：
 
 	export FABRIC_CA_CLIENT_HOME=/opt/app/fabric-ca/clients/admin
 	mkdir -p $FABRIC_CA_CLIENT_HOME
 	fabric-ca-client enroll -u http://admin:pass@localhost:7054
 
+环境变量FABRIC_CA_CLIENT_HOME指定了client的工作目录，生成的用户凭证将存放在这个目录中。
+
+也可以用`-H`参数指定：
+
+	mkdir -p /opt/app/fabric-ca/clients/admin
+	fabric-ca-client enroll -u http://admin:pass@localhost:7054 -H  /opt/app/fabric-ca/clients/admin
+
+为了防止混乱，后面的演示操作中，都直接用`-H`指定目录。
+
 ### 创建联盟
 
-	fabric-ca-client affiliation add com 
-	fabric-ca-client affiliation add com.example
-	fabric-ca-client affiliation add com.example.org1
-	fabric-ca-client affiliation add com.example.org2
+执行下面命令创建联盟：
+	
+	fabric-ca-client  -H /opt/app/fabric-ca/clients/admin  affiliation add com 
+	fabric-ca-client  -H /opt/app/fabric-ca/clients/admin  affiliation add com.example
+	fabric-ca-client  -H /opt/app/fabric-ca/clients/admin  affiliation add com.example.org1
+	fabric-ca-client  -H /opt/app/fabric-ca/clients/admin  affiliation add com.example.org2
 
 创建联盟如下：
 
-	$ fabric-ca-client affiliation list
+	$ fabric-ca-client -H /opt/app/fabric-ca/clients/admin  affiliation list
 	2018/04/28 15:19:34 [INFO] 127.0.0.1:38160 GET /affiliations 201 0 "OK"
 	affiliation: com
 	   affiliation: com.example
 	      affiliation: com.example.org1
 	      affiliation: com.example.org2
 
-### org1.example.com的管理员注册
+如果创建了多余的成员，可以用下面的命令删除：
 
-为org1.example.com注册一个管理员，准备一个目录存放管理员的凭证：
+	fabric-ca-client -H /opt/app/fabric-ca/clients/admin  affiliation remove org1.department1
 
-	mkdir -p /opt/app/fabric-ca/clients/org1.example.com/admin
+### 注册org1.example.com的管理员org1admin
 
-用命令行注册，命令比较长，这里用`\\`截断了：
+然后可以直接用命令行（命令比较长，这里用`\\`截断了）：
 
 	fabric-ca-client register --id.name org1admin --id.type client --id.affiliation "com.example.org1"  \
 	    --id.attrs '"hf.Registrar.Roles=client,orderer,peer,user","hf.Registrar.DelegateRoles=client,orderer,peer,user",\
 	                 hf.Registrar.Attributes=*,hf.GenCRL=true,hf.Revoker=true,hf.AffiliationMgr=true,hf.IntermediateCA=true,role=admin:ecert'
 
-
-该用户名称为`org1admin`，类型是`client`，它能够管理`org1.example.com.*`下的用户，各个参数含义如下:
-
-	--id.name org1admin                                        //用户名
-	--id.type client                                           //类型为client
-	--id.affiliation "com.example.org1"                      //权利访问
-	hf.Registrar.Roles=client,orderer,peer,user            //能够管理的用户类型
-	hf.Registrar.DelegateRoles=client,orderer,peer,user    //可以授权给子用户管理的用户类型
-	hf.Registrar.Attributes=*                                  //可以为子用户设置所有属性
-	hf.GenCRL=true                                             //可以生成撤销证书列表
-	hf.Revoker=true                                            //可以撤销用户
-	hf.AffiliationMgr=true                                     //能够管理联盟
-	hf.IntermediateCA=true                                     //可以作为中间CA
-	role=admin:ecert                                           //自定义属性
-
-命令行参数过程，也可以将设置写在配置文件中。在生成第一个用户的凭证时，在该用户的目录下生成了一个实例的client配置文件。
+也可以将命令行参数写在fabric-ca admin的配置文件`fabric-ca-client-config.yaml`中。
 
 	$ ls admin/
 	fabric-ca-client-config.yaml  msp
 
-将其中的id部分修改为：
+将其中的`id`部分修改为：
 
 	id:
 	  name: org1admin
 	  type: client
-	  affiliation: org1.example.com.*
+	  affiliation: com.example.org1
 	  maxenrollments: 0
 	  attributes:
 	    - name: hf.Registrar.Roles
@@ -472,47 +487,145 @@ org2.example.com有一个peer:
 	    - name: role
 	      value: admin:ecert
 
-然后直接执行下面的命令，即可完成用户org1admin注册：
 
-	$ export FABRIC_CA_CLIENT_HOME=/opt/app/fabric-ca/clients/admin
-	$ fabric-ca-client register
-	Password: sPfsnUDFCcMu
+直接执行下面的命令，即可完成用户org1admin注册：
+	
+	fabric-ca-client register -H  /opt/app/fabric-ca/clients/admin --id.secret=password
 
-这一步会自动生成密码，如果要使用指定密码，通过参数`--id.secret`指定。
+如果不用`--id.secret`指定密码，会自动生成密码。
+
+其它配置的含义是用户名为`org1admin`，类型是`client`，它能够管理`com.example.org1.*`下的用户，如下:
+
+	--id.name org1admin                                    //用户名
+	--id.type client                                       //类型为client
+	--id.affiliation "com.example.org1"                    //权利访问
+	hf.Registrar.Roles=client,orderer,peer,user            //能够管理的用户类型
+	hf.Registrar.DelegateRoles=client,orderer,peer,user    //可以授权给子用户管理的用户类型
+	hf.Registrar.Attributes=*                              //可以为子用户设置所有属性
+	hf.GenCRL=true                                         //可以生成撤销证书列表
+	hf.Revoker=true                                        //可以撤销用户
+	hf.AffiliationMgr=true                                 //能够管理联盟
+	hf.IntermediateCA=true                                 //可以作为中间CA
+	role=admin:ecert                                       //自定义属性
 
 生成org1admin凭证：
 
-	$ export FABRIC_CA_CLIENT_HOME=/opt/app/fabric-ca/clients/org1.example.com/admin
-	$ fabric-ca-client enroll -u http://org1admin:sPfsnUDFCcMu@localhost:7054
-	$ ls org1.example.com/admin/
+	$ mkdir -p /opt/app/fabric-ca/clients/org1.example.com/admin
+	$ fabric-ca-client enroll -u http://org1admin:password@localhost:7054  -H /opt/app/fabric-ca/clients/org1.example.com/admin
+	$ ls /opt/app/fabric-ca/clients/org1.example.com/admin
 	fabric-ca-client-config.yaml  msp/
 
-这时候我们以org1admin的身份查看联盟：
+这时候可以用org1admin的身份查看联盟：
 
-	$ fabric-ca-client affiliation list
+	$ fabric-ca-client affiliation list -H  /opt/app/fabric-ca/clients/org1.example.com/admin
 	2018/04/28 15:35:10 [INFO] 127.0.0.1:38172 GET /affiliations 201 0 "OK"
 	affiliation: com
 	   affiliation: com.example
 	      affiliation: com.example.org1
 
-可以发现，只能看到org1联盟，也就是只能看到org1admin权限范围中的内容。
+可以发现，只能看到org1联盟，也就是只能看到org1admin权限范围中的内容，而admin可以看到全部:
 
-### org2.example.com的管理员注册
+	$ fabric-ca-client affiliation list -H /opt/app/fabric-ca/clients/admin/
+	2018/05/02 16:39:40 [INFO] 127.0.0.1:50820 GET /affiliations 201 0 "OK"
+	affiliation: com
+	   affiliation: com.example
+	      affiliation: com.example.org1
+	      affiliation: com.example.org2
 
-为org2.example.com注册管理员的方式相同，需要先将`FABRIC_CA_CLIENT_HOME`重新设置为第一用户的client目录：
+### 注册org1.example.com的其它用户
 
-	export FABRIC_CA_CLIENT_HOME=/opt/app/fabric-ca/clients/admin
+org1.example.com中的其它用户，通过org1admin就可以注册：
 
-然后准备目录：
+	$ export FABRIC_CA_CLIENT_HOME=/opt/app/fabric-ca/clients/org1.example.com/admin
+	
+	者在命令中用-H明确指定：
+	
+	-H /opt/app/fabric-ca/clients/org1.example.com/admin
+
+为了将fabric组件使用的帐号与人员使用的帐号区分，在org1.example.com中再建立两个机构：
+
+	fabric-ca-client -H /opt/app/fabric-ca/clients/org1.example.com/admin affiliation add com.example.org1.component
+	fabric-ca-client -H /opt/app/fabric-ca/clients/org1.example.com/admin affiliation add com.example.org1.user  
+
+然后修改org1.example.com/admin目录下的fabric-ca-client-config.yaml，分别创建对应的用户：
+
+创建orderer1的凭证，修改配置文件:
+
+	id:
+	  name: org1orderer1
+	  type: orderer
+	  affiliation: com.example.org1.component
+	  maxenrollments: 0
+	  attributes:
+	    - name: role
+	      value: orderer:ecert
+
+创建:
+
+	fabric-ca-client register -H /opt/app/fabric-ca/clients/org1.example.com/admin --id.secret=password
+	mkdir /opt/app/fabric-ca/clients/org1.example.com/orderer1
+	fabric-ca-client enroll -u http://org1orderer1:password@localhost:7054 -H /opt/app/fabric-ca/clients/org1.example.com/orderer1
+
+创建peer0的凭证，修改配置文件:
+
+	id:
+	  name: org1peer0
+	  type: peer
+	  affiliation: com.example.org1.component
+	  maxenrollments: 0
+	  attributes:
+	    - name: role
+	      value: peer:ecert
+
+创建:
+
+	fabric-ca-client register -H /opt/app/fabric-ca/clients/org1.example.com/admin --id.secret=password
+	mkdir /opt/app/fabric-ca/clients/org1.example.com/peer0
+	fabric-ca-client enroll -u http://org1peer0:password@localhost:7054 -H /opt/app/fabric-ca/clients/org1.example.com/peer0
+
+创建peer1的凭证，修改配置文件:
+
+	id:
+	  name: org1peer1
+	  type: peer
+	  affiliation: com.example.org1.component
+	  maxenrollments: 0
+	  attributes:
+	    - name: role
+	      value: peer:ecert
+
+创建:
+
+	fabric-ca-client register -H /opt/app/fabric-ca/clients/org1.example.com/admin --id.secret=password
+	mkdir /opt/app/fabric-ca/clients/org1.example.com/peer1
+	fabric-ca-client enroll -u http://org1peer1:password@localhost:7054 -H /opt/app/fabric-ca/clients/org1.example.com/peer1
+
+### 设置org1.example.com的orderer与peer的admin
+
+orderer、peer启动的时候需从目录`msp/admincerts`中读取管理员证书，这里直接使用org1admin的证书:
+
+	cd /opt/app/fabric-ca/clients/org1.example.com/
+	mkdir {admin,orderer1,peer0,peer1}/msp/admincerts
+
+	cp admin/msp/signcerts/cert.pem  admin/msp/admincerts/
+	cp admin/msp/signcerts/cert.pem  orderer1/msp/admincerts/
+	cp admin/msp/signcerts/cert.pem  peer0/msp/admincerts/
+	cp admin/msp/signcerts/cert.pem  peer1/msp/admincerts/
+
+保留待用。
+
+### 注册org2.example.com的管理员org2admin
+
+为org2.example.com的管理员org2admin准备一个目录:
 
 	mkdir -p /opt/app/fabric-ca/clients/org2.example.com/admin
 
-修改第一个用户client目录下配置文件，将其中的id部分修改为：
+修改fabric-ca admin目录下的`fabric-ca-client-config.yaml`文件:
 
 	id:
 	  name: org2admin
 	  type: client
-	  affiliation: org2.example.com.*
+	  affiliation: com.example.org2
 	  maxenrollments: 0
 	  attributes:
 	    - name: hf.Registrar.Roles
@@ -534,65 +647,41 @@ org2.example.com有一个peer:
 
 注册：
 
-	$ fabric-ca-client register
-	Password: hTGAbaajcstN
+	fabric-ca-client register -H  /opt/app/fabric-ca/clients/admin --id.secret=password
 
 生成凭证：
 
-	$ export FABRIC_CA_CLIENT_HOME=/opt/app/fabric-ca/clients/org2.example.com/admin
-	$ fabric-ca-client enroll -u http://org2admin:hTGAbaajcstN@localhost:7054
-	$ ls org2.example.com/admin/
+	$ fabric-ca-client enroll -u http://org2admin:password@localhost:7054  -H /opt/app/fabric-ca/clients/org2.example.com/admin
+	$ ls /opt/app/fabric-ca/clients/org2.example.com/admin
 	fabric-ca-client-config.yaml  msp/
 
 查看联盟：
 
-	$ fabric-ca-client affiliation list
-	2018/04/28 15:40:48 [INFO] 127.0.0.1:38178 GET /affiliations 201 0 "OK"
+	$ fabric-ca-client affiliation list -H  /opt/app/fabric-ca/clients/org2.example.com/admin
+	2018/05/02 16:49:00 [INFO] 127.0.0.1:50828 GET /affiliations 201 0 "OK"
 	affiliation: com
 	   affiliation: com.example
 	      affiliation: com.example.org2
 
-### org1.example.com的部署
+### 注册org2.example.com中的其它用户
 
-org1.example.com中部署一个order和两个peer。我们对应的注册三个用户。
-
-注意，这三个用户使用org1.exampl.com的admin注册即可：
+过程类似，org2.example.com中只有一个组件peer0，直接用org2admin创建：
 
 	$ export FABRIC_CA_CLIENT_HOME=/opt/app/fabric-ca/clients/org1.example.com/admin
+	或者在命令中用-H明确指定：
+	-H /opt/app/fabric-ca/clients/org1.example.com/admin
 
-为了将fabric组件使用的帐号与人员使用的帐号区分，建立两个机构：
+为了将fabric组件使用的帐号与人员使用的帐号区分，在org2.example.com中再建立两个机构：
 
-	fabric-ca-client affiliation add com.example.org1.component
-	fabric-ca-client affiliation add com.example.org1.user
+	fabric-ca-client -H /opt/app/fabric-ca/clients/org2.example.com/admin affiliation add com.example.org2.component
+	fabric-ca-client -H /opt/app/fabric-ca/clients/org2.example.com/admin affiliation add com.example.org2.user  
 
-然后通过修改org1.example.com/admin目录下的fabric-ca-client-config.yaml，分别创建对应的用户：
-
-orderer1的设置:
-
-	id:
-	  name: orderer1
-	  type: orderer
-	  affiliation: com.example.org1.component
-	  maxenrollments: 0
-	  attributes:
-	    - name: role
-	      value: orderer:ecert
-
-创建:
-
-	$ export FABRIC_CA_CLIENT_HOME=/opt/app/fabric-ca/clients/org1.example.com/admin
-	$ fabric-ca-client register
-	Password: GVLalyhWawUb
-	$ export FABRIC_CA_CLIENT_HOME=/opt/app/fabric-ca/clients/org1.example.com/orderer1
-	$ mkdir -p $FABRIC_CA_CLIENT_HOME
-	fabric-ca-client enroll -u http://orderer1:GVLalyhWawUb@localhost:7054
-
-peer0的设置:
+然后修改org2.example.com/admin目录下的fabric-ca-client-config.yaml，创建peer0：
 
 	id:
-	  name: peer0
+	  name: org2peer0
 	  type: peer
-	  affiliation: com.example.org1.component
+	  affiliation: com.example.org2.component
 	  maxenrollments: 0
 	  attributes:
 	    - name: role
@@ -600,53 +689,30 @@ peer0的设置:
 
 创建:
 
-	$ export FABRIC_CA_CLIENT_HOME=/opt/app/fabric-ca/clients/org1.example.com/admin
-	$ fabric-ca-client register
-	Password: RPhCdqcvdKLm
-	$ export FABRIC_CA_CLIENT_HOME=/opt/app/fabric-ca/clients/org1.example.com/peer0
-	$ mkdir -p $FABRIC_CA_CLIENT_HOME
-	fabric-ca-client enroll -u http://peer0:RPhCdqcvdKLm@localhost:7054
+	fabric-ca-client register -H /opt/app/fabric-ca/clients/org2.example.com/admin --id.secret=password
+	mkdir /opt/app/fabric-ca/clients/org2.example.com/peer0
+	fabric-ca-client enroll -u http://org2peer0:password@localhost:7054 -H /opt/app/fabric-ca/clients/org2.example.com/peer0
 
-peer1的设置:
+### 设置org2.example.com的peer的admin
 
-	id:
-	  name: peer1
-	  type: peer
-	  affiliation: com.example.org1.component
-	  maxenrollments: 0
-	  attributes:
-	    - name: role
-	      value: peer:ecert
+peer启动的时候需从目录`msp/admincerts`中读取管理员证书，这里直接使用org2admin的证书:
 
-创建:
+	cd /opt/app/fabric-ca/clients/org2.example.com/
+	mkdir {admin,peer0}/msp/admincerts
 
-	$ export FABRIC_CA_CLIENT_HOME=/opt/app/fabric-ca/clients/org1.example.com/admin
-	$ fabric-ca-client register
-	Password: mLMyFkjxhxDR
-	$ export FABRIC_CA_CLIENT_HOME=/opt/app/fabric-ca/clients/org1.example.com/peer1
-	$ mkdir -p $FABRIC_CA_CLIENT_HOME
-	fabric-ca-client enroll -u http://peer1:mLMyFkjxhxDR@localhost:7054
-
-
-order、peer启动的时候还需要读取`msp/admincerts`目录中的证书，需要创建一个用户，然后
-将用户证书复制到到admincerts目录中，这样之后，该用户就对对应的order和peer具备了管理员权限。
-
-这里直接使用org1admin的证书。
-
-	cd /opt/app/fabric-ca/clients/org1.example.com/
-	mkdir {orderer1,peer0,peer1}/msp/admincerts
-	cp admin/msp/signcerts/cert.pem  orderer1/msp/admincerts/
+	cp admin/msp/signcerts/cert.pem  admin/msp/admincerts/
 	cp admin/msp/signcerts/cert.pem  peer0/msp/admincerts/
-	cp admin/msp/signcerts/cert.pem  peer1/msp/admincerts/
 
-然后order1、peer0、peer1的msp分别复制到order和peer组件所在的目录中。
+保留待用。
 
-在org1admin的msp目录中也需要创建admincerts目录：
+### 最后
 
-	mkdir msp/admincerts
-	cp msp/signcerts/cert.pem msp/admincerts/
+将上面生成的六个用户的凭证分发给对应的组件或人员：
 
-现在就可以直接使用org1admin用户创建chaincode了。
+	org1.example.com:  org1admin  org1orderer1  org1peer0  org1peer1
+	org2.example.com:  org2admin  org2peer0 
+
+将它们各自目录中的msp发送给对应的组件。
 
 ## 参考
 
