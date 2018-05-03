@@ -3,7 +3,7 @@ layout: default
 title:  hyperledger的fabric项目的全手动部署
 author: 李佶澳
 createdate: 2018/04/28 18:45:00
-changedate: 2018/05/02 15:56:20
+changedate: 2018/05/03 11:06:07
 categories: 项目
 tags: blockchain
 keywords: 超级账本,hyperledger,fabric,逐步部署
@@ -936,6 +936,8 @@ chaincode只能用Admin安装，并且需要在每个peer上都安装一次。
 	cp Admin\@org1.example.com/signed-demo-pack-2.out  Admin\@org2.example.com/
 	cd Admin\@org2.example.com/
 	./peer.sh chaincode install ./signed-demo-pack-2.out
+
+![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
 ## 参考
 

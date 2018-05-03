@@ -3,7 +3,7 @@ layout: default
 title:  Hyperledger fabric的chaincode开发
 author: lijiaocn
 createdate: 2018/04/03 10:07:00
-changedate: 2018/04/19 17:13:09
+changedate: 2018/05/03 11:05:34
 categories: 项目
 tags: blockchain
 keywords:
@@ -205,6 +205,8 @@ chaincode部署到fabric中以后，这些方法可以通过fabic的peer结点�
 [Hyperledger Fabric and how it isn’t concurrent out of the box.][3]
 
 [How hyperledger handle the Concurrent of “invoke” of the same Key-Value pair of chaincode?][4]
+
+![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
 ## 参考
 

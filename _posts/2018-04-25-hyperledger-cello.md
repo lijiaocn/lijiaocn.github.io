@@ -3,7 +3,7 @@ layout: default
 title:  hyperledger的cello项目的部署和使用
 author: 李佶澳
 createdate: 2018/04/25 10:32:00
-changedate: 2018/04/27 10:42:50
+changedate: 2018/05/03 11:05:44
 categories: 方法
 tags: hyperledger
 keywords: 区块链,hyperledger,cello,blockchain
@@ -80,6 +80,8 @@ cello是一个很初期的系统，当前最大的问题是：
 	sysctl -w net.ipv4.ip_forward=1
 
 然后在cello的管理页面中，将worker添加即可。
+
+![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
 ## 参考
 

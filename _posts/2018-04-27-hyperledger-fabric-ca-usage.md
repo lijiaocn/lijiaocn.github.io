@@ -3,7 +3,7 @@ layout: default
 title:  hyperledger的fabricCA的使用
 author: 李佶澳
 createdate: 2018/04/27 10:58:00
-changedate: 2018/05/02 18:31:51
+changedate: 2018/05/03 11:06:20
 categories: 项目
 tags: blockchain
 keywords: fabricCA,hyperledger,blockchain,区块链,联盟链
@@ -713,6 +713,8 @@ peer启动的时候需从目录`msp/admincerts`中读取管理员证书，这里
 	org2.example.com:  org2admin  org2peer0 
 
 将它们各自目录中的msp发送给对应的组件。
+
+![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
 ## 参考
 

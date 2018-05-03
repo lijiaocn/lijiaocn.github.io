@@ -3,7 +3,7 @@ layout: default
 title:  "hyperledger项目fabric的nodejsSDK的使用"
 author: lijiaocn
 createdate: 2018/04/25 11:11:00
-changedate: 2018/04/27 10:36:49
+changedate: 2018/05/03 11:05:56
 categories: 编程
 tags: hyperledger
 keywords: hyperledger,fabricSDK,nodejs,区块链
@@ -135,6 +135,8 @@ description: 当前(2018-04-25 11:16:23)fabric的SDK只有java和node是正式�
 依据[Operation initiated from the Hyperledger Fabric Client SDK for Node.js results in TSI error][4]中方法，将node sdk升级到1.0.3。
 
 结果还是不行，最后把peer和client的tls都设置为false解决。
+
+![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
 ## 参考
 

@@ -3,7 +3,7 @@ layout: default
 title:  Hyperledger Fabric的使用
 author: 李佶澳
 createdate: 2018/02/23 10:50:00
-changedate: 2018/04/17 10:25:45
+changedate: 2018/05/03 11:05:23
 categories: 项目
 tags: blockchain
 keywords: 区块链,Hyperledger,使用
@@ -1188,6 +1188,7 @@ docker配置错误，配置了fluentd driver，但是fluentd不存在。
 
 将fabirc-ccenv、fabric-baseos、fabric-javaenv三个镜像提前下载好以后，实例化成功。
 
+![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
 ## 参考
 
