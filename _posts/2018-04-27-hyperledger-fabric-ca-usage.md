@@ -1,9 +1,9 @@
 ---
 layout: default
-title:  hyperledger的fabricCA的用法
+title:  hyperledger的fabricCA的用法讲解
 author: 李佶澳
 createdate: 2018/04/27 10:58:00
-changedate: 2018/05/04 14:45:22
+changedate: 2018/05/04 19:48:14
 categories: 项目
 tags: blockchain
 keywords: fabricCA,hyperledger,blockchain,区块链,联盟链
