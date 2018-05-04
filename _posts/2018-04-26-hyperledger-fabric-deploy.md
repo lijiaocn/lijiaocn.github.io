@@ -3,7 +3,7 @@ layout: default
 title:  hyperledger的fabric项目的全手动部署
 author: 李佶澳
 createdate: 2018/04/28 18:45:00
-changedate: 2018/05/04 19:47:27
+changedate: 2018/05/04 19:54:28
 categories: 项目
 tags: blockchain
 keywords: 超级账本,hyperledger,fabric,逐步部署
@@ -20,13 +20,14 @@ description: 经历了诸多磨难之后，总算弄清楚了fabric的组件间�
 这种方式隐藏了太多的细节，只能让人对fabric有个模糊的认识，对于生产环境中部署方式，依然不清不楚，而且对配置文件中的配置项也完全不了解。
 
 通过反复阅读fabric的文档，以及[Building Your First Network][1]中的脚本，经历了诸多磨难之后，总算弄清楚了fabric的组件间关系与配置项。
-完整的部署过程已经录制成视频发布在“网易云课堂”:   [HyperLedger Fabric全手动部署网易云课堂教程][6]
 
-![HyperLedger Fabric全手动部署网易云课堂教程]({{ site.imagelocal }}/hyperledger-class/fabric-deploy.png)
+看文档感觉吃力或者一通操作不知所以然的同学，可以使用：[网易云课堂视频教程：HyperLedger Fabric全手动部署][6]
+
+![网易云课堂: HperLedger Fabric全手动部署视频教程目录]({{ site.imglocal }}/hyperledger-class/fabric-deploy.png)
 
 可以到知识星球里找我要优惠券、部署过程中用到的文件，以及咨询其它问题。
 
-![知识星球区块链实践分享]({{ site.imagelocal }}/xiaomiquan-blockchain.jpg)
+![知识星球区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
 ## 规划
 
@@ -946,6 +947,10 @@ chaincode只能用Admin安装，并且需要在每个peer上都安装一次。
 	cd Admin\@org2.example.com/
 	./peer.sh chaincode install ./signed-demo-pack-2.out
 
+视频纪录发布在： [网易云课堂视频教程：HyperLedger Fabric全手动部署][6]
+
+可以到星球里找我要优惠券。
+
 ![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
 ## 参考
@@ -955,7 +960,7 @@ chaincode只能用Admin安装，并且需要在每个peer上都安装一次。
 3. [hyperledger fabric download][3]
 4. [hyperledger的fabricCA的使用][4]
 5. [hyperledger项目fabric的nodejsSDK的使用][5]
-6. [HyperLedger Fabric全手动部署网易云课堂教程][6]
+6. [网易云课堂视频教程：HyperLedger Fabric全手动部署][6]
 
 [1]: http://hyperledger-fabric.readthedocs.io/en/latest/build_network.html  "Building Your First Network" 
 [2]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/02/23/hyperledger-fabric-usage.html#fabric%E7%BC%96%E8%AF%91 "hyperledger fabric编译"
