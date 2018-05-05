@@ -1,9 +1,9 @@
 ---
 layout: default
-title:  超级账本hyperledger的fabricCA的用法讲解
+title:  超级账本HyperLedger的fabricCA的用法讲解
 author: 李佶澳
 createdate: 2018/04/27 10:58:00
-changedate: 2018/05/05 10:04:12
+changedate: 2018/05/05 10:07:34
 categories: 项目
 tags: blockchain
 keywords: 超级账本,fabricCA,hyperledger,blockchain,区块链,联盟链
