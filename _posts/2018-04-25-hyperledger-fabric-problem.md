@@ -1,12 +1,12 @@
 ---
 layout: default
-title:  hyperledger的fabric项目部署过程时遇到的问题
+title:  超级账本hyperledger的fabric项目部署过程时遇到的问题
 author: 李佶澳
 createdate: 2018/05/04 21:14:00
-changedate: 2018/05/04 21:40:51
+changedate: 2018/05/05 10:02:40
 categories: 问题
 tags: blockchain
-keywords: 区块链实践分享,hyperledger,fabric问题,失败错误
+keywords: 超级账本,区块链实践,hyperledger,fabric,区块链问题
 description: "这里记录部署hyperledger fabric时遇到的一些问题"
 
 ---
@@ -20,7 +20,9 @@ description: "这里记录部署hyperledger fabric时遇到的一些问题"
 
 这里记录了部署hyperledger fabric时遇到的一些问题，部署过程见：[hyperledger的fabric项目的手动部署教程][1]
 
-![网易云课堂: HperLedger Fabric手动部署视频教程]({{ site.imglocal }}/hyperledger-class/fabric-deploy.png)
+[网易云课堂：HyperLedger Fabric手动部署教程的视频讲解](http://study.163.com/course/introduction.htm?courseId=1005326005&share=2&shareId=400000000376006)
+
+![网易云课堂: HperLedger Fabric全手动部署视频教程目录]({{ site.imglocal }}/hyperledger-class/fabric-deploy.png)
 
 ## 创建channel时失败：Failed to reach implicit threshold of 1 sub-policies, required 1 remaining
 
