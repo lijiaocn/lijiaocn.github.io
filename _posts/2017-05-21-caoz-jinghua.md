@@ -3,7 +3,7 @@ layout: default
 title: "[知识星球精华帖]: 如何利用热点快速加满一个微信号？"
 author: "caoz的小密圈"
 createdate: 2018/05/01 11:53:25
-changedate: 2018/05/02 08:08:19
+changedate: 2018/05/05 11:30:55
 categories: 好货
 tags:  好货
 keywords: 知识星球精华,caoz的小密圈,热点利用,加微信号
@@ -18,9 +18,7 @@ description: 基本上是零资源零投入，也不用花多大精力，所以�
 
 以下内容是知识星球“cao的小密圈”中的精华帖，摘录到这里，只是为了方便我个人的查阅。
 
-如果您需要使用这些材料，请与caoz联系。
-
-![caoz的小密圈]({{ site.imglocal }}/xiaomiquan-caoz.png) 
+如果您需要使用这些材料，请与caoz联系，见文末。
 
 ## 如何利用热点快速加满一个微信号
 

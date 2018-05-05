@@ -3,7 +3,7 @@ layout: default
 title: "[知识星球精华帖]: 分享一个适合做外贸的套路"
 author: "枫.二@caoz的小密圈"
 createdate: 2018/05/01 11:53:25
-changedate: 2018/05/02 08:09:04
+changedate: 2018/05/05 11:32:09
 categories: 好货
 tags:  好货
 keywords: 知识星球精华,caoz的小密圈,外贸套路,利基市场,变现
@@ -18,9 +18,7 @@ description: 既然我有找利基市场这个需求，那这些店铺的卖家�
 
 以下内容是知识星球“cao的小密圈”中的精华帖，摘录到这里，只是为了方便我个人的查阅。
 
-如果您需要使用这些材料，请与caoz联系。
-
-![caoz的小密圈]({{ site.imglocal }}/xiaomiquan-caoz.png) 
+如果您需要使用这些材料，请与caoz联系，见文末。
 
 ## 分享一个适合做外贸的套路
 

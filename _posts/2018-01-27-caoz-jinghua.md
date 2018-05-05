@@ -3,7 +3,7 @@ layout: default
 title: "[知识星球精华帖]: 贺卡红包小程序的实践经历"
 author: "navysun@caoz的小密圈"
 createdate: 2018/05/01 11:53:25
-changedate: 2018/05/02 08:09:23
+changedate: 2018/05/05 11:32:27
 categories: 好货
 tags:  好货
 keywords: 知识星球精华,caoz的小密圈,微信小程序,贺卡,刷红包
@@ -19,9 +19,7 @@ description: 没想到小小的贺卡红包整整花掉2个月的时间，在这
 
 以下内容是知识星球“cao的小密圈”中的精华帖，摘录到这里，只是为了方便我个人的查阅。
 
-如果您需要使用这些材料，请与caoz联系。
-
-![caoz的小密圈]({{ site.imglocal }}/xiaomiquan-caoz.png) 
+如果您需要使用这些材料，请与caoz联系，见文末。
 
 ## 贺卡红包小程序的实践经历
 
