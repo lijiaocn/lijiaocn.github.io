@@ -3,7 +3,7 @@ layout: default
 title:  超级账本Hyperledger fabric的chaincode开发
 author: lijiaocn
 createdate: 2018/04/03 10:07:00
-changedate: 2018/05/05 11:26:02
+changedate: 2018/05/06 21:13:58
 categories: 项目
 tags: blockchain
 keywords: 超级账本,HyperLedger,Fabric,Chaincode,合约链码
@@ -16,15 +16,15 @@ description: 学习写一下chaincode
 
 ## 说明
 
+[网易云课堂：HyperLedger Fabric手动部署教程的视频讲解](http://study.163.com/course/introduction.htm?courseId=1005326005&share=2&shareId=400000000376006)
+
+[超级账本HyperLedger Fabric手动部署教程的文字实录(公开)](http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/04/26/hyperledger-fabric-deploy.html)
+
 Hyperledger fabric的chaincode可以使用Go、Node.js、Java等语言开发。
 
 Chaincode将会在一个独立的docker容器中运行，实现与背书节点进程之间的隔离。
 
 这里以用Go语言开发Chaincode为例。
-
-[网易云课堂：HyperLedger Fabric手动部署教程的视频讲解](http://study.163.com/course/introduction.htm?courseId=1005326005&share=2&shareId=400000000376006)
-
-[超级账本HyperLedger Fabric手动部署教程的文字实录(公开)](http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/04/26/hyperledger-fabric-deploy.html)
 
 ## ChainCode 接口
 

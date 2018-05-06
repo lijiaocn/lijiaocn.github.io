@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger的fabric项目的手动部署教程
 author: 李佶澳
 createdate: 2018/04/28 18:45:00
-changedate: 2018/05/05 11:36:42
+changedate: 2018/05/06 21:12:53
 categories: 项目
 tags: blockchain
 keywords: 超级账本,hyperledger,fabric,手动部署,部署教程
@@ -16,6 +16,12 @@ description: 经历了诸多磨难之后，总算弄清楚了fabric的组件间�
 
 ## 说明
 
+[HyperLedger Fabric手动部署教程的视频讲解][6]
+
+![网易云课堂: HperLedger Fabric全手动部署视频教程目录]({{ site.imglocal }}/hyperledger-class/fabric-deploy.png)
+
+可以到知识星球里要优惠券、部署过程中用到的文件，以及咨询其它问题，见文末。
+
 虽然通过[Building Your First Network][1]中的docker-compose文件可以直接启动一个all-in-one的fabric。
 但这种方式隐藏了太多的细节，只能让人有个模糊的认识，对生产环境中部署方式，依然不清不楚，
 对各组件的配置文件也完全不了解。
@@ -23,12 +29,6 @@ description: 经历了诸多磨难之后，总算弄清楚了fabric的组件间�
 通过反复阅读fabric的文档，以及[Building Your First Network][1]中的脚本，经历了诸多磨难之后，总算弄清楚了fabric的组件间关系与配置项。
 
 看文档感觉吃力或者一通操作后不知所以然的同学，可以使用网易云课堂视频教程：
-
-[HyperLedger Fabric手动部署教程的视频讲解][6]
-
-![网易云课堂: HperLedger Fabric全手动部署视频教程目录]({{ site.imglocal }}/hyperledger-class/fabric-deploy.png)
-
-可以到知识星球里要优惠券、部署过程中用到的文件，以及咨询其它问题，见文末。
 
 ## 规划
 
