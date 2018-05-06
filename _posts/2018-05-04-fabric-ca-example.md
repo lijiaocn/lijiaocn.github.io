@@ -1,9 +1,9 @@
 ---
 layout: default
-title:  超级账本HyperLedger的Fabric-CA的使用演示(两个组织四个Peer一个Orderer)
+title:  超级账本HyperLedger的Fabric-CA的使用演示(两个组织一个Orderer三个Peer)
 author: lijiaocn
 createdate: 2018/05/04 14:09:00
-changedate: 2018/05/05 10:06:16
+changedate: 2018/05/06 12:00:21
 categories:
 tags:
 keywords:
