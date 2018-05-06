@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger的Fabric-CA的使用演示(两个组织一个Orderer三个Peer)
 author: 李佶澳
 createdate: 2018/05/04 14:09:00
-changedate: 2018/05/06 22:29:46
+changedate: 2018/05/06 23:22:54
 categories: 项目
 tags: blockchain
 keywords: 超级账本部署,fabric-ca,hyperledger,orderer证书
@@ -57,7 +57,7 @@ org2.example.com部署了一个peer:
 
 ## 启动fabric-ca
 
-fabirc-ca的编译安装方法见：[hyperledger的fabricCA的安装使用][5]。
+fabirc-ca的编译安装方法见：[hyperledger的fabricCA的用法讲解][6]。
 
 这里将fabric-ca部署在`/opt/app/fabric-ca/server`目录中：
 
@@ -639,9 +639,11 @@ example.com、org1.example.com、org2.example.com三个组织这时候可以分�
 3. [hyperledger的fabric项目的全手动部署][3]
 4. [hyperledger的fabric项目的全手动部署: 开始部署][4]
 5. [hyperledger的fabric项目的全手动部署-创建channel与peer的设置][5]
+6. [超级账本HyperLedger的fabricCA的用法讲解][6]
 
 [1]: https://hyperledger-fabric-ca.readthedocs.io/en/latest/  "Welcome to Hyperledger Fabric CA" 
 [2]: https://github.com/hyperledger/fabric-ca "fabric-ca codes"
 [3]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/04/26/hyperledger-fabric-deploy.html "hyperledger的fabric项目的全手动部署"
 [4]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/04/26/hyperledger-fabric-deploy.html#%E5%BC%80%E5%A7%8B%E9%83%A8%E7%BD%B2 "开始部署"
 [5]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/04/26/hyperledger-fabric-deploy.html#%E5%88%9B%E5%BB%BAchannel%E4%B8%8Epeer%E7%9A%84%E8%AE%BE%E7%BD%AE "hyperledger的fabric项目的全手动部署-创建channel与peer的设置"
+[6]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/04/27/hyperledger-fabric-ca-usage.html  "超级账本HyperLedger的fabricCA的用法讲解"
