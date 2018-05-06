@@ -1,12 +1,12 @@
 ---
 layout: default
-title:  hyperledger的fabric项目的全手动部署
+title:  超级账本HyperLedger的fabric项目的手动部署教程
 author: 李佶澳
 createdate: 2018/04/28 18:45:00
-changedate: 2018/04/30 20:49:01
+changedate: 2018/05/05 11:36:42
 categories: 项目
 tags: blockchain
-keywords: 超级账本,hyperledger,fabric,逐步部署
+keywords: 超级账本,hyperledger,fabric,手动部署,部署教程
 description: 经历了诸多磨难之后，总算弄清楚了fabric的组件间关系与配置项。
 
 ---
@@ -16,17 +16,25 @@ description: 经历了诸多磨难之后，总算弄清楚了fabric的组件间�
 
 ## 说明
 
-虽然HyperLedger Fabric的文档中给出一套脚本[Building Your First Network][1]，通过docker-compose可以直接启动一个all-in-one的fabric。
-
-这种方式隐藏了太多的细节，只能让人对fabric有个模糊的认识，对于生产环境中部署方式，依然不清不楚，而且对配置文件中的配置项也完全不了解。
+虽然通过[Building Your First Network][1]中的docker-compose文件可以直接启动一个all-in-one的fabric。
+但这种方式隐藏了太多的细节，只能让人有个模糊的认识，对生产环境中部署方式，依然不清不楚，
+对各组件的配置文件也完全不了解。
 
 通过反复阅读fabric的文档，以及[Building Your First Network][1]中的脚本，经历了诸多磨难之后，总算弄清楚了fabric的组件间关系与配置项。
 
-这里创建了一个名为fabric-deploy的目录，用来存放部署过程使用到的文件。有问题可以到知识星球里进行交流。
+看文档感觉吃力或者一通操作后不知所以然的同学，可以使用网易云课堂视频教程：
 
-![知识星球区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
+[HyperLedger Fabric手动部署教程的视频讲解][6]
+
+![网易云课堂: HperLedger Fabric全手动部署视频教程目录]({{ site.imglocal }}/hyperledger-class/fabric-deploy.png)
+
+可以到知识星球里要优惠券、部署过程中用到的文件，以及咨询其它问题，见文末。
 
 ## 规划
+
+创建一个名为fabric-deploy的目录，用来存放部署过程使用到的文件。
+
+	mkdir ~/fabric-deploy
 
 这里将用三台机器部署一个fabric网络，该网络中有两个组织:
 
@@ -801,7 +809,7 @@ channel名字为mychannel，生成的mychannel.tx备用。
 	cp certs/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem  User1\@org1.example.com/
 	cp certs/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem  Admin\@org2.example.com/
 
-### 将peer加入channel
+### 创建channel
 
 在Admin@org1.exampl.com目录中执行下面的命令，：
 
@@ -816,7 +824,9 @@ channel名字为mychannel，生成的mychannel.tx备用。
 
 	cp Admin\@org1.example.com/mychannel.block Admin\@org2.example.com/
 
-然后*分别*在`Admin\@org1.example.com/`和`Admin\@org2.example.com/`执行下面的命令：
+### 将peer加入channel
+
+**分别**在`Admin\@org1.example.com/`和`Admin\@org2.example.com/`执行下面的命令：
 
 	./peer.sh channel join -b mychannel.block
 
@@ -836,6 +846,7 @@ channel名字为mychannel，生成的mychannel.tx备用。
 
 	cd Admin\@org1.example.com/
 	./peer.sh channel update -o orderer.example.com:7050 -c mychannel -f ../Org1MSPanchors.tx --tls true --cafile ./tlsca.example.com-cert.pem
+	
 	cd Admin\@org2.example.com/
 	./peer.sh channel update -o orderer.example.com:7050 -c mychannel -f ../Org2MSPanchors.tx --tls true --cafile ./tlsca.example.com-cert.pem
 
@@ -937,6 +948,12 @@ chaincode只能用Admin安装，并且需要在每个peer上都安装一次。
 	cd Admin\@org2.example.com/
 	./peer.sh chaincode install ./signed-demo-pack-2.out
 
+视频纪录发布在： [网易云课堂视频教程：HyperLedger Fabric全手动部署][6]
+
+可以到星球里找我要优惠券。
+
+![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
+
 ## 参考
 
 1. [Building Your First Network][1]
@@ -944,9 +961,11 @@ chaincode只能用Admin安装，并且需要在每个peer上都安装一次。
 3. [hyperledger fabric download][3]
 4. [hyperledger的fabricCA的使用][4]
 5. [hyperledger项目fabric的nodejsSDK的使用][5]
+6. [网易云课堂视频教程：HyperLedger Fabric全手动部署][6]
 
 [1]: http://hyperledger-fabric.readthedocs.io/en/latest/build_network.html  "Building Your First Network" 
 [2]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/02/23/hyperledger-fabric-usage.html#fabric%E7%BC%96%E8%AF%91 "hyperledger fabric编译"
 [3]: https://nexus.hyperledger.org/content/repositories/releases/org/hyperledger/fabric/hyperledger-fabric/ "hyperledger fabric download"
 [4]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/04/27/hyperledger-fabric-ca-usage.html "hyperledger的fabricCA的使用"
 [5]: http://www.lijiaocn.com/%E7%BC%96%E7%A8%8B/2018/04/25/hyperledger-fabric-sdk-nodejs.html "hyperledger项目fabric的nodejsSDK的使用"
+[6]: http://study.163.com/course/introduction.htm?courseId=1005326005&share=2&shareId=400000000376006 "HyperLedger Fabric全手动部署网易云课堂教程"

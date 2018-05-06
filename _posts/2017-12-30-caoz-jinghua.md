@@ -3,7 +3,7 @@ layout: default
 title: "[知识星球精华帖]: 不要挑战人性，对区块链的一些看法"
 author: "caoz的小密圈"
 createdate: 2018/05/01 11:53:25
-changedate: 2018/05/02 08:08:49
+changedate: 2018/05/05 11:31:53
 categories: 好货
 tags: 好货
 keywords: 知识星球精华,caoz的小密圈,区块链,比特币,李笑来
@@ -18,9 +18,7 @@ description: 区块链产业链我捋一下，话说2018的超级热点
 
 以下内容是知识星球“cao的小密圈”中的精华帖，摘录到这里，只是为了方便我个人的查阅。
 
-如果您需要使用这些材料，请与caoz联系。
-
-![caoz的小密圈]({{ site.imglocal }}/xiaomiquan-caoz.png) 
+如果您需要使用这些材料，请与caoz联系，见文末。
 
 ## 区块链产业链，话说2018的超级热点
 

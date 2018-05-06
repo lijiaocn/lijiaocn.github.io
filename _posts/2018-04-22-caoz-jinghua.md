@@ -3,7 +3,7 @@ layout: default
 title: "[知识星球精华帖]: 从一个优惠券开始的一些发现"
 author: "阿彪@caoz的小密圈"
 createdate: 2018/05/01 11:53:25
-changedate: 2018/05/02 07:46:03
+changedate: 2018/05/05 11:34:10
 categories: 好货
 tags:  好货
 keywords: 知识星球精华,caoz的小密圈,Affiliate,telegram,优惠券营销
@@ -18,9 +18,7 @@ description: 无意中进了一个优惠券的Telegram的channel, 相当于公�
 
 以下内容是知识星球“cao的小密圈”中的精华帖，摘录到这里，只是为了方便我个人的查阅。
 
-如果您需要使用这些材料，请与caoz联系。
-
-![caoz的小密圈]({{ site.imglocal }}/xiaomiquan-caoz.png) 
+如果您需要使用这些材料，请与caoz联系，见文末。
 
 ## 从一个优惠券开始的一些发现
 

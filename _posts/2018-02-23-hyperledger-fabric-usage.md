@@ -1,12 +1,12 @@
 ---
 layout: default
-title:  Hyperledger Fabric的使用
+title:  超级账本Hyperledger Fabric的使用
 author: 李佶澳
 createdate: 2018/02/23 10:50:00
-changedate: 2018/04/17 10:25:45
+changedate: 2018/05/05 11:35:07
 categories: 项目
 tags: blockchain
-keywords: 区块链,Hyperledger,使用
+keywords: 区块链,Hyperledger,超级账本,Fabric
 description: 初步了解一下
 
 ---
@@ -32,6 +32,10 @@ description: 初步了解一下
 	Composer
 	Explorer
 	Quilt
+
+[网易云课堂：HyperLedger Fabric手动部署教程的视频讲解](http://study.163.com/course/introduction.htm?courseId=1005326005&share=2&shareId=400000000376006)
+
+[超级账本HyperLedger Fabric手动部署教程的文字实录(公开)](http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/04/26/hyperledger-fabric-deploy.html)
 
 ## Farbric
 
@@ -1188,6 +1192,7 @@ docker配置错误，配置了fluentd driver，但是fluentd不存在。
 
 将fabirc-ccenv、fabric-baseos、fabric-javaenv三个镜像提前下载好以后，实例化成功。
 
+![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
 ## 参考
 
@@ -1203,6 +1208,7 @@ docker配置错误，配置了fluentd driver，但是fluentd不存在。
 10. [Hyperledger Fabric SDKs][10]
 11. [github hyperleader][11]
 12. [hyperleader fabric-ca][12]
+13. [hyperledger的fabric项目的手动部署教程][13]
 
 [1]: https://cn.hyperledger.org/ "Hyperledger" 
 [2]: https://hyperledger-fabric.readthedocs.io/en/latest/blockchain.html "Fabric"
@@ -1216,3 +1222,4 @@ docker配置错误，配置了fluentd driver，但是fluentd不存在。
 [10]: http://hyperledger-fabric.readthedocs.io/en/latest/fabric-sdks.html "Hyperledger Fabric SDKs"
 [11]: https://github.com/hyperledger  "github hyperleader"
 [12]: https://github.com/hyperledger/fabric-ca  "hyperleader fabric-ca"
+[13]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/04/26/hyperledger-fabric-deploy.html  "hyperledger的fabric项目的手动部署教程"

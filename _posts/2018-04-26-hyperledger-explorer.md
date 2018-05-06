@@ -1,12 +1,12 @@
 ---
 layout: default
-title:  hyperledger的explorer的使用
+title:  超级账本HyperLedger的explorer的使用
 author: 李佶澳
 createdate: 2018/04/26 16:33:00
-changedate: 2018/04/27 10:30:37
+changedate: 2018/05/05 11:26:58
 categories: 项目
 tags: blockchain
-keywords: blockchain,hyperledger,explorer,区块链浏览器
+keywords: 超级账本,blockchain,hyperledger,explorer,区块链浏览器
 description: HyperLedger的区块链浏览器
 
 ---
@@ -17,6 +17,10 @@ description: HyperLedger的区块链浏览器
 ## 说明
 
 [HyperLedger Explorer][1]是HyplerLedger的子项目，是一个区块链浏览器。
+
+[网易云课堂：HyperLedger Fabric手动部署教程的视频讲解](http://study.163.com/course/introduction.htm?courseId=1005326005&share=2&shareId=400000000376006)
+
+[超级账本HyperLedger Fabric手动部署教程的文字实录(公开)](http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/04/26/hyperledger-fabric-deploy.html)
 
 ## 安装
 
@@ -89,7 +93,7 @@ description: HyperLedger的区块链浏览器
 	
 	host    all             all             127.0.0.1/32            trust
 
-根据自己的情况，修改配置文件config.json
+根据自己的情况，修改配置文件config.json:
 
 	{
 	    "network-config": {
@@ -133,6 +137,19 @@ description: HyperLedger的区块链浏览器
 	npm install 
 	npm run build
 
+## 遇到的问题
+
+### 页面空白没有任何内容
+
+如果在浏览器里打开后页面空白，没有任何内容，很可能是没有到client目录中进行安装编译：
+
+	//还需要到client目录中编译，否则页面看不到内容
+	cd client
+	npm install 
+	npm run build
+
+### openssl需要更新
+
 如果遇到下面的问题：
 
 	npm: relocation error: npm: symbol SSL_set_cert_cb, version libssl.so.10 not defined in file libssl.so.10 with link time reference
@@ -146,6 +163,8 @@ description: HyperLedger的区块链浏览器
 	npm build
 	node ./main.js
 
+### Error: No identity has been assigned to this client
+
 如果遇到下面的错误：
 
 	postgres://hppoc:password@127.0.0.1:5432/fabricexplorer
@@ -156,6 +175,10 @@ description: HyperLedger的区块链浏览器
 		at helper.getOrgAdmin.then (/root/blockchain-explorer/app/query.js:98:18)
 	[2018-04-26 19:26:42.979] [ERROR] blockscanner - TypeError: Cannot read property 'low' of undefined
 		at getChainInfo.then.response (/root/blockchain-explorer/app/query.js:213:23)
+
+原因是config.json的中组织不是以`org`开头的。。。。这个还真是有点坑。。
+
+![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
 ## 参考
 

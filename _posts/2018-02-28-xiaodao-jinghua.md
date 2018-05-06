@@ -3,7 +3,7 @@ layout: default
 title: "[知识星球精华帖]: X-Art 这个公司挺有意思"
 author: "冯大辉@小道消息"
 createdate: 2018/05/01 11:53:25
-changedate: 2018/05/02 08:11:05
+changedate: 2018/05/05 11:33:24
 categories: 好货
 tags:  好货
 keywords: 知识星球精华,冯大辉,X-art,小道消息,farewell
@@ -18,9 +18,7 @@ description: X-Art 这个公司挺有意思。看到纽约客上的一篇报道�
 
 以下内容是知识星球“小道消息和他的朋友们”中的精华帖，摘录到这里，只是为了方便我个人的查阅。
 
-如果您需要使用这些材料，请与小道君和caoz联系。
-
-![小道消息和他的朋友们]({{ site.imglocal }}/xiaomiquan-xiaodao.png)
+如果您需要使用这些材料，请与小道君和caoz联系，见文末。
 
 ## X-Art 这个公司挺有意思
 
