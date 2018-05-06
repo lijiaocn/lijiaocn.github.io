@@ -1,9 +1,9 @@
 ---
 layout: default
 title:  超级账本HyperLedger的Fabric-CA的使用演示(两个组织一个Orderer三个Peer)
-author: lijiaocn
+author: 李佶澳
 createdate: 2018/05/04 14:09:00
-changedate: 2018/05/06 22:20:42
+changedate: 2018/05/06 22:29:46
 categories: 项目
 tags: blockchain
 keywords: 超级账本部署,fabric-ca,hyperledger,orderer证书
@@ -24,7 +24,7 @@ description: 这里将演示如何使用fabric-ca为每个组件和用户生成�
 
 可以使用下面的部署方式：
 
-![fabric-deploy-example]({{ site.imgurl }}/hyperledger-class/fabric-ca-deploy-example-1.png)
+![fabric-deploy-example]({{ site.imglocal }}/hyperledger-class/fabric-ca-deploy-example-1.png)
 
 这里将创建一个由两个组织`org1.example.com`和`org2.example.com`组成的的联盟。
 
@@ -32,7 +32,7 @@ description: 这里将演示如何使用fabric-ca为每个组件和用户生成�
 
 同时做了简化，只部署了一个Fabric-CA作为rootCA。
 
-![fabric-deploy-example]({{ site.imgurl }}/hyperledger-class/fabric-ca-deploy-example-2.png)
+![fabric-deploy-example]({{ site.imglocal }}/hyperledger-class/fabric-ca-deploy-example-2.png)
 
 example.com部署了一个`solo`模式的orderer。（多个orderer的部署方式，以后探讨）
 
