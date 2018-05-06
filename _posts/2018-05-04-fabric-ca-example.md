@@ -3,11 +3,11 @@ layout: default
 title:  超级账本HyperLedger的Fabric-CA的使用演示(两个组织一个Orderer三个Peer)
 author: lijiaocn
 createdate: 2018/05/04 14:09:00
-changedate: 2018/05/06 12:00:21
-categories:
-tags:
-keywords:
-description: 
+changedate: 2018/05/06 12:04:10
+categories: 项目
+tags: blockchain
+keywords: 超级账本部署,fabric-ca,hyperledger,orderer证书
+description: 这里将演示如何使用fabric-ca为每个组件和用户生成证书，本文是对hyperledger的fabric项目的全手动部署的补充
 
 ---
 
