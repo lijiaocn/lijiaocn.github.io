@@ -136,7 +136,7 @@ div.center .author {
 }
 
 div.center p {
-	font-size:16px;
+	font-size:15px;
 	font-family: 宋体;
 	line-height: 180%;
 }
@@ -155,7 +155,7 @@ div.center h1 {
 }
 
 div.center h2 {
-	font-size:24px;
+	font-size:22px;
 	font-family: 宋体;
 	font-weight:bold;
 	color:black;
@@ -164,25 +164,25 @@ div.center h2 a {
 	color: #000000;
 }
 div.center h3 {
-	font-size:22px;
-	font-family: 宋体;
-	font-weight:bold;
-	color:black;
-}
-div.center h4 {
 	font-size:20px;
 	font-family: 宋体;
 	font-weight:bold;
 	color:black;
 }
-div.center h5 {
+div.center h4 {
 	font-size:18px;
 	font-family: 宋体;
 	font-weight:bold;
 	color:black;
 }
-div.center h6 {
+div.center h5 {
 	font-size:16px;
+	font-family: 宋体;
+	font-weight:bold;
+	color:black;
+}
+div.center h6 {
+	font-size:15px;
 	font-family: 宋体;
 	font-weight:bold;
 	color:black;
