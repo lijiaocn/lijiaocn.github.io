@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger的Fabric-CA的使用演示(两个组织一个Orderer三个Peer)
 author: 李佶澳
 createdate: 2018/05/04 14:09:00
-changedate: 2018/05/07 19:22:37
+changedate: 2018/05/07 21:59:32
 categories: 项目
 tags: blockchain
 keywords: 超级账本部署,fabric-ca,hyperledger,orderer证书
@@ -218,9 +218,12 @@ fabirc-ca的编译：
 	    - name: hf.IntermediateCA
 	      value: true
 	    - name: role
-	      value: admin:ecert
+	      value: admin
+	      ecert: true
 
-注意最后一行role属性，是我们自定义的属性。
+注意最后一行role属性，是我们自定义的属性，在配置文件中是单独设置ecert属性为true或者false，如果在命令行中，添加后缀`:ecert`表示true，例如:
+
+	fabric-ca-client register --id.affiliation "com.example.org1" --id.attrs "role=admin:ecert"
 
 直接执行下面的命令，即可完成用户`Admin@example.com`注册，注意这时候的注册使用fabricCA的admin账号完成的：
 	
@@ -295,7 +298,8 @@ fabirc-ca的编译：
 	    - name: hf.IntermediateCA
 	      value: true
 	    - name: role
-	      value: admin:ecert
+	      value: admin
+	      ecert: true
 
 注册：
 
@@ -361,7 +365,8 @@ fabirc-ca的编译：
 	    - name: hf.IntermediateCA
 	      value: true
 	    - name: role
-	      value: admin:ecert
+	      value: admin
+	      ecert: true
 
 注册：
 
@@ -414,7 +419,8 @@ example.com、org1.example.com、org2.example.com三个组织这时候可以分�
 	  maxenrollments: 0
 	  attributes:
 	    - name: role
-	      value: orderer:ecert
+	      value: orderer
+	      ecert: true
 
 注册以及生成凭证：
 
@@ -440,7 +446,8 @@ example.com、org1.example.com、org2.example.com三个组织这时候可以分�
 	  maxenrollments: 0
 	  attributes:
 	    - name: role
-	      value: peer:ecert
+	      value: peer
+	      ecert: true
 
 注册以及生成凭证：
 
@@ -466,7 +473,8 @@ example.com、org1.example.com、org2.example.com三个组织这时候可以分�
 	  maxenrollments: 0
 	  attributes:
 	    - name: role
-	      value: peer:ecert
+	      value: peer
+	      ecert: true
 
 注册以及生成凭证：
 
@@ -492,7 +500,8 @@ example.com、org1.example.com、org2.example.com三个组织这时候可以分�
 	  maxenrollments: 0
 	  attributes:
 	    - name: role
-	      value: peer:ecert
+	      value: peer
+	      ecert: true
 
 注册以及生成凭证：
 
@@ -661,7 +670,12 @@ example.com、org1.example.com、org2.example.com三个组织这时候可以分�
 
 这些操作的含义见： [hyperledger的fabric项目的全手动部署-创建channel与peer的设置][5]
 
-后续的合约创建、更新、调用等操作这里就不演示了，请直接查看: [hyperledger的fabric项目的全手动部署：安装合约][8]
+后续的合约创建、更新、调用等操作这里就不演示了，请直接查看: [hyperledger的fabric项目的全手动部署：安装合约][8]:
+
+	./peer.sh chaincode package demo-pack.out -n demo -v 0.0.1 -s -S -p github.com/lijiaocn/fabric-chaincode-example/demo
+	./peer.sh chaincode signpackage demo-pack.out signed-demo-pack.out
+	./peer.sh chaincode install ./signed-demo-pack.out
+	./peer.sh chaincode instantiate -o orderer.example.com:7050 --tls true --cafile ./tlsca.example.com-cert.pem -C mychannel -n demo -v 0.0.1 -c '{"Args":["init"]}' -P "OR('Org1MSP.member','Org2MSP.member')"
 
 有问题的话，可以到下面的知识星球中交流，我会在里面分享一些资料：
 
