@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger的Fabric-CA的使用演示(两个组织一个Orderer三个Peer)
 author: 李佶澳
 createdate: 2018/05/04 14:09:00
-changedate: 2018/05/07 12:46:52
+changedate: 2018/05/07 13:33:33
 categories: 项目
 tags: blockchain
 keywords: 超级账本部署,fabric-ca,hyperledger,orderer证书
@@ -169,6 +169,18 @@ fabirc-ca的编译：
 	fabric-ca-client getcacert -M `pwd`/fabric-ca-files/org2.example.com/msp
 
 这里是用`getcacert`为每个组织准备需要的ca文件，在生成创始块的时候会用到。
+
+在1.1.0版本的fabric-ca中，只会组件或用户在操作区块链的时候用到的证书和密钥，不会生成用来加密grpc通信的证书。
+
+这里继续沿用之前的fabric-deploy中的tls证书，在最后的重新部署操作，只会替换msp目录。
+
+但是需要将验证tls证书的ca添加到msp目录中，如下：
+
+	cp -rf certs/ordererOrganizations/example.com/msp/tlscacerts  fabric-ca-files/example.com/msp/
+	cp -rf certs/peerOrganizations/org1.example.com/msp/tlscacerts/ fabric-ca-files/org1.example.com/msp/
+	cp -rf certs/peerOrganizations/org2.example.com/msp/tlscacerts/ fabric-ca-files/org2.example.com/msp/
+
+如果在你的环境中，各个组件域名的证书，是由第三方CA签署的，就将第三方CA的根证书添加到tlscacerts目录中。
 
 ## 注册example.com的管理员Admin@example.com
 
@@ -391,9 +403,7 @@ example.com、org1.example.com、org2.example.com三个组织这时候可以分�
 
 ### orderer.example.com
 
-使用`Admin@example.com`为唯一的orderer注册账号。	
-
-注意这时候我们要指定的目录是`fabric-ca-files/example.com/admin/`。
+使用`Admin@example.com`注册账号orderer.example.com。注意这时候指定的目录是fabric-ca-files/`example.com`/admin/。
 
 修改fabric-ca-files/example.com/admin/fabric-ca-client-config.yaml:
 
@@ -419,7 +429,7 @@ example.com、org1.example.com、org2.example.com三个组织这时候可以分�
 
 ### peer0.org1.example.com
 
-注意这时候我们要指定的目录是`fabric-ca-files/org1.example.com/admin/`。
+使用`Admin@org1.example.com`注册账号peer0.org1.example.com。这时候指定的目录是fabric-ca-files/`org1.example.com`/admin/。
 
 修改fabric-ca-files/org1.example.com/admin/fabric-ca-client-config.yaml:
 
@@ -445,7 +455,7 @@ example.com、org1.example.com、org2.example.com三个组织这时候可以分�
 
 ### peer1.org1.example.com
 
-注意这时候我们要指定的目录是`fabric-ca-files/org1.example.com/admin/`。
+使用`Admin@org1.example.com`注册账号peer1.org1.example.com。这时候指定的目录是fabric-ca-files/`org1.example.com`/admin/。
 
 修改fabric-ca-files/org1.example.com/admin/fabric-ca-client-config.yaml:
 
@@ -471,7 +481,7 @@ example.com、org1.example.com、org2.example.com三个组织这时候可以分�
 
 ### peer0.org2.example.com
 
-注意这时候我们要指定的目录是`fabric-ca-files/org2.example.com/admin/`。
+使用`Admin@org2.example.com`注册账号peer0.org2.example.com。这时候指定的目录是fabric-ca-files/`org2.example.com`/admin/。
 
 修改fabric-ca-files/org2.example.com/admin/fabric-ca-client-config.yaml:
 
@@ -497,7 +507,7 @@ example.com、org1.example.com、org2.example.com三个组织这时候可以分�
 
 ## 重新部署
 
-然后在[hyperledger的fabric项目的全手动部署][3]`执行结束后得到的fabric-deploy目录`基础上，进行下面的操作。
+然后在[hyperledger的fabric项目的全手动部署][3]执行结束后得到的`fabric-deploy`目录基础上，进行下面的操作。
 
 修改`configtx.yaml`，将其中的msp路径修改为通过fabric-ca创建的msp目录:
 
@@ -624,6 +634,7 @@ example.com、org1.example.com、org2.example.com三个组织这时候可以分�
 	status:STARTED
 	2018-05-04 17:03:06.202 CST [main] main -> INFO 001 Exiting.....
 
+	$ cd ../
 	$ rm -rf Admin\@org2.example.com/msp
 	$ cp -rf fabric-ca-files/org2.example.com/admin/msp Admin\@org2.example.com/
 	$ cd Admin\@org2.example.com
@@ -651,6 +662,8 @@ example.com、org1.example.com、org2.example.com三个组织这时候可以分�
 这些操作的含义见： [hyperledger的fabric项目的全手动部署-创建channel与peer的设置][5]
 
 后续的合约创建、更新、调用等操作这里就不演示了，请直接查看: [hyperledger的fabric项目的全手动部署][3]
+
+有问题的话，可以到下面的知识星球中交流，我会在里面分享一些资料：
 
 ![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
