@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger的fabricCA的用法讲解
 author: 李佶澳
 createdate: 2018/04/27 10:58:00
-changedate: 2018/05/06 21:15:09
+changedate: 2018/05/07 10:30:26
 categories: 项目
 tags: blockchain
 keywords: 超级账本,fabricCA,hyperledger,blockchain,区块链,联盟链
@@ -47,10 +47,11 @@ Hyperledger Fabric CA是Hyperledger Fabric的证书授权中心，支持：
 	$ ls bin/
 	fabric-ca-client  fabric-ca-server
 
-## fabric-ca-server启动前准备
+## fabric-ca-server简单部署
 
-	$ mkdir /opt/app/fabric-ca/server
+	$ mkdir -p /opt/app/fabric-ca/server
 	$ cp $GOPATH/src/github.com/hyperledger/fabric-ca/bin/fabric-ca-server /opt/app/fabric-ca/server
+	$ cp $GOPATH/src/github.com/hyperledger/fabric-ca/bin/fabric-ca-client /opt/app/fabric-ca/server
 	$ cd /opt/app/fabric-ca/server
 
 初始化：
