@@ -283,8 +283,15 @@ div.rsidebar-title p {
 }
 /*百度搜索框*/
 .bdcs-container {
-    width:100%;
+	width:100%;
 }
 .bdcs-search-form-input {
+	width: 60%;
+}
+.bdcs-search-form{
+	width: 300px;
+}
+/*Google*/
+.search {
 	width: 60%;
 }
