@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger的Fabric-CA的使用演示(两个组织一个Orderer三个Peer)
 author: 李佶澳
 createdate: 2018/05/04 14:09:00
-changedate: 2018/05/07 10:31:25
+changedate: 2018/05/07 12:46:52
 categories: 项目
 tags: blockchain
 keywords: 超级账本部署,fabric-ca,hyperledger,orderer证书
@@ -77,34 +77,50 @@ fabirc-ca的编译：
 	cd /opt/app/fabric-ca/server
 	./fabric-ca-server start -b  admin:pass &
 
-如果有删除联盟和用户的需求，需要用下面的方式启动：
+如果有`删除联盟`和`删除用户`的需求，需要用下面的方式启动：
 
 	cd /opt/app/fabric-ca/server
 	./fabric-ca-server start -b admin:pass --cfg.affiliations.allowremove  --cfg.identities.allowremove &
 
-## fabric-ca admin的凭证
+注意：这里只是演示用法，直接用sqlite存储用户信息，生产中，请根据情况配置ldap或者mysql等数据库：[HyperLedger FabricCA Config Database and LDAP][7]。
 
-后续操作在《[hyperledger的fabric项目的全手动部署][3]》中创建的fabric-deploy目录中进行后续操作。
+## 生成fabric-ca admin的凭证
+
+下面的操作在《[hyperledger的fabric项目的全手动部署][3]》中创建的`fabric-deploy`目录中进行后续操作。
 
 	cd ~/fabric-deploy
 	mkdir fabric-ca-files 
 
-生成fabric-ca admin的凭证：
+生成fabric-ca admin的凭证，用`-H`参数指定client目录：
+
+	mkdir -p `pwd`/fabric-ca-files/admin
+	fabric-ca-client enroll -u http://admin:pass@localhost:7054 -H `pwd`/fabric-ca-files/admin
+
+也可以用环境变量`FABRIC_CA_CLIENT_HOME`指定了client的工作目录，生成的用户凭证将存放在这个目录中。
 
 	export FABRIC_CA_CLIENT_HOME=`pwd`/fabric-ca-files/admin
 	mkdir -p $FABRIC_CA_CLIENT_HOME
 	fabric-ca-client enroll -u http://admin:pass@localhost:7054
 
-环境变量`FABRIC_CA_CLIENT_HOME`指定了client的工作目录，生成的用户凭证将存放在这个目录中。
-
-也可以用`-H`参数指定：
-
-	mkdir -p `pwd`/fabric-ca-files/admin
-	fabric-ca-client enroll -u http://admin:pass@localhost:7054 -H `pwd`/fabric-ca-files/admin
-
 为了防止混乱，后面的演示操作中，都直接用`-H`指定目录。
 
 ## 创建联盟
+
+上面的启动方式默认会创建两个组织：
+
+	$ fabric-ca-client  -H `pwd`/fabric-ca-files/admin  affiliation list
+	2018/05/07 02:36:46 [INFO] [::1]:56148 GET /affiliations 200 0 "OK"
+	affiliation: .
+	   affiliation: org2
+	      affiliation: org2.department1
+	   affiliation: org1
+	      affiliation: org1.department1
+	      affiliation: org1.department2
+
+为了查看信息的时候，看到的输出比较简洁，用下面的命令将其删除：
+
+	fabric-ca-client -H `pwd`/fabric-ca-files/admin  affiliation remove --force  org1
+	fabric-ca-client -H `pwd`/fabric-ca-files/admin  affiliation remove --force  org2
 
 执行下面命令创建联盟：
 	
@@ -122,21 +138,16 @@ fabirc-ca的编译：
 	      affiliation: com.example.org1
 	      affiliation: com.example.org2
 
-你可能会看到fabric-ca启动时自动创建的org1和org2联盟，可以用下面的命令将其删除：
-
-	fabric-ca-client -H `pwd`/fabric-ca-files/admin  affiliation remove --force  org1
-	fabric-ca-client -H `pwd`/fabric-ca-files/admin  affiliation remove --force  org2
-
 ## 为每个组织准备msp
 
-为example.com准备msp，将ca证书等存放改目录中:
+为example.com准备msp，将ca证书等存放example.com组织的目录中:
 
 	mkdir -p ./fabric-ca-files/example.com/msp
 	fabric-ca-client getcacert -M `pwd`/fabric-ca-files/example.com/msp    //-M需要指定绝对路径
 
 命令执行结束后，会在`fabric-ca-files/example.com/msp`得到文件：
 
-	$ tree example.com/msp/
+	$ tree fabric-ca-files/example.com/msp/
 	example.com/msp/
 	|-- cacerts
 	|   `-- localhost-7054.pem
@@ -152,10 +163,12 @@ fabirc-ca的编译：
 	mkdir -p fabric-ca-files/org1.example.com/msp
 	fabric-ca-client getcacert -M `pwd`/fabric-ca-files/org1.example.com/msp
 
-用同样的方式为org2.example.com准备msp:
+为org2.example.com准备msp:
 
 	mkdir -p ./fabric-ca-files/org2.example.com/msp
 	fabric-ca-client getcacert -M `pwd`/fabric-ca-files/org2.example.com/msp
+
+这里是用`getcacert`为每个组织准备需要的ca文件，在生成创始块的时候会用到。
 
 ## 注册example.com的管理员Admin@example.com
 
@@ -165,12 +178,12 @@ fabirc-ca的编译：
 	    --id.attrs '"hf.Registrar.Roles=client,orderer,peer,user","hf.Registrar.DelegateRoles=client,orderer,peer,user",\
 	                 hf.Registrar.Attributes=*,hf.GenCRL=true,hf.Revoker=true,hf.AffiliationMgr=true,hf.IntermediateCA=true,role=admin:ecert'
 
-也可以将命令行参数写在fabric-ca admin的配置文件`fabric-ca-fiels/admin/fabric-ca-client-config.yaml`中。
+也可以将命令行参数写在fabric-ca admin的配置文件`fabric-ca-files/admin/fabric-ca-client-config.yaml`中。
 
-	$ ls fabric-ca-fiels/admin/admin/
+	$ ls fabric-ca-files/admin/admin/
 	fabric-ca-client-config.yaml  msp
 
-将其中的`id`部分修改为：
+为了演示清楚，这里使用修改配置文件的方式，将`fabric-ca-files/admin/fabric-ca-client-config.yaml`其中的`id`部分修改为：
 
 	id:
 	  name: Admin@example.com
@@ -195,7 +208,9 @@ fabirc-ca的编译：
 	    - name: role
 	      value: admin:ecert
 
-直接执行下面的命令，即可完成用户`Admin@example.com`注册：
+注意最后一行role属性，是我们自定义的属性。
+
+直接执行下面的命令，即可完成用户`Admin@example.com`注册，注意这时候的注册使用fabricCA的admin账号完成的：
 	
 	fabric-ca-client register -H `pwd`/fabric-ca-files/admin --id.secret=password
 
@@ -236,7 +251,7 @@ fabirc-ca的编译：
 	mkdir fabric-ca-files/example.com/msp/admincerts/
 	cp fabric-ca-files/example.com/admin/msp/signcerts/cert.pem  fabric-ca-files/example.com/msp/admincerts/
 
-只有这样，才能具备管理员权限。
+**只有这样，才能具备管理员权限**。
 
 ## 注册org1.example.com的管理员Admin@org1.example.com
 
@@ -245,7 +260,7 @@ fabirc-ca的编译：
 	cd ~/fabric-deploy
 	mkdir -p ./fabric-ca-files/org1.example.com/admin
 
-修改fabric-ca admin目录下的`fabric-ca-client-config.yaml`文件:
+将`fabric-ca-files/admin/fabric-ca-client-config.yaml`其中的`id`部分修改为：
 
 	id:
 	  name: Admin@org1.example.com
@@ -288,7 +303,7 @@ fabirc-ca的编译：
 	   affiliation: com.example
 	      affiliation: com.example.org1
 
-注意与`Admin@example.com`的区别，这里智能看到组织com.example.org1
+注意与`Admin@example.com`的区别，这里只能看到组织com.example.org1
 
 将Admin@org1.example.com的证书复制到org1.example.com的msp/admincerts中：
 
@@ -300,7 +315,7 @@ fabirc-ca的编译：
 	mkdir fabric-ca-files/org1.example.com/admin/msp/admincerts/
 	cp fabric-ca-files/org1.example.com/admin/msp/signcerts/cert.pem  fabric-ca-files/org1.example.com/admin/msp/admincerts/
 
-另外，这里没有中间CA，将intermediatecerts中的空文件删除，否则peer会提示Warning：
+另外，这里没有使用中间CA，将intermediatecerts中的空文件删除，否则peer会提示Warning：
 
 	rm fabric-ca-files/org1.example.com/admin/msp/intermediatecerts/*
  
@@ -311,7 +326,7 @@ fabirc-ca的编译：
 	cd ~/fabric-deploy
 	mkdir -p ./fabric-ca-files/org2.example.com/admin
 
-修改fabric-ca admin目录下的`fabric-ca-client-config.yaml`文件:
+将`fabric-ca-files/admin/fabric-ca-client-config.yaml`其中的`id`部分修改为：
 
 	id:
 	  name: Admin@org2.example.com
@@ -366,7 +381,7 @@ Admin@org2.example.com只能看到组织`com.example.org2`。
 	mkdir fabric-ca-files/org2.example.com/admin/msp/admincerts/
 	cp fabric-ca-files/org2.example.com/admin/msp/signcerts/cert.pem  fabric-ca-files/org2.example.com/admin/msp/admincerts/
 
-另外，这里没有中间CA，将intermediatecerts中的空文件删除，否则peer会提示Warning：
+另外，这里没有使用中间CA，将intermediatecerts中的空文件删除，否则peer会提示Warning：
 
 	rm fabric-ca-files/org2.example.com/admin/msp/intermediatecerts/*
 
@@ -647,6 +662,7 @@ example.com、org1.example.com、org2.example.com三个组织这时候可以分�
 4. [hyperledger的fabric项目的全手动部署: 开始部署][4]
 5. [hyperledger的fabric项目的全手动部署-创建channel与peer的设置][5]
 6. [超级账本HyperLedger的fabricCA的用法讲解][6]
+7. [HyperLedger FabricCA Config Database and LDAP][7]
 
 [1]: https://hyperledger-fabric-ca.readthedocs.io/en/latest/  "Welcome to Hyperledger Fabric CA" 
 [2]: https://github.com/hyperledger/fabric-ca "fabric-ca codes"
@@ -654,3 +670,4 @@ example.com、org1.example.com、org2.example.com三个组织这时候可以分�
 [4]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/04/26/hyperledger-fabric-deploy.html#%E5%BC%80%E5%A7%8B%E9%83%A8%E7%BD%B2 "开始部署"
 [5]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/04/26/hyperledger-fabric-deploy.html#%E5%88%9B%E5%BB%BAchannel%E4%B8%8Epeer%E7%9A%84%E8%AE%BE%E7%BD%AE "hyperledger的fabric项目的全手动部署-创建channel与peer的设置"
 [6]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/04/27/hyperledger-fabric-ca-usage.html  "超级账本HyperLedger的fabricCA的用法讲解"
+[7]: https://hyperledger-fabric-ca.readthedocs.io/en/latest/users-guide.html#configuring-the-database "HyperLedger FabricCA Config Database and LDAP"
