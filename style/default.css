@@ -76,6 +76,7 @@ div.rsidebar-element img{
 .searchbar {
 	margin-top: 10px;
 	margin-bottom: 10px;
+	text-align: left;
 }
 
 .rsidebar-title {
@@ -281,21 +282,9 @@ div.rsidebar-title p {
 	}
 }
 /*百度搜索框*/
-.bdcs-container .bdcs-search-form-input {
-    border-width: 1px;
-    border-style: solid;
-    display: inline-block;
-    vertical-align: top;
-    text-indent: 5px;
-    float: left;
-    border-color:#a6a6a6; /*边框颜色*/
-    margin-right:10px; /*框与按钮直接的距离*/
-    /*width:246px; 框宽度*/
-    height:26px; /* 框高度*/
-    line-height:26px;
-    font-family:Arial,SimSun,sans-serif;/*字体*/
-    color:#000000;/*字体颜色*/
-    font-size:14px;/*字体大小*/
-    border-radius:0px;
-    background-color:#FFFFFF; /*背景颜色*/
+.bdcs-container {
+    width:100%;
+}
+.bdcs-search-form-input {
+	width: 60%;
 }
