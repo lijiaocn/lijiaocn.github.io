@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger的Fabric-CA的使用演示(两个组织一个Orderer三个Peer)
 author: 李佶澳
 createdate: 2018/05/04 14:09:00
-changedate: 2018/05/07 21:59:32
+changedate: 2018/05/08 00:05:37
 categories: 项目
 tags: blockchain
 keywords: 超级账本部署,fabric-ca,hyperledger,orderer证书
@@ -672,10 +672,13 @@ example.com、org1.example.com、org2.example.com三个组织这时候可以分�
 
 后续的合约创建、更新、调用等操作这里就不演示了，请直接查看: [hyperledger的fabric项目的全手动部署：安装合约][8]:
 
+	go get github.com/lijiaocn/fabric-chaincode-example/demo
 	./peer.sh chaincode package demo-pack.out -n demo -v 0.0.1 -s -S -p github.com/lijiaocn/fabric-chaincode-example/demo
 	./peer.sh chaincode signpackage demo-pack.out signed-demo-pack.out
 	./peer.sh chaincode install ./signed-demo-pack.out
 	./peer.sh chaincode instantiate -o orderer.example.com:7050 --tls true --cafile ./tlsca.example.com-cert.pem -C mychannel -n demo -v 0.0.1 -c '{"Args":["init"]}' -P "OR('Org1MSP.member','Org2MSP.member')"
+	./peer.sh chaincode query -C mychannel -n demox -c '{"Args":["attr","role"]}'
+	./peer.sh chaincode query -C mychannel -n demox -c '{"Args":["attr","hf.Type"]}'
 
 有问题的话，可以到下面的知识星球中交流，我会在里面分享一些资料：
 
