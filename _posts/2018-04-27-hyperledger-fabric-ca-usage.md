@@ -1,9 +1,9 @@
 ---
 layout: default
-title:  超级账本HyperLedger的fabricCA的用法讲解
+title: 超级账本HyperLedger的fabricCA的用法讲解
 author: 李佶澳
 createdate: 2018/04/27 10:58:00
-changedate: 2018/05/07 17:19:31
+changedate: 2018/05/07 19:33:49
 categories: 项目
 tags: blockchain
 keywords: 超级账本,fabricCA,hyperledger,blockchain,区块链,联盟链
@@ -303,7 +303,36 @@ fabric-ca默认注册了几个联盟，可以用`affiliation list`查看：
 	fabric-ca-client register --id.name admin2 --id.affiliation org1.department1 \
 	--id.attrs 'hf.Revoker=true,admin=true:ecert'
 
-用户自定义的属性可以写入到用户的凭证中，在合约中可以获取发起请求的用户属性，根据用户属性决定用户是否由操作权限。参考[HyplerLedger FabricCA ABAC][6]。
+用户自定义的属性可以写入到用户的凭证中，在合约中可以获取发起请求的用户属性，根据用户属性决定用户是否由操作权限。
+
+参考[HyplerLedger FabricCA ABAC][6]，[HyperLedger Fabric Chaincode ABAC][7]给出一个使用ABAC的chaincode:
+
+	...
+	"github.com/hyperledger/fabric/core/chaincode/lib/cid"
+	...
+	
+	err := cid.AssertAttributeValue(stub, "abac.init", "true")
+	if err != nil {
+	    return shim.Error(err.Error())
+	}
+	...
+
+cid（Client Identity）中提供下面的方法：
+
+	+AssertAttributeValue(stub ChaincodeStubInterface, attrName, attrValue string) : error
+	+GetAttributeValue(stub ChaincodeStubInterface, attrName string) : string, bool, error
+	+GetID(stub ChaincodeStubInterface) : string, error
+	+GetMSPID(stub ChaincodeStubInterface) : string, error
+	+GetX509Certificate(stub ChaincodeStubInterface) : *x509.Certificate, error
+	+New(stub ChaincodeStubInterface) : ClientIdentity, error
+	
+	▼+ClientIdentity : interface
+	    [methods]
+	   +AssertAttributeValue(attrName, attrValue string) : error
+	   +GetAttributeValue(attrName string) : string, bool, error
+	   +GetID() : string, error
+	   +GetMSPID() : string, error
+	   +GetX509Certificate() : *x509.Certificate, error
 
 "admin=true:ecert"中的`ecert`的意思是，该属性会被自动写入到用户凭证中(enrollment certificate)。
 
@@ -364,6 +393,7 @@ fabric-ca默认注册了几个联盟，可以用`affiliation list`查看：
 4. [hyperledger的fabric项目的全手动部署: 开始部署][4]
 5. [hyperledger的fabricCA的安装使用][5]
 6. [HyplerLedger FabricCA ABAC][6]
+7. [HyperLedger Fabric Chaincode ABAC][7]
 
 [1]: https://hyperledger-fabric-ca.readthedocs.io/en/latest/  "Welcome to Hyperledger Fabric CA" 
 [2]: https://github.com/hyperledger/fabric-ca "fabric-ca codes"
@@ -371,3 +401,4 @@ fabric-ca默认注册了几个联盟，可以用`affiliation list`查看：
 [4]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/04/26/hyperledger-fabric-deploy.html#%E5%BC%80%E5%A7%8B%E9%83%A8%E7%BD%B2 "开始部署"
 [5]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/04/27/hyperledger-fabric-ca-usage.html#%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85 "hyperledger的fabricCA的安装使用"
 [6]: https://hyperledger-fabric-ca.readthedocs.io/en/latest/users-guide.html#attribute-based-access-control  "HyplerLedger FabricCA ABAC"
+[7]: https://github.com/hyperledger/fabric-samples/tree/release-1.1/chaincode/abac/go "HyperLedger Fabric Chaincode ABAC"

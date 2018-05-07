@@ -3,7 +3,7 @@ layout: default
 title: Calico网络的原理、组网方式与使用
 author: 李佶澳
 createdate: 2017/04/11 10:58:34
-changedate: 2017/10/23 23:10:32
+changedate: 2018/05/07 19:33:37
 categories: 项目
 tags: sdn calico
 keywords:
@@ -176,17 +176,13 @@ calico网络对底层的网络的要求很少，只要求node之间能够通过I
 
 当要部署calico网络的时候，第一步就是要确认，网络中处理能力最强的设备最多能设置多少条路由。
 
-### 在二层(Ethernet)网络中部署calico网络
+### calico在Ethernet interconnect fabric中的部署方式
 
-[calico over an Ethernet interconnect fabric][11]中介绍了在二层网络中部署calico网络方案。
-
-在二层网络中部署calico网络的意思是: 
-
-	所有的node都已经接入了二层网，还没有配置三层网络。
+[calico over an Ethernet interconnect fabric][11]中介绍了在Ethernet interconnect fabric部署calico网络方案。在每个vlan中部署一套calico。
 
 ![calico-l2-rr-spine-planes]({{ site.imglocal }}/calico-usage/calico-l2-rr-spine-planes.png)
 
-为了保证链路可靠，图中设计了四个并列的二层网，每个二层网占用一个三层网段。
+为了保证链路可靠，图中设计了四个并列的二层网，形成fabric。
 
 每个node同时接入四个二层网络，对应拥有四个不同网段的IP。
 
@@ -199,15 +195,9 @@ calico网络对底层的网络的要求很少，只要求node之间能够通过I
 
 根据[ECMP][13]协议，报文将会平均分配给这四个等价路由，提高了可靠性的同时增加了网络的吞吐能力。
 
-为每个二层网络设置了IP之后，二层网络就成为了三层网络，每个二层网络中的calico的部署也可以参考下一节。
+### calico在ip fabric中的部署方式
 
-### 在三层(IP)网络中部署calico网络
-
-在三层网络中部署calico网络的意思是，[calico over ip fabrics][14]:
-
-	所有的node已经接入到了一个三层网络中，在此基础上部署calico网络。
-
-已经部署好的三层网络应当是可靠的，calico可以直接在上面部署。
+如果底层的网络是ip fabric的方式，三层网络是可靠的，只需要部署一套calico。
 
 剩下的关键点就是怎样设计BGP网络，[calico over ip fabrics][14]中给出两种设计方式:
 
