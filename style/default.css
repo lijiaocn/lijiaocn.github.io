@@ -285,7 +285,7 @@ div.rsidebar-title p {
 .bdcs-container {
 	width:100%;
 }
-.bdcs-search-form-input{
+.bdcs-container .bdcs-search-form-input{
 	width: 60%;
 }
 /*Google*/
