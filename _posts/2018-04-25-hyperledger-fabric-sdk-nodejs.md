@@ -3,7 +3,7 @@ layout: default
 title:  "超级账本HyperLedger项目fabric的nodejsSDK的使用"
 author: lijiaocn
 createdate: 2018/04/25 11:11:00
-changedate: 2018/05/06 21:14:21
+changedate: 2018/05/07 17:20:54
 categories: 编程
 tags: hyperledger
 keywords: 超级账本,区块链实践,hyperledger,fabric接口,nodejs

@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger的fabricCA的用法讲解
 author: 李佶澳
 createdate: 2018/04/27 10:58:00
-changedate: 2018/05/07 10:30:26
+changedate: 2018/05/07 17:19:31
 categories: 项目
 tags: blockchain
 keywords: 超级账本,fabricCA,hyperledger,blockchain,区块链,联盟链
@@ -47,16 +47,24 @@ Hyperledger Fabric CA是Hyperledger Fabric的证书授权中心，支持：
 	$ ls bin/
 	fabric-ca-client  fabric-ca-server
 
-## fabric-ca-server简单部署
 
-	$ mkdir -p /opt/app/fabric-ca/server
-	$ cp $GOPATH/src/github.com/hyperledger/fabric-ca/bin/fabric-ca-server /opt/app/fabric-ca/server
-	$ cp $GOPATH/src/github.com/hyperledger/fabric-ca/bin/fabric-ca-client /opt/app/fabric-ca/server
-	$ cd /opt/app/fabric-ca/server
+## fabric-ca-server初始化
 
-初始化：
+	mkdir -p /opt/app/fabric-ca/client
+	cp $GOPATH/src/github.com/hyperledger/fabric-ca/bin/fabric-ca-client /opt/app/fabric-ca/client/
+	ln -s /opt/app/fabric-ca/client/fabric-ca-client  /usr/bin/fabric-ca-client
 
-	$ ./fabric-ca-server init  -b  admin:pass
+	mkdir -p /opt/app/fabric-ca/server
+	cp $GOPATH/src/github.com/hyperledger/fabric-ca/bin/fabric-ca-server /opt/app/fabric-ca/server/
+	cd /opt/app/fabric-ca/server
+
+初始化，可以使用ldap、mysql、postgresql，或者本地sqlite，默认sqlite：
+
+	./fabric-ca-server init -b admin:pass
+
+如果启动的是中间CA，用`-u`指定上级CA：
+
+	fabric-ca-server start -b admin:adminpw -u http://<enrollmentID>:<secret>@<parentserver>:<parentport>
 
 运行结束后，会在当前目录生成以下文件：
 
@@ -144,36 +152,7 @@ Hyperledger Fabric CA是Hyperledger Fabric的证书授权中心，支持：
 	    |--ca2
 	      |-- fabric-ca-config.yaml
 
-## 启动fabric-ca
-
-如果没有使用LDAP，需要用`-b`设置第一个用户。
-
-	$ fabric-ca-server start -b  admin:pass
-	2018/04/27 11:31:06 [INFO] Starting server in home directory: /opt/app/fabric-ca/server
-	2018/04/27 11:31:06 [INFO] Server Version: 1.1.1-snapshot-d536f5a
-	2018/04/27 11:31:06 [INFO] Server Levels: &{Identity:1 Affiliation:1 Certificate:1}
-	2018/04/27 11:31:06 [INFO] The CA key and certificate already exist
-	2018/04/27 11:31:06 [INFO] The key is stored by BCCSP provider 'SW'
-	2018/04/27 11:31:06 [INFO] The certificate is at: /opt/app/fabric-ca/server/ca-cert.pem
-	2018/04/27 11:31:06 [INFO] Initialized sqlite3 database at /opt/app/fabric-ca/server/fabric-ca-server.db
-	2018/04/27 11:31:06 [INFO] Home directory for default CA: /opt/app/fabric-ca/server
-	2018/04/27 11:31:06 [INFO] Listening on http://0.0.0.0:7054
-
-如果启动的是中间CA，用`-u`指定上级CA：
-
-	fabric-ca-server start -b admin:adminpw -u http://<enrollmentID>:<secret>@<parentserver>:<parentport>
-
-## fabric-ca client使用准备
-
-为了方便，将fabric-ca-client连接到/usr/bin目录中：
-
-	# ln -s $GOPATH/src/github.com/hyperledger/fabric-ca/bin/fabric-ca-client  /usr/bin/fabric-ca-client
-	# ls /usr/bin/fabric-ca-client  -lh
-	lrwxrwxrwx 1 root root 71 Apr 28 10:13 /usr/bin/fabric-ca-client -> /root/GOWORK//src/github.com/hyperledger/fabric-ca/bin/fabric-ca-client
-
-这样之后，就可以在shell中直接使用命令`fabric-ca-client`了。
-
-## 第一个用户的凭证
+## 生成fabric-ca管理员的凭证
 
 生成第一个用户的凭证:
 
@@ -265,12 +244,12 @@ fabric-ca默认注册了几个联盟，可以用`affiliation list`查看：
 
 为新注册的用户`admin2`准备一个目录，注意要使用一个新的目录，防止与其它用户混淆：
 
-	$ export FABRIC_CA_CLIENT_HOME=/opt/app/fabric-ca/clients/admin2
-	$ mkdir -p $FABRIC_CA_CLIENT_HOME
+	export FABRIC_CA_CLIENT_HOME=/opt/app/fabric-ca/clients/admin2
+	mkdir -p $FABRIC_CA_CLIENT_HOME
 
 然后生成凭证：
 
-	$ fabric-ca-client enroll -u http://admin2:wvkpvMzLsjPz@localhost:7054
+	fabric-ca-client enroll -u http://admin2:wvkpvMzLsjPz@localhost:7054
 
 之后可以看到新的目录中也生成了`fabric-ca-client-config.yaml`和`msp/`，这是admin2用户的凭证：
 
@@ -291,9 +270,9 @@ fabric-ca默认注册了几个联盟，可以用`affiliation list`查看：
 
 在注册admin2的时候，指定了这样一些属性`--id.attrs 'hf.Revoker=true,admin=true:ecert'`：
 
-	$ fabric-ca-client register --id.name admin2 --id.affiliation org1.department1 --id.attrs 'hf.Revoker=true,admin=true:ecert'
+	fabric-ca-client register --id.name admin2 --id.affiliation org1.department1 --id.attrs 'hf.Revoker=true,admin=true:ecert'
 
-这些属性是一定了解的，以`hf.`开头的属性，是fabric-ca的保留属性:
+这些属性是一定要了解的，以`hf.`开头的属性，是fabric-ca的内置属性:
 
     hf.Registrar.Roles            List        List of roles that the registrar is allowed to manage
     hf.Registrar.DelegateRoles    List        List of roles that the registrar is allowed to give to a registree for its ‘hf.Registrar.Roles’ attribute
@@ -303,7 +282,7 @@ fabric-ca默认注册了几个联盟，可以用`affiliation list`查看：
     hf.AffiliationMgr             Boolean     Identity is able to manage affiliations if attribute value is true
     hf.IntermediateCA             Boolean     Identity is able to enroll as an intermediate CA if attribute value is true
 
-这些属性表示的是用户是否拥有相关的权限。
+这些属性表示的是用户是否拥有相关的权限:
 
 `hf.Registrar.Roles`该用户可以增加的新用户类型，用户类型都有：client、orderer、peer、user。
 
@@ -321,23 +300,25 @@ fabric-ca默认注册了几个联盟，可以用`affiliation list`查看：
 
 除了这些以`hf.`开头的属性外，还可以自定义属性，例如下面的`admin=true`:
 
-	$ fabric-ca-client register --id.name admin2 --id.affiliation org1.department1 --id.attrs 'hf.Revoker=true,admin=true:ecert'
+	fabric-ca-client register --id.name admin2 --id.affiliation org1.department1 \
+	--id.attrs 'hf.Revoker=true,admin=true:ecert'
 
-用户自定义的属性可以写入到用户的凭证中，之后在合约中可以通过检查用户的属性，判断用户是否具有操作权限。
+用户自定义的属性可以写入到用户的凭证中，在合约中可以获取发起请求的用户属性，根据用户属性决定用户是否由操作权限。参考[HyplerLedger FabricCA ABAC][6]。
 
-`admin=true:ecert`中的`ecert`的意思是，该属性会被自动写入到用户凭证中(enrollment certificate)。
+"admin=true:ecert"中的`ecert`的意思是，该属性会被自动写入到用户凭证中(enrollment certificate)。
 
-对于没有注明`ecert`的属性，可以在生成用户凭证的时候，例如注册了这样一个用户:
+对于没有注明`ecert`的属性，可以在生成用户凭证的时候，例如注册了这样一个用户的时候:
 
-	fabric-ca-client register --id.name user1 --id.secret user1pw --id.type user --id.affiliation org1 --id.attrs 'app1Admin=true:ecert,email=user1@gmail.com'
+	fabric-ca-client register --id.name user1 --id.secret user1pw --id.type user \
+	--id.affiliation org1 --id.attrs 'app1Admin=true:ecert,email=user1@gmail.com'
 
-它的属性`email=user1@gmail.com`没有注明ecert，在生成凭证的时候，可以指定：
+它的属性`email=user1@gmail.com`没有注明是ecert，在生成凭证的时候，可以指定下面的属性：
 
 	fabric-ca-client enroll -u http://user1:user1pw@localhost:7054 --enrollment.attrs "email,phone:opt"
 
-`email`是必须要在登陆凭证中包含的属性，`phone:opt`则是可选的。
+`app1Admin`将被自动包含在凭证中；`email`是被明确指定的，它必须是存在的，否则报错；`phone:opt`也是明确指定的，`opt`表示phone属性可选的，如果没有phone属性不会报错。
 
-以`hf.`开头的下面三个属性，被自动包含在登陆凭证中：
+以`hf.`开头的下面三个属性，也会被自动包含在登陆凭证中：
 
 	hf.EnrollmentID    The enrollment ID of the identity
 	hf.Type            The type of the identity
@@ -382,9 +363,11 @@ fabric-ca默认注册了几个联盟，可以用`affiliation list`查看：
 3. [hyperledger的fabric项目的全手动部署][3]
 4. [hyperledger的fabric项目的全手动部署: 开始部署][4]
 5. [hyperledger的fabricCA的安装使用][5]
+6. [HyplerLedger FabricCA ABAC][6]
 
 [1]: https://hyperledger-fabric-ca.readthedocs.io/en/latest/  "Welcome to Hyperledger Fabric CA" 
 [2]: https://github.com/hyperledger/fabric-ca "fabric-ca codes"
 [3]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/04/26/hyperledger-fabric-deploy.html#%E5%90%AF%E5%8A%A8%E5%89%8D%E5%87%86%E5%A4%87  "hyperledger的fabric项目的全手动部署"
 [4]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/04/26/hyperledger-fabric-deploy.html#%E5%BC%80%E5%A7%8B%E9%83%A8%E7%BD%B2 "开始部署"
 [5]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/04/27/hyperledger-fabric-ca-usage.html#%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85 "hyperledger的fabricCA的安装使用"
+[6]: https://hyperledger-fabric-ca.readthedocs.io/en/latest/users-guide.html#attribute-based-access-control  "HyplerLedger FabricCA ABAC"
