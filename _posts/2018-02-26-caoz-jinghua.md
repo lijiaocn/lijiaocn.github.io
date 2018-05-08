@@ -3,9 +3,9 @@ layout: default
 title: "[知识星球精华帖]: 新加坡这个国家的一些情况"
 author: "caoz的小密圈"
 createdate: 2018/05/01 11:53:25
-changedate: 2018/05/06 16:05:39
+changedate: 2018/05/08 10:40:32
 categories: 好货
-tags:  好货
+tags: 知识星球精华
 keywords: 知识星球精华,caoz的小密圈,新加坡,新加坡工作
 description: "如有人想求职新加坡比特大陆或新加坡游族，可以简历给我 当然我不承诺会给你好消息。但确实这两家我可以协助内推"
 

@@ -3,9 +3,9 @@ layout: default
 title: "[知识星球精华帖]: 怎么写年终总结?"
 author: "冯大辉@小道消息"
 createdate: 2018/05/01 11:53:25
-changedate: 2018/05/06 16:04:32
+changedate: 2018/05/08 10:40:01
 categories: 好货
-tags:  好货
+tags: 知识星球精华
 keywords: 知识星球精华,冯大辉,小道消息,年终总结,晋升
 description: 写好了，有助于说明自己的工作绩效，绩效好可以多拿年终奖，还有晋升机会
 

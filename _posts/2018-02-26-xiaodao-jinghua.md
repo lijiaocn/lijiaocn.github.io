@@ -3,9 +3,9 @@ layout: default
 title: "[知识星球精华贴]：如何提高信息素养?"
 author: "冯大辉@小道消息"
 createdate: 2018/05/01 12:02:05
-changedate: 2018/05/06 16:08:08
+changedate: 2018/05/08 10:40:36
 categories: 好货
-tags:  好货
+tags: 知识星球精华
 keywords: 知识星球精华贴,小道消息,信息素养,知识星球
 description: 标题党有一种魔力，能够吸引信息素养比较低的人，或者，那就是信息素养低的人的蜜糖。
 

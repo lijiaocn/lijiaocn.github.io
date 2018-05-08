@@ -3,9 +3,9 @@ layout: default
 title: "[知识星球精华帖]: 小公司跟大公司竞争越来越难"
 author: "冯大辉@小道消息"
 createdate: 2018/05/01 11:53:25
-changedate: 2018/05/06 16:05:27
+changedate: 2018/05/08 10:40:26
 categories: 好货
-tags:  好货
+tags: 知识星球精华
 keywords: 知识星球精华,冯大辉,小公司大公司,小道消息,机会
 description: 以前大公司还算有盲点，会犯战略错误，现在好了，人家有大数据，有大量用户行为，
 

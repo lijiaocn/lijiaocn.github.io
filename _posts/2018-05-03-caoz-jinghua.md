@@ -3,9 +3,9 @@ layout: default
 title: "[知识星球精华帖]: 微信在2017年超过1万亿的交易额，3000亿是流向了淘宝"
 author: caoz的小密圈
 createdate: 2018/05/03 10:40:00
-changedate: 2018/05/06 16:07:20
+changedate: 2018/05/08 10:41:11
 categories: 好货
-tags: 好货
+tags: 知识星球精华
 keywords: 知识星球精华帖,阿里腾讯商战,淘宝,微信,电商流量
 description: keso的文章《淘宝会后悔封杀微信吗？》被转发到圈里后，引起了讨论，陈军恩的点评特别精彩。
 
