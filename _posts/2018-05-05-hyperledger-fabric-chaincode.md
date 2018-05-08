@@ -3,7 +3,7 @@ layout: default
 title:  超级账本Hyperledger fabric的chaincode开发
 author: lijiaocn
 createdate: 2018/04/03 10:07:00
-changedate: 2018/05/06 21:13:58
+changedate: 2018/05/08 10:35:56
 categories: 项目
 tags: blockchain
 keywords: 超级账本,HyperLedger,Fabric,Chaincode,合约链码
@@ -15,6 +15,8 @@ description: 学习写一下chaincode
 {:toc}
 
 ## 说明
+
+文档正在完善中...
 
 [网易云课堂：HyperLedger Fabric手动部署教程的视频讲解](http://study.163.com/course/introduction.htm?courseId=1005326005&share=2&shareId=400000000376006)
 
