@@ -3,9 +3,9 @@ layout: default
 title:  超级账本HyperLedger的fabric项目的手动部署教程
 author: 李佶澳
 createdate: 2018/04/28 18:45:00
-changedate: 2018/05/06 21:12:53
+changedate: 2018/05/08 10:38:17
 categories: 项目
-tags: blockchain
+tags: blockchain HyperLedger
 keywords: 超级账本,hyperledger,fabric,手动部署,部署教程
 description: 经历了诸多磨难之后，总算弄清楚了fabric的组件间关系与配置项。
 
