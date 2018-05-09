@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger的cello项目的部署和使用
 author: 李佶澳
 createdate: 2018/04/25 10:32:00
-changedate: 2018/05/08 10:37:41
+changedate: 2018/05/09 10:22:22
 categories: 方法
 tags: blockchain HyperLedger
 keywords: 区块链,hyperledger,超级账本,cello,blockchain
@@ -26,7 +26,7 @@ cello是一个很初期的系统，当前最大的问题是：
 
 这里暂时只收录下文档。
 
-[网易云课堂：HyperLedger Fabric手动部署教程的视频讲解](http://study.163.com/course/introduction.htm?courseId=1005326005&share=2&shareId=400000000376006)
+[网易云课堂：HyperLedger Fabric手动部署教程的视频讲解](https://study.163.com/course/introduction.htm?courseId=1005326005&share=2&shareId=400000000376006)
 
 [超级账本HyperLedger Fabric手动部署教程的文字实录(公开)](http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/04/26/hyperledger-fabric-deploy.html)
 
