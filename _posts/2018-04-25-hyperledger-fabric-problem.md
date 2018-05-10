@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger的fabric项目部署过程时遇到的问题
 author: 李佶澳
 createdate: 2018/05/04 21:14:00
-changedate: 2018/05/10 09:59:16
+changedate: 2018/05/10 14:27:34
 categories: 问题
 tags: HyperLedger
 keywords: 超级账本,区块链实践,hyperledger,fabric,区块链问题
@@ -16,9 +16,7 @@ description: "这里记录部署hyperledger fabric时遇到的一些问题"
 
 ## 说明
 
-[网易云课堂：HyperLedger Fabric手动部署教程的视频讲解](http://study.163.com/course/introduction.htm?courseId=1005326005&share=2&shareId=400000000376006)
-
-[超级账本HyperLedger Fabric手动部署教程的文字实录(公开)](http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/04/26/hyperledger-fabric-deploy.html)
+[视频教程汇总：HyperLedger Fabric的视频讲解](https://study.163.com/provider/400000000376006/course.htm)
 
 本页内容会经常更新。
 
