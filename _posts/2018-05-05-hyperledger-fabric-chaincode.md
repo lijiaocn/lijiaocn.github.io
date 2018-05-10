@@ -3,9 +3,9 @@ layout: default
 title:  超级账本Hyperledger fabric的chaincode开发
 author: lijiaocn
 createdate: 2018/04/03 10:07:00
-changedate: 2018/05/08 10:38:34
+changedate: 2018/05/10 10:01:32
 categories: 项目
-tags: blockchain HyperLedger
+tags: HyperLedger
 keywords: 超级账本,HyperLedger,Fabric,Chaincode,合约链码
 description: 学习写一下chaincode
 

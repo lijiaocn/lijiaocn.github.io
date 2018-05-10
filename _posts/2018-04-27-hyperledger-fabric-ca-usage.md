@@ -3,9 +3,9 @@ layout: default
 title: 超级账本HyperLedger的fabricCA的用法讲解
 author: 李佶澳
 createdate: 2018/04/27 10:58:00
-changedate: 2018/05/08 10:38:23
+changedate: 2018/05/10 10:01:25
 categories: 项目
-tags: blockchain HyperLedger
+tags: HyperLedger
 keywords: 超级账本,fabricCA,hyperledger,blockchain,区块链,联盟链
 description: "fabricCA用于管理hyperledger fabric以及fabric用户使用到的证书"
 
@@ -64,11 +64,17 @@ Hyperledger Fabric CA是Hyperledger Fabric的证书授权中心，支持：
 
 如果启动的是中间CA，用`-u`指定上级CA：
 
-	fabric-ca-server start -b admin:adminpw -u http://<enrollmentID>:<secret>@<parentserver>:<parentport>
+	./fabric-ca-server start -b admin:adminpw -u http://<enrollmentID>:<secret>@<parentserver>:<parentport>
 
-运行结束后，会在当前目录生成以下文件：
+如果直接作为RootCA，后面两个参数表示允许删除联盟和用户:
+
+	./fabric-ca-server start -b admin:pass --cfg.affiliations.allowremove  --cfg.identities.allowremove
+
+初始化后，会在当前目录生成以下文件：
 
 	ca-cert.pem  fabric-ca-server-config.yaml  fabric-ca-server.db  msp/
+
+fabric-ca-server-config.yaml是fabric-ca-server的配置文件。
 
 其中`ca-cert.pem`是一个自签署的证书：
 
@@ -317,6 +323,8 @@ fabric-ca默认注册了几个联盟，可以用`affiliation list`查看：
 	}
 	...
 
+cid的使用说明见: [HyperLedger Fabric: Client Identity Chaincode Library][8]
+
 cid（Client Identity）中提供下面的方法：
 
 	+AssertAttributeValue(stub ChaincodeStubInterface, attrName, attrValue string) : error
@@ -394,6 +402,7 @@ cid（Client Identity）中提供下面的方法：
 5. [hyperledger的fabricCA的安装使用][5]
 6. [HyplerLedger FabricCA ABAC][6]
 7. [HyperLedger Fabric Chaincode ABAC][7]
+8. [HyperLedger Fabric: Client Identity Chaincode Library][8]
 
 [1]: https://hyperledger-fabric-ca.readthedocs.io/en/latest/  "Welcome to Hyperledger Fabric CA" 
 [2]: https://github.com/hyperledger/fabric-ca "fabric-ca codes"
@@ -402,3 +411,4 @@ cid（Client Identity）中提供下面的方法：
 [5]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/04/27/hyperledger-fabric-ca-usage.html#%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85 "hyperledger的fabricCA的安装使用"
 [6]: https://hyperledger-fabric-ca.readthedocs.io/en/latest/users-guide.html#attribute-based-access-control  "HyplerLedger FabricCA ABAC"
 [7]: https://github.com/hyperledger/fabric-samples/tree/release-1.1/chaincode/abac/go "HyperLedger Fabric Chaincode ABAC"
+[8]: https://github.com/hyperledger/fabric/blob/release-1.1/core/chaincode/lib/cid/README.md  "HyperLedger Fabric: Client Identity Chaincode Library"
