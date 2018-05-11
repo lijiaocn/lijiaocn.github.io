@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger的explorer的使用
 author: 李佶澳
 createdate: 2018/04/26 16:33:00
-changedate: 2018/05/10 14:35:15
+changedate: 2018/05/11 20:21:54
 categories: 项目
 tags: HyperLedger
 keywords: 超级账本,blockchain,hyperledger,explorer,区块链浏览器
@@ -16,7 +16,7 @@ description: HyperLedger的区块链浏览器
 
 ## 说明
 
-[视频教程汇总：HyperLedger Fabric的视频讲解--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm)
+[超级账本HyperLedger视频教程汇总：HyperLedger Fabric的视频讲解--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm)
 
 [HyperLedger Explorer][1]是HyplerLedger的子项目，是一个区块链浏览器。
 

@@ -3,7 +3,7 @@ layout: default
 title:  "超级账本HyperLedger项目fabric的nodejsSDK的使用"
 author: lijiaocn
 createdate: 2018/04/25 11:11:00
-changedate: 2018/05/10 14:35:04
+changedate: 2018/05/11 20:21:43
 categories: 编程
 tags: HyperLedger
 keywords: 超级账本,区块链实践,hyperledger,fabric接口,nodejs
@@ -16,7 +16,7 @@ description: 当前(2018-04-25 11:16:23)fabric的SDK只有java和node是正式�
 
 ## 说明
 
-[视频教程汇总：HyperLedger Fabric的视频讲解--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm)
+[超级账本HyperLedger视频教程汇总：HyperLedger Fabric的视频讲解--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm)
 
 当前(2018-04-25 11:16:23)fabric的SDK只有java和node是正式的，他倆的文档也是最丰富的。
 
