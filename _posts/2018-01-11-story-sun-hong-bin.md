@@ -3,10 +3,10 @@ layout: default
 title: 传奇人物孙宏斌
 author: 宁肯
 createdate: 2018/01/22 22:37:41
-changedate: 2018/01/22 23:40:38
+changedate: 2018/05/12 11:49:51
 categories: 故事
-tags: 孙宏斌
-keywords:
+tags: 人物故事
+keywords: 孙宏斌,柳传志,融创,乐视
 description: 1990年春天，柳传志召开了一期干部培训班，表面上是要大家想想“联想到底要办成一个什么样的公司”的问题，实际上柳传志要解决企业发展部经理孙宏斌的问题。
 
 ---
