@@ -3,7 +3,7 @@ layout: default
 title:  超级账本Hyperledger Fabric的使用
 author: 李佶澳
 createdate: 2018/02/23 10:50:00
-changedate: 2018/05/11 20:20:54
+changedate: 2018/05/12 12:11:44
 categories: 项目
 tags: HyperLedger
 keywords: 区块链,Hyperledger,超级账本,Fabric
@@ -623,6 +623,8 @@ cryptogen命令用来生成证书:
 
 配置文件格式如下：
 
+{% raw %}
+
 	OrdererOrgs:    //order的证书
 	  - Name: Orderer
 	    Domain: example.com
@@ -643,6 +645,8 @@ cryptogen命令用来生成证书:
 	      Count: 2
 	    Users:
 	      Count: 1
+
+{% endraw %}
 
 每个组织都有配置了一个ca证书，每个组件向fabric发起的交易和通信用keystore签署，对方用公钥signcerts进行验证。
 
