@@ -3,10 +3,10 @@ layout: default
 title: 迅雷的玩客币是否有投资价值？
 author: 李佶澳
 createdate: 2017/10/31 22:50:43
-changedate: 2017/11/14 16:02:45
+changedate: 2018/05/12 11:53:15
 categories: 投资
-tags: 投资
-keywords:
+tags: 投资 blockchain
+keywords: 玩客币,迅雷,虚拟货币,投资价值,比特币
 description: 迅雷的玩客币是否有投资价值？是否能代替被禁止交易的比特币？
 
 ---
