@@ -2,13 +2,15 @@
 layout: category
 title:  全部标签
 keywords:  手册,索引手册,参考手册,速查手册
-description: 全部标签,手册汇总,用于快速查询
+description: 视频教程,全部标签,手册汇总,用于快速查询
 
 ---
 
 {% for tag in site.tags %}
 	<h5>{{ tag[0] }}:</h5>
+	<ul>
 	{% for post in tag[1] %}
-	<a href="{{ site.baseurl }}{{ post.url }}">《{{ post.title }}》</a>
+	<li><a href="{{ site.baseurl }}{{ post.url }}">《{{ post.title }}》</a></li>
 	{% endfor %}
+	</ul>
 {% endfor %}
