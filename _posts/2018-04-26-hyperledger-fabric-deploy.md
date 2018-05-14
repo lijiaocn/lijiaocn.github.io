@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger视频教程：fabric项目的手动部署教程
 author: 李佶澳
 createdate: 2018/04/28 18:45:00
-changedate: 2018/05/12 11:14:53
+changedate: 2018/05/14 12:13:57
 categories: 项目
 tags: HyperLedger
 keywords: 超级账本,hyperledger,fabric,视频教程,手动部署
@@ -16,7 +16,7 @@ description: 经历了诸多磨难之后，总算弄清楚了fabric的组件间�
 
 ## 说明
 
-[超级账本HyperLedger视频教程汇总：HyperLedger Fabric的视频讲解--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm)
+[超级账本HyperLedger视频教程汇总：HyperLedger Fabric的视频讲解--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)
 
 ![网易云课堂: HperLedger Fabric全手动部署视频教程目录]({{ site.imglocal }}/hyperledger-class/fabric-deploy.png)
 

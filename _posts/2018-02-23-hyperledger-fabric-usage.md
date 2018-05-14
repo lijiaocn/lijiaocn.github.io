@@ -3,7 +3,7 @@ layout: default
 title:  超级账本Hyperledger Fabric的使用
 author: 李佶澳
 createdate: 2018/02/23 10:50:00
-changedate: 2018/05/12 12:11:44
+changedate: 2018/05/14 12:12:54
 categories: 项目
 tags: HyperLedger
 keywords: 区块链,Hyperledger,超级账本,Fabric
@@ -16,7 +16,7 @@ description: 初步了解一下
 
 ## 说明
 
-[超级账本HyperLedger视频教程汇总：HyperLedger Fabric的视频讲解--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm)
+[超级账本HyperLedger视频教程汇总：HyperLedger Fabric的视频讲解--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)
 
 [Hyperledger][1]是Linux基金会在2015年发起的项目，目的是推进区块链技术的开发应用。Hyperledger收录了多个区块链项目。
 
