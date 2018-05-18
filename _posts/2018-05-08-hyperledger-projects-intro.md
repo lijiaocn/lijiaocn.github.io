@@ -3,10 +3,10 @@ layout: default
 title:  超级账本HyperLedger旗下项目介绍
 author: 李佶澳
 createdate: 2018/05/08 14:35:00
-changedate: 2018/05/14 12:12:29
+changedate: 2018/05/14 23:03:58
 categories: 项目
 tags: HyperLedger
-keywords: 超级账本,HyperLedger
+keywords: 超级账本,HyperLedger,视频教程演示
 description: 超级账本HyperLedger旗下有很多的项目，对这些项目做了简单了解，并收集了一些资料
 
 ---
@@ -16,7 +16,7 @@ description: 超级账本HyperLedger旗下有很多的项目，对这些项目�
 
 ## 说明
 
-[超级账本HyperLedger视频教程汇总：HyperLedger Fabric的视频讲解--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)
+[超级账本HyperLedger视频教程演示汇总：HyperLedger Fabric的视频讲解--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)
 
 超级账本HyperLedger旗下有很多的项目，对这些项目进行了简单的了解。
 
