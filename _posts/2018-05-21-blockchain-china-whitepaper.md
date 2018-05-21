@@ -3,7 +3,7 @@ layout: default
 title: 浮华散去，本质初显，深入解读工信部《2018年中国区块链产业白皮书》
 author: 李佶澳
 createdate: 2018/05/21 16:35:00
-changedate: 2018/05/21 21:15:58
+changedate: 2018/05/21 21:19:31
 categories: 方法
 tags: blockchain
 keywords: 白皮书,区块链,工信部,中国区块链产业白皮书
@@ -13,6 +13,8 @@ description: 昨天（5月20日)，工业和信息化部信息中心发布了《
 
 * auto-gen TOC:
 {:toc}
+
+[超级账本HyperLedger视频教程汇总：HyperLedger Fabric的视频讲解--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)
 
 ## 说明
 
@@ -168,6 +170,8 @@ description: 昨天（5月20日)，工业和信息化部信息中心发布了《
 
 白皮书的最后附了50多页内容，分别是法律政策、国家政策、地方政策节选，很实用。有需要的可以关注后回复“白皮书”，同时会得到一份
 划了重点的标注版白皮书。
+
+![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
 ## 参考
 
