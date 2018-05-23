@@ -21,12 +21,6 @@ var _hmt = _hmt || [];
     s.parentNode.insertBefore(bp, s);
 })();
 
-/*360自动收录*/
-/*(function(){
-   var src = (document.location.protocol == "http:") ? "http://js.passport.qihucdn.com/11.0.1.js?f94b16f3885b8650f1ba17fd97d5bb72":"https://jspassport.ssl.qhimg.com/11.0.1.js?f94b16f3885b8650f1ba17fd97d5bb72";
-   document.write('<script src="' + src + '" id="sozz"><\/script>');
-})();
-*/
 
 /*Google统计*/
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
