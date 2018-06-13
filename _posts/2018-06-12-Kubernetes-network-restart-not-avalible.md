@@ -3,7 +3,7 @@ layout: default
 title:  kubernetes的node上的重启linux网络服务后，pod无法联通
 author: 李佶澳
 createdate: 2018/06/12 11:25:00
-changedate: 2018/06/13 17:13:39
+changedate: 2018/06/13 20:08:43
 categories: 问题
 tags: kubernetes calico
 keywords: kubernetes calico
@@ -105,11 +105,17 @@ kubernetes使用的网络方案是calico，node的操作系统是centos7。
 
 如果直接在caliXXXX网卡上抓包，可以看到MASQUERADE之前的报文，源地址没有被改变，但是看不到回应报文。
 
-所以可以确定：回应包到达了node，却没能到达pod。
+所以可以确定：`回应包到达了node，却没能到达pod`。
 
 通过调试iptables发现，8.8.8.8的回应报文，在mangle表PREROUTING链中被接受“accept”：
 
 >调试前先关停了node上的calico和kube-proxy，防止它们更新iptables。
+
+	*raw
+	-A PREROUTING -p icmp -s 8.8.8.8/32  -m limit --limit 500/minute -j LOG --log-level 7 --log-prefix "raw prerouting: "
+	...
+	-A cali-PREROUTING -p icmp -s 8.8.8.8/32 -m limit --limit 500/minute -j LOG --log-level 7 --log-prefix "raw accept: "
+	-A cali-PREROUTING -m comment --comment "cali:VX8l4jKL9w89GXz5" -m mark --mark 0x1000000/0x1000000 -j ACCEPT
 
 	*mangle
 	...
@@ -130,11 +136,48 @@ kubernetes使用的网络方案是calico，node的操作系统是centos7。
 	-A PREROUTING -m comment --comment "cali:6gwbT8clXdHdC1b1" -j cali-PREROUTING
 	-A PREROUTING -p icmp -m limit --limit 500/minute -j LOG --log-level 7 --log-prefix "nat prerouting end: "
 
-没有输出nat表的日志，即报文被accept之后，不在经过后续规则。
+没有输出nat表的日志，即报文被accept之后，不再经过后续规则。
+
+回应包经过iptables时的日志：
+
+	Jun 13 11:22:44 dev-slave-110 kernel: mangle accept start: IN=eth0 OUT= MAC=52:54:15:5d:39:58:02:54:d4:90:3a:57:08:00 
+	SRC=8.8.8.8 DST=10.39.0.110 LEN=84 TOS=0x00 PREC=0x00 TTL=32 ID=0 PROTO=ICMP TYPE=0 CODE=0 ID=6560 SEQ=1497
 
 因此问题很可能存在于linux的连接跟踪表。
 
-	Jun 13 11:22:44 dev-slave-110 kernel: mangle accept start: IN=eth0 OUT= MAC=52:54:15:5d:39:58:02:54:d4:90:3a:57:08:00 SRC=8.8.8.8 DST=10.39.0.110 LEN=84 TOS=0x00 PREC=0x00 TTL=32 ID=0 PROTO=ICMP TYPE=0 CODE=0 ID=6560 SEQ=1497
+## 进一步分析
+
+在mangle表中继续添加调试规则：
+
+	*mangle
+	...
+	-A FORWARD -p icmp -s 8.8.8.8/32 -m limit --limit 500/minute -j LOG --log-level 7 --log-prefix "mangle forward: "
+	-A PREROUTING -p icmp -s 8.8.8.8/32 -m limit --limit 500/minute -j LOG --log-level 7 --log-prefix "mangle prerouting: "
+
+	...
+
+然后继续在容器内ping，日志如下：
+
+	Jun 13 19:58:21 dev-slave-110 kernel: raw prerouting: IN=eth0 OUT= MAC=52:54:15:5d:39:58:02:54:d4:90:3a:57:08:00 SRC=8.8.8.8 DST=10.39.0.110 LEN=84 TOS=0x00 PREC=0x00 TTL=32 ID=0 PROTO=ICMP TYPE=0 CODE=0 ID=13629 SEQ=15
+	Jun 13 19:58:21 dev-slave-110 kernel: raw accept: IN=eth0 OUT= MAC=52:54:15:5d:39:58:02:54:d4:90:3a:57:08:00 SRC=8.8.8.8 DST=10.39.0.110 LEN=84 TOS=0x00 PREC=0x00 TTL=32 ID=0 PROTO=ICMP TYPE=0 CODE=0 ID=13629 SEQ=15
+	Jun 13 19:58:21 dev-slave-110 kernel: mangle prerouting: IN=eth0 OUT= MAC=52:54:15:5d:39:58:02:54:d4:90:3a:57:08:00 SRC=8.8.8.8 DST=10.39.0.110 LEN=84 TOS=0x00 PREC=0x00 TTL=32 ID=0 PROTO=ICMP TYPE=0 CODE=0 ID=13629 SEQ=15
+	Jun 13 19:58:21 dev-slave-110 kernel: mangle before cali-PREROUTINGIN=eth0 OUT= MAC=52:54:15:5d:39:58:02:54:d4:90:3a:57:08:00 SRC=8.8.8.8 DST=10.39.0.110 LEN=84 TOS=0x00 PREC=0x00 TTL=32 ID=0 PROTO=ICMP TYPE=0 CODE=0 ID=13629 SEQ=15
+	Jun 13 19:58:21 dev-slave-110 kernel: mangle accept start: IN=eth0 OUT= MAC=52:54:15:5d:39:58:02:54:d4:90:3a:57:08:00 SRC=8.8.8.8 DST=10.39.0.110 LEN=84 TOS=0x00 PREC=0x00 TTL=32 ID=0 PROTO=ICMP TYPE=0 CODE=0 ID=13629 SEQ=15
+
+注意日志在`mangel accept start`以后就没有了。
+
+在一个正常的node（没有重启network）上，进行调试发现明显不同：
+
+	...
+	Jun 13 20:07:48 dev-slave-107 kernel: raw prerouting: IN=eth0 OUT= MAC=52:54:31:1e:e1:d9:02:54:d4:90:3a:57:08:00 SRC=8.8.8.8 DST=10.39.0.107 LEN=84 TOS=0x00 PREC=0x00 TTL=32 ID=0 PROTO=ICMP TYPE=0 CODE=0 ID=8554 SEQ=10
+	Jun 13 20:07:48 dev-slave-107 kernel: raw accept: IN=eth0 OUT= MAC=52:54:31:1e:e1:d9:02:54:d4:90:3a:57:08:00 SRC=8.8.8.8 DST=10.39.0.107 LEN=84 TOS=0x00 PREC=0x00 TTL=32 ID=0 PROTO=ICMP TYPE=0 CODE=0 ID=8554 SEQ=10
+	Jun 13 20:07:48 dev-slave-107 kernel: mangle prerouting: IN=eth0 OUT= MAC=52:54:31:1e:e1:d9:02:54:d4:90:3a:57:08:00 SRC=8.8.8.8 DST=10.39.0.107 LEN=84 TOS=0x00 PREC=0x00 TTL=32 ID=0 PROTO=ICMP TYPE=0 CODE=0 ID=8554 SEQ=10
+	Jun 13 20:07:48 dev-slave-107 kernel: mangle accept start: IN=eth0 OUT= MAC=52:54:31:1e:e1:d9:02:54:d4:90:3a:57:08:00 SRC=8.8.8.8 DST=10.39.0.107 LEN=84 TOS=0x00 PREC=0x00 TTL=32 ID=0 PROTO=ICMP TYPE=0 CODE=0 ID=8554 SEQ=10
+	Jun 13 20:07:48 dev-slave-107 kernel: mangle forward: IN=eth0 OUT=cali91dded39638 MAC=52:54:31:1e:e1:d9:02:54:d4:90:3a:57:08:00 SRC=8.8.8.8 DST=192.168.54.50 LEN=84 TOS=0x00 PREC=0x00 TTL=31 ID=0 PROTO=ICMP TYPE=0 CODE=0 ID=8554 SEQ=10
+
+在正常的node上打印出了`mangle forward`日志！并且报文目的地址被修改为了Pod的地址。
+
+network被重启后，pod无法ping外部的node上是没有这条日志的。
 
 ## 参考
 
