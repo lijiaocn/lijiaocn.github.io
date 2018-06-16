@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2017/08/10 15:44:17
 changedate: 2017/09/21 19:25:08
 categories: 技巧
-tags: linuxnet
+tags: linux
 keywords: tc,trickle,dummynet,流量控制,限速,traffic control
 description: "收集几种linux上的限速工具: tc、hashlimit、dummynet、trickle、wondershaper、pyshaper。"
 

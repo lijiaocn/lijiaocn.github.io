@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2017/04/26 17:18:17
 changedate: 2017/09/21 19:29:30
 categories: 技巧
-tags: linuxnet
+tags: linux
 keywords: curl使用手册,http
 description: curl是一个看似简单、实则强大的命令，看它的参数有多少就知道了。
 

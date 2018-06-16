@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2017/09/05 17:08:50
 changedate: 2017/09/05 18:34:02
 categories: 问题
-tags: linuxnet
+tags: linux
 keywords: FIN_WAIT1,tcp,linux
 description: 发现linux服务器上的FIN_WAIT1状态的连接持续很长时间
 

@@ -3,11 +3,11 @@ layout: default
 title:  kubernetes的node上的重启linux网络服务后，pod无法联通
 author: 李佶澳
 createdate: 2018/06/12 11:25:00
-changedate: 2018/06/13 20:08:43
+changedate: 2018/06/16 18:16:45
 categories: 问题
 tags: kubernetes calico
 keywords: kubernetes calico
-description: 在node上重启网络`systemctl restart network`后，pod无法联通
+description: 在node上重启网络(执行`systemctl restart network`)后，pod无法联通
 
 ---
 
@@ -164,7 +164,7 @@ kubernetes使用的网络方案是calico，node的操作系统是centos7。
 	Jun 13 19:58:21 dev-slave-110 kernel: mangle before cali-PREROUTINGIN=eth0 OUT= MAC=52:54:15:5d:39:58:02:54:d4:90:3a:57:08:00 SRC=8.8.8.8 DST=10.39.0.110 LEN=84 TOS=0x00 PREC=0x00 TTL=32 ID=0 PROTO=ICMP TYPE=0 CODE=0 ID=13629 SEQ=15
 	Jun 13 19:58:21 dev-slave-110 kernel: mangle accept start: IN=eth0 OUT= MAC=52:54:15:5d:39:58:02:54:d4:90:3a:57:08:00 SRC=8.8.8.8 DST=10.39.0.110 LEN=84 TOS=0x00 PREC=0x00 TTL=32 ID=0 PROTO=ICMP TYPE=0 CODE=0 ID=13629 SEQ=15
 
-注意日志在`mangel accept start`以后就没有了。
+注意日志在`mangle accept start`以后就没有了。
 
 在一个正常的node（没有重启network）上，进行调试发现明显不同：
 
@@ -175,14 +175,43 @@ kubernetes使用的网络方案是calico，node的操作系统是centos7。
 	Jun 13 20:07:48 dev-slave-107 kernel: mangle accept start: IN=eth0 OUT= MAC=52:54:31:1e:e1:d9:02:54:d4:90:3a:57:08:00 SRC=8.8.8.8 DST=10.39.0.107 LEN=84 TOS=0x00 PREC=0x00 TTL=32 ID=0 PROTO=ICMP TYPE=0 CODE=0 ID=8554 SEQ=10
 	Jun 13 20:07:48 dev-slave-107 kernel: mangle forward: IN=eth0 OUT=cali91dded39638 MAC=52:54:31:1e:e1:d9:02:54:d4:90:3a:57:08:00 SRC=8.8.8.8 DST=192.168.54.50 LEN=84 TOS=0x00 PREC=0x00 TTL=31 ID=0 PROTO=ICMP TYPE=0 CODE=0 ID=8554 SEQ=10
 
-在正常的node上打印出了`mangle forward`日志！并且报文目的地址被修改为了Pod的地址。
+在正常的node上打印出了`mangle forward`日志，并且报文目的地址被修改为了Pod的地址。
 
-network被重启后，pod无法ping外部的node上是没有这条日志的。
+而在network被重启、pod无法ping通外部的node上，没有`mangle foward`这条日志，也就是说`回应包没有被转发`。
+
+查看linux的路由转发功能：
+
+	$ cat /proc/sys/net/ipv4/ip_forward
+	0
+
+问题找到了！网络重启后，转发功能被关闭了。
+
+开始转发功能后，问题解决：
+
+	echo "1">/proc/sys/net/ipv4/ip_forward
+
+永久配置转发功能，在`/etc/sysctl.conf`中添加下面一行：
+
+	net.ipv4.ip_forward=1
+
+执行`sysctl -p`。
+
+## 其它调试方法
+
+使用[Linux的iptables规则调试、连接跟踪、报文跟踪][1]中提供的方式，调试更方便，但只能在RAW表中使用，在RAW表中添加规则：
+
+	-A PREROUTING -p icmp -s 8.8.8.8/32 -j TRACE
+
+之后/var/log/message中可以看到报文日志：
+
+	Jun 16 17:44:05 dev-slave-110 kernel: TRACE: raw:PREROUTING:rule:2 IN=eth0 OUT= MAC=52:54:15:5d:39:58:02:54:d4:90:3a:57:08:00 SRC=8.8.8.8 DST=10.39.0.110 LEN=84 TOS=0x00 PREC=0x00 TTL=32 ID=0 PROTO=ICMP TYPE=0 CODE=0 ID=4064 SEQ=24
+	Jun 16 17:44:05 dev-slave-110 kernel: TRACE: raw:cali-PREROUTING:rule:1 IN=eth0 OUT= MAC=52:54:15:5d:39:58:02:54:d4:90:3a:57:08:00 SRC=8.8.8.8 DST=10.39.0.110 LEN=84 TOS=0x00 PREC=0x00 TTL=32 ID=0 PROTO=ICMP TYPE=0 CODE=0 ID=4064 SEQ=24
+	Jun 16 17:44:05 dev-slave-110 kernel: TRACE: raw:cali-PREROUTING:rule:3 IN=eth0 OUT= MAC=52:54:15:5d:39:58:02:54:d4:90:3a:57:08:00 SRC=8.8.8.8 DST=10.39.0.110 LEN=84 TOS=0x00 PREC=0x00 TTL=32 ID=0 PROTO=ICMP TYPE=0 CODE=0 ID=4064 SEQ=24
+	Jun 16 17:44:05 dev-slave-110 kernel: TRACE: raw:cali-from-host-endpoint:return:1 IN=eth0 OUT= MAC=52:54:15:5d:39:58:02:54:d4:90:3a:57:08:00 SRC=8.8.8.8 DST=10.39.0.110 LEN=84 TOS=0x00 PREC=0x00 TTL=32 ID=0 PROTO=ICMP TYPE=0 CODE=0 ID=4064 SEQ=24
+	Jun 16 17:44:05 dev-slave-110 kernel: TRACE: raw:cali-PREROUTING:return:5 IN=eth0 OUT= MAC=52:54:15:5d:39:58:02:54:d4:90:3a:57:08:00 SRC=8.8.8.8 DST=10.39.0.110 LEN=84 TOS=0x00 PREC=0x00 TTL=32 ID=0 PROTO=ICMP TYPE=0 CODE=0 ID=4064 SEQ=24
 
 ## 参考
 
-1. [文献1][1]
-2. [文献2][2]
+1. [Linux的iptables规则调试、连接跟踪、报文跟踪][1]
 
-[1]: 1.com  "文献1" 
-[2]: 2.com  "文献1" 
+[1]: http://www.lijiaocn.com/%E6%96%B9%E6%B3%95/2018/06/15/debug-linux-network.html  "Linux的iptables规则调试、连接跟踪、报文跟踪" 

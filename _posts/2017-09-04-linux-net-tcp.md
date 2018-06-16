@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2017/09/04 19:24:20
 changedate: 2017/09/16 15:58:23
 categories: 技巧
-tags: linuxnet
+tags: linux
 keywords: tcp,linux,timeout,tcp连接状态
 description: 了解tcp的状态以及每个状态的超时时间，对排查问题和提高Server性能非常有用。
 

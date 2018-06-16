@@ -3,9 +3,9 @@ layout: default
 title: linux的iptables使用
 author: 李佶澳
 createdate: 2014/04/16 10:16:55
-changedate: 2017/10/28 12:34:11
+changedate: 2018/06/16 17:19:08
 categories: 技巧
-tags: linuxnet
+tags: linux
 keywords:  linux iptables
 description: 介绍了iptables的原理、表之间的关系、报文处理时经过规则链的顺序。以及iptables的调试方法和比较有意思的应用。
 

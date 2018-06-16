@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2017/08/01 16:00:12
 changedate: 2017/09/21 19:26:39
 categories: 技巧
-tags: linuxnet
+tags: linux
 keywords: dns,benchmark,namebench
 description: 用来测试dns服务器性能的benchmark工具。
 

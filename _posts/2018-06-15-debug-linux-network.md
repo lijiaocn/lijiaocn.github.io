@@ -3,7 +3,7 @@ layout: default
 title: Linux的iptables规则调试、连接跟踪、报文跟踪
 author: 李佶澳
 createdate: 2018/06/15 10:23:00
-changedate: 2018/06/16 17:50:08
+changedate: 2018/06/16 19:32:34
 categories: 方法
 tags: DEBUG linux
 keywords: linux iptables conntrack debuging 网络调试
@@ -46,6 +46,8 @@ description: 突然发现，没有掌握一套行之有效的调试iptables规�
 
 ### iptables规则调试 -- TRACE
 
+>TRACE只能在raw表中使用
+
 [netfilter/iptables/conntrack debugging][3]中给出了另一个方法，通过`-j TRACE`
 
 	-A PREROUTING -p icmp -s 8.8.8.8/32 -j TRACE
@@ -65,6 +67,31 @@ description: 突然发现，没有掌握一套行之有效的调试iptables规�
 	Jun 16 17:44:05 dev-slave-110 kernel: TRACE: raw:cali-PREROUTING:rule:3 IN=eth0 OUT= MAC=52:54:15:5d:39:58:02:54:d4:90:3a:57:08:00 SRC=8.8.8.8 DST=10.39.0.110 LEN=84 TOS=0x00 PREC=0x00 TTL=32 ID=0 PROTO=ICMP TYPE=0 CODE=0 ID=4064 SEQ=24
 	Jun 16 17:44:05 dev-slave-110 kernel: TRACE: raw:cali-from-host-endpoint:return:1 IN=eth0 OUT= MAC=52:54:15:5d:39:58:02:54:d4:90:3a:57:08:00 SRC=8.8.8.8 DST=10.39.0.110 LEN=84 TOS=0x00 PREC=0x00 TTL=32 ID=0 PROTO=ICMP TYPE=0 CODE=0 ID=4064 SEQ=24
 	Jun 16 17:44:05 dev-slave-110 kernel: TRACE: raw:cali-PREROUTING:return:5 IN=eth0 OUT= MAC=52:54:15:5d:39:58:02:54:d4:90:3a:57:08:00 SRC=8.8.8.8 DST=10.39.0.110 LEN=84 TOS=0x00 PREC=0x00 TTL=32 ID=0 PROTO=ICMP TYPE=0 CODE=0 ID=4064 SEQ=24
+
+### 查看连接跟踪表 -- conntrack
+
+安装：
+
+	yum install -y conntrack-tools
+
+使用：
+
+	$ conntrack -h
+	Command line interface for the connection tracking system. Version 1.4.4
+	Usage: conntrack [commands] [options]
+	
+	Commands:
+	  -L [table] [options]        List conntrack or expectation table
+	  -G [table] parameters       Get conntrack or expectation
+	  -D [table] parameters       Delete conntrack or expectation
+	  -I [table] parameters       Create a conntrack or expectation
+	  -U [table] parameters       Update a conntrack
+	  -E [table] [options]        Show events
+	  -F [table]            Flush table
+	  -C [table]            Show counter
+	  -S                    Show statis
+
+连接跟踪表的参数可以在kernel文档`Documentation/networking/nf_conntrack-sysctl.txt`中找到。
 
 ## 参考
 

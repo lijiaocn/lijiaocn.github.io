@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2017/08/10 14:16:11
 changedate: 2017/10/22 17:24:26
 categories: 技巧
-tags: linuxnet
+tags: linux
 keywords: network,namespace,linux
 description: namespace是一个独立的网络协议栈，通过namespace，可以将网络设备分隔开，设置独立的路由规则、防火墙规则等。
 
