@@ -3,7 +3,7 @@ layout: default
 title: linux的iptables使用
 author: 李佶澳
 createdate: 2014/04/16 10:16:55
-changedate: 2018/06/16 17:19:08
+changedate: 2018/06/17 21:45:31
 categories: 技巧
 tags: linux
 keywords:  linux iptables
@@ -16,7 +16,7 @@ description: 介绍了iptables的原理、表之间的关系、报文处理时�
 
 ## 说明
 
-iptables是linux自带的防火墙，这里做系统的介绍。完全不懂iptables的，可以到[iptables-contents][5]中从头学习。
+iptables是linux自带的防火墙，这里做系统的介绍。完全不懂iptables的，可以到[iptables-contents][5]/[Iptables Tutorial 1.2.2][8]头中学习。
 
 查看iptables的Target的配置项:
 
@@ -446,9 +446,11 @@ iptables的日志信息是kernal日志，可以通过dmesg查看，为了方便�
 5. [iptables-contents][5]
 6. man iptables-extensions
 7. [target REDIRECT][7]
+8. [Iptables Tutorial 1.2.2][8]
 
 [2]: http://www.iptables.info/en/structure-of-iptables.html "structure-of-iptables"
 [3]: http://flymanhi.blog.51cto.com/1011558/1276331 "利用raw表实现iptables调试"
 [4]: http://adminberlin.de/iptables-debugging/ "iptables-debugging"
 [5]: http://www.iptables.info/en/iptables-contents.html "iptables-contents"
 [7]: https://www.frozentux.net/iptables-tutorial/chunkyhtml/x4529.html "target REDIRECT"
+[8]: https://www.frozentux.net/iptables-tutorial/iptables-tutorial.html "Iptables Tutorial 1.2.2"
