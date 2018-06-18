@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger的fabric项目部署过程时遇到的问题
 author: 李佶澳
 createdate: 2018/05/04 21:14:00
-changedate: 2018/05/18 14:15:55
+changedate: 2018/06/19 00:02:45
 categories: 问题
 tags: HyperLedger
 keywords: 超级账本,视频教程演示,区块链实践,hyperledger,fabric,区块链问题
@@ -178,6 +178,35 @@ docker配置错误，配置了fluentd driver，但是fluentd不存在。
 将fabirc-ccenv、fabric-baseos、fabric-javaenv三个镜像提前下载好以后，实例化成功。
 
 ![知识星球区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
+
+## 连接其它Peer超时
+
+日志显示，从其它Peer(192.168.88.10:7051)中读取信息是超时：
+
+	2018-06-18 13:48:54.509 UTC [gossip/comm] authenticateRemotePeer -> WARN 035 Failed reading messge from 192.168.88.10:7051, reason: Timed out waiting for connection message from 192.168.88.10:7051
+	2018-06-18 13:48:54.509 UTC [gossip/comm] Handshake -> WARN 036 Authentication failed: Timed out waiting for connection message from 192.168.88.10:7051
+
+并且紧接着的是认证失败的日志。
+
+查看另一个Peer的日志，发起连接的peer没有使用tls：
+
+	2018-06-18 10:48:19.131 UTC [gossip/comm] authenticateRemotePeer -> WARN 3bda192.168.88.13:53496 didn't send TLS certificate
+	2018-06-18 10:48:19.131 UTC [gossip/comm] GossipStream -> ERRO 3bdbAuthentication failed: No TLS certificate
+
+检查发现是组织org3的msp目录中没有tlscacerts，导致通过configtxgen生成的org3.json中没有包含tls证书。
+
+	    - &Org3
+	        Name: Org3MSP
+	        ID: Org3MSP
+	        MSPDir: ./fabric-ca-files/org3.example.com/msp
+	        AnchorPeers:
+	            - Host: peer0.org3.example.com
+	              Port: 7051
+
+应到有这个目录，且包含这个证书，直接从fabric-CA中读取的msp目录是没有tlscacerts的，通过crytogen生成的msp中有。
+
+	$ ls ./fabric-ca-files/org3.example.com/msp/tlscacerts/
+	tlsca.org3.example.com-cert.pem
 
 ## 参考
 

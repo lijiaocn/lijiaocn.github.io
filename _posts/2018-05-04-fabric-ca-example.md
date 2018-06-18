@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger视频教程：Fabric-CA的使用演示(两个组织一个Orderer三个Peer)
 author: 李佶澳
 createdate: 2018/05/04 14:09:00
-changedate: 2018/05/14 23:04:49
+changedate: 2018/06/18 16:00:00
 categories: 项目
 tags: HyperLedger
 keywords: 超级账本,hyperledger,视频教程演示,fabric-ca,hyperledger,orderer证书
@@ -170,7 +170,7 @@ fabirc-ca的编译：
 
 这里是用`getcacert`为每个组织准备需要的ca文件，在生成创始块的时候会用到。
 
-在1.1.0版本的fabric-ca中，只会组件或用户在操作区块链的时候用到的证书和密钥，不会生成用来加密grpc通信的证书。
+在1.1.0版本的fabric-ca中，只会生成用户在操作区块链的时候用到的证书和密钥，不会生成用来加密grpc通信的证书。
 
 这里继续沿用之前的fabric-deploy中的tls证书，在最后的重新部署操作，只会替换msp目录。
 

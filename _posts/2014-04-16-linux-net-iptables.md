@@ -3,7 +3,7 @@ layout: default
 title: linux的iptables使用
 author: 李佶澳
 createdate: 2014/04/16 10:16:55
-changedate: 2018/06/17 21:45:31
+changedate: 2018/06/17 21:48:31
 categories: 技巧
 tags: linux
 keywords:  linux iptables
@@ -447,6 +447,7 @@ iptables的日志信息是kernal日志，可以通过dmesg查看，为了方便�
 6. man iptables-extensions
 7. [target REDIRECT][7]
 8. [Iptables Tutorial 1.2.2][8]
+9. [netfilter][9]
 
 [2]: http://www.iptables.info/en/structure-of-iptables.html "structure-of-iptables"
 [3]: http://flymanhi.blog.51cto.com/1011558/1276331 "利用raw表实现iptables调试"
@@ -454,3 +455,4 @@ iptables的日志信息是kernal日志，可以通过dmesg查看，为了方便�
 [5]: http://www.iptables.info/en/iptables-contents.html "iptables-contents"
 [7]: https://www.frozentux.net/iptables-tutorial/chunkyhtml/x4529.html "target REDIRECT"
 [8]: https://www.frozentux.net/iptables-tutorial/iptables-tutorial.html "Iptables Tutorial 1.2.2"
+[9]: https://www.netfilter.org/projects/iptables/index.html "netfilter"
