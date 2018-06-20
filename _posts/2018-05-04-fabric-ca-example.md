@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger视频教程：Fabric-CA的使用演示(两个组织一个Orderer三个Peer)
 author: 李佶澳
 createdate: 2018/05/04 14:09:00
-changedate: 2018/06/18 16:00:00
+changedate: 2018/06/20 13:27:39
 categories: 项目
 tags: HyperLedger
 keywords: 超级账本,hyperledger,视频教程演示,fabric-ca,hyperledger,orderer证书
@@ -595,6 +595,7 @@ example.com、org1.example.com、org2.example.com三个组织这时候可以分�
 	rm -rf peer0.org2.example.com/msp/
 	cp -rf fabric-ca-files/org2.example.com/peer0/msp   peer0.org2.example.com/
 
+
 然后重新部署下面的组件，参考[hyperledger的fabric项目的全手动部署: 开始部署][4]。
 
 	scp -r orderer.example.com/*     root@192.168.88.10:/opt/app/fabric/orderer/
@@ -602,7 +603,8 @@ example.com、org1.example.com、org2.example.com三个组织这时候可以分�
 	scp -r peer1.org1.example.com/*  root@192.168.88.11:/opt/app/fabric/peer/
 	scp -r peer0.org2.example.com/*  root@192.168.88.12:/opt/app/fabric/peer/
 
-重新部署的时候，注意将之前已经启动的服务停止，并删除安装文件。
+>重新部署时，注意将各个机器上已经启动的服务停止，并删除原先的文件，data目录一定要清空!
+>否则会因为以前数据的残留，导致fabric无法正常工作。
 
 重新部署完成后，重新生成./genesisblock文件，并上传到orderer.example.com的安装路径中:
 
