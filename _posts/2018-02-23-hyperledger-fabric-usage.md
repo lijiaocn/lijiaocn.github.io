@@ -1,9 +1,9 @@
 ---
 layout: default
-title:  超级账本Hyperledger的fabric的基础使用
+title:  超级账本Hyperledger的Fabric的基础使用
 author: 李佶澳
 createdate: 2018/02/23 10:50:00
-changedate: 2018/06/18 10:43:23
+changedate: 2018/06/20 17:24:36
 categories: 项目
 tags: HyperLedger
 keywords: 区块链,视频教程演示,Hyperledger,超级账本,Fabric
