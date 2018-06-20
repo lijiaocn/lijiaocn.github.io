@@ -3,7 +3,7 @@ layout: default
 title: 超级账本HyperLedger视频教程：在已有的Channel中添加新的组织
 author: 李佶澳
 createdate: 2018/06/18 13:44:00
-changedate: 2018/06/20 14:11:52
+changedate: 2018/06/20 15:24:08
 categories: 项目
 tags: HyperLedger
 keywords: HyperLedger,超级账本,视频教程,组织添加
@@ -657,7 +657,7 @@ configtxgen命令默认读取当前目录下的confitx.yaml文件，在1.1.0版�
 
 ### 指定AnchorPeer
 
->注意：下面的做法是不行的！
+注意下面这种做法是不行的。
 
 修改configtx.yaml，在profile中加入org3:
 
@@ -679,11 +679,86 @@ configtxgen命令默认读取当前目录下的confitx.yaml文件，在1.1.0版�
 	cd Admin@org3.example.com/
 	./peer.sh channel update -o orderer.example.com:7050 -c mychannel -f ../Org3MSPanchors.tx --tls true --cafile ./tlsca.example.com-cert.pem
 
-报错！这种方式可能不行，请等待进一步调查(2018-06-19 00:03:41)。
+报错！这种方式是不行的。
 
 	!!Error: got unexpected status: BAD_REQUEST -- error authorizing update: error validating ReadSet: readset expected key [Group]  /Channel/Application at version 1, but got version 2
 
-因为这不是基于最新的channel配置更改的。
+查看`configtxgen -h`可以看到`only for the first update`：
+
+	-outputAnchorPeersUpdate string
+	   Creates an config update to update an anchor peer (works only with the default channel creation, and only for the first update)
+
+需要读取最新的channel配置，然后更新其中的Anchor。
+
+注意下面的操作在`Admin@org3.example.com目录中`进行。
+
+	cd Admin@org3.example.com/
+
+读取最新的channel配置:
+
+	./peer.sh channel fetch config config_block.pb -c mychannel -o orderer.example.com:7050  --tls --cafile tlsca.example.com-cert.pem
+	
+转换成json格式：
+
+	../bin/configtxlator proto_decode --input ./config_block.pb --type common.Block | jq .data.data[0].payload.data.config > ./mychannel-config.json
+
+创建文件org3_anchor.json：
+
+	{
+	"AnchorPeers": {
+	   "mod_policy": "Admins",
+	   "value": {
+	     "anchor_peers": [
+	       {
+	         "host": "peer0.org3.example.com",
+	         "port": 7051
+	       }
+	     ]
+	   },
+	   "version": "0"
+	 }
+	}
+
+将org3-anchor.json添加到mychannel-config.json中，得到一个新的配置文件
+
+	jq -s '.[0] * {"channel_group":{"groups":{"Application":{"groups": {"Org3MSP": { "values": .[1]}}}}}}' ./mychannel-config.json ./org3-anchor.json > ./modified_config.json
+
+将mychannel-config.json和modified_config.json编码为protobuf格式（后续基本上就是重复添加org3时的操作）：
+
+	../bin/configtxlator proto_encode --input ./mychannel-config.json --type common.Config --output ./mychannel-config.pb
+	
+	../bin/configtxlator proto_encode --input ./modified_config.json --type common.Config --output ./modified_config.pb
+
+计算出modified_config.pb与config.pb之间的差异，并记录到文件`org3_update.pb`中：
+
+	../bin/configtxlator compute_update --channel_id mychannel --original ./mychannel-config.pb --updated ./modified_config.pb --output ./org3_update.pb
+
+将差异文件`org3_update.pb`转换为json格式：
+
+	../bin/configtxlator proto_decode --input ./org3_update.pb --type common.ConfigUpdate | jq . > ./org3_update.json
+
+为`org3_update.json`添加envelope message，即添加header信息:
+
+	echo '{"payload":{"header":{"channel_header":{"channel_id":"mychannel", "type":2}},"data":{"config_update":'$(cat ./org3_update.json)'}}}' | jq . > ./org3_update_in_envelope.json
+
+把`org3_update_in_envelope.json`转换成protobuf格式：
+
+	../bin/configtxlator proto_encode --input ./org3_update_in_envelope.json --type common.Envelope --output ./org3_update_in_envelope.pb
+
+提交更新：
+
+	./peer.sh channel update -f ./org3_update_in_envelope.pb -c mychannel -o orderer.example.com:7050 --tls --cafile ./tlsca.example.com-cert.pem
+
+注意这里不需要再去找org1和org2进行签署了，因为改动的只有org3的anchor。
+
+这时候在读取channel的配置，会看到Org3MSP已经有Anchor了：
+
+	$ ./peer.sh channel fetch config new_config_block.pb -c mychannel -o orderer.example.com:7050  --tls --cafile tlsca.example.com-cert.pem
+	$ ../bin/configtxlator proto_decode --input ./new_config_block.pb --type common.Block | jq .data.data[0].payload.data.config > ./new_mychannel-config.json
+	$ cat ./new_mychannel-config.json |grep peer0
+	                      "host": "peer0.org1.example.com",
+	                      "host": "peer0.org2.example.com",
+	                      "host": "peer0.org3.example.com",
 
 ## 回顾Channel配置更新
 
@@ -716,3 +791,4 @@ Channel的配置信息也存放在区块链上，是一个配置区块(configura
 [6]: http://hyperledger-fabric.readthedocs.io/en/latest/configtx.html  "Channel Configuration (configtx)"
 [7]: http://hyperledger-fabric.readthedocs.io/en/latest/capability_requirements.html "Capability Requirements"
 [8]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/06/19/hyperledger-channel-config-operation.html "超级账本HyperLedger Fabric中Channel配置的读取转换"
+[9]: http://hyperledger-fabric.readthedocs.io/en/latest/glossary.html#anchor-peer  "HyperLedger Fabric :Anchor Peer"
