@@ -3,7 +3,7 @@ layout: default
 title: 超级账本HyperLedger视频教程：在已有的Channel中添加新的组织
 author: 李佶澳
 createdate: 2018/06/18 13:44:00
-changedate: 2018/06/20 17:02:23
+changedate: 2018/06/20 19:03:07
 categories: 项目
 tags: HyperLedger
 keywords: HyperLedger,超级账本,视频教程,组织添加
@@ -657,7 +657,10 @@ configtxgen命令默认读取当前目录下的confitx.yaml文件，在1.1.0版�
 
 ### 指定AnchorPeer
 
-注意下面这种做法是不行的。
+[Anchor Peer][9]是一个组织的锚点Peer，这个peer的地址被写入到Channel的配置中，这样其它组织的peer就能够通过这个组织
+的Anchor Peer的找到该组织内的其它Peer。
+
+注意下面这种修改方法是不行的。
 
 修改configtx.yaml，在profile中加入org3:
 
@@ -784,6 +787,7 @@ Channel的配置信息也存放在区块链上，是一个配置区块(configura
 6. [Channel Configuration (configtx)][6]
 7. [Capability Requirements][7]
 8. [超级账本HyperLedger Fabric中Channel配置的读取转换][8]
+9. [HyperLedger Fabric :Anchor Peer][9]
 
 [1]: http://hyperledger-fabric.readthedocs.io/en/latest/channel_update_tutorial.html#bring-org3-into-the-channel-manually "Bring Org3 into the Channel Manually" 
 [2]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/05/04/fabric-ca-example.html  "Fabric-CA的使用演示(两个组织一个Orderer三个Peer)" 
@@ -794,3 +798,4 @@ Channel的配置信息也存放在区块链上，是一个配置区块(configura
 [7]: http://hyperledger-fabric.readthedocs.io/en/latest/capability_requirements.html "Capability Requirements"
 [8]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/06/19/hyperledger-channel-config-operation.html "超级账本HyperLedger Fabric中Channel配置的读取转换"
 [9]: http://hyperledger-fabric.readthedocs.io/en/latest/glossary.html#anchor-peer  "HyperLedger Fabric :Anchor Peer"
+
