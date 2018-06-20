@@ -3,7 +3,7 @@ layout: default
 title: 超级账本HyperLedger视频教程：在已有的Channel中添加新的组织
 author: 李佶澳
 createdate: 2018/06/18 13:44:00
-changedate: 2018/06/20 14:07:20
+changedate: 2018/06/20 14:11:52
 categories: 项目
 tags: HyperLedger
 keywords: HyperLedger,超级账本,视频教程,组织添加
@@ -20,7 +20,7 @@ description: 在已经建立的channel中添加新的组织
 
 经过[超级账本HyperLedger视频教程][4]中的[Fabric的手动部署教程][3]和[Fabric-CA的使用演示(两个组织一个Orderer三个Peer)][2]中的步骤之后，搭建了一个Fabric系统，并且建立一名为"mychannel"的频道，频道中有两个org1和org2两个成员。
 
-这里演示：如何在已经已经创建的channel中增加新的组织。
+这里演示“如何在已经已经创建的channel中增加新的组织”。 可以先移步到[超级账本HyperLedger Fabric中Channel配置的读取转换][8]中，了解一下Channel的配置，以更好理解接下来的内容。
 
 参考资料：[Bring Org3 into the Channel Manually][1]
 
@@ -706,6 +706,7 @@ Channel的配置信息也存放在区块链上，是一个配置区块(configura
 5. [Updating a Channel Configuration][5]
 6. [Channel Configuration (configtx)][6]
 7. [Capability Requirements][7]
+8. [超级账本HyperLedger Fabric中Channel配置的读取转换][8]
 
 [1]: http://hyperledger-fabric.readthedocs.io/en/latest/channel_update_tutorial.html#bring-org3-into-the-channel-manually "Bring Org3 into the Channel Manually" 
 [2]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/05/04/fabric-ca-example.html  "Fabric-CA的使用演示(两个组织一个Orderer三个Peer)" 
@@ -714,3 +715,4 @@ Channel的配置信息也存放在区块链上，是一个配置区块(configura
 [5]: http://hyperledger-fabric.readthedocs.io/en/latest/config_update.html "Updating a Channel Configuration"
 [6]: http://hyperledger-fabric.readthedocs.io/en/latest/configtx.html  "Channel Configuration (configtx)"
 [7]: http://hyperledger-fabric.readthedocs.io/en/latest/capability_requirements.html "Capability Requirements"
+[8]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/06/19/hyperledger-channel-config-operation.html "超级账本HyperLedger Fabric中Channel配置的读取转换"
