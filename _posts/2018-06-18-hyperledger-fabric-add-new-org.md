@@ -3,7 +3,7 @@ layout: default
 title: 超级账本HyperLedger视频教程：在已有的Channel中添加新的组织
 author: 李佶澳
 createdate: 2018/06/18 13:44:00
-changedate: 2018/06/19 00:04:19
+changedate: 2018/06/20 10:16:41
 categories: 项目
 tags: HyperLedger
 keywords: HyperLedger,超级账本,视频教程,组织添加
@@ -15,6 +15,8 @@ description: 在已经建立的channel中添加新的组织
 {:toc}
 
 ## 说明
+
+[超级账本HyperLedger视频教程演示汇总：HyperLedger Fabric的视频讲解--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)
 
 经过[超级账本HyperLedger视频教程][4]中的[Fabric的手动部署教程][3]和[Fabric-CA的使用演示(两个组织一个Orderer三个Peer)][2]中的步骤之后，搭建了一个Fabric系统，并且建立一名为"mychannel"的频道，频道中有两个org1和org2两个成员。
 
@@ -46,8 +48,8 @@ description: 在已经建立的channel中添加新的组织
 	./peer.sh chaincode signpackage demo-pack.out signed-demo-pack.out
 	./peer.sh chaincode install ./signed-demo-pack.out
 	./peer.sh chaincode instantiate -o orderer.example.com:7050 --tls true --cafile ./tlsca.example.com-cert.pem -C mychannel -n demo -v 0.0.1 -c '{"Args":["init"]}' -P "OR('Org1MSP.member','Org2MSP.member')"
-	./peer.sh chaincode query -C mychannel -n demox -c '{"Args":["attr","role"]}'
-	./peer.sh chaincode query -C mychannel -n demox -c '{"Args":["attr","hf.Type"]}'
+	./peer.sh chaincode query -C mychannel -n demo -c '{"Args":["attr","role"]}'
+	./peer.sh chaincode query -C mychannel -n demo -c '{"Args":["attr","hf.Type"]}'
 
 清空下面的操作过程中生成的文件：
 
@@ -635,7 +637,26 @@ configtxgen命令默认读取当前目录下的confitx.yaml文件，在1.1.0版�
 
 这个错误应当是刚开始加入channel是出现的，不影响最终结果。（更具体的情况，还需要进一步深入研究）
 
+### 更新合约
+
+由于增加了新的成员，因此需要更新合约的背书策略。
+
+在org1、org2、org3中均安装最新版本的合约：
+
+	./peer.sh chaincode install -n demo -v 0.0.2 -p github.com/lijiaocn/fabric-chaincode-example/demo
+
+然后通过org1或org2发起更新合约的请求：
+
+	./peer.sh chaincode upgrade -o orderer.example.com:7050 --tls true --cafile ./tlsca.example.com-cert.pem -C mychannel -n demo -v 0.0.2 -c '{"Args":["init"]}' -P "OR('Org1MSP.member','Org2MSP.member', 'Org3MSP.member')
+
+然后就可以通过org3的peer调用合约：
+
+	cd Admin@org3.example.com
+	./peer.sh chaincode query -C mychannel -n demo -c '{"Args":["attr","role"]}'
+
 ### 指定AnchorPeer
+
+>注意：下面的做法是不行的！
 
 修改configtx.yaml，在profile中加入org3:
 
@@ -659,7 +680,21 @@ configtxgen命令默认读取当前目录下的confitx.yaml文件，在1.1.0版�
 
 报错！这种方式可能不行，请等待进一步调查(2018-06-19 00:03:41)。
 
-!!Error: got unexpected status: BAD_REQUEST -- error authorizing update: error validating ReadSet: readset expected key [Group]  /Channel/Application at version 1, but got version 2
+	!!Error: got unexpected status: BAD_REQUEST -- error authorizing update: error validating ReadSet: readset expected key [Group]  /Channel/Application at version 1, but got version 2
+
+因为这不是基于最新的channel配置更改的。
+
+## 回顾Channel配置更新
+
+[Updating a Channel Configuration][5]中对Channel的配置更新做出详细介绍。
+
+Channel的配置信息也存放在区块链上，是一个配置区块(configuration block)。第一个配置区块就是部署Fabric的使用的创世块（genesis block）。
+
+更新Channel的过程就是从Fabric中读取最新的配置，然后将其转换为可读格式，完成更改后，提交到Fabric中。
+
+[Channel Configuration (configtx)][6]中介绍了channel的配置文件格式，以及更新过程。
+
+[Capability Requirements][7]中介绍了网络中fabric的不同版本共存时，应当怎样处理。
 
 ## 参考
 
@@ -667,8 +702,14 @@ configtxgen命令默认读取当前目录下的confitx.yaml文件，在1.1.0版�
 2. [Fabric-CA的使用演示(两个组织一个Orderer三个Peer)][2]
 3. [超级账本HyperLedger视频教程：Fabric的手动部署教程][3]
 4. [超级账本HyperLedger视频教程][4]
+5. [Updating a Channel Configuration][5]
+6. [Channel Configuration (configtx)][6]
+7. [Capability Requirements][7]
 
 [1]: http://hyperledger-fabric.readthedocs.io/en/latest/channel_update_tutorial.html#bring-org3-into-the-channel-manually "Bring Org3 into the Channel Manually" 
 [2]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/05/04/fabric-ca-example.html  "Fabric-CA的使用演示(两个组织一个Orderer三个Peer)" 
 [3]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/04/26/hyperledger-fabric-deploy.html "fabric项目的手动部署教程"
 [4]: https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006 "超级账本HyperLedger视频教程"
+[5]: http://hyperledger-fabric.readthedocs.io/en/latest/config_update.html "Updating a Channel Configuration"
+[6]: http://hyperledger-fabric.readthedocs.io/en/latest/configtx.html  "Channel Configuration (configtx)"
+[7]: http://hyperledger-fabric.readthedocs.io/en/latest/capability_requirements.html "Capability Requirements"
