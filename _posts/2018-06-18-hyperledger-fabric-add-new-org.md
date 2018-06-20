@@ -3,7 +3,7 @@ layout: default
 title: 超级账本HyperLedger视频教程：在已有的Channel中添加新的组织
 author: 李佶澳
 createdate: 2018/06/18 13:44:00
-changedate: 2018/06/20 10:16:41
+changedate: 2018/06/20 14:07:20
 categories: 项目
 tags: HyperLedger
 keywords: HyperLedger,超级账本,视频教程,组织添加
@@ -290,6 +290,7 @@ configtxgen命令默认读取当前目录下的confitx.yaml文件，在1.1.0版�
 将mychannel-config.json和modified_config.json编码为protobuf格式：
 
 	./bin/configtxlator proto_encode --input ./org3-artifacts/mychannel-config.json --type common.Config --output ./org3-artifacts/mychannel-config.pb
+	
 	./bin/configtxlator proto_encode --input ./org3-artifacts/modified_config.json --type common.Config --output ./org3-artifacts/modified_config.pb
 
 计算出modified_config.pb与config.pb之间的差异，并记录到文件`org3_update.pb`中：
