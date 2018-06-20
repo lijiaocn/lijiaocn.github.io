@@ -3,7 +3,7 @@ layout: default
 title: 超级账本HyperLedger视频教程：在已有的Channel中添加新的组织
 author: 李佶澳
 createdate: 2018/06/18 13:44:00
-changedate: 2018/06/20 15:24:08
+changedate: 2018/06/20 16:44:19
 categories: 项目
 tags: HyperLedger
 keywords: HyperLedger,超级账本,视频教程,组织添加
@@ -771,6 +771,8 @@ Channel的配置信息也存放在区块链上，是一个配置区块(configura
 [Channel Configuration (configtx)][6]中介绍了channel的配置文件格式，以及更新过程。
 
 [Capability Requirements][7]中介绍了网络中fabric的不同版本共存时，应当怎样处理。
+
+![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
 ## 参考
 

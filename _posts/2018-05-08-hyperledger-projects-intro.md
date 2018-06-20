@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger旗下项目介绍
 author: 李佶澳
 createdate: 2018/05/08 14:35:00
-changedate: 2018/05/14 23:03:58
+changedate: 2018/06/20 16:44:29
 categories: 项目
 tags: HyperLedger
 keywords: 超级账本,HyperLedger,视频教程演示
@@ -183,6 +183,8 @@ framework的竞争很激烈，会上演类似mesos、swarm、kubernetes之间的
 	Relay information about the execution of a transaction back to clients without storing that data in state.
 
 另外通过Sawtooth和Ethereum集成项目[Seth][22]，Sawtooth上可以运行以太坊的合约。
+
+![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
 ## 参考
 
