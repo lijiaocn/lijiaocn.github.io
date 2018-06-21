@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger的Fabric项目部署过程时遇到的问题
 author: 李佶澳
 createdate: 2018/05/04 21:14:00
-changedate: 2018/06/21 11:13:34
+changedate: 2018/06/21 11:35:46
 categories: 问题
 tags: HyperLedger
 keywords: 超级账本,视频教程演示,区块链实践,hyperledger,fabric,区块链问题
@@ -21,6 +21,10 @@ description: "这里记录部署hyperledger fabric时遇到的一些问题"
 本页内容会经常更新。
 
 这里记录了部署hyperledger fabric时遇到的一些问题，部署过程见：[hyperledger的fabric项目的手动部署教程][1]
+
+一些问题是我自己遇到的，一些是通过知识星球“区块链实践分享”和微信向我提问的。
+
+我会把比较典型的问题都汇总这里，如果你有新的问题，可以通过知识星球或者微信联系我(见文末)。
 
 ## 残留数据导致orderer启动失败
 
@@ -218,6 +222,8 @@ docker配置错误，配置了fluentd driver，但是fluentd不存在。
 
 	$ ls ./fabric-ca-files/org3.example.com/msp/tlscacerts/
 	tlsca.org3.example.com-cert.pem
+
+![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
 ## 参考
 
