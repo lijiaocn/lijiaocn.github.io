@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger的Fabric项目部署过程时遇到的问题
 author: 李佶澳
 createdate: 2018/05/04 21:14:00
-changedate: 2018/06/20 17:23:43
+changedate: 2018/06/21 11:13:34
 categories: 问题
 tags: HyperLedger
 keywords: 超级账本,视频教程演示,区块链实践,hyperledger,fabric,区块链问题
@@ -21,6 +21,17 @@ description: "这里记录部署hyperledger fabric时遇到的一些问题"
 本页内容会经常更新。
 
 这里记录了部署hyperledger fabric时遇到的一些问题，部署过程见：[hyperledger的fabric项目的手动部署教程][1]
+
+## 残留数据导致orderer启动失败
+
+启动orderer的时候报错，orderer直接panic：
+
+	2018-06-21 11:01:47.892 CST [orderer/commmon/multichannel] newLedgerResources -> CRIT 052 Error creating channelconfig bundle: initializing channelconfig failed: could not create channel Orderer sub-group config: setting up the MSP manager failed: the supplied identity is not valid: x509: certificate signed by unknown authority (possibly because of "x509: ECDSA verification failure" while trying to verify candidate authority certificate "ca.example.com")
+	panic: Error creating channelconfig bundle: initializing channelconfig failed: could not create channel Orderer sub-group config: setting up the MSP manager failed: the supplied identity is not valid: x509: certificate signed by unknown authority (possibly because of "x509: ECDSA verification failure" while trying to verify candidate authority certificate "ca.example.com")
+
+排查发现，部署orderer的机器上以前部署过orderer，并且orderer.yaml中配置的数据路径`/opt/app/fabric/orderer/data`中残留了以前的数据。
+
+将/opt/app/fabric/orderer/data中的文件都删除后，问题解决。
 
 ## 创建channel时失败：Failed to reach implicit threshold of 1 sub-policies, required 1 remaining
 
