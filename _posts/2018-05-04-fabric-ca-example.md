@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger视频教程：Fabric-CA的使用演示(两个组织一个Orderer三个Peer)
 author: 李佶澳
 createdate: 2018/05/04 14:09:00
-changedate: 2018/06/20 13:27:39
+changedate: 2018/06/21 10:59:58
 categories: 项目
 tags: HyperLedger
 keywords: 超级账本,hyperledger,视频教程演示,fabric-ca,hyperledger,orderer证书
@@ -54,6 +54,19 @@ org2.example.com部署了一个peer:
 	org2.example.com:  Admin@org2.example.com  peer0.org2.example.com
 
 这里只创建了Admin用户，普通用户的创建方式相同，只是普通用户的证书不需要添加到目标组件的admincerts目录中。
+
+## 注意事项
+
+实践过程中，可能遇到各种各样的问题，可以到知识星球“区块链实践分享”中提问（见页尾），或者直接加我微信lijiaocn。
+
+我会把比较典型的问题汇总：[超级账本HyperLedger的Fabric项目部署过程时遇到的问题][10]
+
+特别提醒，如果你的操作做到了一半，需要`推倒重做`，一定将目标机器上的每个组件中的data目录删除:
+
+	rm -rf /opt/app/fabric/orderer/data
+	rm -rf /opt/app/fabric/peer/data
+
+否则这些残留的数据会干扰运行，导致各种各样的情况。
 
 ## 启动fabric-ca
 
@@ -697,6 +710,7 @@ example.com、org1.example.com、org2.example.com三个组织这时候可以分�
 7. [HyperLedger FabricCA Config Database and LDAP][7]
 8. [HyperLedger的fabric项目的全手动部署: 安装合约][8]
 9. [超级账本HyperLedger的fabricCA的用法讲解][9]
+10. [超级账本HyperLedger的Fabric项目部署过程时遇到的问题][10]
 
 [1]: https://hyperledger-fabric-ca.readthedocs.io/en/latest/  "Welcome to Hyperledger Fabric CA" 
 [2]: https://github.com/hyperledger/fabric-ca "fabric-ca codes"
@@ -707,3 +721,4 @@ example.com、org1.example.com、org2.example.com三个组织这时候可以分�
 [7]: https://hyperledger-fabric-ca.readthedocs.io/en/latest/users-guide.html#configuring-the-database "HyperLedger FabricCA Config Database and LDAP"
 [8]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/04/26/hyperledger-fabric-deploy.html#%E5%AE%89%E8%A3%85%E5%90%88%E7%BA%A6chaincode  "hyperledger的fabric项目的全手动部署: 安装合约"
 [9]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/04/27/hyperledger-fabric-ca-usage.html "超级账本HyperLedger的fabricCA的用法讲解"
+[10]: http://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/04/25/hyperledger-fabric-problem.html "超级账本HyperLedger的Fabric项目部署过程时遇到的问题"

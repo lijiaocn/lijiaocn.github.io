@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger视频教程：Fabric的手动部署教程
 author: 李佶澳
 createdate: 2018/04/28 18:45:00
-changedate: 2018/06/20 10:17:56
+changedate: 2018/06/21 10:58:03
 categories: 项目
 tags: HyperLedger
 keywords: 超级账本,hyperledger,fabric,视频教程,手动部署
@@ -31,6 +31,19 @@ description: 经历了诸多磨难之后，总算弄清楚了fabric的组件间�
 看文档感觉吃力或者一通操作后不知所以然的同学，可以使用网易云课堂视频教程： 
 
 [超级账本HyperLedger视频教程汇总：HyperLedger Fabric的视频讲解--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm)
+
+## 注意事项
+
+实践过程中，可能遇到各种各样的问题，可以到知识星球“区块链实践分享”中提问（见页尾），或者直接加我微信lijiaocn。
+
+我会把比较典型的问题汇总：[超级账本HyperLedger的Fabric项目部署过程时遇到的问题][7]
+
+特别提醒，如果你的操作做到了一半，需要`推倒重做`，一定将目标机器上的每个组件中的data目录删除:
+
+	rm -rf /opt/app/fabric/orderer/data
+	rm -rf /opt/app/fabric/peer/data
+
+否则这些残留的数据会干扰运行，导致各种各样的情况。
 
 ## 规划
 
@@ -964,6 +977,7 @@ chaincode只能用Admin安装，并且需要在每个peer上都安装一次。
 4. [hyperledger的fabricCA的使用][4]
 5. [hyperledger项目fabric的nodejsSDK的使用][5]
 6. [网易云课堂视频教程：HyperLedger Fabric全手动部署][6]
+7. [超级账本HyperLedger的Fabric项目部署过程时遇到的问题][7]
 
 [1]: http://hyperledger-fabric.readthedocs.io/en/latest/build_network.html  "Building Your First Network" 
 [2]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/02/23/hyperledger-fabric-usage.html#fabric%E7%BC%96%E8%AF%91 "hyperledger fabric编译"
@@ -971,3 +985,4 @@ chaincode只能用Admin安装，并且需要在每个peer上都安装一次。
 [4]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/04/27/hyperledger-fabric-ca-usage.html "hyperledger的fabricCA的使用"
 [5]: http://www.lijiaocn.com/%E7%BC%96%E7%A8%8B/2018/04/25/hyperledger-fabric-sdk-nodejs.html "hyperledger项目fabric的nodejsSDK的使用"
 [6]: http://study.163.com/course/introduction.htm?courseId=1005326005&share=2&shareId=400000000376006 "HyperLedger Fabric全手动部署网易云课堂教程"
+[7]: http://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/04/25/hyperledger-fabric-problem.html "超级账本HyperLedger的Fabric项目部署过程时遇到的问题"
