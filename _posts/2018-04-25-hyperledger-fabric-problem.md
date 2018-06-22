@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger的Fabric项目部署过程时遇到的问题
 author: 李佶澳
 createdate: 2018/05/04 21:14:00
-changedate: 2018/06/21 11:35:46
+changedate: 2018/06/22 22:41:56
 categories: 问题
 tags: HyperLedger
 keywords: 超级账本,视频教程演示,区块链实践,hyperledger,fabric,区块链问题
@@ -25,6 +25,71 @@ description: "这里记录部署hyperledger fabric时遇到的一些问题"
 一些问题是我自己遇到的，一些是通过知识星球“区块链实践分享”和微信向我提问的。
 
 我会把比较典型的问题都汇总这里，如果你有新的问题，可以通过知识星球或者微信联系我(见文末)。
+
+## genesisblock中admin证书错误导致orderer panic: x509: ECDSA verification failure
+
+orderer在启动的时候报错，直接panic：
+
+	-----END CERTIFICATE-----
+	2018-06-22 14:27:30.462 UTC [orderer/commmon/multichannel] newLedgerResources -> CRIT 04d Error creating channelconfig bundle: initializing channelconfig failed: could not create channel Consortiums sub-group config: setting up the MSP manager failed: the supplied identity is not valid: x509: certificate signed by unknown authority (possibly because of "x509: ECDSA verification failure" while trying to verify candidate authority certificate "ca.org1.example.com")
+	panic: Error creating channelconfig bundle: initializing channelconfig failed: could not create channel Consortiums sub-group config: setting up the MSP manager failed: the supplied identity is not valid: x509: certificate signed by unknown authority (possibly because of "x509: ECDSA verification failure" while trying to verify candidate authority certificate "ca.org1.example.com")
+
+	goroutine 1 [running]:
+	github.com/hyperledger/fabric/vendor/github.com/op/go-logging.(*Logger).Panicf(0xc4201ee120, 0x108668e, 0x27, 0xc42026af50, 0x1, 0x1)
+		/w/workspace/fabric-binaries-x86_64/gopath/src/github.com/hyperledger/fabric/vendor/github.com/op/go-logging/logger.go:194 +0x134
+	github.com/hyperledger/fabric/orderer/common/multichannel.(*Registrar).newLedgerResources(0xc42010a380, 0xc420138840, 0xc420138840)
+		/w/workspace/fabric-binaries-x86_64/gopath/src/github.com/hyperledger/fabric/orderer/common/multichannel/registrar.go:253 +0x391
+
+怀疑是创世块的原因，用下面的命令将创始块解开：
+
+	./bin/configtxgen -profile TwoOrgsOrdererGenesis -outputBlock ./genesisblock
+
+发现比较奇怪的地方，Org1的Admin证书有两个：
+
+	"groups": {
+	  "Org1MSP": {
+	  "mod_policy": "Admins",
+	  ...
+	  "mod_policy": "Admins",
+	  "value": {
+	  "config": {
+	  "admins": [
+	  "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUNHVENDQWIrZ0F3SUJBZ0lRVXRxQWxlZENzWkErWStWdlZMUTZQakFLQmdncWhrak9QUVFEQWpCek1Rc3cKQ1FZRFZRUUdFd0pWVXpFVE1CRUdBMVVFQ0JNS1EyRnNhV1p2Y201cFlURVdNQlFHQTFVRUJ4TU5VMkZ1SUVaeQpZVzVqYVhOamJ6RVpNQmNHQTFVRUNoTVFiM0puTVM1bGVHRnRjR3hsTG1OdmJURWNNQm9HQTFVRUF4TVRZMkV1CmIzSm5NUzVsZUdGdGNHeGxMbU52YlRBZUZ3MHhPREEyTWpFd05qVTNNekJhRncweU9EQTJNVGd3TmpVM016QmEKTUZzeEN6QUpCZ05WQkFZVEFsVlRNUk13RVFZRFZRUUlFd3BEWVd4cFptOXlibWxoTVJZd0ZBWURWUVFIRXcxVApZVzRnUm5KaGJtTnBjMk52TVI4d0hRWURWUVFEREJaQlpHMXBia0J2Y21jeExtVjRZVzF3YkdVdVkyOXRNRmt3CkV3WUhLb1pJemowQ0FRWUlLb1pJemowREFRY0RRZ0FFRVp3cUhTVmxxRGNKNC9aVSt0YnB5RVBSTkl5ellMdTMKRGlRVUZOMklBZm5vVGhjTjRmY3Y4c2dsdXUxcnpJYUVHSFRFLzd0TC9EdEg2U3Fjd2tOQkthTk5NRXN3RGdZRApWUjBQQVFIL0JBUURBZ2VBTUF3R0ExVWRFd0VCL3dRQ01BQXdLd1lEVlIwakJDUXdJb0FnbkpjYVVLVFlseVJxCjcyckk4QXNINHNVZHB0ZytWY3IvbHkxZlp3QndrOEF3Q2dZSUtvWkl6ajBFQXdJRFNBQXdSUUloQUsvRXh6NlYKRVYwUFl4M1BQbitPMysvODQrdXFEVkZ2Q1ZRUEVNcU1yV3dkQWlBNVVqTDcyb2drTHB3UUtGZ1ptdTJqRmtPWApSVnhpY0htLzZCR3htelFRc1E9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==",
+	  "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUNGVENDQWJ5Z0F3SUJBZ0lRU3E0VzJ1SEVqbHdXZHdGY21WNUlpekFLQmdncWhrak9QUVFEQWpCek1Rc3cKQ1FZRFZRUUdFd0pWVXpFVE1CRUdBMVVFQ0JNS1EyRnNhV1p2Y201cFlURVdNQlFHQTFVRUJ4TU5VMkZ1SUVaeQpZVzVqYVhOamJ6RVpNQmNHQTFVRUNoTVFiM0puTVM1bGVHRnRjR3hsTG1OdmJURWNNQm9HQTFVRUF4TVRZMkV1CmIzSm5NUzVsZUdGdGNHeGxMbU52YlRBZUZ3MHhPREEyTWpFd056VXdNVEZhRncweU9EQTJNVGd3TnpVd01URmEKTUZneEN6QUpCZ05WQkFZVEFsVlRNUk13RVFZRFZRUUlFd3BEWVd4cFptOXlibWxoTVJZd0ZBWURWUVFIRXcxVApZVzRnUm5KaGJtTnBjMk52TVJ3d0dnWURWUVFERXhOallTNXZjbWN4TG1WNFlXMXdiR1V1WTI5dE1Ga3dFd1lICktvWkl6ajBDQVFZSUtvWkl6ajBEQVFjRFFnQUVxNHl6K0tqSTR2ZmtObzQ0bWp0Q25HQ2cwLzA3L2Y5VW1sZlEKMlpSZWtHN2lyVm1QY0N6YnRVVEcvTFJjbndVemgyaFMvZkg5cGxvZEM4a1pwSlpXQzZOTk1Fc3dEZ1lEVlIwUApBUUgvQkFRREFnZUFNQXdHQTFVZEV3RUIvd1FDTUFBd0t3WURWUjBqQkNRd0lvQWdPc1NNQ2VqcnBOMnBhNEZSCnBOMVE2eXJkVHJleXNGY0Q1Ym9TcVNzSnFLNHdDZ1lJS29aSXpqMEVBd0lEUndBd1JBSWdCQWo1Q3l2cEFhU0kKaTh4anpVVHZxbUt5dmxSOFFPeExBUTAvVi9jRGpTNENJRVg3V1lnZzYwTFUwTy9LNEpmVVpiQmoyNHRBbTkxcgpkQmczN21IZHZVcSsKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo="
+	  ],
+	  ...
+
+
+将上面的两大行字符串分别用base64解码得到证书，然后用openssl命令查看：
+
+	echo "LS0tLS1CRUdJTiBDRVJUSU....tLS0tCg==" |base64 -D >a.cert
+	openssl x509 -in a.cert -text
+
+第一个证书正确：
+
+	...
+	 Subject: C=US, ST=California, L=San Francisco, CN=Admin@org1.example.com
+	...
+
+查看第二行：
+
+	echo "LS0tLS1CRUdJTi....tLS0tLQo=" |base64 -D >b.cert
+	openssl x509 -in b.cert -text
+
+发现第二个证书是CA证书，不是用户证书！
+
+	 Subject: C=US, ST=California, L=San Francisco, CN=ca.org1.example.com
+
+检查生成genesisblock时使用的configtx.yaml文件，发现configtx.yaml中配置的msp目录：
+
+	 MSPDir: ./certs/peerOrganizations/org1.example.com/msp
+
+msp的admincerts子目录中，多出了一个ca证书：
+
+	$ ls ./certs/peerOrganizations/org1.example.com/msp/admincerts/
+	Admin@org1.example.com-cert.pem ca.org1.example.com-cert.pem
+
+把多出的ca证书删除。
 
 ## 残留数据导致orderer启动失败
 
@@ -191,8 +256,6 @@ docker配置错误，配置了fluentd driver，但是fluentd不存在。
 				from $(DOCKER_NS)/fabric-javaenv:$(ARCH)-$(PROJECT_VERSION)
 
 将fabirc-ccenv、fabric-baseos、fabric-javaenv三个镜像提前下载好以后，实例化成功。
-
-![知识星球区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
 ## 连接其它Peer超时
 
