@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger视频教程：Fabric的手动部署教程
 author: 李佶澳
 createdate: 2018/04/28 18:45:00
-changedate: 2018/06/23 13:35:42
+changedate: 2018/06/23 13:42:25
 categories: 项目
 tags: HyperLedger
 keywords: 超级账本,hyperledger,fabric,视频教程,手动部署
@@ -999,6 +999,20 @@ chaincode只能用Admin安装，并且需要在每个peer上都安装一次。
 	cd Admin\@org2.example.com/
 	./peer.sh chaincode install ./signed-demo-pack-2.out
 
+## 接下来...
+
+接下来，可以开始使用Fabric-CA：
+
+[超级账本HyperLedger视频教程：Fabric-CA的使用演示(两个组织一个Orderer三个Peer)][11]
+
+然后可以：
+
+[超级账本HyperLedger视频教程：Fabric，在已有的Channel中添加新的组织][12]
+
+还有：
+
+[更多关于超级账本和区块链的文章][10]
+
 视频纪录发布在： [网易云课堂视频教程：HyperLedger Fabric全手动部署][6]
 
 可以到星球里找我要优惠券。
@@ -1016,6 +1030,9 @@ chaincode只能用Admin安装，并且需要在每个peer上都安装一次。
 7. [超级账本HyperLedger的Fabric项目部署过程时遇到的问题][7]
 8. [超级账本HyperLedger Fabric中Channel配置的读取转换][8]
 9. [https://github.com/lijiaocn/fabric-chaincode-example/][9]
+10. [更多关于超级账本和区块链的文章][10]
+11. [超级账本HyperLedger视频教程：Fabric-CA的使用演示(两个组织一个Orderer三个Peer)][11]
+12. [超级账本HyperLedger视频教程：Fabric，在已有的Channel中添加新的组织][12]
 
 [1]: http://hyperledger-fabric.readthedocs.io/en/latest/build_network.html  "Building Your First Network" 
 [2]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/02/23/hyperledger-fabric-usage.html#fabric%E7%BC%96%E8%AF%91 "hyperledger fabric编译"
@@ -1026,3 +1043,6 @@ chaincode只能用Admin安装，并且需要在每个peer上都安装一次。
 [7]: http://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/04/25/hyperledger-fabric-problem.html "超级账本HyperLedger的Fabric项目部署过程时遇到的问题"
 [8]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/06/19/hyperledger-channel-config-operation.html "超级账本HyperLedger Fabric中Channel配置的读取转换"
 [9]: https://github.com/lijiaocn/fabric-chaincode-example/ "https://github.com/lijiaocn/fabric-chaincode-example/"
+[10]: http://www.lijiaocn.com/tags/blockchain.html "更多关于超级账本和区块链的文章"
+[11]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/05/04/fabric-ca-example.html  ""
+[12]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/06/18/hyperledger-fabric-add-new-org.html "超级账本HyperLedger视频教程：Fabric，在已有的Channel中添加新的组织"
