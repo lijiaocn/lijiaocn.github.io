@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger视频教程：Fabric的手动部署教程
 author: 李佶澳
 createdate: 2018/04/28 18:45:00
-changedate: 2018/06/21 10:58:03
+changedate: 2018/06/23 13:35:42
 categories: 项目
 tags: HyperLedger
 keywords: 超级账本,hyperledger,fabric,视频教程,手动部署
@@ -288,7 +288,7 @@ fabric-ca的部署和详细用法见：[hyperledger的fabricCA的使用][4]
 	cp bin/orderer orderer.example.com/
 	cp -rf certs/ordererOrganizations/example.com/orderers/orderer.example.com/* orderer.example.com/
 
-然后准备orderer的配置文件`orderer.yaml`:
+然后准备orderer的配置文件`orderer.example.com/orderer.yaml`:
 
 	General:
 	    LedgerType: file
@@ -568,7 +568,7 @@ fabric-ca的部署和详细用法见：[hyperledger的fabricCA的使用][4]
 
 	mkdir -p /opt/app/fabric/{orderer,peer}
 
-将orderer.example.com和peer0.org1.exmaple.com中的内容复制到192.168.88.10:
+将`orderer.example.com`和`peer0.org1.exmaple.com`中的内容复制到`192.168.88.10`:
 
 	scp -r orderer.example.com/* root@192.168.88.10:/opt/app/fabric/orderer/
 	scp -r peer0.org1.example.com/* root@192.168.88.10:/opt/app/fabric/peer/
@@ -577,7 +577,7 @@ fabric-ca的部署和详细用法见：[hyperledger的fabricCA的使用][4]
 
 	mkdir -p /opt/app/fabric/peer
 
-将peer1.org1.exmaple.com中的内容复制到192.168.88.11:
+将`peer1.org1.exmaple.com`中的内容复制到`192.168.88.11`:
 
 	scp -r peer1.org1.example.com/* root@192.168.88.11:/opt/app/fabric/peer/
 
@@ -585,7 +585,7 @@ fabric-ca的部署和详细用法见：[hyperledger的fabricCA的使用][4]
 
 	mkdir -p /opt/app/fabric/peer
 
-将peer0.org2.exmaple.com中的内容复制到192.168.88.12:
+将`peer0.org2.exmaple.com`中的内容复制到`192.168.88.12`:
 
 	scp -r peer0.org2.example.com/* root@192.168.88.12:/opt/app/fabric/peer/
 
@@ -677,6 +677,10 @@ order、peer都部署到位，但是对我这里示意的场景，需要的文�
 
 为了方便查看输出的日志，可以写一个脚本：
 
+>注意，启动方式根据自己需要进行安排，譬如可以使用systemd服务的方式启动，也可以打包到
+>docker镜像中，以容器的方式启动。
+>这里只演示最后启动命令，直接运行orderer和peer。
+
 	$ cat start.sh
 	./orderer 2>&1 |tee log
 
@@ -693,7 +697,9 @@ peer的脚本如下：
 
 ## 用户
 
-要使用得先有用户。在前面用`cryptogen`准备证书的时候，它默认创建了用户。
+如果每个组件的日志中没有错误，那么fabric启动就完成。现在的问题是如何使用？
+
+首先要有用户，在前面用`cryptogen`准备证书的时候，默认创建了用户。
 
 还记得certs目录下的几个`users`目录吗？那里面就是用户证书。
 
@@ -728,7 +734,7 @@ Admin和User1唯一的区别是，Admin的用户证书被添加到了对一个pe
 
 	cp peer0.org1.example.com/core.yaml  Admin\@org1.example.com/
 
-为了方便使用，在Admin@org1.example.com中创建一个peer.sh脚本：
+为了方便使用，创建一个脚本`Admin@org1.example.com/peer.sh`：
 
 	#!/bin/bash
 	PATH=`pwd`/../bin:$PATH
@@ -753,10 +759,11 @@ Admin和User1唯一的区别是，Admin的用户证书被添加到了对一个pe
 	$ ./peer.sh node status
 	status:STARTED
 	2018-04-29 14:32:03.517 CST [main] main -> INFO 001 Exiting.....
+	$ cd ..
 
 可以看到`peer0.org1.example.com:7051`的状态是启动的。
 
-为了后面的演示，下面使用复制替换的方式，准备另外两个用户的目录。
+为了减少演示过程中的重复操作，下面使用复制、替换的方式，准备另外两个用户的目录。
 
 ### User1@org1.example.com
 
@@ -767,23 +774,30 @@ User1与Admin1使用相同的peer，因此只需要替换用户证书即可：
 	rm -rf  User1\@org1.example.com/tls
 	cp -rf  certs/peerOrganizations/org1.example.com/users/User1\@org1.example.com/* User1\@org1.example.com/
 
+>注意上面的过程，就是把msp和tls目录替换了。
+
 执行peer.sh检验：
 
+	$ cd User1\@org1.example.com
 	$ ./peer.sh node status
 	status:STARTED
 	2018-04-29 14:37:48.251 CST [main] main -> INFO 001 Exiting.....
+	$ cd ..
 
 ### Admin@org2.example.com
 
-对于Admin@org2.example.com，core.yaml也需要替换：
+同样在Admin\@org1.example.com/的基础上修改，替换掉msp和tls目录：
 
 	cp -rf  Admin\@org1.example.com/ Admin\@org2.example.com/
 	rm -rf  Admin\@org2.example.com/msp/
 	rm -rf  Admin\@org2.example.com/tls/
 	cp -rf certs/peerOrganizations/org2.example.com/users/Admin\@org2.example.com/* Admin\@org2.example.com/
+
+对于Admin@org2.example.com另一个组织的用户，`core.yaml`需要替换成它自己组织(org2)的core.yaml：
+
 	cp peer0.org2.example.com/core.yaml Admin\@org2.example.com/
 
-还需要将`peer.sh`中peer地址修改为org2的peer地址：
+还需要将`Admin\@org2.example.com/peer.sh`中peer地址修改为org2的peer地址：
 
 	export CORE_PEER_ADDRESS=peer0.org1.example.com:7051
 	export CORE_PEER_LOCALMSPID=Org1MSP
@@ -793,11 +807,15 @@ User1与Admin1使用相同的peer，因此只需要替换用户证书即可：
 	export CORE_PEER_ADDRESS=peer0.org2.example.com:7051
 	export CORE_PEER_LOCALMSPID=Org2MSP
 
+>注意peer.sh中需要修改的地方有两个： org1->org2，Org1->Org2。
+
 验证：
 
+	$ cd Admin\@org2.example.com
 	$ ./peer.sh node status
 	status:STARTED
 	2018-04-29 14:44:22.395 CST [main] main -> INFO 001 Exiting.....
+	$ cd ..
 
 ## 创建channel与peer的设置
 
@@ -818,7 +836,9 @@ channel名字为mychannel，生成的mychannel.tx备用。
 
 生成的Org1MSPanchors.tx和Org2MSPanchors.tx备用。
 
-下一步操作中需要访问orderer.example.com，需要将验证orderer.example.com的证书复制到用户目录中：
+这里生成的三个文件的含义与内容，见[超级账本HyperLedger Fabric中Channel配置的读取转换][8]。
+
+下一步操作中要访问orderer.example.com，需要将验证orderer.example.com的根证书复制到用户目录中：
 
 	cp certs/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem  Admin\@org1.example.com/
 	cp certs/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem  User1\@org1.example.com/
@@ -828,7 +848,9 @@ channel名字为mychannel，生成的mychannel.tx备用。
 
 在Admin@org1.exampl.com目录中执行下面的命令，：
 
+	cd  Admin\@org1.exampl.com
 	./peer.sh channel create -o orderer.example.com:7050 -c mychannel -f ../mychannel.tx --tls true --cafile tlsca.example.com-cert.pem
+
 
 执行完成后，会生成一个`mychannel.block`文件：
 
@@ -837,17 +859,26 @@ channel名字为mychannel，生成的mychannel.tx备用。
 
 将mychannel.block复制一份到`Admin\@org2.example.com/`中备用：
 
-	cp Admin\@org1.example.com/mychannel.block Admin\@org2.example.com/
+	cp mychannel.block ../Admin\@org2.example.com/
+	cd ..
 
 ### 将peer加入channel
 
 **分别**在`Admin\@org1.example.com/`和`Admin\@org2.example.com/`执行下面的命令：
 
+	cd Admin\@org1.example.com/
 	./peer.sh channel join -b mychannel.block
+	cd ..
 
 因为org1有两个peer，因此需要将peer.sh中peer修改为`peer1.org1.example.com`后，再添加一次：
 
 	./peer.sh channel join -b mychannel.block
+
+在Admin\@org2.example.com/中执行一次：
+
+	cd Admin\@org2.example.com/
+	./peer.sh channel join -b mychannel.block
+	cd ..
 
 可以用channel list查看peer所在channel
 
@@ -857,13 +888,15 @@ channel名字为mychannel，生成的mychannel.tx备用。
 	mychannel
 	2018-04-29 16:37:47.018 CST [main] main -> INFO 002 Exiting.....
 
-最后需要每个组织指定一个anchor peer，anchor peer是组织用来与外部通信的peer:
+最后需要每个组织指定一个anchor peer，anchor peer是组织用来接收orderer下发的区块的peer:
 
 	cd Admin\@org1.example.com/
 	./peer.sh channel update -o orderer.example.com:7050 -c mychannel -f ../Org1MSPanchors.tx --tls true --cafile ./tlsca.example.com-cert.pem
+	cd ..
 	
 	cd Admin\@org2.example.com/
 	./peer.sh channel update -o orderer.example.com:7050 -c mychannel -f ../Org2MSPanchors.tx --tls true --cafile ./tlsca.example.com-cert.pem
+	cd ..
 
 ## 安装合约（chaincode）
 
@@ -876,6 +909,8 @@ channel名字为mychannel，生成的mychannel.tx备用。
 直接用`go get`获取一份合约代码：
 
 	go get github.com/lijiaocn/fabric-chaincode-example/demo
+
+注意代码的查看地址是：[https://github.com/lijiaocn/fabric-chaincode-example ][9]
 
 到`Admin@org1.example.com/`目录下，以Admin@org1.example.com的身份打包合约:
 
@@ -899,9 +934,10 @@ channel名字为mychannel，生成的mychannel.tx备用。
 
 chaincode只能用Admin安装，并且需要在每个peer上都安装一次。
 
-因此需要将peer0.org1.example.com切换为peer1.org1.example.com后，再次安装一次：
+将peer0.org1.example.com切换为peer1.org1.example.com后(修改peer.sh中的地址)，再次安装一次：
 
 	./peer.sh chaincode install ./signed-demo-pack.out  (不需要重新打包签署)
+	cd ..
 
 将signed-demo-pack.out复制到`Admin@org2.exmaple.com`中安装一次
 
@@ -911,7 +947,7 @@ chaincode只能用Admin安装，并且需要在每个peer上都安装一次。
 
 ## 合约初始化
 
-合约安装之后，需要进行一次初始化，只能由创建合约的用户进行初始化:
+合约安装之后，`需要且只需要`进行一次初始化，只能由`签署合约`的用户进行初始化:
 
 	cd Admin\@org1.example.com/
 	./peer.sh chaincode instantiate -o orderer.example.com:7050 --tls true --cafile ./tlsca.example.com-cert.pem -C mychannel -n demo -v 0.0.1 -c '{"Args":["init"]}' -P "OR('Org1MSP.member','Org2MSP.member')"
@@ -923,7 +959,7 @@ chaincode只能用Admin安装，并且需要在每个peer上都安装一次。
 可以在任意一个peer上调用合约，例如以admin@org2.example.com的进行写操作：
 
 	cd Admin\@org2.example.com/
-	./peer.sh chaincode invoke -o orderer.example.com:7050  --tls true --cafile ./tlsca.example.com-cert.pem -C mychannel -n demo -c '{"Args":["write","key1","key1 value is abc"]}'
+	./peer.sh chaincode invoke -o orderer.example.com:7050  --tls true --cafile ./tlsca.example.com-cert.pem -C mychannel -n demo -c '{"Args":["write","key1","key1valueisabc"]}'
 
 如果是第一次在一个peer访问一个合约，这个peer需要先启动容器，响应会比较慢。进行写操作（invoke命令）时，需要指定orderer（-o orderer.example.com:7050）。
 
@@ -978,6 +1014,8 @@ chaincode只能用Admin安装，并且需要在每个peer上都安装一次。
 5. [hyperledger项目fabric的nodejsSDK的使用][5]
 6. [网易云课堂视频教程：HyperLedger Fabric全手动部署][6]
 7. [超级账本HyperLedger的Fabric项目部署过程时遇到的问题][7]
+8. [超级账本HyperLedger Fabric中Channel配置的读取转换][8]
+9. [https://github.com/lijiaocn/fabric-chaincode-example/][9]
 
 [1]: http://hyperledger-fabric.readthedocs.io/en/latest/build_network.html  "Building Your First Network" 
 [2]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/02/23/hyperledger-fabric-usage.html#fabric%E7%BC%96%E8%AF%91 "hyperledger fabric编译"
@@ -986,3 +1024,5 @@ chaincode只能用Admin安装，并且需要在每个peer上都安装一次。
 [5]: http://www.lijiaocn.com/%E7%BC%96%E7%A8%8B/2018/04/25/hyperledger-fabric-sdk-nodejs.html "hyperledger项目fabric的nodejsSDK的使用"
 [6]: http://study.163.com/course/introduction.htm?courseId=1005326005&share=2&shareId=400000000376006 "HyperLedger Fabric全手动部署网易云课堂教程"
 [7]: http://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/04/25/hyperledger-fabric-problem.html "超级账本HyperLedger的Fabric项目部署过程时遇到的问题"
+[8]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/06/19/hyperledger-channel-config-operation.html "超级账本HyperLedger Fabric中Channel配置的读取转换"
+[9]: https://github.com/lijiaocn/fabric-chaincode-example/ "https://github.com/lijiaocn/fabric-chaincode-example/"

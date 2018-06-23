@@ -3,7 +3,7 @@ layout: default
 title: 超级账本HyperLedger视频教程：Fabric，在已有的Channel中添加新的组织
 author: 李佶澳
 createdate: 2018/06/18 13:44:00
-changedate: 2018/06/20 21:50:04
+changedate: 2018/06/23 12:02:43
 categories: 项目
 tags: HyperLedger
 keywords: HyperLedger,超级账本,视频教程,组织添加

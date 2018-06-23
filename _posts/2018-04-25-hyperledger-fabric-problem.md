@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger的Fabric项目部署过程时遇到的问题
 author: 李佶澳
 createdate: 2018/05/04 21:14:00
-changedate: 2018/06/22 22:41:56
+changedate: 2018/06/23 13:33:00
 categories: 问题
 tags: HyperLedger
 keywords: 超级账本,视频教程演示,区块链实践,hyperledger,fabric,区块链问题
@@ -25,6 +25,18 @@ description: "这里记录部署hyperledger fabric时遇到的一些问题"
 一些问题是我自己遇到的，一些是通过知识星球“区块链实践分享”和微信向我提问的。
 
 我会把比较典型的问题都汇总这里，如果你有新的问题，可以通过知识星球或者微信联系我(见文末)。
+
+## 目标Peer上的Docker没有启动，导致合约实例化失败
+
+实例化合约时出错：
+
+	./peer.sh chaincode instantiate -o orderer.example.com:7050 --tls true --cafile ./tlsca.example.com-cert.pem -C mychannel -n demo -v 0.0.1 -c '{"Args":["init"]}' -P "OR('Org1MSP.member','Org2MSP.member')"
+
+错误如下：
+
+	Error: Error endorsing chaincode: rpc error: code = Unknown desc = error starting container: Post http://unix.sock/containers/create?name=dev-peer1.org1.example.com-demo-0.0.1: dial unix /var/run/docker.sock: connect: no such file or directory
+
+这是目标peer上的docker没有启动造成的。
 
 ## genesisblock中admin证书错误导致orderer panic: x509: ECDSA verification failure
 
