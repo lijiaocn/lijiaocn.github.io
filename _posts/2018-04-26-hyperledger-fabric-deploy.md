@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger视频教程：Fabric的手动部署教程
 author: 李佶澳
 createdate: 2018/04/28 18:45:00
-changedate: 2018/06/23 13:42:25
+changedate: 2018/06/23 14:22:13
 categories: 项目
 tags: HyperLedger
 keywords: 超级账本,hyperledger,fabric,视频教程,手动部署
@@ -670,10 +670,10 @@ order、peer都部署到位，但是对我这里示意的场景，需要的文�
 
 ## 启动
 
-分别到每台机器到orderer、peer目录中启动：
+分别到每台机器的orderer、peer目录中启动：
 
-	./orderer  &
-	./peer node start  &
+	./orderer 
+	./peer node start 
 
 为了方便查看输出的日志，可以写一个脚本：
 

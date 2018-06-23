@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger视频教程：Fabric-CA的使用演示(两个组织一个Orderer三个Peer)
 author: 李佶澳
 createdate: 2018/05/04 14:09:00
-changedate: 2018/06/21 10:59:58
+changedate: 2018/06/23 14:33:38
 categories: 项目
 tags: HyperLedger
 keywords: 超级账本,hyperledger,视频教程演示,fabric-ca,hyperledger,orderer证书
@@ -18,42 +18,44 @@ description: 这里将演示如何使用fabric-ca为每个组件和用户生成�
 
 [超级账本HyperLedger视频教程演示汇总：HyperLedger FabricCA的视频讲解--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)
 
-本文是对[hyperledger的fabric项目的全手动部署][3]的补充，是HyperLedger FabricCA使用的视频演示，这里将演示如何使用fabric-ca为每个组件和用户生成证书。
+本文是对[hyperledger的fabric项目的全手动部署][3]的补充，是HyperLedger FabricCA使用的视频演示，这里将演示如何使用FabricCA为每个组件和用户生成证书。
 
 如果对下面的操作有不清楚的地方，可以参阅[超级账本HyperLedger的fabricCA的用法讲解][9]。
 
-可以使用下面的部署方式：
+FabricCA可以使用下面的部署方式：
 
 ![fabric-deploy-example]({{ site.imglocal }}/hyperledger-class/fabric-ca-deploy-example-1.png)
 
-这里做了简化，只部署了一个Fabric-CA作为rootCA。
+这里做了简化，只部署了一个FabricCA作为rootCA。
 
 ![fabric-deploy-example]({{ site.imglocal }}/hyperledger-class/fabric-ca-deploy-example-2.png)
 
-将创建一个由两个组织`org1.example.com`和`org2.example.com`组成的的联盟。
+下面的操作中将创建一个由两个组织`org1.example.com`和`org2.example.com`组成的的联盟。
 
 另外还有一个组织`example.com`用来部署orderer。
 
-example.com部署了一个`solo`模式的orderer。（多个orderer的部署方式，以后探讨）
+组织example.com部署了一个`solo`模式的orderer。（多个orderer的部署方式，以后探讨）
 
 	orderer.example.com
 
-org1.example.com部署了两个peer:
+组织org1.example.com部署了两个peer:
 
 	peer0.org1.example.com
 	peer1.org1.example.com
 
-org2.example.com部署了一个peer:
+组织org2.example.com部署了一个peer:
 
 	peer0.org2.example.com
 
-每个组织都要有一个Admin用户，每个组件(peer/orderer)也需要一个账号，因此需要通过fabric-ca创建7个用户：
+每个组织都要有一个Admin用户，每个组件(peer/orderer)也需要一个账号，因此需要通过FabricCA创建7个用户：
 
 	example.com:       Admin@example.com       orderer.example.com
 	org1.example.com:  Admin@org1.example.com  peer0.org1.example.com  peer1.org1.example.com  
 	org2.example.com:  Admin@org2.example.com  peer0.org2.example.com
 
-这里只创建了Admin用户，普通用户的创建方式相同，只是普通用户的证书不需要添加到目标组件的admincerts目录中。
+这里只创建了Admin用户和每个组件的账号，普通用户的创建方式相同，只是普通用户的证书不需要添加到目标组件的admincerts目录中。
+
+或者说一个用户的证书如果被添加到了对应组织或组件的`msp/admincerts`目录中，那么这个用户就称为对应的管理员。
 
 ## 注意事项
 
@@ -142,6 +144,8 @@ fabirc-ca的编译：
 	fabric-ca-client  -H `pwd`/fabric-ca-files/admin  affiliation add com.example.org1
 	fabric-ca-client  -H `pwd`/fabric-ca-files/admin  affiliation add com.example.org2
 
+注意：联盟是`有层级`的。
+
 创建联盟如下：
 
 	$ fabric-ca-client -H `pwd`/fabric-ca-files/admin  affiliation list
@@ -152,6 +156,8 @@ fabirc-ca的编译：
 	      affiliation: com.example.org2
 
 ## 为每个组织准备msp
+
+就是从Fabric-CA中，读取出用来签署用户的根证书等。
 
 为example.com准备msp，将ca证书等存放example.com组织的目录中:
 
@@ -169,7 +175,7 @@ fabirc-ca的编译：
 	|-- keystore
 	`-- signcerts
 
-注意通过getcacert得到msp目录中只有CA证书。
+注意通过getcacert得到msp目录中只有CA证书，而且这里没有使用中间CA，fabric-ca-files/example.com/msp/intermediatecerts/localhost-7054.pem是一个空文件。
 
 同样的方式为org1.example.com获取msp:
 
@@ -185,15 +191,15 @@ fabirc-ca的编译：
 
 在1.1.0版本的fabric-ca中，只会生成用户在操作区块链的时候用到的证书和密钥，不会生成用来加密grpc通信的证书。
 
-这里继续沿用之前的fabric-deploy中的tls证书，在最后的重新部署操作，只会替换msp目录。
-
-但是需要将验证tls证书的ca添加到msp目录中，如下：
+这里复用之前用cryptogen生成的tls证书，需要将验证tls证书的ca添加到msp目录中，如下：
 
 	cp -rf certs/ordererOrganizations/example.com/msp/tlscacerts  fabric-ca-files/example.com/msp/
 	cp -rf certs/peerOrganizations/org1.example.com/msp/tlscacerts/ fabric-ca-files/org1.example.com/msp/
 	cp -rf certs/peerOrganizations/org2.example.com/msp/tlscacerts/ fabric-ca-files/org2.example.com/msp/
 
-如果在你的环境中，各个组件域名的证书，是由第三方CA签署的，就将第三方CA的根证书添加到tlscacerts目录中。
+如果在你的环境中，各个组件域名的证书，是由第三方CA签署的，就将第三方CA的根证书添加到`msp/tlscacerts`目录中。
+
+`组织的msp`目录中，包含都是CA根证书，分别是TLS加密的根证书，和用于身份验证的根证书。另外还需要admin用户的证书，后面的操作中会添加。
 
 ## 注册example.com的管理员Admin@example.com
 
@@ -234,9 +240,11 @@ fabirc-ca的编译：
 	      value: admin
 	      ecert: true
 
-注意最后一行role属性，是我们自定义的属性，在配置文件中是单独设置ecert属性为true或者false，如果在命令行中，添加后缀`:ecert`表示true，例如:
+注意最后一行role属性，是我们`自定义`的属性，对于自定义的属性，要设置certs，在配置文件中需要`单独设置ecert属性为true或者false`。如果在命令行中，添加后缀`:ecert`表示true，例如:
 
 	fabric-ca-client register --id.affiliation "com.example.org1" --id.attrs "role=admin:ecert"
+
+ecert的含义见[超级账本HyperLedger的fabricCA的用法讲解][9]。
 
 直接执行下面的命令，即可完成用户`Admin@example.com`注册，注意这时候的注册使用fabricCA的admin账号完成的：
 	
@@ -258,7 +266,7 @@ fabirc-ca的编译：
 	hf.IntermediateCA=true                                 //可以作为中间CA
 	role=admin:ecert                                       //自定义属性
 
-生成Admin@example.com凭证：
+完成注册之后，还需生成Admin@example.com凭证：
 
 	$ mkdir -p ./fabric-ca-files/example.com/admin
 	$ fabric-ca-client enroll -u http://Admin@example.com:password@localhost:7054  -H `pwd`/fabric-ca-files/example.com/admin
@@ -274,7 +282,7 @@ fabirc-ca的编译：
 	      affiliation: com.example.org1
 	      affiliation: com.example.org2
 
-最后需要将Admin@example.com的证书复制到example.com/msp/admincerts/
+最后将Admin@example.com的证书复制到example.com/msp/admincerts/中：
 
 	mkdir fabric-ca-files/example.com/msp/admincerts/
 	cp fabric-ca-files/example.com/admin/msp/signcerts/cert.pem  fabric-ca-files/example.com/msp/admincerts/
@@ -334,14 +342,14 @@ fabirc-ca的编译：
 
 注意与`Admin@example.com`的区别，这里只能看到组织com.example.org1
 
-将Admin@org1.example.com的证书复制到org1.example.com的msp/admincerts中：
+将Admin@org1.example.com的证书复制到`org1.example.com`的`msp/admincerts`中：
 
 	mkdir fabric-ca-files/org1.example.com/msp/admincerts/
 	cp fabric-ca-files/org1.example.com/admin/msp/signcerts/cert.pem  fabric-ca-files/org1.example.com/msp/admincerts/
 
-在Admin@org1.example.com中也需要创建msp/admincerts目录，通过peer命令操作fabric的时候会要求admincerts存在：
+在`Admin@org1.example.com目录`中也需要创建msp/admincerts目录，通过peer命令操作fabric的时候会要求admincerts存在：
 
-	mkdir fabric-ca-files/org1.example.com/admin/msp/admincerts/
+	mkdir fabric-ca-files/org1.example.com/admin/msp/admincerts/     # 注意是org1.example.com/admin目录
 	cp fabric-ca-files/org1.example.com/admin/msp/signcerts/cert.pem  fabric-ca-files/org1.example.com/admin/msp/admincerts/
 
 另外，这里没有使用中间CA，将intermediatecerts中的空文件删除，否则peer会提示Warning：
@@ -531,7 +539,7 @@ example.com、org1.example.com、org2.example.com三个组织这时候可以分�
 
 然后在[hyperledger的fabric项目的全手动部署][3]执行结束后得到的`fabric-deploy`目录基础上，进行下面的操作。
 
-修改`configtx.yaml`，将其中的msp路径修改为通过fabric-ca创建的msp目录:
+修改`configtx.yaml`，将其中的`msp路径`修改为通过fabric-ca创建的msp目录:
 
 	Profiles:
 	    TwoOrgsOrdererGenesis:
@@ -586,7 +594,7 @@ example.com、org1.example.com、org2.example.com三个组织这时候可以分�
 	Application: &ApplicationDefaults
 	    Organizations:
 
-注意`configtx.yaml`中使用的每个组织的msp，不是组件的或者用户的。这个文件备用。
+注意`configtx.yaml`中使用的每个`组织的msp`，不是组件的或者用户的。这个文件修改后备用，后面使用configtxgen生成新的创世块时会用到这个文件。
 
 更新orderer.example.com/中的msp：
 
@@ -608,18 +616,17 @@ example.com、org1.example.com、org2.example.com三个组织这时候可以分�
 	rm -rf peer0.org2.example.com/msp/
 	cp -rf fabric-ca-files/org2.example.com/peer0/msp   peer0.org2.example.com/
 
-
 然后重新部署下面的组件，参考[hyperledger的fabric项目的全手动部署: 开始部署][4]。
+
+>重新部署时，注意将各个机器上已经启动的服务停止，并删除原先的文件，data目录一定要清空!
+>否则会因为以前数据的残留，导致fabric无法正常工作。
 
 	scp -r orderer.example.com/*     root@192.168.88.10:/opt/app/fabric/orderer/
 	scp -r peer0.org1.example.com/*  root@192.168.88.10:/opt/app/fabric/peer/
 	scp -r peer1.org1.example.com/*  root@192.168.88.11:/opt/app/fabric/peer/
 	scp -r peer0.org2.example.com/*  root@192.168.88.12:/opt/app/fabric/peer/
 
->重新部署时，注意将各个机器上已经启动的服务停止，并删除原先的文件，data目录一定要清空!
->否则会因为以前数据的残留，导致fabric无法正常工作。
-
-重新部署完成后，重新生成./genesisblock文件，并上传到orderer.example.com的安装路径中:
+重新部署完成后不要立即启动，重新生成./genesisblock文件，并上传到orderer.example.com的安装路径中:
 
 	./bin/configtxgen -profile TwoOrgsOrdererGenesis -outputBlock ./genesisblock
 
@@ -645,11 +652,14 @@ example.com、org1.example.com、org2.example.com三个组织这时候可以分�
 
 然后重新启动fabric的所有组件。
 
+	./orderer
+	./peer node start
+
 ## 更新用户的证书以及后续操作
 
 因为我们是在[hyperledger的fabric项目的全手动部署][3]`执行结束后得到的fabric-deploy目录`基础上，进行操作的。
 
-所有还要更新一下该目录下用户目录中的msp：
+所有还要更新一下该目录下`用户目录中`的msp：
 
 	$ rm -rf Admin\@org1.example.com/msp
 	$ cp -rf fabric-ca-files/org1.example.com/admin/msp Admin\@org1.example.com/
@@ -674,7 +684,7 @@ example.com、org1.example.com、org2.example.com三个组织这时候可以分�
 	
 	cd Admin\@org1.example.com/
 	./peer.sh channel create -o orderer.example.com:7050 -c mychannel -f ../mychannel.tx --tls true --cafile tlsca.example.com-cert.pem
-	cp mychannel.block ../Admin\@org2.example.com/
+	cp mychannel.block ../Admin\@org2.example.com/    //注意要覆盖原先的文件！
 	./peer.sh channel join -b mychannel.block
 	./peer.sh channel join -b mychannel.block   //将peer.sh中的peer0修改为peer1后在执行一次
 	./peer.sh channel update -o orderer.example.com:7050 -c mychannel -f ../Org1MSPanchors.tx --tls true --cafile ./tlsca.example.com-cert.pem
@@ -692,8 +702,18 @@ example.com、org1.example.com、org2.example.com三个组织这时候可以分�
 	./peer.sh chaincode signpackage demo-pack.out signed-demo-pack.out
 	./peer.sh chaincode install ./signed-demo-pack.out
 	./peer.sh chaincode instantiate -o orderer.example.com:7050 --tls true --cafile ./tlsca.example.com-cert.pem -C mychannel -n demo -v 0.0.1 -c '{"Args":["init"]}' -P "OR('Org1MSP.member','Org2MSP.member')"
-	./peer.sh chaincode query -C mychannel -n demox -c '{"Args":["attr","role"]}'
-	./peer.sh chaincode query -C mychannel -n demox -c '{"Args":["attr","hf.Type"]}'
+	./peer.sh chaincode query -C mychannel -n demo -c '{"Args":["attr","role"]}'
+	./peer.sh chaincode query -C mychannel -n demo -c '{"Args":["attr","hf.Type"]}'
+
+现在，使用Fabric-CA的HyperLedger Fabric部署完成了。
+
+然后可以：
+
+[超级账本HyperLedger视频教程：Fabric，在已有的Channel中添加新的组织][13]
+
+还有：
+
+[更多关于超级账本和区块链的文章][11]
 
 有问题的话，可以到下面的知识星球中交流，我会在里面分享一些资料：
 
@@ -711,6 +731,8 @@ example.com、org1.example.com、org2.example.com三个组织这时候可以分�
 8. [HyperLedger的fabric项目的全手动部署: 安装合约][8]
 9. [超级账本HyperLedger的fabricCA的用法讲解][9]
 10. [超级账本HyperLedger的Fabric项目部署过程时遇到的问题][10]
+11. [更多关于超级账本和区块链的文章][11]
+12. [超级账本HyperLedger视频教程：Fabric，在已有的Channel中添加新的组织][12]
 
 [1]: https://hyperledger-fabric-ca.readthedocs.io/en/latest/  "Welcome to Hyperledger Fabric CA" 
 [2]: https://github.com/hyperledger/fabric-ca "fabric-ca codes"
@@ -722,3 +744,5 @@ example.com、org1.example.com、org2.example.com三个组织这时候可以分�
 [8]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/04/26/hyperledger-fabric-deploy.html#%E5%AE%89%E8%A3%85%E5%90%88%E7%BA%A6chaincode  "hyperledger的fabric项目的全手动部署: 安装合约"
 [9]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/04/27/hyperledger-fabric-ca-usage.html "超级账本HyperLedger的fabricCA的用法讲解"
 [10]: http://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/04/25/hyperledger-fabric-problem.html "超级账本HyperLedger的Fabric项目部署过程时遇到的问题"
+[11]: http://www.lijiaocn.com/tags/blockchain.html "更多关于超级账本和区块链的文章"
+[12]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/06/18/hyperledger-fabric-add-new-org.html "超级账本HyperLedger视频教程：Fabric，在已有的Channel中添加新的组织"
