@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger Fabric，掰开揉碎，一文解惑 
 author: 李佶澳
 createdate: 2018/06/25 07:53:00
-changedate: 2018/06/25 07:59:17
+changedate: 2018/06/25 08:08:12
 categories: 项目
 tags: HyperLedger
 keywords: HyperLedger,fabric,疑惑,fabri-ca,msp结构说明
@@ -16,10 +16,14 @@ description: 这篇文章适合对超级账本的明星项目Fabric有一定了�
 
 ## 说明
 
+原文发布在微信公众号“我的网课”： [超级账本HyperLedger Fabric，掰开揉碎，一文解惑][1]。
+
+[超级账本HyperLedger视频演示：HyperLedger Fabric的视频讲解--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)
+
 把事情搞清楚，并讲清楚，是一种难得的能力。虽然，需要的仅仅是对“常识”的把握，和永不停滞的思索、求证。
 
 
-这篇文章适合对超级账本的明星项目Fabric有一定了解，同时内心充满了无数疑惑的朋友。Fabric与HyperLedger的关系，见《超级账本HyperLedger旗下项目介绍》。
+这篇文章适合对超级账本的明星项目Fabric有一定了解，同时内心充满了无数疑惑的朋友。Fabric与HyperLedger的关系，见[《超级账本HyperLedger旗下项目介绍》][2]。
 
 
 主要内容分为五个章节：目标、结构、合约、MSP、配置
@@ -387,10 +391,12 @@ HyperLedger Fabric其实还是比较复杂的。
 
 有需要朋友，点击阅读原文领取。不需要的朋友，欢迎转发喽～
 
+![知识星球区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
+
 ## 参考
 
-1. [文献1][1]
-2. [文献2][2]
+1. [超级账本HyperLedger Fabric，掰开揉碎，一文解惑][1]
+2. [超级账本HyperLedger旗下项目介绍][2]
 
-[1]: 1.com  "文献1" 
-[2]: 2.com  "文献1" 
+[1]: https://mp.weixin.qq.com/s/dcTCI7k_tyAqGKbLmzYR_A  "超级账本HyperLedger Fabric，掰开揉碎，一文解惑" 
+[2]: https://mp.weixin.qq.com/s/hiGBf5TBWhqt63IBiNrgSA  "超级账本HyperLedger旗下项目介绍" 
