@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger视频教程：Fabric的全手动、多服务器部署教程
 author: 李佶澳
 createdate: 2018/04/28 18:45:00
-changedate: 2018/06/26 14:09:31
+changedate: 2018/06/26 14:15:14
 categories: 项目
 tags: HyperLedger
 keywords: 超级账本,hyperledger,fabric,多服务器,视频教程,手动部署
@@ -999,7 +999,7 @@ chaincode只能用Admin安装，并且需要在每个peer上都安装一次。
 
 ## 接下来...
 
-接下来，可以开始使用Fabric-CA（所有的文档都是公开的，点击查看）：
+接下来，可以开始使用Fabric-CA，以及应对更多实际场景：
 
 [Fabric-CA的使用演示(两个组织一个Orderer三个Peer)][11]
 
