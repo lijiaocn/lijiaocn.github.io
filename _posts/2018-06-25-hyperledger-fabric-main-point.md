@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger Fabric：掰开揉碎，一文解惑 
 author: 李佶澳
 createdate: 2018/06/25 07:53:00
-changedate: 2018/06/26 11:13:47
+changedate: 2018/06/26 13:26:36
 categories: 项目
 tags: HyperLedger
 keywords: HyperLedger,fabric,疑惑,fabri-ca,msp结构说明
@@ -16,18 +16,16 @@ description: 这篇文章适合对超级账本的明星项目Fabric有一定了�
 
 ## 说明
 
-原文发布在微信公众号“我的网课”： [超级账本HyperLedger Fabric，掰开揉碎，一文解惑][1]。
+原文发布在微信公众号“ **我的网课** ”： [超级账本HyperLedger Fabric，掰开揉碎，一文解惑][1]。
 
-[超级账本HyperLedger视频演示：HyperLedger Fabric的视频讲解--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)
+[超级账本HyperLedger视频教程：HyperLedger Fabric全手动、多服务器部署与进阶教程--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)
 
 把事情搞清楚，并讲清楚，是一种难得的能力。虽然，需要的仅仅是对“常识”的把握，和永不停滞的思索、求证。
-
 
 这篇文章适合对超级账本的明星项目Fabric有一定了解，同时内心充满了无数疑惑的朋友。Fabric与HyperLedger的关系，见[《超级账本HyperLedger旗下项目介绍》][2]。
 
 
 主要内容分为五个章节：目标、结构、合约、MSP、配置
-
 
 ## 目标
 
@@ -71,7 +69,6 @@ Fabric中，所有的参与者都是得到批准的、实名的。当然这里�
 
 
 ## 结构
-
 
 
 解惑之前，还是要先解说一下Fabric的结构。毕竟看到此文的人，未必都有Fabric的使用经验。
@@ -121,9 +118,9 @@ Fabric中有一组特殊的链，叫做“system chain”。这组链相当于�
 
 每个参与者可以将自己的一个Peer地址写入到system chain中，这样的Peer被称为“锚点”（Anchor Peer）。Orderer们从system chain中获得Anchor Peer的地址，并将形成的共识通知给它们。
 
-
 之后Anchor Peer通过Gossip协议，将结论八卦给其它的Peer。
 
+>更正：这里的描述不恰当，Orderer是将共识发送给每个组织的Leader Peer，Leader Peer是一个组织的多个Peer之间选举出来的，或者组织的主动指定的。Anchor Peer主要作用是用于Peer之间的发现。
 
 “八卦”当然是需要时间的，回顾一下，前面为什么讲：
 
@@ -393,10 +390,16 @@ HyperLedger Fabric其实还是比较复杂的。
 
 ![知识星球区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
+更多关于超级账本和区块链的文章：
+
+[超级账本&区块链][3]
+
 ## 参考
 
 1. [超级账本HyperLedger Fabric，掰开揉碎，一文解惑][1]
 2. [超级账本HyperLedger旗下项目介绍][2]
+3. [超级账本&区块链][3]
 
 [1]: https://mp.weixin.qq.com/s/dcTCI7k_tyAqGKbLmzYR_A  "超级账本HyperLedger Fabric，掰开揉碎，一文解惑" 
 [2]: https://mp.weixin.qq.com/s/hiGBf5TBWhqt63IBiNrgSA  "超级账本HyperLedger旗下项目介绍" 
+[3]: http://www.lijiaocn.com/tags/blockchain.html "超级账本&区块链"

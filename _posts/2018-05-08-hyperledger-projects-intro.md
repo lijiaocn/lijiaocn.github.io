@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger：旗下项目介绍
 author: 李佶澳
 createdate: 2018/05/08 14:35:00
-changedate: 2018/06/26 11:21:55
+changedate: 2018/06/26 13:34:16
 categories: 项目
 tags: HyperLedger
 keywords: 超级账本,HyperLedger,视频教程演示
@@ -16,7 +16,7 @@ description: 超级账本HyperLedger旗下有很多的项目，对这些项目�
 
 ## 说明
 
-[超级账本HyperLedger视频教程演示汇总：HyperLedger Fabric的视频讲解--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)
+[超级账本HyperLedger视频教程：HyperLedger Fabric全手动、多服务器部署与进阶教程--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)
 
 超级账本HyperLedger旗下有很多的项目，对这些项目进行了简单的了解。
 
@@ -184,7 +184,19 @@ framework的竞争很激烈，会上演类似mesos、swarm、kubernetes之间的
 
 另外通过Sawtooth和Ethereum集成项目[Seth][22]，Sawtooth上可以运行以太坊的合约。
 
+## 最后
+
+更多关于相关文章：
+
+[超级账本&区块链](http://www.lijiaocn.com/tags/blockchain.html)
+
+有问题可以到知识星球中交流：
+
 ![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
+
+视频：
+
+[超级账本HyperLedger视频教程：HyperLedger Fabric全手动、多服务器部署与进阶教程--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)
 
 ## 参考
 

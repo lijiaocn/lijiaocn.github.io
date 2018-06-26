@@ -3,7 +3,7 @@ layout: default
 title: 超级账本HyperLedger视频教程：Fabric，在已有的Channel中添加新的组织
 author: 李佶澳
 createdate: 2018/06/18 13:44:00
-changedate: 2018/06/26 11:12:17
+changedate: 2018/06/26 13:32:15
 categories: 项目
 tags: HyperLedger
 keywords: HyperLedger,超级账本,视频教程,组织添加
@@ -22,7 +22,7 @@ description: 这里演示“如何在已经创建的channel中增加新的组织
 
 如果感觉文档理解起来比较困难，可以参考网易云课堂中的视频教程：
 
-[超级账本HyperLedger视频教程演示：Fabric进阶教程](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)
+[超级账本HyperLedger视频教程：HyperLedger Fabric全手动、多服务器部署与进阶教程--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)
 
 参考资料：[Bring Org3 into the Channel Manually][1]
 
@@ -778,6 +778,10 @@ Channel的配置信息也存放在区块链上，是一个配置区块(configura
 [Capability Requirements][7]中介绍了网络中fabric的不同版本共存时，应当怎样处理。
 
 ## 最后
+
+视频地址：
+
+[超级账本HyperLedger视频教程：HyperLedger Fabric全手动、多服务器部署与进阶教程--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)
 
 更多关于超级账本Hyperledger的文章：
 

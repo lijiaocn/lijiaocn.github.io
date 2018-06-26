@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger Fabric：Channel配置的读取转换
 author: 李佶澳
 createdate: 2018/06/19 19:38:00
-changedate: 2018/06/26 11:14:00
+changedate: 2018/06/26 13:30:56
 categories: 项目
 tags: HyperLedger
 keywords: HyperLedger,超级账本,configtxlator,配置文件
@@ -16,9 +16,11 @@ description: HyperLedger Fabric的Channel的配置文件，以及配置的读取
 
 ## 说明
 
-[超级账本HyperLedger视频教程演示汇总--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)
-
 HyperLedger Fabric的Channel的配置文件，以及配置的读取、更新是比较让人迷惑的，有必要单独介绍一下。
+
+这篇文章是对发布在网易云课堂的超级账本HyperLedger视频教程进阶部分的文本补充:
+
+[超级账本HyperLedger视频教程：HyperLedger Fabric全手动、多服务器部署与进阶教程--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)
 
 ## Channel配置也是区块
 
@@ -340,7 +342,11 @@ channel配置的更新文件对应的类型为`common.ConfigUpdate`：
 	echo '{"payload":{"header":{"channel_header":{"channel_id":"mychannel", "type":2}},"data":{"config_update":'$(cat ./org3-artifacts/org3_update.json)'}}}' | jq . > ./org3-artifacts/org3_update_in_envelope.json
 	./bin/configtxlator proto_encode --input ./org3-artifacts/org3_update_in_envelope.json --type common.Envelope --output ./org3-artifacts/org3_update_in_envelope.pb
 
+## 最后
+
 ![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
+
+[超级账本&区块链](http://www.lijiaocn.com/tags/blockchain.html)
 
 ## 参考
 

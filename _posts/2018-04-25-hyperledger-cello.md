@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger：Cello项目的部署和使用
 author: 李佶澳
 createdate: 2018/04/25 10:32:00
-changedate: 2018/06/26 11:15:51
+changedate: 2018/06/26 13:45:48
 categories: 方法
 tags: HyperLedger
 keywords: 区块链,视频教程演示,hyperledger,超级账本,cello,blockchain
@@ -16,7 +16,7 @@ description: cello是一个用来部署、管理fabric的系统
 
 ## 说明
 
-[超级账本HyperLedger视频教程演示汇总：HyperLedger Fabric的视频讲解--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)
+[超级账本HyperLedger视频教程：HyperLedger Fabric全手动、多服务器部署与进阶教程--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)
 
 cello是一个用来部署、管理fabric的系统。
 
@@ -86,6 +86,12 @@ cello是一个很初期的系统，当前最大的问题是：
 	sysctl -w net.ipv4.ip_forward=1
 
 然后在cello的管理页面中，将worker添加即可。
+
+## 最后
+
+更多相关文章：
+
+[超级账本&区块链](http://www.lijiaocn.com/tags/blockchain.html)
 
 ![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 

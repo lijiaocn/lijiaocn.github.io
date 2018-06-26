@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger Fabric：部署过程时遇到的问题汇总
 author: 李佶澳
 createdate: 2018/05/04 21:14:00
-changedate: 2018/06/26 11:15:33
+changedate: 2018/06/26 13:44:36
 categories: 问题
 tags: HyperLedger
 keywords: 超级账本,视频教程演示,区块链实践,hyperledger,fabric,区块链问题
@@ -16,15 +16,23 @@ description: "这里记录部署hyperledger fabric时遇到的一些问题"
 
 ## 说明
 
-[超级账本HyperLedger视频教程演示汇总：HyperLedger Fabric的视频讲解--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)
-
-本页内容会经常更新。
-
 这里记录了部署hyperledger fabric时遇到的一些问题，部署过程见：[hyperledger的fabric项目的手动部署教程][1]
 
 一些问题是我自己遇到的，一些是通过知识星球“区块链实践分享”和微信向我提问的。
 
 我会把比较典型的问题都汇总这里，如果你有新的问题，可以通过知识星球或者微信联系我(见文末)。
+
+[超级账本HyperLedger视频教程：HyperLedger Fabric全手动、多服务器部署与进阶教程--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)
+
+## Peer或者Orderer不通
+
+如果你是用vmware或者virtualbox虚拟机部署的Fabric，注意使用的网络模式。最好使用Host模式或者桥接模式，因为虚拟机中的NAT网卡地址的IP通常都是相同的，并且从虚拟机外部主动发起访问的时候，也很容易出现各种状况。
+
+当不通的时候，先确认域名对应的IP是否正确，然后用telnet检查服务端口：
+
+	telnet peer0.org1.example.com
+
+留心是不是系统的防火墙没有开放相应的端口。
 
 ## 目标Peer上的Docker没有启动，导致合约实例化失败
 
