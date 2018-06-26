@@ -3,11 +3,11 @@ layout: default
 title: 超级账本HyperLedger视频教程：Fabric，在已有的Channel中添加新的组织
 author: 李佶澳
 createdate: 2018/06/18 13:44:00
-changedate: 2018/06/23 12:02:43
+changedate: 2018/06/26 11:12:17
 categories: 项目
 tags: HyperLedger
 keywords: HyperLedger,超级账本,视频教程,组织添加
-description: 在已经建立的channel中添加新的组织
+description: 这里演示“如何在已经创建的channel中增加新的组织”。可以先移步到《超级账本HyperLedger Fabric中Channel配置的读取转换》
 
 ---
 
@@ -16,11 +16,13 @@ description: 在已经建立的channel中添加新的组织
 
 ## 说明
 
-[超级账本HyperLedger视频教程演示汇总--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)
-
 经过[视频教程][4]中的[Fabric的手动部署教程][3]和[Fabric-CA的使用演示(两个组织一个Orderer三个Peer)][2]中的步骤之后，搭建了一个Fabric系统，并且建立一名为"mychannel"的频道，频道中有两个org1和org2两个成员。
 
-这里演示“如何在已经已经创建的channel中增加新的组织”。 可以先移步到[超级账本HyperLedger Fabric中Channel配置的读取转换][8]中，了解一下Channel的配置，以更好理解接下来的内容。
+这里演示“如何在已经创建的channel中增加新的组织”。 可以先移步到[超级账本HyperLedger Fabric中Channel配置的读取转换][8]中，了解一下Channel的配置，以更好理解接下来的内容。
+
+如果感觉文档理解起来比较困难，可以参考网易云课堂中的视频教程：
+
+[超级账本HyperLedger视频教程演示：Fabric进阶教程](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)
 
 参考资料：[Bring Org3 into the Channel Manually][1]
 
@@ -775,6 +777,14 @@ Channel的配置信息也存放在区块链上，是一个配置区块(configura
 
 [Capability Requirements][7]中介绍了网络中fabric的不同版本共存时，应当怎样处理。
 
+## 最后
+
+更多关于超级账本Hyperledger的文章：
+
+[超级账本HyperLedger&区块链技术实践][10]
+
+有问题可以到知识星球中交流（优先使用知识星球，微信聊天记录容易丢失）：
+
 ![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
 ## 参考
@@ -788,6 +798,7 @@ Channel的配置信息也存放在区块链上，是一个配置区块(configura
 7. [Capability Requirements][7]
 8. [超级账本HyperLedger Fabric中Channel配置的读取转换][8]
 9. [HyperLedger Fabric :Anchor Peer][9]
+10. [超级账本HyperLedger&区块链技术实践][10]
 
 [1]: http://hyperledger-fabric.readthedocs.io/en/latest/channel_update_tutorial.html#bring-org3-into-the-channel-manually "Bring Org3 into the Channel Manually" 
 [2]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/05/04/fabric-ca-example.html  "Fabric-CA的使用演示(两个组织一个Orderer三个Peer)" 
@@ -798,4 +809,4 @@ Channel的配置信息也存放在区块链上，是一个配置区块(configura
 [7]: http://hyperledger-fabric.readthedocs.io/en/latest/capability_requirements.html "Capability Requirements"
 [8]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/06/19/hyperledger-channel-config-operation.html "超级账本HyperLedger Fabric中Channel配置的读取转换"
 [9]: http://hyperledger-fabric.readthedocs.io/en/latest/glossary.html#anchor-peer  "HyperLedger Fabric :Anchor Peer"
-
+[10]: http://www.lijiaocn.com/tags/blockchain.html "超级账本HyperLedger&区块链技术实践"
