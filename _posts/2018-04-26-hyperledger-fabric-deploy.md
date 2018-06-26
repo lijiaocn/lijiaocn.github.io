@@ -1,13 +1,13 @@
 ---
 layout: default
-title:  超级账本HyperLedger视频教程：Fabric的手动部署教程
+title:  超级账本HyperLedger视频教程：Fabric的全手动、多服务器部署教程
 author: 李佶澳
 createdate: 2018/04/28 18:45:00
-changedate: 2018/06/23 14:22:13
+changedate: 2018/06/26 10:44:31
 categories: 项目
 tags: HyperLedger
-keywords: 超级账本,hyperledger,fabric,视频教程,手动部署
-description: 经历了诸多磨难之后，总算弄清楚了fabric的组件间关系与配置项。
+keywords: 超级账本,hyperledger,fabric,多服务器,视频教程,手动部署
+description: 经历了诸多磨难之后，总算弄清楚了fabric的组件间关系与配置项，全手动、多服务器部署。
 
 ---
 
@@ -20,10 +20,8 @@ description: 经历了诸多磨难之后，总算弄清楚了fabric的组件间�
 
 ![网易云课堂: HperLedger Fabric全手动部署视频教程目录]({{ site.imglocal }}/hyperledger-class/fabric-deploy.png)
 
-可以到知识星球里要优惠券、部署过程中用到的文件，以及咨询其它问题，见文末。
-
 虽然通过[Building Your First Network][1]中的docker-compose文件可以直接启动一个all-in-one的fabric。
-但这种方式隐藏了太多的细节，只能让人有个模糊的认识，对生产环境中部署方式，依然不清不楚，
+但这种方式隐藏了太多的细节，只能让人有个模糊的认识，对生产环境中部署方式、多服务器部署，依然不清不楚，
 对各组件的配置文件也完全不了解。
 
 通过反复阅读fabric的文档，以及[Building Your First Network][1]中的脚本，经历了诸多磨难之后，总算弄清楚了fabric的组件间关系与配置项。
