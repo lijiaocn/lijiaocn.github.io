@@ -1,9 +1,9 @@
 ---
 layout: default
-title:  超级账本HyperLedger Fabric中Channel配置的读取转换
+title:  超级账本HyperLedger Fabric：Channel配置的读取转换
 author: 李佶澳
 createdate: 2018/06/19 19:38:00
-changedate: 2018/06/20 17:01:11
+changedate: 2018/06/26 11:14:00
 categories: 项目
 tags: HyperLedger
 keywords: HyperLedger,超级账本,configtxlator,配置文件
