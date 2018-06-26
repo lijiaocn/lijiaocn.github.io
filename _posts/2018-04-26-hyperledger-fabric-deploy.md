@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger视频教程：Fabric的全手动、多服务器部署教程
 author: 李佶澳
 createdate: 2018/04/28 18:45:00
-changedate: 2018/06/26 13:38:57
+changedate: 2018/06/26 14:00:29
 categories: 项目
 tags: HyperLedger
 keywords: 超级账本,hyperledger,fabric,多服务器,视频教程,手动部署
@@ -32,7 +32,7 @@ description: 经历了诸多磨难之后，总算弄清楚了Fabric的组件间�
 
 ## 注意
 
-实践过程中，可能遇到各种各样的问题，可以到知识星球“区块链实践分享”中提问（见页尾），或者直接加我微信lijiaocn。
+实践过程中，可能遇到各种各样的问题，可以到知识星球“区块链实践分享”中提问（见页尾）。
 
 比较典型的问题汇总在了这里：[超级账本HyperLedger的Fabric项目多服务器部署过程时遇到的问题][7]
 
