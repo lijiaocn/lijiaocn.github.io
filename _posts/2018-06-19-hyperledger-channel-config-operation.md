@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger Fabric：Channel配置的读取转换
 author: 李佶澳
 createdate: 2018/06/19 19:38:00
-changedate: 2018/06/26 13:30:56
+changedate: 2018/06/26 14:50:30
 categories: 项目
 tags: HyperLedger
 keywords: HyperLedger,超级账本,configtxlator,配置文件
@@ -342,11 +342,11 @@ channel配置的更新文件对应的类型为`common.ConfigUpdate`：
 	echo '{"payload":{"header":{"channel_header":{"channel_id":"mychannel", "type":2}},"data":{"config_update":'$(cat ./org3-artifacts/org3_update.json)'}}}' | jq . > ./org3-artifacts/org3_update_in_envelope.json
 	./bin/configtxlator proto_encode --input ./org3-artifacts/org3_update_in_envelope.json --type common.Envelope --output ./org3-artifacts/org3_update_in_envelope.pb
 
-## 最后
+## 接下来...
+
+[更多关于超级账本和区块链的文章](http://www.lijiaocn.com/tags/blockchain.html)
 
 ![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
-
-[超级账本&区块链](http://www.lijiaocn.com/tags/blockchain.html)
 
 ## 参考
 

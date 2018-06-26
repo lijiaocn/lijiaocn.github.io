@@ -1,11 +1,11 @@
 ---
 layout: default
-title:  超级账本Hyperledger Fabric的chaincode开发
+title:  超级账本Hyperledger Fabric：chaincode(合约）开发
 author: lijiaocn
 createdate: 2018/04/03 10:07:00
-changedate: 2018/06/20 17:24:11
+changedate: 2018/06/26 14:48:53
 categories: 项目
-tags: HyperLedger,视频教程演示
+tags: HyperLedger 视频教程演示
 keywords: 超级账本,HyperLedger,Fabric,Chaincode,合约链码
 description: 学习写一下chaincode
 
@@ -209,6 +209,10 @@ chaincode部署到fabric中以后，这些方法可以通过fabic的peer结点�
 [Hyperledger Fabric and how it isn’t concurrent out of the box.][3]
 
 [How hyperledger handle the Concurrent of “invoke” of the same Key-Value pair of chaincode?][4]
+
+## 接下来...
+
+[更多关于超级账本和区块链的文章](http://www.lijiaocn.com/tags/blockchain.html)
 
 ![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 

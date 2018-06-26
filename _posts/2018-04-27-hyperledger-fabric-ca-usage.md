@@ -3,7 +3,7 @@ layout: default
 title: 超级账本HyperLedger：FabricCA的用法讲解
 author: 李佶澳
 createdate: 2018/04/27 10:58:00
-changedate: 2018/06/26 13:38:08
+changedate: 2018/06/26 14:50:55
 categories: 项目
 tags: HyperLedger
 keywords: 超级账本,视频教程演示,fabricCA,hyperledger,blockchain,区块链,联盟链
@@ -394,6 +394,12 @@ cid（Client Identity）中提供下面的方法：
 	    其中保留属性，还要求必须是当前用户拥有的属性。
 
 后续的很多操作都受到`权利范围`的约束。
+
+## 接下来...
+
+[更多关于超级账本和区块链的文章](http://www.lijiaocn.com/tags/blockchain.html)
+
+![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
 ## 参考
 

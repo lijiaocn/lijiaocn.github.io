@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger Fabric：部署过程时遇到的问题汇总
 author: 李佶澳
 createdate: 2018/05/04 21:14:00
-changedate: 2018/06/26 13:44:36
+changedate: 2018/06/26 14:43:07
 categories: 问题
 tags: HyperLedger
 keywords: 超级账本,视频教程演示,区块链实践,hyperledger,fabric,区块链问题
@@ -305,6 +305,10 @@ docker配置错误，配置了fluentd driver，但是fluentd不存在。
 
 	$ ls ./fabric-ca-files/org3.example.com/msp/tlscacerts/
 	tlsca.org3.example.com-cert.pem
+
+## 接下来...
+
+[更多关于超级账本和区块链的文章](http://www.lijiaocn.com/tags/blockchain.html)
 
 ![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 

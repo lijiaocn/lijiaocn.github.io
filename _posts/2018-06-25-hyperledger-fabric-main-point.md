@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger Fabric：掰开揉碎，一文解惑 
 author: 李佶澳
 createdate: 2018/06/25 07:53:00
-changedate: 2018/06/26 13:26:36
+changedate: 2018/06/26 14:50:47
 categories: 项目
 tags: HyperLedger
 keywords: HyperLedger,fabric,疑惑,fabri-ca,msp结构说明
@@ -388,11 +388,11 @@ HyperLedger Fabric其实还是比较复杂的。
 
 有需要朋友，点击阅读原文领取。不需要的朋友，欢迎转发喽～
 
+## 接下来...
+
+[更多关于超级账本和区块链的文章](http://www.lijiaocn.com/tags/blockchain.html)
+
 ![知识星球区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
-
-更多关于超级账本和区块链的文章：
-
-[超级账本&区块链][3]
 
 ## 参考
 

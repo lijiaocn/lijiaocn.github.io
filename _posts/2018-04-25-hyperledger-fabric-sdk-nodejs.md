@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger Fabric：Node.js SDK的使用
 author: lijiaocn
 createdate: 2018/04/25 11:11:00
-changedate: 2018/06/26 13:39:33
+changedate: 2018/06/26 14:45:45
 categories: 编程
 tags: HyperLedger
 keywords: 超级账本,视频教程演示,区块链实践,hyperledger,fabric接口,nodejs
@@ -137,6 +137,10 @@ description: 当前(2018-04-25 11:16:23)fabric的SDK只有java和node是正式�
 依据[Operation initiated from the Hyperledger Fabric Client SDK for Node.js results in TSI error][4]中方法，将node sdk升级到1.0.3。
 
 结果还是不行，最后把peer和client的tls都设置为false解决。
+
+## 接下来...
+
+[更多关于超级账本和区块链的文章](http://www.lijiaocn.com/tags/blockchain.html)
 
 ![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 

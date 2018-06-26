@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger的explorer的使用
 author: 李佶澳
 createdate: 2018/04/26 16:33:00
-changedate: 2018/05/14 23:05:57
+changedate: 2018/06/26 14:46:55
 categories: 项目
 tags: HyperLedger,视频教程演示
 keywords: 超级账本,blockchain,hyperledger,explorer,区块链浏览器
@@ -175,6 +175,10 @@ description: HyperLedger的区块链浏览器
 		at getChainInfo.then.response (/root/blockchain-explorer/app/query.js:213:23)
 
 原因是config.json的中组织不是以`org`开头的。。。。这个还真是有点坑。。
+
+## 接下来...
+
+[更多关于超级账本和区块链的文章](http://www.lijiaocn.com/tags/blockchain.html)
 
 ![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
