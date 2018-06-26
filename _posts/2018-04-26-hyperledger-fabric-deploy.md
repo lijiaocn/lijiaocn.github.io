@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger视频教程：Fabric的全手动、多服务器部署教程
 author: 李佶澳
 createdate: 2018/04/28 18:45:00
-changedate: 2018/06/26 14:00:29
+changedate: 2018/06/26 14:09:31
 categories: 项目
 tags: HyperLedger
 keywords: 超级账本,hyperledger,fabric,多服务器,视频教程,手动部署
@@ -22,7 +22,7 @@ description: 经历了诸多磨难之后，总算弄清楚了Fabric的组件间�
 
 通过反复阅读Fabric的文档，以及[Building Your First Network][1]中的脚本，经历了诸多磨难之后，总算弄清楚了Fabric的组件间关系与配置项。
 
-这里直接使用“二进制+配置文件”的方式，部署了一个由多台服务器组成的Fabric网络(关于FabricCA的内容，见文章最后)。
+这里直接使用“二进制+配置文件”的方式，部署了一个由多台服务器组成的Fabric网络(关于FabricCA的内容，见[FabricCA的使用演示][11])。
 
 看文档感觉吃力或者一通操作后不知所以然的同学，可以使用网易云课堂视频教程： 
 
@@ -1003,11 +1003,7 @@ chaincode只能用Admin安装，并且需要在每个peer上都安装一次。
 
 [Fabric-CA的使用演示(两个组织一个Orderer三个Peer)][11]
 
-可以：
-
-[Fabric，在已有的Channel中添加新的组织][12]
-
-还有：
+[Fabric进阶，在已有的Channel中添加新的组织][12]
 
 [更多关于超级账本和区块链的文章][10]
 
@@ -1042,5 +1038,5 @@ chaincode只能用Admin安装，并且需要在每个peer上都安装一次。
 [8]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/06/19/hyperledger-channel-config-operation.html "超级账本HyperLedger Fabric中Channel配置的读取转换"
 [9]: https://github.com/lijiaocn/fabric-chaincode-example/ "https://github.com/lijiaocn/fabric-chaincode-example/"
 [10]: http://www.lijiaocn.com/tags/blockchain.html "更多关于超级账本和区块链的文章"
-[11]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/05/04/fabric-ca-example.html  ""
+[11]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/05/04/fabric-ca-example.html  "Fabric-CA的使用演示(两个组织一个Orderer三个Peer)"
 [12]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/06/18/hyperledger-fabric-add-new-org.html "超级账本HyperLedger视频教程：Fabric，在已有的Channel中添加新的组织"
