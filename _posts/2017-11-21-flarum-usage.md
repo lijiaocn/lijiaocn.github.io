@@ -3,7 +3,7 @@ layout: default
 title: flarum轻论坛系统怎样搭建和使用?
 author: 李佶澳
 createdate: 2017/11/21 22:25:26
-changedate: 2017/12/02 22:56:13
+changedate: 2018/06/27 17:03:32
 categories: 方法
 tags: flarum
 keywords: flarum,bbs,轻论坛,论坛系统
@@ -201,4 +201,4 @@ composer要求php版本为5.3.2+。[composer][6]提供了一个安装[脚本][8]
 [6]: https://getcomposer.org/  "php composer"
 [7]: http://php.net/  "php官网"
 [8]: https://github.com/composer/getcomposer.org/blob/master/web/installer "php composer installer"
-[9]: https://github.com/lijiaocn/install-flarum  "git: install-flarum
+[9]: https://github.com/lijiaocn/install-flarum  "git: install-flarum"
