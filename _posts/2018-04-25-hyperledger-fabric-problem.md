@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger Fabric：部署过程时遇到的问题汇总
 author: 李佶澳
 createdate: 2018/05/04 21:14:00
-changedate: 2018/06/26 14:43:07
+changedate: 2018/06/29 11:15:09
 categories: 问题
 tags: HyperLedger
 keywords: 超级账本,视频教程演示,区块链实践,hyperledger,fabric,区块链问题
@@ -23,6 +23,49 @@ description: "这里记录部署hyperledger fabric时遇到的一些问题"
 我会把比较典型的问题都汇总这里，如果你有新的问题，可以通过知识星球或者微信联系我(见文末)。
 
 [超级账本HyperLedger视频教程：HyperLedger Fabric全手动、多服务器部署与进阶教程--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)
+
+## ID不合法导致Orderer Panic
+
+Orderer启动时Panic：
+
+	2018-06-29 10:25:01.951 CST [orderer/commmon/multichannel] newLedgerResources -> CRIT 072 Error creating channelconfig bundle: initializing configtx manager failed: error converting config to map: Illegal characters in key: [Group]
+	panic: Error creating channelconfig bundle: initializing configtx manager failed: error converting config to map: Illegal characters in key: [Group]
+
+	goroutine 1 [running]:
+	github.com/hyperledger/fabric/vendor/github.com/op/go-logging.(*Logger).Panicf(0xc420224cf0, 0xfac59d, 0x27, 0xc420315f90, 0x1, 0x1)
+		/root/GOWORK/src/github.com/hyperledger/fabric/vendor/github.com/op/go-logging/logger.go:194 +0x126
+	github.com/hyperledger/fabric/orderer/common/multichannel.(*Registrar).newLedgerResources(0xc42015e2a0, 0xc420224600, 0xc420224600)
+		/root/GOWORK/src/github.com/hyperledger/fabric/orderer/common/multichannel/registrar.go:253 +0x389
+	github.com/hyperledger/fabric/orderer/common/multichannel.NewRegistrar(0x102cf00, 0xc420124400, 0xc420161050, 0x1025880, 0x1640950, 0xc4200b0760, 0x1, 0x1, 0x0)
+		/root/GOWORK/src/github.com/hyperledger/fabric/orderer/common/multichannel/registrar.go:144 +0x327
+	github.com/hyperledger/fabric/orderer/common/server.initializeMultichannelRegistrar(0xc42026d400, 0x1025880, 0x1640950, 0xc4200b0760, 0x1, 0x1, 0x1)
+		/root/GOWORK/src/github.com/hyperledger/fabric/orderer/common/server/main.go:262 +0x250
+	github.com/hyperledger/fabric/orderer/common/server.Start(0xf903dc, 0x5, 0xc42026d400)
+		/root/GOWORK/src/github.com/hyperledger/fabric/orderer/common/server/main.go:103 +0x1ec
+	github.com/hyperledger/fabric/orderer/common/server.Main()
+		/root/GOWORK/src/github.com/hyperledger/fabric/orderer/common/server/main.go:82 +0x204
+	main.main()
+		/root/GOWORK/src/github.com/hyperledger/fabric/orderer/main.go:15 +0x20
+
+查看代码，发现`fabric/common/configtx/validator.go:48`中，对ID做了要求：
+
+	// validateConfigID makes sure that the config element names (ie map key of
+	// ConfigGroup) comply with the following restrictions
+	//      1. Contain only ASCII alphanumerics, dots '.', dashes '-'
+	//      2. Are shorter than 250 characters.
+	//      3. Are not the strings "." or "..".
+	func validateConfigID(configID string) error {
+		re, _ := regexp.Compile(configAllowedChars)
+		// Length
+	...
+
+ConfigID中不能使用下划线，可以用下面命令查看创世块:
+
+	./configtxgen -inspectBlock  genesisblock
+
+将`configtx.yaml`中的组织名和ID，修改为不带下划线的，重新生成创始块等文件。
+
+注意，需要将orderer中以前的数据删除。
 
 ## Peer或者Orderer不通
 
