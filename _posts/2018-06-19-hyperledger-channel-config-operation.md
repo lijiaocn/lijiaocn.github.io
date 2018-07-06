@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger Fabric：Channel配置的读取转换
 author: 李佶澳
 createdate: 2018/06/19 19:38:00
-changedate: 2018/06/26 14:50:30
+changedate: 2018/07/06 17:50:55
 categories: 项目
 tags: HyperLedger
 keywords: HyperLedger,超级账本,configtxlator,配置文件
@@ -21,6 +21,17 @@ HyperLedger Fabric的Channel的配置文件，以及配置的读取、更新是�
 这篇文章是对发布在网易云课堂的超级账本HyperLedger视频教程进阶部分的文本补充:
 
 [超级账本HyperLedger视频教程：HyperLedger Fabric全手动、多服务器部署与进阶教程--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)
+
+注意：下面的命令，来自多个不同的环境，不要`直接复制`，根据自己的情况，调整参数！
+
+## 从Fabric中读取，并解析Channel配置
+
+	cd Admin@org1.example.com/
+	//读取mychannel最新的的配置区块
+	./peer.sh channel fetch config config_block.pb -c mychannel -o orderer0.member1.example.com:7050  --tls --cafile tlsca.member1.example.com-cert.pem
+	
+	//将配置区块转化成json格式
+	configtxlator proto_decode  --input config_block.pb  --type common.Block >config_block.json
 
 ## Channel配置也是区块
 
