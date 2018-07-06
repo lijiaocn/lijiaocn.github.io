@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger Fabric：部署过程时遇到的问题汇总
 author: 李佶澳
 createdate: 2018/05/04 21:14:00
-changedate: 2018/06/29 11:15:09
+changedate: 2018/06/29 14:11:33
 categories: 问题
 tags: HyperLedger
 keywords: 超级账本,视频教程演示,区块链实践,hyperledger,fabric,区块链问题
@@ -204,6 +204,14 @@ peer执行后，返回的结果如下：
 可以用下面的命令查看创始块的内容:
 
 	./bin/configtxgen  -inspectBlock genesisblock
+
+另一次遇到这个问题，Orderer日志如下：
+
+	[31m2018-06-29 14:06:35.844 CST [cauthdsl] deduplicate -> ERRO 008^[[0m Principal deserialization failure (MSP Kecology_Orderer_MSP is unknown) for identity 0a144b65636f6c6f
+
+这里是因为Orderer的配置文件Orderer.yaml中的LocalMSPID写错了：
+
+	LocalMSPID: Kecology_Orderer_MSP
 
 ## /Channel/Application/Org2MSP but was in the read set
 
