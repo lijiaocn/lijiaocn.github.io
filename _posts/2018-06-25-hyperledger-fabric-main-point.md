@@ -1,9 +1,9 @@
 ---
 layout: default
-title:  超级账本HyperLedger Fabric：Fabric掰开揉碎，一文解惑 
+title:  超级账本HyperLedger：Fabric掰开揉碎，一文解惑 
 author: 李佶澳
 createdate: 2018/06/25 07:53:00
-changedate: 2018/06/26 14:52:49
+changedate: 2018/07/09 11:16:45
 categories: 项目
 tags: HyperLedger
 keywords: HyperLedger,fabric,疑惑,fabri-ca,msp结构说明

@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "超级账本Hyperledger的FabricCA级联使用"
+title: "超级账本Hyperledger：FabricCA级联使用"
 author: 李佶澳
 createdate: 2018/06/06 13:41:00
-changedate: 2018/06/08 11:10:57
+changedate: 2018/07/09 11:13:09
 categories: 项目
 tags: HyperLedger
 keywords: hyperledger,fabricCA,超级账本,fabric
@@ -32,13 +32,13 @@ description:
 
 在实际使用中，每个接入的机构都有自己用户管理系统，FabricCA必然要采用“级联”的方式部署。
 
-下面将部署一个RootCA，在RootCA中创建一个为“son”的机构，为son机构创建一个账号。
+下面将部署一个RootCA，在RootCA中创建一个为“Son”的机构，为Son机构创建一个账号。
 
-第一级InterMediateCA通过son机构的账号，接入RootCA，作为son机构的CA。
+第一级InterMediateCA通过Son机构的账号，接入RootCA，作为Son机构的CA。
 
-然后在son机构的CA中，创建一个名为“grandson”的机构，相应为grandson创建一个账号。
+然后在Son机构的CA中，创建一个名为“GrandSon”的机构，相应为GrandSon创建一个账号。
 
-第二级InterMediateCA通过grandson的账号，接入son结构的CA，成为grandson的CA。
+第二级InterMediateCA通过GrandSon的账号，接入Son结构的CA，成为GrandSon的CA。
 
 ## 启动RootCA 
 
@@ -88,29 +88,29 @@ description:
 
 但是admin是rootCA的管理员账号，不能把这个账号的名称和密码暴露给Intermediate CA。
 
-### 创建son机构
+### 创建Son机构
 
 先把默认创建的机构删除：
 
 	fabric-ca-client -H  fabric-ca-cascade/admin affiliation remove --force org1
 	fabric-ca-client -H  fabric-ca-cascade/admin affiliation remove --force org2
 
-然后创建son机构:
+然后创建Son机构:
 
-	fabric-ca-client -H  fabric-ca-cascade/admin affiliation add son
+	fabric-ca-client -H  fabric-ca-cascade/admin affiliation add Son
 
-查看新建的son机构：
+查看新建的Son机构：
 
 	# fabric-ca-client -H  fabric-ca-cascade/admin affiliation list
 	2018/06/06 07:06:27 [INFO] [::1]:36168 GET /affiliations 201 0 "OK"
-	affiliation: son
+	affiliation: Son
 
-为org1注册一个用户，修改`fabric-ca-cascade/admin/fabric-ca-client-config.yaml`:
+为Son机构注册一个管理员用户，修改`fabric-ca-cascade/admin/fabric-ca-client-config.yaml`:
 
 	id:
-	 name: Admin@son
+	 name: Admin@Son
 	 type: client
-	 affiliation: son
+	 affiliation: Son
 	 maxenrollments: 0
 	 attributes:
 	   - name: hf.Registrar.Roles
@@ -135,17 +135,17 @@ description:
 
 	fabric-ca-client register -H fabric-ca-cascade/admin --id.secret=password1
 
-用下面的命令可以查看RootCA中的用户：
+可以用下面的命令查看RootCA中已经注册的用户：
 
 	fabric-ca-client -H fabric-ca-cascade/admin  identity  list
 
-## 启动InterMediateCA
+## 启动InterMediaCA
 
-在第二台机器上启动fabricCA：
+在第二台机器上启动InterMediaCA，注意`-u`参数，是`使用Admin@Son账号和密码，登录到了RootCA`：
 
-	./fabric-ca-server start -b admin:pass1 -u http://Admin@son:password1@192.168.88.10:7054 --cfg.affiliations.allowremove  --cfg.identities.allowremove  &
+	./fabric-ca-server start -b admin:pass1 -u http://Admin@Son:password1@192.168.88.10:7054 --cfg.affiliations.allowremove  --cfg.identities.allowremove  &
 
-同样准备一个目录，存放管理员的凭证：
+准备一个目录，存放InterMediaCA的管理员凭证：
 
 	mkdir fabric-ca-cascade
 	fabric-ca-client enroll -u http://admin:pass1@localhost:7054 -H fabric-ca-cascade/admin
@@ -155,16 +155,16 @@ description:
 	fabric-ca-client -H  fabric-ca-cascade/admin affiliation remove --force org1
 	fabric-ca-client -H  fabric-ca-cascade/admin affiliation remove --force org2
 
-创建机构grandson:
+创建机构GrandSon:
 
-	fabric-ca-client -H  fabric-ca-cascade/admin affiliation add grandson
+	fabric-ca-client -H  fabric-ca-cascade/admin affiliation add GrandSon
 
-修改fabric-ca-cascade/admin/fabric-ca-client-config.yaml: 
+在InterMediaCA中注册GrandSon的管理员，修改fabric-ca-cascade/admin/fabric-ca-client-config.yaml: 
 
 	id:
-	  name: Admin@grandson
+	  name: Admin@GrandSon
 	  type: client
-	  affiliation: grandson
+	  affiliation: GrandSon
 	  maxenrollments: 0
 	  attributes:
 	    - name: hf.Registrar.Roles
@@ -185,7 +185,7 @@ description:
 	      value: admin
 	      ecert: true
 
-注册用户：
+注册Admin@GrandSon：
 
 	fabric-ca-client register -H fabric-ca-cascade/admin --id.secret=password2
 

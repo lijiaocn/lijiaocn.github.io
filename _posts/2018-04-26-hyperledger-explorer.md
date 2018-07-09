@@ -1,9 +1,9 @@
 ---
 layout: default
-title:  超级账本HyperLedger Explorer：Exploer安装使用
+title:  超级账本HyperLedger：Exploer安装使用
 author: 李佶澳
 createdate: 2018/04/26 16:33:00
-changedate: 2018/06/30 02:28:02
+changedate: 2018/07/09 11:15:29
 categories: 项目
 tags: HyperLedger
 keywords: 超级账本,blockchain,hyperledger,explorer,区块链浏览器
