@@ -3,7 +3,7 @@ layout: default
 title:  使用Ansible进行超级账本HyperLedger Fabric多机部署
 author: 李佶澳
 createdate: 2018/07/09 08:57:00
-changedate: 2018/07/09 09:11:31
+changedate: 2018/07/09 09:52:40
 categories: 项目
 tags: HyperLedger
 keywords: ansible,HyperLedger,多机部署,分布式部署
@@ -16,17 +16,16 @@ description: 已经是一套非常实用的Ansible部署脚本了，完全可以
 
 ## 说明
 
-这是网易云课堂“[IT技术快速入门学院][1]”的
-第二门课《[HyperLedger Fabric进阶实战课][2]》第三章节使用的素材。
+这是网易云课堂“[IT技术快速入门学院][1]”的第二门课《[HyperLedger Fabric进阶实战课][2]》第三章节使用的素材。
 
 这其实已经是一套非常实用的Ansible部署脚本了，完全可以应用于生产。
-
 脚本托管在github上：[hyperledger-fabric-ansible][5]，网易云上有视频讲解：[视频][2]。
 
-要获得更多的内容，可以关注：
+要获得更多的内容，可以长按关注微信公众号： “我的网课”，(关注后可以获得我微信):
 
-        微信公众号： “我的网课”，(关注后可以获得我微信)
-        QQ交流群： 576555864
+![我的网课]({{ site.imglocal }}/class.jpg)
+
+	QQ交流群： 576555864
 
 如果视频中有讲解不到位或需要订正的地方，可以加入知识星球“区块链实践分享”，（二维码在最后）
 
