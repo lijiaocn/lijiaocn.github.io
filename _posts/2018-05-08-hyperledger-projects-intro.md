@@ -1,9 +1,9 @@
 ---
 layout: default
-title:  超级账本HyperLedger：旗下项目介绍
+title:  超级账本HyperLedger：超级账本工作组旗下项目介绍
 author: 李佶澳
 createdate: 2018/05/08 14:35:00
-changedate: 2018/06/26 14:57:06
+changedate: 2018/07/09 11:21:30
 categories: 项目
 tags: HyperLedger
 keywords: 超级账本,HyperLedger,视频教程演示
