@@ -1,9 +1,9 @@
 ---
 layout: default
-title:  使用Ansible进行HyperLedger Fabric多机部署
+title:  使用Ansible进行超级账本HyperLedger Fabric多机部署
 author: 李佶澳
 createdate: 2018/07/09 08:57:00
-changedate: 2018/07/09 09:02:29
+changedate: 2018/07/09 09:04:18
 categories: 项目
 tags: HyperLedger
 keywords: ansible,HyperLedger,多机部署,分布式部署
