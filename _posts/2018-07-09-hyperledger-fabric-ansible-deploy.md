@@ -3,7 +3,7 @@ layout: default
 title:  使用Ansible进行超级账本HyperLedger Fabric多机部署
 author: 李佶澳
 createdate: 2018/07/09 08:57:00
-changedate: 2018/07/09 09:04:18
+changedate: 2018/07/09 09:09:29
 categories: 项目
 tags: HyperLedger
 keywords: ansible,HyperLedger,多机部署,分布式部署
@@ -53,6 +53,11 @@ description: 已经是一套非常实用的Ansible部署脚本了，完全可以
 共识算法是solo，如果要切换为其它共识算法，例如kafka，需要另外部署kafka，并修改配置文件。
 
 ## 准备
+
+下载Ansible脚本：
+
+	git clone https://github.com/introclass/hyperledger-fabric-ansible.git
+	cd hyperledger-fabric-ansible
 
 0 将要部署到目标环境中的二进制文件复制到output/example.com/bin/目录中
 
