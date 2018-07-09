@@ -3,7 +3,7 @@ layout: default
 title: "超级账本HyperLedger：FabricCA的级联使用（InterMediateCA）"
 author: 李佶澳
 createdate: 2018/06/06 13:41:00
-changedate: 2018/07/09 14:54:49
+changedate: 2018/07/09 14:57:02
 categories: 项目
 tags: HyperLedger
 keywords: hyperledger,fabricCA,超级账本,fabric
@@ -86,7 +86,7 @@ RootCA管理员的登录方式为：
 
 admin是RootCA的管理员账号，不能把这个账号的名称和密码暴露给Intermediate CA，需要为每个Intermediate CA 单独创建账号。
 
-### 在RootCA中创建Son机构和它的管理员
+## 在RootCA中创建Son机构和它的管理员
 
 先把RootCA中默认创建的机构删除：
 
