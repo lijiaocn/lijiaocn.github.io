@@ -3,7 +3,7 @@ layout: default
 title:  使用Ansible进行超级账本HyperLedger Fabric多机部署
 author: 李佶澳
 createdate: 2018/07/09 08:57:00
-changedate: 2018/07/09 10:30:54
+changedate: 2018/07/09 10:41:10
 categories: 项目
 tags: HyperLedger
 keywords: ansible,HyperLedger,多机部署,分布式部署
@@ -220,6 +220,8 @@ QQ交流群：  `576555864`
 
 ![知识星球区块链实践分享](http://www.lijiaocn.com/img/xiaomiquan-blockchain.jpg)
 
+[更多关于超级账本和区块链的文章][6]
+
 ## 参考
 
 1. [网易云课堂，IT技术快速入门学院][1]
@@ -227,9 +229,11 @@ QQ交流群：  `576555864`
 3. [超级账本&区块链实战文档][3]
 4. [HyperLedger Fabric原版文档中文批注][4]
 5. [hyperledger-fabric-ansible][5]
+6. [更多关于超级账本和区块链的文章][6]
 
 [1]: https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006 "IT技术快速入门学院" 
 [2]: https://study.163.com/course/courseMain.htm?courseId=1005359012&share=2&shareId=400000000376006 "HyperLedger Fabric进阶实战课"
 [3]: http://www.lijiaocn.com/tags/blockchain.html "超级账本&区块链实战文档"
 [4]: http://fabric.lijiaocn.com "HyperLedger Fabric原版文档中文批注"
 [5]: https://github.com/introclass/hyperledger-fabric-ansible "hyperledger-fabric-ansible"
+[6]: http://www.lijiaocn.com/tags/blockchain.html "更多关于超级账本和区块链的文章"
