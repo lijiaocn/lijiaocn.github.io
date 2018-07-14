@@ -3,7 +3,7 @@ layout: default
 title: https证书的制作
 author: 李佶澳
 createdate: 2017/08/18 17:57:09
-changedate: 2018/01/18 18:33:11
+changedate: 2018/07/11 16:54:04
 categories: 技巧
 tags: cryptography
 keywords: https,cert
@@ -94,14 +94,28 @@ firefox:
 
 	openssl verify  -CAfile /etc/kubernetes/pki/ca.pem /etc/cni/net.d/calico-tls/etcd-cert
 
+## 使用CFSSL工具
+
+[CFSSL][5]是CloudFlare开发的用于管理TLS/SSL证书的工具，该工具是开源的，[源码][6]。
+
+cfssl既可以作为命令行工具使用，也可以作为一个服务：
+
+	cfssl bundle -cert mycert.crt
+	# 服务
+	cfssl serve
+
 ## 参考
 
 1. [setting-openssl-create-certificates][1]
 2. [OpenSSL Certificate Authority][2]
 3. [make certs methord1][3]
 4. [make certs methord2][4]
+5. [Introducing CFSSL - CloudFlare's PKI toolkit][5]
+6. [github: cloudflare/cfssl][6]
 
 [1]: http://www.flatmtn.com/article/setting-openssl-create-certificates  "setting-openssl-create-certificates"
 [2]: https://jamielinux.com/docs/openssl-certificate-authority/index.html  "OpenSSL Certificate Authority"
 [3]: https://github.com/lijiaocn/https-certs/tree/master/methord1  "make certs methord1"
 [4]: https://github.com/lijiaocn/https-certs/tree/master/methord2  "make certs methord2"
+[5]: https://blog.cloudflare.com/introducing-cfssl/ "Introducing CFSSL - CloudFlare's PKI toolkit" 
+[6]: https://github.com/cloudflare/cfssl "github: cloudflare/cfssl"
