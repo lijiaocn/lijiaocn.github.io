@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger：Fabric Node.js SDK的使用
 author: lijiaocn
 createdate: 2018/04/25 11:11:00
-changedate: 2018/07/09 11:15:13
+changedate: 2018/07/15 14:18:31
 categories: 编程
 tags: HyperLedger
 keywords: 超级账本,视频教程演示,区块链实践,hyperledger,fabric接口,nodejs
@@ -22,7 +22,9 @@ description: 当前(2018-04-25 11:16:23)fabric的SDK只有java和node是正式�
 
 [Hyperledger Fabric SDK for node.js][1]
 
-## 源码
+当前支持的node版本是v8.9.0~v9.0，v9.0以上版本不支持(2018-07-15 14:11:01)。
+
+## 下载SDK
 
 	git clone https://gerrit.hyperledger.org/r/fabric-sdk-node
 
