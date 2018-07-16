@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger：视频教程，Fabric-CA的使用演示(两个组织一个Orderer三个Peer)
 author: 李佶澳
 createdate: 2018/05/04 14:09:00
-changedate: 2018/07/09 11:19:26
+changedate: 2018/07/16 10:20:58
 categories: 项目
 tags: HyperLedger
 keywords: 超级账本,hyperledger,视频教程演示,fabric-ca,hyperledger,orderer证书
@@ -714,8 +714,6 @@ example.com、org1.example.com、org2.example.com三个组织这时候可以分�
 [超级账本HyperLedger视频教程：Fabric，在已有的Channel中添加新的组织][12]
 
 [更多关于超级账本和区块链的文章][11]
-
-![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
 ## 参考
 

@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger：Fabric Chaincode(合约）开发
 author: lijiaocn
 createdate: 2018/04/03 10:07:00
-changedate: 2018/07/09 11:20:08
+changedate: 2018/07/16 10:19:46
 categories: 项目
 tags: HyperLedger
 keywords: 超级账本,HyperLedger,Fabric,Chaincode,合约链码
@@ -213,8 +213,6 @@ chaincode部署到fabric中以后，这些方法可以通过fabic的peer结点�
 ## 接下来...
 
 [更多关于超级账本和区块链的文章](http://www.lijiaocn.com/tags/blockchain.html)
-
-![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
 ## 参考
 

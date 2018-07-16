@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger：视频教程，Fabric的全手动、多服务器部署教程
 author: 李佶澳
 createdate: 2018/04/28 18:45:00
-changedate: 2018/07/09 11:15:40
+changedate: 2018/07/16 10:19:32
 categories: 项目
 tags: HyperLedger
 keywords: 超级账本,hyperledger,fabric,多服务器,视频教程,手动部署
@@ -1004,8 +1004,6 @@ chaincode只能用Admin安装，并且需要在每个peer上都安装一次。
 [Fabric进阶，在已有的Channel中添加新的组织][12]
 
 [更多关于超级账本和区块链的文章][10]
-
-![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
 ## 参考
 

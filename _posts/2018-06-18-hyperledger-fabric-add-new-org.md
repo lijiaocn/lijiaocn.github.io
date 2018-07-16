@@ -3,7 +3,7 @@ layout: default
 title: 超级账本HyperLedger：视频教程，Fabric进阶，在已有的Channel中添加新的组织
 author: 李佶澳
 createdate: 2018/06/18 13:44:00
-changedate: 2018/07/09 11:16:28
+changedate: 2018/07/16 10:20:00
 categories: 项目
 tags: HyperLedger
 keywords: HyperLedger,超级账本,视频教程,组织添加
@@ -784,8 +784,6 @@ Channel的配置信息也存放在区块链上，是一个配置区块(configura
 [更多关于超级账本和区块链的文章](http://www.lijiaocn.com/tags/blockchain.html)
 
 有问题可以到知识星球中交流（优先使用知识星球，微信聊天记录容易丢失）：
-
-![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
 ## 参考
 

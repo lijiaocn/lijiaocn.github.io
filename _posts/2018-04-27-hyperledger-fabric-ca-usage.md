@@ -3,7 +3,7 @@ layout: default
 title: 超级账本HyperLedger：FabricCA的基本概念与用法讲解
 author: 李佶澳
 createdate: 2018/04/27 10:58:00
-changedate: 2018/07/09 11:15:56
+changedate: 2018/07/16 10:19:39
 categories: 项目
 tags: HyperLedger
 keywords: 超级账本,视频教程演示,fabricCA,hyperledger,blockchain,区块链,联盟链
@@ -398,8 +398,6 @@ cid（Client Identity）中提供下面的方法：
 ## 接下来...
 
 [更多关于超级账本和区块链的文章](http://www.lijiaocn.com/tags/blockchain.html)
-
-![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
 ## 参考
 

@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger：Explorer安装使用
 author: 李佶澳
 createdate: 2018/04/26 16:33:00
-changedate: 2018/07/10 18:53:30
+changedate: 2018/07/16 10:19:22
 categories: 项目
 tags: HyperLedger
 keywords: 超级账本,blockchain,hyperledger,explorer,区块链浏览器
@@ -243,8 +243,6 @@ node的版本太老的缘故:
 ## 接下来...
 
 [更多关于超级账本和区块链的文章](http://www.lijiaocn.com/tags/blockchain.html)
-
-![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
 ## 参考
 

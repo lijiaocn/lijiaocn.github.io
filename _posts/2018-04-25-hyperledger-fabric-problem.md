@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger：Fabric部署过程时遇到的问题汇总
 author: 李佶澳
 createdate: 2018/05/04 21:14:00
-changedate: 2018/07/15 18:01:59
+changedate: 2018/07/16 10:19:09
 categories: 问题
 tags: HyperLedger
 keywords: 超级账本,视频教程演示,区块链实践,hyperledger,fabric,区块链问题
@@ -360,8 +360,6 @@ docker配置错误，配置了fluentd driver，但是fluentd不存在。
 ## 接下来...
 
 [更多关于超级账本和区块链的文章](http://www.lijiaocn.com/tags/blockchain.html)
-
-![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
 ## 参考
 

@@ -3,7 +3,7 @@ layout: default
 title: "超级账本HyperLedger：FabricCA的级联使用（InterMediateCA）"
 author: 李佶澳
 createdate: 2018/06/06 13:41:00
-changedate: 2018/07/09 15:44:51
+changedate: 2018/07/16 10:20:31
 categories: 项目
 tags: HyperLedger
 keywords: hyperledger,fabricCA,超级账本,fabric
@@ -270,8 +270,6 @@ admin是RootCA的管理员账号，不能把这个账号的名称和密码暴露
 ## 接下来...
 
 [更多关于超级账本和区块链的文章](http://www.lijiaocn.com/tags/blockchain.html)
-
-![知识星球区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
 ## 参考
 

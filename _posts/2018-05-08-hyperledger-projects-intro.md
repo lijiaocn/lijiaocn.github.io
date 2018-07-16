@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger：超级账本工作组旗下项目介绍
 author: 李佶澳
 createdate: 2018/05/08 14:35:00
-changedate: 2018/07/09 11:21:30
+changedate: 2018/07/16 10:19:53
 categories: 项目
 tags: HyperLedger
 keywords: 超级账本,HyperLedger,视频教程演示
@@ -189,8 +189,6 @@ framework的竞争很激烈，会上演类似mesos、swarm、kubernetes之间的
 [HyperLedger Fabric全手动、多服务器部署与进阶教程--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)
 
 [更多关于超级账本和区块链的文章](http://www.lijiaocn.com/tags/blockchain.html)
-
-![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
 ## 参考
 

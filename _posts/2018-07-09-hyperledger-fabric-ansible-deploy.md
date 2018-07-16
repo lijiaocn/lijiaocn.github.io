@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger：使用Ansible进行Fabric多节点分布式部署（实战）
 author: 李佶澳
 createdate: 2018/07/09 08:57:00
-changedate: 2018/07/11 10:33:36
+changedate: 2018/07/16 10:20:23
 categories: 项目
 tags: HyperLedger
 keywords: ansible,HyperLedger,多机部署,分布式部署
@@ -217,8 +217,6 @@ QQ交流群：  `576555864`
         QQ交流群： 576555864
 
 如果视频中有讲解不到位或需要订正的地方，可以加入：
-
-![知识星球区块链实践分享](http://www.lijiaocn.com/img/xiaomiquan-blockchain.jpg)
 
 [更多关于超级账本和区块链的文章][6]
 

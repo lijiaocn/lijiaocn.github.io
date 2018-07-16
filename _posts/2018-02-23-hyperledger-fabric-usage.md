@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger：Fabric的基本概念与基础用法
 author: 李佶澳
 createdate: 2018/02/23 10:50:00
-changedate: 2018/07/09 11:14:29
+changedate: 2018/07/16 10:18:48
 categories: 项目
 tags: HyperLedger
 keywords: 区块链,视频教程演示,Hyperledger,超级账本,Fabric
@@ -1082,8 +1082,6 @@ core.yaml文件格式如下，下面摘取了主要的配置：
 [超级账本HyperLedger的fabric项目部署过程时遇到的问题](http://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/04/25/hyperledger-fabric-problem.html)
 
 [更多关于超级账本和区块链的文章](http://www.lijiaocn.com/tags/blockchain.html)
-
-![知识星球区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
 ## 参考
 

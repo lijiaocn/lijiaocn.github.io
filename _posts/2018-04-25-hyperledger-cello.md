@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger：Cello部署和使用
 author: 李佶澳
 createdate: 2018/04/25 10:32:00
-changedate: 2018/07/09 11:14:42
+changedate: 2018/07/16 10:19:01
 categories: 方法
 tags: HyperLedger
 keywords: 区块链,视频教程演示,hyperledger,超级账本,cello,blockchain
@@ -90,8 +90,6 @@ cello是一个很初期的系统，当前最大的问题是：
 ## 接下来...
 
 [更多关于超级账本和区块链的文章](http://www.lijiaocn.com/tags/blockchain.html)
-
-![区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
 ## 参考
 
