@@ -3,7 +3,7 @@ layout: default
 title:  "超级账本HyperLedger：Fabric的nodejs sdk使用时遇到的问题"
 author: 李佶澳
 createdate: 2018/07/15 17:38:00
-changedate: 2018/07/16 09:21:08
+changedate: 2018/07/16 09:51:42
 categories: 问题
 tags: HyperLedger
 keywords: 超级账本,nodejs sdk,fabric sdk,hyperledger,fabric,区块链问题
@@ -57,6 +57,7 @@ description: 这里记录使用HyperLedger Fabric的nodejs sdk时遇到的一些
 ## nodejs SDK: Invalid cert chain file
 
 错误如下：
+
 	0715 16:34:03.966476000 140736069952384 ssl_transport_security.cc:664] Invalid cert chain file.
 	E0715 16:34:03.966695000 140736069952384 security_connector.cc:1062]   Handshaker factory creation failed with TSI_INVALID_ARGUMENT.
 	E0715 16:34:03.966702000 140736069952384 secure_channel_create.cc:121] Failed to create secure subchannel for secure name 'peer0.member1.example.com'
