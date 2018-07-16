@@ -1,9 +1,9 @@
 ---
 layout: default
-title: go的开发环境
+title: Golang的开发环境-使用vim
 author: 李佶澳
 createdate: 2017/03/28 10:01:38
-changedate: 2017/11/15 10:49:06
+changedate: 2018/07/16 13:57:22
 categories: 编程
 tags: golang
 keywords: Go编程
