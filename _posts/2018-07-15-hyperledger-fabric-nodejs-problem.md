@@ -3,7 +3,7 @@ layout: default
 title:  "超级账本HyperLedger：Fabric的nodejs sdk使用时遇到的问题"
 author: 李佶澳
 createdate: 2018/07/15 17:38:00
-changedate: 2018/07/16 09:51:42
+changedate: 2018/07/16 10:10:48
 categories: 问题
 tags: HyperLedger
 keywords: 超级账本,nodejs sdk,fabric sdk,hyperledger,fabric,区块链问题
@@ -85,6 +85,8 @@ description: 这里记录使用HyperLedger Fabric的nodejs sdk时遇到的一些
 	 46             'ssl-target-name-override': 'peer0.member1.example.com'
 	 47         }
 	 48     );
+
+![知识星球区块链实践分享]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
 ## 参考
 
