@@ -15,6 +15,6 @@ url:         http://localhost:4000
 lsi:         false
 excerpt_separator: "----"
 ICP-number:
-Copyright: Copyright @2011-2017 All rights reserved.
+Copyright: Copyright @2011-2018 All rights reserved.
 footlinks: {"lijiaocn":"http://www.lijiaocn.com", "github.com":"https://www.github.com/lijiaocn"}
 pageheader: 
