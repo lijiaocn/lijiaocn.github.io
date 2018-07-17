@@ -3,7 +3,7 @@ layout: default
 title: Golang开发环境-使用idea
 author: 李佶澳
 createdate: 2017/03/27 17:38:05
-changedate: 2018/07/16 14:22:06
+changedate: 2018/07/16 17:20:35
 categories: 技巧
 tags: golang
 keywords: golang,idea,IDE
@@ -76,7 +76,7 @@ All in all there are now 7 license server:
 
 并在~/.bash_profile中设置环境变量：
 
-	export PATH="~/Work/Bin/go-1.9.7/go/bin:$PATH"
+	export PATH="/Users/lijiao/Work/Bin/go-1.9.7/go/bin:$PATH"
 	export GOROOT="/Users/lijiao/Work/Bin/go-1.9.7/go"
 	export GOPATH="/Users/lijiao/Work/Bin/gopath"
 	export PATH="$GOPATH/bin/:$GOPATH:$PATH"

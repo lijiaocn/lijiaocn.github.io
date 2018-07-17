@@ -3,7 +3,7 @@ layout: default
 title: Golang的开发环境-使用vim
 author: 李佶澳
 createdate: 2017/03/28 10:01:38
-changedate: 2018/07/16 13:57:22
+changedate: 2018/07/16 19:12:55
 categories: 编程
 tags: golang
 keywords: Go编程
@@ -175,6 +175,48 @@ vim-go的作者[fatih][7]专门写了一个[教程][8]。
 	go get github.com/golang/tools/cmd/guru
 	go get github.com/golang/tools/cmd/gorename
 
+### YouCompleteMe 
+
+[YCM][10]需要7.4的vim，在mac系统上可以通过下面的命令升级[Mac自带的Vim怎么升级？][11]：
+
+	brew install vim --with-lua --with-override-system-vi
+
+更多参数通过`brew info vim`查看，例如支持python3：
+
+	—with-python3
+
+或者使用YCM推荐的macvim:
+
+	brew install macvim    //YCM推荐使用macvim
+
+在macOS上安装YCM：
+
+	brew install cmake
+	cd .vim/bundle
+	git clone https://github.com/Valloric/YouCompleteMe.git
+
+如果要支持C系列和Go语言：
+
+	cd ~/.vim/bundle/YouCompleteMe
+	git submodule update --init --recursive
+	./install.py --clang-completer --go-completer
+
+否则：
+
+	cd ~/.vim/bundle/YouCompleteMe
+	./install.py
+
+如果需要支持其它语言，使用对应的参数：
+
+	--go-completer   //go
+	--js-completer   //js
+	--rust-completer //rust
+	--all            //所有支持的语言
+
+支持所有语言：
+
+	./install.py 
+
 ## Golang零碎事项
 
 ### 换行
@@ -269,4 +311,6 @@ golang的net/http中提供了http客户端client, 可以用client发起http操�
 [6]: https://github.com/fatih/vim-go "https://github.com/fatih/vim-go"
 [7]: https://www.patreon.com/fatih "https://www.patreon.com/fatih"
 [8]: https://github.com/fatih/vim-go-tutorial "https://github.com/fatih/vim-go-tutorial"
-[9]: https://github.com/golang/tools "https://github.com/golang/tools
+[9]: https://github.com/golang/tools "https://github.com/golang/tools"
+[10]: https://github.com/Valloric/YouCompleteMe  "https://github.com/Valloric/YouCompleteMe"
+[11]: https://www.zhihu.com/question/34113076 "https://www.zhihu.com/question/34113076"
