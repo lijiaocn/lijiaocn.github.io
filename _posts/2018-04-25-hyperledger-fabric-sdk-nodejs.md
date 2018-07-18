@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger：Fabric Node.js SDK的使用
 author: lijiaocn
 createdate: 2018/04/25 11:11:00
-changedate: 2018/07/16 10:19:16
+changedate: 2018/07/18 10:18:57
 categories: 编程
 tags: HyperLedger
 keywords: 超级账本,视频教程演示,区块链实践,hyperledger,fabric接口,nodejs
@@ -24,28 +24,29 @@ description: 当前(2018-04-25 11:16:23)fabric的SDK只有java和node是正式�
 
 当前支持的node版本是v8.9.0~v9.0，v9.0以上版本不支持(2018-07-15 14:11:01)。
 
-## 下载SDK
+## 准备合适的node版本
 
-	git clone https://gerrit.hyperledger.org/r/fabric-sdk-node
+当前支持的node版本是v8.9.0~v9.0，v9.0以上版本不支持(2018-07-15 14:11:01)。
 
-## 开发环境
+在mac上可以用brew安装node8：
 
-[Setting up the Application Developer's Environment][2]
+	$ brew install node@8
+	$ echo 'export PATH="/usr/local/opt/node@8/bin:$PATH"' >> ~/.bash_profile
+	$ source ~/.bash_profile
+	$ node --version
+	v8.11.3
 
-确保已经本地已经安装了node和npm。
+或者直接下载安装：[nodejs download][6]
+
+## 用npm管理依赖包
+
+创建文件package.json：
 
 	$ cat package.json
 	{
-	    "name": "fabcar",
-	    "version": "1.0.0",
-	    "description": "Hyperledger Fabric Car Sample Application",
-	    "main": "fabcar.js",
-	    "scripts": {
-	        "test": "echo \"Error: no test specified\" && exit 1"
-	    },
 	    "dependencies": {
-	        "fabric-ca-client": "1.0.3",
-	        "fabric-client": "1.0.3",
+	        "fabric-ca-client": "1.1.2",
+	        "fabric-client": "1.1.2",
 	        "grpc": "^1.6.0"
 	    },
 	    "author": "Anthony O'Dowd",
@@ -59,9 +60,18 @@ description: 当前(2018-04-25 11:16:23)fabric的SDK只有java和node是正式�
 	    ]
 	}
 
-## example-0
+用npm安装依赖包：
 
-[Hyperledger Fabric SDK for node.js][1]中有每个类说明。
+	npm config set registry https://registry.npm.taobao.org  (设置淘宝提供的镜像源)
+	npm install
+
+## Example
+
+调用mychannel中的mycc合约的query接口，参数为`key`:
+
+	node ./01-query-chaincode.js
+
+代码如下：
 
 	/*
 	 * client.js
@@ -70,77 +80,63 @@ description: 当前(2018-04-25 11:16:23)fabric的SDK只有java和node是正式�
 	 * Distributed under terms of the GPL license.
 	 */
 	
+	var fs = require('fs');
 	var Fabric_Client = require('fabric-client');
 	
+	//创建一个Client
 	Fabric_Client.newDefaultKeyValueStore({ path: '/tmp/xx/' }).then((state_store) => {
 	    client=new Fabric_Client();
 	    client.setStateStore(state_store)
 	
+	    //设置用户信息    
 	    var userOpt = {
-	        username: 'Admin@saler.ennblock.cn',
-	        mspid: 'saler',
-	        cryptoContent: {
-	            privateKey: './msp/keystore/9ac3c01e8b74eb5eb9dfb05041cef1d345e13d8e5bdc1f6a26365ed9803ba19e_sk',
-	            signedCert: './msp/signcerts/Admin@saler.ennblock.cn-cert.pem'
+	        username: 'Admin@member1.example.com',
+	        mspid: 'peers.member1.example.com',
+	        cryptoContent: { 
+	            privateKey: './msp/keystore/09dd09cf530d8f0fa6cb383b5b409ae8e895d32d31f75823f3bdb3c1f3ee180a_sk',
+	            signedCert: './msp/signcerts/Admin@member1.example.com-cert.pem'
 	        }
 	    }
 	
 	    return client.createUser(userOpt)
 	
 	}).then((user)=>{
-	    //设置channel与peer
+	
+	    //设置要连接的Channel
 	    var channel = client.newChannel('mychannel');
 	
+	    //设置要连接的Peer
 	    var peer = client.newPeer(
-	        'grpc://peer0.saler.ennblock.cn:7051'
-	    );
-	
-	/* 使用TLS加密
-	    var peer = client.newPeer(
-	        'grpcs://peer0.saler.ennblock.cn:7051',
+	        'grpcs://peer0.member1.example.com:7051',
 	        {
-	            pem: './tls/ca.crt',
-	            'ssl-target-name-override': 'peer0.saler.ennblock.cn'
+	            pem: fs.readFileSync('./tls/ca.crt', { encoding: 'utf8' }),
+	            clientKey: fs.readFileSync('./tls/client.key', { encoding: 'utf8' }),
+	            clientCert: fs.readFileSync('./tls/client.crt', { encoding: 'utf8' }),
+	            'ssl-target-name-override': 'peer0.member1.example.com'
 	        }
 	    );
-	*/
+	
 	    channel.addPeer(peer);
 	
 	    //调用chaincode
 	    const request = {
-	        //targets : --- letting this default to the peers assigned to the channel
-	        chaincodeId: 'saler',
-	        fcn: 'saler',
-	        args: ['info','saler-6']
+	        chaincodeId: 'mycc',   //chaincode名称
+	        fcn: 'query',          //调用的函数名
+	        args: ['key1']         //参数
 	    };
 	
 	    // send the query proposal to the peer
 	    return channel.queryByChaincode(request);
 	
 	}).then((response)=>{
-	    console.log('Response is', response);
-	   // console.log('Response is', response[0].toString());
+	    console.log('Response is', response.toString());
 	})
 
-## example-1
+[Hyperledger Fabric SDK for node.js][1]中有每个类说明，上面示例的源代码托管在Github上: [hyperledger-fabric-sdks-usage][8]。
 
-[fabric node sdk example][3]
+HyperLedger官方源代码中还有更多的例子：[fabric node sdk example][3]
 
-	cd fabric-samples/fabcar
-
-安装依赖包：
-
-	npm install --registry=https://registry.npm.taobao.org
-
-## 问题
-
-###  Could not load any root certificate.
-
-依据[Operation initiated from the Hyperledger Fabric Client SDK for Node.js results in TSI error][4]中方法，将node sdk升级到1.0.3。
-
-结果还是不行，最后把peer和client的tls都设置为false解决。
-
-## 接下来...
+使用过程遇到的问题记录在： [《超级账本HyperLedger：Fabric的Node.js SDK使用时遇到的问题》][7]
 
 [更多关于超级账本和区块链的文章](http://www.lijiaocn.com/tags/blockchain.html)
 
@@ -151,9 +147,15 @@ description: 当前(2018-04-25 11:16:23)fabric的SDK只有java和node是正式�
 3. [fabric node sdk example][3]
 4. [Operation initiated from the Hyperledger Fabric Client SDK for Node.js results in TSI error][4]
 5. [使用Fabric Node SDK进行Invoke和Query][5]
+6. [nodejs download][6]
+7. [《超级账本HyperLedger：Fabric的Node.js SDK使用时遇到的问题》][7]
+8. [hyperledger-fabric-sdks-usage][8]
 
 [1]: https://fabric-sdk-node.github.io/  "Hyperledger Fabric SDK for node.js" 
 [2]: https://fabric-sdk-node.github.io/tutorial-app-dev-env-setup.html "Setting up the Application Developer's Environment"
-[3]: https://github.com/hyperledger/fabric-samples/tree/release-1.1/fabcar "fabric node sdk example"
+[3]: https://github.com/hyperledger/fabric-samples/tree/master/fabcar "fabric node sdk example"
 [4]: https://developer.ibm.com/answers/questions/430049/operation-initiated-from-the-hyperledger-fabric-cl/  "Operation initiated from the Hyperledger Fabric Client SDK for Node.js results in TSI error"
 [5]: http://www.cnblogs.com/studyzy/p/7524245.html "使用Fabric Node SDK进行Invoke和Query"
+[6]: https://nodejs.org/en/  "nodejs download" 
+[7]: http://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/07/15/hyperledger-fabric-nodejs-problem.html "《超级账本HyperLedger：Fabric的Node.js SDK使用时遇到的问题》"
+[8]: https://github.com/introclass/hyperledger-fabric-sdks-usage "hyperledger-fabric-sdks-usage"

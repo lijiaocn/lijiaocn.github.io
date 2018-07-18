@@ -1,9 +1,9 @@
 ---
 layout: default
-title:  "超级账本HyperLedger：Fabric的nodejs sdk使用时遇到的问题"
+title:  "超级账本HyperLedger：Fabric Node.js SDK使用时遇到的问题"
 author: 李佶澳
 createdate: 2018/07/15 17:38:00
-changedate: 2018/07/16 10:20:38
+changedate: 2018/07/18 10:21:57
 categories: 问题
 tags: HyperLedger
 keywords: 超级账本,nodejs sdk,fabric sdk,hyperledger,fabric,区块链问题
@@ -17,6 +17,8 @@ description: 这里记录使用HyperLedger Fabric的nodejs sdk时遇到的一些
 ## 说明
 
 这里记录使用HyperLedger Fabric的nodejs sdk时遇到的一些问题，示例代码在：[HyperLedger Fabric nodejs sdk examples][1]
+
+HyperLedger Fabric的Node.js SDK的使用方法见：[《超级账本HyperLedger：Fabric Node.js SDK的使用》][2]
 
 ## nodejs SDK: 加载pem证书，验证失败
 
@@ -89,5 +91,7 @@ description: 这里记录使用HyperLedger Fabric的nodejs sdk时遇到的一些
 ## 参考
 
 1. [HyperLedger Fabric nodejs sdk examples][1]
+2. [《超级账本HyperLedger：Fabric Node.js SDK的使用》][2]
 
 [1]: https://github.com/introclass/hyperledger-fabric-sdks-usage/tree/master/nodejs "HyperLedger Fabric nodejs sdk examples" 
+[2]: http://www.lijiaocn.com/%E7%BC%96%E7%A8%8B/2018/04/25/hyperledger-fabric-sdk-nodejs.html "《超级账本HyperLedger：Fabric Node.js SDK的使用》"
