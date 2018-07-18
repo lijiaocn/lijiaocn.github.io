@@ -3,7 +3,7 @@ layout: default
 title:  "超级账本HyperLedger：Fabric Node.js SDK使用时遇到的问题"
 author: 李佶澳
 createdate: 2018/07/15 17:38:00
-changedate: 2018/07/18 10:21:57
+changedate: 2018/07/18 10:27:53
 categories: 问题
 tags: HyperLedger
 keywords: 超级账本,nodejs sdk,fabric sdk,hyperledger,fabric,区块链问题
@@ -16,11 +16,11 @@ description: 这里记录使用HyperLedger Fabric的nodejs sdk时遇到的一些
 
 ## 说明
 
-这里记录使用HyperLedger Fabric的nodejs sdk时遇到的一些问题，示例代码在：[HyperLedger Fabric nodejs sdk examples][1]
-
 HyperLedger Fabric的Node.js SDK的使用方法见：[《超级账本HyperLedger：Fabric Node.js SDK的使用》][2]
 
-## nodejs SDK: 加载pem证书，验证失败
+这里记录使用HyperLedger Fabric Node.js SDK时遇到的一些问题，示例代码在Github上：[HyperLedger Fabric nodejs sdk examples][1]
+
+## Node.js SDK: 加载pem证书，验证失败
 
 如果，指定了pem证书为./tls/ca.crt
 
@@ -56,7 +56,7 @@ HyperLedger Fabric的Node.js SDK的使用方法见：[《超级账本HyperLedger
 	 47         }
 	 48     );
 
-## nodejs SDK: Invalid cert chain file
+## Node.js SDK: Invalid cert chain file
 
 错误如下：
 
@@ -90,7 +90,7 @@ HyperLedger Fabric的Node.js SDK的使用方法见：[《超级账本HyperLedger
 
 ## 参考
 
-1. [HyperLedger Fabric nodejs sdk examples][1]
+1. [HyperLedger Fabric Node.js sdk examples][1]
 2. [《超级账本HyperLedger：Fabric Node.js SDK的使用》][2]
 
 [1]: https://github.com/introclass/hyperledger-fabric-sdks-usage/tree/master/nodejs "HyperLedger Fabric nodejs sdk examples" 
