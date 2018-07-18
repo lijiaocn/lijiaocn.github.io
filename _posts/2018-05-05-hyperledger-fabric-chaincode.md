@@ -1,9 +1,9 @@
 ---
 layout: default
-title:  超级账本HyperLedger：Fabric Chaincode(合约）开发
-author: lijiaocn
+title:  超级账本HyperLedger：Fabric Chaincode（智能合约、链码）开发方法
+author: 李佶澳
 createdate: 2018/04/03 10:07:00
-changedate: 2018/07/16 10:19:46
+changedate: 2018/07/18 14:42:27
 categories: 项目
 tags: HyperLedger
 keywords: 超级账本,HyperLedger,Fabric,Chaincode,合约链码
@@ -18,47 +18,15 @@ description: 学习写一下chaincode
 
 [超级账本HyperLedger视频教程汇总：HyperLedger Fabric的视频讲解--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)
 
-文档正在完善中...
-
 Hyperledger fabric的chaincode可以使用Go、Node.js、Java等语言开发。
 
-Chaincode将会在一个独立的docker容器中运行，实现与背书节点进程之间的隔离。
+Chaincode将在Peer节点上以容器的方式运行，实现与背书节点进程之间的隔离。
 
-这里以用Go语言开发Chaincode为例。
+这里讲解一下怎样用Go语言开发Chaincode。
 
-## ChainCode 接口
+## Chaincode代码结构
 
-接口在["github.com/hyperledger/fabric/core/chaincode/shim"][1]中的ChaincodeStubInterface中定义。
-
-	ChaincodeStubInterface : interface
-	    [methods]
-	   +CreateCompositeKey(objectType string, attributes []string) : string, error
-	   +DelState(key string) : error
-	   +GetArgs() : [][]byte
-	   +GetArgsSlice() : []byte, error
-	   +GetBinding() : []byte, error
-	   +GetChannelID() : string
-	   +GetCreator() : []byte, error
-	   +GetDecorations() : map[string][]byte
-	   +GetFunctionAndParameters() : string, []string
-	   +GetHistoryForKey(key string) : HistoryQueryIteratorInterface, error
-	   +GetQueryResult(query string) : StateQueryIteratorInterface, error
-	   +GetSignedProposal() : *pb.SignedProposal, error
-	   +GetState(key string) : []byte, error
-	   +GetStateByPartialCompositeKey(objectType string, keys []string) : StateQueryIteratorInterface, error
-	   +GetStateByRange(startKey, endKey string) : StateQueryIteratorInterface, error
-	   +GetStringArgs() : []string
-	   +GetTransient() : map[string][]byte, error
-	   +GetTxID() : string
-	   +GetTxTimestamp() : *timestamp.Timestamp, error
-	   +InvokeChaincode(chaincodeName string, args [][]byte, channel string) : pb.Response
-	   +PutState(key string, value []byte) : error
-	   +SetEvent(name string, payload []byte) : error
-	   +SplitCompositeKey(compositeKey string) : string, []string, error
-
-## chaincode代码结构
-
-chaincode的代码结构大体如下，直接调用shim.Start()启动chaincode，传入的结构是chaincode的数据。
+chaincode的代码结构大体如下，直接调用shim.Start()启动chaincode：
 
 	package main
 	
@@ -77,9 +45,9 @@ chaincode的代码结构大体如下，直接调用shim.Start()启动chaincode�
 		}
 	}
 
-## 实现Init接口
+然后需要做的就是为SimpleChaincode实现一些接口，其中`Init`和`Invoke`是约定好的，必须有的。
 
-chaincode部署到fabric中以后，这些方法可以通过fabic的peer结点进行调用。
+## 实现Init接口
 
 首先增加一个Init方法，这个方法将在chaincode初始化的时候调用，用来初始化chaincode。
 
@@ -124,7 +92,7 @@ chaincode部署到fabric中以后，这些方法可以通过fabic的peer结点�
 
 ## 实现Invoke接口
 
-通过Invoke接口，将调用请求转发给具体的方法。
+通过Invoke接口，调用请求将被转发到Invoke，然后可以在这里将请求转发给不通的函数处理：
 
 	func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	    fmt.Println("ex02 Invoke")
@@ -143,7 +111,39 @@ chaincode部署到fabric中以后，这些方法可以通过fabic的peer结点�
 	    return shim.Error("Invalid invoke function name. Expecting \"invoke\" \"delete\" \"query\"")
 	}
 
-## 获取传入参数
+在Init和Invoke方法中，都有一个stub参数，通过这个参数可以做很多操作，例如读取数据、写入数据、查看提案等。
+
+## shim.ChaincodeStubInterfac: 可以使用的ChainCode接口
+
+接口在["github.com/hyperledger/fabric/core/chaincode/shim"][1]中的ChaincodeStubInterface中定义。
+
+	ChaincodeStubInterface : interface
+	    [methods]
+	   +CreateCompositeKey(objectType string, attributes []string) : string, error
+	   +DelState(key string) : error
+	   +GetArgs() : [][]byte
+	   +GetArgsSlice() : []byte, error
+	   +GetBinding() : []byte, error
+	   +GetChannelID() : string
+	   +GetCreator() : []byte, error
+	   +GetDecorations() : map[string][]byte
+	   +GetFunctionAndParameters() : string, []string
+	   +GetHistoryForKey(key string) : HistoryQueryIteratorInterface, error
+	   +GetQueryResult(query string) : StateQueryIteratorInterface, error
+	   +GetSignedProposal() : *pb.SignedProposal, error
+	   +GetState(key string) : []byte, error
+	   +GetStateByPartialCompositeKey(objectType string, keys []string) : StateQueryIteratorInterface, error
+	   +GetStateByRange(startKey, endKey string) : StateQueryIteratorInterface, error
+	   +GetStringArgs() : []string
+	   +GetTransient() : map[string][]byte, error
+	   +GetTxID() : string
+	   +GetTxTimestamp() : *timestamp.Timestamp, error
+	   +InvokeChaincode(chaincodeName string, args [][]byte, channel string) : pb.Response
+	   +PutState(key string, value []byte) : error
+	   +SetEvent(name string, payload []byte) : error
+	   +SplitCompositeKey(compositeKey string) : string, []string, error
+
+## 读取传入参数
 
 传入参数通过`stub.GetFunctionAndParameters()`获取，得到的是一个数组，记录了所有传入参数。
 
@@ -204,13 +204,9 @@ chaincode部署到fabric中以后，这些方法可以通过fabic的peer结点�
 		}
 	}
 
-## 并发问题
-
-[Hyperledger Fabric and how it isn’t concurrent out of the box.][3]
-
-[How hyperledger handle the Concurrent of “invoke” of the same Key-Value pair of chaincode?][4]
-
 ## 接下来...
+
+合约的使用参考：[《超级账本HyperLedger：Fabric的Chaincode（智能合约、链码）开发、使用演示》][3]
 
 [更多关于超级账本和区块链的文章](http://www.lijiaocn.com/tags/blockchain.html)
 
@@ -218,10 +214,8 @@ chaincode部署到fabric中以后，这些方法可以通过fabic的peer结点�
 
 1. [chaincode interface][1]
 2. [HyperledgerFabric的使用][2]
-3. [Hyperledger Fabric and how it isn’t concurrent out of the box.][3]
-4. [How hyperledger handle the Concurrent of “invoke” of the same Key-Value pair of chaincode?][4]
+3. [《超级账本HyperLedger：Fabric的Chaincode（智能合约、链码）开发、使用演示》][3]
 
 [1]: https://github.com/hyperledger/fabric/blob/release-1.1/core/chaincode/shim/interfaces_stable.go  "chaincode interface" 
 [2]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/02/23/hyperledger-fabric-usage.html  "Hyperledger Fabric的使用" 
-[3]: https://medium.com/wearetheledger/hyperledger-fabric-concurrency-really-eccd901e4040 "Hyperledger Fabric and how it isn’t concurrent out of the box"
-[4]: https://stackoverflow.com/questions/37691994/how-hyperledger-handle-the-concurrent-of-invoke-of-the-same-key-value-pair-of?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa  "How hyperledger handle the Concurrent of “invoke” of the same Key-Value pair of chaincode?"
+[3]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/07/17/hyperledger-fabric-chaincodes-example.html "《超级账本HyperLedger：Fabric的Chaincode（智能合约、链码）开发、使用演示》"

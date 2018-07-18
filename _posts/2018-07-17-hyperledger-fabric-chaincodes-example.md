@@ -3,7 +3,7 @@ layout: default
 title:  "超级账本HyperLedger：Fabric的Chaincode（智能合约、链码）开发、使用演示"
 author: 李佶澳
 createdate: 2018/07/17 10:20:00
-changedate: 2018/07/18 14:02:43
+changedate: 2018/07/18 14:41:14
 categories: 项目
 tags: HyperLedger
 keywords: 超级账本,Fabric,HyperLedger Fabric,Chaincode,智能合约,链码
@@ -16,7 +16,9 @@ description: 超级账本HyperLedger Fabric的Chaincode的开发、使用
 
 ## 说明
 
-演示使用的合约代码都托管在在Github上：[合约代码][1]。
+这里演示合约的用法，合约代码托管在在Github上：[合约代码][1]。
+
+怎样写合约参考： [超级账本HyperLedger：Fabric Chaincode（智能合约、链码）开发方法][3]
 
 ## Example-1：demo
 
@@ -236,6 +238,14 @@ description: 超级账本HyperLedger Fabric的Chaincode的开发、使用
 		"eb802055364096703b351cea60c0392119c487b0ab3a9cd6ed344ee897b6fa1a":"9"}
 	2018-07-18 13:42:47.210 CST [main] main -> INFO 003 Exiting.....
 
+并发写入的问题可以参考：
+
+[HyperLedger High-Throughput Network][6]
+
+[Hyperledger Fabric and how it isn’t concurrent out of the box.][3]
+
+[How hyperledger handle the Concurrent of “invoke” of the same Key-Value pair of chaincode?][4]
+
 ### 合约链式调用
 
 就是通过当前合约，调用另一个合约。
@@ -304,6 +314,14 @@ demo合约中提供了一个call方法，可以很方便的测试合约链式调
 
 1. [演示使用的合约代码][1]
 2. [example-1: demo][2]
+3. [超级账本HyperLedger：Fabric Chaincode（智能合约、链码）开发方法][3]
+4. [Hyperledger Fabric and how it isn’t concurrent out of the box.][4]
+5. [How hyperledger handle the Concurrent of “invoke” of the same Key-Value pair of chaincode?][5]
+6. [HyperLedger High-Throughput Network][6]
 
 [1]: https://github.com/introclass/hyperledger-fabric-chaincodes  "https://github.com/introclass/hyperledger-fabric-chaincodes" 
 [2]: https://github.com/introclass/hyperledger-fabric-chaincodes/tree/master/demo "example-1: demo"
+[3]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/05/05/hyperledger-fabric-chaincode.html "超级账本HyperLedger：Fabric Chaincode（智能合约、链码）开发方法"
+[4]: https://medium.com/wearetheledger/hyperledger-fabric-concurrency-really-eccd901e4040 "Hyperledger Fabric and how it isn’t concurrent out of the box"
+[5]: https://stackoverflow.com/questions/37691994/how-hyperledger-handle-the-concurrent-of-invoke-of-the-same-key-value-pair-of?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa  "How hyperledger handle the Concurrent of “invoke” of the same Key-Value pair of chaincode?"
+[6]: https://github.com/hyperledger/fabric-samples/tree/release-1.2/high-throughput "HyperLedger High-Throughput Network"
