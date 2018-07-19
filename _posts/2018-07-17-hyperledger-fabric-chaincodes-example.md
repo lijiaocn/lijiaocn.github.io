@@ -3,7 +3,7 @@ layout: default
 title:  "超级账本HyperLedger：Fabric的Chaincode（智能合约、链码）开发、使用演示"
 author: 李佶澳
 createdate: 2018/07/17 10:20:00
-changedate: 2018/07/18 14:41:14
+changedate: 2018/07/19 23:22:47
 categories: 项目
 tags: HyperLedger
 keywords: 超级账本,Fabric,HyperLedger Fabric,Chaincode,智能合约,链码
@@ -15,6 +15,8 @@ description: 超级账本HyperLedger Fabric的Chaincode的开发、使用
 {:toc}
 
 ## 说明
+
+这是网易云课堂“[IT技术快速入门学院](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)”使用的素材。
 
 这里演示合约的用法，合约代码托管在在Github上：[合约代码][1]。
 

@@ -3,7 +3,7 @@ layout: default
 title: "超级账本HyperLedger：FabricCA的级联使用（InterMediateCA）"
 author: 李佶澳
 createdate: 2018/06/06 13:41:00
-changedate: 2018/07/16 10:20:31
+changedate: 2018/07/19 23:23:16
 categories: 项目
 tags: HyperLedger
 keywords: hyperledger,fabricCA,超级账本,fabric
@@ -15,6 +15,8 @@ description: 在实际使用中，每个接入的机构都有自己用户管理�
 {:toc}
 
 ## 说明
+
+这是网易云课堂“[IT技术快速入门学院](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)”使用的素材。
 
 FabricCA级联部署的场景一直没有试验，也就是下图中的场景：
 

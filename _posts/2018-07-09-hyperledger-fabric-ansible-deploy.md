@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger：使用Ansible进行Fabric多节点分布式部署（实战）
 author: 李佶澳
 createdate: 2018/07/09 08:57:00
-changedate: 2018/07/16 10:20:23
+changedate: 2018/07/19 15:05:54
 categories: 项目
 tags: HyperLedger
 keywords: ansible,HyperLedger,多机部署,分布式部署
@@ -53,9 +53,9 @@ QQ交流群：  `576555864`
 
 ## 准备
 
-下载Ansible脚本：
+下载Ansible脚本，这里使用Fabric1.1.x，1.2.x的部署直接参考对应分支中的README.md。
 
-	git clone https://github.com/introclass/hyperledger-fabric-ansible.git
+	git clone --branch=Fabric1.1.x --depth=0  https://github.com/introclass/hyperledger-fabric-ansible.git
 	cd hyperledger-fabric-ansible
 
 0 将要部署到目标环境中的二进制文件复制到output/example.com/bin/目录中
