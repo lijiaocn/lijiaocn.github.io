@@ -3,7 +3,7 @@ layout: default
 title: "超级账本HyperLedger：Fabric从1.1.0升级到1.2.0"
 author: 李佶澳
 createdate: 2018/07/19 14:48:00
-changedate: 2018/07/19 23:22:20
+changedate: 2018/07/20 13:58:41
 categories: 项目
 tags: HyperLedger
 keywords: HyperLedger升级,超级账本,Fabric

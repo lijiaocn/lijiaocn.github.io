@@ -3,7 +3,7 @@ layout: default
 title:  "超级账本HyperLedger：为Fabric的Peer节点配置CouchDB"
 author: 李佶澳
 createdate: 2018/07/19 09:38:00
-changedate: 2018/07/19 23:22:15
+changedate: 2018/07/20 13:58:51
 categories: 项目
 tags: HyperLedger
 keywords: CouchDB,HyperLedger,Peer,超级账本

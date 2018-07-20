@@ -3,10 +3,10 @@ layout: default
 title:  "超级账本HyperLedger：Fabric Node.js SDK使用时遇到的问题"
 author: 李佶澳
 createdate: 2018/07/15 17:38:00
-changedate: 2018/07/19 23:22:55
+changedate: 2018/07/20 13:58:10
 categories: 问题
 tags: HyperLedger
-keywords: 超级账本,nodejs sdk,fabric sdk,hyperledger,fabric,区块链问题
+keywords: 超级账本,nodejs sdk,fabric sdk,hyperledger
 description: 这里记录使用HyperLedger Fabric的nodejs sdk时遇到的一些问题
 
 ---

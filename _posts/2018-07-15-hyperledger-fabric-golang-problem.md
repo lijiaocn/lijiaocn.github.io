@@ -3,7 +3,7 @@ layout: default
 title:  "超级账本HyperLedger：Fabric Golang SDK使用时遇到的问题"
 author: 李佶澳
 createdate: 2018/07/17 13:24:00
-changedate: 2018/07/19 23:23:03
+changedate: 2018/07/20 13:58:02
 categories: 问题
 tags: HyperLedger
 keywords: 超级账本,golang sdk,fabric sdk,hyperledger,fabric,区块链问题
