@@ -3,7 +3,7 @@ layout: default
 title:  "超级账本HyperLedger：Fabric的Chaincode（智能合约、链码）开发、使用演示"
 author: 李佶澳
 createdate: 2018/07/17 10:20:00
-changedate: 2018/07/20 13:58:22
+changedate: 2018/07/20 19:21:31
 categories: 项目
 tags: HyperLedger
 keywords: 超级账本,Fabric,HyperLedger,Chaincode,智能合约,链码学习资料
@@ -32,6 +32,9 @@ description: 超级账本HyperLedger Fabric的Chaincode的开发、使用
 	    //返回调用者信息
 	    case "creator":
 	        return t.creator(stub, args)
+	    //返回调用者信息，方法2
+	    case "creator2":
+	        return t.creator2(stub, args)
 	    //调用改合约中的其它方法，用来演示复杂的调用
 	    case "call":
 	        return t.call(stub, args)
@@ -78,9 +81,7 @@ description: 超级账本HyperLedger Fabric的Chaincode的开发、使用
 
 完整代码： [合约代码][1]。
 
-### 合约安装&单合约调用
-
-#### 获取合约代码
+## 合约安装
 
 可以用下面的方式获取合约源代码：
 
@@ -92,7 +93,7 @@ description: 超级账本HyperLedger Fabric的Chaincode的开发、使用
 
 	go get github.com/introclass/hyperledger-fabric-chaincodes
 
-#### 安装合约&初始化
+## 安装合约&初始化
 
 安装合约：
 
@@ -109,11 +110,15 @@ description: 超级账本HyperLedger Fabric的Chaincode的开发、使用
 	./3_install_chaincode.sh
 	<不需要再次实例化>
 
-#### 合约直接调用
+## 合约直接调用
 
 下面的操作可以在任意一个Peer进行。
 
+### 获取调用者信息
+
 查看当前调用者，调用creator方法：
+
+>应当直接使用cid包中提供的方法，见creator2的实现。
 
 	$ ./peer.sh chaincode query -C mychannel -n mycc -c  '{"Args":["creator"]}'
 	2018-07-18 12:45:48.083 CST [chaincodeCmd] checkChaincodeCmdParams -> INFO 001 Using default escc
@@ -135,6 +140,38 @@ description: 超级账本HyperLedger Fabric的Chaincode的开发、使用
 	-----END CERTIFICATE-----
 	
 	2018-07-18 12:45:48.087 CST [main] main -> INFO 003 Exiting.....
+
+后来发现cid的存在，用cid获取当前用户信息要简单多了：
+
+	...
+	"github.com/hyperledger/fabric/core/chaincode/lib/cid"
+	...
+	
+	id, err := cid.GetID(stub)
+	if err != nil {
+		return shim.Error("getid error: " + err.Error())
+	}
+	...
+	mspid, err := cid.GetMSPID(stub)
+	if err != nil {
+		return shim.Error("getmspid error: " + err.Error())
+	}
+	...
+
+调用creator2的结果如下：
+
+	$ ./peer.sh chaincode query -C mychannel -n mycc -c '{"Args":["creator2"]}'
+	2018-07-20 16:57:47.968 CST [msp] GetLocalMSP -> DEBU 001 Returning existing local MSP
+	2018-07-20 16:57:47.968 CST [msp] GetDefaultSigningIdentity -> DEBU 002 Obtaining default signing identity
+	2018-07-20 16:57:47.968 CST [chaincodeCmd] checkChaincodeCmdParams -> INFO 003 Using default escc
+	2018-07-20 16:57:47.968 CST [chaincodeCmd] checkChaincodeCmdParams -> INFO 004 Using default vscc
+	2018-07-20 16:57:47.968 CST [chaincodeCmd] getChaincodeSpec -> DEBU 005 java chaincode disabled
+	2018-07-20 16:57:47.968 CST [msp/identity] Sign -> DEBU 006 Sign: plaintext: 0AC9070A6708031A0C088BC8C6DA0510...6D7963631A0A0A0863726561746F7232
+	2018-07-20 16:57:47.968 CST [msp/identity] Sign -> DEBU 007 Sign: digest: 0EB40A1AC4F18EDADDD47C92BC38B238ED43EA5252590121EE6EC9205C8665D7
+	Query Result: {"ID":"x509::CN=Admin@member1.example.com,L=San Francisco,ST=California,C=US::CN=ca.member1.example.com,O
+	....
+
+### 读写账本
 
 写入Key:
 
@@ -248,7 +285,7 @@ description: 超级账本HyperLedger Fabric的Chaincode的开发、使用
 
 [How hyperledger handle the Concurrent of “invoke” of the same Key-Value pair of chaincode?][4]
 
-### 合约链式调用
+### 链式调用合约，即合约中调用另一个合约
 
 就是通过当前合约，调用另一个合约。
 
@@ -311,6 +348,49 @@ demo合约中提供了一个call方法，可以很方便的测试合约链式调
 	2018-07-18 13:59:55.470 CST [chaincodeCmd] checkChaincodeCmdParams -> INFO 002 Using default vscc
 	Query Result: inmycc2
 	2018-07-18 13:59:55.476 CST [main] main -> INFO 003 Exiting.....
+
+## 背书策略不满足时，更新无效
+
+前面创建的合约使用的背书策略是：任意一个组织的成员认可即可。
+
+	-P  "OR ('peers.member1.example.com.member','peers.member2.example.com.member')"
+
+修改成AND的方式，试验一下多个成员共同背书的场景：
+
+	-P  "AND ('peers.member1.example.com.member','peers.member2.example.com.member')"
+
+可以通过升级合约的方式，更新背书策略，在`3_install_chaincode.sh`中设置一个新的版本号：
+
+	CHANNEL_NAME="mychannel"
+	NAME="mycc"
+	VERSION="1.11"
+
+重新安装：
+
+	./3_install_chaincode.sh
+
+在` 7_upgrade_chaincode.sh`中更新目标版本和背书：
+
+	CHANNEL_NAME="mychannel"
+	NAME="mycc"
+	VERSION="1.11"
+	...
+	peer chaincode upgrade -o orderer0.member1.example.com:7050 --tls true --cafile tlsca.member1.example.com-cert.pem -C $CHANNEL_NAME -n $NAME -v $VERSION -c '{"Args":["init"]}' -P  "AND ('peers.member1.example.com.member','peers.member2.example.com.member')"
+
+执行：
+
+	./7_upgrade_chaincode.sh
+
+这时候把一个组织的所有Peer关掉，写入/更新账本是不会成功的，对应的Peer的日志会显示背书策略不满足，更新失败。
+
+	2018-07-20 10:14:36.262 UTC [vscc] Invoke -> WARN 051 Endorsement policy failure for transaction txid=2c1b021a0c428c54f52d35eddad84fc793baffb349b09a3cdd5eddac41fc5a39, err: signature set did not satisfy policy
+	2018-07-20 10:14:36.262 UTC [committer/txvalidator] validateTx -> ERRO 052 VSCCValidateTx for transaction txId = 2c1b021a0c428c54f52d35eddad84fc793baffb349b09a3cdd5eddac41fc5a39 returned error: VSCC error: endorsement policy failure, err: signature set did not satisfy policy
+	2018-07-20 10:14:36.263 UTC [valimpl] preprocessProtoBlock -> WARN 053 Channel [mychannel]: Block [18] Transaction index [0] TxId [2c1b021a0c428c54f52d35eddad84fc793baffb349b09a3cdd5eddac41fc5a39] marked as invalid by committer. Reason code [ENDORSEMENT_POLICY_FAILURE]
+	2018-07-20 10:14:36.332 UTC [kvledger] CommitWithPvtData -> INFO 054 Channel [mychannel]: Committed block [18] with 1 transaction(s)
+
+从任意一个peer中查询，查到的也都是以前的值。
+
+
 
 ## 参考
 
