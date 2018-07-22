@@ -3,7 +3,7 @@ layout: default
 title:  "gdb：进程调试与查看工具，查阅内存等"
 author: 李佶澳
 createdate: 2018/07/22 15:05:00
-changedate: 2018/07/22 15:09:36
+changedate: 2018/07/22 15:10:32
 categories: 技巧
 tags: linuxtool
 keywords: gdb,pmap,内存取证据,内存查看,调试工具
@@ -40,6 +40,6 @@ description: 通过gdb可以查看系统中的进程的详细信息，包括内�
 
 ## 参考
 
-1. [文献1][1]
+1. [Dump a linux process's memory to file][1]
 
-[1]: 1.com  "文献1" 
+[1]: https://serverfault.com/questions/173999/dump-a-linux-processs-memory-to-file  "Dump a linux process's memory to file" 
