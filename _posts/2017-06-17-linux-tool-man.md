@@ -1,9 +1,9 @@
 ---
 layout: default
-title: linux的man手册使用
+title: "man：linux的man手册使用"
 author: 李佶澳
 createdate: 2017/06/17 10:50:21
-changedate: 2017/06/17 10:55:03
+changedate: 2018/07/22 14:26:43
 categories: 技巧
 tags:  linuxtool
 keywords: linuxtool,man,手册使用

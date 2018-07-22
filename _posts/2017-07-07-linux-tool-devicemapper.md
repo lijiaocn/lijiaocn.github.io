@@ -1,9 +1,9 @@
 ---
 layout: default
-title: linux的device mapper原理与使用
+title: "device mapper：linux的device mapper原理与使用"
 author: 李佶澳
 createdate: 2017/07/07 14:02:42
-changedate: 2017/09/21 19:29:09
+changedate: 2018/07/22 14:26:57
 categories: 技巧
 tags: linuxtool
 keywords: linux,device mapper

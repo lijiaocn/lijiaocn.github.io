@@ -1,9 +1,9 @@
 ---
 layout: default
-title: 进程管理工具runit
+title: "runit：进程管理工具runit"
 author: 李佶澳
 createdate: 2017/08/24 10:58:48
-changedate: 2017/09/21 18:42:01
+changedate: 2018/07/22 14:27:50
 categories: 技巧
 tags: linuxtool
 keywords: runit,runsvdir,进程管理
