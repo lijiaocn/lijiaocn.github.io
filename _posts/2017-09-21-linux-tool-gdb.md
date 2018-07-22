@@ -3,7 +3,7 @@ layout: default
 title:  "gdb：进程调试与查看工具，查阅内存等"
 author: 李佶澳
 createdate: 2018/07/22 15:05:00
-changedate: 2018/07/22 15:10:32
+changedate: 2018/07/22 15:12:36
 categories: 技巧
 tags: linuxtool
 keywords: gdb,pmap,内存取证据,内存查看,调试工具
@@ -20,7 +20,7 @@ description: 通过gdb可以查看系统中的进程的详细信息，包括内�
 
 ## 导出内存数据
 
-先用pmap或者直接查看/proc/XX/maps得到进程的内存地址：
+先用pmap或者直接查看[/proc/XX/maps][2]得到进程的内存地址：
 
 	$ pmap -X 16210
 	16210:   /tmp/docker -c /tmp/k.conf
@@ -41,5 +41,7 @@ description: 通过gdb可以查看系统中的进程的详细信息，包括内�
 ## 参考
 
 1. [Dump a linux process's memory to file][1]
+2. [linux proc maps文件分析][2]
 
 [1]: https://serverfault.com/questions/173999/dump-a-linux-processs-memory-to-file  "Dump a linux process's memory to file" 
+[2]: https://blog.csdn.net/lijzheng/article/details/23618365 "linux proc maps文件分析"
