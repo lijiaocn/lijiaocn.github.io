@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger：Fabric Chaincode（智能合约、链码）开发方法
 author: 李佶澳
 createdate: 2018/04/03 10:07:00
-changedate: 2018/07/18 14:42:27
+changedate: 2018/07/22 15:02:35
 categories: 项目
 tags: HyperLedger
 keywords: 超级账本,HyperLedger,Fabric,Chaincode,合约链码
@@ -215,7 +215,9 @@ chaincode的代码结构大体如下，直接调用shim.Start()启动chaincode�
 1. [chaincode interface][1]
 2. [HyperledgerFabric的使用][2]
 3. [《超级账本HyperLedger：Fabric的Chaincode（智能合约、链码）开发、使用演示》][3]
+4. [HyperLedger Fabric ChainCode开发——shim.ChaincodeStubInterface用法][4]
 
 [1]: https://github.com/hyperledger/fabric/blob/release-1.1/core/chaincode/shim/interfaces_stable.go  "chaincode interface" 
 [2]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/02/23/hyperledger-fabric-usage.html  "Hyperledger Fabric的使用" 
 [3]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/07/17/hyperledger-fabric-chaincodes-example.html "《超级账本HyperLedger：Fabric的Chaincode（智能合约、链码）开发、使用演示》"
+[4]: https://www.cnblogs.com/studyzy/p/7360733.html "HyperLedger Fabric ChainCode开发——shim.ChaincodeStubInterface用法"
