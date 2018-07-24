@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  超级账本HyperLeger：Fabric的Chaincode开发过程中遇到的问题
+title:  超级账本HyperLedger：Fabric的Chaincode开发过程中遇到的问题
 author: 李佶澳
 createdate: 2018/07/20 16:22:00
 changedate: 2018/07/20 16:40:50
