@@ -3,7 +3,7 @@ layout: default
 title:  "超级账本HyperLedger：Fabric源码走读(一)：源代码阅读环境准备"
 author: 李佶澳
 createdate: 2018/07/17 09:52:00
-changedate: 2018/07/20 13:58:32
+changedate: 2018/07/26 19:32:25
 categories: 项目
 tags: HyperLedger
 keywords: 区块链,源代码走读,Hyperledger,超级账本,Fabric
@@ -28,12 +28,10 @@ description: 超级账本HyperLedger Fabric源代码走读第一部分，准备�
 
 下载后解压即可：
 
-	$ mkdir -p ~/Work/Bin/go-1.9.7
-	$ cd ~/Work/Bin/go-1.9.7
-	$ wget https://dl.google.com/go/go1.9.7.darwin-amd64.tar.gz  (这里下载的是mac版)
-	$ tar -xvf go1.9.7.darwin-amd64.tar.gz
-
-(当前Idea的go插件不支持go1.10.x版本，这里使用1.9.7版本的go，@2018-07-16 13:20:30)
+	$ mkdir -p ~/Work/Bin/go-1.10.3
+	$ cd ~/Work/Bin/go-1.10.3
+	$ wget https://dl.google.com/go/go1.10.3.darwin-amd64.tar.gz  (这里下载的是mac版)
+	$ tar -xvf go1.10.3.darwin-amd64.tar.gz
 
 准备存放源代码的GOPATH目录：
 
@@ -41,8 +39,8 @@ description: 超级账本HyperLedger Fabric源代码走读第一部分，准备�
 
 在~/.bash_profile中设置环境变量：
 
-	export PATH="/Users/lijiao/Work/Bin/go-1.9.7/go/bin:$PATH"
-	export GOROOT="/Users/lijiao/Work/Bin/go-1.9.7/go"
+	export PATH="/Users/lijiao/Work/Bin/go-1.10.3/go/bin:$PATH"
+	export GOROOT="/Users/lijiao/Work/Bin/go-1.10.3/go"
 	export GOPATH="/Users/lijiao/Work/Bin/gopath"
 	export PATH="$GOPATH/bin/:$GOPATH:$PATH"
 

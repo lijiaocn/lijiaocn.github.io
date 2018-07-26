@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger：Fabric 1.2.0使用时遇到的问题
 author: 李佶澳
 createdate: 2018/07/26 11:07:00
-changedate: 2018/07/26 13:27:48
+changedate: 2018/07/26 15:32:11
 categories: 项目
 tags: HyperLedger
 keywords: HyperLedger,1.2.0,problems
@@ -54,13 +54,17 @@ orderer启动的时候根据创世块创建的channel名为mychannel:
 	# CHANNEL_NAME为mychannel
 	$BIN_PATH/configtxgen -profile OrdererGenesis -outputBlock $output/genesisblock -channelID $CHANNEL_NAME
 
-估计是对创世块的理解还是有问题，修改一下名称：
+修改一下名称：
 
 	$BIN_PATH/configtxgen -profile OrdererGenesis -outputBlock $output/genesisblock  -channelID genesis
 
 重新生成创世块，重新部署后成功。
 
 >对创世块和channel之间的关系还是不了解，哎..@2018-07-26 12:03:52
+
+Question:  What is the orderer system channel?
+
+Answer:  The orderer system channel (sometimes called ordering system channel) is the channel the orderer is initially bootstrapped with. It is used to orchestrate channel creation. The orderer system channel defines consortia and the initial configuration for new channels. At channel creation time, the organization definition in the consortium, the /Channel group’s values and policies, as well as the /Channel/Orderer group’s values and policies, are all combined to form the new initial channel definition.
 
 ## 查看node状态时：bad request: Envelope must have a Header
 
