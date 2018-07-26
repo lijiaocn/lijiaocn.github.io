@@ -3,7 +3,7 @@ layout: default
 title: "超级账本HyperLedger：Fabric从1.1.0升级到1.2.0"
 author: 李佶澳
 createdate: 2018/07/19 14:48:00
-changedate: 2018/07/20 13:58:41
+changedate: 2018/07/26 13:33:43
 categories: 项目
 tags: HyperLedger
 keywords: HyperLedger升级,超级账本,Fabric
@@ -95,8 +95,14 @@ Fabric1.2增加了这些新特性：私有数据、服务发现、访问控制�
 
 ## 直接部署Fabric-1.2.0
 
-
 直接部署过程与分支Fabric-1.1.x的部署过程类似，只是将程序文件换成了1.2.0版本。
+
+Fabric 1.2.0的Peer依赖的镜像，提前在Peer上下载好：
+
+	docker pull hyperledger/fabric-ccenv:latest
+	docker pull hyperledger/fabric-baseos:amd64-0.4.10
+	docker pull hyperledger/fabric-javaenv:x86_64-1.1.0     #for java
+	docker pull hyperledger/fabric-baseimage:amd64-0.4.10   #for node.js
 
 ### 目标
 
