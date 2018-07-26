@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger：使用Ansible进行Fabric多节点分布式部署（实战）
 author: 李佶澳
 createdate: 2018/07/09 08:57:00
-changedate: 2018/07/19 15:05:54
+changedate: 2018/07/24 12:30:29
 categories: 项目
 tags: HyperLedger
 keywords: ansible,HyperLedger,多机部署,分布式部署
@@ -95,6 +95,12 @@ QQ交流群：  `576555864`
 >每个部署环境分别在output和inventories中有一个自己的目录，要增加新部署环境除了在output和inventories中准备目录和文件，您还可能需要根据自己的需要在prepare.sh中添加为新的环境生成证书和其它文件的命令。
 
 ## 部署
+
+0 在本地生成ssh登陆证书
+
+	$ ssh-keygen
+	Generating public/private rsa key pair.
+	Enter file in which to save the key (/Users/lijiao/.ssh/id_rsa):
 
 1 初始化目标机器
 
