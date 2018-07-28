@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger：Fabric Golang SDK的使用
 author: 李佶澳
 createdate: 2018/07/28 13:34:00
-changedate: 2018/07/28 14:36:28
+changedate: 2018/07/28 14:37:25
 categories: 编程
 tags: HyperLedger
 keywords: 超级账本,视频教程演示,区块链实践,hyperledger,fabric接口,golang
@@ -31,7 +31,7 @@ crypto-config中只需要包含`需要的`msp和tls证书，需要哪些证书�
 
 ## 查询合约
 
-演示视频和代码讲解在[网易云课堂《HyperLeger Fabric进阶实战课》第五章](https://study.163.com/course/courseMain.htm?courseId=1005359012&share=2&shareId=400000000376006)中。
+演示视频、配置文件和代码讲解在[网易云课堂《HyperLeger Fabric进阶实战课》第五章](https://study.163.com/course/courseMain.htm?courseId=1005359012&share=2&shareId=400000000376006)中。
 
 01-query中通过go-sdk做了一个最简单操作：链接peer，调用合约，查询账本。
 
