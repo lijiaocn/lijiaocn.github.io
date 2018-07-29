@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger：Fabric的Chaincode开发过程中遇到的问题
 author: 李佶澳
 createdate: 2018/07/20 16:22:00
-changedate: 2018/07/20 16:40:50
+changedate: 2018/07/29 13:08:48
 categories: 项目
 tags: HyperLedger
 keywords: Chaincode,智能合约,HyperLedger,链码开发
@@ -16,9 +16,9 @@ description: 这里记录在开发ChainCode的过程中遇到的一些问题，�
 
 ## 说明
 
-description: 这里记录在开发ChainCode的过程中遇到的一些问题，以及解决方法。
-
 这是网易云课堂“[IT技术快速入门学院](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)”使用的素材。
+
+讲解视频位于[《HyperLedger Fabric进阶实战课》第四章](https://study.163.com/course/courseMain.htm?courseId=1005359012&share=2&shareId=400000000376006)。演示用的合约代码托管在在Github上：[合约代码][1]。
 
 ## 本地编译报错: undefined: tar.FormatPAX
 

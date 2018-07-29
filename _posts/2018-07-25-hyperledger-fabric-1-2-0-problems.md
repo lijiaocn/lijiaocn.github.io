@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger：Fabric 1.2.0使用时遇到的问题
 author: 李佶澳
 createdate: 2018/07/26 11:07:00
-changedate: 2018/07/26 15:32:11
+changedate: 2018/07/29 13:09:25
 categories: 项目
 tags: HyperLedger
 keywords: HyperLedger,1.2.0,problems
@@ -15,6 +15,10 @@ description: HyperLedger Fabric 1.2.0使用过程中遇到的一些问题。
 {:toc}
 
 ## 说明
+
+这是“网易云课堂[IT技术快速入门学院](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)”使用的素材。
+
+操作、配置文件和代码讲解视频在[网易云课堂《HyperLeger Fabric进阶实战课》第三章](https://study.163.com/course/courseMain.htm?courseId=1005359012&share=2&shareId=400000000376006)中。
 
 HyperLedger Fabric 1.2.0使用过程中遇到的一些问题。
 

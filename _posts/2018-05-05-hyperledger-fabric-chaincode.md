@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger：Fabric Chaincode（智能合约、链码）开发方法
 author: 李佶澳
 createdate: 2018/04/03 10:07:00
-changedate: 2018/07/22 15:02:35
+changedate: 2018/07/29 13:04:26
 categories: 项目
 tags: HyperLedger
 keywords: 超级账本,HyperLedger,Fabric,Chaincode,合约链码
@@ -16,7 +16,9 @@ description: 学习写一下chaincode
 
 ## 说明
 
-[超级账本HyperLedger视频教程汇总：HyperLedger Fabric的视频讲解--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)
+这是“网易云课堂[IT技术快速入门学院](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)”使用的素材。
+
+操作、配置文件和代码讲解视频在[网易云课堂《HyperLeger Fabric进阶实战课》第一章](https://study.163.com/course/courseMain.htm?courseId=1005359012&share=2&shareId=400000000376006)中。
 
 Hyperledger fabric的chaincode可以使用Go、Node.js、Java等语言开发。
 

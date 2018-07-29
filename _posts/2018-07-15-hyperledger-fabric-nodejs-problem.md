@@ -3,7 +3,7 @@ layout: default
 title:  "超级账本HyperLedger：Fabric Node.js SDK使用时遇到的问题"
 author: 李佶澳
 createdate: 2018/07/15 17:38:00
-changedate: 2018/07/20 13:58:10
+changedate: 2018/07/29 13:05:29
 categories: 问题
 tags: HyperLedger
 keywords: 超级账本,nodejs sdk,fabric sdk,hyperledger
@@ -16,7 +16,9 @@ description: 这里记录使用HyperLedger Fabric的nodejs sdk时遇到的一些
 
 ## 说明
 
-这是网易云课堂“[IT技术快速入门学院](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)”使用的素材。
+这是“网易云课堂[IT技术快速入门学院](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)”使用的素材。
+
+操作、配置文件和代码讲解视频在[网易云课堂《HyperLeger Fabric进阶实战课》第五章](https://study.163.com/course/courseMain.htm?courseId=1005359012&share=2&shareId=400000000376006)中。
 
 HyperLedger Fabric的Node.js SDK的使用方法见：[《超级账本HyperLedger：Fabric Node.js SDK的使用》][2]
 

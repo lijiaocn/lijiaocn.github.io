@@ -3,7 +3,7 @@ layout: default
 title:  "超级账本HyperLedger：Fabric使用kafka进行区块排序（共识，附视频讲解)"
 author: 李佶澳
 createdate: 2018/07/28 23:17:00
-changedate: 2018/07/29 09:50:26
+changedate: 2018/07/29 13:09:49
 categories: 项目
 tags: HyperLedger
 keywords: 超级账本,HyperLedger,orderer,kafka
@@ -17,7 +17,8 @@ description:  在Fabric1.2以及之前的版本中，使用kafka进行区块排�
 ## 说明
 
 这是"网易云课堂[IT技术快速入门学院](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)使用的素材。
-操作和讲解视频位于[《HyperLedger Fabric手把手入门》](https://study.163.com/course/courseMain.htm?courseId=1005326005&share=2&shareId=400000000376006)第四章。
+
+操作和讲解视频位于[《HyperLedger Fabric手把手入门》第四章](https://study.163.com/course/courseMain.htm?courseId=1005326005&share=2&shareId=400000000376006)中。
 
 在Fabric1.2以及之前的版本中，使用kafka进行排序是比较贴近生产的。Fabric支持
 的三种共识机制：solo（单台orderer相当于没有共识）、kafka、pbft(还在开发中)

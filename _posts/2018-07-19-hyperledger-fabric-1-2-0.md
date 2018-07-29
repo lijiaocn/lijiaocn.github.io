@@ -3,7 +3,7 @@ layout: default
 title: "超级账本HyperLedger：Fabric从1.1.0升级到1.2.0"
 author: 李佶澳
 createdate: 2018/07/19 14:48:00
-changedate: 2018/07/26 13:33:43
+changedate: 2018/07/29 13:07:00
 categories: 项目
 tags: HyperLedger
 keywords: HyperLedger升级,超级账本,Fabric
@@ -16,7 +16,9 @@ description: HyperLedger Fabric的升级还是比较方便的，直接替换程�
 
 ## 说明
 
-这是网易云课堂“[IT技术快速入门学院](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)”使用的素材。
+这是“网易云课堂[IT技术快速入门学院](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)”使用的素材。
+
+操作、配置文件和代码讲解视频在[网易云课堂《HyperLeger Fabric进阶实战课》第三章](https://study.163.com/course/courseMain.htm?courseId=1005359012&share=2&shareId=400000000376006)中。
 
 Fabric1.2增加了这些新特性：私有数据、服务发现、访问控制和插拔式背书验证。详情可见[Fabric: What’s new in v1.2][1]。
 
