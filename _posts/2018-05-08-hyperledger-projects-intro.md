@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger：超级账本工作组旗下项目介绍
 author: 李佶澳
 createdate: 2018/05/08 14:35:00
-changedate: 2018/07/16 10:19:53
+changedate: 2018/08/06 19:09:29
 categories: 项目
 tags: HyperLedger
 keywords: 超级账本,HyperLedger,视频教程演示
@@ -154,7 +154,7 @@ Iroha的介绍中也提到了`permissioned`，它解释了这个词的含义，�
 
 [Interledger Protocol (ILP)][20]定义了分布式账本与分布式账本之间、传统账本与分布式账本之间的交互过程。
 
-[Interledger.org](https://interledger.org)中介绍是ILP协议时，称ILP是十多年的研究成果：
+[Interledger.org](https://interledger.org)中介绍ILP协议时，称ILP是一项有十多年积累的研究成果：
 
 	The interledger protocol is the culmination of more than a decade of research in decentralized payment protocols. 
 	This work was started in 2004 by Ryan Fugger, augmented by the development of Bitcoin in 2008 and has involved 
