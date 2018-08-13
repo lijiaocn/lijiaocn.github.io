@@ -3,7 +3,7 @@ layout: default
 title:  "curl：发起http(s)请求，查看http(s)通信过程"
 author: 李佶澳
 createdate: 2018/07/22 15:25:00
-changedate: 2018/07/22 15:29:30
+changedate: 2018/08/10 13:46:58
 categories: 技巧
 tags: linuxtool
 keywords: curl,http,交互
@@ -34,6 +34,10 @@ curl是一个特别方便的用于http(s)客户端。
 	< HTTP/1.1 200 OK
 	< Server: bfe/1.0.8.18
 	...
+
+## https
+
+	curl -k --cacert $ca_file  --key $key_file --cert $cert_file https://XXXX
 
 ## 参考
 

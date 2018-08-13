@@ -1,9 +1,9 @@
 ---
 layout: default
-title:  新型监控告警工具prometheus（普罗米修斯）的使用
+title:  新型监控告警工具prometheus（普罗米修斯）的使用（附视频讲解）
 author: 李佶澳
 createdate: 2018/08/03 10:26:00
-changedate: 2018/08/10 17:31:03
+changedate: 2018/08/13 15:24:44
 categories: 项目
 tags: prometheus
 keywords: prometheus,监控
@@ -148,6 +148,150 @@ TODO: 告警规则
 
 TODO: 通过exporter获取更多监控指标，blackbox_exporter的使用。
 
+### blackbox_exporter
+
+#### 工作原理与配置
+
+[prometheus/blackbox_exporter][7]是一个用来探测HTTP、HTTPS、DNS、TCP和ICMP等网络状态的工具。
+
+在blockbox_exporter中配置的一个个工作模块，[prometheus/blackbox_exporter config][8]。
+
+例如下面的配置中，有两个工作模块`http_2xx`和`http_post_2xx`。
+
+	modules:
+	  http_2xx:
+	    prober: http
+	    http:
+	  http_post_2xx:
+	    prober: http
+	    timeout: 5s
+	    http:
+	      method: POST
+	      headers:
+	        Content-Type: application/json
+	    body: '{}'
+
+模块可以根据需要设置更多的参数和判断条件：
+
+	http_2xx_example:
+	  prober: http
+	  timeout: 5s
+	  http:
+	    valid_http_versions: ["HTTP/1.1", "HTTP/2"]
+	    valid_status_codes: []  # Defaults to 2xx
+	    method: GET
+	    headers:
+	      Host: vhost.example.com
+	      Accept-Language: en-US
+	    no_follow_redirects: false
+	    fail_if_ssl: false
+	    fail_if_not_ssl: false
+	    fail_if_matches_regexp:
+	      - "Could not connect to database"
+	    fail_if_not_matches_regexp:
+	      - "Download the latest version here"
+	    tls_config:
+	      insecure_skip_verify: false
+	    preferred_ip_protocol: "ip4" # defaults to "ip6"
+
+通过blackbox_exporter的服务地址调用这些模块，并传入参数。例如下面调用的是http_2xx模块，传入的参数是http://www.baidu.com ：
+
+	http://10.10.199.154:9115/probe?module=http_2xx&target=http%3A%2F%2Fwww.baidu.com%2F
+
+blackbox_exporter将按照http_2xx中的配置探测目标网址http://www.baidu.com， 并返回探测到的指标：
+
+	# HELP probe_dns_lookup_time_seconds Returns the time taken for probe dns lookup in seconds
+	...<省略>....
+	probe_http_version 1.1
+	# HELP probe_ip_protocol Specifies whether probe ip protocol is IP4 or IP6
+	# TYPE probe_ip_protocol gauge
+	probe_ip_protocol 4
+	# HELP probe_success Displays whether or not the probe was a success
+	# TYPE probe_success gauge
+	probe_success 1
+
+上面的这些指标将被记录在prometheus中。
+
+探测目标在prometheus的配置文件中设置，可以根据需要静态配置，或者指定动态发现：
+
+	scrape_configs:
+	  - job_name: 'blackbox'
+	    metrics_path: /probe
+	    params:
+	      module: [http_2xx]  # Look for a HTTP 200 response.
+	    static_configs:
+	      - targets:
+	        - http://prometheus.io    # Target to probe with http.
+	        - https://prometheus.io   # Target to probe with https.
+	        - http://example.com:8080 # Target to probe with http on port 8080.
+	    relabel_configs:
+	      - source_labels: [__address__]
+	        target_label: __param_target
+	      - source_labels: [__param_target]
+	        target_label: instance
+	      - target_label: __address__
+	        replacement: 127.0.0.1:9115  # The blackbox exporter's real hostname:port.
+
+#### 示例：探测kubernetes的集群node是否ping通
+
+在blackbox的配置文件中配置icmp模块：
+
+	  icmp:
+	    prober: icmp
+
+在prometheus.yml中配置服务发现，设置blackbox目标：
+
+	  - job_name: 'kubernetes-nodes-ping'
+	    kubernetes_sd_configs:
+	    - role: node
+	      api_server: https://10.10.199.154:6443
+	      tls_config:
+	        ca_file: /etc/kubernetes/ssl/ca.pem
+	        cert_file: /etc/kubernetes/ssl/admin.pem
+	        key_file: /etc/kubernetes/ssl/admin-key.pem
+	    bearer_token_file: /etc/kubernetes/ssl/token.csv
+	    scheme: http
+	    tls_config:
+	        ca_file: /etc/kubernetes/ssl/ca.pem
+	        cert_file: /etc/kubernetes/ssl/admin.pem
+	        key_file: /etc/kubernetes/ssl/admin-key.pem
+	    metrics_path: /probe
+	    params:
+	      module: [icmp]
+	    relabel_configs:
+	    - source_labels: [__address__]
+	      regex: (.+):(.+)
+	      replacement: ${1}
+	      target_label: __param_target
+	    - target_label: __address__
+	      replacement: 10.10.199.154:9115
+	    - action: labelmap
+	      regex: __meta_kubernetes_node_label_(.+)
+
+kubernetes_sd_configs中node角色的__address__是：
+
+	The target address defaults to the first existing address of the Kubernetes 
+	node object in the address type order of:
+	NodeInternalIP, NodeExternalIP, NodeLegacyHostIP, and NodeHostName
+
+注意如果action使用的`labelkeep`，很容易出现各种状况。
+
+重新加载配置后，就可以在prometheus的页面中搜索指标probe_success：
+
+	http://10.10.199.154:9090/graph?g0.range_input=1h&g0.expr=probe_success&g0.tab=0
+
+可以编写下面的告警规则，持续2分钟ping不通，触发告警：
+
+	- name: node_icmp_avaliable
+	  rules:
+	  - alert: NODE_ICMP_UNREACHABLE
+	    expr: probe_success{job="kubernetes-nodes-ping"} == 0
+	    for: 2m
+	    labels:
+	      level: 1
+	    annotations:
+	      summary: node is {{ $labels.instance }}
+
 ## 资料
 
 规则检查：
@@ -208,6 +352,8 @@ In order to get the metric "container_cpu_load_average_10s" the cAdvisor must ru
 4. [prometheus first_steps][4]
 5. [prometheus relabel_config][5]
 6. [prometheus exporters][6]
+7. [prometheus/blackbox_exporter][7]
+8. [prometheus/blackbox_exporter config][8]
 
 [1]: https://prometheus.io/docs/introduction/overview/ "prometheus documents"
 [2]: https://prometheus.io/docs/prometheus/latest/configuration/configuration/ "prometheus configuration"
@@ -215,7 +361,10 @@ In order to get the metric "container_cpu_load_average_10s" the cAdvisor must ru
 [4]: https://prometheus.io/docs/introduction/first_steps/ "prometheus first_steps"
 [5]: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#%3Crelabel_config%3E "prometheus relabel_config"
 [6]: https://prometheus.io/docs/instrumenting/exporters/ "prometheus exporters"
+[7]: https://github.com/prometheus/blackbox_exporter "prometheus/blackbox_exporter"
+[8]: https://github.com/prometheus/blackbox_exporter/blob/master/example.yml "prometheus/blackbox_exporter config"
 
 [1]: https://prometheus.io/docs/prometheus/latest/configuration/configuration/  "prometheus配置文件与服务发现" 
 [2]: 2.com  "文献1" 
 
+[]: https://blog.frognew.com/2018/02/prometheus-blackbox-exporter.html "blackbox_exporter的配置"

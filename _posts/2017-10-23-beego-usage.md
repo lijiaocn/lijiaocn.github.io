@@ -3,7 +3,7 @@ layout: default
 title: 怎样用beego开发服务端应用？
 author: 李佶澳
 createdate: 2017/10/23 14:01:13
-changedate: 2017/11/23 19:42:06
+changedate: 2018/08/08 15:32:55
 categories: 方法
 tags: beego
 keywords: beego
