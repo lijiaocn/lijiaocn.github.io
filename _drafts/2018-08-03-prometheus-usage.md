@@ -3,7 +3,7 @@ layout: default
 title:  新型监控告警工具prometheus（普罗米修斯）的使用（附视频讲解）
 author: 李佶澳
 createdate: 2018/08/03 10:26:00
-changedate: 2018/08/13 15:24:44
+changedate: 2018/08/13 17:59:32
 categories: 项目
 tags: prometheus
 keywords: prometheus,监控
@@ -354,6 +354,7 @@ In order to get the metric "container_cpu_load_average_10s" the cAdvisor must ru
 6. [prometheus exporters][6]
 7. [prometheus/blackbox_exporter][7]
 8. [prometheus/blackbox_exporter config][8]
+9. [Promtheus Remote Storage使用案例：多Kubernetes集群监控方案][9]
 
 [1]: https://prometheus.io/docs/introduction/overview/ "prometheus documents"
 [2]: https://prometheus.io/docs/prometheus/latest/configuration/configuration/ "prometheus configuration"
@@ -363,6 +364,7 @@ In order to get the metric "container_cpu_load_average_10s" the cAdvisor must ru
 [6]: https://prometheus.io/docs/instrumenting/exporters/ "prometheus exporters"
 [7]: https://github.com/prometheus/blackbox_exporter "prometheus/blackbox_exporter"
 [8]: https://github.com/prometheus/blackbox_exporter/blob/master/example.yml "prometheus/blackbox_exporter config"
+[9]: http://ylzheng.com/2018/04/25/prometheus-with-mutil-k8s-environment/ "Promtheus Remote Storage使用案例：多Kubernetes集群监控方案"
 
 [1]: https://prometheus.io/docs/prometheus/latest/configuration/configuration/  "prometheus配置文件与服务发现" 
 [2]: 2.com  "文献1" 
