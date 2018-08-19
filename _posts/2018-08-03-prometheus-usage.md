@@ -3,7 +3,7 @@ layout: default
 title:  新型监控告警工具prometheus（普罗米修斯）的使用（附视频讲解）
 author: 李佶澳
 createdate: 2018/08/03 10:26:00
-changedate: 2018/08/19 15:16:56
+changedate: 2018/08/19 18:56:12
 categories: 项目
 tags: prometheus
 keywords: prometheus,监控
@@ -16,9 +16,13 @@ description: prometheus是很流行的监控告警工具，特别是kubernetes�
 
 ## 说明
 
-视频还在制作中，可以通过右侧链接进入[网易云课堂·IT技术快速入门学院](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)查询。
+视频讲解通过链接[网易云课堂·IT技术快速入门学院](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)进入。
 
 [Prometheus][1]是最近几年开始流行的一个新兴监控告警工具，特别是kubernetes的流行带动了prometheus的应用。
+
+Prometheus是一套完整的监控告警系统：
+
+![Prometheus系统组成](https://prometheus.io/assets/architecture-cb2ada1ece6.png)
 
 Prometheus的主要特点有：
 
@@ -30,21 +34,13 @@ Prometheus的主要特点有：
 	6. targets are discovered via service discovery or static configuration
 	7. multiple modes of graphing and dashboarding support
 
-作为一个监控系统，主要的功能就是提供时间序列数据的存储、查询、展示，这也是prometheus的基本功能。
+>influxdb、openTSDB等，是专门时间序列数据库，不是一套完整的监控告警系统，缺少告警功能。
 
-不过，不能将prometheus算作一个时间序列数据存储系统。
+Prometheus系统的[服务发现][2]功能很强大，可以直接通过Kubernetes等系统的接口，发现要监控的目标，不需要人员干预，不需要做系统对接方面的开发。
 
-很多系统都具有这样的功能例如influxdb、openTSDB等，是专门时间序列数据库，但它们不是一套完整的监控告警系统，缺少告警功能。
+Prometheus系统的三部分：prometheus、alertmanager、*_exporter（多个），下文将分别讲解。
 
-而Prometheus是一套完整的监控告警系统：
-
-![Prometheus系统组成](https://prometheus.io/assets/architecture-cb2ada1ece6.png)
-
-另外Prometheus系统的[服务发现][2]功能很强大，可以直接通过Kubernetes等系统的接口，发现要监控的目标，不需要人员干预，不需要做系统对接方面的开发。
-
-Prometheus系统由prometheus、alertmanager、*_exporter（多个）三组程序组成。下面分别讲解。
-
-下面的演示使用的机器IP为：192.168.88.10。
+这里使用的机器IP为：192.168.88.10。
 
 ## Prometheus
 
