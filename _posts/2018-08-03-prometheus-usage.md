@@ -1,9 +1,9 @@
 ---
 layout: default
-title:  新型监控告警工具prometheus（普罗米修斯）的使用（附视频讲解）
+title:  新型监控告警工具prometheus（普罗米修斯）入门使用（附视频讲解）
 author: 李佶澳
 createdate: 2018/08/03 10:26:00
-changedate: 2018/08/19 18:56:12
+changedate: 2018/08/20 07:54:36
 categories: 项目
 tags: prometheus
 keywords: prometheus,监控
