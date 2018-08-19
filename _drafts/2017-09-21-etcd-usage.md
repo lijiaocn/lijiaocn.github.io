@@ -3,7 +3,7 @@ layout: default
 title: 分布式kv存储etcd的使用
 author: lijiaocn
 createdate: 2017/09/21 18:44:21
-changedate: 2017/10/02 13:02:06
+changedate: 2018/08/12 17:12:13
 categories: 项目
 tags: etcd
 keywords: etcd,分布式kv存储,服务发现,leader
@@ -23,6 +23,7 @@ description: etcd是一个可靠的分布式kv存储系统，可以用来做服�
 ## 部署
 
 ### staitc
+
 etcd使用两个端口，`2379`用于处理client请求，`2380`用etcd peer之间通信。
 
 
