@@ -3,7 +3,7 @@ layout: default
 title:  新型监控告警工具prometheus（普罗米修斯）的使用（附视频讲解）
 author: 李佶澳
 createdate: 2018/08/03 10:26:00
-changedate: 2018/08/19 13:52:57
+changedate: 2018/08/19 15:16:56
 categories: 项目
 tags: prometheus
 keywords: prometheus,监控
@@ -483,11 +483,11 @@ alertmanager可以配置成集群模式，即多个alaertmanager一起运行，�
 
 这些exporter分别采集对应系统的指标，并将其以prometheus的格式呈现出来，供prometheus采集。
 
-## blackbox_exporter
+### blackbox_exporter
 
 blackbox_exporter是一个用来探测url、domain等联通、响应情况的exporter。
 
-### 部署启动
+#### 部署启动
 
 	wegt https://github.com/prometheus/blackbox_exporter/releases/download/v0.12.0/blackbox_exporter-0.12.0.linux-amd64.tar.gz
 	tar -xvf blackbox_exporter-0.12.0.linux-amd64.tar.gz
@@ -500,7 +500,7 @@ blackbox_exporter是一个用来探测url、domain等联通、响应情况的exp
 
 	./blaxkbox_exporter
 
-### blackbox_exporter配置文件与工作原理
+#### blackbox_exporter配置文件与工作原理
 
 [prometheus/blackbox_exporter][7]是一个用来探测HTTP、HTTPS、DNS、TCP和ICMP等网络状态的工具。
 
@@ -604,7 +604,7 @@ blackbox_exporter将按照http_2xx中的配置探测目标网址http://www.baidu
 
 可以借助relabel_configs将`__address__`替换为blackbox_exporter的地址，使带有指定参数的blackbox_exporter的url成为prometheus的监控目标。
 
-### 示例：监测kubernetes的集群node的ping的情况
+#### 示例：监测kubernetes的集群node的ping的情况
 
 在blackbox的配置文件中配置icmp模块：
 
