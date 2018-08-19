@@ -3,11 +3,11 @@ layout: default
 title:  新型监控告警工具prometheus（普罗米修斯）的使用（附视频讲解）
 author: 李佶澳
 createdate: 2018/08/03 10:26:00
-changedate: 2018/08/19 13:14:48
+changedate: 2018/08/19 13:17:48
 categories: 项目
 tags: prometheus
 keywords: prometheus,监控
-description: prometheus是最近几年开始流行的一个新兴监控告警工具，特别是kubernetes带动了prometheus的应用。
+description: prometheus是很流行的监控告警工具，特别是kubernetes带动了prometheus的应用，这是prometheus的入门教程。
 
 ---
 
