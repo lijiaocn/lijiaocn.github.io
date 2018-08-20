@@ -3,7 +3,7 @@ layout: default
 title:  服务发现工具consul的使用
 author: 李佶澳
 createdate: 2018/08/17 11:54:00
-changedate: 2018/08/20 14:42:24
+changedate: 2018/08/20 16:27:10
 categories: 项目
 tags: consul
 keywords: consul,服务发现,service mesh
@@ -16,7 +16,7 @@ description: consul是近几年比较流行的服务发现工具
 
 ## 说明
 
-文献是这样引用的: [文献1][1]、[文献2][2]。
+consul是近几年比较流行的服务发现工具，工作中用到，简单了解一下。
 
 ## 快速体验
 
