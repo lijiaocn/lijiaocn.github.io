@@ -3,7 +3,7 @@ layout: default
 title:  新型监控告警工具prometheus（普罗米修斯）入门使用（附视频讲解）
 author: 李佶澳
 createdate: 2018/08/03 10:26:00
-changedate: 2018/08/20 07:54:36
+changedate: 2018/08/20 16:26:09
 categories: 项目
 tags: prometheus
 keywords: prometheus,监控
@@ -235,6 +235,40 @@ relabel_config是一个很强大的功能，除了修改标签，还可以为采
 	      target_label: label_add_by_me
 
 在配置文件中加上上面的内容后，为每个指标都将被添加了一个名为`label_add_by_me`的标签。
+
+### 使用relabel_config过滤目标
+
+2018-08-20 16:22:01补充，视频中没有这一节
+
+还可以通过relabel_config将不需要的target过滤：
+
+	  - job_name: "user_server_icmp_detect"
+	    consul_sd_configs:
+	    - server: "127.0.0.1:8500"
+	    scheme: http
+	    metrics_path: /probe
+	    params:
+	      module: [icmp]
+	    relabel_configs:
+	    - action: keep
+	      source_labels: [__meta_consul_tags]        #如果__meta_consul_tags匹配正则，则保留该目标
+	      regex: '.*,icmp,.*'
+	    - source_labels: [__meta_consul_service]
+	      regex: '(.+)@(.+)@(.+)'
+	      replacement: ${2}
+	      target_label: type
+	    - source_labels: [__meta_consul_service]
+	      regex: '(.+)@(.+)@(.+)'
+	      replacement: ${1}
+	      target_label: user
+	    - source_labels: [__address__]
+	      regex: (.+):(.+)
+	      replacement: ${1}
+	      target_label: __param_target
+	    - target_label: __address__
+	      replacement:  10.10.199.154:9115
+	    - source_labels: [__param_target]
+	      target_label: instance
 
 ### prometheus的查询语句
 

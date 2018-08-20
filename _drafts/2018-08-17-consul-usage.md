@@ -3,7 +3,7 @@ layout: default
 title:  服务发现工具consul的使用
 author: 李佶澳
 createdate: 2018/08/17 11:54:00
-changedate: 2018/08/17 19:06:03
+changedate: 2018/08/20 14:42:24
 categories: 项目
 tags: consul
 keywords: consul,服务发现,service mesh
@@ -33,8 +33,14 @@ description: consul是近几年比较流行的服务发现工具
 	#!/bin/bash
 	nohup ./consul agent  -bootstrap -bind=10.10.199.154 -server -data-dir=./data/ 2>&1 1>consul.log  &
 
-启动后，可以操作：
+启动后，可以直接通过网址`http://127.0.0.1:8500/ui`打开consul的网页。
 
+查看组成consul服务的node：
+
+	$ ./consul catalog nodes
+	Node           ID        Address        DC
+	10-10-199-154  3f33abc5  10.10.199.154  dc1
+	
 	$ curl 127.0.0.1:8500/v1/catalog/nodes 2>/dev/null |python -m json.tool
 	[
 	    {
@@ -54,8 +60,9 @@ description: consul是近几年比较流行的服务发现工具
 	    }
 	]
 
-注册服务：
+注册服务，注意，注册的时候使用的api是`agent/service`：
 
+	# curl --request PUT --data @server.json  http://127.0.0.1:8500/v1/agent/service/register
 	# cat server.json
 	{
 	  "Name": "user1.server.10.10.199.154",
@@ -70,12 +77,14 @@ description: consul是近几年比较流行的服务发现工具
 	  },
 	  "EnableTagOverride": false
 	}
-	
-	//注意：注册的时候使用的api是agent/service
-	# curl --request PUT --data @server.json  http://127.0.0.1:8500/v1/agent/service/register
 
 查询服务：
 
+	$ ./consul catalog services
+	consul
+	user1.server.10.10.199.154
+	web
+	
 	$ curl http://10.10.199.154:8500/v1/catalog/service/user1.server.10.10.199.154
 	[
 	    {
@@ -90,7 +99,9 @@ description: consul是近几年比较流行的服务发现工具
 	        "NodeMeta": {
 	...
 
+删除服务：
 
+	curl --request PUT  http://127.0.0.1:8500/v1/agent/service/deregister/user1.server.10.10.199.154
 
 ## 参考
 
