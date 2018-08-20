@@ -3,7 +3,7 @@ layout: default
 title:  新型监控告警工具prometheus（普罗米修斯）入门使用（附视频讲解）
 author: 李佶澳
 createdate: 2018/08/03 10:26:00
-changedate: 2018/08/20 07:54:36
+changedate: 2018/08/20 08:06:26
 categories: 项目
 tags: prometheus
 keywords: prometheus,监控
@@ -317,7 +317,7 @@ alertmanager是用来接收prometheus发出的告警，然后按照配置文件�
 
 将告警集中到alertmanager，可以对告警进行更细致的管理。
 
-### 部署启动
+### alertmanager部署启动
 
 	wget https://github.com/prometheus/alertmanager/releases/download/v0.15.2/alertmanager-0.15.2.linux-amd64.tar.gz
 	tar -xvf alertmanager-0.15.2.linux-amd64.tar.gz
@@ -483,7 +483,7 @@ alertmanager可以配置成集群模式，即多个alaertmanager一起运行，�
 
 blackbox_exporter是一个用来探测url、domain等联通、响应情况的exporter。
 
-#### 部署启动
+#### blackbox_exporter部署启动
 
 	wegt https://github.com/prometheus/blackbox_exporter/releases/download/v0.12.0/blackbox_exporter-0.12.0.linux-amd64.tar.gz
 	tar -xvf blackbox_exporter-0.12.0.linux-amd64.tar.gz
