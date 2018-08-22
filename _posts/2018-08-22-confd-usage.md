@@ -3,7 +3,7 @@ layout: default
 title:  配置文件动态生成工具confd的使用
 author: 李佶澳
 createdate: 2018/08/22 11:28:00
-changedate: 2018/08/22 18:44:13
+changedate: 2018/08/22 18:51:37
 categories: 项目
 tags: config
 keywords: config,配置管理
@@ -66,6 +66,8 @@ confd的配置路径（-confdir指定的路径）中需要有conf.d和templates�
 
 其中`myconfig.conf.tmpl`是等待被渲染的配置文件模版，使用[go template][2]语法：
 
+{% raw %}
+
 	$ cat templates/myconfig.conf.tmpl
 	[myconfig]
 	
@@ -75,6 +77,8 @@ confd的配置路径（-confdir指定的路径）中需要有conf.d和templates�
 	{{range getvs "/rules/*"}}
 	loop rule:  {{.}};
 	{{end}}
+
+{% endraw %}
 
 启动：
 
