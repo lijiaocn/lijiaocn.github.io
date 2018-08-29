@@ -3,7 +3,7 @@ layout: default
 title: haproxy的基本使用与常见实践
 author: 李佶澳
 createdate: 2017/06/26 10:40:02
-changedate: 2018/03/02 10:54:25
+changedate: 2018/08/25 11:08:03
 categories: 技巧
 tags: haproxy
 keywords:  haproxy,lb 
@@ -371,6 +371,17 @@ haproxy1.7中有11个以`timeout`开头的[配置][11]。[连接haproxy间歇性
 
 如果没有和host匹配的证书，使用第一个证书。
 
+## http跳转https
+ 
+[haproxy redirect][24]:
+
+	 frontend example.com
+	     mode http
+	     bind 0.0.0.0:80
+	     acl exmaple-com-acl hdr(host) -i example.com 
+	     redirect scheme https if !{ ssl_fc } 
+	     option forwardfor except 127.0.0.0/8
+	     errorfile 503 /etc/haproxy/errors/503.http
 
 ## 会话保持
 
@@ -630,6 +641,7 @@ acl可用的flags:
 21. [haproxy fetching samples][21]
 22. [Global parameters][22]
 23. [haproxy: Proxy keywords matrix][23]
+24. [haproxy redirect][24]
 
 [1]: http://www.haproxy.org/  "haproxy site" 
 [2]: http://www.haproxy.org/#doc1.7 "haproxy doc v1.7"
@@ -654,3 +666,4 @@ acl可用的flags:
 [21]: http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#7.3  "haproxy fetching samples"
 [22]: http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#3 "haproxy: Global parameters"
 [23]: http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#4.1 "haproxy: Proxy keywords matrix"
+[24]: http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#4-redirect "haproxy redirect"
