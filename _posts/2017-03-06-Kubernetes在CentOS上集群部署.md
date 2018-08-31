@@ -1,9 +1,9 @@
 ---
 layout: default
-title: kubernetes在CentOS上的集群部署
+title: 使用CentOS的yum命令，部署kubernetes集群
 author: 李佶澳
 createdate: 2017/03/06 11:59:43
-changedate: 2017/10/28 12:38:24
+changedate: 2018/08/31 18:29:51
 categories: 项目
 tags: kubernetes
 keywords: kubernetes,业务编排,centos
@@ -18,7 +18,7 @@ description: 介绍了如何在CentOS上部署kubernetes系统。
 
 	操作系统： CentOS Linux release 7.3.1611 (Core) 
 
-## 分布式部署
+## 集群部署
 
 ### 规划
 
@@ -372,6 +372,8 @@ kubernetes服务地址的获取方式:
 
 	systemctl start docker-distribution
 
-----
+## 参考
+
+1. [Kubernetes Dashboard][1]
 
 [1]: https://github.com/kubernetes/dashboard "kubernetes dashboard"

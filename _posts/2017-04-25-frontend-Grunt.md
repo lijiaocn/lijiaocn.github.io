@@ -3,7 +3,7 @@ layout: default
 title: Grunt使用手册
 author: 李佶澳
 createdate: 2017/04/25 15:41:52
-changedate: 2017/09/04 21:45:32
+changedate: 2018/08/30 18:31:26
 categories: 技巧
 tags: 前端
 keywords: Grunt,Grunt插件,javascript,构建工具
@@ -20,6 +20,10 @@ description: Grunt,JaveScript世界的构建工具,主要还是依靠大量的�
 
 	package.json: 此文件被npm用于存储项目的元数据，以便将此项目发布为npm模块。
 	Gruntfile: 此文件被命名为 Gruntfile.js 或 Gruntfile.coffee，用来配置或定义任务（task）并加载Grunt插件的。
+
+## 安装
+
+	npm install -g grunt-cli
 
 ## package.json
 
