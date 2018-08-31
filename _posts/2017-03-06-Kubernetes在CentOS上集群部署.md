@@ -1,9 +1,9 @@
 ---
 layout: default
-title: 使用CentOS的yum命令，部署kubernetes集群
+title: kubernetes在CentOS上的集群部署
 author: 李佶澳
 createdate: 2017/03/06 11:59:43
-changedate: 2018/08/31 18:29:51
+changedate: 2018/08/31 18:36:16
 categories: 项目
 tags: kubernetes
 keywords: kubernetes,业务编排,centos
