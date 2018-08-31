@@ -3,7 +3,7 @@ layout: default
 title: kubernetes在CentOS上的集群部署
 author: 李佶澳
 createdate: 2017/03/06 11:59:43
-changedate: 2018/08/31 18:36:16
+changedate: 2018/08/31 18:43:29
 categories: 项目
 tags: kubernetes
 keywords: kubernetes,业务编排,centos
