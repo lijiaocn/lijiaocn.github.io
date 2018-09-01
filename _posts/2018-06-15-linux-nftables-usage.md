@@ -3,8 +3,8 @@ layout: default
 title: Linux的nftables的使用
 author: 李佶澳
 createdate: 2018/06/15 10:23:00
-changedate: 2018/06/16 17:20:04
-categories: 方法
+changedate: 2018/09/01 15:26:30
+categories: 项目
 tags: linux
 keywords: linux nftables conntrack debuging 网络调试
 description: nftables是一个新的报文分类框架（packet classification framework），被用来取代iptables，知识又要更新了

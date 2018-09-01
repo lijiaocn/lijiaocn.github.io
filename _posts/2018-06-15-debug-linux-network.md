@@ -3,8 +3,8 @@ layout: default
 title: Linux的iptables规则调试、连接跟踪、报文跟踪
 author: 李佶澳
 createdate: 2018/06/15 10:23:00
-changedate: 2018/06/28 17:23:10
-categories: 方法
+changedate: 2018/09/01 15:27:24
+categories: 技巧
 tags: linux
 keywords: linux iptables conntrack debuging 网络调试
 description: 突然发现，没有掌握一套行之有效的调试iptables规则、追踪linux上的连接、报文的方法
