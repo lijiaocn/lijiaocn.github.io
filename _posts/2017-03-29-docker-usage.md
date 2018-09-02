@@ -1,9 +1,9 @@
 ---
 layout: default
-title: docker的基础使用
+title: docker最基本的一些用法
 author: 李佶澳
 createdate: 2017/03/29 11:11:53
-changedate: 2018/09/02 21:57:38
+changedate: 2018/09/02 22:05:32
 categories: 技巧
 tags: docker
 keywords: docker,使用手册,docker的使用手册
