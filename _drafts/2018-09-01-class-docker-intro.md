@@ -3,7 +3,7 @@ layout: default
 title:  "Kubernetes容器集群从零开始：Docker入门"
 author: 李佶澳
 createdate: 2018/09/01 15:12:00
-changedate: 2018/09/02 21:54:15
+changedate: 2018/09/02 23:11:20
 categories: 项目
 tags: docker kubernetes 
 keywords: kubernetes,容器集群,docker
@@ -110,6 +110,12 @@ Docker是由负责容器管理的服务端dockerd，和用来操作的docker命�
 
 ## Docker的使用
 
+参考以前的笔记： [docker的常用操作][19]。
+
+## Docker的原理
+
+可以先阅读一下以前的笔记：[一个最简容器的实现][20]。
+
 ## 参考
 
 1. [Docker Website][1]
@@ -130,6 +136,8 @@ Docker是由负责容器管理的服务端dockerd，和用来操作的docker命�
 16. [Post-installation steps for Linux][16]
 17. [Dockerd CLI Usage][17]
 18. [docker daemon configuration file][18]
+19. [docker的常用操作][19]
+20. [一个最简容器的实现][20]
 
 [1]: https://www.docker.com/ "Docker Website" 
 [2]: https://docs.docker.com/  "Docker Document" 
@@ -149,3 +157,5 @@ Docker是由负责容器管理的服务端dockerd，和用来操作的docker命�
 [16]: https://docs.docker.com/install/linux/linux-postinstall/ "Post-installation steps for Linux"
 [17]: https://docs.docker.com/engine/reference/commandline/dockerd/ "Dockerd CLI Usage"
 [18]: https://docs.docker.com/engine/reference/commandline/dockerd/#daemon-configuration-file "docker daemon configuration file"
+[19]: http://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2017/03/29/docker-usage.html "docker的常用操作"
+[20]: http://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2015/02/25/%E4%B8%80%E4%B8%AA%E6%9C%80%E7%AE%80%E5%AE%B9%E5%99%A8%E7%9A%84%E5%AE%9E%E7%8E%B0.html "一个最简容器的实现"
