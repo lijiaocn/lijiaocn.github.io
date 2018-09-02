@@ -3,7 +3,7 @@ layout: default
 title: docker的基础使用
 author: 李佶澳
 createdate: 2017/03/29 11:11:53
-changedate: 2017/09/11 16:20:40
+changedate: 2018/09/02 21:54:13
 categories: 技巧
 tags: docker
 keywords: docker,使用手册,docker的使用手册
@@ -14,38 +14,6 @@ description: docker的使用手册，配置docker deamon运行参数等。
 * auto-gen TOC:
 {:toc}
 
-## 摘要
-
-## 资料
-
-[Source](https://github.com/docker/docker)  源代码
-
-[Master Binaries](https://master.dockerproject.com/)  可以下载编译好的docker
-
-[Report Issues](https://github.com/docker/docker/issues) 问题汇报
-
-[Report Security Issues](mail:security@docker.com)  安全问题汇报
-
-[Pull Request](https://github.com/docker/docker/pulls?q=is%3Aopen+is%3Apr) 发起建议
-
-[Dev Maillist](https://groups.google.com/forum/?fromgroups#!forum/docker-dev) 邮件组
-
->在贡献编码之前，先在邮件组中讨论开发计划。
-
-Issues处理流程:
-
-	创建Issues ->       如果是Proposal              -> 把docker的master fork到自己的github
-	            开发之前到邮件组中进行设计讨论          创建名为XXXX-something的分支
-	                                                    (XXXX是对应issues的编号)
-	                                                                |
-	                                                                v 
-	在docker的项目中发布一个pull request(PR)            将改动push到自己的XXXX-something分支上
-	1 只有发布了PR之后,其他成员才会留意到你的修改   <-  1 如果创建或修改特性，更新相关文档
-	   并对你的代码进行审核                             2 commit之前，gofmt格式化代码       
-	2 当你向你自己的分支进行push操作后, 需要到PR中      3 commit message必须有不多于50字符的简要说明       
-	   进行留言，通知其他成员                           4 commit是sign your work: git commit -s       
-	                                                    5 需要提交unit test代码       
-	                                                    6 push前先做rebase                                 
 
 ## docker基础镜像的制作
 
@@ -329,7 +297,7 @@ docker自身的编译环境也是运行在docker容器中的, 这里以docker编
 	# Upload docker source
 	COPY . /go/src/github.com/docker/docker
 
-## 镜像管理
+## Docker镜像管理
 
 ### 查看本地所有的镜像
 
@@ -344,7 +312,7 @@ docker自身的编译环境也是运行在docker容器中的, 这里以docker编
 
 	docker search
 
-docker搜索其它registry中的镜像:
+docker搜索指定registry中的镜像:
 
 	docker search 192.168.1.104:5000/redis
 	docker search 192.168.1.104:5000/*
@@ -380,7 +348,7 @@ docker tag为容器设置tag
 
 	docker push 
 
-### 导入导出
+### 导入导出镜像
 
 save/load
 
@@ -434,9 +402,9 @@ Where is images? 对于虚拟机来说, 虚拟机文件就在那里, 当时docke
 	ubuntu              14.04               53bf7a53e890        2 days ago          199.8 MB
 	ubuntu              latest              53bf7a53e890        2 days ago          199.8 MB
 
-## 镜像使用
+## 运行容器
 
-### 运行交互程序
+### 前台运行容器
 
 	[root@localhost ~]# docker run -t -i  ubuntu:14.04  /bin/bash
 	[info] POST /v1.14/containers/create
@@ -458,14 +426,14 @@ Where is images? 对于虚拟机来说, 虚拟机文件就在那里, 当时docke
 
 >注意: -t表示创建tty, -i表示交互运行, 可以在docker help run中查看选项。
 
-### 后台运行
+### 后台运行容器
 
 	[root@localhost ~]# docker run -d ubuntu:14.04 /bin/bash -c "while true;do echo hello world; sleep 1;done"
 	2eecc150eda7af8226b29856468a5428e59664977663779f591cae59c1a217b5
 
 >-d表示放入后台运行, 最下面显示字符串新建的docker的唯一id 
 
-### 查看运行中的镜像
+### 查看运行中的容器
 
 	[root@localhost ~]# docker ps
 	CONTAINER ID    IMAGE           COMMAND                CREATED         STATUS         PORTS    NAMES
@@ -473,7 +441,7 @@ Where is images? 对于虚拟机来说, 虚拟机文件就在那里, 当时docke
 
 >第一栏的ID数值是容器ID的简短形式, 最后一栏的NAMES是docker自动为容器的命的名。可以通过这个名字和这个容器进行交互
 
-### 查看运行中的镜像的输出
+### 查看容器的输出
 
 可以通过docker logs查看后台运行的容器的输出, 目标容器可以通过id指定, 也可以通过Name指定:
 
@@ -485,7 +453,7 @@ Where is images? 对于虚拟机来说, 虚拟机文件就在那里, 当时docke
 	hello world
 	hello world
 
-### 查看镜像中运行的进程
+### 查看容器中的进程
 
 可以通过docker top 查看容器内运行的进程
 
@@ -495,7 +463,7 @@ Where is images? 对于虚拟机来说, 虚拟机文件就在那里, 当时docke
 	root    14248   14221   0 11:46   ? 00:00:00crond
 	root    14250   14221   0 11:46   pts/4   00:00:00/usr/sbin/sshd -D
 
-### 查看镜像详情 
+### 查看容器详情 
 
 可以通过docker insepect 查看容器的信息
 
@@ -509,9 +477,9 @@ Where is images? 对于虚拟机来说, 虚拟机文件就在那里, 当时docke
 			"AttachStdin": false,
 		...
 
-###　停止镜像 
+### 停止容器 
 
-docker stop停止镜像的运行
+docker stop停止正在运行的容器：
 
 	[root@localhost ~]# docker ps
 	CONTAINER ID IMAGE         COMMAND                CREATED             STATUS              PORTS               NAMES
@@ -521,7 +489,7 @@ docker stop停止镜像的运行
 	CONTAINER ID     IMAGE         COMMAND             CREATED             STATUS              PORTS               NAMES
 	[root@localhost ~]# 
 
-发现将在后台运行的镜像STOP之后, 镜像依然是存在的, 可以通过docker ps -a查看所有的镜像。
+容器被停止之后，容器文件依然是存在的, 可以通过`docker ps -a`查看正在运行的和已经停止运行的容器。
 
 	[root@localhost ~]# docker ps -a
 	CONTAINER ID    IMAGE         COMMAND        CREATED       STATUS             PORTS         NAMES
@@ -529,27 +497,23 @@ docker stop停止镜像的运行
 	e7ebdbdd0cf0    ubuntu:14.04    "bash"       About an hour ago   Exited (0) About an hour ago             mad_sinoussi    
 	68c792c83338    ubuntu:14.04    "echo hello" About an hour ago   Exited (0) About an hour ago             drunk_brown     
 
->从docker ps -a中可以看到, 每次docker run都是在创建一个新的镜像,  所以要搞清楚是要创建镜像还是启动镜像。
+>从docker ps -a中可以看到, 每次docker run都是在创建一个新的容器文件
 
-### 启动镜像
-
-docker start启动镜像
-
-### 查看活动的的镜像
-
-docker attach附加到运行的镜像的1号进程(PID:1), 可以查看pid为1的进程的输出. 
-
-如果该进程为交互式的, 也可以看到进程的所有交互过程，也可以直接与进程进行交互。
-
-TODO: 文档上说是痛过ctrl-q ctrl-p可以detach, 并且镜像继续运行。通过ctrl-c, detach的同时关停镜像。
-
-	但是没操作成功 ！
-
-### 删除镜像
+### 删除容器
 
 docker rm删除镜像:
 
 	docker rm 2eecc150eda7  
+
+###  attach运行中的容器
+
+docker attach接入到容器的1号进程(PID:1), 可以查看pid为1的进程的输出. 
+
+如果该进程为交互式的, 也可以看到进程的所有交互过程，也可以直接与进程进行交互。
+
+TODO: 文档上说是通过ctrl-q ctrl-p可以detach, 并且容器继续运行。通过ctrl-c, detach的同时关停镜像。
+
+	但是没操作成功 ！
 
 ### 端口映射 
 
@@ -584,165 +548,14 @@ docker启动的时候会自动加载/etc/docker/deamon.json，读取其中的配
 	}
 
 注意同一个参数只能使用一种方式配置，如果既在配置文件中配置了，也在daemon.json中配置了，docker daemon将会启动失败。
+
 ## 其它
 
 ### boot2docker
 
 一个boot2docker的发行版, 专门运行docker镜像的linux, 比较有意思, 以后闲暇时可以研究下。
 
-### docker搜索其它registry中的镜像
-
-默认搜索docker.io中的镜像，现在要搜索192.168.1.104中镜像:
-
-	docker search 192.168.1.104:5000/redis
-	docker search 192.168.1.104:5000/*
-
-## docker的开发环境镜像
-
-[官方手册](https://docs.docker.com/contributing/devenvironment/)
-
-docker的开发环境也是一个docker，在docker源码的根目录下，有一个Dockerfile, 在make build时候会根据这个Dockerfile创建一个开发环境的image.
-
-通过下面的操作, 将开发环境的镜像导出:
-
-	1. 先安装一个docker, 并且启动docker server.
-		$ wget https://get.docker.io/builds/Linux/x86_64/docker-latest -O docker
-		$ chmod +x docker
-		$ sudo ./docker -d &
-	2. 下载一份docker的源码：
-		$ git clone https://git@github.com/docker/docker
-		$ cd docker
-	3. make build    
-		查看Makefile可以发现, 首先运行make build时使用docker build创建了一个image, 
-		这个image就是docker的编译环境
-			build: bundles
-				docker build -t "$(DOCKER_IMAGE)" .
-
-	   成功之后，会在docker images中看到一个名为 dockerXXX的镜像, 可以将其save到一个文件中,如下:
-			docker save -o ubuntu_14.04.tar.gz ubuntu:14.04     //save
-			docker load -i ubuntu_14.04.tar.gz                  //load
-
-也可以根据Dockerfile中的描述，自行配置docker的开发环境。
-
-源码的顶层目录结构如下, 其中docker目录是代码的入口:
-
-	[root@localhost docker.git]# pwd
-	/root/docker.git
-	[root@localhost docker.git]# ls
-	api           contrib          docs         integration-cli  opts       vendor
-	archive       CONTRIBUTING.md  engine       LICENSE          pkg        VERSION
-	AUTHORS       daemon           events       links            README.md  volumes
-	builder       docker           graph        MAINTAINERS      reexec
-	builtins      Dockerfile       hack         Makefile         registry
-	bundles       dockerinit       image        nat              runconfig
-	CHANGELOG.md  dockerversion    integration  NOTICE           utils
-
-
-## API
-
-Docker Server是一个后台进程(docker -d), 提供了一个类似rest的API
-
-[api](http://docs.docker.com/reference/api/docker_remote_api_v1.16/)
-
-## 源码剖析
-
-### 编译过程
-
-假设docker的编译镜像是docker:master:
-
-	docker run docker:master hack/make.sh  [all|binary]
-
-hack/make.sh的执行路径:
-
-	/go/src/github.com/docker/docker   
-	# make.sh中对路径进行了检查, 必须在该路径下执行
-	# 这个路径中存放是docker的源码
-	# Dockerfile通过WORKDIR设置了当前路径， 
-
-hack/make.sh可以指定多个编译目标，"hack/make.sh binary"为例:
-
-	1. 在/go/src/github.com/docker/docker中建立一个bundles目录，生成的目标文件将被放到这个目录中。
-	2. hack/mash.sh中完成了一些准备工作，目标文件产生是由hack/make/目录下的同名的脚本完成的。
-
-hack/make/binary:
-
-	#!/bin/bash
-	set -e
-	 
-	DEST=$1
-	BINARY_NAME="docker-$VERSION"
-	BINARY_EXTENSION="$(binary_extension)"
-	BINARY_FULLNAME="$BINARY_NAME$BINARY_EXTENSION"
-	 
-	# Cygdrive paths don't play well with go build -o.
-	if [[ "$(uname -s)" == CYGWIN* ]]; then
-	   DEST=$(cygpath -mw $DEST)
-	fi
-	 
-	# 这里是真正的编译命令,编译了docker源码的一级目录docker中的go文件, 这里也是docker代码的入口。
-	go build \
-	   -o "$DEST/$BINARY_FULLNAME" \
-	   "${BUILDFLAGS[@]}" \
-	   -ldflags "
-	      $LDFLAGS
-	      $LDFLAGS_STATIC_DOCKER
-	   " \
-	   ./docker
-	echo "Created binary: $DEST/$BINARY_FULLNAME"
-	ln -sf "$BINARY_FULLNAME" "$DEST/docker$BINARY_EXTENSION"
-	hash_files "$DEST/$BINARY_FULLNAME"
-
-hack/make.sh总共有以下目标:
-
-	# List of bundles to create when no argument is passed
-	DEFAULT_BUNDLES=(
-	   validate-dco
-	   validate-gofmt
-	 
-	   binary
-	 
-	   test-unit
-	   test-integration-cli
-	   test-docker-py
-	 
-	   dynbinary
-	   test-integration
-	 
-	   cover
-	   cross
-	   tgz
-	   ubuntu
-	)
-
-### 依赖的组件
-
-[cgroup](http://blog.dotcloud.com/kernel-secrets-from-the-paas-garage-part-24-c)
-[namespacing](http://blog.dotcloud.com/under-the-hood-linux-kernels-on-dotcloud-part)
-[Go](http://golang.org)
-
-介绍资料:  [Paas under the hood](http://www.dotcloud.com/ebook.html)
-
-### 入口
-
-虽然docker最终形态只是一个名为docker的可执行文件。这个文件中实际包含client和daemon两个部分。
-
-	client部分是操作、管理工具, 用于向daemon发送指令, 接收daemon的回应。
-	daemon是后台服务, 负责容器、image的管理等, 这才是docker的主要部分。
-
-docker没有将这两部分拆成两个程序, 而是将他们合并在一个程序中。
-
-docker程序的入口在docker.git/docker目录中:
-
-  client.go        //docker client的入口
-  daemon.go        //docker daemon的入口
-  docker.go        //client与daemon的合并
-
-daemon初始化:
-
-	docker/daemon.go -- func mainDaemon(){...}
-
-
-## 搭建Docker registry
+### 搭建Docker registry
 
 [docker distribution](https://github.com/docker/distribution)
 
@@ -771,3 +584,33 @@ Docker Hub已经提供了一个Registry的容器
 
 	docker  pull X.X.X.X:5000/redis:latest
 
+## 资料
+
+[Source](https://github.com/docker/docker)  源代码
+
+[Master Binaries](https://master.dockerproject.com/)  可以下载编译好的docker
+
+[Report Issues](https://github.com/docker/docker/issues) 问题汇报
+
+[Report Security Issues](mail:security@docker.com)  安全问题汇报
+
+[Pull Request](https://github.com/docker/docker/pulls?q=is%3Aopen+is%3Apr) 发起建议
+
+[Dev Maillist](https://groups.google.com/forum/?fromgroups#!forum/docker-dev) 邮件组
+
+>在贡献编码之前，先在邮件组中讨论开发计划。
+
+Issues处理流程:
+
+	创建Issues ->       如果是Proposal              -> 把docker的master fork到自己的github
+	            开发之前到邮件组中进行设计讨论          创建名为XXXX-something的分支
+	                                                    (XXXX是对应issues的编号)
+	                                                                |
+	                                                                v 
+	在docker的项目中发布一个pull request(PR)            将改动push到自己的XXXX-something分支上
+	1 只有发布了PR之后,其他成员才会留意到你的修改   <-  1 如果创建或修改特性，更新相关文档
+	   并对你的代码进行审核                             2 commit之前，gofmt格式化代码       
+	2 当你向你自己的分支进行push操作后, 需要到PR中      3 commit message必须有不多于50字符的简要说明       
+	   进行留言，通知其他成员                           4 commit是sign your work: git commit -s       
+	                                                    5 需要提交unit test代码       
+	                                                    6 push前先做rebase                                 
