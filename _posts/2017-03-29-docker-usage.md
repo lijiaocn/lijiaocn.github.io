@@ -3,7 +3,7 @@ layout: default
 title: docker的基础使用
 author: 李佶澳
 createdate: 2017/03/29 11:11:53
-changedate: 2018/09/02 21:54:13
+changedate: 2018/09/02 21:57:38
 categories: 技巧
 tags: docker
 keywords: docker,使用手册,docker的使用手册
@@ -477,6 +477,16 @@ Where is images? 对于虚拟机来说, 虚拟机文件就在那里, 当时docke
 			"AttachStdin": false,
 		...
 
+###  attach运行中的容器
+
+docker attach接入到容器的1号进程(PID:1), 可以查看pid为1的进程的输出. 
+
+如果该进程为交互式的, 也可以看到进程的所有交互过程，也可以直接与进程进行交互。
+
+TODO: 文档上说是通过ctrl-q ctrl-p可以detach, 并且容器继续运行。通过ctrl-c, detach的同时关停镜像。
+
+	但是没操作成功 ！
+
 ### 停止容器 
 
 docker stop停止正在运行的容器：
@@ -504,16 +514,6 @@ docker stop停止正在运行的容器：
 docker rm删除镜像:
 
 	docker rm 2eecc150eda7  
-
-###  attach运行中的容器
-
-docker attach接入到容器的1号进程(PID:1), 可以查看pid为1的进程的输出. 
-
-如果该进程为交互式的, 也可以看到进程的所有交互过程，也可以直接与进程进行交互。
-
-TODO: 文档上说是通过ctrl-q ctrl-p可以detach, 并且容器继续运行。通过ctrl-c, detach的同时关停镜像。
-
-	但是没操作成功 ！
 
 ### 端口映射 
 
