@@ -1,9 +1,9 @@
 ---
 layout: default
-title:  "Kubernetes容器集群从零开始：Docker入门"
+title:  "Kubernetes容器集群从零讲解：Docker入门"
 author: 李佶澳
 createdate: 2018/09/01 15:12:00
-changedate: 2018/09/02 23:11:20
+changedate: 2018/09/03 10:44:16
 categories: 项目
 tags: docker kubernetes 
 keywords: kubernetes,容器集群,docker
