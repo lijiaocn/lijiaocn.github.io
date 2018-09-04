@@ -3,7 +3,7 @@ layout: default
 title:  "Kubernetes容器集群从零讲解：正篇"
 author: 李佶澳
 createdate: 2018/09/03 20:43:00
-changedate: 2018/09/03 23:54:16
+changedate: 2018/09/04 17:24:51
 categories: 项目
 tags: kubernetes
 keywords: kubernetes,容器集群,docker
@@ -51,7 +51,9 @@ Kubernetes网站的域名是[kubernetes.io][1]，可以用短域名[k8s.io](http
 
 ## Kubernetes演示集群与各个组件的功能和参数详解
 
-## 完成Kubernetes官网上的Task，掌握使用细节
+TODO
+
+## Kubernetes官网上的Task
 
 [Kubernetes Tasks][18]中给出了很多的操作示例，涵盖了Kubernetes的绝大多数特性。
 
@@ -181,6 +183,126 @@ Kubernetes网站的域名是[kubernetes.io][1]，可以用短域名[k8s.io](http
 [注入保存在Secret中的敏感数据](https://kubernetes.io/docs/tasks/inject-data-application/distribute-credentials-secure/)
 
 [用ProdPreset在Pod创建时注入](https://kubernetes.io/docs/tasks/inject-data-application/podpreset/)
+
+### 部署应用
+
+[使用Deployment部署无状态应用](https://kubernetes.io/docs/tasks/run-application/run-stateless-application-deployment/)
+
+[部署单个有状态应用](https://kubernetes.io/docs/tasks/run-application/run-single-instance-stateful-application/)
+
+[使用StatefulSet部署有状态应用](https://kubernetes.io/docs/tasks/run-application/run-replicated-stateful-applicatio)、[StatefulSet的扩张](https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/)、[StatefulSet的删除](https://kubernetes.io/docs/tasks/run-application/delete-stateful-set/)
+
+[kubectl patch的使用](https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/)
+
+[滚动升级](https://kubernetes.io/docs/tasks/run-application/rolling-update-replication-controller/)
+
+[Pod自动水平扩展](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)、[Pod自动水平扩展示例](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/)
+
+[使用PodDisruptionBudget防止Pod数量过低](https://kubernetes.io/docs/tasks/run-application/configure-pdb/)
+
+### 部署任务
+
+[部署定时任务CronJob](https://kubernetes.io/docs/tasks/job/automated-tasks-with-cron-jobs/)
+
+[多个Job的并行运行](https://kubernetes.io/docs/tasks/job/parallel-processing-expansion/)
+
+[通过消息队列为多个并行运行Job分配不同的任务](https://kubernetes.io/docs/tasks/job/coarse-parallel-processing-work-queue/)
+
+[通过Redis队列为多个并行运行Job分配不通的任务](https://kubernetes.io/docs/tasks/job/fine-parallel-processing-work-queue/)
+
+### 访问集群和集群内的应用
+
+[集群Dashboard](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/)
+
+[集群的访问方式配置](https://kubernetes.io/docs/tasks/access-application-cluster/access-cluster/)
+
+[多个集群的访问方式集中配置](https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/#set-the-kubeconfig-environment-variable)
+
+[用端口转发的方式从本地访问集群中的应用](https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/)
+
+[为集群内的应用创建Service，通过Service访问应用](https://kubernetes.io/docs/tasks/access-application-cluster/load-balance-access-application-cluster/)
+
+[应用之间通过Service地址访问彼此](https://kubernetes.io/docs/tasks/access-application-cluster/connecting-frontend-backend/)
+
+[创建外部负载均衡器](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/)
+
+[LoadBalancer对接防火墙](https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/)
+
+[几个查看集群内容器的技巧](https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/)
+
+[同一个Pod中的容器通过存储卷通信](https://kubernetes.io/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/)
+
+[为集群配置DNS服务](https://kubernetes.io/docs/tasks/access-application-cluster/configure-dns-cluster/)
+
+### 监控、日志、调试
+
+[用describe命令查看详情](https://kubernetes.io/docs/tasks/debug-application-cluster/debug-application-introspection/)
+
+[操作审计](https://kubernetes.io/docs/tasks/debug-application-cluster/audit/)
+
+[Metric Server](https://kubernetes.io/docs/tasks/debug-application-cluster/core-metrics-pipeline/)
+
+[Service调试](https://kubernetes.io/docs/tasks/debug-application-cluster/debug-service/)
+
+[使用crictl调试Kubernetes node](https://kubernetes.io/docs/tasks/debug-application-cluster/crictl/)
+
+[Pod调试](https://kubernetes.io/docs/tasks/debug-application-cluster/determine-reason-pod-failure/)
+
+[登陆容器](https://kubernetes.io/docs/tasks/debug-application-cluster/get-shell-running-container/)
+
+[使用ELK采集日志](https://kubernetes.io/docs/tasks/debug-application-cluster/logging-elasticsearch-kibana/)
+
+[部署日志采集Agent](https://kubernetes.io/docs/tasks/debug-application-cluster/logging-stackdriver/)
+
+[node状态检查](https://kubernetes.io/docs/tasks/debug-application-cluster/monitor-node-health/)
+
+[常用的监控工具](https://kubernetes.io/docs/tasks/debug-application-cluster/resource-usage-monitoring/)
+
+[应用故障排查方法](https://kubernetes.io/docs/tasks/debug-application-cluster/debug-application/)
+
+[集群故障排查方法](https://kubernetes.io/docs/tasks/debug-application-cluster/debug-cluster/)
+
+### Kubernetes集群扩展
+
+[添加自定义的资源](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/)
+
+[aggregation layer配置](https://kubernetes.io/docs/tasks/access-kubernetes-api/configure-aggregation-layer/)和[apiserver扩展](https://kubernetes.io/docs/tasks/access-kubernetes-api/setup-extension-api-server/)
+
+### TLS证书
+
+[证书轮替](https://kubernetes.io/docs/tasks/tls/certificate-rotation/)
+
+[集群使用的证书管理](https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster/)
+
+### Kubernetes集群联邦
+
+[跨集群服务发现](https://kubernetes.io/docs/tasks/federation/federation-service-discovery/)
+
+[设置集群联邦](https://kubernetes.io/docs/tasks/federation/set-up-cluster-federation-kubefed/)
+
+[CoreDNS作为联邦集群的DNS服务](https://kubernetes.io/docs/tasks/federation/set-up-coredns-provider-federation/)
+
+[联邦集群的放置策略](https://kubernetes.io/docs/tasks/federation/set-up-placement-policies-federation/)
+
+[联邦集群的系列操作](https://kubernetes.io/docs/tasks/administer-federation/cluster/)
+
+### DaemonSet管理
+
+[DaemonSet回滚](https://kubernetes.io/docs/tasks/manage-daemon/rollback-daemon-set/)
+
+[Daemonset更新](https://kubernetes.io/docs/tasks/manage-daemon/update-daemon-set/)
+
+### 添加外部服务目录Catalog
+
+[用Helm安装服务目录](https://kubernetes.io/docs/tasks/service-catalog/install-service-catalog-using-helm/)
+
+[用sc安装服务目录](https://kubernetes.io/docs/tasks/service-catalog/install-service-catalog-using-sc/)
+
+### 其它
+
+[hugepage的管理使用](https://kubernetes.io/docs/tasks/manage-hugepages/scheduling-hugepages/)
+
+[gpu](https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus/)
 
 ## 参考
 
