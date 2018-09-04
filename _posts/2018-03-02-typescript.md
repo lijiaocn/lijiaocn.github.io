@@ -3,7 +3,7 @@ layout: default
 title:  typescript语言入门
 author: 李佶澳
 createdate: 2018/04/18 16:25:00
-changedate: 2018/04/22 06:58:33
+changedate: 2018/09/04 17:55:52
 categories: 编程
 tags:  前端
 keywords: typescript,javascript,angularjs
@@ -16,65 +16,8 @@ description: 了解AngularJS2的时候学习了一下TypeScript
 
 ## 说明
 
-根据从这三篇文章了解到内容([MVC，MVP 和 MVVM 的图示][2]、[React 入门实例教程][3]、[AngularJS2.0入门教程][4])，
-结合之前对Angular1的粗浅了解，大概明白了较早的Angular1和后来的React在设计思想的区别。另起炉灶的Angular2似乎
-吸收React的思路，这里对Angular2做略微的了解。
+了解[AngularJS2][2]的时候，了解了一下TypeScript。
 
-## 快速体验
-
-Angular2的中文手册相当不错,[Angular2 quick start][1]。
-
-安装Angular的命令行：
-
-	npm install -g @angular/cli
-
-创建Angular项目:
-
-	ng new my-app
-
-启动项目：
-
-	cd my-app
-	ng serve --open
-
-项目结构：
-
-	▸ e2e/
-	▸ node_modules/       
-	▸ src/
-	  angular-cli.json
-	  karma.conf.js
-	  package-lock.json
-	  package.json
-	  protractor.conf.js
-	  README.md
-	  tslint.json
-
-src目录以外的内容都为构建项目提供支持用的，src中应用代码的结构如下：
-
-	▾ src/
-	  ▾ app/                        //模版、样式、自定义组件
-	      app.component.css
-	      app.component.html
-	      app.component.spec.ts
-	      app.component.ts
-	      app.module.ts             //描述如何组装应用的根模块
-	  ▸ assets/                     //发布时会被打包的静态资源
-	  ▾ environments/               //不同的运行环境
-	      environment.prod.ts
-	      environment.ts
-	    favicon.ico
-	    index.html                  //主页，一般不需要修改，构建时会自动引入依赖的js和css
-	    main.ts                     //应用的主要入口点
-	    polyfills.ts
-	    styles.css                  //全局样式
-	    test.ts
-	    tsconfig.json
-
-需要注意的Angular官方例子使用的都是ts，参考[Angular用TS写还是ES6写比较好？][5]中的讨论。
-
-可以到[TypeScript中文网][6]中学习ts。
-=======
 ## TypeScript
 
 ts是编译型语言，ts文件被编译成js，ts的语法是js语法的超集。
@@ -101,7 +44,7 @@ ts的优势特别显著，它增强了js的语法，而且可以编译时检查�
 
 编译得到greeter.js文件。
 
-### 类型注解
+## 类型注解
 
 ts可以为函数的参数设置类型约束：
 
@@ -585,10 +528,11 @@ const用来声明常量，被赋值后不能再改变。
 	f({ a: "yes" }); // ok, default b = 0
 	f(); // ok, default to {a: ""}, which then defaults b = 0
 	f({}); // error, 'a' is required if you supply an argument
->>>>>>> 9b719b0e15c58d1952b9dabcc4777bcaa2ebd48a:_posts/2018-03-02-typescript.md
 
 ## 参考
 
 1. [TypeScript中文网][1]
+2. [Angular2][2]
 
 [1]: https://www.tslang.cn/ "TypeScript中文网"
+[2]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/03/02/Angularjs2.html "Angular2"
