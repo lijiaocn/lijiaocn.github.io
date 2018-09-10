@@ -3,7 +3,7 @@ layout: default
 title:  新型监控告警工具prometheus（普罗米修斯）入门使用（附视频讲解）
 author: 李佶澳
 createdate: 2018/08/03 10:26:00
-changedate: 2018/08/22 18:17:38
+changedate: 2018/09/10 08:33:13
 categories: 项目
 tags: prometheus
 keywords: prometheus,监控
@@ -674,6 +674,8 @@ blackbox_exporter将按照http_2xx中的配置探测目标网址http://www.baidu
 
 可以编写下面的告警规则，如果持续2分钟ping不通，触发告警：
 
+{% raw %}
+
 	- name: node_icmp_avaliable
 	  rules:
 	  - alert: NODE_ICMP_UNREACHABLE
@@ -683,6 +685,8 @@ blackbox_exporter将按照http_2xx中的配置探测目标网址http://www.baidu
 	      level: 1
 	    annotations:
 	      summary: node is {{ $labels.instance }}
+
+{% endraw %}
 
 ## 杂项
 

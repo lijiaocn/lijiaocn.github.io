@@ -3,7 +3,7 @@ layout: default
 title: 通过consul、confd，动态为prometheus添加监控目标和告警规则
 author: 李佶澳
 createdate: 2018/08/30 10:40:00
-changedate: 2018/08/30 15:45:19
+changedate: 2018/09/10 08:34:07
 categories: 技巧
 tags: prometheus
 keywords: prometheus,consul,confd
@@ -100,6 +100,8 @@ prometheus的告警规则文件是独立的yml文件，用confd监控consul中�
 
 这里使用的告警规则如下：
 
+{% raw %}
+
 	$ cat app1_rule.yml
 	- alert: HAWKEYE_APP1_IP_UNREACHABLE
 	  expr: probe_success{app="app1",instance="10.10.192.35"} == 0
@@ -108,6 +110,8 @@ prometheus的告警规则文件是独立的yml文件，用confd监控consul中�
 	    level: 1
 	  annotations:
 	    summary:  app is {{ $labels.app }}，ip is {{ $labels.instance }}，alert id is {{ $labels.alert_id }}
+
+{% endraw %}
 
 调用consul的api，写入到consul中，注意这里是kv的方式：
 
@@ -129,11 +133,15 @@ prometheus的告警规则文件是独立的yml文件，用confd监控consul中�
 
 写一下配置模版文件:
 
+{% raw %}
+
 	$ cat templates/ip_detect_rules.conf.tmpl
 	groups:
 	- name: container_cpu_usage_increase_rate
 	  rules:{{range getvs "/prometheus/rules/ip/*"}}
 	{{.}}{{end}}
+
+{% endraw %}
 
 在promethues的配置文件引入confd生成的最终文件`ip_detect_rules.yml`：
 
