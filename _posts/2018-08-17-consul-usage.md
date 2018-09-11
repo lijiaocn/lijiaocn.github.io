@@ -3,7 +3,7 @@ layout: default
 title:  服务治理工具consul的功能介绍与使用入门
 author: 李佶澳
 createdate: 2018/08/17 11:54:00
-changedate: 2018/08/30 10:55:22
+changedate: 2018/09/06 13:56:00
 categories: 项目
 tags: consul
 keywords: consul,服务发现,service mesh
@@ -175,7 +175,7 @@ dns查询指定服务地址，默认后缀为`service.consul`，注意查询类�
 
 http api查询：
 
-	$ curl http://10.10.199.154:8500/v1/catalog/service/web
+	$ curl http://10.10.199.154:8500/v1/catalog/service/web |python -m json.tool
 	[
 	    {
 	        "ID": "3f33abc5-a8b1-8dfc-d553-051ea2be6750",
@@ -208,6 +208,10 @@ http api查询：
 	        "ModifyIndex": 10
 	    }
 	]
+
+查看agent上的所有服务：
+
+	curl http://10.10.199.154:8500/v1/agent/services 2>/dev/null |python -m json.tool
 
 ### 删除服务
 
