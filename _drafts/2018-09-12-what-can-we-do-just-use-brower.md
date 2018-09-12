@@ -1,0 +1,64 @@
+---
+layout: default
+title: "用js实现一些不需要服务端的纯网页版工具"
+author: 李佶澳
+createdate: "2018-09-12 15:13:01 +0800"
+changedate: "2018-09-12 15:13:01 +0800"
+categories: 技巧
+tags: 前端
+keywords: javascript,前端
+description:
+---
+
+* auto-gen TOC:
+{:toc}
+
+## 说明
+
+## Json编辑器
+
+[github: jsoneditor][2]是一个实现了json字符串处理功能的js代码库，使用它可以很快的作出一个网页版的json编辑器，例如: [json editor online][3]。
+
+使用方法可以参考：[自己写JSON编辑器][1]，以及：[json editor examples][4]。
+
+## Json、Yaml互转
+
+[json2yaml online][5]是一个json、yaml互相转换的应用，但它的转换过程是在服务端完成的。[json-to-yaml online][6]是在浏览器端实现的。
+
+可以使用代码库：
+
+[JS-YAML - YAML 1.2 parser / writer for JavaScript][10]
+
+[npmjs: json2yaml][9]
+
+## Javascript、Html代码格式化
+
+[Online JavaScript Beautifier][7]是一个在线的js、html代码格式化应用，使用[js-beautify][8]实现。
+
+## 时间转换
+
+## 进制转换
+
+## 参考
+
+1. [自己写JSON编辑器][1]
+2. [github: jsoneditor][2]
+3. [json editor online][3]
+4. [json editor examples][4]
+5. [json2yaml online][5]
+6. [json-to-yaml online][6]
+7. [Online JavaScript Beautifier][7]
+8. [js-beautify][8]
+9. [npmjs: json2yaml][9]
+10. [JS-YAML - YAML 1.2 parser / writer for JavaScript][10]
+
+[1]: https://my.oschina.net/jojo76/blog/1607734 "自己写JSON编辑器"
+[2]: https://github.com/josdejong/jsoneditor "https://github.com/josdejong/jsoneditor"
+[3]: http://jsoneditoronline.org/ "json editor online"
+[4]: https://github.com/josdejong/jsoneditor/tree/master/examples "json editor examples"
+[5]: https://www.json2yaml.com/ "json2yaml online"
+[6]: https://jsonformatter.org/json-to-yaml "json-to-yaml online"
+[7]: https://beautifier.io/ "Online JavaScript Beautifier"
+[8]: https://github.com/beautify-web/js-beautify "js-beautify"
+[9]: https://www.npmjs.com/package/json2yaml "npmjs: json2yaml"
+[10]: https://github.com/nodeca/js-yaml "JS-YAML - YAML 1.2 parser / writer for JavaScript"
