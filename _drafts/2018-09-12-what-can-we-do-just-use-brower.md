@@ -21,6 +21,17 @@ description:
 
 使用方法可以参考：[自己写JSON编辑器][1]，以及：[json editor examples][4]。
 
+jsoneditor的使用比较简单，引入css和js文件：
+
+	<link href="https://cdn.bootcss.com/jsoneditor/5.13.1/jsoneditor.min.css" rel="stylesheet">
+	...
+	<script src="https://cdn.bootcss.com/jsoneditor/5.13.1/jsoneditor.min.js"></script>
+
+然后在body中定义:
+
+	<div id="jsoneditor" style="width: 400px; height: 400px;"></div>
+
+
 ## Json、Yaml互转
 
 [json2yaml online][5]是一个json、yaml互相转换的应用，但它的转换过程是在服务端完成的。[json-to-yaml online][6]是在浏览器端实现的。
@@ -34,6 +45,10 @@ description:
 ## Javascript、Html代码格式化
 
 [Online JavaScript Beautifier][7]是一个在线的js、html代码格式化应用，使用[js-beautify][8]实现。
+
+## 内容比对
+
+[自己写代码对比工具][11]中用[mergely][12]实现的，效果如下[merge editor online][13]。
 
 ## 时间转换
 
@@ -51,6 +66,9 @@ description:
 8. [js-beautify][8]
 9. [npmjs: json2yaml][9]
 10. [JS-YAML - YAML 1.2 parser / writer for JavaScript][10]
+11. [自己写代码对比工具][11]
+12. [mergely][12]
+13. [merge editor online][13]
 
 [1]: https://my.oschina.net/jojo76/blog/1607734 "自己写JSON编辑器"
 [2]: https://github.com/josdejong/jsoneditor "https://github.com/josdejong/jsoneditor"
@@ -62,3 +80,6 @@ description:
 [8]: https://github.com/beautify-web/js-beautify "js-beautify"
 [9]: https://www.npmjs.com/package/json2yaml "npmjs: json2yaml"
 [10]: https://github.com/nodeca/js-yaml "JS-YAML - YAML 1.2 parser / writer for JavaScript"
+[11]: https://my.oschina.net/jojo76/blog/1609851 "自己写代码对比工具"
+[12]: http://www.mergely.com/ "mergely"
+[13]: http://www.mergely.com/editor "merge editor online"
