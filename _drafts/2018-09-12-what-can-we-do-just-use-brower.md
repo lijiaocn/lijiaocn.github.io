@@ -31,7 +31,6 @@ jsoneditor的使用比较简单，引入css和js文件：
 
 	<div id="jsoneditor" style="width: 400px; height: 400px;"></div>
 
-
 ## Json、Yaml互转
 
 [json2yaml online][5]是一个json、yaml互相转换的应用，但它的转换过程是在服务端完成的。[json-to-yaml online][6]是在浏览器端实现的。

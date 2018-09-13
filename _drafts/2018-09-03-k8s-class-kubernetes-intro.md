@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  "Kubernetes容器集群从零讲解：正篇"
+title:  "Kubernetes容器集群从零开始（一）：从文档入手"
 author: 李佶澳
 createdate: 2018/09/03 20:43:00
 changedate: 2018/09/04 17:24:51
@@ -18,38 +18,40 @@ description: 先概要地了解一下kubernetes，这一篇主要讲解一下它
 
 Kubernetes网站的域名是[kubernetes.io][1]，可以用短域名[k8s.io](https://k8s.io)直接访问。
 
-强调！Kubernetes的[官方文档][2]，应当是学习工作中最常使用的。其它所有的资料都是二手的，包括这篇文章。
+Kubernetes的[官方文档][2]，应当是学习工作中最常使用的，其它所有的资料都是二手的，包括这篇文章。
 
-能够使用官方文档，是真正掌握Kubernetes的第一步，因为只有这样，才能在独立解决问题的时候找到思路，才能从正规渠道了解到Kubernetes的最新变化。
+能够使用官方文档，是开始掌握Kubernetes的第一步，因为只有这样才能独立解决问题，才能第一时间得知了解到Kubernetes的最新变化。
 
-不过Kubernetes的官方文档虽然完善了很多，但是对初学者还是不够友好，而这正是这篇文章存在的理由：释疑解惑，帮人入门。
+Kubernetes的官方文档虽然完善了很多，但是对初学者还是不够友好，有必要专门介绍一下。
 
 ## Kubernetes的文档介绍
 
-[Kubernetes Documentation][2]相比以前已经完善太多了，如果英文还可以，只学习它的文档就足够了。
-这篇文章以及配套视频的目的是缩短自行摸索学习的时间，最终是要促使你主动地从正确的渠道猎取信息、自发自驱的深入研究。
+[Kubernetes Documentation][2]相比以前已经完善太多了，如果英文还可以，只学习它的文档应该是足够的。
 
-文档首页[Kubernetes Documentation Home][3]最有价值的部分是页面底部，经过分类整理的页面链接：
+[Kubernetes Documentation Home][3]页面中最有价值的部分是底部经过分类整理的页面链接。
 
-[Kubernetes Setup][4]是Kubernetes的安装部署文档，给出多种部署Kubernetes的方法，例如通过[kubeadm][5]、[在aws上直接部署][6]、[基于云上的CoreOS部署][7]、
-[在CloudStack上部署][8]、[使用Salt部署][9]、以及[从零开始部署Kubernetes][12]，或者[通过Minikube在本地运行Kubernetes][15]。
+Kubernetes的安装部署文档：[Kubernetes Setup][4]，包括[通过kubeadm][5]、[在aws上直接部署][6]、[在托管于云上的CoreOS上部署][7]、
+[在CloudStack上部署][8]、[使用Salt部署][9]、[从零开始部署Kubernetes][12]，或者[通过Minikube在本地运行Kubernetes][15]。
 
-此外还有部署大规模Kubernetes集群时需要注意的问题：[Building Large Clusters][10]，跨可用区部署时需要注意的问题：[kubernetes Running in Multiple Zones][11]，[源代码编译][13]
+大规模Kubernetes集群时需要注意的问题：[Building Large Clusters][10]。
 
-[Kubernetes PKI Certificates and Requirements][14]中介绍了Kubernetes集群中使用到证书的地方，[Validate Node Setup][16]中提供了验证node设置的方法。
+跨可用区部署时需要注意的问题：[kubernetes Running in Multiple Zones][11]，[源代码编译][13]。
 
-[Kubernetes Concepts][17]是非常重要的文档，这里解释了Kubernetes使用的所有名词，以及对应的使用方法，还有Kubernetes的系统架构等内容，建议全部阅读一遍！
-把这里的文档吃透，基本就可以成为Kubernetes的使用专家了。
+Kubernetes集群中证书的使用：[Kubernetes PKI Certificates and Requirements][14]。
 
-[Kubernetes Tasks][18]汇总了常用的Kubernetes操作，非常有用，也建议通读一遍，这样以后要满足某些需求的时候，就不用漫山遍野地搜索了。
+集群节点Node的验证方法：[Validate Node Setup][16]。
 
-[Kubernetes Reference][19]是Kubernetes的API手册和命令手册，这里有不少小技巧，譬如设置kubelet的命令提示：[Kubectl Cheat Sheet][20]。
+Kubernetes的基本概念：[Kubernetes Concepts][17]，这是非常重要的文档，解释了Kubernetes使用的术语以及对应的使用方法，包括Kubernetes的系统架构介绍。
 
-[Tutorials][23]是Kubernetes官方提供的教学材料，适合初学者。
+Kubernetes的常用操作：[Kubernetes Tasks][18]，比较有用，演示了很多操作，也建议通读一遍，对Kubernetes能做到的事情有所了解。 
 
-[Contribute to Kubernetes docs][21]和[Community][22]介绍了怎样参与社区开发，可以根据自己的需要阅读。
+Kubernetes的API手册和命令手册：[Kubernetes Reference][19]，包括一些使用技巧，譬如设置kubelet的命令提示：[Kubectl Cheat Sheet][20]。
 
-## Kubernetes演示集群与各个组件的功能和参数详解
+Kubernetes官方提供的教学材料，[Tutorials][23]，适合初学者。
+
+社区：[Contribute to Kubernetes docs][21]和[Community][22]介绍了怎样参与社区开发。
+
+## Kubernetes集群部署与各个组件的功能和参数详解
 
 TODO
 
@@ -57,15 +59,23 @@ TODO
 
 [Kubernetes Tasks][18]中给出了很多的操作示例，涵盖了Kubernetes的绝大多数特性。
 
-### Pod和容器操作
+### Pod和Container操作
 
-[Pod的内存资源设置](https://kubernetes.io/docs/tasks/configure-pod-container/assign-memory-resource/)
+[Pod的内存设置](https://kubernetes.io/docs/tasks/configure-pod-container/assign-memory-resource/)
 
-[Pod的CPU资源设置](https://kubernetes.io/docs/tasks/configure-pod-container/assign-cpu-resource/)
+[Pod的CPU设置](https://kubernetes.io/docs/tasks/configure-pod-container/assign-cpu-resource/)
 
-[Pod被分配的QOS策略](https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/)
+[Pod的QOS策略](https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/)
 
-[为Node设置扩展资源](https://kubernetes.io/docs/tasks/administer-cluster/extended-resource-node/)和[为Pod分配扩展资源](https://kubernetes.io/docs/tasks/configure-pod-container/extended-resource/)
+	Guaranteed:  request == limit，            Pod分配的资源是固定受限的
+	Burstable:   request <  limit(包括未设置)  Pod分配的资源在request~limit之间变动
+	BestEffort:  request和limit均未设置        Pod的资源不受限也没有最低保证     
+
+[为Node声明扩展资源](https://kubernetes.io/docs/tasks/administer-cluster/extended-resource-node/)
+
+	扩展资源是CPU、Memory、磁盘等通用资源之外的、Kubernetes感知不到的资源，例如Node上的特殊硬件。
+
+[为Pod分配扩展资源](https://kubernetes.io/docs/tasks/configure-pod-container/extended-resource/)
 
 [为Pod设置Volume(存储卷)](https://kubernetes.io/docs/tasks/configure-pod-container/configure-volume-storage/)
 
@@ -73,102 +83,146 @@ TODO
 
 [为Pod设置Projected Volume](https://kubernetes.io/docs/tasks/configure-pod-container/configure-projected-volume-storage/)
 
+	Projected Volume可以将secret、configMap、serviceAccountToken、downwardAPI几种不同类型的Source挂载到同一个目录中。
+
 [为Pod设置Security Context](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)
+
+	Security Context定义了Pod和Container的操作权限和访问控制。
 
 [为Pod设置Service Account](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/)
 
-[Pod使用私有镜像仓库中的镜像](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/)
+	Service Account被挂载到Pod中，Pod中的进程可以用Service Account来通过其它服务的认证。
 
-[为Pod配置存活监测和就绪监测](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/)
+[为Pod配置私有镜像仓库的访问凭证](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/)
 
-[将Pod绑定到指定的Node](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes/)
+	将私有镜像仓库的账号和密码保存成Kubernetes中的secret，然后在Pod的声明中指定要使用的secret。
+
+[为Pod配置存活监听(liveness)和就绪监听(readiness)](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/)
+
+	liveness probes用来判定Container是否需要被重启
+	readiness probes 用来判定Container是否可以开始接收请求
+
+[将Pod调度到特定范围内的Node](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes/)
 
 [为Pod设置Init Container](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-initialization/)
 
+	Init Container在Pod中的业务容器启动之前*完成运行*，可以用来为业务容器准备运行环境。
+
 [在Pod的生命周期中设置钩子(handler)](https://kubernetes.io/docs/tasks/configure-pod-container/attach-handler-lifecycle-event/)
+
+	postStart：容器启动后执行的命令，与容器中的entrypoint异步执行
+	preStop：  容器停止前执行的命令，容器需要等到preStop指定的命令运行结束后才能终止，除非等待时间超过了grace period
 
 [为Pod设置ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/)
 
-[Pod的多个容器共享进程空间，以及访问其它容器中的文件](https://kubernetes.io/docs/tasks/configure-pod-container/share-process-namespace/)
+	容器的环境变量的值可以从ConfigMap中读取，ConfigMap也可以被以volumn的形式挂载到容器中
 
-[将Docker Compose文件转换kuberntes file](https://kubernetes.io/docs/tasks/configure-pod-container/translate-compose-kubernetes/)
+[Pod中多个容器进程空间的共享，以及访问其它容器中文件的方法](https://kubernetes.io/docs/tasks/configure-pod-container/share-process-namespace/)
+
+	Kubernetes v1.11 alpha特性。
+
+[将Docker Compose文件转换Kubernetes file](https://kubernetes.io/docs/tasks/configure-pod-container/translate-compose-kubernetes/)
+
+	一个名为Kompose的工具。
 
 ### 集群管理员操作
 
-[在namespace中设置容器默认的内存用量](https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/)
+[将Cluster切分成多个namespace提供给用户](https://kubernetes.io/docs/tasks/administer-cluster/namespaces/)
 
-[在namespace中设置容器默认的CPU用量](https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/cpu-default-namespace/)
+[Namespace介绍](https://kubernetes.io/docs/tasks/administer-cluster/namespaces-walkthrough/)
 
-[在namespace中设置容器内存使用量的上限和下限](https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/memory-constraint-namespace/)
+[在namespace中为容器设置默认内存配额](https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/)
 
-[在namespace中设置容器CPU使用量的上限和下限](https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/cpu-constraint-namespace/)
+[在namespace中为容器设置默认CPU配额](https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/cpu-default-namespace/)
 
-[设置一个namespace可以使用的内存和CPU总量](https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/)
+[在namespace中设置单个容器内存配额的上限和下限](https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/memory-constraint-namespace/)
 
-[设置一个namespace可以创建的Pod的总数](https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/quota-pod-namespace/)
+[在namespace中设置单个容器CPU配额上限和下限](https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/cpu-constraint-namespace/)
+
+[设置namespace的内存和CPU配额](https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/)
+
+[设置namespace的Pod配额](https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/quota-pod-namespace/)
+
+[设置namespace的PVC和Service配额](https://kubernetes.io/docs/tasks/administer-cluster/quota-api-object/)、
+
+[设置namespaces中单个PVC存储空间配额上限和下限、设置Namespace的存储空间配额](https://kubernetes.io/docs/tasks/administer-cluster/limit-storage-consumption/)
+
+[为Node设置扩展资源](https://kubernetes.io/docs/tasks/administer-cluster/extended-resource-node/)
+
+[PV的回收策略](https://kubernetes.io/docs/tasks/administer-cluster/change-pv-reclaim-policy/)
+
+	Retain   :  用户删除PVC时，动态分配的PV保留，标记为released，不能被其它的PVC使用 
+	Delete   :  用户删除PVC时，动态分配的PV一同删除
+	Recycle  :  (deprecated)用户删除PVC时，对应PV中的数据被删除，PV可以再次用于其它PVC。
+
+[保护正在被使用的PVC和PV：完全释放后才能删除](https://kubernetes.io/docs/tasks/administer-cluster/storage-object-in-use-protection/)
+
+[设置默认的Storage Class](https://kubernetes.io/docs/tasks/administer-cluster/change-default-storage-class/)
+
+[Storage Class的使用](https://kubernetes.io/docs/concepts/storage/storage-classes/)
+
+[Node资源不足时，Kubelet驱逐Pod的策略](https://kubernetes.io/docs/tasks/administer-cluster/out-of-resource/)
+
+[启动多个调度器，为Pod分配指定的调度器](https://kubernetes.io/docs/tasks/administer-cluster/configure-multiple-schedulers/)
+
+[设置Node的CPU分配策略：支持CPU独占](https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/)
+
+[NetworkPolicy的使用](https://kubernetes.io/docs/tasks/administer-cluster/declare-network-policy/)
+
+[Kubelet直接引导启动的static pod](https://kubernetes.io/docs/tasks/administer-cluster/static-pod/)
+
+[保证关键Pod的运行](https://kubernetes.io/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/)
+
+[在Node上为宿主机进程保留资源](https://kubernetes.io/docs/tasks/administer-cluster/reserve-compute-resources/)
+
+[在Pod中设置内核参数](https://kubernetes.io/docs/tasks/administer-cluster/sysctl-cluster/)
+
+[Master的高可用设置](https://kubernetes.io/docs/tasks/administer-cluster/highly-available-master/)
+
+[安全地从集群中移除Node](https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/)
+
+[Kubernetes集群的安全防护](https://kubernetes.io/docs/tasks/administer-cluster/securing-a-cluster/)
+
+[Kubernetes集群的DNS服务配置](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/)
+
+[使用CoreDNS做服务发现](https://kubernetes.io/docs/tasks/administer-cluster/coredns/)
+
+[敏感数据的加密存放](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/)
+
+[设置NAT转换，隐藏Pod的IP地址](https://kubernetes.io/docs/tasks/administer-cluster/ip-masq-agent/)
+
+[Kubelet从文件中加载参数](https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/)
+
+[Kubelet配置参数的热更新](https://kubernetes.io/docs/tasks/administer-cluster/reconfigure-kubelet/)
+
+
+
+
 
 [访问cluster api的几种方法](https://kubernetes.io/docs/tasks/administer-cluster/access-cluster-api/)
 
 [访问cluster中的服务的几种方法](https://kubernetes.io/docs/tasks/administer-cluster/access-cluster-services/)
 
-[为Node设置扩展资源](https://kubernetes.io/docs/tasks/administer-cluster/extended-resource-node/)
 
-[设置PV的回收策略](https://kubernetes.io/docs/tasks/administer-cluster/change-pv-reclaim-policy/)
 
-[修改默认的Storage Class](https://kubernetes.io/docs/tasks/administer-cluster/change-default-storage-class/)
 
 [Cluster生命周期管理：维护、升级等](https://kubernetes.io/docs/tasks/administer-cluster/cluster-management/)
 
-[配置多个调度器](https://kubernetes.io/docs/tasks/administer-cluster/configure-multiple-schedulers/)
 
-[Pod资源耗尽时的处理策略](https://kubernetes.io/docs/tasks/administer-cluster/out-of-resource/)
 
-[设置一个namespace可以使用的资源总量](https://kubernetes.io/docs/tasks/administer-cluster/quota-api-object/)、
-[设一个namespace可以使用的存储空间](https://kubernetes.io/docs/tasks/administer-cluster/limit-storage-consumption/)
 
-[修改CPU管理、分配策略：配置Pod独占CPU](https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/)
 
-[定制集群的DNS服务](https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/)
+
 
 [DNS调试方法](https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/)
 
-[NetworkPolicy的使用](https://kubernetes.io/docs/tasks/administer-cluster/declare-network-policy/)
 
 [正在开发中的Cloud Controller Manager](https://kubernetes.io/docs/tasks/administer-cluster/developing-cloud-controller-manager/)
 
-[数据加密存放](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/)
-
-[关键Pod的调度保证](https://kubernetes.io/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/)
-
-[Pod地址隐藏](https://kubernetes.io/docs/tasks/administer-cluster/ip-masq-agent/)
-
-[namespace介绍](https://kubernetes.io/docs/tasks/administer-cluster/namespaces-walkthrough/)
-
 [Etcd集群的管理](https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/)
-
-[更改正在运行中的kubelet的配置](https://kubernetes.io/docs/tasks/administer-cluster/reconfigure-kubelet/)
-
-[为系统守护进程保留计算资源](https://kubernetes.io/docs/tasks/administer-cluster/reserve-compute-resources/)
-
-[安全地摘除节点](https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/)
-
-[集群通信过程加密](https://kubernetes.io/docs/tasks/administer-cluster/securing-a-cluster/)
-
-[通过配置文件设置kubelet的运行参数](https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/)
-
-[Master的高可用设置](https://kubernetes.io/docs/tasks/administer-cluster/highly-available-master/)
-
-[Namespace的使用](https://kubernetes.io/docs/tasks/administer-cluster/namespaces/)
-
-[直接由kubelet管理的static pod](https://kubernetes.io/docs/tasks/administer-cluster/static-pod/)
-
-[pv删除保护：在被占用时，不执行删除](https://kubernetes.io/docs/tasks/administer-cluster/storage-object-in-use-protection/)
-
-[使用CoreDNS做服务发现](https://kubernetes.io/docs/tasks/administer-cluster/coredns/)
 
 [使用KMS管理用于数据加密的密钥](https://kubernetes.io/docs/tasks/administer-cluster/kms-provider/)
 
-[设置Pod中的内核参数](https://kubernetes.io/docs/tasks/administer-cluster/sysctl-cluster/)
 
 ### 数据注入应用的方法
 
