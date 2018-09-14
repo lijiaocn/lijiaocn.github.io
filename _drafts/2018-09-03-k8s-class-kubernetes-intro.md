@@ -66,11 +66,11 @@ Kubernetes官方提供的教学材料，[Tutorials][23]，适合初学者。
 	可选插件：
 	    DNS、Web UI、Container Resource Monitoring、Cluster-level Logging
 
-## Kubernetes的API约定与开关方法
+### Kubernetes的API约定与启用方法
 
 [The Kubernetes API](https://kubernetes.io/docs/concepts/overview/kubernetes-api/)
 
-## Kubernetes中资源(Object)的定义
+### Kubernetes中资源(Object)的定义
 
 [Understanding Kubernetes Objects](https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects/)中介绍了Kubernetes的设计原则：
 
@@ -129,6 +129,12 @@ Kubernetes官方提供的教学材料，[Tutorials][23]，适合初学者。
 	    app.kubernetes.io/component: database
 	    app.kubernetes.io/part-of: wordpress
 	    app.kubernetes.io/managed-by: helm
+
+### kubectl命令
+
+[kubectl管理命令](https://kubernetes.io/docs/concepts/overview/object-management-kubectl/overview/)
+
+
 
 ## Kubernetes集群部署与各个组件的功能和参数详解
 
