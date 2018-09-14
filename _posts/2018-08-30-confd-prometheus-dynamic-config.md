@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2018/08/30 10:40:00
 changedate: 2018/09/10 08:34:07
 categories: 技巧
-tags: prometheus
+tags: prometheus confd consul
 keywords: prometheus,consul,confd
 description: 通过consul向prometheus中注册监控目标，通过confd动态生成告警规则
 

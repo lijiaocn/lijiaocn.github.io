@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2017/09/21 16:00:08
 changedate: 2018/07/22 14:28:29
 categories: 技巧
-tags: linuxtool
+tags: linuxtool confd
 keywords: confd,配置管理
 description: confd从etcd或者consul等获取数据更新，更新本地的配置文件后，重新加载目标应用。
 

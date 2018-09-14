@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2018/08/22 11:28:00
 changedate: 2018/08/28 11:51:49
 categories: 项目
-tags: config
+tags: confd
 keywords: config,配置管理
 description: confd是一个支持多种后端的配置文件动态生成工具
 
