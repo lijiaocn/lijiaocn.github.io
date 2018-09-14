@@ -51,6 +51,85 @@ Kubernetes官方提供的教学材料，[Tutorials][23]，适合初学者。
 
 社区：[Contribute to Kubernetes docs][21]和[Community][22]介绍了怎样参与社区开发。
 
+## Kubernetes中的术语与资源的操作方法
+
+[Concepts][24]中罗列了Kubernetes中的所有术语，并介绍了这些术语对应的对象的使用方法。
+
+[Kubernetes组件中](https://kubernetes.io/docs/concepts/overview/components/)介绍了几个主要组件：
+
+	Master的组件：
+	    kube-apiserver、etcd、kube-scheduler、kube-controller-manager、cloud-controller-manager、
+	
+	Node的组件：
+	    kubelet、kube-proxy、Container Runtime
+	
+	可选插件：
+	    DNS、Web UI、Container Resource Monitoring、Cluster-level Logging
+
+## Kubernetes的API约定与开关方法
+
+[The Kubernetes API](https://kubernetes.io/docs/concepts/overview/kubernetes-api/)
+
+## Kubernetes中资源(Object)的定义
+
+[Understanding Kubernetes Objects](https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects/)中介绍了Kubernetes的设计原则：
+
+	Object的定义是`声明式`的，spec中记录的是期待达成状态，status中记录的是当前状态。
+
+>延伸：到哪找到每类Object的完整定义？Object的定义代码在哪里？
+
+[Namespaces](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/):
+
+	nodes and persistentVolumes, are not in any namespace.
+
+[Labels and Selectors](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/):
+
+	松耦合设计
+	
+	We don’t want to pollute labels with non-identifying, 
+	especially large and/or structured, data. Non-identifying information should be recorded using annotations.
+	
+	Equality-based requirement:  Three kinds of operators are admitted =,==,!=
+	Set-based requirement:       Three kinds of operators are supported: in,notin and exists (only the key identifier)
+	
+	Similarly the comma separator acts as an AND operator:  partition,environment notin (qa)
+	
+	Set-based requirements can be mixed with equality-based requirements:  partition in (customerA, customerB),environment!=qa
+	
+	kubectl get pods -l 'environment in (production, qa)'
+	
+	Service and ReplicationController:  equality-based requirement selectors are supported
+	
+	Newer resources, such as Job, Deployment, Replica Set, and Daemon Set, support set-based requirements as well.
+
+[Annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/):
+
+	Annotations are not used to identify and select objects. 
+	The metadata in an annotation can be small or large, structured or unstructured, and can include characters not permitted by labels.
+
+[Field Selectors](https://kubernetes.io/docs/concepts/overview/working-with-objects/field-selectors/):
+
+	Supported operators: =, ==, and !=
+	field selectors can be chained together as a comma-separated list
+	
+	use field selectors across multiple resource types:
+	    kubectl get statefulsets,services --field-selector metadata.namespace!=default
+
+[Recommended Labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/):
+
+	这只是建议使用的labels
+	
+	apiVersion: apps/v1
+	kind: StatefulSet
+	metadata:
+	  labels:
+	    app.kubernetes.io/name: mysql
+	    app.kubernetes.io/instance: wordpress-abcxzy
+	    app.kubernetes.io/version: "5.7.21"
+	    app.kubernetes.io/component: database
+	    app.kubernetes.io/part-of: wordpress
+	    app.kubernetes.io/managed-by: helm
+
 ## Kubernetes集群部署与各个组件的功能和参数详解
 
 TODO
@@ -234,31 +313,37 @@ TODO
 
 [将Pod和Container的信息通过文件注入](https://kubernetes.io/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/)
 
-[注入保存在Secret中的敏感数据](https://kubernetes.io/docs/tasks/inject-data-application/distribute-credentials-secure/)
+[将Secret注入到容器中](https://kubernetes.io/docs/tasks/inject-data-application/distribute-credentials-secure/)
 
 [用ProdPreset在Pod创建时注入](https://kubernetes.io/docs/tasks/inject-data-application/podpreset/)
 
 ### 部署应用
 
-[使用Deployment部署无状态应用](https://kubernetes.io/docs/tasks/run-application/run-stateless-application-deployment/)
+[用Deployment部署无状态应用](https://kubernetes.io/docs/tasks/run-application/run-stateless-application-deployment/)
 
-[部署单个有状态应用](https://kubernetes.io/docs/tasks/run-application/run-single-instance-stateful-application/)
+[应用PVC，部署单个有状态应用](https://kubernetes.io/docs/tasks/run-application/run-single-instance-stateful-application/)
 
-[使用StatefulSet部署有状态应用](https://kubernetes.io/docs/tasks/run-application/run-replicated-stateful-applicatio)、[StatefulSet的扩张](https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/)、[StatefulSet的删除](https://kubernetes.io/docs/tasks/run-application/delete-stateful-set/)
+[使用StatefulSet部署多副本的有状态应用](https://kubernetes.io/docs/tasks/run-application/run-replicated-stateful-application/)
 
-[kubectl patch的使用](https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/)
+[StatefulSet的扩张](https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/)
+
+[StatefulSet删除时应当注意的事项](https://kubernetes.io/docs/tasks/run-application/delete-stateful-set/)
+
+[用Kubectl Patch更新](https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/)
 
 [滚动升级](https://kubernetes.io/docs/tasks/run-application/rolling-update-replication-controller/)
 
-[Pod自动水平扩展](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)、[Pod自动水平扩展示例](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/)
+[Pod自动水平扩展](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)
+
+[Pod自动水平扩展示例](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/)
 
 [使用PodDisruptionBudget防止Pod数量过低](https://kubernetes.io/docs/tasks/run-application/configure-pdb/)
 
 ### 部署任务
 
-[部署定时任务CronJob](https://kubernetes.io/docs/tasks/job/automated-tasks-with-cron-jobs/)
+[定时任务CronJob](https://kubernetes.io/docs/tasks/job/automated-tasks-with-cron-jobs/)
 
-[多个Job的并行运行](https://kubernetes.io/docs/tasks/job/parallel-processing-expansion/)
+[并行运行的Job](https://kubernetes.io/docs/tasks/job/parallel-processing-expansion/)
 
 [通过消息队列为多个并行运行Job分配不同的任务](https://kubernetes.io/docs/tasks/job/coarse-parallel-processing-work-queue/)
 
@@ -270,7 +355,7 @@ TODO
 
 [集群的访问方式配置](https://kubernetes.io/docs/tasks/access-application-cluster/access-cluster/)
 
-[多个集群的访问方式集中配置](https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/#set-the-kubeconfig-environment-variable)
+[同时配置多个集群的访问方式](https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/#set-the-kubeconfig-environment-variable)
 
 [用端口转发的方式从本地访问集群中的应用](https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/)
 
@@ -383,6 +468,7 @@ TODO
 21. [Contribute to Kubernetes docs][21]
 22. [Community][22]
 23. [Tutorials][23]
+24. [Concepts][24]
 
 [1]: https://kubernetes.io/  "kubernetes website" 
 [2]: https://kubernetes.io/docs/home/?path=users&persona=app-developer&level=foundational "kubernetes Documentation" 
@@ -407,3 +493,4 @@ TODO
 [21]: https://kubernetes.io/docs/contribute/ "Contribute to Kubernetes docs"
 [22]: https://kubernetes.io/docs/community/ "Community"
 [23]: https://kubernetes.io/docs/tutorials/ "Tutorials"
+[24]: https://kubernetes.io/docs/concepts/ "Concepts"
