@@ -5,16 +5,15 @@ future: true
 
 markdown: kramdown
 
+url:  "https://www.lijiaocn.com"
 plugins:
   - jekyll-feed
   - jekyll-paginate
+  - jekyll-sitemap
 
-host:        0.0.0.0
-port:        4000
 baseurl:    
 imgurl: 
 imglocal:   /img
-url:         http://localhost:4000
 lsi:         false
 excerpt_separator: "----"
 ICP-number:
