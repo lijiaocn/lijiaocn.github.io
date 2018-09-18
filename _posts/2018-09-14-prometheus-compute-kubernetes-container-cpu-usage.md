@@ -70,9 +70,9 @@ kubelet中的cadvisor采集的指标与含义，见：[Monitoring cAdvisor with 
 	sum(
 	    container_spec_cpu_shares
 	        {container_name="store-app-server",pod_name="store-app-server-2959171753-6kgll"}
-	) / 1024 * 60
+	) / 1000 * 60
 
-`container_spec_cpu_shares`是容器的CPU配额，它的值是：为容器指定的CPU个数*1024。
+`container_spec_cpu_shares`是容器的CPU配额，它的值是：为容器指定的CPU个数*1000。
 
 将上面两个公式的结果相除，就得到了容器的CPU使用率：
 
@@ -86,16 +86,28 @@ kubelet中的cadvisor采集的指标与含义，见：[Monitoring cAdvisor with 
 	( sum(
 	    container_spec_cpu_shares
 	        {container_name="store-app-server",pod_name="store-app-server-2959171753-6kgll"}
-	  ) / 1024 * 60
+	  ) / 1000 * 60
 	)
 
 写成一行就是：
 
-	sum(delta(container_cpu_usage_seconds_total{container_name="store-app-server",pod_name="store-app-server-2959171753-6kgll"}[1m])) / (sum(container_spec_cpu_shares{container_name="store-app-server",pod_name="store-app-server-2959171753-6kgll"}) /1024 * 60)
+	sum(delta(container_cpu_usage_seconds_total{container_name="store-app-server",pod_name="store-app-server-2959171753-6kgll"}[1m])) / (sum(container_spec_cpu_shares{container_name="store-app-server",pod_name="store-app-server-2959171753-6kgll"}) /1000 * 60)
 
 上面使用`delta()`计算增量，还可以用`irate()`直接计算比率：
 
-	sum(irate(container_cpu_usage_seconds_total{container_name="store-app-server",pod_name="store-app-server-2959171753-6kgll"}[1m]))/(sum(container_spec_cpu_shares{container_name="store-app-server",pod_name="store-app-server-2959171753-6kgll"})/1024))
+	sum(irate(container_cpu_usage_seconds_total{container_name="store-app-server",pod_name="store-app-server-2959171753-6kgll"}[1m]))/(sum(container_spec_cpu_shares{container_name="store-app-server",pod_name="store-app-server-2959171753-6kgll"})/1000))
+	
+
+同时计算所有容器的CPU使用率：
+
+	(sum(irate(container_cpu_usage_seconds_total{container_name!="",pod_name!=""}[1m])) by(cluster,namespace,container_name,pod_name))/(sum(container_spec_cpu_shares{container_name!="",pod_name!=""}) by(cluster,namespace,container_name,pod_name) /1000)*100
+	
+
+上面算出的使用率是相对于`Request`中声明的CPU数量的，如果要计算相当于`Limit`的使用率，将`container_spec_cpu_shares`换成`container_spec_cpu_quota`:
+
+	(sum(irate(container_cpu_usage_seconds_total{container_name!="",pod_name!=""}[1m])) by(cluster,namespace,container_name,pod_name))/(sum(container_spec_cpu_quota{container_name!="",pod_name!=""}) by(cluster,namespace,container_name,pod_name) /1000)*100
+	
+
 
 ## 容器内存使用率的计算
 
