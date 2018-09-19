@@ -386,6 +386,9 @@ TODO
 [操作审计](https://kubernetes.io/docs/tasks/debug-application-cluster/audit/)
 
 [Metric Server](https://kubernetes.io/docs/tasks/debug-application-cluster/core-metrics-pipeline/)
+	Starting from Kubernetes 1.8, resource usage metrics, such as container CPU and memory usage, are available in Kubernetes through the Metrics API.
+	These metrics can be either accessed directly by user, for example by using kubectl top command, or used by a controller in the cluster, e.g. Horizontal Pod Autoscaler, to make decisions.
+	
 
 [Service调试](https://kubernetes.io/docs/tasks/debug-application-cluster/debug-service/)
 
