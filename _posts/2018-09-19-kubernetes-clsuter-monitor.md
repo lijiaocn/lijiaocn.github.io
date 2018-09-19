@@ -17,7 +17,9 @@ description: 最近参与了监控系统的建设，主要是用Prometheus监控
 
 最近参与了监控系统的建设，主要是用Prometheus监控Kubernetes集群自身以及托管在Kubernetes中的业务容器的状态。目标是主动探测及时发现系统异常，避免当用户开始抱怨、造成实际损失的时候，才发现问题。
 
-这里简单总结一下，做个收尾。
+这里简单总结一下，做个收尾，先贴张图：
+
+![prometheus部署架构图]({{ site.imglocal }}/prometheus/arch.png)
 
 Kubernetes1.8提供了[Metrics API][4]，待研究 @ 2018-09-19 18:15:07。
 
