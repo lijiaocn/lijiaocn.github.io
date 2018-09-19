@@ -65,6 +65,8 @@ Prometheus的服务发现: [新型监控告警工具prometheus（普罗米修斯
 
 prometheus、alert-manager、confd，加上一个自己开发的告警通知组件（为alert-manager提供webhook）构成一个了monitor-server。
 
+![prometheus部署架构图]({{ site.imglocal }}/prometheus/arch.png)
+
 这样的monitor-server有两台，各自独立工作，两个monitor-server上的alert-manager配置成了集群模式，防止告警重复发出。
 
 	prometheus发出的告警传送到alertmanager，alertmanager再调用自己开发告警通知组件的webhook将告警送出。
