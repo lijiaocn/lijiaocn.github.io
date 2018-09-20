@@ -61,49 +61,59 @@ kubelet中的cadvisor采集的指标与含义，见：[Monitoring cAdvisor with 
 	sum(
 	   delta(
 	       container_cpu_usage_seconds_total
-	           {container_name="store-app-server",pod_name="store-app-server-2959171753-6kgll"}[1m]
+	           {container_name="webshell",pod_name="webshell-rc-8wjhv"}[1m]
 	   )
 	) 
 
 然后计算CPU的总时间，这里的CPU数量是容器分配到CPU数量，公式如下：
 
 	sum(
-	    container_spec_cpu_shares
-	        {container_name="store-app-server",pod_name="store-app-server-2959171753-6kgll"}
-	) / 1024 * 60
+	    container_spec_cpu_quota
+	        {container_name="webshell",pod_name="webshell-rc-8wjhv"}
+	) / 1000 * 60
 
-`container_spec_cpu_shares`是容器的CPU配额，它的值是：为容器指定的CPU个数*1024。
+`container_spec_cpu_quota`是容器的CPU配额，它的值是：为容器指定的CPU个数*100000。
 
 将上面两个公式的结果相除，就得到了容器的CPU使用率：
 
 	sum(
 	   delta(
 	       container_cpu_usage_seconds_total
-	           {container_name="store-app-server",pod_name="store-app-server-2959171753-6kgll"}[1m]
+	           {container_name="webshell",pod_name="webshell-rc-8wjhv"}[1m]
 	   )
 	) 
 	/ 
 	( sum(
-	    container_spec_cpu_shares
-	        {container_name="store-app-server",pod_name="store-app-server-2959171753-6kgll"}
-	  ) / 1024 * 60
+	    container_spec_cpu_quota
+	        {container_name="webshell",pod_name="webshell-rc-8wjhv"}
+	  ) / 1000 * 60
 	)
 
 写成一行就是：
 
-	sum(delta(container_cpu_usage_seconds_total{container_name="store-app-server",pod_name="store-app-server-2959171753-6kgll"}[1m])) / (sum(container_spec_cpu_shares{container_name="store-app-server",pod_name="store-app-server-2959171753-6kgll"}) /1024 * 60)
+	sum(delta(container_cpu_usage_seconds_total{container_name="webshell",pod_name="webshell-rc-8wjhv"}[1m])) / (sum(container_spec_cpu_quota{container_name="webshell",pod_name="webshell-rc-8wjhv"}) /100000 * 60)
 
 上面使用`delta()`计算增量，还可以用`irate()`直接计算比率：
 
-	sum(irate(container_cpu_usage_seconds_total{container_name="store-app-server",pod_name="store-app-server-2959171753-6kgll"}[1m]))/(sum(container_spec_cpu_shares{container_name="store-app-server",pod_name="store-app-server-2959171753-6kgll"})/1024))
+	sum(irate(container_cpu_usage_seconds_total{container_name="webshell",pod_name="webshell-rc-8wjhv"}[1m]))/(sum(container_spec_cpu_quota{container_name="webshell",pod_name="webshell-rc-8wjhv"})/100000))
+	
+
+如果要同时计算所有容器的CPU使用率：
+
+	(sum(irate(container_cpu_usage_seconds_total{container_name!="",pod_name!=""}[1m])) by(cluster,namespace,container_name,pod_name))/(sum(container_spec_cpu_quota{container_name!="",pod_name!=""}) by(cluster,namespace,container_name,pod_name) /100000)*100
+	
 
 ## 容器内存使用率的计算
 
 容器内存使用率的计算就简单多了，直接用CPU使用量除以CPU配额即可：
 
-	container_memory_rss{container_name="store-app-server",pod_name="store-app-server-2959171753-6kgll"}
+	container_memory_rss{container_name="webshell",pod_name="webshell-rc-8wjhv"}
 	/
-	container_spec_memory_limit_bytes{container_name="store-app-server",pod_name="store-app-server-2959171753-6kgll"}
+	container_spec_memory_limit_bytes{container_name="webshell",pod_name="webshell-rc-8wjhv"}
+
+## 计算Node CPU的空闲率
+
+	avg(rate(node_cpu_seconds_total{mode="idle"}[1m])) by (cluster,instance,nodename) < 0.1
 
 ## 参考
 
