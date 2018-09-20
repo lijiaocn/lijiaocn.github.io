@@ -3,7 +3,7 @@ layout: default
 title: 《深入剖析Kubernetes》专栏的阅读笔记(持续更新)
 author: 李佶澳
 createdate: 2018/09/20 22:37:00
-changedate: 2018/09/21 00:48:00
+changedate: 2018/09/21 00:51:25
 categories: 好货
 tags: 阅读笔记
 keywords: 极客时间,Kubernetes,docker,张磊,深入剖析,原理
@@ -24,11 +24,11 @@ description: 张磊是《Docker容器与容器云》的作者，Kubernetes多个
 
 极客时间是知识付费行业里的特种兵，主打精品专栏。邀请的专栏作者几乎都是`FANG`、`BAT`、`TMD`等顶级互联网公司的资深员工，并且为专栏作者配备了专业的编辑和播音员。
 
-我最早抱着试一试的态度，订阅了左耳朵耗子的《左耳听风》，读了几篇之后发现内容真得很不错。订阅价格和买一本数的价格差不多，甚至更便宜，但是内容却是最新、持续更新的，并且可以在评论中与作者和其它读者互动。
+我最早抱着试一试的态度，订阅了左耳朵耗子的[《左耳听风》](https://www.lijiaocn.com/%E5%A5%BD%E8%B4%A7/2018/10/09/geek-chenghao-zhuanlan.html)，读了几篇之后发现内容真得很不错。订阅价格和买一本数的价格差不多，甚至更便宜，但是内容却是最新、持续更新的，并且可以在评论中与作者和其它读者互动。
 
 最重要的是，文章不仅干货满满，还特别清晰易懂，读起来很“爽”。可充分上下班在地铁上的时间阅读，不喜欢看文字的，可以听专业播音录制的音频。
 
-订阅之后可以在移动端和PC端`永久阅读`。强烈建议花费一两次午餐钱体验一下，新用户还可以领取：[极客时间首次注册30元优惠券](https://time.geekbang.org/activity/getinvite?gk_ucode=E274D90C022D49)
+订阅之后可以在移动端和PC端`永久阅读`。强烈建议花费一两次午餐钱体验一下， **新用户还可以领取** ：[极客时间首次注册30元优惠券](https://time.geekbang.org/activity/getinvite?gk_ucode=E274D90C022D49)
 
 ## 《深入剖析Kubernetes》专栏介绍
 
@@ -126,7 +126,9 @@ kubelet通过gRPC 协议同一个叫作 Device Plugin 的插件进行交互。�
 1. [一个最简容器的实现][1]
 2. [Borg论文阅读笔记][2]
 3. [Google Stack][3]
+4. [《左耳听风》陈皓专栏的阅读笔记(持续更新)][4]
 
 [1]: https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2015/02/25/%E4%B8%80%E4%B8%AA%E6%9C%80%E7%AE%80%E5%AE%B9%E5%99%A8%E7%9A%84%E5%AE%9E%E7%8E%B0.html  "一个最简容器的实现" 
 [2]: https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/02/22/borg-note.html "Borg论文阅读笔记"
 [3]: http://malteschwarzkopf.de/research/assets/google-stack.pdf "Google Stack"
+[4]: https://www.lijiaocn.com/%E5%A5%BD%E8%B4%A7/2018/10/09/geek-chenghao-zhuanlan.html "《左耳听风》陈皓专栏的阅读笔记(持续更新)"
