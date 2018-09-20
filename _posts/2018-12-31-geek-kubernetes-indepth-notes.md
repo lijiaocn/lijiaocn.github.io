@@ -3,7 +3,7 @@ layout: default
 title: 《深入剖析Kubernetes》专栏的阅读笔记(持续更新)
 author: 李佶澳
 createdate: 2018/09/20 22:37:00
-changedate: 2018/09/21 00:23:33
+changedate: 2018/09/21 00:48:00
 categories: 好货
 tags: 阅读笔记
 keywords: 极客时间,Kubernetes,docker,张磊,深入剖析,原理
@@ -109,7 +109,7 @@ aufs文件系统的知识有必要了解一下，还有devicemapper、btrfs、ov
 
 这里提到的[Google Stack][3]很赞！
 
-![Google Stack](https://time.geekbang.org/column/article/23132)
+![Google Stack](https://static001.geekbang.org/resource/image/c7/bd/c7ed0043465bccff2efc1a1257e970bd.png)
 
 kubelet通过gRPC 协议同一个叫作 Device Plugin 的插件进行交互。这个插件，是 Kubernetes 项目用来管理 GPU 等宿主机物理设备的主要组件，也是基于 Kubernetes 项目进行机器学习训练、高性能作业支持等工作必须关注的功能。
 
