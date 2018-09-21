@@ -22,9 +22,9 @@ description: 张磊是《Docker容器与容器云》的作者，Kubernetes多个
 
 ## 极客时间介绍
 
-最早抱着试一试的态度，订阅了左耳朵耗子的[《左耳听风》](https://www.lijiaocn.com/%E5%A5%BD%E8%B4%A7/2018/10/09/geek-chenghao-zhuanlan.html)，读了几篇之后发现内容不错。和买一本书差不多，但是内容是最新的、持续更新，并且可以在评论中与作者和其它读者互动。
+最早抱着试一试的态度，订阅了左耳朵耗子的[《左耳听风》](https://www.lijiaocn.com/%E5%A5%BD%E8%B4%A7/2018/10/09/geek-chenghao-zhuanlan.html)，读了几篇之后发现内容不错。和买一本书差不多，但是内容是最新的、持续更新，可以在地铁上用手机阅读，可以在评论中与作者和其它读者互动。
 
-订阅之后可以在移动端和PC端`永久阅读`。可以体验一下， **新用户可以领取** ：[极客时间首次注册30元优惠券](https://time.geekbang.org/activity/getinvite?gk_ucode=E274D90C022D49)
+订阅之后可以在移动端和PC端`永久阅读`。**新用户可以领取** ：[极客时间首次注册30元优惠券](https://time.geekbang.org/activity/getinvite?gk_ucode=E274D90C022D49)
 
 ## 《深入剖析Kubernetes》专栏介绍
 
