@@ -73,6 +73,7 @@ label的命名规则为`[a-zA-Z_][a-zA-Z0-9_]*`，以`__`开头的label名称被
 2018-09-25 15:29:02 补充：
 
 metric有`Counter`、`Gauge`、`Histogram`和`Summary`[四种类型][17]。在指标生成端，也就是应用程序中，调用prometheus的sdk创建metrics的时候，必须要明确是哪一种类型的metrics。
+见：[使用Prometheus SDK输出Prometheus格式的Metrics](https://www.lijiaocn.com/%E7%BC%96%E7%A8%8B/2018/09/25/prometheus-client-usage.html)
 
 Counter是累计数值，只能增加或者在重启时被归零。
 
