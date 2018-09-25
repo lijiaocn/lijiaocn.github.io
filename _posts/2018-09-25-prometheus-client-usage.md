@@ -67,6 +67,7 @@ simple是一个最简单的例子：
 
 random复杂一点点，注册了两个采集器，注意第一个采集器后面的"service"，它是label名称：
 
+	...
 	var (
 		rpcDurations = prometheus.NewSummaryVec(
 			prometheus.SummaryOpts{
@@ -82,12 +83,13 @@ random复杂一点点，注册了两个采集器，注意第一个采集器后�
 			Buckets: prometheus.LinearBuckets(*normMean-5**normDomain, .5**normDomain, 20),
 		})
 	)
-
+	
 	func init() {
 		// Register the summary and the histogram with Prometheus's default registry.
 		prometheus.MustRegister(rpcDurations)
 		prometheus.MustRegister(rpcDurationsHistogram)
 	}
+	...
 
 采集器在与[采集器类型](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/08/03/prometheus-usage.html#metric%E7%B1%BB%E5%9E%8B)同名的.go文件中实现：
 
@@ -120,6 +122,7 @@ random复杂一点点，注册了两个采集器，注意第一个采集器后�
 否则label的值会错配，为了防止这种情况，可以用`GetMetricWith(labels Labels)`方法设置。
 
 启动后可以查询到下面到指标：
+
 	...
 	rpc_durations_seconds{service="exponential",quantile="0.5"} 7.380919552318622e-07
 	rpc_durations_seconds{service="exponential",quantile="0.9"} 2.291519677915514e-06
