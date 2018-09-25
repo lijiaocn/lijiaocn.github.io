@@ -1,13 +1,13 @@
 ---
 layout: default
-title: "Prometheus client_golang：以prometheus支持的格式输出应用的metrics"
+title: "应用程序中使用Prometheus Client输出Prometheus格式的Metrics"
 author: 李佶澳
 createdate: "2018-09-25 16:02:37 +0800"
 changedate: "2018-09-25 16:02:37 +0800"
 categories: 编程
 tags: prometheus
 keywords: prometheus,go,client,api
-description: client_golang是prometheus的go client，主要有两部分：用于吐出metrics的prometheus库，和调用prometheus的api的sdk
+description: client_golang是prometheus的go client，主要有两部分：用于吐出metrics的sdk，和调用prometheus的api的sdk。
 
 ---
 
