@@ -1,0 +1,5 @@
+# robots.txt generated at http://tool.chinaz.com/robots/ 
+Disallow: /google2bf2ccb40b0a5824.html
+Disallow: /97bbec40a8a51d3a917707d4620f9ea7.html
+Disallow: /baidu_verify_SvbChe69Hh.html
+Sitemap: https://www.lijiaocn.com/sitemap.xml
