@@ -44,7 +44,62 @@ Prometheus系统的三部分：prometheus、alertmanager、*_exporter（多个�
 
 ## Prometheus
 
-prometheus是最主要的组件，负责采集数据，发出告警。
+prometheus是最主要的组件，负责采集数据，将告警发送到alertmanager，alertmanager再将告警以各种形式送出。
+
+### 命名规则
+
+2018-09-25 15:28:47 补充：
+
+[prometheus data model][16]中介绍了数据模型。时间序列以metric的名字命名，可以附带有多个label，label是一个键值对。
+
+metric的命名规则为`[a-zA-Z_:][a-zA-Z0-9_:]*`，其中`:`被保留用于用户定义的记录规则。
+
+label的命名规则为`[a-zA-Z_][a-zA-Z0-9_]*`，以`__`开头的label名称被保留用于内部label。
+
+每个采样点叫做`sample`，它是float64的数值或者精确到毫秒的时间戳。
+
+通过metric名称和label查询samples，语法如下：
+
+	<metric name>{<label name>=<label value>, ...}
+	
+
+例如：
+
+	api_http_requests_total{method="POST", handler="/messages"}
+	
+
+### metric类型
+
+2018-09-25 15:29:02 补充：
+
+metric有`Counter`、`Gauge`、`Histogram`和`Summary`[四种类型][17]。
+
+Counter是累计数值，只能增加或者在重启时被归零。Gauge是瞬时值，
+
+Histogram（直方图）对采集的指标进行分组计数，一次产生多个指标，带有后缀`_bucket`(仅histogram)、`_sum`、`_count`，其中`_bucket`是区间内计数：
+
+	<basename>_bucket{le="<upper inclusive bound>"}
+	
+
+Summary一次产生多个指标，带有后缀`_bucket`(仅histogram)、`_sum`、`_count`，可以查询指定位置的分位数：
+
+	<basename>{quantile="<φ>"}
+	
+
+Histogram和Summary都可以获取分位数，Histogram需要依靠在服务端执行的函数[histogram_quantile()](https://prometheus.io/docs/prometheus/latest/querying/functions/#histogram_quantile)，Summary则是在客户端计算得到。
+
+[Histograms and summaries][18]中阐述了两者的区别，特别是Summary的的分位数不能被聚合。注意，这个不能聚合不是说功能上不能聚合，
+而是说聚合出来的数值可能没有意义的，例如对多个采样周期中得到分位数进行平均计算就是没有意义的。
+
+[LatencyTipOfTheDay: You can't average percentiles. Period][19]中对“分位数”不能被相加平均的做了很详细的说明，分位数本身是用来切分数据的，它们的平均数没有同样的分位效果。
+
+### Job和Instance
+
+2018-09-25 15:37:09 补充：
+
+被监控的具体目标是instance，监控这些instances的任务叫做job。每个job负责一类任务，可以为一个job配置多个instance，job对自己的instance执行相同的动作。
+
+隶属于job的instance可以直接在配置文件中写死。也可以让job自动从consul、kuberntes中动态获取，这个过程就是下文说的服务发现。
 
 ### 部署、启动
 
@@ -757,6 +812,10 @@ In order to get the metric "container_cpu_load_average_10s" the cAdvisor must ru
 13. [alertmanager configuration][13]
 14. [prometheus ha deploy][14]
 15. [prometheus exporter][15]
+16. [prometheus data model][16]
+17. [prometheus metric types][17]
+18. [prometheus Histograms and summaries][18]
+19. [LatencyTipOfTheDay: You can't average percentiles. Period. ][19]
 
 [1]: https://prometheus.io/docs/introduction/overview/ "prometheus documents"
 [2]: https://prometheus.io/docs/prometheus/latest/configuration/configuration/ "prometheus configuration"
@@ -773,3 +832,7 @@ In order to get the metric "container_cpu_load_average_10s" the cAdvisor must ru
 [13]: https://prometheus.io/docs/alerting/configuration/ "alertmanager configuration"
 [14]: http://ylzheng.com/2018/03/17/promethues-ha-deploy/ "prometheus ha deploy"
 [15]: https://prometheus.io/docs/instrumenting/exporters/ "prometheus exporter"
+[16]: https://prometheus.io/docs/concepts/data_model/ "prometheus data model"
+[17]: https://prometheus.io/docs/concepts/metric_types/ "prometheus metric types"
+[18]: https://prometheus.io/docs/practices/histograms/ "prometheus Histograms and summaries"
+[19]: http://latencytipoftheday.blogspot.com/2014/06/latencytipoftheday-you-cant-average.html "LatencyTipOfTheDay: You can't average percentiles. Period. "
