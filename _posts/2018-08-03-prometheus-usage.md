@@ -44,7 +44,108 @@ Prometheus系统的三部分：prometheus、alertmanager、*_exporter（多个�
 
 ## Prometheus
 
-prometheus是最主要的组件，负责采集数据，发出告警。
+prometheus是最主要的组件，负责采集数据，将告警发送到alertmanager，alertmanager再将告警以各种形式送出。
+
+### 命名规则
+
+2018-09-25 15:28:47 补充：
+
+[prometheus data model][16]中介绍了数据模型。时间序列以metric的名字命名，可以附带有多个label，label是一个键值对。
+
+metric的命名规则为`[a-zA-Z_:][a-zA-Z0-9_:]*`，其中`:`被保留用于用户定义的记录规则。
+
+label的命名规则为`[a-zA-Z_][a-zA-Z0-9_]*`，以`__`开头的label名称被保留用于内部label。
+
+每个采样点叫做`sample`，它是float64的数值或者精确到毫秒的时间戳。
+
+通过metric名称和label查询samples，语法如下：
+
+	<metric name>{<label name>=<label value>, ...}
+	
+
+例如：
+
+	api_http_requests_total{method="POST", handler="/messages"}
+	
+
+### metric类型
+
+2018-09-25 15:29:02 补充：
+
+metric有`Counter`、`Gauge`、`Histogram`和`Summary`[四种类型][17]。在指标生成端，也就是应用程序中，调用prometheus的sdk创建metrics的时候，必须要明确是哪一种类型的metrics。
+见：[使用Prometheus SDK输出Prometheus格式的Metrics](https://www.lijiaocn.com/%E7%BC%96%E7%A8%8B/2018/09/25/prometheus-client-usage.html)
+
+Counter是累计数值，只能增加或者在重启时被归零。
+
+Gauge是瞬时值。
+
+Histogram（直方图）对采集的指标进行分组计数，会生成多个指标，分别带有后缀`_bucket`(仅histogram)、`_sum`、`_count`，其中`_bucket`是区间内计数：
+
+	<basename>_bucket{le="<upper inclusive bound>"}
+	
+
+名为`rpc_durations_seconds`histogram生成的metrics：
+
+	# TYPE rpc_durations_histogram_seconds histogram
+	rpc_durations_histogram_seconds_bucket{le="-0.00099"} 0
+	rpc_durations_histogram_seconds_bucket{le="-0.00089"} 0
+	rpc_durations_histogram_seconds_bucket{le="-0.0007899999999999999"} 0
+	rpc_durations_histogram_seconds_bucket{le="-0.0006899999999999999"} 1
+	rpc_durations_histogram_seconds_bucket{le="-0.0005899999999999998"} 1
+	rpc_durations_histogram_seconds_bucket{le="-0.0004899999999999998"} 1
+	rpc_durations_histogram_seconds_bucket{le="-0.0003899999999999998"} 10
+	rpc_durations_histogram_seconds_bucket{le="-0.0002899999999999998"} 26
+	rpc_durations_histogram_seconds_bucket{le="-0.0001899999999999998"} 64
+	rpc_durations_histogram_seconds_bucket{le="-8.999999999999979e-05"} 117
+	rpc_durations_histogram_seconds_bucket{le="1.0000000000000216e-05"} 184
+	rpc_durations_histogram_seconds_bucket{le="0.00011000000000000022"} 251
+	rpc_durations_histogram_seconds_bucket{le="0.00021000000000000023"} 307
+	rpc_durations_histogram_seconds_bucket{le="0.0003100000000000002"} 335
+	rpc_durations_histogram_seconds_bucket{le="0.0004100000000000002"} 349
+	rpc_durations_histogram_seconds_bucket{le="0.0005100000000000003"} 353
+	rpc_durations_histogram_seconds_bucket{le="0.0006100000000000003"} 356
+	rpc_durations_histogram_seconds_bucket{le="0.0007100000000000003"} 357
+	rpc_durations_histogram_seconds_bucket{le="0.0008100000000000004"} 357
+	rpc_durations_histogram_seconds_bucket{le="0.0009100000000000004"} 357
+	rpc_durations_histogram_seconds_bucket{le="+Inf"} 357
+	rpc_durations_histogram_seconds_sum -0.000331219501489902
+	rpc_durations_histogram_seconds_count 357
+	
+
+Summary同样产生多个指标，分别带有后缀`_bucket`(仅histogram)、`_sum`、`_count`，可以直接查询分位数：
+
+	<basename>{quantile="<φ>"}
+	
+
+名为`rpc_durations_seconds`summary生成到metrics：
+
+	# TYPE rpc_durations_seconds summary
+	rpc_durations_seconds{service="exponential",quantile="0.5"} 7.380919552318622e-07
+	rpc_durations_seconds{service="exponential",quantile="0.9"} 2.291519677915514e-06
+	rpc_durations_seconds{service="exponential",quantile="0.99"} 4.539723552933882e-06
+	rpc_durations_seconds_sum{service="exponential"} 0.0005097984764772547
+	rpc_durations_seconds_count{service="exponential"} 532
+	
+
+Histogram和Summary都可以获取分位数。
+
+通过Histogram获得分位数，要将直方图指标数据收集prometheus中，
+然后用prometheus的查询函数[histogram_quantile()](https://prometheus.io/docs/prometheus/latest/querying/functions/#histogram_quantile)计算出来。
+Summary则是在应用程序中直接计算出了分位数。
+
+[Histograms and summaries][18]中阐述了两者的区别，特别是Summary的的分位数不能被聚合。
+
+注意，这个不能聚合不是说功能上不支持，而是说对分位数做聚合操作通常是没有意义的。
+
+[LatencyTipOfTheDay: You can't average percentiles. Period][19]中对“分位数”不能被相加平均的做了很详细的说明：分位数本身是用来切分数据的，它们的平均数没有同样的分位效果。
+
+### Job和Instance
+
+2018-09-25 15:37:09 补充：
+
+被监控的具体目标是instance，监控这些instances的任务叫做job。每个job负责一类任务，可以为一个job配置多个instance，job对自己的instance执行相同的动作。
+
+隶属于job的instance可以直接在配置文件中写死。也可以让job自动从consul、kuberntes中动态获取，这个过程就是下文说的服务发现。
 
 ### 部署、启动
 
@@ -757,6 +858,10 @@ In order to get the metric "container_cpu_load_average_10s" the cAdvisor must ru
 13. [alertmanager configuration][13]
 14. [prometheus ha deploy][14]
 15. [prometheus exporter][15]
+16. [prometheus data model][16]
+17. [prometheus metric types][17]
+18. [prometheus Histograms and summaries][18]
+19. [LatencyTipOfTheDay: You can't average percentiles. Period. ][19]
 
 [1]: https://prometheus.io/docs/introduction/overview/ "prometheus documents"
 [2]: https://prometheus.io/docs/prometheus/latest/configuration/configuration/ "prometheus configuration"
@@ -773,3 +878,7 @@ In order to get the metric "container_cpu_load_average_10s" the cAdvisor must ru
 [13]: https://prometheus.io/docs/alerting/configuration/ "alertmanager configuration"
 [14]: http://ylzheng.com/2018/03/17/promethues-ha-deploy/ "prometheus ha deploy"
 [15]: https://prometheus.io/docs/instrumenting/exporters/ "prometheus exporter"
+[16]: https://prometheus.io/docs/concepts/data_model/ "prometheus data model"
+[17]: https://prometheus.io/docs/concepts/metric_types/ "prometheus metric types"
+[18]: https://prometheus.io/docs/practices/histograms/ "prometheus Histograms and summaries"
+[19]: http://latencytipoftheday.blogspot.com/2014/06/latencytipoftheday-you-cant-average.html "LatencyTipOfTheDay: You can't average percentiles. Period. "
