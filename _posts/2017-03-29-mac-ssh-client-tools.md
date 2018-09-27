@@ -58,6 +58,45 @@ description:  mac上虽然有iterm等shell终端，可以直接ssh登陆，但�
 
 三个参数分别为：端口、用户名@地址、登陆密码。
 
+### 配置lrzsz
+
+[ZModem integration for iTerm 2](https://github.com/mmastrac/iterm2-zmodem)
+
+	brew install lrzsz
+
+	wget https://raw.githubusercontent.com/mmastrac/iterm2-zmodem/master/iterm2-recv-zmodem.sh
+	wget https://raw.githubusercontent.com/mmastrac/iterm2-zmodem/master/iterm2-send-zmodem.sh
+	chmod +x *.sh
+	mv iterm2*.sh /usr/local/bin/
+
+然后到iterm的"Preferences->Profiles->Advanced->Triggers"中添加下面两个trigger:
+
+    Regular expression: rz waiting to receive.\*\*B0100
+    Action: Run Silent Coprocess
+    Parameters: /usr/local/bin/iterm2-send-zmodem.sh
+    Instant: checked
+
+    Regular expression: \*\*B00000000000000
+    Action: Run Silent Coprocess
+    Parameters: /usr/local/bin/iterm2-recv-zmodem.sh
+    Instant: checked
+
+## ssh 实现Session Clone
+
+[MAC下iterm2 实现clone session](https://blog.csdn.net/xusensen/article/details/72785592)
+
+在~目录下的.ssh文件夹冲创建一个config文件，文件内容输入：
+
+	host *
+	ControlMaster auto
+	ControlPath ~/.ssh/master-%r@%h:%p
+
+然后只需要第一次登陆时输入密码，打开新窗口再次登陆，直接输入名称就可以了，不需要密码。
+
+> ~/.ssh/目录下会发现master-*的sock文件。它记录了你目前登录到的机器，这样的话，你登录同样的机器就会重用同一个链接了。
+
+[ssh_config](https://linux.die.net/man/5/ssh_config)
+
 ## ~/.ssh/config
 
 在~/.ssh/目录中创建config文件，在其中按照如下格式记录主机:

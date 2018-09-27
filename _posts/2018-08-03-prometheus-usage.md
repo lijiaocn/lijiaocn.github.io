@@ -789,6 +789,39 @@ blackbox_exporter将按照http_2xx中的配置探测目标网址http://www.baidu
 
 {% endraw %}
 
+## 更改标签的时机：抓取前修改、抓取后修改、告警时修改
+
+prometheus支持修改标签。metric的标签可以在采集端采集的时候直接打上，这是最原始的标签。
+
+除此之外，还可以在prometheus的配置文件里，对metric的label进行修改。
+
+修改的时机有两个：采集数据之前，通过`relabel_config`；采集数据之后，写入存储之前，通过`metric_relabel_configs`。
+
+两个的配置方式是相同的：
+
+
+	relabel_configs:
+	- source_labels: [__meta_kubernetes_pod_label_app]
+	  regex: 'rabbitmq01-exporter'
+	  replacement: 'public-rabbitmq01.paas.production:5672'
+	  target_label: instance
+	
+	metric_relabel_configs:
+	- source_labels: [node]
+	  regex: 'rabbit01@rabbit01'
+	  replacement: 'public-rabbitmq01.paas.production:5672'
+	  target_label: node_addr
+
+第一个是采集之前通过已有的标签，采集之前的标签通常是服务发现时设置的，生成新的标签instance。
+
+第一个是采集之后，检查采集的指标，如果标签`node`匹配正则，生成新的标签node_addr。
+
+如果要修改标签，target_label指定同名的标签。
+
+另外`alert_relabel_configs`可以在告警前修改标签。
+
+参考：[relabel_configs vs metric_relabel_configs][20]
+
 ## 杂项
 
 下面是学习过程中，查询的一些资料，直接罗列，没有做整理。
@@ -862,6 +895,7 @@ In order to get the metric "container_cpu_load_average_10s" the cAdvisor must ru
 17. [prometheus metric types][17]
 18. [prometheus Histograms and summaries][18]
 19. [LatencyTipOfTheDay: You can't average percentiles. Period. ][19]
+20. [relabel_configs vs metric_relabel_configs][20]
 
 [1]: https://prometheus.io/docs/introduction/overview/ "prometheus documents"
 [2]: https://prometheus.io/docs/prometheus/latest/configuration/configuration/ "prometheus configuration"
@@ -882,3 +916,4 @@ In order to get the metric "container_cpu_load_average_10s" the cAdvisor must ru
 [17]: https://prometheus.io/docs/concepts/metric_types/ "prometheus metric types"
 [18]: https://prometheus.io/docs/practices/histograms/ "prometheus Histograms and summaries"
 [19]: http://latencytipoftheday.blogspot.com/2014/06/latencytipoftheday-you-cant-average.html "LatencyTipOfTheDay: You can't average percentiles. Period. "
+[20]: https://www.robustperception.io/relabel_configs-vs-metric_relabel_configs "relabel_configs vs metric_relabel_configs"

@@ -137,15 +137,166 @@ Nginx原本只能做7层(http)代理，在1.9.0版本中增加了4层(TCP/UDP)�
 	    }
 	}
 
+### Nginx模块
+
+理解Nginx Module很重要，因为后面的OpenResty就是标准的Nginx加上很多Nginx Module。
+
+Nginx是用C语言开发软件，采用模块化设计，可以通过开发模块扩展Nginx的功能。
+
+[Nginx Development guide][18]中介绍了Nginx模块开发的方法[Nginx Module develop][19]。
+
+插件可以编译成.so以后动态加载，也可以直接编译到nginx中，编译是通过`--add-module`指定要集成的模块。
+
+例如[lua-nginx-module](https://github.com/openresty/lua-nginx-module#readme)：
+
+	./configure --prefix=/opt/nginx \
+		 --with-ld-opt="-Wl,-rpath,/path/to/luajit-or-lua/lib" \
+		 --add-module=/path/to/ngx_devel_kit \
+		 --add-module=/path/to/lua-nginx-module
+
 ## OpenResty
 
-[OpenResty][15]是一个集成了Nginx、LuaJIT和其它很多moudels的平台，web应用可以完全在OpenResty中运行:
+[OpenResty][15]是一个集成了Nginx、LuaJIT和其它很多moudels的平台，用来托管完整的web应用——包含业务逻辑，而不单纯是静态文件服务器:
 
 	OpenResty® aims to run your server-side web app completely in the Nginx server, 
 	leveraging Nginx's event model to do non-blocking I/O not only with the HTTP 
 	clients, but also with remote backends like MySQL, PostgreSQL, Memcached, and Redis.
 
-[OpenResty Components][16]中列出了OpenResty集成的组件。
+[OpenResty Components][16]中列出了OpenResty集成的组件，数量不少，这里就不列出来了。
+
+先通过[OpenResty Getting Started][17]感受一下OpenResty是咋回事。
+
+### OpenResty安装
+
+Centos安装方式：
+
+	sudo yum install yum-utils
+	sudo yum-config-manager --add-repo https://openresty.org/package/centos/openresty.repo
+	sudo yum install openresty
+	sudo yum install openresty-resty
+
+通过源代码编译：
+
+	wget https://openresty.org/download/openresty-1.13.6.2.tar.gz
+	tar -xvf openresty-1.13.6.2.tar.gz
+	cd openresty-1.13.6.2/
+	./configure -j2
+	make -j2
+	make install     //默认安装在/usr/local/bin/openresty
+	export PATH=/usr/local/openresty/bin:$PATH
+
+都包含以下文件：
+
+	$ tree -L 2 /usr/local/openresty/
+	/usr/local/openresty/
+	|-- bin
+	|   |-- md2pod.pl
+	|   |-- nginx-xml2pod
+	|   |-- openresty -> /usr/local/openresty/nginx/sbin/nginx
+	|   |-- opm
+	|   |-- resty
+	|   |-- restydoc
+	|   `-- restydoc-index
+	|-- COPYRIGHT
+	|-- luajit
+	|   |-- bin
+	|   |-- include
+	|   |-- lib
+	|   `-- share
+	...
+
+注意openresty命令就是nginx命令，OpenResty可以理解为一个集成了很多模块的定制版nginx：
+
+	$ openresty -h
+	nginx version: openresty/1.13.6.2
+	Usage: nginx [-?hvVtTq] [-s signal] [-c filename] [-p prefix] [-g directives]
+	
+	Options:
+	  -?,-h         : this help
+	  -v            : show version and exit
+	  -V            : show version and configure options then exit
+	  -t            : test configuration and exit
+	  -T            : test configuration, dump it and exit
+	  -q            : suppress non-error messages during configuration testing
+	  -s signal     : send signal to a master process: stop, quit, reopen, reload
+	  -p prefix     : set prefix path (default: /usr/local/openresty/nginx/)
+	  -c filename   : set configuration file (default: conf/nginx.conf)
+	  -g directives : set global directives out of configuration file
+
+
+可以在openresty的配置文件中写入lua代码：
+
+	$ cat nginx.conf
+	worker_processes  1;
+	error_log logs/error.log;
+	events {
+	    worker_connections 1024;
+	}
+	http {
+	    server {
+	        listen 8080;
+	        location / {
+	            default_type text/html;
+	            content_by_lua '
+	                ngx.say("<p>hello, world</p>")
+	            ';
+	        }
+	    }
+	}
+
+启动：
+
+	openresty -p `pwd` -c nginx.conf
+
+然后访问"127.0.0.1:8080"，可以看到输出：
+
+	$ curl 127.0.0.1:8080
+	<p>hello, world</p>
+
+## Kong
+
+[Kong][3]是一个OpenResty应用，用来管理api。
+
+## Kong编译安装
+
+Kong[编译安装](https://docs.konghq.com/install/source/?_ga=2.8480690.66649192.1538042077-515173955.1536914658)时需要先安装有OpenResty。
+
+还需要lua包管理工具[luarocks](https://luarocks.org/):
+
+	yum install -y luarocks
+	yum install -y lua-devel
+
+下载代码编译：
+
+	git clone https://github.com/Kong/kong.git
+	cd kong
+	make install
+
+编译完成之后会在当前目录生成一个bin目录：
+
+	$ ls bin/
+	busted  kong
+
+查看bin/kong的内容，可以发现这是一个用resty执行的脚本文件：
+
+	$ cat bin/kong
+	#!/usr/bin/env resty
+
+	require "luarocks.loader"
+
+	package.path = "./?.lua;./?/init.lua;" .. package.path
+
+	require("kong.cmd.init")(arg)
+
+准备数据库，kong支持PostgreSQL和Cassandra 3.x.x，这里使用PostgreSQL:
+
+	yum install -y  postgresql-server
+	postgresql-setup initdb
+	systemctl start postgresql
+	su - postgres 
+	psql
+	REATE USER kong; CREATE DATABASE kong OWNER kong;
+	kong start -c ./kong.conf
 
 ## 参考
 
@@ -165,6 +316,9 @@ Nginx原本只能做7层(http)代理，在1.9.0版本中增加了4层(TCP/UDP)�
 14. [Nginx: Module ngx_stream_core_module][14]
 15. [OpenResty website][15]
 16. [OpenResty Components][16]
+17. [OpenResty Getting Started][17]
+18. [Nginx Development guide][18]
+19. [Nginx Module develop][19]
 
 [1]: http://nginx.org/ "nginx website"
 [2]: https://openresty.org/en/ "OpenResty website" 
@@ -182,3 +336,6 @@ Nginx原本只能做7层(http)代理，在1.9.0版本中增加了4层(TCP/UDP)�
 [14]: http://nginx.org/en/docs/stream/ngx_stream_core_module.html "Nginx: Module ngx_stream_core_module"
 [15]: https://openresty.org/en/ "OpenResty website"
 [16]: https://openresty.org/en/components.html "OpenResty Components"
+[17]: https://openresty.org/en/getting-started.html "OpenResty Getting Started"
+[18]: http://nginx.org/en/docs/dev/development_guide.html "Nginx Development guide"
+[19]: http://nginx.org/en/docs/dev/development_guide.html#Modules "Nginx Module develop"

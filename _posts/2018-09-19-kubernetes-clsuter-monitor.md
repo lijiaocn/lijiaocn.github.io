@@ -186,6 +186,84 @@ Kubernetes状态指标指的是Kubernetes中的Pod、Service、ConfigMap、Ingre
 
 可以参考：[通过Prometheus查询计算Kubernetes集群中的容器CPU、内存使用率等指标][8]。
 
+NodeCPU使用率：
+
+	sum(irate(node_cpu_seconds_total{nodename="10.10.173.203",mode!="idle"}[1m]))*100
+
+Node CPU负载:
+
+	node_load1
+	node_load5
+	node_load15
+
+Node内存使用率：
+
+	(1-node_memory_MemAvailable_bytes/node_memory_MemTotal_bytes)*100
+
+根分区剩余空间：
+
+	node_filesystem_avail_bytes{device="rootfs"}
+
+Node CPU数量:
+
+	machine_cpu_cores
+
+容器CPU使用率：
+
+	 (sum(irate(container_cpu_usage_seconds_total{container_name!="",pod_name!="",namespace="test-godeyes"}[1m])) by(cluster,namespace,container_name,pod_name))/(sum(container_spec_cpu_quota{namespace="test-godeyes",container_name!="",pod_name!=""}) by(cluster,namespace,container_name,pod_name) /100000)*100
+
+容器内存使用率:
+
+	container_memory_rss{namespace="test-godeyes",container_name!="",pod_name!=""}/(container_spec_memory_limit_bytes{namespace="test-godeyes", container_name!="",pod_name!=""}) <=1
+
+容器inode使用总数：
+
+	container_fs_inodes_total{namespace="test-godeyes",container_name!="",pod_name!=""}
+
+mysql连接数:
+
+	mysql_global_status_connections{vip="10.19.124.36:3306"}
+
+mysql状态：
+
+	MySQL_Up{vip="10.19.124.36:3306"}
+
+mysql ops:
+
+	delta(mysql_global_status_innodb_row_ops_total{vip="10.19.185.107:3306"}[5m])
+
+mysql hit命中率:
+
+	(mysql_global_status_qcache_hits-mysql_global_status_qcache_inserts )/mysql_global_status_qcache_hits * 100
+
+redis状态：
+
+	redis_cluster_state{addr="10.19.100.8:7000"}
+
+redis连接数：
+
+	redis_connected_clients{addr="10.19.100.8:7000"}
+
+redis命中率:
+
+	redis_keyspace_hits_total{addr="10.19.100.8:7000"}/(redis_keyspace_misses_total{addr="10.19.100.8:7000"}+redis_keyspace_hits_total{addr="10.19.100.8:7000"})
+
+redis内存使用率：
+
+	redis_memory_used_bytes{addr="10.19.100.8:7000"}/redis_memory_max_bytes{addr="10.19.100.8:7000"}
+
+mq状态：
+
+	rabbitmq_up
+
+mq积压：
+
+	rabbitmq_queue_messages_ready
+
+mq内存：
+
+	rabbitmq_node_mem_used/rabbitmq_node_mem_limit
+
 ## 参考
 
 1. [新型监控告警工具prometheus（普罗米修斯）入门使用][1]
