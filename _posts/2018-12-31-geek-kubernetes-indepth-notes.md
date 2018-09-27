@@ -3,7 +3,7 @@ layout: default
 title: 《深入剖析Kubernetes》专栏的阅读笔记(持续更新)
 author: 李佶澳
 createdate: 2018/09/20 22:37:00
-changedate: 2018/09/21 00:51:25
+changedate: 2018/09/28 00:23:19
 categories: 好货
 tags: 阅读笔记
 keywords: 极客时间,Kubernetes,docker,张磊,深入剖析,原理
@@ -30,7 +30,7 @@ description: 张磊是《Docker容器与容器云》的作者，Kubernetes多个
 
 专栏详情可以直接扫码查看，有很详细的内容目录，并且可以试读。
 
-![深入剖析Kubernetes极客时间专栏介绍]({{ site.imglocal }}/geek/kubernetes.jpeg)
+<span style="display:block;text-align:center">![深入剖析Kubernetes极客时间专栏介绍]({{ site.imglocal }}/geek/kubernetes.jpeg){: width="250px"}</span>
 
 ## 让top显示容器自己的状态 —— 06 | 白话容器基础（二）：隔离与限制 
 
