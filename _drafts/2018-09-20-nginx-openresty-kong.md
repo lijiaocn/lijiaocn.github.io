@@ -263,10 +263,11 @@ Kong[编译安装](https://docs.konghq.com/install/source/?_ga=2.8480690.6664919
 
 还需要lua包管理工具[luarocks](https://luarocks.org/):
 
-	yum install -y luarocks
-	yum install -y lua-devel
+	git clone git://github.com/luarocks/luarocks.git
+	./configure --lua-suffix=jit --with-lua=/usr/local/openresty/luajit --with-lua-include=/usr/local/openresty/luajit/include/luajit-2.1
+	make install
 
-下载代码编译：
+下载kong代码编译：
 
 	git clone https://github.com/Kong/kong.git
 	cd kong
@@ -295,8 +296,16 @@ Kong[编译安装](https://docs.konghq.com/install/source/?_ga=2.8480690.6664919
 	systemctl start postgresql
 	su - postgres 
 	psql
-	REATE USER kong; CREATE DATABASE kong OWNER kong;
-	kong start -c ./kong.conf
+	CREATE USER kong; CREATE DATABASE kong OWNER kong;
+	alter user kong with encrypted password '';
+	cp kong.conf.default kong.conf
+	./bin/kong start -c ./kong.conf
+
+## ERROR: ./kong/globalpatches.lua:63: module 'socket' not found:No LuaRocks module found for socket
+
+这是因为编译kong之后，重新编译了luarocks，并且将luarocks安装在了其它位置。重新编译kong之后解决。
+
+## 
 
 ## 参考
 

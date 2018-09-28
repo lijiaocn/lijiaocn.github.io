@@ -5,7 +5,7 @@ author: lijiaocn
 createdate: 2017/08/31 09:43:20
 changedate: 2017/09/08 14:26:42
 categories: 技巧
-tags: database
+tags: PostgreSQL
 keywords: posgres,postgresql,database
 description: postgresql的基本使用，最常用的操作。
 
@@ -17,6 +17,75 @@ description: postgresql的基本使用，最常用的操作。
 ## 介绍 
 
 postgresql是一个老牌的数据库，它的文档[postgresql manuals][1]中包含更多的内容。
+
+## 部署启动
+
+### 1. 在CentOS上使用
+
+安装：
+
+	yum install -y  postgresql-server
+
+启动前初始化：
+
+	postgresql-setup initdb
+
+启动：
+
+	systemctl start postgresql
+
+需要以postgre用户身份登陆管理：
+
+	su - postgres
+	psql
+
+### 2. 在容器中启动
+
+获取镜像:
+
+	docker pull docker.io/postgres:latest
+
+如果要把sql文件打包到镜像中，在启动postgre时自动创建相关到库，需要以postgres为base，加入sql文件制作成新镜像:
+
+	$cat Dockerfile
+	FROM postgres:latest
+	ADD ./your.sql  /docker-entrypoint-initdb.d
+	
+	$docker build -t mypostgres:latest .
+
+通过查看镜像docker.io/postgres可以知道，容器的entrypoint是镜像中的脚本`docker-entrypoint.sh`。
+该脚本运行的时候会自动创建用户，并加载执行目录`/docker-entrypoint-initdb.d`中的.sh、.sql和.sql.gz文件。
+
+启动postgres:
+
+	docker run -idt \
+		-e POSTGRES_PASSWORD="alice" \
+		-e POSTGRES_USER="alice" \
+		-e POSTGRES_DB="alice"  \
+		-p 5432:5432  \
+		mypostgres:latest
+
+## postgres的用户创建
+
+这个需要认真说下，很多很多人在这踩坑。
+
+postgre启动后，默认用户是postgres，需要在运行postgres的机器上，切换为postgres用户，然后才能通过psql直接进入：
+
+	# su - postgres
+	Last login: Fri Sep 28 15:23:41 CST 2018 on pts/2
+	-bash-4.2$ psql
+	psql (9.2.24)
+	Type "help" for help.
+	
+	postgres=#
+
+如果要增加新用户，进入postgres之后，直接使用create创建：
+
+	create user tony with password '123';
+
+创建之后是不是就可以登陆了？当然不是！
+
+
 
 ## 命令行psql
 
@@ -52,31 +121,6 @@ posgresql的client是psql，通过`psql --help`可以查看具体用法。
 	\du：列出所有用户。
 	\e：打开文本编辑器。
 	\conninfo：列出当前数据库和连接的信息。
-
-## 在容器中启动
-
-获取镜像:
-
-	docker pull docker.io/postgres:latest
-
-以postgres为base，加入sql文件制作得到新镜像:
-
-	$cat Dockerfile
-	FROM postgres:latest
-	ADD ./tenxcloud_2_0.postgres.sql  /docker-entrypoint-initdb.d
-
-	$docker build -t mypostgres:latest .
-
-启动postgres:
-
-	docker run -idt \
-		-e POSTGRES_PASSWORD="alice" \
-		-e POSTGRES_USER="alice" \
-		-e POSTGRES_DB="alice"  \
-		-p 5432:5432  \
-		mypostgres:latest
-
-通过查看镜像docker.io/postgres可以知道，容器的entrypoint是镜像中的脚本`docker-entrypoint.sh`。该脚本运行的时候会自动创建用户，并执行目录`/docker-entrypoint-initdb.d`中的.sh、.sql和.sql.gz文件。
 
 ## SQL基本操作
 
