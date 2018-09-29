@@ -65,7 +65,7 @@ postgresql是一个老牌的数据库，它的文档[postgresql manuals][1]中�
 		-p 5432:5432  \
 		mypostgres:latest
 
-## postgres的用户创建
+## postgres用户创建/删除
 
 这个需要认真说下，很多很多人在这踩坑。
 
@@ -84,6 +84,8 @@ postgre启动后，默认用户是postgres，需要在运行postgres的机器上
 	create user tony with password '123';
 
 创建之后是不是就可以登陆了？当然不是！参考：[PostgreSQL的用户到底是这么回事？新用户怎样才能用密码登陆？][5]
+
+查看用户使用`du`命令，删除用户执行`drop user USERNAME`。
 
 ## 命令行psql
 

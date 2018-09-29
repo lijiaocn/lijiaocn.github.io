@@ -180,10 +180,12 @@ Centos安装方式：
 	wget https://openresty.org/download/openresty-1.13.6.2.tar.gz
 	tar -xvf openresty-1.13.6.2.tar.gz
 	cd openresty-1.13.6.2/
-	./configure -j2
+	./configure --with-pcre-jit --with-http_ssl_module --with-http_realip_module --with-http_stub_status_module --with-http_v2_module
 	make -j2
 	make install     //默认安装在/usr/local/bin/openresty
 	export PATH=/usr/local/openresty/bin:$PATH
+
+>为了后面顺利的使用kong，configure时要指定kong依赖的模块。
 
 都包含以下文件：
 
@@ -282,30 +284,288 @@ Kong[编译安装](https://docs.konghq.com/install/source/?_ga=2.8480690.6664919
 
 	$ cat bin/kong
 	#!/usr/bin/env resty
-
+	
 	require "luarocks.loader"
-
+	
 	package.path = "./?.lua;./?/init.lua;" .. package.path
-
+	
 	require("kong.cmd.init")(arg)
 
-准备数据库，kong支持PostgreSQL和Cassandra 3.x.x，这里使用PostgreSQL:
+准备数据库，kong支持PostgreSQL和Cassandra 3.x.x，这里使用PostgreSQL（需要版本在9.4及以上）:
 
-	yum install -y  postgresql-server
-	postgresql-setup initdb
-	systemctl start postgresql
+>注意，如果使用其它版本的PostgreSQL，将下面的9.6换成对应版本号。
+
+	yum install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm
+	yum install postgresql96
+	yum install postgresql96-server
+	export PATH=$PATH:/usr/pgsql-9.6/bin/
+	postgresql96-setup initdb
+	systemctl start postgresql-9.6
 	su - postgres 
 	psql
 	CREATE USER kong; CREATE DATABASE kong OWNER kong;
-	alter user kong with encrypted password '';
+	alter user kong with encrypted password '123456';
+	\q
+
+在/var/lib/pgsql/9.6/data/pg_hba.conf的`开始处`添加规则下面规则:
+
+	host    kong            kong            127.0.0.1/32            md5
+
+然后`重启PostgreSQL`，确保下面的命令能登陆PostgreSQL：
+
+	# psql -h 127.0.0.1 -U kong kong -W
+	Password for user kong:
+	psql (9.6.10)
+	Type "help" for help.
+
+	kong=>
+
+PostgreSQL的部署使用和通过密码登陆方式的设置参考：[PostgresSQL数据库的基本使用][21]、[PostgreSQL的用户到底是这么回事？新用户怎样才能用密码登陆？][20]。
+
+准备kong的配置文件，
+
 	cp kong.conf.default kong.conf
+	# 在kong.conf中填入数据地址、用户、密码等
+
+创建kong的数据库：
+
+	./bin/kong migrations up -c ./kong.conf
+
+启动kong:
+
 	./bin/kong start -c ./kong.conf
 
-## ERROR: ./kong/globalpatches.lua:63: module 'socket' not found:No LuaRocks module found for socket
+kong默认的代理地址是：
+
+	proxy_listen = 0.0.0.0:8000, 0.0.0.0:8443
+
+默认的管理地址是：
+
+	admin_listen = 127.0.0.1:8001, 127.0.0.1:8444 ssl
+
+返回的是json字符串：
+
+	$ curl -i http://localhost:8001/
+	HTTP/1.1 200 OK
+	Date: Sat, 29 Sep 2018 08:56:51 GMT
+	Content-Type: application/json; charset=utf-8
+	Connection: keep-alive
+	Access-Control-Allow-Origin: *
+	Server: kong/0.14.1
+	Content-Length: 5667
+	
+	{"plugins":{"enabled_in_cluster":[],"availab...
+
+## Kong的使用
+
+停止:
+
+	kong stop
+
+重新加载：
+
+	kong reload
+
+### 注册API：添加服务、配置路由
+
+添加服务[Configuring a Service](https://docs.konghq.com/0.14.x/getting-started/configuring-a-service/)。
+
+添加一个名为`example-service`的服务，服务地址是`http://mockbin.org`：
+
+	 curl -i -X POST \
+	  --url http://localhost:8001/services/ \
+	  --data 'name=example-service' \
+	  --data 'url=http://mockbin.org'
+
+执行后返回：
+
+	{
+	    "connect_timeout": 60000,
+	    "created_at": 1538213979,
+	    "host": "mockbin.org",
+	    "id": "ebed2707-e2fb-4694-9e8e-fb66fe9dd7c8",
+	    "name": "example-service",
+	    "path": null,
+	    "port": 80,
+	    "protocol": "http",
+	    "read_timeout": 60000,
+	    "retries": 5,
+	    "updated_at": 1538213979,
+	    "write_timeout": 60000
+	}
+
+为`example-service`添加一个`route`，满足route的请求将被转发给example-service，执行:
+
+	 curl -i -X POST \
+	  --url http://localhost:8001/services/example-service/routes \
+	  --data 'hosts[]=example.com'
+
+这里配置的route条件是：host为example.com。
+
+返回：
+
+	{
+	    "created_at": 1538185340,
+	    "hosts": [
+	        "example.com"
+	    ],
+	    "id": "4738ae2c-b64a-4fe5-9e2a-5855e769a9e8",
+	    "methods": null,
+	    "paths": null,
+	    "preserve_host": false,
+	    "protocols": [
+	        "http",
+	        "https"
+	    ],
+	    "regex_priority": 0,
+	    "service": {
+	        "id": "ebed2707-e2fb-4694-9e8e-fb66fe9dd7c8"
+	    },
+	    "strip_path": true,
+	    "updated_at": 1538185340
+	}
+
+这时候访问kong的`proxy地址`时，如果host为`example.com`，请求被转发到`http://mockbin.org`：
+
+	curl -i -X GET \
+	  --url http://localhost:8000/ \
+	  --header 'Host: example.com'
+
+可以在/etc/hostsname中将example.com地址配置为kong所在的机器的地址：
+
+	10.10.192.35 example.com
+
+然后就可以通过`example.com:8000`打开http://mockbin.org。
+
+### 启用插件
+
+插件是用来扩展API的，例如为API添加认证、设置ACL、限制速率等、集成oauth、ldap等。
+
+[Kong Plugins][24]中列出了已有的所有插件：
+
+这里演示[key-auth](https://docs.konghq.com/plugins/key-authentication/)插件的用法，[Kong Enabling Plugins][22]，。
+
+	 curl -i -X POST \
+	  --url http://localhost:8001/services/example-service/plugins/ \
+	  --data 'name=key-auth'
+
+返回：
+
+	{
+	    "config": {
+	        "anonymous": "",
+	        "hide_credentials": false,
+	        "key_in_body": false,
+	        "key_names": [
+	            "apikey"
+	        ],
+	        "run_on_preflight": true
+	    },
+	    "created_at": 1538218948000,
+	    "enabled": true,
+	    "id": "f25f3952-d0d4-4923-baac-860554fc2fc1",
+	    "name": "key-auth",
+	    "service_id": "ebed2707-e2fb-4694-9e8e-fb66fe9dd7c8"
+	}
+
+这时候直接访问example.com，会返回401:
+
+	curl -i -X GET \
+	>   --url http://localhost:8000/ \
+	>   --header 'Host: example.com'
+	HTTP/1.1 401 Unauthorized
+	Date: Sat, 29 Sep 2018 11:03:55 GMT
+	Content-Type: application/json; charset=utf-8
+	Connection: keep-alive
+	WWW-Authenticate: Key realm="kong"
+	Server: kong/0.14.1
+	Content-Length: 41
+
+在kong中创建一个名为Jason的用户：
+
+	curl -i -X POST \
+	  --url http://localhost:8001/consumers/ \
+	  --data "username=Jason"
+
+返回：
+
+	{
+	    "created_at": 1538219225,
+	    "custom_id": null,
+	    "id": "f2450962-e4bb-477f-8df6-85984eb94e09",
+	    "username": "Jason"
+	}
+
+将Jason的密码设置为123456：
+
+	curl -i -X POST \
+	  --url http://localhost:8001/consumers/Jason/key-auth/ \
+	  --data 'key=123456'
+
+返回：
+
+	{
+	    "consumer_id": "f2450962-e4bb-477f-8df6-85984eb94e09",
+	    "created_at": 1538219311000,
+	    "id": "0332d36f-61b9-425a-b563-510c11a85e85",
+	    "key": "123456"
+	}
+
+这时候可以用Jason的key访问API:
+
+	 curl -i -X GET \
+	  --url http://localhost:8000 \
+	  --header "Host: example.com" \
+	  --header "apikey: 123456"
+
+返回的是mockbin.org的首页。
+
+key-auth插件的详细用法参考[Kong Plugin: key-auth][23]。插件的作用范围可以是全局(global)、服务(service)、路由(router)。
+
+启用key-auth后，通过认证的请求被转发给上游服务时，key-auth会增设下面的字段：
+
+	X-Consumer-ID, the ID of the Consumer on Kong
+	X-Consumer-Custom-ID, the custom_id of the Consumer (if set)
+	X-Consumer-Username, the username of the Consumer (if set)
+	X-Credential-Username, the username of the Credential (only if the consumer is not the 'anonymous' consumer)
+	X-Anonymous-Consumer, will be set to true when authentication failed, and the 'anonymous' consumer was set instead.
+
+## ERROR:  module 'socket' not found:No LuaRocks module found for socket
+
+启动的时候：
+
+	# ./bin/kong start -c ./kong.conf
+	...
+	ERROR: ./kong/globalpatches.lua:63: module 'socket' not found:No LuaRocks module found for socket
+	...
 
 这是因为编译kong之后，重新编译了luarocks，并且将luarocks安装在了其它位置。重新编译kong之后解决。
 
-## 
+## ERROR: function to_regclass(unknown) does not exist (8)
+
+创建数据库的时候：
+
+	# kong migrations up -c ./kong.conf
+	...
+	[postgres error] could not retrieve current migrations: [postgres error] ERROR: function to_regclass(unknown) does not exist (8)
+	...
+
+这是因为PostgreSQL的版本太低了，`to_regclass`在PostgreSQL 9.4及以上的版本中才存在。
+
+	yum install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm
+	yum install postgresql96
+	yum install postgresql96-server
+
+## nginx: [emerg] unknown directive "real_ip_header" in /usr/local/kong/nginx-kong.conf:73
+
+	nginx: [emerg] unknown directive "real_ip_header" in /usr/local/kong/nginx-kong.conf:73
+
+这是因为编译的openresty的时候，没有指定`--with-http_realip_module`，重新编译安装：
+
+	./configure --with-pcre-jit --with-http_ssl_module --with-http_realip_module --with-http_stub_status_module --with-http_v2_module
+	make -j2
+	make install     //默认安装在/usr/local/bin/openresty
+	export PATH=/usr/local/openresty/bin:$PATH
 
 ## 参考
 
@@ -328,6 +588,11 @@ Kong[编译安装](https://docs.konghq.com/install/source/?_ga=2.8480690.6664919
 17. [OpenResty Getting Started][17]
 18. [Nginx Development guide][18]
 19. [Nginx Module develop][19]
+20. [PostgreSQL的用户到底是这么回事？新用户怎样才能用密码登陆？][20]
+21. [PostgresSQL数据库的基本使用][21]
+22. [Kong Enabling Plugins][22]
+23. [Kong Plugin: key-auth][23]
+24. [Kong Plugins][24]
 
 [1]: http://nginx.org/ "nginx website"
 [2]: https://openresty.org/en/ "OpenResty website" 
@@ -348,3 +613,8 @@ Kong[编译安装](https://docs.konghq.com/install/source/?_ga=2.8480690.6664919
 [17]: https://openresty.org/en/getting-started.html "OpenResty Getting Started"
 [18]: http://nginx.org/en/docs/dev/development_guide.html "Nginx Development guide"
 [19]: http://nginx.org/en/docs/dev/development_guide.html#Modules "Nginx Module develop"
+[20]: https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2018/09/28/postgres-user-manage.html "PostgreSQL的用户到底是这么回事？新用户怎样才能用密码登陆？"
+[21]: https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2017/08/31/postgre-usage.html "PostgresSQL数据库的基本使用"
+[22]: https://docs.konghq.com/0.14.x/getting-started/enabling-plugins/ "Kong: Enabling Plugins"
+[23]: https://docs.konghq.com/hub/kong-inc/key-auth/ "Kong Plugin: key-auth"
+[24]: https://docs.konghq.com/hub/ "Kong Plugins"
