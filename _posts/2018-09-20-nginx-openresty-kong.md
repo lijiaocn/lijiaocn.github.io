@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2018-09-20 15:41:50 +0800"
 changedate: "2018-09-20 15:41:50 +0800"
 categories: 项目
-tags: nginx OpenResty Kong
+tags: nginx
 keywords: kong,openresty,nginx
 description: Nginx、OpenRestry、Kong这三个项目紧密相连，OpenResty是围绕Nginx做的Web平台，Kong是一个OpenResty应用。
 ---
