@@ -3,7 +3,7 @@ layout: default
 title: 传奇人物孙宏斌
 author: 宁肯
 createdate: 2018/01/22 22:37:41
-changedate: 2018/05/12 11:49:51
+changedate: 2018/09/30 01:15:14
 categories: 故事
 tags: 人物故事
 keywords: 孙宏斌,柳传志,融创,乐视
