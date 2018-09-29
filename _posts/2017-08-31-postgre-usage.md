@@ -1,6 +1,6 @@
 ---
 layout: default
-title: postgres数据库的基本使用
+title: PostgresSQL数据库的基本使用
 author: lijiaocn
 createdate: 2017/08/31 09:43:20
 changedate: 2017/09/08 14:26:42
@@ -83,7 +83,7 @@ postgre启动后，默认用户是postgres，需要在运行postgres的机器上
 
 	create user tony with password '123';
 
-创建之后是不是就可以登陆了？当然不是！参考：
+创建之后是不是就可以登陆了？当然不是！参考：[PostgreSQL的用户到底是这么回事？新用户怎样才能用密码登陆？][5]
 
 ## 命令行psql
 
@@ -243,8 +243,10 @@ postgres支持数据库模版，数据库可以从模版创建，如果模版修
 2. [alter role][2]
 3. [create role][3]
 4. [sql commands][4]
+5. [PostgreSQL的用户到底是这么回事？新用户怎样才能用密码登陆？][5]
 
 [1]: https://www.postgresql.org/docs/manuals/  "postgresql manuals" 
 [2]: https://www.postgresql.org/docs/9.4/static/sql-alterrole.html  "alter role"
 [3]: https://www.postgresql.org/docs/9.4/static/sql-createrole.html "create role"
 [4]: https://www.postgresql.org/docs/9.4/static/sql-commands.html "postgres sql commands"
+[5]: https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2018/09/28/postgres-user-manage.html "PostgreSQL的用户到底是这么回事？新用户怎样才能用密码登陆？"

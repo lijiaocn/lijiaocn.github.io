@@ -18,6 +18,8 @@ description: PostgreSQL数据库的用法和MySQL很不一样，新创建的用�
 
 PostgreSQL数据库的用法和MySQL很不一样，新创建的用户的创建要和pg_hba.conf中的配置对应才能成功登陆。很多人在这个地方卡壳，用Google或者Baidu搜索到一些资料，说得也不清楚。这里特别阐述一下。
 
+PostgreSQL的部署启动参考：[PostgreSQL数据库的基本使用][8]。
+
 ## User与Role
 
 创建用户使用的是PostgreSQL的[CREATE USER][1]命令。在[CREATE USER][1]的命令手册中有这样一个说明：
@@ -334,6 +336,7 @@ pg_hba.conf的语法规则是这样的：
 5. [PostgreSQL: The pg_hba.conf File][5]
 6. [PostgreSQL: Authentication Methods][6]
 7. [PostgreSQL SQL Commands: ALTER ROLE][7]
+8. [PostgreSQL数据库的基本使用][8]
 
 [1]: https://www.postgresql.org/docs/current/static/sql-createuser.html "PostgreSQL SQL Commands:CREATE USER"
 [2]: https://www.postgresql.org/docs/9.1/static/user-manag.html "PostgreSQL 9.1.24 Documentation:  Database Roles"
@@ -342,3 +345,4 @@ pg_hba.conf的语法规则是这样的：
 [5]: https://www.postgresql.org/docs/9.2/static/auth-pg-hba-conf.html "PostgreSQL: The pg_hba.conf File"
 [6]: https://www.postgresql.org/docs/current/static/auth-methods.html#AUTH-PASSWORD "PostgreSQL: Authentication Methods"
 [7]: https://www.postgresql.org/docs/9.2/static/sql-alterrole.html "PostgreSQL SQL Commands: ALTER ROLE"
+[8]: https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2017/08/31/postgre-usage.html "PostgreSQL数据库的基本使用"
