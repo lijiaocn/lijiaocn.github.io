@@ -51,6 +51,11 @@
 	margin:0px;
 }
 
+.mainbottom {
+	padding-top:10px;
+	text-align: center;
+}
+
 .mainbottomleft {
 	padding-top:10px;
 	float:left;
