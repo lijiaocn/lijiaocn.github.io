@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "PostgreSQL的用户到底是这么回事？新加用户怎样才能成功登陆？
+title: "PostgreSQL的用户到底是这么回事？新用户怎样才能用密码登陆？
 author: 李佶澳
 createdate: "2018-09-28 15:54:43 +0800"
 changedate: "2018-09-28 15:54:43 +0800"
@@ -129,7 +129,21 @@ pg_hba.conf文件内容如下：
 	# IPv6 local connections:
 	host    all             all             ::1/128                 ident
 
-最后一列是认证方式，支持11种[认证方式][6]：
+它的语法规则是这样的：
+
+	local      database  user  auth-method  [auth-options]
+	host       database  user  address  auth-method  [auth-options]
+	hostssl    database  user  address  auth-method  [auth-options]
+	hostnossl  database  user  address  auth-method  [auth-options]
+	host       database  user  IP-address  IP-mask  auth-method  [auth-options]
+	hostssl    database  user  IP-address  IP-mask  auth-method  [auth-options]
+	hostnossl  database  user  IP-address  IP-mask  auth-method  [auth-options]
+
+第一列是连接的方式，local是通过本地的unix socket连接，host是通过IP地址连接。
+
+第二列是目标数据库，第三列是用户。
+
+最后一列是认证方式，总共支持11种[认证方式][6](2018-09-29 10:04:36)：
 
 	20.3.1. Trust Authentication
 	20.3.2. Password Authentication
@@ -145,35 +159,43 @@ pg_hba.conf文件内容如下：
 
 其中最常接触到的是`peer`、`ident`和`paasword`。
 
-[peer](https://www.postgresql.org/docs/current/static/auth-methods.html#AUTH-PEER)是用当前使用的操作系统上的用户做认证。
-在刚部署PosgreSQL之后，需要切换到系统上的postgres用户，才能进入PostgreSQL就是这个道理。
+## Peer和Ident认证: 使用操作系统上的用户登陆
 
-上面配置中的第一项设置本地用户通过unix socket登陆时，使用peer方式认证。
+上一节给出的`pg_hba.conf`配置中的第一项设置的意思是：本地用户通过unix socket登陆时，使用peer方式认证。
 
 	# "local" is for Unix domain socket connections only
 	local   all             all                                     peer
 
-peer方式中，client必须和postgresql在同一台机器上，[ident](https://www.postgresql.org/docs/current/static/auth-methods.html#AUTH-IDENT)则可以跨主机。
+[peer](https://www.postgresql.org/docs/current/static/auth-methods.html#AUTH-PEER)是用PostgreSQL所在的操作系统上的用户登陆。
 
-上面配置中后两项，第一列变成了host，表示通过IP地址访问时，使用ident认证：
+peer方式中，client必须和PostgreSQL在同一台机器上。只要当前系统用户和要登陆到PostgreSQL的用户名相同，就可以登陆。
+
+在刚部署PostgreSQL之后，切换到系统的postgres用户后，直接执行`psql`就能进入PostgreSQL就是这个原因（当前系统用户为名postgre，PostgreSQL中的用户名也是postgre)。
+
+上一节给出的`pg_hba.conf`配置中的后两项，第一列是host，表示通过IP地址访问时，使用ident认证：
 
 	# IPv4 local connections:
 	host    all             all             127.0.0.1/32            ident
 	# IPv6 local connections:
 	host    all             all             ::1/128                 ident
 
-需要注意，host方式需要在通过psql登陆时，用`-h`指定要登陆的postgreSQL的IP。如果不指定IP，默认使用的unix socket。
-即使就在PostgreSQL本地登陆，也要用-h指定：`-h 127.0.0.1`。
+[ident](https://www.postgresql.org/docs/current/static/auth-methods.html#AUTH-IDENT)与peer类似，不过peer只能在PostgreSQL本地使用，ident则可以跨主机使用。
 
-创建一个没有密码的用户之后：
+需要注意，host方式需要在通过psql登陆时，用`-h`指定要登陆的postgreSQL的IP，如果不指定IP，默认使用的unix socket。
+
+>host方式，即使在PostgreSQL本地登陆，也要用-h指定IP地址：`-h 127.0.0.1`。
+
+### Peer方式演示
+
+在PostgreSQL中创建一个没有密码的用户：
 
 	create user local_user1;
 
-在本机创建一个同名的用户：
+在PostgreSQL所在的机上，创建一个同名的用户：
 
 	useradd local_user1;
 
-然后切换到同名用户后，就可以直接通过`unix_socket`的方式登陆:
+切换到local_user1用户后，就可以直接通过`unix_socket`登陆PostgreSQL:
 
 	# su - local_user1
 	[local_user1@10 ~]$ psql postgres     
@@ -188,27 +210,70 @@ peer和ident这两种方式都不是常用的方式！最常用的方式是通�
 
 [password](https://www.postgresql.org/docs/current/static/auth-methods.html#AUTH-PASSWORD)提供这样的功能，见下一节。
 
-## 使用密码登陆
+## 密码认证：使用PostgreSQL的用户(Role)和密码登陆
 
-[password](https://www.postgresql.org/docs/current/static/auth-methods.html#AUTH-PASSWORD)认证又分为三种方式：
+[password](https://www.postgresql.org/docs/current/static/auth-methods.html#AUTH-PASSWORD)认证分为三种方式：
 
 	scram-sha-256
 	md5
 	password
 
-这三种方式指定的是密码在PostgreSQL上存储的形式和登陆时密码的传输形式。
+这三种方式都用密码认证，区别是密码在PostgreSQL上存储的形式和登陆时密码的传输形式。
 
 `scram-sha-256`和`md5`分别用sha-256和md5算法对设置的密码进行保护，传输和保存的都是难以逆向破解的散列字符串，`password`方式传输和保存的则都是原始的明文密码。
 
-无论使用哪种方式，都需要在`pg_hba.conf`中设置，例如将前面的配置中的ident修改成：
+无论使用哪种方式，都需要在`pg_hba.conf`中设置：
 
-	host    all             all             127.0.0.1/32           md5
+	# "local" is for Unix domain socket connections only
+	local   all             all                                     peer
+	# IPv4 local connections:
+	host    all             all             127.0.0.1/32            md5
+	# IPv6 local connections:
+	host    all             all             ::1/128                 md5
 
-注意，修改pg_hba.conf之后，要重启PostgreSQL，以重新加载配置文件。
+上面配置中的后两项，将通过IP连接时的登陆方式修改为md5（修改pg_hba.conf之后，要重启PostgreSQL，新的配置文件才能生效)，表示用密码进行认证。
 
-修改了认证方式之后，接下来就要为Role设置密码，密码可以在创建Role的时候就设置
+修改了认证方式之后，还要为用户(Role)设置密码，密码可以在创建用户(Role)的时候就设置:
 
-也可以是创建后用alter设置。
+	CREATE USER name [ [ WITH ] option [ ... ] ]
+	
+	where option can be:
+	...
+	    | [ ENCRYPTED ] PASSWORD 'password'
+	...
+	
+	
+	CREATE ROLE name [ [ WITH ] option [ ... ] ]
+	
+	where option can be:
+	...
+	    | [ ENCRYPTED | UNENCRYPTED ] PASSWORD 'password'
+	...
+
+也可以创建后用[alter][7]修改：
+
+	ALTER ROLE name [ [ WITH ] option [ ... ] ]
+	
+	where option can be:
+	
+	      SUPERUSER | NOSUPERUSER
+	    | CREATEDB | NOCREATEDB
+	    | CREATEROLE | NOCREATEROLE
+	    | CREATEUSER | NOCREATEUSER
+	    | INHERIT | NOINHERIT
+	    | LOGIN | NOLOGIN
+	    | REPLICATION | NOREPLICATION
+	    | CONNECTION LIMIT connlimit
+	    | [ ENCRYPTED | UNENCRYPTED ] PASSWORD 'password'
+	    | VALID UNTIL 'timestamp'
+	
+	ALTER ROLE name RENAME TO new_name
+	
+	ALTER ROLE name [ IN DATABASE database_name ] SET configuration_parameter { TO | = } { value | DEFAULT }
+	ALTER ROLE name [ IN DATABASE database_name ] SET configuration_parameter FROM CURRENT
+	ALTER ROLE name [ IN DATABASE database_name ] RESET configuration_parameter
+	ALTER ROLE name [ IN DATABASE database_name ] RESET ALL
+
 
 在为Role设置密码的时候，可以指定密码是否加密存储：
 
@@ -216,17 +281,18 @@ peer和ident这两种方式都不是常用的方式！最常用的方式是通�
 
 如果没有指定，则根据配置的[password_encryption](https://www.postgresql.org/docs/9.4/static/runtime-config-connection.html#GUC-PASSWORD-ENCRYPTION)参数决定，默认是加密的。
 
-然后创建用户：
+`Create User`是没有`UNENCRYPTED`选项的，只能使用加密或者默认方式：
 
-	create user user1 with encrypted password '123';
+	create user user1 with encrypted password '123';     //加密
+	create user user1 with password '123';               //默认
 
-这样之后，就可以用user1登陆了:
+在pg_hda.conf中设置了密码认证，并在PostgreSQL中创建了有密码的用户(Role)之后，就可以通过用户名(Role)和密码登陆了:
 
 	psql -h 127.0.0.1 -U user_password1  postgres -W
 
-注意，必须用`-h`指定IP，否则就通过unix socket链接，使用peer的方式认证了。
+注意，必须用`-h`指定IP，否则就用unix socket链接，使用peer的方式认证了。
 
-如果为用户配置了密码，但是pg_hba.conf中配置的认证方式是ident等非密码的认证方式，则会登陆失败。
+pg_hba.conf中配置的认证方式和实际登陆方式不匹配，则会登陆失败。
 
 例如当pg_hda.conf中配置的是：
 
@@ -242,16 +308,7 @@ peer和ident这两种方式都不是常用的方式！最常用的方式是通�
 
 ## 为不同数据库、不同用户设置不同的认证方式
 
-pg_hba.conf文件内容如下：
-
-	# "local" is for Unix domain socket connections only
-	local   all             all                                     peer
-	# IPv4 local connections:
-	host    all             all             127.0.0.1/32            ident
-	# IPv6 local connections:
-	host    all             all             ::1/128                 ident
-
-它的语法规则是这样的：
+pg_hba.conf的语法规则是这样的：
 
 	local      database  user  auth-method  [auth-options]
 	host       database  user  address  auth-method  [auth-options]
@@ -261,7 +318,11 @@ pg_hba.conf文件内容如下：
 	hostssl    database  user  IP-address  IP-mask  auth-method  [auth-options]
 	hostnossl  database  user  IP-address  IP-mask  auth-method  [auth-options]
 
+可以分别为某个数据库、某个用户、某个来源IP指定认证方式，例如：
 
+	host       postgre  user  10.10.10.1/24 password
+
+可以自行实验。
 
 ## 参考
 
@@ -271,6 +332,7 @@ pg_hba.conf文件内容如下：
 4. [PostgreSQL SQL Commands: ALTER ROLE][4]
 5. [PostgreSQL: The pg_hba.conf File][5]
 6. [PostgreSQL: Authentication Methods][6]
+7. [PostgreSQL SQL Commands: ALTER ROLE][7]
 
 [1]: https://www.postgresql.org/docs/current/static/sql-createuser.html "PostgreSQL SQL Commands:CREATE USER"
 [2]: https://www.postgresql.org/docs/9.1/static/user-manag.html "PostgreSQL 9.1.24 Documentation:  Database Roles"
@@ -278,3 +340,4 @@ pg_hba.conf文件内容如下：
 [4]: https://www.postgresql.org/docs/9.2/static/sql-alterrole.html "PostgreSQL SQL Commands: ALTER ROLE"
 [5]: https://www.postgresql.org/docs/9.2/static/auth-pg-hba-conf.html "PostgreSQL: The pg_hba.conf File"
 [6]: https://www.postgresql.org/docs/current/static/auth-methods.html#AUTH-PASSWORD "PostgreSQL: Authentication Methods"
+[7]: https://www.postgresql.org/docs/9.2/static/sql-alterrole.html "PostgreSQL SQL Commands: ALTER ROLE"

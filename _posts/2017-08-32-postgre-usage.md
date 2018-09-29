@@ -83,9 +83,7 @@ postgre启动后，默认用户是postgres，需要在运行postgres的机器上
 
 	create user tony with password '123';
 
-创建之后是不是就可以登陆了？当然不是！
-
-
+创建之后是不是就可以登陆了？当然不是！参考：
 
 ## 命令行psql
 
