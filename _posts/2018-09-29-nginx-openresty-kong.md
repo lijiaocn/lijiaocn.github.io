@@ -259,7 +259,7 @@ Centos安装方式：
 
 [Kong][3]是一个OpenResty应用，用来管理api。
 
-## Kong编译安装
+### Kong编译安装
 
 Kong[编译安装](https://docs.konghq.com/install/source/?_ga=2.8480690.66649192.1538042077-515173955.1536914658)时需要先安装有OpenResty。
 
@@ -356,7 +356,7 @@ kong默认的代理地址是：
 	
 	{"plugins":{"enabled_in_cluster":[],"availab...
 
-## Kong的使用
+### Kong的使用
 
 停止:
 
@@ -366,7 +366,7 @@ kong默认的代理地址是：
 
 	kong reload
 
-### 注册API：添加服务、配置路由
+#### 注册API：添加服务、配置路由
 
 添加服务[Configuring a Service](https://docs.konghq.com/0.14.x/getting-started/configuring-a-service/)。
 
@@ -437,7 +437,7 @@ kong默认的代理地址是：
 
 然后就可以通过`example.com:8000`打开http://mockbin.org。
 
-### 插件启用方法
+#### 插件启用方法
 
 插件是用来扩展API的，例如为API添加认证、设置ACL、限制速率等、集成oauth、ldap等。
 
@@ -530,7 +530,7 @@ key-auth插件的详细用法参考[Kong Plugin: key-auth][23]。插件的作用
 	X-Credential-Username, the username of the Credential (only if the consumer is not the 'anonymous' consumer)
 	X-Anonymous-Consumer, will be set to true when authentication failed, and the 'anonymous' consumer was set instead.
 
-## Kong的插件
+### Kong的插件
 
 [Kong Plugins][24]中列出了已有的所有插件，有些插件只能在企业版使用，有些插件是社区成员开发的，大部分是Kong公司开发，并集成到社区版中。
 
@@ -593,7 +593,7 @@ key-auth插件的详细用法参考[Kong Plugin: key-auth][23]。插件的作用
 	TCP Log
 	UDP Log
 
-## Kong与Kubernetes的集成
+### Kong与Kubernetes的集成
 
 经过前面的学习，对Api网关是什么，以及Kong能够做什么已经有了足够的了解。现在Kubernetes一统计算资源与应用发布编排的趋势已经形成，我们更关心Kong能否和Kubernetes结合。
 
