@@ -15,7 +15,10 @@ description: Nginx、OpenRestry、Kong这三个项目紧密相连，OpenResty是
 
 ## 说明
 
-[Nginx][1]、[OpenRestry][2]、[Kong][3]这三个项目紧密相连，OpenResty是围绕Nginx做的Web平台，Kong是一个OpenResty应用。
+[Nginx][1]、[OpenRestry][2]、[Kong][3]这三个项目紧密相连：
+Nginx是模块化设计的反向代理软件，C语言开发；
+OpenResty是以Nginx为核心的Web开发平台，可以解析执行Lua脚本（OpenResty与Lua的关系，类似于Jvm与Java，不过Java可以做的事情太多了，OpenResty主要用来做Web、API等）；
+Kong是一个OpenResty应用，是一个api gateway，具有API管理和请求代理的功能。
 
 ## Nginx
 
