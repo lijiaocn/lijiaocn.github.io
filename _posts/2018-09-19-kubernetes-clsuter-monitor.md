@@ -23,6 +23,18 @@ description: 最近参与了监控系统的建设，主要是用Prometheus监控
 
 Kubernetes1.8提供了[Metrics API][4]，待研究 @ 2018-09-19 18:15:07。
 
+## 指标和Exporter汇总
+
+每个Job采集的指标都相当多，要经常查询它们的含义，把它们的说明文档统一收集在这里：
+
+Prometheus Node Exporter采集的指标可以在[Readme](https://github.com/prometheus/node_exporter)中看到大类，查询出的metrics中每个指标都有注释: [e2e-64k-page-output.txt](https://github.com/prometheus/node_exporter/blob/1c9ea46ccab252e217971eebd5da6e492c108ea2/collector/fixtures/e2e-64k-page-output.txt)
+
+[Kuberntes内置Cadvisor采集的指标](https://github.com/google/cadvisor/blob/master/docs/storage/prometheus.md)
+
+kube-state-metrics采集的指标分散在多个文件中：[kube state metrics](https://github.com/kubernetes/kube-state-metrics/tree/master/Documentation)
+
+[Prometheus Exporter大全](https://github.com/prometheus/docs/blob/50084b8f2938cafcbbd6f5d71462f5c980870952/content/docs/instrumenting/exporters.md)
+
 ## 背景
 
 公司成立时间较短，在过去几年飞速扩张、业务团队快速扩充、打法各异，有的监控做的比较完善，有的经验不足，监控覆盖不完善，存在一些处于“裸奔”状态的服务。历史上发生过几次故障，都是等到用户投诉过来后才知晓，才开始定位、解决，给公司造成了实质性的损失。
