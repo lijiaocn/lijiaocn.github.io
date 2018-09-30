@@ -1,12 +1,12 @@
 ---
 layout: default
-title: "Nginx、OpenResty、Kong的基本概念与使用方法"
+title: "Nginx、OpenResty和Kong的基本概念与使用方法"
 author: 李佶澳
 createdate: "2018-09-29 15:41:50 +0800"
 changedate: "2018-09-20 15:41:50 +0800"
 categories: 项目
 tags: nginx
-keywords: kong,openresty,nginx
+keywords: kong,openresty,nginx,apigateway,API网关
 description: Nginx、OpenRestry、Kong这三个项目紧密相连，OpenResty是围绕Nginx做的Web平台，Kong是一个OpenResty应用。
 ---
 
@@ -437,11 +437,11 @@ kong默认的代理地址是：
 
 然后就可以通过`example.com:8000`打开http://mockbin.org。
 
-### 启用插件
+### 插件启用方法
 
 插件是用来扩展API的，例如为API添加认证、设置ACL、限制速率等、集成oauth、ldap等。
 
-[Kong Plugins][24]中列出了已有的所有插件：
+[Kong Plugins][24]中列出了已有的所有插件。
 
 这里演示[key-auth](https://docs.konghq.com/plugins/key-authentication/)插件的用法，[Kong Enabling Plugins][22]，。
 
@@ -530,7 +530,84 @@ key-auth插件的详细用法参考[Kong Plugin: key-auth][23]。插件的作用
 	X-Credential-Username, the username of the Credential (only if the consumer is not the 'anonymous' consumer)
 	X-Anonymous-Consumer, will be set to true when authentication failed, and the 'anonymous' consumer was set instead.
 
-## ERROR:  module 'socket' not found:No LuaRocks module found for socket
+## Kong的插件
+
+[Kong Plugins][24]中列出了已有的所有插件，有些插件只能在企业版使用，有些插件是社区成员开发的，大部分是Kong公司开发，并集成到社区版中。
+
+下面是社区版集成的、Kong公司维护的插件(2018-09-30 14:33:03)：
+
+认证插件：
+
+	Basic Auth
+	HMAC Auth
+	JWT Auth
+	Key Auth
+	LDAP Auth
+	OAuth 2.0 Auth
+	
+
+安全插件：
+
+	Bot Detection (机器人检测)
+	CORS (跨域请求)
+	IP Restriction (IP限制)
+	
+
+流控插件：
+
+	ACL (访问控制，貌似归类与安全更合适，但Kong的网站上是归类于流控的)
+	Rate Limiting （限速）
+	Request Size Limiting
+	Request Termination
+	Response Rate Limiting
+	
+
+微服务插件：
+
+	AWS Lambda
+	Azure Functions
+	Apache OpenWhisk
+	Serverless Functions
+	
+
+分析和监控插件：
+
+	Datadog
+	Prometheus
+	Zipkin
+	
+
+内容修改插件(Transformations)：
+
+	Correlation ID
+	Request Transformer
+	Response Transformer
+
+日志插件：
+
+	File Log
+	HTTP Log
+	Loggly
+	StatsD
+	Syslog
+	TCP Log
+	UDP Log
+
+## Kong与Kubernetes的集成
+
+经过前面的学习，对Api网关是什么，以及Kong能够做什么已经有了足够的了解。现在Kubernetes一统计算资源与应用发布编排的趋势已经形成，我们更关心Kong能否和Kubernetes结合。
+
+Kong是一个Api网关，也是一个特性更丰富的反向代理，既然它有代理流量的功能，那么能不能直接成为Kubernetes的流量入口？使Kubernetes内部的服务都通过Kong发布。
+
+Kong实现了一个[Kubernetes Ingress Controller][26]来做这件事。
+
+另外也可以把Kong部署在Kubernetes中，见[Kong CE or EE on Kubernetes][25]。
+
+这部分内容会比较多，单独开篇了。
+
+## 遇到的问题
+
+### ERROR:  module 'socket' not found:No LuaRocks module found for socket
 
 启动的时候：
 
@@ -541,7 +618,7 @@ key-auth插件的详细用法参考[Kong Plugin: key-auth][23]。插件的作用
 
 这是因为编译kong之后，重新编译了luarocks，并且将luarocks安装在了其它位置。重新编译kong之后解决。
 
-## ERROR: function to_regclass(unknown) does not exist (8)
+### ERROR: function to_regclass(unknown) does not exist (8)
 
 创建数据库的时候：
 
@@ -556,7 +633,7 @@ key-auth插件的详细用法参考[Kong Plugin: key-auth][23]。插件的作用
 	yum install postgresql96
 	yum install postgresql96-server
 
-## nginx: [emerg] unknown directive "real_ip_header" in /usr/local/kong/nginx-kong.conf:73
+### nginx: [emerg] unknown directive "real_ip_header" in /usr/local/kong/nginx-kong.conf:73
 
 	nginx: [emerg] unknown directive "real_ip_header" in /usr/local/kong/nginx-kong.conf:73
 
@@ -593,6 +670,8 @@ key-auth插件的详细用法参考[Kong Plugin: key-auth][23]。插件的作用
 22. [Kong Enabling Plugins][22]
 23. [Kong Plugin: key-auth][23]
 24. [Kong Plugins][24]
+25. [Kong CE or EE on Kubernetes][25]
+26. [Kong/kubernetes-ingress-controller][26]
 
 [1]: http://nginx.org/ "nginx website"
 [2]: https://openresty.org/en/ "OpenResty website" 
@@ -618,3 +697,5 @@ key-auth插件的详细用法参考[Kong Plugin: key-auth][23]。插件的作用
 [22]: https://docs.konghq.com/0.14.x/getting-started/enabling-plugins/ "Kong: Enabling Plugins"
 [23]: https://docs.konghq.com/hub/kong-inc/key-auth/ "Kong Plugin: key-auth"
 [24]: https://docs.konghq.com/hub/ "Kong Plugins"
+[25]: https://docs.konghq.com/install/kubernetes/ "Kong CE or EE on Kubernetes"
+[26]: https://github.com/Kong/kubernetes-ingress-controller "Github: Kong/kubernetes-ingress-controller"
