@@ -164,6 +164,8 @@ div.center h2 {
 	font-size:22px;
 	font-family: 宋体;
 	color:black;
+	padding:10px;
+	background: lightblue;
 }
 div.center h2 a {
 	color: #000000;
@@ -173,24 +175,32 @@ div.center h3 {
 	font-family: 宋体;
 	font-weight:bold;
 	color:black;
+	padding:10px;
+	background: lightblue;
 }
 div.center h4 {
 	font-size:18px;
 	font-family: 宋体;
 	font-weight:bold;
 	color:black;
+	padding:10px;
+	background: lightblue;
 }
 div.center h5 {
 	font-size:16px;
 	font-family: 宋体;
 	font-weight:bold;
 	color:black;
+	padding:10px;
+	background: lightblue;
 }
 div.center h6 {
 	font-size:15px;
 	font-family: 宋体;
 	font-weight:bold;
 	color:black;
+	padding:10px;
+	background: lightblue;
 }
 
 div.center pre {
@@ -213,6 +223,14 @@ div.postlist p {
 	line-height:130%;
 	padding-top:5px;
 	padding-left:0px
+}
+
+div.postlist h2 {
+	font-size:22px;
+	font-family: 宋体;
+	color:black;
+	padding: 0px;
+	background-color: white;
 }
 
 div.postinfo p {
