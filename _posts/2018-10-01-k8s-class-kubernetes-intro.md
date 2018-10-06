@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2018/09/03 20:43:00
 changedate: 2018/09/04 17:24:51
 categories: 项目
-tags: kubernetes
+tags: 视频教程 kubernetes 
 keywords: kubernetes,容器集群,docker
 description: 先概要地了解一下kubernetes，这一篇主要讲解一下它的基本原理和文档的使用
 

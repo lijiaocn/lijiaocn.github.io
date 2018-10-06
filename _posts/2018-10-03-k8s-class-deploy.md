@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2018/09/03 20:43:00
 changedate: 2018/09/04 17:24:51
 categories: 项目
-tags: kubernetes
+tags: 视频教程 kubernetes
 keywords: kubernetes,容器集群,docker
 description: 这一节部署Kubernetes，用于本地开发测试的minikube、不适合用于生产但是极其方便的kubeadm、与手动部署每个组件的方法，这里一次性全覆盖。
 

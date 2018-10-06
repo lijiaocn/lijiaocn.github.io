@@ -1,11 +1,11 @@
 ---
 layout: default
-title:  "超级账本HyperLedger：Fabric使用kafka进行区块排序（共识，附视频讲解)"
+title:  "超级账本HyperLedger：视频教程，Fabric使用kafka进行区块排序（共识）"
 author: 李佶澳
 createdate: 2018/07/28 23:17:00
 changedate: 2018/07/29 13:09:49
 categories: 项目
-tags: HyperLedger
+tags: 视频教程 HyperLedger
 keywords: 超级账本,HyperLedger,orderer,kafka
 description:  在Fabric1.2以及之前的版本中，使用kafka进行区块排序（共识）是比较贴近生产的
 
