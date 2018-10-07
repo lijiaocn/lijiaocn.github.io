@@ -436,6 +436,8 @@ Docker的版本发布计划与安装方法见[moby、docker-ce与docker-ee][10]�
 
 	systemctl enable kubelet && systemctl start kubelet
 
+#### kubelet的用途
+
 这里需要解释一下，为什么在每个机器上都启动的kubelet。kubelet是node上的agent，它负责根据至少启动、关停容器，是一个持续运行的后台服务。
 
 它除了执行Kubernetes的Master下发任务外，还会加载本地`/etc/kubernetes/manifests/`目录中的Kubernetes任务，通常就是描述Kubernetes中应用的yaml文件。
