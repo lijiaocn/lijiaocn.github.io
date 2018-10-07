@@ -1,6 +1,6 @@
 --- 
 layout: default
-title: linux上的物理网卡与虚拟网络设备
+title: Linux上的物理网卡与虚拟网络设备
 author: 李佶澳
 createdate: 2017/03/31 18:47:12
 changedate: 2018/08/17 18:16:49
