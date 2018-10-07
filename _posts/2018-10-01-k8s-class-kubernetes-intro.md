@@ -386,6 +386,7 @@ TODO
 [操作审计](https://kubernetes.io/docs/tasks/debug-application-cluster/audit/)
 
 [Metric Server](https://kubernetes.io/docs/tasks/debug-application-cluster/core-metrics-pipeline/)
+
 	Starting from Kubernetes 1.8, resource usage metrics, such as container CPU and memory usage, are available in Kubernetes through the Metrics API.
 	These metrics can be either accessed directly by user, for example by using kubectl top command, or used by a controller in the cluster, e.g. Horizontal Pod Autoscaler, to make decisions.
 	
@@ -451,6 +452,20 @@ TODO
 [hugepage的管理使用](https://kubernetes.io/docs/tasks/manage-hugepages/scheduling-hugepages/)
 
 [gpu](https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus/)
+
+## 关于TLS证书文档
+
+[PKI Certificates and Requirements](https://kubernetes.io/docs/setup/certificates/)
+
+[Certificates](https://kubernetes.io/docs/concepts/cluster-administration/certificates/)
+
+[Manage TLS Certificates in a Cluster](https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster/)
+
+[Kubelet通过bootstrap申请证书：TLS bootstrapping](https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet-tls-bootstrapping/)
+
+[Kubelet的证书轮转更替：Certificate Rotation](https://kubernetes.io/docs/tasks/tls/certificate-rotation/)
+
+[Authenticating with Bootstrap Tokens](https://kubernetes.io/docs/reference/access-authn-authz/bootstrap-tokens/)
 
 ## 参考
 
