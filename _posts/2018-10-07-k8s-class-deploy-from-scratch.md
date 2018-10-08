@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  "Kubernetes1.12从零开始（五）：自己动手部署Kubernetes（未完成）"
+title:  "Kubernetes1.12从零开始（五）：自己动手部署Kubernetes（待续）"
 author: 李佶澳
 createdate: "2018-10-07 15:38:55 +0800"
 changedate: "2018-10-07 15:38:55 +0800"
