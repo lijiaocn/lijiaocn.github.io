@@ -20,35 +20,37 @@ description: Kong是一个Api网关，也是一个特性更丰富的反向代理
 
 Kong是一个Api网关，也是一个特性更丰富的反向代理。既然它有代理流量的功能，那么能不能直接成为Kubernetes的流量入口？使Kubernetes上托管的服务都通过Kong发布。
 
-Kong实现了一个[Kubernetes Ingress Controller][2]（后面用kong-ingress-controller指代这个项目）来做这件事。另外也可以把Kong部署在Kubernetes中，见[Kong CE or EE on Kubernetes][1]。
+Kong实现了一个[Kubernetes Ingress Controller][2]（后面用kong-ingress-controller指代这个项目）来做这件事。另外把整个Kong部署在Kubernetes中也是可行的，见[Kong CE or EE on Kubernetes][1]。
 
 ## 先说设计
 
 [Kubernetes Ingress Controller for Kong][4]中介绍了部署方法。不算PostgreSQL，总共有两个Deployment。
 
 第一个Deployment是[ingress-controller.yaml][5]，部署的是一个有三个容器的Pod：
+
 第一个容器是InitContainer，负责初始化数据库；
-第二个容器是只开启了Admin管理地址的kong-proxy，负责提供Kong的管理API；
+第二个容器是kong-proxy，只开放了admin接口，负责提供Kong的管理API；
 第三个容器是kong-ingress-controller，负责Kubernetes资源与Kong的衔接：监测Kubernetes资源的变动，及时调用Kong的管理API，更新Kong的配置。
 
-第二个Deployment是[Deployment：Kong]，pod中包含的是只开启了代理地址的kong-proxy。
+第二个Deployment是[kong.yaml][6]，pod中包含的是一个kong-proxy容器，禁用了admin接口，只提供代理服务。
 
-第一个Deployment属于控制平面，负责管理Kong。第二个Deployment属于数据平面，负责根据指示反向代理API请求。下面的图片是kong-ingress-controller中的图片，
-红色箭头表示控制信息的流动，绿色箭头表示API请求的流动：
+第一个Deployment属于控制平面，负责管理Kong。第二个Deployment属于数据平面，反向代理对API的请求。下面是[kong-ingress-controller][4]中的示意图，
+红色箭头表示控制信息的流动，绿色箭头表示API请求的流动，dataplane就是通过第二个Deployment启动的Pod：
 
 ![kong kubernetes ingress conroller deployment](https://raw.githubusercontent.com/Kong/kubernetes-ingress-controller/master/docs/images/deployment.png)
 
 ## kong自定义的kubernetes资源
 
-Kubernetes支持自定义资源（[Extend the Kubernetes API with CustomResourceDefinitions][7]，kong-ingress-controller充分利用了这个CRD特性。
-在[custer-types.yml][8]中定义了`KongPlugin`、`KongConsumer`、`KongCredential`和`KongIngress`四种自定义资源(@2018-09-30 17:19:38)。
+Kubernetes支持自定义资源（[Extend the Kubernetes API with CustomResourceDefinitions][7]），kong-ingress-controller充分利用了这个简称为CRD的特性。
 
-[Kong ingress controller: custom types][8]中对这四种自定义资源用法做了说明：
+[cluster-types.yml][8]中定义了`KongPlugin`、`KongConsumer`、`KongCredential`和`KongIngress`四种CRD资源(@2018-09-30 17:19:38)。
+
+[Kong ingress controller: custom types][8]对这四种CRD资源做了说明：
 
 	KongPlugin:     kong插件的配置项
 	KongConsumer:   kong的用户
 	KongCredential: kong用户的认证凭证
-	KongIngress:    对ingress的增强配置，可以设置更多细节
+	KongIngress:    对ingress的增强配置，可以设置更多代理细节
 
 ## 开始部署
 
@@ -60,7 +62,7 @@ Kubernetes支持自定义资源（[Extend the Kubernetes API with CustomResource
 3. [Nginx、OpenResty和Kong的基本概念与使用方法][3]
 4. [Kubernetes Ingress Controller for Kong][4]
 5. [Deployment: ingress-controller.yaml][5]
-6. [Deployment: Kong]
+6. [Deployment: Kong][6]
 7. [Extend the Kubernetes API with CustomResourceDefinitions][7]
 8. [Kong ingress controller: custom types][8]
 
