@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2017/03/31 18:47:12
 changedate: 2018/08/17 18:16:49
 categories: 技巧
-tags: linux
+tags: linux network
 keywords: tun设备,tap设备,tun/tap,veth,虚拟设备
 description: 介绍了Linux中的网络设备，重点是tun、tap、veth等虚拟的网络设备。
 
