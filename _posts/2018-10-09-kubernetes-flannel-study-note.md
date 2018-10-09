@@ -38,6 +38,8 @@ Flannel支持几种不同的方式，把它们叫做[Backends][2]。
 	GBP:  boolean，是否使用vxlan Group Policy，默认false
 	DirectRouting:  boolean，是否启用直接路由，当两台宿主机位于同一个网段时，不封装通过路由直接送达，默认false
 
+GBP特性，参考：[vxlan: Group Policy extension][6]。
+
 其次是host-gw的方式，通过直接路由的方式传送虚拟网络报文。这种方式要求所有宿主机是二层直达的(中间不经过路由)，原理和vxlan中的DirectRouting相同。
 
 Vxlan DriectRouting是`能够直接路由的时候`采用直接路由的方式，否则就通过vxlan。
@@ -110,9 +112,11 @@ Flannel是一个特别简单的网络方案，文档也就特别简单。把上�
 3. [Kubernetes1.12从零开始（五）：自己动手部署Kubernetes][3]
 4. [Github: Canal][4]
 5. [Flannels, Canals and Tigers, Oh My! — Big News in the Land of Project Calico][5]
+6. [vxlan: Group Policy extension][6]
 
 [1]: https://github.com/coreos/flannel "Github: Flannel"
 [2]: https://github.com/coreos/flannel/blob/master/Documentation/backends.md "Flannel: Backends"
 [3]: https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/07/k8s-class-deploy-from-scratch.html#%E9%87%87%E7%94%A8%E5%93%AA%E7%A7%8D%E7%BD%91%E7%BB%9C%E6%96%B9%E6%A1%88 "Kubernetes1.12从零开始（五）：自己动手部署Kubernetes"
 [4]: https://github.com/projectcalico/canal "Github: Canal"
 [5]: https://www.projectcalico.org/canal-tigera/ "Flannels, Canals and Tigers, Oh My! — Big News in the Land of Project Calico"
+[6]: https://github.com/torvalds/linux/commit/3511494ce2f3d3b77544c79b87511a4ddb61dc89 "vxlan: Group Policy extension "
