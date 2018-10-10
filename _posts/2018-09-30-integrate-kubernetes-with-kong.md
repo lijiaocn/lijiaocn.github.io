@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Kubernetes与API网关Kong的集成"
+title: "API网关Kong与Kubernetes的集成方法"
 author: 李佶澳
 createdate: "2018-09-30 16:07:13 +0800"
 changedate: "2018-09-30 16:07:13 +0800"
@@ -312,7 +312,7 @@ kong.yaml中少了一个service（commit: 34e9b4165ab64318d00028f42b797e77dac65e
 	          containerPort: 8080
 	          protocol: TCP
 
-## 使用方法
+## 使用演示
 
 在另一个namespaces中创建一个完整应用：
 

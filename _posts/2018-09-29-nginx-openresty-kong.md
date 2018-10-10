@@ -566,7 +566,7 @@ key-auth插件的详细用法参考[Kong Plugin: key-auth][23]。插件的作用
 
 流控插件：
 
-	ACL (访问控制，貌似归类与安全更合适，但Kong的网站上是归类于流控的)
+	ACL (访问控制）
 	Rate Limiting （限速）
 	Request Size Limiting
 	Request Termination
