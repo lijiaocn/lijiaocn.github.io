@@ -25,7 +25,9 @@ description: 这是阿里云分布式应用服务的博客上发布的文章，�
 
 在限流方面，阿里巴巴是用Nginx实现的，开发一个名为taobao missile defense的模块，限制IP或者Cookie的请求频率。
 
-在服务接口的限流和降级方面，阿里巴巴使用自己开发的Sentinel平台实现的。在应用嵌入Sentinel客户端，通过Sentinel控制台设置限流规则和服务降级。
+在服务接口的限流和降级方面，阿里巴巴使用自己开发的Sentinel平台实现。在应用嵌入Sentinel客户端，通过Sentinel控制台设置限流规则和服务降级。
+
+下面是原文。
 
 ## 如何打造平台稳定性能力（一）
 
