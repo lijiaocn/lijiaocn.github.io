@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "API网关Kong与Kubernetes的集成方法"
+title: "API网关Kong与Kubernetes集成的方法"
 author: 李佶澳
 createdate: "2018-09-30 16:07:13 +0800"
 changedate: "2018-09-30 16:07:13 +0800"
@@ -38,6 +38,8 @@ Kong实现了一个[Kubernetes Ingress Controller][2]（后面用kong-ingress-co
 	
 
 第三部分是[kong.yaml][6]，可以是Deployment，也可以是Daemonset，pod中只有一个kong-proxy容器，禁用了admin接口，只提供代理服务。
+
+### Kong的控制平面与数据平面
 
 `ingress-controller.yaml`是控制平面，提供管理接口、下发规则；`kong.yaml`是数据平面，反向代理对API的请求。
 
@@ -314,7 +316,7 @@ kong.yaml中少了一个service（commit: 34e9b4165ab64318d00028f42b797e77dac65e
 
 ## 使用演示
 
-在另一个namespaces中创建一个完整应用：
+在另一个namespaces中创建一个完整应用：[webshell-all-in-one.yaml](https://github.com/introclass/kubernetes-yamls/blob/master/all-in-one/webshell-all-in-one.yaml)。
 
 	$ kubectl create -f https://raw.githubusercontent.com/introclass/kubernetes-yamls/master/all-in-one/webshell-all-in-one.yaml
 	namespace "demo-webshell" created
@@ -407,7 +409,7 @@ kong.yaml中少了一个service（commit: 34e9b4165ab64318d00028f42b797e77dac65e
 [5]: https://github.com/Kong/kubernetes-ingress-controller/blob/master/deploy/manifests/ingress-controller.yaml "Deployment: ingress-controller.yaml"
 [6]: https://github.com/Kong/kubernetes-ingress-controller/blob/master/deploy/manifests/kong.yaml "Deployment: Kong"
 [7]: https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/ "Extend the Kubernetes API with CustomResourceDefinitions"
-[8]: https://github.com/Kong/kubernetes-ingress-controller/blob/master/deploy/manifests/custom-types.yaml "Kong ingress controller: custom types"
+[8]: https://github.com/Kong/kubernetes-ingress-controller/blob/0.2.0/docs/custom-types.md "Kong ingress controller: custom types"
 [9]: https://github.com/Kong/kubernetes-ingress-controller/blob/master/deploy/manifests/postgres.yaml "Kong postgres.yaml"
 [10]: https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2017/08/31/postgre-usage.html "PostgresSQL数据库的基本使用"
 [11]: https://github.com/Kong/kubernetes-ingress-controller/blob/master/docs/custom-types.md  "Kong: Custom Resource Definitions"
