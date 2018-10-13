@@ -149,9 +149,11 @@ Kong的[数据平面][4]用NodePort的方式暴露，端口是31447，下面随�
 	</body>
 	</html>
 
-## Key-Auth
+## 认证插件试验
 
-创建KongConsumer，名为user1:
+### Key-Auth认证
+
+创建名为`websehll-user1`的KongConsumer，username为`user1`:
 
 	apiVersion: configuration.konghq.com/v1
 	kind: KongConsumer
@@ -166,7 +168,7 @@ Kong的[数据平面][4]用NodePort的方式暴露，端口是31447，下面随�
 	NAME             AGE
 	webshell-user1   1m
 
-创建user1的访问凭证:
+创建user1的访问凭证，名为`credential-webshell-user1`:
 
 	apiVersion: configuration.konghq.com/v1
 	kind: KongCredential
