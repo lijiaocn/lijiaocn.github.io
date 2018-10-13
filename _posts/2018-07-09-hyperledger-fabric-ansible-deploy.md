@@ -1,11 +1,11 @@
 ---
 layout: default
-title:  超级账本HyperLedger：使用Ansible进行Fabric多节点分布式部署（实战）
+title:  超级账本HyperLedger：视频教程，使用Ansible进行Fabric多节点分布式部署（实战）
 author: 李佶澳
 createdate: 2018/07/09 08:57:00
 changedate: 2018/07/29 13:03:43
 categories: 项目
-tags: HyperLedger
+tags: 视频教程 HyperLedger
 keywords: ansible,HyperLedger,多机部署,分布式部署
 description: 已经是一套非常实用的Ansible部署脚本了，完全可以应用于生产，直接部署HyperLedger Fabric
 

@@ -5,8 +5,8 @@ author: 李佶澳
 createdate: 2018/08/03 10:26:00
 changedate: 2018/09/10 08:33:13
 categories: 项目
-tags: prometheus
-keywords: prometheus,监控
+tags: 视频教程 prometheus
+keywords: prometheus ,监控
 description: prometheus是很流行的监控告警工具，特别是kubernetes带动了prometheus的应用，这是prometheus的入门教程。
 
 ---

@@ -158,9 +158,7 @@ Nginx是用C语言开发软件，采用模块化设计，可以通过开发模�
 		 --add-module=/path/to/lua-nginx-module
 
 ## OpenResty
-
-[OpenResty][15]是一个集成了Nginx、LuaJIT和其它很多moudels的平台，用来托管完整的web应用——包含业务逻辑，而不单纯是静态文件服务器:
-
+[OpenResty][15]是一个集成了Nginx、LuaJIT和其它很多moudels的平台，用来托管完整的web应用——包含业务逻辑，而不单纯是静态文件服务器: 
 	OpenResty® aims to run your server-side web app completely in the Nginx server, 
 	leveraging Nginx's event model to do non-blocking I/O not only with the HTTP 
 	clients, but also with remote backends like MySQL, PostgreSQL, Memcached, and Redis.
@@ -294,7 +292,9 @@ Kong[编译安装](https://docs.konghq.com/install/source/?_ga=2.8480690.6664919
 	
 	require("kong.cmd.init")(arg)
 
-准备数据库，kong支持PostgreSQL和Cassandra 3.x.x，这里使用PostgreSQL（需要版本在9.4及以上）:
+### 启动Kong
+
+先准备数据库，kong支持PostgreSQL和Cassandra 3.x.x，这里使用PostgreSQL（需要版本在9.4及以上）:
 
 >注意，如果使用其它版本的PostgreSQL，将下面的9.6换成对应版本号。
 
@@ -358,6 +358,14 @@ kong默认的代理地址是：
 	Content-Length: 5667
 	
 	{"plugins":{"enabled_in_cluster":[],"availab...
+
+### 部署Kong Dashboard
+
+[PGBI/kong-dashboard][27]是一个第三方的Dashboard。
+
+	docker run --rm -p 8080:8080 pgbi/kong-dashboard start \
+	  --kong-url http://kong:8001
+	  --basic-auth user1=password1 user2=password2
 
 ### Kong的使用
 
@@ -558,7 +566,7 @@ key-auth插件的详细用法参考[Kong Plugin: key-auth][23]。插件的作用
 
 流控插件：
 
-	ACL (访问控制，貌似归类与安全更合适，但Kong的网站上是归类于流控的)
+	ACL (访问控制）
 	Rate Limiting （限速）
 	Request Size Limiting
 	Request Termination
@@ -602,11 +610,9 @@ key-auth插件的详细用法参考[Kong Plugin: key-auth][23]。插件的作用
 
 Kong是一个Api网关，也是一个特性更丰富的反向代理，既然它有代理流量的功能，那么能不能直接成为Kubernetes的流量入口？使Kubernetes内部的服务都通过Kong发布。
 
-Kong实现了一个[Kubernetes Ingress Controller][26]来做这件事。
+Kong实现了一个[Kubernetes Ingress Controller][26]来做这件事。在Kubernetes中部署kong的方法见[Kong CE or EE on Kubernetes][25]。
 
-另外也可以把Kong部署在Kubernetes中，见[Kong CE or EE on Kubernetes][25]。
-
-这部分内容会比较多，单独开篇了。
+这部分内容比较多，单独开篇了: [Kubernetes与API网关Kong的集成](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/09/30/integrate-kubernetes-with-kong.html)。
 
 ## 遇到的问题
 
@@ -675,6 +681,7 @@ Kong实现了一个[Kubernetes Ingress Controller][26]来做这件事。
 24. [Kong Plugins][24]
 25. [Kong CE or EE on Kubernetes][25]
 26. [Kong/kubernetes-ingress-controller][26]
+27. [PGBI/kong-dashboard][27]
 
 [1]: http://nginx.org/ "nginx website"
 [2]: https://openresty.org/en/ "OpenResty website" 
@@ -702,3 +709,4 @@ Kong实现了一个[Kubernetes Ingress Controller][26]来做这件事。
 [24]: https://docs.konghq.com/hub/ "Kong Plugins"
 [25]: https://docs.konghq.com/install/kubernetes/ "Kong CE or EE on Kubernetes"
 [26]: https://github.com/Kong/kubernetes-ingress-controller "Github: Kong/kubernetes-ingress-controller"
+[27]: https://github.com/PGBI/kong-dashboard  "PGBI/kong-dashboard"

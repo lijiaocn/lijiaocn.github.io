@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2018/06/18 13:44:00
 changedate: 2018/07/29 13:02:43
 categories: 项目
-tags: HyperLedger
+tags: 视频教程 HyperLedger
 keywords: HyperLedger,超级账本,视频教程,组织添加
 description: 这里演示“如何在已经创建的channel中增加新的组织”。可以先移步到《超级账本HyperLedger Fabric中Channel配置的读取转换》
 

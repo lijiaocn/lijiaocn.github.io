@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2018/05/04 14:09:00
 changedate: 2018/07/29 13:02:06
 categories: 项目
-tags: HyperLedger
+tags: 视频教程 HyperLedger
 keywords: 超级账本,hyperledger,视频教程演示,fabric-ca,hyperledger,orderer证书
 description: 这里将演示如何使用FabricCA为每个组件和用户生成证书，并在多服务器、多节点的环境中应用。是在《超级账本Hyperledger：Fabric项目的多服务器、全手动部署》的基础上进行的
 

@@ -1,11 +1,11 @@
 ---
 layout: default
-title: 怎样获取linux kernel相关的知识？
+title: "怎样获取Linux kernel相关的知识？Linux内核文档汇总"
 author: 李佶澳
 createdate: 2017/11/13 10:55:50
 changedate: 2017/11/14 15:29:48
 categories: 方法
-tags: linux
+tags: linux toolsbox
 keywords: kernel,linux,获取知识,documention
 description: 使用linux是躲不开的kernel，但kernel的内容又实在是太多了
 
@@ -22,13 +22,11 @@ description: 使用linux是躲不开的kernel，但kernel的内容又实在是�
 
 百度和google都是不靠谱的，因为通过搜索只能得到零碎、不一定正确的内容，构建起知识体系，加注第一手资料的索引才是王道。
 
-幸好，kernel的文档很丰富、并且很集中： [linux kernel documentation][1]
+Kernel源码中包含到文档很丰富、收集了kernel各个方面的内容： [Linux Kernel Documentation][1]，也可以到[Github: linux kernel][18]中查看。
 
-kernel.org中收集的文档对各自的问题有非常系统的讲解： [][]
+Redhat的产品文档是特别优秀的资料：[Product Documentation for Red Hat Enterprise Linux][5]
 
-redhat的产品文档是特别优秀的资料：[Product Documentation for Red Hat Enterprise Linux][5]
-
-redhat的知识库也是很靠谱的：[redhat knowledgebase][6]
+Redhat的知识库也是很靠谱的：[redhat knowledgebase][6]
 
 ## 00-INDEX
 
@@ -493,6 +491,7 @@ linux提供了SELinux的管理工具
 15. [Kmalloc Internals: Exploring Linux Kernel Memory Allocation][15]
 16. [lwn.net: Memory compaction][16]
 17. [System-wide Memory Defragmenter Without Killing any application][17]
+18. [Github: linux kernel][18]
 
 [1]: https://www.kernel.org/doc/Documentation/  "linux kernel documentation" 
 [2]: https://www.kernel.org/doc/Documentation/networking/ "Documentation/networking"
@@ -511,3 +510,4 @@ linux提供了SELinux的管理工具
 [15]: http://www.jikos.cz/jikos/Kmalloc_Internals.html "Kmalloc Internals: Exploring Linux Kernel Memory Allocation"
 [16]: https://lwn.net/Articles/368869/  "lwn.net: Memory compaction"
 [17]: http://events.linuxfoundation.org/sites/events/files/slides/%5BELC-2015%5D-System-wide-Memory-Defragmenter.pdf  "System-wide Memory Defragmenter Without Killing any application"
+[18]: https://github.com/torvalds/linux "Github: linux kernel"

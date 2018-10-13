@@ -16,6 +16,7 @@
 		</div>
 		<div class="collapse navbar-collapse " id="categories">
 			<ul class="nav navbar-nav">
+				<li><a href="{{ site.baseurl }}/tags/class.html">教程</a></li>
 				{% for cate in site.categories %} 
 					<li><a href="{{ site.baseurl }}/categories/{{ cate[0]}}.html">{{ cate[0] }}</a></li>
 				{% endfor %}

@@ -1,6 +1,6 @@
 ---
 layout: default
-title: linux的网络namespace
+title: Linux的网络namespace
 author: 李佶澳
 createdate: 2017/08/10 14:16:11
 changedate: 2017/10/22 17:24:26

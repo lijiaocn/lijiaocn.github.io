@@ -1,11 +1,11 @@
 ---
 layout: default
-title:  "超级账本HyperLedger：为Fabric的Peer节点配置CouchDB"
+title:  "超级账本HyperLedger：视频教程，为Fabric的Peer节点配置CouchDB"
 author: 李佶澳
 createdate: 2018/07/19 09:38:00
 changedate: 2018/07/29 13:08:07
 categories: 项目
-tags: HyperLedger
+tags: 视频教程  HyperLedger
 keywords: CouchDB,HyperLedger,Peer,超级账本
 description: 当前(1.1~1.2)版本的Fabric的Peer的数据存储支持LevelDB和CouchDB两种方式，默认为LevelDB
 
