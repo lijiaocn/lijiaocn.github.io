@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "阿里巴巴的应用限流和服务降级是怎样实现的?|如何打造平台稳定能力"
-author: 李佶澳
+author: 阿里巴巴
 createdate: "2018-10-12 17:26:04 +0800"
 changedate: "2018-10-12 17:26:04 +0800"
 categories: 方法
@@ -23,9 +23,9 @@ description: 这是阿里云分布式应用服务的博客上发布的文章，�
 
 为了保障核心服务的运行，将一些非核心服务，从调用链中摘除，这是降级。
 
-在限流方面，阿里巴巴是用Nginx实现的，开发一个名为taobao missile defense的模块，限制IP或者Cookie的请求频率。
+在限流方面，阿里巴巴是用Nginx实现的，开发一个名为taobao missile defense的模块，根据IP或者Cookie限制请求频率。
 
-在服务接口的限流和降级方面，阿里巴巴使用自己开发的Sentinel平台实现。在应用嵌入Sentinel客户端，通过Sentinel控制台设置限流规则和服务降级。
+在服务接口的限流和降级方面，阿里巴巴使用自己开发的Sentinel平台实现，在应用中嵌入Sentinel客户端，通过Sentinel控制台设置限流规则和服务降级。
 
 下面是原文。
 
