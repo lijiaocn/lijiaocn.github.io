@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  "用CloudFlare的PKI工具CFSSL的工具生成Certificate Bundle"
+title:  "用CloudFlare的PKI工具CFSSL生成Certificate Bundle"
 author: 李佶澳
 createdate: 2018/10/13 17:05:00
 changedate: 2018/10/13 17:05:00
