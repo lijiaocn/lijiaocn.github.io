@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "[知识星球精华贴]：如何提高信息素养?"
+title: "[知识星球精华贴]: 如何提高信息素养?"
 author: "冯大辉@小道消息"
 createdate: 2018/05/01 12:02:05
 changedate: 2018/05/08 10:40:36
