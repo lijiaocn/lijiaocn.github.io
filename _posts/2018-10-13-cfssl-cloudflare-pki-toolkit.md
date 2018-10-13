@@ -17,7 +17,10 @@ description: 在阅读Kubernetes文档的时候知道了CFSSL，cfssl有一个bu
 ## 说明
 
 在阅读[Kubernetes文档][1]的时候知道了[CFSSL][2]，在CFFL的[Github Readme][2]中看到它有一个`bundle`命令，不知道用来做什么的。
-直到阅读了[CloudFlare](https://www.cloudflare.com/)技术博客上的文章：[Introducing CFSSL - CloudFlare's PKI toolkit][3]。
+
+直到阅读了[CloudFlare](https://www.cloudflare.com/)技术博客上的文章《[Introducing CFSSL - CloudFlare's PKI toolkit][3]》，
+才知道了Certificate Bundle的意思，以及bundle命令的用途。
+
 
 ## 非对称加密与PKI(Public key infrastructure)
 
