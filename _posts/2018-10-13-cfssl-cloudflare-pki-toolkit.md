@@ -88,6 +88,17 @@ CFSSL同时具有CA功能，它除了可以生成Ceritificate Bundle，还可以
 
 可以说，只要部署一套CFSSL，就可以成为一个CA机构了（要发挥作用，还需要得到浏览器厂商的认可和支持，将公钥内置到浏览器中）。
 
+### 下载cfssl
+
+后面使用额cfssl命令是用这种方式下载的：
+
+	curl -L https://pkg.cfssl.org/R1.2/cfssl_linux-amd64 -o cfssl
+	chmod +x cfssl
+	curl -L https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64 -o cfssljson
+	chmod +x cfssljson
+	curl -L https://pkg.cfssl.org/R1.2/cfssl-certinfo_linux-amd64 -o cfssl-certinfo
+	chmod +x cfssl-certinfo
+
 ### 生成CA证书
 
 命令如下：

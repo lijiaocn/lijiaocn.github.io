@@ -334,11 +334,129 @@ Kubelet第一次启动的时候，先用同一个bootstrap token作为凭证。
 	mkdir cert
 	cd cert
 
-生成cfssl的配置文件：
+cfssl使用的配置文件的格式可以下面的命令查看：：
 
-	../cfssl print-defaults config >config.json
-	../cfssl print-defaults csr > csr.json
+	./cfssl print-defaults config 
+	./cfssl print-defaults csr 
 
+#### 生成CA证书
+
+虽然可以用多套证书，但是维护多套CA实在过于繁杂，这里用一个CA签署所有证书。
+
+创建文件`cert/ca/ca-csr.json`，这个文件中是对要生成的CA证书的要求：
+
+	{
+	  "CN": "CN",
+	  "key": {
+	    "algo": "rsa",
+	    "size": 2048
+	  },
+	  "names":[{
+	    "C": "CN",
+	    "ST": "BeiJing",
+	    "L": "BeiJing",
+	    "O": "lijiaocn.com",
+	    "OU": "kubernetes"
+	  }]
+	}
+
+然后到cert/ca中执行下面的命令，生成CA：
+
+	./cfssl gencert -initca cert/ca-csr.json | ./cfssljson -bare ca
+
+得到下面的文件：
+
+	ca-csr.json  ca-key.pem  ca.csr  ca.pem
+
+其中ca-key.pem是ca的私钥，ca.pem是CA证书。ca.pem就是后面kubernetes组件会用到的RootCA。
+
+可以用下面的命令查看ca证书的内容：
+
+	openssl x509 -in ca.pem -text
+
+可以看到ca.pem中的Issuer、Subject就是ca-csr.json中设置的内容：
+
+	    ...
+	    Signature Algorithm: sha256WithRSAEncryption
+	        Issuer: C=CN, ST=BeiJing, L=BeiJing, O=lijiaocn.com, OU=kubernetes, CN=CN
+	        Validity
+	            Not Before: Oct 13 16:49:00 2018 GMT
+	            Not After : Oct 12 16:49:00 2023 GMT
+	        Subject: C=CN, ST=BeiJing, L=BeiJing, O=lijiaocn.com, OU=kubernetes, CN=CN
+	     ...
+
+另外还需要创建`cert/ca/ca-config.json`，这个文件中后面签署etcd、kubernetes等证书的时候，用到的配置：
+
+	{
+	  "signing": {
+	    "default": {
+	      "expiry": "87600h"
+	    },
+	    "profiles": {
+	      "etcd": {
+	        "usages": [
+	          "signing",
+	          "key encipherment",
+	          "server auth",
+	          "client auth"
+	        ],
+	        "expiry": "87600h"
+	      },
+	      "kubernetes": {
+	        "usages": [
+	          "signing",
+	          "key encipherment",
+	          "server auth",
+	          "client auth"
+	        ],
+	        "expiry": "87600h"
+	      }
+	    }
+	  }
+	}
+
+#### 生成etcd的证书
+
+这节教程里，只计划部署一个单节点的etcd，部署在192.168.33.11上。所以下面只生成了192.168.33.11的etcd证书。
+
+##### etcd server证书
+
+创建etcd server的证书配置，`cert/etcd/server1/etcd-csr.json`：
+
+	{
+	  "CN": "etcd",
+	  "hosts": [
+	    "127.0.0.1",
+	    "192.168.33.11"
+	  ],
+	  "key": {
+	    "algo": "rsa",
+	    "size": 2048
+	  },
+	  "names": [{
+	    "C": "CN",
+	    "ST": "BeiJing",
+	    "L": "BeiJing",
+	    "O": "lijiaocn.com",
+	    "OU": "etcd"
+	  }]
+	}
+
+然后在`cert/etcd/server1`目录中执行下面的命令，生成etcd server1的server证书：
+
+	../../../cfssl gencert -ca=../../ca/ca.pem  -ca-key=../../ca/ca-key.pem  --config=../../ca/ca-config.json -profile=etcd etcd-csr.json  | ../../../cfssljson -bare etcd-server
+
+得到下面的文件：
+
+	etcd-csr.json  etcd-server-key.pem  etcd-server.csr  etcd-server.pem
+
+`etcd-server.pem`和`etcd-server-key.pem`分别是etcd-server的证书和私钥。
+
+另外还有一个`etcd-server.csr`这个签署时用到中间文件，如果你不打算自己签署证书，而是让第三方的CA机构签署，只需要把etcd-server.csr文件提交给CA机构。
+
+##### etcd peer证书
+
+##### etcd client证书
 
 ## 启动集群
 
