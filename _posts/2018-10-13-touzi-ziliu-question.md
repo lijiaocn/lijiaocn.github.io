@@ -22,7 +22,7 @@ description: 从知识星球“投资人子柳”中摘录的关于创业、商�
 
 你可以用微信扫描下面的二维码，加入子柳的知识星球（加入后，可以查看全部历史内容，以及接收最新的内容，或者向子柳提问）。
 
-![原淘宝大学校长投资人子柳（赵超）的投资创业问答录](https：//www.lijiaocn.com/img/xiaomiquan-ziliu.png)
+<span style="display:block;text-align:center">![原淘宝大学校长投资人子柳（赵超）的投资创业问答录]({{ site.imglocal }}/xiaomiquan-ziliu.png){: width="300px"}</span>
 
 ## 热点事件观点
 
@@ -1034,7 +1034,7 @@ iweobo ： 个人能力严重错配——这个没太理解，什么意思呢？
 
 你可以用微信扫描下面的二维码，加入子柳的知识星球（加入后，可以查看全部历史内容，以及接收最新的内容，或者向子柳提问）。
 
-![原淘宝大学校长投资人子柳（赵超）的投资创业问答录](https：//www.lijiaocn.com/img/xiaomiquan-ziliu.png)
+![原淘宝大学校长投资人子柳（赵超）的投资创业问答录](https://www.lijiaocn.com/img/xiaomiquan-ziliu.png)
 
 ## 参考
 
