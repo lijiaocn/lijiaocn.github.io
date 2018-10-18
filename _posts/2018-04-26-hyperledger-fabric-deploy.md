@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger：视频教程，Fabric的全手动、多服务器部署教程
 author: 李佶澳
 createdate: 2018/04/28 18:45:00
-changedate: 2018/07/29 12:58:46
+changedate: 2018/10/18 21:50:06
 categories: 项目
 tags: 视频教程 HyperLedger
 keywords: 超级账本,hyperledger,fabric,多服务器,视频教程,手动部署
@@ -764,6 +764,28 @@ Admin和User1唯一的区别是，Admin的用户证书被添加到了对一个pe
 	$ cd ..
 
 可以看到`peer0.org1.example.com:7051`的状态是启动的。
+
+**注意**：根据反馈，很多人遇到了类似问题：
+
+	 failed to connect to peer0.org1.example.com:7051: failed to create new connection: context deadline exceeded
+
+遇到这种情况，先用telnet看一下服务是是通的：
+
+	telnet peer0.org1.example.com 7051
+
+如果不通，检查一下/etc/hosts中是否设置了域名和IP的对应关系是否正确。
+
+如果还是不通，看一下系统有没有防火墙，是否不是7051端口被防火墙禁止了。
+
+如果还是不行，看一下你是否用的虚拟机，虚拟机的是否用添加了host模式的网卡，并且使用的是host模式网卡的IP。
+
+如果还有问题，可以查看：[Fabric部署过程时遇到的问题汇总](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/04/25/hyperledger-fabric-problem.html)
+
+还是不行，可以到QQ群`576555864`中交流。
+
+还是不行，扫描下面的二维码，翻历史问题，发帖提问:
+
+![我的网课](https://www.lijiaocn.com/img/xiaomiquan-class.jpeg)
 
 为了减少演示过程中的重复操作，下面使用复制、替换的方式，准备另外两个用户的目录。
 

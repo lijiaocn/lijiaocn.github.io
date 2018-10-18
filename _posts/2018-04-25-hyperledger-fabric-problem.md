@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger：Fabric部署过程时遇到的问题汇总
 author: 李佶澳
 createdate: 2018/05/04 21:14:00
-changedate: 2018/07/16 10:19:09
+changedate: 2018/10/18 21:49:59
 categories: 问题
 tags: HyperLedger
 keywords: 超级账本,视频教程演示,区块链实践,hyperledger,fabric,区块链问题
@@ -16,13 +16,29 @@ description: "这里记录部署hyperledger fabric时遇到的一些问题"
 
 ## 说明
 
-这里记录了部署hyperledger fabric时遇到的一些问题，部署过程见：[hyperledger的fabric项目的手动部署教程][1]
+这里记录了部署hyperledger fabric时遇到的一些问题，部署过程见：[hyperledger的fabric项目的手动部署教程][1]、
+视频教程地址是[HyperLedger Fabric全手动、多服务器部署与进阶教程](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)
 
-一些问题是我自己遇到的，一些是通过知识星球“区块链实践分享”和微信向我提问的。
+一些问题是我自己遇到的，一些是通过知识星球“我的网课”和微信向我提问的。
+把比较典型的问题都汇总到这里了。
 
-我会把比较典型的问题都汇总这里，如果你有新的问题，可以通过知识星球或者微信联系我(见文末)。
+如果你有新的问题，可以到QQ群`576555864`中交流。
 
-[超级账本HyperLedger视频教程：HyperLedger Fabric全手动、多服务器部署与进阶教程--“主页”中可领优惠券](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)
+QQ群解决不了，扫描下面的二维码，翻历史问题，发帖提问:
+
+![我的网课](https://www.lijiaocn.com/img/xiaomiquan-class.jpeg)
+
+## Peer或者Orderer不通
+
+如果你是用vmware或者virtualbox虚拟机部署的Fabric，注意使用的网络模式。最好使用Host模式或者桥接模式，因为虚拟机中的NAT网卡地址的IP通常都是相同的，并且从虚拟机外部主动发起访问的时候，也很容易出现各种状况。
+
+当不通的时候，先确认域名对应的IP是否正确，然后用telnet检查服务端口：
+
+	telnet peer0.org1.example.com 7051
+
+如果不通，检查一下/etc/hosts中是否设置了域名和IP的对应关系是否正确。
+
+如果还是不通，看一下系统有没有防火墙，是否不是7051端口被防火墙禁止了。
 
 ## ID不合法导致Orderer Panic
 
@@ -66,16 +82,6 @@ ConfigID中不能使用下划线，可以用下面命令查看创世块:
 将`configtx.yaml`中的组织名和ID，修改为不带下划线的，重新生成创始块等文件。
 
 注意，需要将orderer中以前的数据删除。
-
-## Peer或者Orderer不通
-
-如果你是用vmware或者virtualbox虚拟机部署的Fabric，注意使用的网络模式。最好使用Host模式或者桥接模式，因为虚拟机中的NAT网卡地址的IP通常都是相同的，并且从虚拟机外部主动发起访问的时候，也很容易出现各种状况。
-
-当不通的时候，先确认域名对应的IP是否正确，然后用telnet检查服务端口：
-
-	telnet peer0.org1.example.com
-
-留心是不是系统的防火墙没有开放相应的端口。
 
 ## 目标Peer上的Docker没有启动，导致合约实例化失败
 
