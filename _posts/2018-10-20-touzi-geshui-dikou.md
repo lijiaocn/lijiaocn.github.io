@@ -3,7 +3,7 @@ layout: default
 title: 个人所得税专项附加扣除暂行办法（征求意见稿）
 author: 财政部、税务总局
 createdate: 2018/10/20 11:56:00
-changedate: 2018/10/20 14:43:45
+changedate: 2018/10/20 15:28:23
 categories: 投资
 tags: 投资
 keywords: 个人所得税专项,专项扣除,个人所得税,个税扣除细则
@@ -16,7 +16,7 @@ description: 2018年10月20日，财政部、国家税务总局下发了关于�
 
 ## 说明
 
-规则详细分析：[重大消息：房贷利息抵扣个税细则出炉（附全文和详细分析）](https://mp.weixin.qq.com/s/sP8BPmkTJRr2sa_sDQAPaw)
+**详细分析见**：[重大消息：房贷利息抵扣个税细则出炉（附全文和详细分析）](https://mp.weixin.qq.com/s/sP8BPmkTJRr2sa_sDQAPaw) (首发于微信公众号最牛推荐)
 
 2018年10月20日，财政部、国家税务总局下发了[关于《个人所得税专项附加扣除暂行办法（征求意见稿）》向社会公开征求意见的通知][1]：
 
