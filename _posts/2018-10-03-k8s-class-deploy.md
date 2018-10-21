@@ -381,25 +381,30 @@ minikube默认部署了dashborad插件，用下面的命令自动打开dashboard
 
 kubeadm和kubernetes的其它组件一起发布(本来就是kubernetes项目中的一部分)，支持部署v1.12.x版本的kubernetes。
 
-### 安装kubeadm
+### 安装docker、kubelet、kubeadm
 
-[Installing kubeadm][9]中介绍了kubeadm的安装方法。要求每个机器至少2G内存，2个CPU，我设置的虚拟机用了1G内存也勉强能跑起来。
+[Installing kubeadm][9]中介绍了kubeadm的安装方法，要求每个机器至少2G内存，2个CPU，我设置的虚拟机用了1G内存也勉强能跑起来。
 
 单独的一个kubeadm不能工作，`每个机器上`还需要安装有docker、kubelet，可选安装kubectl。
 
-从kubernetes1.6.0以后，kubernetes支持CRI，不一定非要用Docker，不过我们这里还是先不踩其它坑了，毕竟用Docker的还是大多数。
+从kubernetes1.6.0以后，kubernetes支持CRI，不一定非要用Docker，我们这里还是选用Docker，毕竟用Docker的还是大多数。
 
-Docker的版本发布计划与安装方法见[moby、docker-ce与docker-ee][10]。为了聚焦主旨，这里不岔开了，直接用yum安装CentOS默认版本的Docker：
+#### 安装docker
+
+Docker的版本发布计划与安装方法见[moby、docker-ce与docker-ee][10]，这里直接用yum安装CentOS默认的Docker：
 
 	yum install -y docker
 	systemctl start  docker
 	systemctl enable docker.service
 
+#### 安装kubeadm、kubelet
+
 然后安装kubeadm、kubelet和kubectl，这三个命令可以自己编译或者下载编译好的kubernetes文件。
 
-我们这里使用Google提供的yum源，
-直接用yum安装（[Ubuntu和其它操作系统中的安装方法](https://kubernetes.io/docs/setup/independent/install-kubeadm/#installing-kubeadm-kubelet-and-kubectl)）。
-注意这个源需要翻_qiang才能访问。
+我们这里使用Google提供的yum源，直接用yum命令安装，如果不是CentOS系统参考：
+[Ubuntu和其它操作系统中的安装方法](https://kubernetes.io/docs/setup/independent/install-kubeadm/#installing-kubeadm-kubelet-and-kubectl)。
+
+注意这里用到的Google的源需要翻_qiang才能访问。
 
 执行下面的命令，创建`kubernetes.repo`：
 
@@ -414,12 +419,12 @@ Docker的版本发布计划与安装方法见[moby、docker-ce与docker-ee][10]�
 	exclude=kube*
 	EOF
 
-然后关闭Selinux：
+关闭Selinux：
 
 	setenforce 0
 	sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
 
-在CentOS7上还需要设置一下内核参数，放置流量被错误转发：
+在CentOS7上还需要设置一下内核参数，防止流量被错误转发：
 
 	cat <<EOF >  /etc/sysctl.d/k8s.conf
 	net.bridge.bridge-nf-call-ip6tables = 1
@@ -427,7 +432,7 @@ Docker的版本发布计划与安装方法见[moby、docker-ce与docker-ee][10]�
 	EOF
 	sysctl --system
 
-再然后安装：
+然后安装：
 
 	# 默认安装最新版本的kubernetes
 	yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
@@ -438,11 +443,13 @@ Docker的版本发布计划与安装方法见[moby、docker-ce与docker-ee][10]�
 
 #### kubelet的用途
 
-这里需要解释一下，为什么在每个机器上都启动的kubelet。kubelet是node上的agent，它负责根据至少启动、关停容器，是一个持续运行的后台服务。
+这里需要解释一下，为什么在每个机器上都启动kubelet。
+
+kubelet是node上的agent，它负责根据指示启动、关停容器，是一个持续运行的后台服务。
 
 它除了执行Kubernetes的Master下发任务外，还会加载本地`/etc/kubernetes/manifests/`目录中的Kubernetes任务，通常就是描述Kubernetes中应用的yaml文件。
 
-Kubeadm使用的部署方式中，Kubernetes的Master组件`apiserver`、`controller-manager`、`scheduler`，以及依赖的`etcd`等最基础的组件，被做成了kubernetes任务，用kubelet启动。
+kubeadm使用的部署方式中，kubernetes的Master组件`apiserver`、`controller-manager`、`scheduler`，以及依赖的`etcd`等最基础的组件，被做成了kubernetes任务，用kubelet启动。
 
 组件依赖分层如下：：
 
