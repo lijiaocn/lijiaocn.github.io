@@ -15,6 +15,8 @@ description: 先通过部署一个webshell应用和为它设置key-auth插件的
 
 ## 说明
 
+这是[API网关Kong的系列教程](https://www.lijiaocn.com/tags/class.html)中的一篇。
+
 通过[Nginx、OpenResty和Kong的基本概念与使用方法][1]了解了Kong的工作原理，通过[API网关Kong与Kubernetes的集成方法][2]了解了与Kubernetes的集成方法。
 这里学习下[Kong的插件][3]，并尽可能压测一下感兴趣的插件。
 
@@ -41,7 +43,7 @@ Kong-Ingress-Controller的版本是0.2.0，Kong的版本是0.14.1。
 
 例如：List Services
 
-	$ curl 10.10.173.203:32685/services 2>/dev/null |python -m json.tool
+	$ curl 192.168.33.12:32685/services 2>/dev/null |python -m json.tool
 	{
 	    "data": [
 	        {
@@ -65,7 +67,7 @@ Kong-Ingress-Controller的版本是0.2.0，Kong的版本是0.14.1。
 
 列出所有可以使用的插件：
 
-	$ curl 10.10.173.203:32685/plugins/enabled 2>/dev/null |python -m json.tool
+	$ curl 192.168.33.12:32685/plugins/enabled 2>/dev/null |python -m json.tool
 	{
 	    "enabled_plugins": [
 	        "response-transformer",

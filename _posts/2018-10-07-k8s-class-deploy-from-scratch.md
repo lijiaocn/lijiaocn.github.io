@@ -17,6 +17,8 @@ description: "经过前面的尝试（一次minikube部署，一次kubeadm部署
 
 >该文档未完成。2018-10-21 18:59:32
 
+可以先参考：[Kubernetes1.12从零开始（三）：用minikube部署开发测试环境](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/03/k8s-class-deploy.html) 和 [Kubernetes1.12从零开始（三）：用kubeadm部署多节点集群](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/04/k8s-class-a-deploy-kubeadm.html)
+
 在准备[kubelet的manifests文件](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/07/k8s-class-deploy-from-scratch.html#%E5%90%AF%E5%8A%A8kube-apiserver)时，
 打算直接使用kubeadm生成的manifest文件，发现里面有一些不曾了解过的参数，需要等核实之后，继续完成。证书的命名也要调整一下，尽量与kubeadm的证书命名方式保持一致，避免造成困扰。
 
