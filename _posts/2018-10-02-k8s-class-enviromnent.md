@@ -111,6 +111,14 @@ node1目录中会生成一个名为Vagrantfile的文件，在其中被注掉的�
 
 如果你是直接用vmware或者virtualbox等创建的虚拟机，注意在它们的管理页面中添加一个host模式的网卡。
 
+## 虚拟机时间同步
+
+虚拟机的时间需要保持一致，否则可能导致证书认定失败。这里用ntp进行时间同步：
+
+	sudo yum install ntp
+	sudo systemctl start ntpd
+	sudo systemctl enable ntpd
+
 ## 参考
 
 1. [虚拟化技术汇总-工具Vagrant][1]

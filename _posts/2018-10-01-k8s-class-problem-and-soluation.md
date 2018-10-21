@@ -20,6 +20,58 @@ description: 这里记录Kubernetes1.12从零开始的过程中遇到的一些�
 
 所有成系列的文章，都可以在页面[系列教程汇总](https://www.lijiaocn.com/tags/class.html)中找到。
 
+##  kubeadm init失败，kube-apiserver不停重启
+
+>几周以后，使用最新版本的kubeadm，发现这个问题没有了 2018-10-21 20:27:11
+
+`kubeadm init`时遇到了下面的问题：
+
+	[init] waiting for the kubelet to boot up the control plane as Static Pods from directory "/etc/kubernetes/manifests" 
+	[init] this might take a minute or longer if the control plane images have to be pulled
+	
+	                Unfortunately, an error has occurred:
+	                        timed out waiting for the condition
+	
+	                This error is likely caused by:
+	                        - The kubelet is not running
+	                        - The kubelet is unhealthy due to a misconfiguration of the node in some way (required cgroups disabled)
+	                        - No internet connection is available so the kubelet cannot pull or find the following control plane images:
+
+观察发现其实apiserver已经启动，但是大概两分钟后自动推出，日志显示：
+
+	E1006 09:45:23.046362       1 controller.go:173] no master IPs were listed in storage, refusing to erase all endpoints for the kubernetes service
+
+东找西找，找到了这么一段[说明](https://deploy-preview-6695--kubernetes-io-master-staging.netlify.com/docs/admin/high-availability/#endpoint-reconciler):
+
+	As mentioned in the previous section, the apiserver is exposed through a service called kubernetes. 
+	The endpoints for this service correspond to the apiserver replicas that we just deployed.
+	...
+	there is special code in the apiserver to let it update its own endpoints directly. This code is called the “reconciler,” ..
+
+这个和Apiserver高可用相关的，在kubernetes内部，apiserver被包装成一个名为`kubernetes`的服务，既然是服务，那么就要有后端的endpoints。对`kubernetes`服务来说，后端的endpoints
+就是apiserver的地址，apiserver需要更新etcd中的endpoints记录。
+
+另外从1.9以后，用参数`--endpoint-reconciler-type=lease`指定endpoint的更新方法，`lease`是默认值。
+
+怀疑是1.12.1版本在apiserver高可用方面有bug，直接在`/etc/kubernetes/manifests/kube-apiserver.yaml`中，加了一行配置：
+
+	 - --endpoint-reconciler-type=none
+	 - --insecure-port=8080
+
+然后apiserver就稳定运行不重启了，顺便把insecure-port设置为8080了。
+
+github上两个issue[22609](https://github.com/kubernetes/kubernetes/issues/22609)、[1047](https://github.com/kubernetes/kubeadm/issues/1047)都很长时间没有可用的答案，让人感觉不太靠谱啊。。
+
+这样更改之后，用`kubectl get cs`看到组件都正常：
+
+	$ kubectl get cs
+	NAME                 STATUS    MESSAGE              ERROR
+	controller-manager   Healthy   ok
+	scheduler            Healthy   ok
+	etcd-0               Healthy   {"health": "true"}
+
+虽然手动调整正常了，但是kubeadm init还是报错，没法获得添加node的命令
+
 ## Mac上CFSSL执行出错：Failed MSpanList_Insert 0xa0f000 0x19b27193a1671 0x0 0x0
 
 下载的1.2版本的Mac版cfssl：
