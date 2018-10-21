@@ -121,6 +121,16 @@ node1目录中会生成一个名为Vagrantfile的文件，在其中被注掉的�
 	sudo systemctl start ntpd
 	sudo systemctl enable ntpd
 
+## 允许密码登陆
+
+修改`/etc/ssh/sshd_config`：
+
+	PasswordAuthentication yes
+
+重启sshd服务:
+
+	systemctl restart sshd
+
 ## 参考
 
 1. [虚拟化技术汇总-工具Vagrant][1]
