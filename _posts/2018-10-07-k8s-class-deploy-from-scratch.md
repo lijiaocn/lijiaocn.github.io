@@ -15,7 +15,14 @@ description: "经过前面的尝试（一次minikube部署，一次kubeadm部署
 
 ## 说明
 
->该文档尚未完成。2018-10-07 23:58:01
+在准备[kubelet的manifests文件](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/07/k8s-class-deploy-from-scratch.html#%E5%90%AF%E5%8A%A8kube-apiserver)时，
+准备直接使用kubeadm生成的manifest文件，发现里面有一些不曾了解过的参数，需要做一番了解。
+
+这篇文档只完成了一半，需要等核实了新版本的一些参数之后，继续完成。
+
+好消息是，刚试验了一下kubeadm，发现之前导致卡壳的问题没有了:[使用kubeadm部署多节点Kubernetes](https://wwww.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/03/k8s-class-deploy.html#%E4%BD%BF%E7%94%A8kubeadm%E9%83%A8%E7%BD%B2%E5%A4%9A%E8%8A%82%E7%82%B9kubernetes)
+
+>该文档尚未完成。2018-10-21 18:59:32
 
 经过前面的尝试（一次[minikube部署][1]，一次[kubeadm部署][2]）以及[基本概念的梳理][4]，终于走到了自己动手从零开始部署kubernetes这一步。
 
@@ -146,56 +153,7 @@ Kubernetes对网络插件的要求不高，相应的，能够满足Kubernetes的
 
 比如为Cluster命名之类的，管理规划上的琐碎事情，不同公司有不同规矩，不同人有不同习惯，这里不提了。
 
-## 安装软件
-
-### 下载文件和镜像
-
-安装之前要先准备好安装文件，需要安装的软件有：
-
-	etcd
-	A container runner, one of:
-	    docker
-	    rkt
-	Kubernetes
-	    kubelet
-	    kube-proxy
-	    kube-apiserver
-	    kube-controller-manager
-	    kube-scheduler
-
-Docker和etcd，是独立于Kubernetes的项目，按照它们各自提供的方式安装即可。其中etcd最好使用[cluster/images/etcd/Makefile](https://github.com/kubernetes/kubernetes/blob/v1.12.1/cluster/images/etcd/Makefile)中使用的版本，这是kubernetes测试时使用的etcd版本。
-
-Kubelet、kube-proxy可以直接下载二进制文件部署（对于CentOS来说，需要做成service），也可以通过Google提供的yum源安装。
-
-Kube-apiserver、kube-controller-manager、kube-scheduler，文档中建议[用容器的方式启动](https://kubernetes.io/docs/setup/scratch/#selecting-images)，需要提前准备好镜像。
-它们的镜像，可以从k8s.gcr.io中下载，也可以从下载的release文件中获得（见后面操作）。
-
-在[kubernetes release list](https://github.com/kubernetes/kubernetes/releases/)中可以找到二进制文件的下载地址，例如v1.12.1的下载地址是：
-[https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.12.md#downloads-for-v1121 ](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.12.md#downloads-for-v1121)
-
-我们先把虚拟机node1清理一下，然后它的目录中下载文件：
-
-	cd node1
-	vagrant destroy
-
-在node1目录中下载服务端和客户端的二进制文件：
-
-	cd node1
-	wget https://dl.k8s.io/v1.12.1/kubernetes-server-linux-amd64.tar.gz
-	tar -xvf kubernetes-server-linux-amd64.tar.gz
-	wget https://dl.k8s.io/v1.12.1/kubernetes-node-linux-amd64.tar.gz
-	tar -xvf kubernetes-node-linux-amd64
-
-解压以后，在服务端文件中可以找到几个.tar文件，它们就是同名组件的docker镜像：
-
-	$ find . -name "*.tar"
-	./kubernetes/server/bin/kube-proxy.tar
-	./kubernetes/server/bin/kube-scheduler.tar
-	./kubernetes/server/bin/kube-controller-manager.tar
-	./kubernetes/server/bin/cloud-controller-manager.tar
-	./kubernetes/server/bin/kube-apiserver.tar
-
-这些文件保留备用。
+## 准备证书
 
 ### 制作证书前需要知道的事情
 
@@ -306,22 +264,23 @@ Kubelet第一次启动的时候，先用同一个bootstrap token作为凭证。
 制作证书的工具比较多，[Certificates](https://kubernetes.io/docs/concepts/cluster-administration/certificates/)中介绍了`easyrsa`、`openssl`和`cfssl`。
 这些工具的用法，可以私下里去研究，这里就不展开了。如果对tls证书不了解，可以参阅：《[RSA的私钥和公钥，以及用openssl制作的方法][13]》、《[https证书的制作][14]》。
 
-这里使用[cfssl][16]，它是cloudflare开发的一个开源的PKI工具，对它的介绍见：《[Introducing CFSSL - CloudFlare's PKI toolkit][17]》。
+这里使用[CFSSL][16]，它是cloudflare开发的一个开源的PKI工具，对它的介绍见：《[Introducing CFSSL - CloudFlare's PKI toolkit][17]》。
 它其实是一个完备的CA服务系统，可以签署、撤销证书等，覆盖了一个证书的整个生命周期，后面只用到了它的命令行工具。
+
+CFSSL的功能和使用方法，以及它的特别之处，参考：[用CloudFlare的PKI工具CFSSL生成Certificate Bundle][18]。
 
 #### 下载cfssl命令行工具
 
 在node1中制作证书：
 
 	cd node1
-	vagrant up
-	vagrant ssh
-	cd /vagrant
-	mkdir cfssl
+	mkdir cfssl/bin/
 	cd cfssl
 
-下载cfssl命令行工具：
+下载cfssl命令行工具，如果是linux系统，使用下面的命令：
 
+	mkdir bin
+	cd bin
 	curl -L https://pkg.cfssl.org/R1.2/cfssl_linux-amd64 -o cfssl
 	chmod +x cfssl
 	curl -L https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64 -o cfssljson
@@ -329,19 +288,35 @@ Kubelet第一次启动的时候，先用同一个bootstrap token作为凭证。
 	curl -L https://pkg.cfssl.org/R1.2/cfssl-certinfo_linux-amd64 -o cfssl-certinfo
 	chmod +x cfssl-certinfo
 
+如果是mac系统，使用下面的命令：
+
+	curl -L https://pkg.cfssl.org/R1.2/cfssl_darwin-amd64 -o cfssl
+	chmod +x cfssl
+	curl -L https://pkg.cfssl.org/R1.2/cfssljson_darwin-amd64 -o cfssljson
+	chmod +x cfssljson
+	curl -L https://pkg.cfssl.org/R1.2/cfssl-certinfo_darwin-amd64 -o cfssl-certinfo
+	chmod +x cfssl-certinfo
+
+如果下载的cfssl在Mac上运行出错，可以改成用brew安装，或者用go get本地编译：
+
+	#这个过程要从github上下载依赖的源代码，可能会很慢
+	go get -u github.com/cloudflare/cfssl/cmd/...
+
+我遇到一个cfssl错误是：[Failed MSpanList_Insert 0xa0f000](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/10/01/k8s-class-problem-and-soluation.html#mac%E4%B8%8Acfssl%E6%89%A7%E8%A1%8C%E5%87%BA%E9%94%99failed-mspanlist_insert-0xa0f000-0x19b27193a1671-0x0-0x0)。用本地Go重新编译得到的cfssl没有问题。
+
+为了后续的演示一致，在Mac上，将本地编译的cffs文件复制到node1目录中：
+
+	mkdir bin
+	cp $GOPATH/bin/cfssl* bin/
+
 创建一个存放证书的目录：
 
 	mkdir cert
 	cd cert
 
-cfssl使用的配置文件的格式可以下面的命令查看：：
-
-	./cfssl print-defaults config 
-	./cfssl print-defaults csr 
-
 #### 生成CA证书
 
-虽然可以用多套证书，但是维护多套CA实在过于繁杂，这里用一个CA签署所有证书。
+虽然可以用多套证书，但是维护多套CA实在过于繁杂，这里还是用一个CA签署所有证书。
 
 创建文件`cert/ca/ca-csr.json`，这个文件中是对要生成的CA证书的要求：
 
@@ -360,15 +335,15 @@ cfssl使用的配置文件的格式可以下面的命令查看：：
 	  }]
 	}
 
-然后到cert/ca中执行下面的命令，生成CA：
+然后执行下面的命令，生成CA：
 
-	./cfssl gencert -initca cert/ca-csr.json | ./cfssljson -bare ca
+	./bin/cfssl gencert -initca cert/ca/ca-csr.json | ./bin/cfssljson -bare ca
 
 得到下面的文件：
 
-	ca-csr.json  ca-key.pem  ca.csr  ca.pem
+	ca-key.pem  ca.csr  ca.pem
 
-其中ca-key.pem是ca的私钥，ca.pem是CA证书。ca.pem就是后面kubernetes组件会用到的RootCA。
+其中ca-key.pem是ca的私钥，ca.csr是一个签署请求，ca.pem是CA证书，是后面kubernetes组件会用到的RootCA。
 
 可以用下面的命令查看ca证书的内容：
 
@@ -385,7 +360,11 @@ cfssl使用的配置文件的格式可以下面的命令查看：：
 	        Subject: C=CN, ST=BeiJing, L=BeiJing, O=lijiaocn.com, OU=kubernetes, CN=CN
 	     ...
 
-另外还需要创建`cert/ca/ca-config.json`，这个文件中后面签署etcd、kubernetes等证书的时候，用到的配置：
+把这三个文件移动到cert/ca目录中：
+
+	mv ca* cert/ca
+
+另外还需要创建`cert/ca/ca-config.json`，这个文件中包含后面签署etcd、kubernetes等证书的时候，用到的配置：
 
 	{
 	  "signing": {
@@ -417,11 +396,11 @@ cfssl使用的配置文件的格式可以下面的命令查看：：
 
 #### 生成etcd的证书
 
-这节教程里，只计划部署一个单节点的etcd，部署在192.168.33.11上。所以下面只生成了192.168.33.11的etcd证书。
+这里计划部署一个单节点的etcd，在192.168.33.11上。所以下面只生成了192.168.33.11的etcd证书。
 
 ##### etcd server证书
 
-创建etcd server的证书配置，`cert/etcd/server1/etcd-csr.json`：
+创建etcd server的证书配置，`cert/etcd/server/192.168.33.11/etcd-csr.json`：
 
 	{
 	  "CN": "etcd",
@@ -438,27 +417,394 @@ cfssl使用的配置文件的格式可以下面的命令查看：：
 	    "ST": "BeiJing",
 	    "L": "BeiJing",
 	    "O": "lijiaocn.com",
-	    "OU": "etcd"
+	    "OU": "etcd server"
 	  }]
 	}
 
-然后在`cert/etcd/server1`目录中执行下面的命令，生成etcd server1的server证书：
+然后执行下面的命令，生成etcd的server证书：
 
-	../../../cfssl gencert -ca=../../ca/ca.pem  -ca-key=../../ca/ca-key.pem  --config=../../ca/ca-config.json -profile=etcd etcd-csr.json  | ../../../cfssljson -bare etcd-server
+	./bin/cfssl gencert -ca=./cert/ca/ca.pem  -ca-key=./cert/ca/ca-key.pem  --config=./cert/ca/ca-config.json -profile=etcd ./cert/etcd/server/192.168.33.11/etcd-csr.json  | ./bin/cfssljson -bare etcd-server
 
 得到下面的文件：
 
-	etcd-csr.json  etcd-server-key.pem  etcd-server.csr  etcd-server.pem
+	etcd-server-key.pem etcd-server.csr     etcd-server.pem
 
-`etcd-server.pem`和`etcd-server-key.pem`分别是etcd-server的证书和私钥。
+`etcd-server.pem`和`etcd-server-key.pem`分别是etcd-server的证书和私钥，将它们移动到etcd/192.168.33.11目录中：
 
-另外还有一个`etcd-server.csr`这个签署时用到中间文件，如果你不打算自己签署证书，而是让第三方的CA机构签署，只需要把etcd-server.csr文件提交给CA机构。
+	mv etcd-server* cert/etcd/server/192.168.33.11
+
+`etcd-server.csr`是签署时用到的中间文件，如果你不打算自己签署证书，而是让第三方的CA机构签署，只需要把etcd-server.csr文件提交给CA机构。
 
 ##### etcd peer证书
 
+peer证书的制作过程类似，和server证书以及下面的etcd证书，本质上都是相同的证书，只不过用在了不同的地方。
+
+创建etcd peer的证书配置，`cert/etcd/peer/192.168.33.11/etcd-csr.json`：
+
+	{
+	  "CN": "etcd",
+	  "hosts": [
+	    "127.0.0.1",
+	    "192.168.33.11"
+	  ],
+	  "key": {
+	    "algo": "rsa",
+	    "size": 2048
+	  },
+	  "names": [{
+	    "C": "CN",
+	    "ST": "BeiJing",
+	    "L": "BeiJing",
+	    "O": "lijiaocn.com",
+	    "OU": "etcd peer"
+	  }]
+	}
+
+然后执行下面的命令，生成etcd的peer证书：
+
+	./bin/cfssl gencert -ca=./cert/ca/ca.pem  -ca-key=./cert/ca/ca-key.pem  --config=./cert/ca/ca-config.json -profile=etcd ./cert/etcd/peer/192.168.33.11/etcd-csr.json  | ./bin/cfssljson -bare etcd-peer
+
+得到下面的文件：
+
+	etcd-peer-key.pem etcd-peer.csr     etcd-peer.pem
+
+将它们移动到peer目录中：
+
+	mv etcd-peer* cert/etcd/peer/192.168.33.11
+
 ##### etcd client证书
 
-## 启动集群
+etcd client证书是给需要访问etcd的程序用的，需要访问etcd的是kubernetes master的组件apiserver，它部署在192.168.33.11上。
+
+创建etcd client的证书配置，`cert/etcd/client/192.168.33.11/etcd-csr.json`：
+
+	{
+	  "CN": "etcd",
+	  "hosts": [
+	    "127.0.0.1",
+	    "192.168.33.11"
+	  ],
+	  "key": {
+	    "algo": "rsa",
+	    "size": 2048
+	  },
+	  "names": [{
+	    "C": "CN",
+	    "ST": "BeiJing",
+	    "L": "BeiJing",
+	    "O": "lijiaocn.com",
+	    "OU": "etcd client"
+	  }]
+	}
+
+然后执行下面的命令，生成etcd的client证书：
+
+	./bin/cfssl gencert -ca=./cert/ca/ca.pem  -ca-key=./cert/ca/ca-key.pem  --config=./cert/ca/ca-config.json -profile=etcd ./cert/etcd/client/192.168.33.11/etcd-csr.json  | ./bin/cfssljson -bare etcd-client
+
+得到下面的文件：
+
+	etcd-client-key.pem etcd-client.csr     etcd-client.pem
+
+将它们移动到client目录中：
+
+	mv etcd-client* cert/etcd/client/192.168.33.11
+
+#### 生成kubernetes master证书
+
+kube-apiserver、kube-scheduler、kube-controller-manager是kubernetes的master组件，这里生成它们使用的证书。
+
+##### kube-apiserver的server证书
+
+创建etcd client的证书配置，`cert/kube-apiserver/server/192.168.33.11/apiserver-csr.json`：
+
+	{
+	  "CN": "kube-apiserver",
+	  "hosts": [
+	    "127.0.0.1",
+	    "192.168.33.11"
+	  ],
+	  "key": {
+	    "algo": "rsa",
+	    "size": 2048
+	  },
+	  "names": [{
+	    "C": "CN",
+	    "ST": "BeiJing",
+	    "L": "BeiJing",
+	    "O": "lijiaocn.com",
+	    "OU": "kube-apiserver"
+	  }]
+	}
+
+然后执行下面的命令，生成kube-apiserver的server证书：
+
+	./bin/cfssl gencert -ca=./cert/ca/ca.pem  -ca-key=./cert/ca/ca-key.pem  --config=./cert/ca/ca-config.json -profile=kubernetes ./cert/kube-apiserver/server/192.168.33.11/apiserver-csr.json  | ./bin/cfssljson -bare kube-apiserver-server
+
+得到下面的文件：
+
+	kube-apiserver-server-key.pem kube-apiserver-server.csr     kube-apiserver-server.pem
+
+将它们移动到server目录中：
+
+	mv kube-apiserver-server* cert/kube-apiserver/server/192.168.33.11
+
+##### kube-apiserver的client证书
+
+生成kube-apiserver的client证书的时候，需要特别注意。因为kubernetes会通过证书CN（Comman Name)识别当前请求者的角色，不同的角色有不同的操作权限。
+
+因此kube-scheduer、kube-controller-manager的kube-apiserver client证书的CN分别是：
+
+	system:kube-controller-manager
+	system:kube-scheduler
+
+###### kube-apiserver client证书 for kube-scheduler
+
+创建kube-scheduler的kube-apiserverclient的证书配置，`cert/kube-apiserver/client/kube-scheduler/192.168.33.11/apiserver-csr.json`：
+
+	{
+	  "CN": "system:kube-scheduler",
+	  "hosts": [
+	    "127.0.0.1",
+	    "192.168.33.11"
+	  ],
+	  "key": {
+	    "algo": "rsa",
+	    "size": 2048
+	  },
+	  "names": [{
+	    "C": "CN",
+	    "ST": "BeiJing",
+	    "L": "BeiJing",
+	    "O": "lijiaocn.com",
+	    "OU": "kube-scheduler"
+	  }]
+	}
+
+然后执行下面的命令，生成证书：
+
+	./bin/cfssl gencert -ca=./cert/ca/ca.pem  -ca-key=./cert/ca/ca-key.pem  --config=./cert/ca/ca-config.json -profile=kubernetes ./cert/kube-apiserver/client/kube-scheduler/192.168.33.11/apiserver-csr.json  | ./bin/cfssljson -bare kube-apiserver-scheduler
+
+得到三个文件：
+
+	kube-apiserver-scheduler-key.pem kube-apiserver-scheduler.csr     kube-apiserver-scheduler.pem
+
+移动到对应目录：
+
+	mv kube-apiserver-scheduler* cert/kube-apiserver/client/kube-scheduler/192.168.33.11
+
+###### kube-apiserver client证书 for kube-controller-manager
+
+创建kube-controller-manager的kube-apiserver client的证书配置，`cert/kube-apiserver/client/kube-controller/192.168.33.11/apiserver-csr.json`：
+
+	{
+	  "CN": "system:kube-controller-manager",
+	  "hosts": [
+	    "127.0.0.1",
+	    "192.168.33.11"
+	  ],
+	  "key": {
+	    "algo": "rsa",
+	    "size": 2048
+	  },
+	  "names": [{
+	    "C": "CN",
+	    "ST": "BeiJing",
+	    "L": "BeiJing",
+	    "O": "lijiaocn.com",
+	    "OU": "kube-scheduler"
+	  }]
+	}
+
+然后执行下面的命令，生成证书：
+
+	./bin/cfssl gencert -ca=./cert/ca/ca.pem  -ca-key=./cert/ca/ca-key.pem  --config=./cert/ca/ca-config.json -profile=kubernetes ./cert/kube-apiserver/client/kube-controller/192.168.33.11/apiserver-csr.json  | ./bin/cfssljson -bare kube-apiserver-controller
+
+得到三个文件：
+
+	kube-apiserver-controller-key.pem kube-apiserver-controller.csr     kube-apiserver-controller.pem
+
+移动到对应目录：
+
+	mv kube-apiserver-controller* cert/kube-apiserver/client/kube-controller/192.168.33.11
+
+##### kube-controller-manager签署service account的证书
+
+kube-controller-manager会为kubernetes中的每个namespace创建一个ServiceAccount，这个service account需要被用证书签署。
+
+这里生成用来签署service account的证书，本质上是一个CA证书，创建配置文件`cert/ServiceAccount/service-account-csr.json`：
+
+	{
+	  "CN": "CN",
+	  "key": {
+	    "algo": "rsa",
+	    "size": 2048
+	  },
+	  "names":[{
+	    "C": "CN",
+	    "ST": "BeiJing",
+	    "L": "BeiJing",
+	    "O": "lijiaocn.com",
+	    "OU": "ServiceAccount"
+	  }]
+	}
+
+然后执行下面的命令，生成CA：
+
+	./bin/cfssl gencert -initca cert/ServiceAccount/service-account-csr.json | ./bin/cfssljson -bare service-account 
+
+得到下面的文件：
+
+	service-account-key.pem service-account.csr     service-account.pem
+
+把这三个文件移动到对应目录中：
+
+	mv service-account* cert/ServiceAccount
+
+## 组件部署
+
+需要安装的软件有：
+
+	etcd
+	A container runner, one of:
+	    docker
+	    rkt
+	Kubernetes
+	    kubelet
+	    kube-proxy
+	    kube-apiserver
+	    kube-controller-manager
+	    kube-scheduler
+
+Docker和etcd，是独立于Kubernetes的项目，按照它们各自提供的方式安装即可。
+
+其中etcd最好使用[cluster/images/etcd/Makefile](https://github.com/kubernetes/kubernetes/blob/v1.12.1/cluster/images/etcd/Makefile)中使用的版本，这是kubernetes测试时使用的etcd版本。
+
+	LATEST_ETCD_VERSION?=3.2.24
+
+kube-apiserver、kube-controller-manager、kube-scheduler，文档中建议[用容器的方式启动](https://kubernetes.io/docs/setup/scratch/#selecting-images)，需要提前准备好镜像。
+它们的镜像，可以从k8s.gcr.io中下载，也可以从kubernetes的release文件中获得。
+
+kubelet、kube-proxy可以直接下载二进制文件部署，也可以通过Google提供的yum源安装。
+
+### 部署etcd
+
+etcd是独立于kubernetes的，但它对kubernetes极为重要，kubernetes依赖etcd，将数据都保存在etcd中。
+
+鉴于etcd的重要性，将etcd集群单独部署、单独维护，是非常应当的。
+
+etcd版本选用[cluster/images/etcd/Makefile (v1.12.1)](https://github.com/kubernetes/kubernetes/blob/v1.12.1/cluster/images/etcd/Makefile)中使用的版本：
+
+	LATEST_ETCD_VERSION?=3.2.24
+
+这里直接从[etcd的github主页](https://github.com/etcd-io/etcd/releases)下载：
+
+	cd node1/
+	wget https://github.com/etcd-io/etcd/releases/download/v3.2.24/etcd-v3.2.24-linux-amd64.tar.gz
+	tar -xvf etcd-v3.2.24-linux-amd64.tar.gz
+
+>这里暂时使用yum源中的etcd，自己定义etcd service的方法，以后有时间再补充。2018-10-21 16:08:54
+
+#### yum安装etcd
+
+进入虚拟机中部署：
+
+	vagrant up
+	vagrant ssh
+	yum install -y etcd
+
+然后编辑`/etc/etcd/etcd.conf`，指定我们前面创建的etcd证书：
+
+	ETCD_LISTEN_CLIENT_URLS="https://192.168.33.11:2379"
+	...
+	ETCD_ADVERTISE_CLIENT_URLS="https://192.168.33.11:2379"
+	...
+	[Security]
+	ETCD_CERT_FILE="/vagrant/cfssl/cert/etcd/server/192.168.33.11/etcd-server.pem"
+	ETCD_KEY_FILE="/vagrant/cfssl/cert/etcd/server/192.168.33.11/etcd-server-key.pem"
+	ETCD_CLIENT_CERT_AUTH="true"
+	ETCD_TRUSTED_CA_FILE="/vagrant/cfssl/cert/ca/ca.pem"
+	ETCD_AUTO_TLS="false"
+	ETCD_PEER_CERT_FILE="/vagrant/cfssl/cert/etcd/peer/192.168.33.11/etcd-peer.pem"
+	ETCD_PEER_KEY_FILE="/vagrant/cfssl/cert/etcd/peer/192.168.33.11/etcd-peer-key.pem"
+	ETCD_PEER_CLIENT_CERT_AUTH="false"
+	ETCD_PEER_TRUSTED_CA_FILE="/vagrant/cfssl/cert/ca/ca.pem"
+	ETCD_PEER_AUTO_TLS="false"
+
+>注意：如果URLS没有使用https的样式，那么即使指定了证书，也不会启用。
+
+还需要把etcd证书的所属用户修改为etcd，否则etcd不能启动：
+
+	chown -R  etcd:etcd /vagrant/cfssl/cert/etcd/
+
+启动：
+
+	systemctl start etcd
+
+用下面的命令验证一下：
+
+	etcdctl  --endpoints=https://192.168.33.11:2379 --ca-file=/vagrant/cfssl/cert/ca/ca.pem  --cert-file=/vagrant/cfssl/cert/etcd/client/192.168.33.11/etcd-client.pem --key-file=/vagrant/cfssl/cert/etcd/client/192.168.33.11/etcd-client-key.pem member list
+	8e9e05c52164694d: name=default peerURLs=http://localhost:2380 clientURLs=https://192.168.33.11:2379 isLeader=true
+
+### 部署master
+
+#### 下载文件和镜像
+
+在[kubernetes release list](https://github.com/kubernetes/kubernetes/releases/)中可以找到二进制文件的下载地址，例如v1.12.1的下载地址是：
+
+	https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.12.md#downloads-for-v1121
+
+在node1目录中下载服务端和客户端的二进制文件：
+
+	cd node1
+	wget https://dl.k8s.io/v1.12.1/kubernetes-server-linux-amd64.tar.gz
+	tar -xvf kubernetes-server-linux-amd64.tar.gz
+	wget https://dl.k8s.io/v1.12.1/kubernetes-node-linux-amd64.tar.gz
+	tar -xvf kubernetes-node-linux-amd64
+
+解压以后，在服务端文件中可以找到几个.tar文件，它们就是同名组件的docker镜像：
+
+	$ find . -name "*.tar"
+	./kubernetes/server/bin/kube-proxy.tar
+	./kubernetes/server/bin/kube-scheduler.tar
+	./kubernetes/server/bin/kube-controller-manager.tar
+	./kubernetes/server/bin/cloud-controller-manager.tar
+	./kubernetes/server/bin/kube-apiserver.tar
+
+这些文件保留备用。
+
+#### 安装docker和kubelet
+
+在master节点上，docker和kubelet其实不是必须的，但是现在比较常见的一个做法是使用kubelet启动kube-apiserver等组件。
+
+这样就需要安装docker和kubelet了，在[Kubernetes1.12从零开始（三）：用minikube与kubeadm部署](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/03/k8s-class-deploy.html#%E5%AE%89%E8%A3%85dockerkubeletkubeadm)中介绍过，这里不赘述了。
+
+最后安装的时候，可以去掉kubeadm：
+
+	yum install -y kubelet kubectl --disableexcludes=kubernetes
+	systemctl enable kubelet && systemctl start kubelet
+
+Google提供的yum源中默认就是最新的kubernetes。如果你不想用，可以将相应的文件替换掉。
+
+#### 启动kube-apiserver
+
+首先导入前面下载的kube-apiserver的docker镜像：
+
+	docker load -i /vagrant/kubernetes/server/bin/kube-apiserver.tar
+
+用images命令查看导入的镜像名称：
+
+	$ docker images |grep kube-apiserver
+	gcr.io/google_containers/kube-apiserver                                        v1.12.1             dcb029b5e3ad        2 weeks ago         194MB
+	k8s.gcr.io/kube-apiserver                                                      v1.12.1             dcb029b5e3ad        2 weeks ago         194MB
+
+然后创建文件`/etc/kubernetes/manifests/kube-apiserver.yaml`
+
+#### 启动kube-controller-manager
+
+#### 启动kube-scheduler
+
+### 部署node
+
 
 ## 问题排查
 
@@ -481,6 +827,7 @@ cfssl使用的配置文件的格式可以下面的命令查看：：
 15. [Kubernetes TLS bootstrapping][15]
 16. [Github cfssl][16]
 17. [Introducing CFSSL - CloudFlare's PKI toolkit][17]
+18. [用CloudFlare的PKI工具CFSSL生成Certificate Bundle][18]
 
 [1]: https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/03/k8s-class-deploy.html#%E6%9C%80%E5%BF%AB%E6%8D%B7%E7%9A%84%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E6%96%B9%E5%BC%8Fminikube "最快捷的本地部署方式：Minikube"
 [2]: https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/03/k8s-class-deploy.html#%E4%BD%BF%E7%94%A8kubeadm%E9%83%A8%E7%BD%B2%E5%A4%9A%E8%8A%82%E7%82%B9kubernetes "使用kubeadm部署多节点Kubernetes"
@@ -499,3 +846,4 @@ cfssl使用的配置文件的格式可以下面的命令查看：：
 [15]: https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet-tls-bootstrapping/ "Kubernetes TLS bootstrapping"
 [16]: https://github.com/cloudflare/cfssl "Github cfssl"
 [17]: https://blog.cloudflare.com/introducing-cfssl/ "Introducing CFSSL - CloudFlare's PKI toolkit"
+[18]: https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2018/10/13/cfssl-cloudflare-pki-toolkit.html "用CloudFlare的PKI工具CFSSL生成Certificate Bundle"
