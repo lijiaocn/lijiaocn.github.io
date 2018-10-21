@@ -15,18 +15,14 @@ description: Kubernetes中的一些基本概念，有必要先讲一下，不然
 
 ## 说明
 
-[上一节][1]中，成功用minikube启动了一个本地kubernetes（可惜是1.10的，1.12的没成功），用kubeadm部署1.12也[尴尬的失败了](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/03/k8s-class-deploy.html#%E9%97%AE%E9%A2%981-kubeadmi-init%E5%A4%B1%E8%B4%A5kube-apiserver%E4%B8%8D%E5%81%9C%E9%87%8D%E5%90%AF)。
-
-没能顺利部署1.12的一个重要原因是：1.12这个版本太新了。v1.12.0是9月27日release的，才刚刚过去没几天。v1.12.1刚在19个小时前release（2018-10-06 22:18:44）。这么新的版本，很多配套工具，可能都还没有磨合好。
+本系列所有文章可以在[系列教程汇总](https://www.lijiaocn.com/tags/class.html)中找到，[Kubernetes1.12从零开始（一）：遇到的问题与解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/10/01/k8s-class-problem-and-soluation.html)记录了探索过程遇到的问题。
 
 如果是生产环境，选择kubernetes版本的时候，一定要小心斟酌，别选太新的版本，选择上一个，或者上上个稳定版本。
 我这里是在做教程，就“择新不择旧”了，哪个版本新用哪个，让时效性尽量好一点。
 
-前面用minikube和kubeadm部署1.12版本都没有成功，本来应该先讲一下怎样全手动的把kubernetes1.12部署起来：自己定制每一个组件、敲定每一个参数。但是，这个过程会有一些繁琐，甚至有一些波折。
+先介绍一下kubernetes中的一些基本概念，不然后面容易感觉云里雾里。
 
-因此，先介绍一下kubernetes中的一些基本概念，或许更好一些，不然后面容易感觉云里雾里。这一节，你只要知道这些概念就可以了，以后遇到感觉面熟就行。
-
-我的习惯还是借花献佛，请多参考官方文档：[kubernetes Concepts][2]。
+借花献佛，多参考官方文档：[kubernetes Concepts][2]。
 
 ## Kubernetes的组成
 

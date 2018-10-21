@@ -19,15 +19,16 @@ description: "经过前面的尝试（一次minikube部署，一次kubeadm部署
 
 可以先参考：[Kubernetes1.12从零开始（三）：用minikube部署开发测试环境](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/03/k8s-class-deploy.html) 和 [Kubernetes1.12从零开始（三）：用kubeadm部署多节点集群](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/04/k8s-class-a-deploy-kubeadm.html)
 
-在准备[kubelet的manifests文件](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/07/k8s-class-deploy-from-scratch.html#%E5%90%AF%E5%8A%A8kube-apiserver)时，
-打算直接使用kubeadm生成的manifest文件，发现里面有一些不曾了解过的参数，需要等核实之后，继续完成。证书的命名也要调整一下，尽量与kubeadm的证书命名方式保持一致，避免造成困扰。
+本系列所有文章可以在[系列教程汇总](https://www.lijiaocn.com/tags/class.html)中找到，[Kubernetes1.12从零开始（一）：遇到的问题与解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/10/01/k8s-class-problem-and-soluation.html)记录了探索过程遇到的问题。
+
+准备[kubelet的manifests文件](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/07/k8s-class-deploy-from-scratch.html#%E5%90%AF%E5%8A%A8kube-apiserver)时，打算直接使用kubeadm生成的manifest文件，发现里面有一些不曾了解过的参数，需要等核实之后，继续完成。证书的命名也要调整一下，尽量与kubeadm的证书命名方式保持一致，避免造成困扰。
 
 另外，现在心里有点犯嘀咕：还有必要用这种既缓慢、又折腾，而且容易出错的全手动方式部署吗？直接用官方维护更新的kubeadm不是更好？
 
 即使不用kubeadm，很早之前已经做过一套[ansible脚本](https://github.com/introclass/kubefromscratch-ansible)，不仅部署过程自动化，编译过程也自动化了。
 现在似乎更应该把精力放在已经写好的ansible脚本上，然后逐渐以kubeadm为主，否则社区跑的太快，追起来会很被动。2018-10-21 19:31:18
 
-好消息是，刚试验了一下kubeadm，发现之前导致卡壳的问题没有了：[使用kubeadm部署多节点Kubernetes](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/03/k8s-class-deploy.html#%E4%BD%BF%E7%94%A8kubeadm%E9%83%A8%E7%BD%B2%E5%A4%9A%E8%8A%82%E7%82%B9kubernetes)
+好消息是，刚试验了一下kubeadm，发现之前导致卡壳的问题没有了，可以顺利部署了：[使用kubeadm部署多节点Kubernetes](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/03/k8s-class-deploy.html)
 
 ## 说明
 

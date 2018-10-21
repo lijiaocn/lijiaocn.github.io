@@ -16,7 +16,9 @@ description: 这一节部署Kubernetes，用于本地开发测试的minikube、�
 
 ## 说明
 
-这一节用[kubeadm部署][2]一个多节点的kubernetes集群。
+这一节在[Kubernetes1.12从零开始（二）：部署环境准备](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/02/k8s-class-enviromnent.html)中设置的虚拟机上部署Kubernetes，用[kubeadm部署][2]一个多节点的kubernetes集群。
+
+本系列所有文章可以在[系列教程汇总](https://www.lijiaocn.com/tags/class.html)中找到，[Kubernetes1.12从零开始（一）：遇到的问题与解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/10/01/k8s-class-problem-and-soluation.html)记录了探索过程遇到的问题。
 
 ## 使用kubeadm部署多节点Kubernetes
 

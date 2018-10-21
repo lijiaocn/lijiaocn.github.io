@@ -16,13 +16,12 @@ description: 先概要地了解一下kubernetes，这一篇主要讲解一下它
 
 ## 说明
 
-Kubernetes网站的域名是[kubernetes.io][1]，可以用短域名[k8s.io](https://k8s.io)直接访问。
+本系列所有文章可以在[系列教程汇总](https://www.lijiaocn.com/tags/class.html)中找到。
 
+Kubernetes网站的域名是[kubernetes.io][1]，可以用短域名[k8s.io](https://k8s.io)直接访问。
 Kubernetes的[官方文档][2]，应当是学习工作中最常使用的，其它所有的资料都是二手的，包括这篇文章。
 
-能够使用官方文档，是开始掌握Kubernetes的第一步，因为只有这样才能独立解决问题，才能第一时间得知了解到Kubernetes的最新变化。
-
-Kubernetes的官方文档虽然完善了很多，但是对初学者还是不够友好，有必要专门介绍一下。
+能够使用官方文档，是开始掌握Kubernetes的第一步，因为只有这样才能独立解决问题，才能第一时间得知了解到Kubernetes的最新变化。Kubernetes的官方文档虽然完善了很多，但是对初学者还是不够友好，有必要专门介绍一下。
 
 ## Kubernetes的文档介绍
 

@@ -18,6 +18,8 @@ description: 这一节准备一下接下来将要使用的环境
 
 这一节准备一下接下来将要使用的环境。我这里使用的是三个运行CentOS 7的虚拟机，用vagrant管理的virtualbox。使用哪种虚拟化软件没有关系，virtualbox、vmware都可以了，vagrant只是一个方便创建启动虚拟机的工具，也不是必须的。
 
+本系列所有文章可以在[系列教程汇总](https://www.lijiaocn.com/tags/class.html)中找到，[Kubernetes1.12从零开始（一）：遇到的问题与解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/10/01/k8s-class-problem-and-soluation.html)记录了探索过程遇到的问题。
+
 ## Vagrant和VirtualBox
 
 [Vagrant][2]是一个虚拟化管理软件，它本身是一个命令行工具，可以通过它方便的创建、设置虚拟机，可以节对接virtualbox、vmware等虚拟化软件，甚至aws的云端虚拟机。
