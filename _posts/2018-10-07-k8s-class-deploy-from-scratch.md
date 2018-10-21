@@ -25,7 +25,7 @@ description: "经过前面的尝试（一次minikube部署，一次kubeadm部署
 即使不用kubeadm，很早之前已经做过一套[ansible脚本](https://github.com/introclass/kubefromscratch-ansible)，不仅部署过程自动化，编译过程也自动化了。
 现在似乎更应该把精力放在已经写好的ansible脚本上，然后逐渐以kubeadm为主，否则社区跑的太快，追起来会很被动。2018-10-21 19:31:18
 
-好消息是，刚试验了一下kubeadm，发现之前导致卡壳的问题没有了：[使用kubeadm部署多节点Kubernetes](https://wwww.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/03/k8s-class-deploy.html#%E4%BD%BF%E7%94%A8kubeadm%E9%83%A8%E7%BD%B2%E5%A4%9A%E8%8A%82%E7%82%B9kubernetes)
+好消息是，刚试验了一下kubeadm，发现之前导致卡壳的问题没有了：[使用kubeadm部署多节点Kubernetes](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/03/k8s-class-deploy.html#%E4%BD%BF%E7%94%A8kubeadm%E9%83%A8%E7%BD%B2%E5%A4%9A%E8%8A%82%E7%82%B9kubernetes)
 
 ## 说明
 
