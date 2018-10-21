@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  "Kubernetes1.12从零开始（一）：官方文档汇总"
+title:  "Kubernetes1.12从零开始（零）：官方文档汇总"
 author: 李佶澳
 createdate: 2018/09/03 20:43:00
 changedate: 2018/09/04 17:24:51
