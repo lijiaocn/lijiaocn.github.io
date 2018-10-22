@@ -16,7 +16,7 @@ description: Kong的plugins中列出了Kong的社区版支持的一些插件，�
 
 ## 说明
 
-这是[API网关Kong的系列教程](https://www.lijiaocn.com/tags/class.html)中的一篇。
+这是[API网关Kong的系列教程](https://www.lijiaocn.com/tags/class.html)中的一篇，使用过程中遇到的问题和解决方法记录在[API网关Kong的使用过程中遇到的问题以及解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/30/kong-usage-problem-and-solution.html)。
 
 [Kong的plugins][1]中列出了Kong的社区版支持的一些插件，这里尝试使用一下其中的认证插件：
 
@@ -30,6 +30,10 @@ description: Kong的plugins中列出了Kong的社区版支持的一些插件，�
 完整插件名单和使用方法见：[Kong Plugins Website][2]
 
 [API网关Kong的功能梳理和插件使用（一)：基本使用过程][3]已经介绍了基本使用方法，这里不再赘述。
+
+Kong-Ingress-Controller的版本是0.2.0，Kong的版本是0.14.1，是用下面的方式部署的：
+
+	./kubectl.sh create -f https://raw.githubusercontent.com/introclass/kubernetes-yamls/master/all-in-one/kong-all-in-one.yaml
 
 ## 部署一个echo应用
 
