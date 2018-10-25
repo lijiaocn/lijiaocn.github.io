@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2018/07/19 14:48:00
 changedate: 2018/07/29 13:07:00
 categories: 项目
-tags: HyperLedger
+tags: HyperLedger 视频教程
 keywords: HyperLedger升级,超级账本,Fabric
 description: HyperLedger Fabric的升级还是比较方便的，直接替换程序文件和配置文件。
 
