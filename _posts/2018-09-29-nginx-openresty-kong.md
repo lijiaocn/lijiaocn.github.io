@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Nginx、OpenResty和Kong的基本概念与使用方法"
+title: "API网关Kong（一）：Nginx、OpenResty和Kong的基本概念与使用方法"
 author: 李佶澳
 createdate: "2018-09-29 15:41:50 +0800"
 changedate: "2018-09-20 15:41:50 +0800"
@@ -161,6 +161,7 @@ Nginx是用C语言开发软件，采用模块化设计，可以通过开发模�
 
 ## OpenResty
 [OpenResty][15]是一个集成了Nginx、LuaJIT和其它很多moudels的平台，用来托管完整的web应用——包含业务逻辑，而不单纯是静态文件服务器: 
+
 	OpenResty® aims to run your server-side web app completely in the Nginx server, 
 	leveraging Nginx's event model to do non-blocking I/O not only with the HTTP 
 	clients, but also with remote backends like MySQL, PostgreSQL, Memcached, and Redis.
@@ -168,6 +169,8 @@ Nginx是用C语言开发软件，采用模块化设计，可以通过开发模�
 [OpenResty Components][16]中列出了OpenResty集成的组件，数量不少，这里就不列出来了。
 
 先通过[OpenResty Getting Started][17]感受一下OpenResty是咋回事。
+
+OpenResty集成了[LuaJit](http://luajit.org/luajit.html)，一个Lua代码的实时编译器，支持使用Lua代码。
 
 ### OpenResty安装
 
@@ -188,9 +191,11 @@ Centos安装方式：
 	make install     //默认安装在/usr/local/bin/openresty
 	export PATH=/usr/local/openresty/bin:$PATH
 
->为了后面顺利的使用kong，configure时要指定kong依赖的模块。
+>为了后面顺利的使用kong，执行./configure时要指定kong依赖的模块。
 
-都包含以下文件：
+### OpenResty使用
+
+OpenResty的安装目录包含以下文件：
 
 	$ tree -L 2 /usr/local/openresty/
 	/usr/local/openresty/
@@ -210,7 +215,7 @@ Centos安装方式：
 	|   `-- share
 	...
 
-注意openresty命令就是nginx命令，OpenResty可以理解为一个集成了很多模块的定制版nginx：
+注意`openresty命令就是nginx命令`，OpenResty可以理解为一个集成了很多模块的定制版nginx：
 
 	$ openresty -h
 	nginx version: openresty/1.13.6.2
@@ -228,8 +233,31 @@ Centos安装方式：
 	  -c filename   : set configuration file (default: conf/nginx.conf)
 	  -g directives : set global directives out of configuration file
 
+nginx集成了很多模块之后，可以执行lua代码。
 
-可以在openresty的配置文件中写入lua代码：
+#### 用resty直接执行lua代码
+
+OpenResty的安装目录中有一个`resty`文件，它是一个perl脚本，可以直接给它传入lua代码：
+
+	$ resty -e 'print("hello, world!")'
+	hello, world!
+
+查看resty文件`/usr/local/openresty/bin/resty`，会发现最后的执行者还是nginx命令：
+
+	my $nginx_path = '/usr/local/openresty/nginx/sbin/nginx';
+	...
+	my @cmd = ($nginx_path, '-p', "$prefix_dir/", '-c', "conf/nginx.conf");
+	...
+
+OpenResty本质上就是一个定制的nginx，通过支持在配置文件中使用lua代码，成为一个完善的应用开发平台。
+
+API网关Kong是一个典型的OpenResty应用，它的[数据平面实现](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/22/kong-data-plane-implement.html)中，直接生成了一个使用了kong模块的nginx.conf文件，然后直接给nginx指定这个配置启动。
+
+这时候的nginx有点类似于可以加载执行lua代码的解释器。
+
+#### 在配置文件中写入lua代码
+
+OpenResty的配置文件中也可以写入lua代码：
 
 	$ cat nginx.conf
 	worker_processes  1;
@@ -260,11 +288,11 @@ Centos安装方式：
 
 ## Kong
 
-[Kong][3]是一个OpenResty应用，用来管理api。
+[Kong][3]是一个基于OpenResty的应用，是一个API网关。
 
 ### Kong编译安装
 
-Kong[编译安装](https://docs.konghq.com/install/source/?_ga=2.8480690.66649192.1538042077-515173955.1536914658)时需要先安装有OpenResty。
+Kong[编译安装](https://docs.konghq.com/install/source/?_ga=2.8480690.66649192.1538042077-515173955.1536914658)时需要先安装OpenResty。
 
 还需要lua包管理工具[luarocks](https://luarocks.org/):
 
@@ -283,7 +311,7 @@ Kong[编译安装](https://docs.konghq.com/install/source/?_ga=2.8480690.6664919
 	$ ls bin/
 	busted  kong
 
-查看bin/kong的内容，可以发现这是一个用resty执行的脚本文件：
+查看bin/kong的内容，可以发现这是一个用`resty`执行的脚本文件：
 
 	$ cat bin/kong
 	#!/usr/bin/env resty

@@ -19,6 +19,28 @@ Kong的介绍和使用方法参考：[Nginx、OpenResty和Kong的基本概念与
 
 这里记录使用Kong时遇到的问题，以及找到的解决方法。
 
+## Mac编译kong的代码时："Unknown number type, check LUA_NUMBER_* in luaconf.h"
+
+在Mac上编译Kong的代码时报错：
+
+	Do not use 'module' as a build type. Use 'builtin' instead.
+	env MACOSX_DEPLOYMENT_TARGET=10.8 gcc -O2 -fPIC -I/usr/local/opt/lua/include/lua5.3 -c bit.c -o bit.o
+	bit.c:79:2: error: "Unknown number type, check LUA_NUMBER_* in luaconf.h"
+	#error "Unknown number type, check LUA_NUMBER_* in luaconf.h"
+
+Wireshark的邮件组里[有同样的问题](https://www.wireshark.org/lists/wireshark-dev/201501/msg00211.html)，说是:
+
+	macosx-setup.sh installs Lua 5.3 by default, and lua_bitop.c hasn't yet been ported to 5.3 yet.
+
+用brew安装5.1版本的lua：
+
+	brew install lua@5.1
+
+然后修改kong的makefile，添加了`--lua-dir`，指定使用lua 5.1：
+
+	install:
+		@luarocks make OPENSSL_DIR=$(OPENSSL_DIR) CRYPTO_DIR=$(OPENSSL_DIR)   --lua-dir=/usr/local/opt/lua@5.1
+
 ## 在ingress中设置了key-auth plugin，kong-ingress-controller更新kong中的plugin失败
 
 Kong-Ingress-Controller的版本是0.2.0，Kong的版本是0.14.1。

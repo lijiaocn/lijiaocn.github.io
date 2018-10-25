@@ -54,6 +54,10 @@ description: 蓝绿部署、A/B测试、金丝雀发布，以及灰度发布、�
 蓝绿部署只是上线策略中的一种，它不是可以应对所有情况的万能方案。
 蓝绿部署能够简单快捷实施的前提假设是目标系统是非常内聚的，如果目标系统相当复杂，那么如何切换、两套系统的数据是否需要以及如何同步等，都需要仔细考虑。
 
+[BlueGreenDeployment][2]中给出的一张图特别形象：
+
+![蓝绿部署示意图](https://martinfowler.com/bliki/images/blueGreenDeployment/blue_green_deployments.png)
+
 ## 金丝雀发布
 
 金丝雀发布（Canary）也是一种发布策略，和国内常说的`灰度发布`是同一类策略。
@@ -100,5 +104,7 @@ A/B测试时，线上同时运行多个版本的服务，这些服务通常会�
 ## 参考
 
 1. [Blue-green Deployments, A/B Testing, and Canary Releases][1]
+2. [BlueGreenDeployment][2]
 
 [1]: http://blog.christianposta.com/deploy/blue-green-deployments-a-b-testing-and-canary-releases/  "Blue-green Deployments, A/B Testing, and Canary Releases" 
+[2]: https://martinfowler.com/bliki/BlueGreenDeployment.html "BlueGreenDeployment"
