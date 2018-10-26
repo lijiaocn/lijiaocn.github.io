@@ -173,7 +173,6 @@ div.center h2 a {
 div.center h3 {
 	font-size:20px;
 	font-family: 宋体;
-	font-weight:bold;
 	color:black;
 	padding:10px;
 	background: lightblue;
@@ -181,7 +180,6 @@ div.center h3 {
 div.center h4 {
 	font-size:18px;
 	font-family: 宋体;
-	font-weight:bold;
 	color:black;
 	padding:10px;
 	background: lightblue;
@@ -189,7 +187,6 @@ div.center h4 {
 div.center h5 {
 	font-size:16px;
 	font-family: 宋体;
-	font-weight:bold;
 	color:black;
 	padding:10px;
 	background: lightblue;
@@ -197,7 +194,6 @@ div.center h5 {
 div.center h6 {
 	font-size:15px;
 	font-family: 宋体;
-	font-weight:bold;
 	color:black;
 	padding:10px;
 	background: lightblue;
