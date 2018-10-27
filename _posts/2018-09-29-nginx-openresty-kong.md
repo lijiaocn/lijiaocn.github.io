@@ -186,9 +186,9 @@ Centos安装方式：
 	wget https://openresty.org/download/openresty-1.13.6.2.tar.gz
 	tar -xvf openresty-1.13.6.2.tar.gz
 	cd openresty-1.13.6.2/
-	./configure --with-pcre-jit --with-http_ssl_module --with-http_realip_module --with-http_stub_status_module --with-http_v2_module
+	./configure --with-pcre-jit --with-http_ssl_module --with-http_realip_module --with-http_stub_status_module --with-http_v2_module --prefix=/usr/local/bin/openresty
 	make -j2
-	make install     //默认安装在/usr/local/bin/openresty
+	make install     //默认安装在--prefix指定的目录：/usr/local/bin/openresty
 	export PATH=/usr/local/openresty/bin:$PATH
 
 >为了后面顺利的使用kong，执行./configure时要指定kong依赖的模块。
@@ -255,7 +255,7 @@ API网关Kong是一个典型的OpenResty应用，它的[数据平面实现](http
 
 这时候的nginx有点类似于可以加载执行lua代码的解释器。
 
-#### 在配置文件中写入lua代码
+#### 执行配置文件中的lua代码
 
 OpenResty的配置文件中也可以写入lua代码：
 
