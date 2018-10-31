@@ -93,14 +93,14 @@ kubelet中的cadvisor采集的指标与含义，见：[Monitoring cAdvisor with 
 
 	sum(delta(container_cpu_usage_seconds_total{container_name="webshell",pod_name="webshell-rc-8wjhv"}[1m])) / (sum(container_spec_cpu_quota{container_name="webshell",pod_name="webshell-rc-8wjhv"}) /100000 * 60)
 
-上面使用`delta()`计算增量，还可以用`irate()`直接计算比率：
+上面使用`delta()`计算增量，算的是1m中内的时间变化，用`rate()`直接计算比率更好：
 
-	sum(irate(container_cpu_usage_seconds_total{container_name="webshell",pod_name="webshell-rc-8wjhv"}[1m]))/(sum(container_spec_cpu_quota{container_name="webshell",pod_name="webshell-rc-8wjhv"})/100000))
+	sum(rate(container_cpu_usage_seconds_total{container_name="webshell",pod_name="webshell-rc-8wjhv"}[1m])) / (sum(container_spec_cpu_quota{container_name="webshell",pod_name="webshell-rc-8wjhv"}/100000))
 	
 
 如果要同时计算所有容器的CPU使用率：
 
-	(sum(irate(container_cpu_usage_seconds_total{container_name!="",pod_name!=""}[1m])) by(cluster,namespace,container_name,pod_name))/(sum(container_spec_cpu_quota{container_name!="",pod_name!=""}) by(cluster,namespace,container_name,pod_name) /100000)*100
+	(sum(rate(container_cpu_usage_seconds_total{container_name!="",pod_name!=""}[1m])) by(cluster,namespace,container_name,pod_name))/(sum(container_spec_cpu_quota{container_name!="",pod_name!=""}) by(cluster,namespace,container_name,pod_name) /100000)*100
 	
 
 ## 容器内存使用率的计算
