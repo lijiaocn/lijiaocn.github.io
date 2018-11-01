@@ -80,7 +80,85 @@ lua-nginx-moudle实现了多个`XXX_by_lua`样式的[配置指令][3]，指令�
 
 ### 常用指令和变量
 
-`ngx.shared`是一个table，记录在nginx.conf中用指令[lua_shared_dict](https://github.com/openresty/lua-nginx-module#lua_shared_dict)创建的共享内存。
+[lua-nginx-module/nginx-api-for-lua](https://github.com/openresty/lua-nginx-module#nginx-api-for-lua)收录的指令和变量最全。
+
+下面只记录遇到的几个比较重要的指令和变量。
+
+### ngx.shared
+
+[ngx.shared](https://github.com/openresty/lua-nginx-module#ngxshareddict)是一个table，
+记录在nginx.conf中用指令[lua_shared_dict](https://github.com/openresty/lua-nginx-module#lua_shared_dict)创建的共享内存。
+
+譬如在nginx.conf中用`lua_shared_dict`指定创建一个5兆大小的共享内存：
+
+	...
+	lua_shared_dict kong                5m;
+
+然后就可以在lua代码中，用`ngx.shared`读取这块共享内存，有两种语法格式：
+
+	dict = ngx.shared.kong
+	dict = ngx.shared[kong]
+
+共享内存的操作方法有多个，详细用法参考[ngx.shared](https://github.com/openresty/lua-nginx-module#ngxshareddict)：
+
+	get
+	get_stale
+	set
+	safe_set
+	add
+	safe_add
+	replace
+	delete
+	incr
+	lpush
+	rpush
+	lpop
+	rpop
+	llen
+	ttl
+	expire
+	flush_all
+	flush_expired
+	get_keys
+	capacity
+	free_space
+
+这些方法都是原子操作，可以在多个nginx worker中并发调用。
+
+#### ngx.ctx
+
+[ngx.ctx](https://github.com/openresty/lua-nginx-module#ngxctx)，当前请求的lua上下文，类型是`table`，请求结束随之销毁。
+
+ngx.ctx的类型是table，可以在其中记录状态，并且将记录的状态带到后续的阶段，例如：
+
+	 location /test {
+	     rewrite_by_lua_block {
+	         ngx.ctx.foo = 76
+	     }
+	     access_by_lua_block {
+	         ngx.ctx.foo = ngx.ctx.foo + 3
+	     }
+	     content_by_lua_block {
+	         ngx.say(ngx.ctx.foo)
+	     }
+	 }
+
+`rewrite`阶段，在上下文中添加变量`foo`，然后在`access`阶段进行了修改，最后在`content`阶段被用于生成返回的内容。
+
+`GET /test`返回的结果将是79（76+3）。
+
+ngx.ctx可以在以下处理阶段中使用，ngx.timer.*是全局的定时器：
+
+	 init_worker_by_lua*
+	 set_by_lua*
+	 rewrite_by_lua*
+	 access_by_lua*
+	 content_by_lua*
+	 header_filter_by_lua*
+	 body_filter_by_lua*
+	 log_by_lua*
+	 ngx.timer.*
+	 balancer_by_lua*
 
 ## 参考
 

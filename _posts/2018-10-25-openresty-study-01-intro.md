@@ -120,6 +120,14 @@ OpenResty应用可以用openresty定制的nginx（命令openresty）运行，也
 	$ curl 127.0.0.1:6699
 	HelloWorld
 
+OpenResty的退出、重启、重新加载等操作，用`-s`指定对应的信号：
+
+  -s signal     : send signal to a master process: stop, quit, reopen, reload
+
+例如重新加载：
+
+	openresty -s reload
+
 ## OpenResty与Lua的关系
 
 OpenResty和Lua不是一回事。
