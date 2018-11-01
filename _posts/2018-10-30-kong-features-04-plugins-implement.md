@@ -267,6 +267,25 @@ ACLHandler自己没有实现`init_worker()`方法，这个方法是从父类Base
 	  runloop.rewrite.after(ctx)
 	  ...
 
+## XXX.before 和 XXX.after()
+
+有一些处理阶段，调用插件之前，会先执行XXX.before()方法，调用插件之后会执行XXX.after()方法，例如：
+
+	-- kong/init.lua
+	...
+	local runloop = require "kong.runloop.handler"
+	...
+	function Kong.rewrite()
+	  ...
+	  runloop.rewrite.before(ctx)
+	    ...
+	    plugin.handler:rewrite(plugin_conf)
+	    ...
+	  runloop.rewrite.after(ctx)
+	  ...
+
+这些方法在kong/runloop/handler.lua中实现。
+
 ## ACL插件的实现
 
 ACL插件的目录结构如下：
