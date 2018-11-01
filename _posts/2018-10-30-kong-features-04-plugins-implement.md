@@ -7,7 +7,7 @@ changedate: 2018/11/01 14:18:00
 categories: 项目
 tags: 视频教程 kong 
 keywords: kong,apigateway,API网关,plugins,kong插件
-description: kong的数据平面插件(plugin)的调用过程
+description: kong的数据平面插件(plugin)的调用过程，请求处理过程，调用插件进行检查的过程和插件的基本结构
 
 ---
 
