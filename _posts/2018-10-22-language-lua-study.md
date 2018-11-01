@@ -161,6 +161,10 @@ Module是一个返回一个Table变量的.lua文件，使用函数`require`引�
 	local m = require "math"
 	print(m.sin(3.14)) 
 
+模块名称也可以用变量，动态加载模块：
+
+	local cmd = require("kong.cmd." .. cmd_name)
+
 Lua的`标准模块`会被用下面的方式加载默认加载：
 
 	math = require "math"
@@ -216,6 +220,11 @@ require函数没有传入参数，这是为了防止同一个module被使用不�
 
 	local mod = require "mod"
 	mod.init(0, 0)
+
+需要注意的是如果引入的Module是一个目录，加载目录的下的`init.lua`文件，这是由`package.path`的值决定的：
+
+	> print("%s",package.path)
+	%s	./?.lua;/usr/local/share/lua/5.1/?.lua;/usr/local/share/lua/5.1/?/init.lua;/usr/local/lib/lua/5.1/?.lua;/usr/local/lib/lua/5.1/?/init.lua
 
 #### require函数查找Module的路径
 

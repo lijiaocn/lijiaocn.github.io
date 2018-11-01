@@ -19,13 +19,13 @@ description: OpenResty是什么？被扩展的Nginx，扩展到可以直接执�
 
 可以先看一下[Nginx、OpenResty和Kong的基本概念与使用方法][1]，对OpenResty有一个整体感知。
 
-## OpenResty学习资料
+## 学习资料
 
 使用OpenResty，需要对Nginx和Lua比较熟悉。
 
 Nginx是OpenResty的执行引擎，Lua是OpenResty平台上使用的开发语言。
 
-[OpenResty的网站][2]给出了几本[关于Lua、Nginx、OpenResty的电子书](https://openresty.org/en/ebooks.html)：
+[OpenResty的网站](https://openresty.org)给出了几本[关于Lua、Nginx、OpenResty的电子书](https://openresty.org/en/ebooks.html)：
 
 1  OpenResty的主要作者章宜春写的[Programming OpenResty](https://openresty.gitbooks.io/programming-openresty/content/)，好像是刚开始写...
 
@@ -35,7 +35,7 @@ Nginx是OpenResty的执行引擎，Lua是OpenResty平台上使用的开发语言
 
 [编程语言Lua（一）：入门学习资料、基本语法与项目管理工具][3]中收集了更多关于Lua的内容。
 
-## OpenResty开发环境搭建
+## 开发环境搭建
 
 在mac上可以直接安装：
 
@@ -391,6 +391,24 @@ OpenResty自身的接口有两部分，一部分是集成的Nginx模块实现的
 Lua Package用require引用，例如：
 
 	require "resty.core"
+
+需要注意的是[lua-nginx-module][7]的部分接口不在lua代码中，见[nginx api for lua](https://github.com/openresty/lua-nginx-module#nginx-api-for-lua)：
+
+	ngx.arg
+	ngx.var.VARIABLE
+	Core constants
+	HTTP method constants
+	HTTP status constants
+	Nginx log level constants
+	print
+	ngx.ctx
+	ngx.location.capture
+	ngx.location.capture_multi
+	ngx.status
+	ngx.header.HEADER
+	ngx.resp.get_headers
+	ngx.req.is_internal
+	...
 
 ## 参考
 
