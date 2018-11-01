@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2018-09-29 15:41:50 +0800"
 changedate: "2018-09-20 15:41:50 +0800"
 categories: 项目
-tags: nginx 视频教程
+tags: nginx 视频教程 kong
 keywords: kong,openresty,nginx,apigateway,API网关
 description: Nginx、OpenRestry、Kong这三个项目紧密相连，OpenResty是围绕Nginx做的Web平台，Kong是一个OpenResty应用。
 ---

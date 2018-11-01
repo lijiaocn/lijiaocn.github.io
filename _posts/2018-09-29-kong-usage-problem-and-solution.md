@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "API网关Kong的使用过程中遇到的问题以及解决方法"
+title: "API网关Kong（零）：使用过程中遇到的问题以及解决方法"
 author: 李佶澳
 createdate: "2018-10-15 11:50:58 +0800"
 changedate: "2018-10-15 11:50:58 +0800"
