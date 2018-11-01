@@ -34,6 +34,8 @@ OpenResty首先是nginx，然后才是OpenResty，因此Nginx的知识依旧适�
 
 [lua-nginx-module][1]是最重要的模块，它赋予了nginx执行lua脚本的功能。这个模块作用于Nginx的Http子系统，因此只能用来处理HTTP协议族（HTTP 0.9/1.0/1.1/2.0, WebSockets）。对于TCP，引入的模块是[stream-lua-nginx-module][2]。
 
+### 实现的指令与作用位置
+
 lua-nginx-moudle实现了多个`XXX_by_lua`样式的[配置指令][3]，指令中包含的是要被执行的Lua代码。
 
 这些指令分别作用于一次Http请求处理过程的不同阶段，如下图所示：
