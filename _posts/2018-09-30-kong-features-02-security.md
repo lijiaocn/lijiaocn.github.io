@@ -61,7 +61,7 @@ Bot Detection只作用于Route和Service，因此直接创建KongPlugin，并绑
 	plugin: bot-detection
 	config:
 	#  whitelist:    #黑白名单是一组用“,”间隔的正则表达式，匹配的是User-Agent
-	#  blacklist:
+	   blacklist: curl/7.54.0
 
 编辑Ingress：
 
@@ -73,9 +73,31 @@ Bot Detection只作用于Route和Service，因此直接创建KongPlugin，并绑
 	  annotations:
 	    plugins.konghq.com: echo-bot-detection
 
+通过分析bot-detection插件的代码，[bot-detection插件的实现](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/30/kong-features-04-plugins-implement.html#bot-detection%E6%8F%92%E4%BB%B6%E7%9A%84%E5%AE%9E%E7%8E%B0)，它的用途是检查http请求中的user agent，如果user agent在黑名单中，或者被判定为机器人且不在白名单中，则拒绝请求。
+
 [Kong Plugin: Bot Detection Default Rules][3]中给出了机器人检测的规则，这些规则会被用来检查每一个请求。
 
->插件配置成功了，但是还没搞清楚效果应该是怎样的，需要去了解一下这个插件的实现。
+上面的配置中将`curl/7.54.0`加入了黑名单，结果如下：
+
+	$ curl 192.168.33.11:30198 -H "Host: echo.com"
+	<html>
+	<head><title>403 Forbidden</title></head>
+	<body bgcolor="white">
+	<center><h1>403 Forbidden</h1></center>
+	<hr><center>openresty/1.13.6.2</center>
+	</body>
+	</html>
+
+改一些User-Agent就可以了：
+
+	$ curl  192.168.33.11:30198 -H "Host: echo.com" -H "User-Agent: chrome"
+	Hostname: echo-676ff9c67f-444dg
+	Pod Information:
+		-no pod information available-
+
+bot-detection只是很弱的防护，改一下User-Agent就可以绕过。
+
+应该做一个人机检测的插件，通过返回验证码等方式，判断请求者是不是机器人。
 
 ## CORS
 
@@ -151,12 +173,29 @@ Kong的CORS插件就是直接在响应头中添加配置的字段，创建KongPl
 	disabled: false  # optional
 	plugin: ip-restriction
 	config:
-	#  whitelist:     #用“,”间隔的一组IP或者CIDR
-	  blacklist: 192.168.33.1
+	#  whitelist:     #用“,”间隔的一组IP或者CIDR，要么白名单、要么黑名单
+	  blacklist: 192.168.33.12,172.16.129.1
 
-试验未通过，需要分析原因。
+测试：
 
-	curl   192.168.33.11:30198 -H "Host: echo.com"
+	$ curl  192.168.33.11:30198 -H "Host: echo.com"
+	{"message":"Your IP address is not allowed"}
+
+需要特别注意的是这里配置的IP需要是kong-proxy收到的请求报文的源IP。如果kong-proxy部署在kubernetes中，且通过NodePort方式暴露出来，kong-proxy看到的源IP可能是所在的node的虚IP，或者另一台node的IP。
+
+例如kong-proxy容器是在192.168.33.11上运行的，通过192.168.33.11访问，看到源IP是192.168.33.11的虚拟IP
+
+	//需要将上面的ip-restriction插件去掉
+	$ curl  192.168.33.11:30198 -H "Host: echo.com" 2>/dev/null |grep x-real-ip=
+		x-real-ip=172.16.129.1
+
+通过192.168.33.12访问，看到的源IP则是192.168.33.12的node IP：
+
+	//需要将上面的ip-restriction插件去掉
+	$ curl  192.168.33.12:30198 -H "Host: echo.com" 2>/dev/null |grep x-real-ip=
+		x-real-ip=192.168.33.12
+
+注意，我这里使用的网络方案是kube-router，所以是这种情况，如果使用其他的网络方案，情况可能有所不同。
 
 ## 参考
 
