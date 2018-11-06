@@ -93,6 +93,30 @@ Nginx有很多的module，在[Nginx Documents][13]中可以查看每个modules�
 	Default:    gzip off;
 	Context:    http, server, location, if in location   # 可以使用gzip指令的地方
 
+一个最常用的模块是[ngx_http_upstream_module](http://nginx.org/en/docs/http/ngx_http_upstream_module.html)，使用该模块后，可以用upstream指令选定一组server:
+
+	resolver 10.0.0.1;
+	
+	upstream dynamic {
+	    zone upstream_dynamic 64k;
+	
+	    server backend1.example.com      weight=5;
+	    server backend2.example.com:8080 fail_timeout=5s slow_start=30s;
+	    server 192.0.2.1                 max_fails=3;
+	    server backend3.example.com      resolve;
+	    server backend4.example.com      service=http resolve;
+	
+	    server backup1.example.com:8080  backup;
+	    server backup2.example.com:8080  backup;
+	}
+	
+	server {
+	    location / {
+	        proxy_pass http://dynamic;
+	        health_check;
+	    }
+	}
+
 ### Nginx作为TCP/UDP负载均衡器
 
 Nginx原本只能做7层(http)代理，在1.9.0版本中增加了4层(TCP/UDP)代理功能。

@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Web开发平台OpenResty（一)：学习资料、基本组成与使用方法"
+title: "Web开发平台OpenResty（一）：学习资料、基本组成与使用方法"
 author: 李佶澳
 createdate: "2018-10-25 10:12:32 +0800"
 changedate: "2018-10-25 10:12:32 +0800"

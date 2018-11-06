@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  编程语言Lua（二）：基本语法学习
+title:  "编程语言Lua（二）：基本语法学习"
 author: 李佶澳
 createdate: 2018/10/28 13:42:00
 changedate: 2018/10/28 13:42:00
@@ -58,7 +58,26 @@ Lua最新的版本是5.3，但是一个用C和汇编语言编写的更高效的L
 
 ## 基本情况
 
-一段Lua代码，无论是一个lua文件，还是命令行模式下的一行lua代码，成为一个`Chunk`。
+### 保留关键字和有特殊含义的符号
+
+保留了以下关键字：
+
+	and       break     do        else      elseif
+	end       false     for       function  if
+	in        local     nil       not       or
+	repeat    return    then      true      until     while
+
+有特殊意义的符号总共有下面这些：
+
+	+     -     *     /     %     ^     #
+	==    ~=    <=    >=    <     >     =
+	(     )     {     }     [     ]
+	;     :     ,     .     ..    ...
+
+
+### 代码执行
+
+一段Lua代码，无论是一个lua文件，还是命令行模式下的一行lua代码，称呼一个`Chunk`。
 
 Lua5.3支持直接在Lua命令行输入表达式，lua5.1不行：
 

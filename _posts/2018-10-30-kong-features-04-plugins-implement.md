@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  API网关Kong（七）：Kong数据平面Plugin的调用过程
+title: "API网关Kong（七）：Kong数据平面Plugin的调用与实现"
 author: 李佶澳
 createdate: 2018/11/01 14:18:00
 changedate: 2018/11/01 14:18:00
@@ -320,13 +320,32 @@ ACL插件的目录结构如下：
 	function ACLHandler:access(conf)
 	  ...
 
-因此它应当是在nginx.conf中的access阶段被调用：
+即该插件只在access_by_lua_block阶段生效：
 
 	        access_by_lua_block {
 	            Kong.access()
 	        }
 
-显然，插件如果实现了多个方法，可以在多个阶段被调用。
+插件如果实现了多个方法，则会在多个阶段被调用。
+
+## bot-detection插件的实现
+
+[bot-detection](https://docs.konghq.com/hub/kong-inc/bot-detection/)是用来识别机器人插件：
+
+	$ tree kong/plugins/bot-detection
+	kong/plugins/bot-detection
+	├── handler.lua
+	├── rules.lua
+	└── schema.lua
+
+它的handler也只实现了access方法：
+
+	function BotDetectionHandler:access(conf)
+		...
+		local user_agent, err = get_user_agent()
+		...
+
+它的用途是检查http请求中的user agent，如果user agent在黑名单中，或者被判定为机器人，则拒绝请求。
 
 ## 参考
 
