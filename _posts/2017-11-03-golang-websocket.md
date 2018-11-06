@@ -159,6 +159,10 @@ websocket中使用frame传输数据，格式如下：
 
 可以看到，server可以直接读取ws中的数据，以及向ws写入回应数据。
 
+使用这种方式创建的websocket，无法用[wscat](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2010/01/01/tool-box-wscat.html)连接。
+
+[gorilla/websocket](https://github.com/gorilla/websocket/blob/master/examples/echo/server.go)中的例子，可以用wscat连接。
+
 ## websocket的client端
 
 建立websocket连接之后，client直接通过Read和Write方法接收、发送数据。
