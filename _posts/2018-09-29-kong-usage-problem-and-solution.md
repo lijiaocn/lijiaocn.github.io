@@ -19,6 +19,56 @@ Kong的介绍和使用方法参考：[Nginx、OpenResty和Kong的基本概念与
 
 这里记录使用Kong时遇到的问题，以及找到的解决方法。
 
+## ERROR: ./kong:3: module 'luarocks.loader' not found:
+
+通过源代码安装的kong，执行bin/kong命令是报错：
+
+	[root@localhost kong]# ./bin/kong -h
+	ERROR: ./bin/kong:3: module 'luarocks.loader' not found:
+		no field package.preload['luarocks.loader']
+		no file '/usr/local/openresty/site/lualib/luarocks/loader.ljbc'
+		no file '/usr/local/openresty/site/lualib/luarocks/loader/init.ljbc'
+		no file '/usr/local/openresty/lualib/luarocks/loader.ljbc'
+	    ...
+
+提示找不到`luarocks.loader`，查看rpm安装信息，发现安装在/usr/lib64/lua/5.1目录中：
+
+	# rpm -ql luarocks |grep loader
+	/usr/lib64/lua/5.1/luarocks/loader.lua
+
+但是package.path中是包含这个路径的：
+
+	[root@localhost kong]# lua
+	Lua 5.1.4  Copyright (C) 1994-2008 Lua.org, PUC-Rio
+	> print(package.path)
+	./?.lua;/usr/share/lua/5.1/?.lua;/usr/share/lua/5.1/?/init.lua;/usr/lib64/lua/5.1/?.lua;/usr/lib64/lua/5.1/?/init.lua
+	>
+
+在resty中答应package.path，发现没有包含/usr/lib64/路径：
+
+	$ cat a.lua
+	print(package.path)
+	
+	$ resty a.lua
+	/usr/local/openresty/site/lualib/?.ljbc;
+	/usr/local/openresty/site/lualib/?/init.ljbc;
+	/usr/local/openresty/lualib/?.ljbc;
+	/usr/local/openresty/lualib/?/init.ljbc;
+	/usr/local/openresty/site/lualib/?.lua;
+	/usr/local/openresty/site/lualib/?/init.lua;
+	/usr/local/openresty/lualib/?.lua;
+	/usr/local/openresty/lualib/?/init.lua;
+	./?.lua;
+	/usr/local/openresty/luajit/share/luajit-2.1.0-beta3/?.lua;
+	/usr/local/share/lua/5.1/?.lua;
+	/usr/local/share/lua/5.1/?/init.lua;
+	/usr/local/openresty/luajit/share/lua/5.1/?.lua;
+	/usr/local/openresty/luajit/share/lua/5.1/?/init.lua
+
+用resty命令运行，用参数-I指定/usr/lib64/lua/5.1路径即可：
+
+	resty -I /usr/lib64/lua/5.1  bin/kong  version
+
 ## Mac编译kong的代码时："Unknown number type, check LUA_NUMBER_* in luaconf.h"
 
 在Mac上编译Kong的代码时报错：
