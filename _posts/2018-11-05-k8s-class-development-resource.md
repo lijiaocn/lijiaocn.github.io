@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "k8s-class-development-resource"
-title:  "Kubernetes1.12从零开始（八）：kubernetes开发资源"
+title:  "Kubernetes1.12从零开始（七）：kubernetes开发资源"
 author: 李佶澳
 createdate: "2018-11-05 12:48:58 +0800"
 changedate: "2018-11-05 12:48:58 +0800"
