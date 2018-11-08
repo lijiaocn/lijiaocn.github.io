@@ -19,6 +19,52 @@ Kong的介绍和使用方法参考：[Nginx、OpenResty和Kong的基本概念与
 
 这里记录使用Kong时遇到的问题，以及找到的解决方法。
 
+## kong prepare时，提示找不到kong模块： error loading module 'kong' 
+
+	$ resty -I /usr/lib64/lua/5.1  kong/bin/kong prepare -c ./kong.conf
+	nginx: the configuration file /usr/local/kong/nginx.conf syntax is ok
+	nginx: [error] init_by_lua error: error loading module 'kong' from file '/usr/lib64/lua/5.1':
+		cannot read /usr/lib64/lua/5.1: Is a directory
+	stack traceback:
+		[C]: at 0x7fbb4b8275b0
+		[C]: in function 'require'
+		init_by_lua:2: in main chunk
+	nginx: configuration file /usr/local/kong/nginx.conf test failed
+
+在根目录中查找，发现kong位于下面的目录中：
+
+	# find . -name "kong"
+	/usr/share/lua/5.1/kong
+	/usr/lib64/luarocks/rocks/kong
+
+在kong.conf中配置lua包的查找路径：
+
+	lua_package_path =/usr/share/lua/5.1/?.lua;/usr/share/lua/5.1/?/init.lua;./?.lua;./?/init.lua;
+
+增加了两个路径：
+
+	/usr/share/lua/5.1/?.lua;
+	/usr/share/lua/5.1/?/init.lua;
+
+只增加这两个路径，可能还不够，可能还会提示找不到`luarocks.loader`：
+
+	Error: could not prepare Kong prefix at /usr/local/kong: nginx configuration is invalid (exit code 1):
+	nginx: the configuration file /usr/local/kong/nginx.conf syntax is ok
+	nginx: [error] init_by_lua error: /usr/share/lua/5.1/kong/init.lua:27: module 'luarocks.loader' not found:
+
+	# find . -type d -name "luarocks"
+	/usr/lib64/luarocks
+	/usr/lib64/lua/5.1/luarocks
+
+`luarocks.loader`模块位于/usr/lib64/lua/5.1目录中，继续增加了两个路径：
+
+	/usr/lib64/lua/5.1/?.lua;
+	/usr/lib64/lua/5.1/?/init.lua;
+
+最终配置如下：
+
+	lua_package_path =/usr/lib64/lua/5.1/?.lua;/usr/lib64/lua/5.1/?/init.lua;/usr/share/lua/5.1/?.lua;/usr/share/lua/5.1/?/init.lua;./?.lua;./?/init.lua;
+
 ## ERROR: ./kong:3: module 'luarocks.loader' not found:
 
 通过源代码安装的kong，执行bin/kong命令是报错：
