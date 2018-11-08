@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2018-10-05 22:07:51 +0800"
 changedate: "2018-10-05 22:07:51 +0800"
 categories: 项目
-tags: 视频教程 Kubernetes
+tags: 视频教程 kubernetes
 Keywords: Kubernetes,基本概念,pod,docker
 description: Kubernetes中的一些基本概念，有必要先讲一下，不然后面容易感觉云里雾里
 ---
