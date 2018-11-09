@@ -21,10 +21,14 @@
 					</div>
 				</div>
 				<div class="row">
+					{% include top_banner_ad.html %}
+				</div>
+				<div class="row">
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 content">
 						{% if page.author %}
 							<p class="author">作者: {{ page.author }} 创建: {{ page.createdate }}</p>
 						{% endif %}
+
 						{{content}}
 					</div>
 				</div>
