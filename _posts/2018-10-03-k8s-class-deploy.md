@@ -1,9 +1,9 @@
 ---
 layout: default
-title:  "Kubernetes1.12从零开始（三）：用minikube部署开发测试环境"
+title:  "Kubernetes1.12从零开始（二）：用minikube部署开发测试环境"
 author: 李佶澳
 createdate: 2018/09/03 20:43:00
-changedate: 2018/09/04 17:24:51
+changedate: 2018/11/08 22:54:25
 categories: 项目
 tags: 视频教程 kubernetes
 keywords: kubernetes,容器集群,docker

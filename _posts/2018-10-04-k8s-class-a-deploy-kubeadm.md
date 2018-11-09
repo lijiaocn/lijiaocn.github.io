@@ -1,9 +1,9 @@
 ---
 layout: default
-title:  "Kubernetes1.12从零开始（四）：用kubeadm部署多节点集群"
+title:  "Kubernetes1.12从零开始（三）：用kubeadm部署多节点集群"
 author: 李佶澳
 createdate: 2018/09/03 20:43:00
-changedate: 2018/09/04 17:24:51
+changedate: 2018/11/08 22:54:32
 categories: 项目
 tags: 视频教程 kubernetes
 keywords: kubernetes,容器集群,docker
