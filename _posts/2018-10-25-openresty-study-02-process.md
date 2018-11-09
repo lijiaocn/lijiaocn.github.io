@@ -26,6 +26,8 @@ description: 组成OpenResty的各个模块的用途和工作过程，Nginx、Ng
 
 其中章宜春写的两本都没有完成，不成系统，360公司的那本相对好一些。
 
+后面的内容只是记录OpenResty的大概框架，具体的使用参考[Web开发平台OpenResty（四）：项目开发中常用的操作](https://www.lijiaocn.com/%E7%BC%96%E7%A8%8B/2018/11/09/openresty-study-04-development.html)。
+
 ## Nginx部分
 
 OpenResty首先是nginx，然后才是OpenResty，因此Nginx的知识依旧适用。
@@ -82,50 +84,7 @@ lua-nginx-moudle实现了多个`XXX_by_lua`样式的[配置指令][3]，指令�
 
 [lua-nginx-module/nginx-api-for-lua](https://github.com/openresty/lua-nginx-module#nginx-api-for-lua)收录的指令和变量最全。
 
-下面只记录遇到的几个比较重要的指令和变量。
-
-### ngx.shared
-
-[ngx.shared](https://github.com/openresty/lua-nginx-module#ngxshareddict)是一个table，
-记录在nginx.conf中用指令[lua_shared_dict](https://github.com/openresty/lua-nginx-module#lua_shared_dict)创建的共享内存。
-
-譬如在nginx.conf中用`lua_shared_dict`指定创建一个5兆大小的共享内存：
-
-	...
-	lua_shared_dict kong                5m;
-
-然后就可以在lua代码中，用`ngx.shared`读取这块共享内存，有两种语法格式：
-
-	dict = ngx.shared.kong
-	dict = ngx.shared[kong]
-
-共享内存的操作方法有多个，详细用法参考[ngx.shared](https://github.com/openresty/lua-nginx-module#ngxshareddict)：
-
-	get
-	get_stale
-	set
-	safe_set
-	add
-	safe_add
-	replace
-	delete
-	incr
-	lpush
-	rpush
-	lpop
-	rpop
-	llen
-	ttl
-	expire
-	flush_all
-	flush_expired
-	get_keys
-	capacity
-	free_space
-
-这些方法都是原子操作，可以在多个nginx worker中并发调用。
-
-#### ngx.ctx
+### ngx.ctx
 
 [ngx.ctx](https://github.com/openresty/lua-nginx-module#ngxctx)，当前请求的lua上下文，类型是`table`，请求结束随之销毁。
 
@@ -165,7 +124,9 @@ ngx.ctx可以在以下处理阶段中使用，ngx.timer.*是全局的定时器�
 1. [GitHub: openresty/lua-nginx-module][1]
 2. [stream-lua-nginx-module][2]
 3. [lua-nginx-module directives][3]
+4. [Nginx: Alphabetical index of variables][4]
 
 [1]: https://github.com/openresty/lua-nginx-module  "GitHub: openresty/lua-nginx-module"
 [2]: https://github.com/openresty/stream-lua-nginx-module#readme  "stream-lua-nginx-module" 
 [3]: https://github.com/openresty/lua-nginx-module#directives  "lua-nginx-module directives"
+[4]: http://nginx.org/en/docs/varindex.html "Nginx: Alphabetical index of variables"
