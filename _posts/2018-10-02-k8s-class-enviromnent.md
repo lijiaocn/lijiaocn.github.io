@@ -3,7 +3,7 @@ layout: default
 title:  "Kubernetes1.12从零开始（一）：部署环境准备"
 author: 李佶澳
 createdate: 2018/09/03 20:43:00
-changedate: 2018/11/08 23:01:27
+changedate: 2018/11/10 17:06:16
 categories: 项目
 tags: 视频教程 kubernetes
 keywords: kubernetes,容器集群,docker
@@ -51,7 +51,7 @@ description: 这一节准备一下接下来将要使用的环境
 	    box: Download redirected to host: cloud.centos.org
 	    box: Progress: 0% (Rate: 2156/s, Estimated time remaining: 90:05:49)
 
-在国内下载可能会非常慢，我挂着翻`qiang`的vpn通过从香港下载快一些，可以想办法先把网址 “https://vagrantcloud.com/centos/boxes/7/versions/1809.01/providers/virtualbox.box” 中的virtualbox.box文件下载下来。然后用`vagrant box add ./virtualbox.box`加载。
+在国内下载可能会非常慢，我挂着翻`qiang`的vpn从香港下载快一些，可以想办法先把网址 [https://vagrantcloud.com/centos/boxes/7/versions/1809.01/providers/virtualbox.box ](https://vagrantcloud.com/centos/boxes/7/versions/1809.01/providers/virtualbox.box)中的virtualbox.box文件下载下来。然后用`vagrant box add ./virtualbox.box`命令加载。
 
 加载完成之后，用vagrant box list可以看到本地可以用的虚拟机镜像：
 
@@ -97,17 +97,17 @@ node1目录中会生成一个名为Vagrantfile的文件，在其中被注掉的�
 	vagrant up
 	vagrant ssh
 
-要推出虚拟机，直接exit就可以了。
+要退出虚拟机，直接exit就可以了。
 
 用同样方式准备node2和node3，不同的是分别将它们的IP地址配置为`192.168.33.12`、`192.168.33.13`。
 
 ## 如果你用其它的方式创建虚拟机，要创建host模式网卡
 
-使用Vagrant创建虚拟机的时候，在Vagrantfile中设置了IP之后：
+使用Vagrant创建虚拟机的时候，在Vagrantfile中设置了IP：
 
 	config.vm.network "private_network", ip: "192.168.33.11"
 
-会自动在虚拟机中创建一个host模式的网卡，并将它的IP按照配置文件进行设置。
+这样会自动在虚拟机中创建一个host模式的网卡，并将它的IP按照配置文件进行设置。
 
 我们后续部署的Kubernetes集群，组件之间通信都用这个host模式网卡的IP。
 

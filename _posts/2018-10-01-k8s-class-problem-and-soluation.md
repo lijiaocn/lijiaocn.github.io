@@ -3,7 +3,7 @@ layout: default
 title: "Kubernetes1.12从零开始（零）：遇到的问题与解决方法"
 author: 李佶澳
 createdate: 2018/10/21 12:06:00
-changedate: 2018/11/08 22:54:00
+changedate: 2018/11/10 22:30:05
 categories: 问题
 tags: 视频教程 kubernetes 
 keywords: kubernetes,容器集群,docker
@@ -19,6 +19,90 @@ description: 这里记录Kubernetes1.12从零开始的过程中遇到的一些�
 这里记录Kubernetes1.12从零开始的过程中遇到的一些问题与解决方法。
 
 本系列所有文章可以在[系列教程汇总](https://www.lijiaocn.com/tags/class.html)中找到。
+
+## 运行ansible脚本时，无法连接机器
+
+###  fatal: [192.168.33.11]: UNREACHABLE!
+
+	The ssh-ed25519 key fingerprint is 633978fd7f443a4605b43f860c8867d8.
+	Are you sure you want to continue connecting (yes/no)?
+	fatal: [192.168.33.11]: UNREACHABLE! => {"changed": false, "msg": "('Bad authentication type', [u'publickey', u'gssapi-keyex', u'gssapi-with-mic']) (allowed_types=[u'publickey', u'gssapi-keyex', u'gssapi-with-mic'])", "unreachable": true}
+
+	fatal: [192.168.33.12]: UNREACHABLE! => {"changed": false, "msg": "('Bad authentication type', [u'publickey', u'gssapi-keyex', u'gssapi-with-mic']) (allowed_types=[u'publickey', u'gssapi-keyex', u'gssapi-with-mic'])", "unreachable": true}
+
+这是因为目标机器上的sshd不允许密码登陆，更改`/etc/ssh/sshd_config`中配置：
+
+	PasswordAuthentication yes
+
+然后重启sshd服务：
+
+	systemctl restart sshd
+
+## 运行ansible脚本时，无法连接机器： fatal: [192.168.33.11]: UNREACHABLE!
+
+	Are you sure you want to continue connecting (yes/no)?
+	fatal: [192.168.33.11]: UNREACHABLE! => {"changed": false, "msg": "host key mismatch for 192.168.33.11", "unreachable": true}
+
+这是因为本地的`~/.ssh/known_hosts`中有对应的IP记录，但是其中的指纹和现有的机器对应不上。将虚拟机销毁后重建，就会出现这种情况。
+
+将`~/.ssh/known_hosts`中对应IP的记录直接删除即可。
+
+## Mac上编译时，容器被杀死：/usr/local/go/pkg/tool/linux_amd64/link: signal: killed
+
+在编译kubeneters的时候特别注意，如果是在Mac上编译，因为Mac上的Docker实际上是在一个虚拟机中运行的，虚拟机默认内存是2G，在编译kubernetes中的部署组件，例如kubelet的时候，可以会因为内存不足，用来编译的容器被杀死：
+
+	+++ [1110 18:33:03] Building go targets for linux/amd64:
+	    cmd/kubelet
+	/usr/local/go/pkg/tool/linux_amd64/link: signal: killed
+	!!! [1110 18:34:41] Call tree:
+	!!! [1110 18:34:41]  1: /go/src/github.com/kubernetes/kubernetes/hack/lib/golang.sh:600 kube::golang::build_some_binaries(...)
+	!!! [1110 18:34:41]  2: /go/src/github.com/kubernetes/kubernetes/hack/lib/golang.sh:735 kube::golang::build_binaries_for_platform(...)
+	!!! [1110 18:34:42]  3: hack/make-rules/build.sh:27 kube::golang::build_binaries(...)
+	!!! [1110 18:34:42] Call tree:
+	!!! [1110 18:34:42]  1: hack/make-rules/build.sh:27 kube::golang::build_binaries(...)
+	!!! [1110 18:34:42] Call tree:
+	!!! [1110 18:34:42]  1: hack/make-rules/build.sh:27 kube::golang::build_binaries(...)
+	make: *** [all] Error 1
+
+修改Mac上的Docker使用的虚拟机的配置的方法： 点击Docker图标，选择“preference"->“advanced”。
+
+
+## pip命令执行时：SSLError: [SSL: TLSV1_ALERT_PROTOCOL_VERSION] tlsv1 alert protocol version (_ssl.c:590)
+
+	(env) lijiaos-mbp:kubefromscratch-ansible lijiao$ pip search a
+	Exception:
+	Traceback (most recent call last):
+	  File "/Users/lijiao/Work/nodes/kubefromscratch-ansible/env/lib/python2.7/site-packages/pip/basecommand.py", line 209, in main
+	    status = self.run(options, args)
+	  File "/Users/lijiao/Work/nodes/kubefromscratch-ansible/env/lib/python2.7/site-packages/pip/commands/search.py", line 43, in run
+	    pypi_hits = self.search(query, options)
+	  File "/Users/lijiao/Work/nodes/kubefromscratch-ansible/env/lib/python2.7/site-packages/pip/commands/search.py", line 60, in search
+	    hits = pypi.search({'name': query, 'summary': query}, 'or')
+	  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/xmlrpclib.py", line 1240, in __call__
+	    return self.__send(self.__name, args)
+	  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/xmlrpclib.py", line 1599, in __request
+	    verbose=self.__verbose
+	  File "/Users/lijiao/Work/nodes/kubefromscratch-ansible/env/lib/python2.7/site-packages/pip/download.py", line 764, in request
+	    headers=headers, stream=True)
+	  File "/Users/lijiao/Work/nodes/kubefromscratch-ansible/env/lib/python2.7/site-packages/pip/_vendor/requests/sessions.py", line 511, in post
+	    return self.request('POST', url, data=data, json=json, **kwargs)
+	  File "/Users/lijiao/Work/nodes/kubefromscratch-ansible/env/lib/python2.7/site-packages/pip/download.py", line 378, in request
+	    return super(PipSession, self).request(method, url, *args, **kwargs)
+	  File "/Users/lijiao/Work/nodes/kubefromscratch-ansible/env/lib/python2.7/site-packages/pip/_vendor/requests/sessions.py", line 468, in request
+	    resp = self.send(prep, **send_kwargs)
+	  File "/Users/lijiao/Work/nodes/kubefromscratch-ansible/env/lib/python2.7/site-packages/pip/_vendor/requests/sessions.py", line 576, in send
+	    r = adapter.send(request, **kwargs)
+	  File "/Users/lijiao/Work/nodes/kubefromscratch-ansible/env/lib/python2.7/site-packages/pip/_vendor/cachecontrol/adapter.py", line 46, in send
+	    resp = super(CacheControlAdapter, self).send(request, **kw)
+	  File "/Users/lijiao/Work/nodes/kubefromscratch-ansible/env/lib/python2.7/site-packages/pip/_vendor/requests/adapters.py", line 447, in send
+	    raise SSLError(e, request=request)
+	SSLError: [SSL: TLSV1_ALERT_PROTOCOL_VERSION] tlsv1 alert protocol version (_ssl.c:590)
+
+出现这个错误的原因是python.org已经不支持TLSv1.0和TLSv1.1了。
+
+[解决[SSL: TLSV1_ALERT_PROTOCOL_VERSION 问题](https://blog.csdn.net/meifannao789456/article/details/81198253)中给出的方法是重装pip,可以解决问题：
+
+	curl https://bootstrap.pypa.io/get-pip.py | python
 
 ##  kubeadm init失败，kube-apiserver不停重启
 
