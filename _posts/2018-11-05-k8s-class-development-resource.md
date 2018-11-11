@@ -1,20 +1,22 @@
 ---
 layout: default
-title: "k8s-class-development-resource"
-title:  "Kubernetes1.12从零开始（七）：kubernetes开发资源"
+title: "Kubernetes1.12从零开始（七）：kubernetes开发资源"
 author: 李佶澳
-createdate: "2018-11-05 12:48:58 +0800"
-changedate: "2018-11-05 12:48:58 +0800"
+createdate: 2018/11/05 20:43:00
+changedate: 2018/11/11 18:42:19
 categories: 项目
 tags: 视频教程 kubernetes
 keywords: kubernetes,从零部署,deploy,kubernetes视频教程,kubernetes系列教程
 description: Kubernetes提供了一些开发资源，需要与Kubernetes对接的时候，可以考虑使用这些社区维护的资源。
+
 ---
 
 * auto-gen TOC:
 {:toc}
 
 ## 说明
+
+本系列`所有文章`可以在**[系列教程汇总](https://www.lijiaocn.com/tags/class.html)**中找到，`演示和讲解视频`位于**[网易云课堂·IT技术快速入门学院 ](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)**，`课程说明`、`资料`和`QQ交流群`见 **[Kubernetes1.12从零开始（初）：课程介绍与官方文档汇总](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/01/k8s-class-kubernetes-intro.html#说明)**，探索过程遇到的问题记录在：[Kubernetes1.12从零开始（一）：遇到的问题与解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/10/01/k8s-class-problem-and-soluation.html)。
 
 Kubernetes提供了一些开发资源，需要与Kubernetes对接的时候，可以考虑使用这些社区维护的资源。
 

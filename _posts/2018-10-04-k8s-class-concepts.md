@@ -2,8 +2,8 @@
 layout: default
 title:  "Kubernetes1.12从零开始（四）：必须先讲一下基本概念"
 author: 李佶澳
-createdate: "2018-10-05 22:07:51 +0800"
-changedate: "2018-10-05 22:07:51 +0800"
+createdate: 2018/10/05 22:07:51
+changedate: 2018/11/11 18:41:53
 categories: 项目
 tags: 视频教程 kubernetes
 Keywords: Kubernetes,基本概念,pod,docker
@@ -15,7 +15,7 @@ description: Kubernetes中的一些基本概念，有必要先讲一下，不然
 
 ## 说明
 
-本系列所有文章可以在[系列教程汇总](https://www.lijiaocn.com/tags/class.html)中找到，[Kubernetes1.12从零开始（一）：遇到的问题与解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/10/01/k8s-class-problem-and-soluation.html)记录了探索过程遇到的问题。
+本系列`所有文章`可以在**[系列教程汇总](https://www.lijiaocn.com/tags/class.html)**中找到，`演示和讲解视频`位于**[网易云课堂·IT技术快速入门学院 ](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)**，`课程说明`、`资料`和`QQ交流群`见 **[Kubernetes1.12从零开始（初）：课程介绍与官方文档汇总](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/01/k8s-class-kubernetes-intro.html#说明)**，探索过程遇到的问题记录在：[Kubernetes1.12从零开始（一）：遇到的问题与解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/10/01/k8s-class-problem-and-soluation.html)。
 
 如果是生产环境，选择kubernetes版本的时候，一定要小心斟酌，别选太新的版本，选择上一个，或者上上个稳定版本。
 我这里是在做教程，就“择新不择旧”了，哪个版本新用哪个，让时效性尽量好一点。

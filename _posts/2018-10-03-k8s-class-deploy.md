@@ -3,7 +3,7 @@ layout: default
 title:  "Kubernetes1.12从零开始（二）：用minikube部署开发测试环境"
 author: 李佶澳
 createdate: 2018/09/03 20:43:00
-changedate: 2018/11/08 22:54:25
+changedate: 2018/11/11 18:41:41
 categories: 项目
 tags: 视频教程 kubernetes
 keywords: kubernetes,容器集群,docker
@@ -15,6 +15,8 @@ description: 这一节部署Kubernetes，用于本地开发测试的minikube、�
 {:toc}
 
 ## 说明
+
+本系列`所有文章`可以在**[系列教程汇总](https://www.lijiaocn.com/tags/class.html)**中找到，`演示和讲解视频`位于**[网易云课堂·IT技术快速入门学院 ](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)**，`课程说明`、`资料`和`QQ交流群`见 **[Kubernetes1.12从零开始（初）：课程介绍与官方文档汇总](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/01/k8s-class-kubernetes-intro.html#说明)**，探索过程遇到的问题记录在：[Kubernetes1.12从零开始（一）：遇到的问题与解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/10/01/k8s-class-problem-and-soluation.html)。
 
 这一节在[Kubernetes1.12从零开始（二）：部署环境准备](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/02/k8s-class-enviromnent.html)中设置的虚拟机上部署Kubernetes，[minikube][1]用来部署一个本地运行的开发测试环境，
 
