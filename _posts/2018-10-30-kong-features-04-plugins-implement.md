@@ -24,6 +24,8 @@ Kong-Ingress-Controller的版本是0.2.0，Kong的版本是0.14.1，是用下面
 
 	./kubectl.sh create -f https://raw.githubusercontent.com/introclass/kubernetes-yamls/master/all-in-one/kong-all-in-one.yaml
 
+下面主要分析了插件的加载时机和插件被调用的时机，插件的实现在[API网关Kong（十一）：自己动手写一个插件][5]中作了详细分析，并仿照写了一个插件。
+
 ## 插件加载
 
 插件的加载过程在[API网关Kong（六）：Kong数据平面的实现分析: Plugin的加载与初始化][1]中提过了，这里不再赘述。
@@ -63,26 +65,10 @@ Kong-Ingress-Controller的版本是0.2.0，Kong的版本是0.14.1，是用下面
 	    plugin.handler:init_worker()
 	  end
 
-## 插件的目录结构
-
-以acl插件的为例，目录结构如下：
-
-	$ tree kong/plugins/acl
-	kong/plugins/acl
-	├── api.lua
-	├── daos.lua
-	├── groups.lua
-	├── handler.lua
-	├── migrations
-	│   ├── cassandra.lua
-	│   └── postgres.lua
-	└── schema.lua
-
-后面的分析也都以acl插件为例。
 
 ## handler:init_worker()
 
-初始化时调用的`handelr:init_worker()`在kong/plugins/acl/handler.lua中实现：
+以ACL插件为例，初始化时调用的`handelr:init_worker()`在kong/plugins/acl/handler.lua中实现：
 
 	-- kong/plugins/acl/handler.lua
 	local BasePlugin = require "kong.plugins.base_plugin"
@@ -160,7 +146,7 @@ ACLHandler自己没有实现`init_worker()`方法，这个方法是从父类Base
 	...
 	}
 
-根据[Web开发平台OpenResty（二)：运行原理与工作过程: NginxLuaModule][3]，数据平台的收到的请求的处理路径是：
+根据 [Web开发平台OpenResty（二)：运行原理与工作过程: NginxLuaModule][3] ，数据平面收到的请求的处理路径是：
 
 	        ssl_certificate_by_lua_block {
 	            Kong.ssl_certificate()
@@ -286,7 +272,7 @@ ACLHandler自己没有实现`init_worker()`方法，这个方法是从父类Base
 
 这些方法在kong/runloop/handler.lua中实现。
 
-## ACL插件的实现
+## ACL插件的Handler
 
 ACL插件的目录结构如下：
 
@@ -328,6 +314,7 @@ ACL插件的目录结构如下：
 
 插件如果实现了多个方法，则会在多个阶段被调用。
 
+
 ## bot-detection插件的实现
 
 [bot-detection](https://docs.konghq.com/hub/kong-inc/bot-detection/)是用来识别机器人插件：
@@ -353,8 +340,10 @@ ACL插件的目录结构如下：
 2. [API网关Kong（六）：Kong数据平面的实现分析: nginx启动][2]
 3. [Web开发平台OpenResty（二)：运行原理与工作过程: NginxLuaModule][3]
 4. [API网关Kong（三）：功能梳理和插件使用-基本使用过程: 先了解下插件的作用范围和设置方法][4]
+5. [API网关Kong（十一）：自己动手写一个插件][5]
 
 [1]: https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/30/kong-features-03-data-plane-implement.html#plugin%E7%9A%84%E5%8A%A0%E8%BD%BD%E4%B8%8E%E5%88%9D%E5%A7%8B%E5%8C%96  "API网关Kong（六）：Kong数据平面的实现分析: Plugin的加载与初始化" 
 [2]: https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/30/kong-features-03-data-plane-implement.html#nginx%E5%90%AF%E5%8A%A8  "API网关Kong（六）：Kong数据平面的实现分析: nginx启动" 
 [3]: https://www.lijiaocn.com/%E7%BC%96%E7%A8%8B/2018/10/25/openresty-study-02-process.html#nginxluamodule "Web开发平台OpenResty（二)：运行原理与工作过程: NginxLuaModule"
 [4]: https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/09/30/kong-features-00-basic.html#%E5%85%88%E4%BA%86%E8%A7%A3%E4%B8%8B%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%9C%E7%94%A8%E8%8C%83%E5%9B%B4%E5%92%8C%E8%AE%BE%E7%BD%AE%E6%96%B9%E6%B3%95 "API网关Kong（三）：功能梳理和插件使用-基本使用过程: 先了解下插件的作用范围和设置方法"
+[5]: https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/11/09/kong-features-07-write-plugins.html "API网关Kong（十一）：自己动手写一个插件"
