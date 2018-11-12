@@ -366,9 +366,9 @@ worker_events使用的是resty的实现：
 	        local entity_operation_channel = fmt("%s:%s", data.schema.table,
 	                                             data.operation)
 	
-	        local _, err = worker_events.post_local("crud", entity_channel, data)
+	        local _ , err = worker_events.post_local("crud", entity_channel, data)
 	        ...
-	        _, err = worker_events.post_local("crud", entity_operation_channel, data)
+	        _ , err = worker_events.post_local("crud", entity_operation_channel, data)
 	        ...
 
 接受抛出事件的"crud"模式中的handler，执行的操作大多都是清除cache：
@@ -570,7 +570,7 @@ bundled插件都有以下这些：
 	function Kong.init_worker()
 	  kong_global.set_phase(kong, PHASES.init_worker)
 	  ...
-	  for _, plugin in ipairs(loaded_plugins) do
+	  for _ , plugin in ipairs(loaded_plugins) do
 	    kong_global.set_namespaced_log(kong, plugin.name)
 	
 	    plugin.handler:init_worker()
@@ -584,30 +584,43 @@ bundled插件都有以下这些：
 
 	function Kong.init()
 	  ...
+	  -- 创建DB，初始化连接
 	  local db = assert(DB.new(config))
 	  assert(db:init_connector())
 	  ...
+	  -- 通过前面创建的DB，创建DAO
 	  local dao = assert(DAOFactory.new(config, db)) -- instantiate long-lived DAO
 	  ...
+	  -- DAO初始化
 	  local ok, err_t = dao:init()
 	  ...
 	  assert(dao:are_migrations_uptodate())
 	  ...
+	  -- DB和DAO保存到全局变量中
 	  kong.dao = dao
 	  kong.db = db
 	  ...
+
+kong/db中有一个目录也叫dao：`kong/db/dao`。怀疑kong/dao是早先的实现，kong/db/dao是最新的实现。
+
+通过kong/db创建的db对象会被保存到通过kong/dao创建的dao对象的db.new_db成员中，根据名字判断，通过kong/db创建的db对于通过kong/dao创建的dao对象来说，是一个新的db。
 
 ### kong/db
 
 `kong/db`用来初始化数据库连接器(connector)，strategy是数据库类型，并生成核心Schema的DAO：
 
+	-- kong/db/init.lua
 	function DB.new(kong_config, strategy)
 	  ...
 	  local schemas = {}
 	  ...
+	  -- 加载schemas，后面说明
+	  ...
+	  -- 连接数据库
 	  local connector, strategies, err = Strategies.new(kong_config, strategy, schemas, errors)
 	  ...
 	  local daos = {}
+	  -- 连接器保存在这里
 	  local self   = {
 	    daos       = daos,       -- each of those has the connector singleton
 	    strategies = strategies,
@@ -616,18 +629,14 @@ bundled插件都有以下这些：
 	  }
 	  ...
 	  do
-	    for _, schema in pairs(schemas) do
+	    for _ , schema in pairs(schemas) do
 	      local strategy = strategies[schema.name]
 	      ...
 	      daos[schema.name] = DAO.new(self, schema, strategy, errors)
 	    end
 	  end
 
-需要特别注意的是通过schema创建的Dao对象都保存在DB对象的daos中（self.daos），以schema.name命名。
-
-使用数据库的时候，例如`db.plugins`，如果db中没有plugins，就会使用daos中的plugins，而daos中的plugins对应的就是同名的数据库表，相关的方法就是操作数据库的方法。
-
-Schema是数据库视图，比实体表（Entity）更高一层，通过CORE_ENTITIES中的Entity创建：
+schemas中记录的是entity，创建DB的时候加载的entity记录在变量CORE_ENTITIES中：
 
 	-- kong/db/init.lua
 	function DB.new(kong_config, strategy)
@@ -635,7 +644,7 @@ Schema是数据库视图，比实体表（Entity）更高一层，通过CORE_ENT
 	  local schemas = {}
 	  ...
 	   do
-	    for _, entity_name in ipairs(CORE_ENTITIES) do
+	    for _ , entity_name in ipairs(CORE_ENTITIES) do
 	      local entity_schema = require("kong.db.schema.entities." .. entity_name)
 	      ...
 	      schemas[entity_name] = Entity.new(entity_schema)
@@ -652,21 +661,63 @@ CORE_ENTITIES中包括以下Entity，它们都位于`kong/db/schema/entities`目
 	  "snis",
 	}
 
-### Schema的加载：Entity.New()
+`Entity.New()`里面保存的是数据库表的完整定义, 创建entity的过程略复杂，下一节会专门分析。
 
-Schema是用kong/db/schema/entity.lua中的`Entity.new()`创建的，参数entity_schema是从`kong/db/schema/entities`中加载的Entity：
+这里创建的这些entity，被用来创建dao：
 
 	-- kong/db/init.lua
 	function DB.new(kong_config, strategy)
+	  ...
+	  local self   = {
+	    daos       = daos,       -- each of those has the connector singleton
 	    ...
-	    local Entity       = require "kong.db.schema.entity"
-	    ...
+	  }
+	  do
+	    for _ , schema in pairs(schemas) do
+	      local strategy = strategies[schema.name]
+	      ...
+	      daos[schema.name] = DAO.new(self, schema, strategy, errors)
+	    end
+	  end
+	  ...
+
+通过schemas中的entity创建的dao，都保存在DB对象的daos中（self.daos），key就是每个entity的名字，也就是每个表的名字。
+
+使用数据库的时候，比如说要操作数据库中的plugins表，是用`db.plugins`的样式获取表的。
+
+db自定义了元方法，在用db.plugins的方式引用名为plugins的变量时，如果db中没有plugins成员，就使用daos中的plugins。
+
+DAO的对象的创建过程，后面单独分析。
+
+### Entity的加载：Entity.New()
+
+Entity是用kong/db/schema/entity.lua中的`Entity.new()`创建的，参数entity_schema是从`kong/db/schema/entities`中加载的Entity：
+
+	-- kong/db/init.lua
+	function DB.new(kong_config, strategy)
+	   ...
+	   local Entity       = require "kong.db.schema.entity"
+	      ...
+	   do
+	    for _ , entity_name in ipairs(CORE_ENTITIES) do
+	      -- 加载目录下同名模块
 	      local entity_schema = require("kong.db.schema.entities." .. entity_name)
 	      ...
 	      schemas[entity_name] = Entity.new(entity_schema)
-	    ...
+	      end
+	   end
 
-`Entity.new()`中调用kong/db/schema/init.lua中的`Schema.new()`创建schema对象，参数definition是继续传递下来的Entity：
+kong/db/schema/entities中一共有下面几个entity：
+
+	$ tree kong/db/schema/entities
+	kong/db/schema/entities
+	├── certificates.lua
+	├── consumers.lua
+	├── routes.lua
+	├── services.lua
+	└── snis.lua
+
+`Entity.new()`在kong/db/schema/entity.lua中定义，它调用kong/db/schema/init.lua中的`Schema.new()`创建schema对象，参数definition是继续传递下来的Entity：
 
 	-- kong/db/schema/entity.lua
 	...
@@ -674,16 +725,19 @@ Schema是用kong/db/schema/entity.lua中的`Entity.new()`创建的，参数entit
 	...
 	function Entity.new(definition)
 	...
+	  -- definition是kong/db/schema/entities/中的模块返回的entity
 	  local self, err = Schema.new(definition)
 
-`Schema.new()`的加载过程就是把传递下来的Entity复制一份，并将它的field添加到schema中：
+`Schema.new()`的加载过程就是把传递下来的entity复制一份，并且给复制到自身的fileds中的成员，添加了名称索引：
 
 	-- kong/db/schema/init.lua
 	...
 	function Schema.new(definition)
 	  ...
+	  -- definition是kong/db/schema/entities/中的模块返回的entity
 	  local self = copy(definition)
 	  ...
+	  -- 将
 	  for key, field in self:each_field() do
 	    self.fields[key] = field
 	    if field.type == "foreign" then
@@ -695,10 +749,71 @@ Schema是用kong/db/schema/entity.lua中的`Entity.new()`创建的，参数entit
 	    end
 	  end
 	...
+	//
+	function Schema:each_field()
+	  local i = 1
+	  return function()
+	    local item = self.fields[i]
+	    if not self.fields[i] then
+	      return nil
+	    end
+	    local key = next(item)
+	    local field = item[key]
+	    i = i + 1
+	    return key, field
+	  end
+	end
 
-最后得到的schema中存放的就是Entity和Entity的fields，如果field是外键，会在field.schema中保存外键对应的schema。
+以kong/db/schema/entities/router.lua为例，该模块返回的table如下：
 
-正如前面说的，这里的到的schema会被用来和其他参数一起创建dao对象。
+	--kong/db/schema/entities/router.lua
+	...
+	return {
+	  name        = "routes",
+	  primary_key = { "id" },
+	
+	  fields = {
+	    { id             = typedefs.uuid, },
+	    { created_at     = { type = "integer", timestamp = true, auto = true }, },
+	    { updated_at     = { type = "integer", timestamp = true, auto = true }, },
+	    { protocols      = { type     = "set",
+	                         len_min  = 1,
+	                         required = true,
+	                         elements = typedefs.protocol,
+	                         default  = { "http", "https" },
+	                       }, },
+	  ...
+	  },
+	
+	  entity_checks = {
+	    { at_least_one_of = {"methods", "hosts", "paths"} },
+	  },
+	}
+
+可以看到每个fileds对应的就是数据库表中的一列。
+
+因此Entity中存放的就是一个数据库表的元数据，它的fileds成员中存放的是数据库表的列定义，可以以列名为key读取。
+
+如果是外键，在为filed生成名称索引时，还会加载外键对应的entity，保存在这个filed的schema成员中
+
+	-- kong/db/schema/init.lua
+	...
+	function Schema.new(definition)
+	  ...
+	  -- Also give access to fields by name
+	  for key, field in self:each_field() do
+	    self.fields[key] = field
+	    //如果是外键，加载外键对应的entity，保存在这个filed的schema成员中
+	    if field.type == "foreign" then
+	      local err
+	      field.schema, err = get_foreign_schema_for_field(field)
+	      if not field.schema then
+	        return nil, err
+	      end
+	    end
+	  end
+
+Entity中保存了完整的数据表定义。
 
 ### Entity的实现
 
@@ -731,18 +846,12 @@ Entity都在`kong/db/schema/entities`目录中实现，下面是consumers的实�
 
 而`kong/db/dao`中的模块则实现了对数据库的操作。
 
-### DAO
 
-有两个目录都叫dao，一个是`kong/db/dao`，另一个是`kong/dao`。
-
-怀疑kong/dao是早先的实现，kong/db/dao是最新的实现。
-
-通过kong/db创建的db会被保存到kong/dao创建的dao的db.new_db。
-
-#### kong/db/dao
+### kong/db中DAO对象的创建
 
 kong/db在创建db的时候，会使用`kong/db/dao`为每个schema生成一个DAO：
 
+	-- kong/db/init.lua
 	function DB.new(kong_config, strategy)
 	  ...
 	  local schemas = {}
@@ -750,14 +859,15 @@ kong/db在创建db的时候，会使用`kong/db/dao`为每个schema生成一个D
 	  local connector, strategies, err = Strategies.new(kong_config, strategy, schemas, errors)
 	  ...
 	  do
-	    for _, schema in pairs(schemas) do
+	    for _ , schema in pairs(schemas) do
 	      local strategy = strategies[schema.name]
 	      ...
+	      -- 这里传入的schema就是前面创建的包含完整表定义的entity
 	      daos[schema.name] = DAO.new(self, schema, strategy, errors)
 	    end
 	  end
 
-`kong/db/dao`中的`DAO.new()`，将schemas中的Entity中指定的`kong/db/dao`模块中的方法加载。
+`kong/db/dao`中的`DAO.new()`，将中的Entity中指定的`kong/db/dao`模块中的方法加载。
 
 每个Entity的中都有一个"dao"，它记录了Entity绑定的`kong/db/dao`中的模块，例如：
 
@@ -860,7 +970,7 @@ kong/db在创建db的时候，会使用`kong/db/dao`为每个schema生成一个D
 	  db.new_db = new_db
 	  self.db = db
 	  ...
-	  for _, m_name in ipairs(CORE_MODELS) do
+	  for _ , m_name in ipairs(CORE_MODELS) do
 	    schemas[m_name] = require("kong.dao.schemas." .. m_name)
 	  end
 	  ...
@@ -868,7 +978,7 @@ kong/db在创建db的时候，会使用`kong/db/dao`为每个schema生成一个D
 	    local has_schema, plugin_schemas = utils.load_module_if_exists("kong.plugins." .. plugin_name .. ".daos")
 	    if has_schema then
 	      if plugin_schemas.tables then
-	        for _, v in ipairs(plugin_schemas.tables) do
+	        for _ , v in ipairs(plugin_schemas.tables) do
 	          table.insert(self.additional_tables, v)
 	        end
 	      else
@@ -1019,7 +1129,7 @@ kong的admin api使用了[kong/lapis][3]框架。`kong/api/init.lua`中创建了
 	local app = lapis.Application()
 	...
 	-- Load core routes
-	for _, v in ipairs({"kong", "apis", "consumers", "plugins", "cache", "upstreams"}) do
+	for _ , v in ipairs({"kong", "apis", "consumers", "plugins", "cache", "upstreams"}) do
 	  local routes = require("kong.api.routes." .. v)
 	  attach_routes(routes)
 	end
@@ -1027,11 +1137,11 @@ kong的admin api使用了[kong/lapis][3]框架。`kong/api/init.lua`中创建了
 	do
 	  local routes = {}
 	
-	  for _, dao in pairs(singletons.db.daos) do
+	  for _ , dao in pairs(singletons.db.daos) do
 	    routes = Endpoints.new(dao.schema, routes)
 	  end
 	  ...
-	  for _, dao in pairs(singletons.db.daos) do
+	  for _ , dao in pairs(singletons.db.daos) do
 	    local schema = dao.schema
 	    local ok, custom_endpoints = utils.load_module_if_exists("kong.api.routes." .. schema.name)
 	    ...
