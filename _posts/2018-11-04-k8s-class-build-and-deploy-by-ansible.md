@@ -55,11 +55,33 @@ Docker的版本发布计划可以到[moby、docker-ce与docker-ee][5]中了解�
 	brew install git
 	brew cask install docker
 
-### 代码编译
+## 代码编译
 
 使用下面的命令直接编译所有代码：
 
 	ansible-playbook -i inventories/staging/hosts build.yml
+
+执行结果应当如下所示，这一步耗时会非常长，可能有10~20分钟：
+
+	$ ansible-playbook -i inventories/staging/hosts build.yml
+	
+	PLAY [localhost] **********************************************************
+	
+	TASK [Gathering Facts] ****************************************************
+	ok: [localhost]
+	
+	TASK [build : checkout] ***************************************************
+	changed: [localhost]
+	
+	TASK [build : build component] ********************************************
+	changed: [localhost] => (item=build-cni-plugins)
+	changed: [localhost] => (item=build-cni)
+	changed: [localhost] => (item=build-etcd)
+	changed: [localhost] => (item=build-kube-router)
+	[changed: [localhost] => (item=build-kubernetes)
+	
+	PLAY RECAP ****************************************************************
+	localhost                  : ok=3    changed=2    unreachable=0    failed=0
 
 编译过程中kubefromscratch代码，在`roles/build/tasks/main.yml`中指定，可以根据需要修改这个文件中内容：
 
