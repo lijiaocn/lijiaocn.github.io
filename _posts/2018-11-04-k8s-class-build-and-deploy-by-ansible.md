@@ -282,7 +282,7 @@ vagrant创建的虚拟机root密码默认是vagrant。
 	kube-scheduler                   RUNNING   pid 2987, uptime 0:08:33
 	kubelet                          RUNNING   pid 2993, uptime 0:08:33
 
-注意部署过程中，可能会出现下面的错误：
+注意部署过程中，可能会出现下面的错误（这个问题已经修复，supervisord正在执行reload，还没有加载完成，紧接着执行supervisorctl restart XXX导致的，已经将reload过程修改为supervisorctl reread && supervisorctl update all）：
 
 	RUNNING HANDLER [kubelet : restart kubelet] ************************************************************************************************************************************************************************************************************************************
 	fatal: [192.168.33.11]: FAILED! => {"changed": true, "cmd": "supervisorctl restart kubelet", "delta": "0:00:00.182922", "end": "2018-11-10 23:24:05.443215", "msg": "non-zero return code", "rc": 2, "start": "2018-11-10 23:24:05.260293", "stderr": "", "stderr_lines": [], "stdout": "error: <class 'xmlrpclib.Fault'>, <Fault 6: 'SHUTDOWN_STATE'>: file: /usr/lib64/python2.7/xmlrpclib.py line: 794", "stdout_lines": ["error: <class 'xmlrpclib.Fault'>, <Fault 6: 'SHUTDOWN_STATE'>: file: /usr/lib64/python2.7/xmlrpclib.py line: 794"]}
