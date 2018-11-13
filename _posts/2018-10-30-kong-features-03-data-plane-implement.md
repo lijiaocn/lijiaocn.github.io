@@ -452,7 +452,7 @@ cluster_event是被记录在数据库中、被所有的kong实例监控的事件
 	  kong.cluster_events = cluster_events
 	  ...
 
-## Plugin的加载与初始化
+## plugin的加载和初始化
 
 要加载的插件名单是从配置中读取的，默认配置文件是prefix目录中的`.kong_env`文件：
 
@@ -576,9 +576,116 @@ bundled插件都有以下这些：
 	    plugin.handler:init_worker()
 	  end
 
-插件工作过程比较重要，单独开个页面记录一下，这里略过不表。
+插件工作过程单独开个页面记录一下，这里略过不表。
 
-## 数据库的操作封装
+## 数据库表的创建
+
+在`kong/cmd/start.lua`中实现，创建了一个db和一个dao，如果使用参数`migrations`，调用dao的方法创建数据库：
+
+	-- kong/cmd/start.lua
+	local DB = require "kong.db"
+	local DAOFactory = require "kong.dao.factory"
+	...
+	local function execute(args)
+	  local db = assert(DB.new(conf))
+	  assert(db:init_connector())
+	  local dao = assert(DAOFactory.new(conf, db))
+	  local ok, err_t = dao:init()
+	  ...
+	  -- 调用dao的方法创建数据库
+	    if args.run_migrations then
+	      assert(dao:run_migrations())
+	    end
+	  ...
+
+db和dao是kong中操作数据库的基本方式，它们的创建过程中，加载数据库表的信息和操作方法，在另一个入口Kong.init()中也有创建，后面章节分析。
+
+`run_migrations()`在`kong/dao/factory.lua`中实现:
+
+	-- kong/dao/factory.lua
+	function _M:run_migrations(on_migrate, on_success)
+	  ...
+	  local migrations_modules, err = self:migrations_modules()
+	  ...
+	  local ok, err, migrations_ran = migrate(self, "core", migrations_modules, cur_migrations, on_migrate, on_success)
+	  ...
+	  for identifier in pairs(migrations_modules) do
+	    if identifier ~= "core" then
+	      local ok, err, n_ran = migrate(self, identifier, migrations_modules, cur_migrations, on_migrate, on_success)
+	        ...  
+	        migrations_ran = migrations_ran + n_ran
+	  ...
+
+函数migrations_modules()返回的migrations_modules，一部分来自`kong/dao/migrations/`目录，一部分来自于每个插件的`migrations`目录：
+
+	-- kong/dao/factory.lua
+	function _M:migrations_modules()
+	  ...
+	  local migrations = {
+	    core = require("kong.dao.migrations." .. self.db_type)
+	  }
+	  ...
+	  for plugin_name in pairs(self.plugin_names) do
+	    local ok, plugin_mig = utils.load_module_if_exists("kong.plugins." .. plugin_name .. ".migrations." .. self.db_type)
+	    if ok then
+	      migrations[plugin_name] = plugin_mig
+	  ...
+
+migrations_modules中记录了每个数据表的创建方式、销毁方式，以及一些设置操作，`kong/dao/migrations`目录中modules和插件目录中的modules格式相同。
+
+例如kong/dao/migrations/postgres.lua:
+
+	-- kong/dao/migrations/postgres.lua:
+	local utils = require "kong.tools.utils"
+	return {
+	  {
+	    name = "2015-01-12-175310_skeleton",
+	    up = function(db, properties)
+	      return db:queries [[
+	        CREATE TABLE IF NOT EXISTS schema_migrations(
+	          id text PRIMARY KEY,
+	          migrations varchar(100)[]
+	        );
+	      ]]
+	    end,
+	    down = [[
+	      DROP TABLE schema_migrations;
+	    ]]
+	  },
+	  ...
+
+和插件kong/plugins/acl/migrations/postgres.lua中的内容，结构是一致的：
+
+	--kong/plugins/acl/migrations/postgres.lua中
+	return {
+	  {
+	    name = "2015-08-25-841841_init_acl",
+	    up = [[
+	      CREATE TABLE IF NOT EXISTS acls(
+	        id uuid,
+	        consumer_id uuid REFERENCES consumers (id) ON DELETE CASCADE,
+	        "group" text,
+	        created_at timestamp without time zone default (CURRENT_TIMESTAMP(0) at time zone 'utc'),
+	        PRIMARY KEY (id)
+	      );
+	
+	      DO $$
+	      BEGIN
+	        IF (SELECT to_regclass('acls_group')) IS NULL THEN
+	          CREATE INDEX acls_group ON acls("group");
+	        END IF;
+	        IF (SELECT to_regclass('acls_consumer_id')) IS NULL THEN
+	          CREATE INDEX acls_consumer_id ON acls(consumer_id);
+	        END IF;
+	      END$$;
+	    ]],
+	    down = [[
+	      DROP TABLE acls;
+	    ]]
+	  }
+	}
+
+## 数据库操作封装
 
 和数据库相关的模块有两个`kong/db`和`kong/dao`。
 
@@ -689,7 +796,7 @@ db自定义了元方法，在用db.plugins的方式引用名为plugins的变量�
 
 DAO的对象的创建过程，后面单独分析。
 
-### Entity的加载：Entity.New()
+#### Entity的加载：Entity.New()
 
 Entity是用kong/db/schema/entity.lua中的`Entity.new()`创建的，参数entity_schema是从`kong/db/schema/entities`中加载的Entity：
 
@@ -815,7 +922,7 @@ kong/db/schema/entities中一共有下面几个entity：
 
 Entity中保存了完整的数据表定义。
 
-### Entity的实现
+#### Entity的实现
 
 Entity都在`kong/db/schema/entities`目录中实现，下面是consumers的实现，类似于数据表的定义：
 
@@ -847,7 +954,7 @@ Entity都在`kong/db/schema/entities`目录中实现，下面是consumers的实�
 而`kong/db/dao`中的模块则实现了对数据库的操作。
 
 
-### kong/db中DAO对象的创建
+#### kong/db中DAO对象的创建
 
 kong/db在创建db的时候，会使用`kong/db/dao`为每个schema生成一个DAO：
 
@@ -867,14 +974,64 @@ kong/db在创建db的时候，会使用`kong/db/dao`为每个schema生成一个D
 	    end
 	  end
 
-`kong/db/dao`中的`DAO.new()`，将中的Entity中指定的`kong/db/dao`模块中的方法加载。
-
-每个Entity的中都有一个"dao"，它记录了Entity绑定的`kong/db/dao`中的模块，例如：
+传给DAO.new()的schema是kong/db/schema/entities中的模块，每个entity的中都有一个"dao"成员，记录entity绑定的`kong/db/dao`中的模块，例如consumers绑定的dao是`kong.db.dao.consumers`：
 
 	-- kong/db/schema/entities/consumers.lua
+	...
+	return {
+	  name         = "consumers",
+	  primary_key  = { "id" },
+	  endpoint_key = "username",
+	  -- 关联的dao模块
 	  dao          = "kong.db.dao.consumers",
+	
+	  fields = {
+	    { id             = typedefs.uuid, },
+	...
 
-它会在`DAO.new()`中被加载，并将其中的方法一同加载：
+`kong/db/dao`中的`DAO.new()`在kong/db/dao/init.lua，首先将文件`kong/db/dao/init.lua`中DAO加到元表中：
+
+	-- kong/db/dao/init.lua
+	local DAO   = {}
+	DAO.__index = DAO
+	...
+	function _M.new(db, schema, strategy, errors)
+	  local fk_methods = generate_foreign_key_methods(schema)
+	  -- 设置元表DAO
+	  local super      = setmetatable(fk_methods, DAO)
+	  ...
+	  local self = {
+	    db       = db,
+	    schema   = schema,
+	    strategy = strategy,
+	    errors   = errors,
+	    super    = super,
+	  }
+	  ...
+	  -- 将包含了DAO的super设置为 __index
+	  return setmetatable(self, { __index = super })
+	end
+
+DAO实现常用的数据操作：
+
+	-- kong/db/dao/init.lua
+	function DAO:truncate()
+	  return self.strategy:truncate()
+	end
+	function DAO:select(primary_key, options)
+	  ...
+	  return self:row_to_entity(row, options)
+	end
+	function DAO:insert(entity, options)
+	  ...
+	  self:post_crud_event("create", row)
+	  return row
+	end
+	...
+
+这些方法可以直接通过DAO对象调用，
+
+此外`kong/db/dao`中的`DAO.new()`，还将传入的entity中指定的`kong/db/dao`模块，和模块中的方法，以方法名为key导入到DAO对象中。
 
 	-- kong/db/dao/init.lua
 	function _M.new(db, schema, strategy, errors)
@@ -887,9 +1044,11 @@ kong/db在创建db的时候，会使用`kong/db/dao`为每个schema生成一个D
 	    super    = super,
 	  }
 	  ...
+	  -- schema.dao是entity模块中指定的dao模块
 	  if schema.dao then
 	    local custom_dao = require(schema.dao)
 	    for name, method in pairs(custom_dao) do
+	      -- key是方法名
 	      self[name] = method
 	    end
 	  end
@@ -897,28 +1056,25 @@ kong/db在创建db的时候，会使用`kong/db/dao`为每个schema生成一个D
 	  return setmetatable(self, { __index = super })
 	end
 
-同时将`kong/db/dao/init.lua`中`DAO:XX`方法加载到dao对象中：
 
-	function _M.new(db, schema, strategy, errors)
-	  local fk_methods = generate_foreign_key_methods(schema)
-	  local super      = setmetatable(fk_methods, DAO)
-	  ...
-	  local self = {
-	    db       = db,
-	    schema   = schema,
-	    strategy = strategy,
-	    errors   = errors,
-	    super    = super,
-	  }
-	  ...
-	  return setmetatable(self, { __index = super })
-	end
+因此，DAO对象中包含entity绑定的dao模块中的方法，也kong/db/dao/init.lua中实现的Dao方法，前者的优先级高于后者。
 
-最后得到的dao对象中包含db、schema、strategy和多个方法，调用dao中的方法就可以操作数据库中的数据。。
+kong/db/schema/entities/consumers.lua绑定的kong/db/dao/consumers.lua中实现了下面这些方法：
 
-#### kong/db/dao/init.lua中的数据库操作
+	-- kong/db/dao/consumers.lua
+	...
+	local _Consumers = {}
+	...
+	local function delete_cascade(self, table_name, fk)
+	...
+	local function delete_cascade_all(self, consumer_id)
+	...
+	function _Consumers:delete(primary_key)
+	...
 
-重点是对数据库进行操作之后，最后会抛出事件：
+#### kong/db/dao/init.lua操作数据库时抛出事件
+
+`kong/db/dao/init.lua`中实现的、加载到DAO对象中的方法，在对数据库进行操作之后，会抛出事件：
 
 	--kong/db/dao/init.lua
 	function DAO:insert(entity, options)
@@ -931,31 +1087,29 @@ kong/db在创建db的时候，会使用`kong/db/dao`为每个schema生成一个D
 	  ...
 	    self:post_crud_event("create", row)
 
-#### kong/dao 
+### kong/dao 
 
-`Kong.init()`函数中，调用`DAOFactory.new()`创建Dao，并传入前面创建的`db`：
+`Kong.init()`函数中，除了创建db，还单独调用`DAOFactory.new()`创建Dao，并将创建的db作为参数传入：
 
+	-- kong/init.lua
 	local DAOFactory = require "kong.dao.factory"
 	...
 	function Kong.init()
 	  ...
 	  local db = assert(DB.new(config))
 	  assert(db:init_connector())
-	
+	  -- 单独创建dao，传入的刚创建的db
 	  local dao = assert(DAOFactory.new(config, db)) -- instantiate long-lived DAO
 	  local ok, err_t = dao:init()
-	  if not ok then
-	    error(tostring(err_t))
-	  end
-	
+	  ...
 	  assert(dao:are_migrations_uptodate())
-	
 	  db.old_dao = dao
-	
+	  -- 这里面加载插件相关内容，后面要单独分析
 	  loaded_plugins = assert(load_plugins(config, dao))
 
-`DAOFactory.new()`中调用`kong/dao/db/XXX`创建了一个db，将传入的db保存到db.new_db，加载`kong.dao.schemas`目录中的schema，和`kong/plugins/XXX/.daos`（如果不存在就不加载）：
-	
+`DAOFactory.new()`中再次创建了一个db，而传入的db被保存到新建的db的new_db成员中。
+
+	-- kong/dao/factory.lua
 	local CORE_MODELS = {
 	  "apis",
 	  "plugins",
@@ -970,18 +1124,42 @@ kong/db在创建db的时候，会使用`kong/db/dao`为每个schema生成一个D
 	  db.new_db = new_db
 	  self.db = db
 	  ...
+
+然后又加载了一批entity：
+
+	-- kong/dao/factory.lua
+	local CORE_MODELS = {
+	  "apis",
+	  "plugins",
+	  "upstreams",
+	  "targets",
+	}
+	...
+	function _M.new(kong_config, new_db)
+	  ...
 	  for _ , m_name in ipairs(CORE_MODELS) do
 	    schemas[m_name] = require("kong.dao.schemas." .. m_name)
 	  end
 	  ...
+
+和前面kong/db中加载的entity不同，dao加载的是kong/dao/schemas中的entity。 
+
+除了CORE_MODELS，kong/dao还会加载每个插件中的daos.lua，将插件中的entity导入：
+
+	-- kong/dao/factory.lua
+	function _M.new(kong_config, new_db)
+	  ...
 	  for plugin_name in pairs(self.plugin_names) do
+	    -- 加载插件目录中的daos.lua
 	    local has_schema, plugin_schemas = utils.load_module_if_exists("kong.plugins." .. plugin_name .. ".daos")
 	    if has_schema then
 	      if plugin_schemas.tables then
 	        for _ , v in ipairs(plugin_schemas.tables) do
+	          -- 插件目录中daos.lua中的tables被导入到self.additional_tables
 	          table.insert(self.additional_tables, v)
 	        end
 	      else
+	        -- 如果没有tables，保存entity
 	        for k, v in pairs(plugin_schemas) do
 	          schemas[k] = v
 	        end
@@ -989,18 +1167,34 @@ kong/db在创建db的时候，会使用`kong/db/dao`为每个schema生成一个D
 	    end
 	  end
 	  ...
+
+这时候schemas中包含了kong/dao/schemas中的entity，和插件目录中daos.lua中的entity。
+
+最后用load_daos()将为这些entity生成对应的DAO对象：
+
+	-- kong/dao/factory.lua
+	function _M.new(kong_config, new_db)
+	  ...
 	  load_daos(self, schemas, constraints)
+	  create_legacy_wrappers(self, constraints)
+	  ...
 
-`load_daos()`中，又通过`kong/dao/dao.lua`创建了self.daos中的成员：
+`load_daos()`中，用kong/dao/dao.lua创建每个entity的DAO对象：
 
+	-- kong/dao/factory.lua
+	...
+	local DAO = require "kong.dao.dao"
+	...
 	local function load_daos(self, schemas, constraints)
+	  ...
 	  for m_name, schema in pairs(schemas) do
 	    self.daos[m_name] = DAO(self.db, ModelFactory(schema), schema,
 	                            constraints[m_name])
 	  end
 
-`kong/dao/dao.lua`中的`DAO:new()`比较简单，就是生成一个dao对象，
+`kong/dao/dao.lua`中的`DAO:new()`比较简单，就是生成一个dao对象: 
 
+	-- kong/dao/dao.lua
 	function DAO:new(db, model_mt, schema, constraints)
 	  self.db = db
 	  self.model_mt = model_mt
@@ -1009,20 +1203,55 @@ kong/db在创建db的时候，会使用`kong/db/dao`为每个schema生成一个D
 	  self.constraints = constraints
 	end
 
-其中需要注意的第二个参数`ModelFactory(schema)`，这个函数在`kong/dao/model_factory.lua`中实现。
+关键是kong/dao/dao.lua中，还实现了DAO的很多方法，例如：
 
-#### dao初始化
+	-- kong/dao/dao.lua
+	function DAO:insert(tbl, options)
+	...
+	function DAO:entity_cache_key(entity)
+	...
+	function DAO:find(tbl)
+	...
 
+这里创建DAO对象时，传入的第二个参数`ModelFactory(schema)`，ModelFactory是在`kong/dao/model_factory.lua`中实现的，它的作用是设置元表。
+
+	-- kong/dao/model_factory.lua
+	...
+	return setmetatable({}, {
+	  __call = function(_, schema)
+	    local Model_mt = {}
+	    Model_mt.__meta = {
+	      __schema = schema,
+	      __name = schema.name,
+	      __table = schema.table
+	    }
+	...
+
+总结一下，Kong.init()的时候，用kong/db中的方法创建了一个db，然后将这个db传给/kong/dao中DAOFactory.new()，创建了一个dao。在创建这个dao的过程中，又创建了一个db，传入的db被保存为new_db。dao的创建过程中，还加载了kong/dao/schemas目录中entity，和插件目录中的daos.lua。最后加载的所有entity生成了对应的DAO对象，这些DAO对象拥有find、insert等方法。
+
+### kong/dao中的init()
+
+Kong.init()中创建了dao之后，首先调用了它的init()方法：
+
+	-- kong/init.lua
+	local DAOFactory = require "kong.dao.factory"
+	...
+	function Kong.init()
+	  ...
+	  local dao = assert(DAOFactory.new(config, db)) -- instantiate long-lived DAO
+	  -- 调用dao:init()
 	  local ok, err_t = dao:init()
 
-`dao:init()`调用`db.init()`， 
+`dao:init()`调用`db.init()`，这个db是创建dao时，用kong/dao/db中的方法创建的db，和kong/db不同。
 
+	-- kong/dao/factory.lua
 	function _M:init()
 	  local ok, err = self.db:init()
 	...
 
-db来自于`kong.dao.db.数据库类型`：
+db来自于`kong.dao.db.数据库类型`，下面是创建db时的代码：
 
+	-- kong/dao/factory.lua
 	function _M.new(kong_config, new_db)
 	  ...
 	  local DB = require("kong.dao.db." .. self.db_type)
@@ -1034,43 +1263,16 @@ db来自于`kong.dao.db.数据库类型`：
 	  db.new_db = new_db
 	  self.db = db
 
-`kong/dao/db/XX.lua`中每种类型的数据库会在各自的init()中连接数据库。
+`kong/dao/db/`是支持的多种数据库，它们分别实现了自己的init()，进行一些初始化，以postgres为例：
 
-### 数据库的初始化
-
-在`kong/cmd/start.lua`中实现：
-	
-	local function execute(args)
-	  local db = assert(DB.new(conf))
-	  assert(db:init_connector())
-	  local dao = assert(DAOFactory.new(conf, db))
-	  local ok, err_t = dao:init()
+	-- kong/dao/db/postgres.lua
+	function _M:init()
+	  local res, err = self:query("SHOW server_version;")
 	  ...
-	    if args.run_migrations then
-	      assert(dao:run_migrations())
-	    end
-	  ...
-
-`kong/dao/factory.lua`中实现了`run_migrations()`
-
-	function _M:run_migrations(on_migrate, on_success)
-	  local migrations_modules, err = self:migrations_modules()
-	  ...
-
-初始化操作一部分来自`kong/dao/migrations/`，一部分来自于每个插件的`migrations`目录：
-
-	function _M:migrations_modules()
-	  ...
-	  local migrations = {
-	    core = require("kong.dao.migrations." .. self.db_type)
-	  }
-	  ...
-	  for plugin_name in pairs(self.plugin_names) do
-	    local ok, plugin_mig = utils.load_module_if_exists("kong.plugins." .. plugin_name .. ".migrations." .. self.db_type)
-	    if ok then
-	      migrations[plugin_name] = plugin_mig
-	    end
+	  if #res < 1 or not res[1].server_version then
+	    return nil, Errors.db("could not retrieve server_version")
 	  end
+	  ...
 
 ## 管理API的启动
 
@@ -1087,7 +1289,7 @@ db来自于`kong.dao.db.数据库类型`：
 	    client_body_buffer_size 10m;
 	
 	
-	    # injected nginx_admin_* directives
+	    # injected nginx_admin_ * directives
 	
 	    location / {
 	        default_type application/json;

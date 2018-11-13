@@ -21,6 +21,12 @@ description: gitbook2014年成立于法国的第二大城市`Lyon`，它致力�
 
 这里关注偏向程序员的一些用法。
 
+[What is GitBook](https://docs.gitbook.com/)
+
+[GitBook Toolchain Documentation](https://toolchain.gitbook.com/)
+
+
+
 ## 在github上存管
 
 虽然在gitbook上可以直接创建编辑电子书，但程序员可能更倾向于用github管理自己的资料。
@@ -111,6 +117,30 @@ gitbook支持将素材存放在github上。
 第三步，就是等待域名解析记录在全球范围内生效，然后就可以直接通过`go.lijiaocn.com`阅读图书。
 
 等待的时候不是固定的，如果你等待了很久还是不能访问，不妨翻墙试一下。
+
+## 本地预览
+
+Github提供了一个客户端软件[GitBook Editor](https://legacy.gitbook.com/editor)
+
+还可以安装[GitBook工具](https://toolchain.gitbook.com/setup.html):
+
+	npm install gitbook-cli -g
+
+gitbook命令默认位于/usr/local/bin中，需要将这个目录添加到环境变量PATH中：
+
+	export PATH="/usr/local/bin/":$PATH
+
+然后可以用`init`子命令创建一个gitbook项目：
+
+	gitbook init
+
+用`serve`子命令在本地预览：
+
+	gitbook serve --port 4001   //默认端口是4000
+
+用`build`子命令本地构建：
+
+	gitbook build
 
 ## 参考
 
