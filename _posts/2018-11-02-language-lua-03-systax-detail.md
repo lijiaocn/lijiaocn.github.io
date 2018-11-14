@@ -17,7 +17,7 @@ description: 这里记录Lua语言的一些语法细节，边学习边记录，�
 
 这是[编程语言Lua系列教程](https://www.lijiaocn.com/tags/class.html)中的一篇。
 
-这里记录一些Lua的语法细节，边学习边记录，随时补充，主要来自 [Lua 5.1 Reference Manual ][1]、[Programming in Lua, 4th Edition][2]。
+这里记录一些Lua的语法细节，边学习边记录，随时补充，主要来自 [Programming in Lua, 4th Edition][2]、[Lua 5.3 Reference Manual ][3]、[Lua 5.1 Reference Manual ][1]。
 
 ## 操作符："."与":"
 
@@ -48,6 +48,8 @@ withdraw()函数中用到Account变量，只作用于Account变量，且Account�
 
 1. [Lua 5.1 Reference Manual ][1]
 2. [Programming in Lua, 4th Edition][2]
+3. [Lua 5.3 Reference Manual ][3]
 
-[1]: https://www.lua.org/manual/5.1/manual.html#pdf-_G "Lua 5.1 Reference Manual "
+[1]: https://www.lua.org/manual/5.1/ "Lua 5.1 Reference Manual "
 [2]: https://pan.baidu.com/s/1NOhdKjDbg18RQ_4DkGC8tg "Programming in Lua, 4th Edition"
+[3]: https://www.lua.org/manual/5.3/ "Lua 5.3 Reference Manual "
