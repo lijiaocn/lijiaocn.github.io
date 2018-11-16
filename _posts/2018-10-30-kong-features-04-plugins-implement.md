@@ -22,7 +22,7 @@ description: kong的数据平面插件(plugin)的调用过程，请求处理过�
 
 Kong-Ingress-Controller的版本是0.2.0，Kong的版本是0.14.1，是用下面的方式部署的：
 
-	./kubectl.sh create -f https://raw.githubusercontent.com/introclass/kubernetes-yamls/master/all-in-one/kong-all-in-one.yaml
+./kubectl.sh create -f https://raw.githubusercontent.com/introclass/kubernetes-yamls/master/all-in-one/kong-all-in-one.yaml
 
 下面主要分析了插件的加载时机和插件被调用的时机，插件的实现在[API网关Kong（十一）：自己动手写一个插件][5]中作了详细分析，并仿照写了一个插件。
 
@@ -32,146 +32,160 @@ Kong-Ingress-Controller的版本是0.2.0，Kong的版本是0.14.1，是用下面
 
 需要记住的是，kong启动时加载的插件对象，有三个成员：name、handler、schema:
 
-	-- kong/init.lua
-	local function load_plugins(kong_conf, dao)
-	...
-	  for plugin in pairs(kong_conf.loaded_plugins) do
-	    ...
-	    local ok, handler = utils.load_module_if_exists("kong.plugins." .. plugin .. ".handler")
-	    local ok, schema = utils.load_module_if_exists("kong.plugins." .. plugin .. ".schema")
-	    ...
-	    sorted_plugins[#sorted_plugins+1] = {
-	      name = plugin,
-	      handler = handler(),
-	      schema = schema
-	    }
+```lua
+-- kong/init.lua
+local function load_plugins(kong_conf, dao)
+...
+  for plugin in pairs(kong_conf.loaded_plugins) do
+    ...
+    local ok, handler = utils.load_module_if_exists("kong.plugins." .. plugin .. ".handler")
+    local ok, schema = utils.load_module_if_exists("kong.plugins." .. plugin .. ".schema")
+    ...
+    sorted_plugins[#sorted_plugins+1] = {
+      name = plugin,
+      handler = handler(),
+      schema = schema
+    }
+```
 
 以及所有的插件都存放在全局变量`loaded_plugins`中：
 
-	-- kong/init.lua
-	function Kong.init()
-	  ...
-	  loaded_plugins = assert(load_plugins(config, dao))
-	  ...
+```lua
+-- kong/init.lua
+function Kong.init()
+  ...
+  loaded_plugins = assert(load_plugins(config, dao))
+  ...
+```
 
 在随后的初始化过程中，调用的是handler对象的`init_worker()`方法。
 
-	-- kong/init.lua
-	function Kong.init_worker()
-	  ...
-	  for _, plugin in ipairs(loaded_plugins) do
-	    kong_global.set_namespaced_log(kong, plugin.name)
-	     ...
-	    plugin.handler:init_worker()
-	  end
-
+```lua
+-- kong/init.lua function Kong.init_worker()
+  ...
+  for _, plugin in ipairs(loaded_plugins) do
+    kong_global.set_namespaced_log(kong, plugin.name)
+     ...
+    plugin.handler:init_worker()
+  end
+```
 
 ## handler:init_worker()
 
 以ACL插件为例，初始化时调用的`handelr:init_worker()`在kong/plugins/acl/handler.lua中实现：
 
-	-- kong/plugins/acl/handler.lua
-	local BasePlugin = require "kong.plugins.base_plugin"
-	...
-	local ACLHandler = BasePlugin:extend()
-	...
-	function ACLHandler:new()
-	  ACLHandler.super.new(self, "acl")
-	end
+```lua
+-- kong/plugins/acl/handler.lua
+local BasePlugin = require "kong.plugins.base_plugin"
+...
+local ACLHandler = BasePlugin:extend()
+...
+function ACLHandler:new()
+  ACLHandler.super.new(self, "acl")
+end
+```
 
 ACLHandler自己没有实现`init_worker()`方法，这个方法是从父类BasePlugin中继承的。
 
 `BasePlugin:extend()`在kong/plugins/base_plugin.lua中实现：
 
-	--kong/plugins/base_plugin.lua
-	
-	local Object = require "kong.vendor.classic"
-	local BasePlugin = Object:extend()
-	
-	function BasePlugin:new(name)
-	  self._name = name
-	end
-	...
-	function BasePlugin:init_worker()
-	  ngx_log(DEBUG, "executing plugin \"", self._name, "\": init_worker")
-	end
+```lua
+--kong/plugins/base_plugin.lua
+
+local Object = require "kong.vendor.classic"
+local BasePlugin = Object:extend()
+
+function BasePlugin:new(name)
+  self._name = name
+end
+...
+function BasePlugin:init_worker()
+  ngx_log(DEBUG, "executing plugin \"", self._name, "\": init_worker")
+end
+```
 
 可以看到对于ACL插件，init_worker()没有做什么事情。
 
 有一些插件覆盖了父类的实现，例如kong/plugins/ip-restriction/handler.lua中：
 
-	--kong/plugins/ip-restriction/handler.lua:
-	...
-	function IpRestrictionHandler:init_worker()
-	  IpRestrictionHandler.super.init_worker(self)
-	  local ok, err = iputils.enable_lrucache()
-	  if not ok then
-	    ngx.log(ngx.ERR, "[ip-restriction] Could not enable lrucache: ", err)
-	  end
-	end
+```lua
+--kong/plugins/ip-restriction/handler.lua:
+...
+function IpRestrictionHandler:init_worker()
+  IpRestrictionHandler.super.init_worker(self)
+  local ok, err = iputils.enable_lrucache()
+  if not ok then
+    ngx.log(ngx.ERR, "[ip-restriction] Could not enable lrucache: ", err)
+  end
+end
+```
 
 ## 请求处理过程
 
 [API网关Kong（六）：Kong数据平面的实现分析: nginx启动][2]中摘出了OpenResty定制的nginx启动使用的配置文件：
 
-	...
-	server {
-	...
-	    ssl_certificate_by_lua_block {
-	        Kong.ssl_certificate()
-	    }
-	    ...
-	    location / {
-	        ...
-	        rewrite_by_lua_block {
-	            Kong.rewrite()
-	        }
-	
-	        access_by_lua_block {
-	            Kong.access()
-	        }
-	        ...
-	        header_filter_by_lua_block {
-	            Kong.header_filter()
-	        }
-	
-	        body_filter_by_lua_block {
-	            Kong.body_filter()
-	        }
-	
-	        log_by_lua_block {
-	            Kong.log()
-	        }
-	    }
-	...
-	}
+```bash
+...
+server {
+...
+    ssl_certificate_by_lua_block {
+        Kong.ssl_certificate()
+    }
+    ...
+    location / {
+        ...
+        rewrite_by_lua_block {
+            Kong.rewrite()
+        }
+
+        access_by_lua_block {
+            Kong.access()
+        }
+        ...
+        header_filter_by_lua_block {
+            Kong.header_filter()
+        }
+
+        body_filter_by_lua_block {
+            Kong.body_filter()
+        }
+
+        log_by_lua_block {
+            Kong.log()
+        }
+    }
+...
+}
+```
 
 根据 [Web开发平台OpenResty（二)：运行原理与工作过程: NginxLuaModule][3] ，数据平面收到的请求的处理路径是：
 
-	        ssl_certificate_by_lua_block {
-	            Kong.ssl_certificate()
-	        }
-	        rewrite_by_lua_block {
-	            Kong.rewrite()
-	        }
-	        access_by_lua_block {
-	            Kong.access()
-	        }
-	        access_by_lua_block {
-	            Kong.access()
-	        }
-	        ...
-	        header_filter_by_lua_block {
-	            Kong.header_filter()
-	        }
-	
-	        body_filter_by_lua_block {
-	            Kong.body_filter()
-	        }
-	
-	        log_by_lua_block {
-	            Kong.log()
-	        }
+```bash
+        ssl_certificate_by_lua_block {
+            Kong.ssl_certificate()
+        }
+        rewrite_by_lua_block {
+            Kong.rewrite()
+        }
+        access_by_lua_block {
+            Kong.access()
+        }
+        access_by_lua_block {
+            Kong.access()
+        }
+        ...
+        header_filter_by_lua_block {
+            Kong.header_filter()
+        }
+
+        body_filter_by_lua_block {
+            Kong.body_filter()
+        }
+
+        log_by_lua_block {
+            Kong.log()
+        }
+```
 
 对Plugins的调用就分布在这些阶段中，这些方法都是在kong/init.lua中实现的。
 
@@ -179,57 +193,63 @@ ACLHandler自己没有实现`init_worker()`方法，这个方法是从父类Base
 
 插件的调用过程大体类似，`ssl_certificate()`的实现如下:：
 
-	-- kong/init.lua
-	function Kong.ssl_certificate()
-	  kong_global.set_phase(kong, PHASES.certificate)
-	
-	  local ctx = ngx.ctx
-	
-	  runloop.certificate.before(ctx)
-	
-	  for plugin, plugin_conf in plugins_iterator(loaded_plugins, true) do
-	    kong_global.set_namespaced_log(kong, plugin.name)
-	    plugin.handler:certificate(plugin_conf)
-	    kong_global.reset_log(kong)
-	  end
-	end
+```lua
+-- kong/init.lua
+function Kong.ssl_certificate()
+  kong_global.set_phase(kong, PHASES.certificate)
+
+  local ctx = ngx.ctx
+
+  runloop.certificate.before(ctx)
+
+  for plugin, plugin_conf in plugins_iterator(loaded_plugins, true) do
+    kong_global.set_namespaced_log(kong, plugin.name)
+    plugin.handler:certificate(plugin_conf)
+    kong_global.reset_log(kong)
+  end
+end
+```
 
 可以看到通过`plugins_iterator()`遍历所有插件，然后调用每个插件的handler:certificate()方法。
 
 `plugins_iterator()`在kong/runloop/plugins_iterator.lua中实现，遍历方法如下：
 
-	--kong/runloop/plugins_iterator.lua
-	local function get_next(self)
-	  ... 
-	  local plugin = self.loaded_plugins[i]
-	  repeat
-	        if route_id and service_id and consumer_id then
-	          plugin_configuration = load_plugin_configuration(route_id, service_id, consumer_id, plugin_name, nil)
-	           ...
-	  end
-	
-	  -- return the plugin configuration
-	  local plugins_for_request = ctx.plugins_for_request
-	  if plugins_for_request[plugin.name] then
-	    return plugin, plugins_for_request[plugin.name]
-	  end
-	
-	 return plugin, plugins_for_request[plugin.name]
+```lua
+--kong/runloop/plugins_iterator.lua
+local function get_next(self)
+  ... 
+  local plugin = self.loaded_plugins[i]
+  repeat
+        if route_id and service_id and consumer_id then
+          plugin_configuration = load_plugin_configuration(route_id, service_id, consumer_id, plugin_name, nil)
+           ...
+  end
+
+  -- return the plugin configuration
+  local plugins_for_request = ctx.plugins_for_request
+  if plugins_for_request[plugin.name] then
+    return plugin, plugins_for_request[plugin.name]
+  end
+
+ return plugin, plugins_for_request[plugin.name]
+```
 
 第一个返回值是全局变量`loaded_plugins`中的plugin，第二个返回值是存储在数据库中对应的插件配置。
 
 读取数据库中插件配置的时候，是有顺序的，查询条件依次放松（在上面的代码的repeat和end之间）：
 
-	plugin_configuration = load_plugin_configuration(route_id, service_id, consumer_id, plugin_name, nil)
-	plugin_configuration = load_plugin_configuration(route_id, nil, consumer_id, plugin_name, nil)
-	plugin_configuration = load_plugin_configuration(nil, service_id, consumer_id, plugin_name, nil)
-	plugin_configuration = load_plugin_configuration(nil, nil, consumer_id, plugin_name, api_id)
-	plugin_configuration = load_plugin_configuration(route_id, service_id, nil, plugin_name, nil)
-	plugin_configuration = load_plugin_configuration(nil, nil, consumer_id, plugin_name, nil)
-	plugin_configuration = load_plugin_configuration(route_id, nil, nil, plugin_name, nil)
-	plugin_configuration = load_plugin_configuration(nil, service_id, nil, plugin_name, nil)
-	plugin_configuration = load_plugin_configuration(nil, nil, nil, plugin_name, api_id)
-	plugin_configuration = load_plugin_configuration(nil, nil, nil, plugin_name, nil)
+```lua
+plugin_configuration = load_plugin_configuration(route_id, service_id, consumer_id, plugin_name, nil)
+plugin_configuration = load_plugin_configuration(route_id, nil, consumer_id, plugin_name, nil)
+plugin_configuration = load_plugin_configuration(nil, service_id, consumer_id, plugin_name, nil)
+plugin_configuration = load_plugin_configuration(nil, nil, consumer_id, plugin_name, api_id)
+plugin_configuration = load_plugin_configuration(route_id, service_id, nil, plugin_name, nil)
+plugin_configuration = load_plugin_configuration(nil, nil, consumer_id, plugin_name, nil)
+plugin_configuration = load_plugin_configuration(route_id, nil, nil, plugin_name, nil)
+plugin_configuration = load_plugin_configuration(nil, service_id, nil, plugin_name, nil)
+plugin_configuration = load_plugin_configuration(nil, nil, nil, plugin_name, api_id)
+plugin_configuration = load_plugin_configuration(nil, nil, nil, plugin_name, nil)
+```
 
 因为只要读取一个插件配置，就停止后续查找，所以这个顺序就是同一个插件多个配置的优先级顺序，和[API网关Kong（三）：功能梳理和插件使用-基本使用过程: 先了解下插件的作用范围和设置方法][4]对插件的说明相对应。
 
@@ -237,38 +257,42 @@ ACLHandler自己没有实现`init_worker()`方法，这个方法是从父类Base
 
 下面是Kong.rewrite()的实现，代码结构基本相同，这回调用的是每个插件的`handler:rewrite()`方法：
 
-	-- kong/init.lua
-	function Kong.rewrite()
-	  ...
-	  runloop.rewrite.before(ctx)
-	  for plugin, plugin_conf in plugins_iterator(loaded_plugins, true) do
-	    kong_global.set_named_ctx(kong, "plugin", plugin_conf)
-	    kong_global.set_namespaced_log(kong, plugin.name)
-	
-	    plugin.handler:rewrite(plugin_conf)
-	
-	    kong_global.reset_log(kong)
-	  end
-	
-	  runloop.rewrite.after(ctx)
-	  ...
+```lua
+-- kong/init.lua
+function Kong.rewrite()
+  ...
+  runloop.rewrite.before(ctx)
+  for plugin, plugin_conf in plugins_iterator(loaded_plugins, true) do
+    kong_global.set_named_ctx(kong, "plugin", plugin_conf)
+    kong_global.set_namespaced_log(kong, plugin.name)
 
-## XXX.before 和 XXX.after()
+    plugin.handler:rewrite(plugin_conf)
+
+    kong_global.reset_log(kong)
+  end
+
+  runloop.rewrite.after(ctx)
+  ...
+```
+
+## runloop.X.before 和 runloop.after()
 
 有一些处理阶段，调用插件之前，会先执行XXX.before()方法，调用插件之后会执行XXX.after()方法，例如：
 
-	-- kong/init.lua
-	...
-	local runloop = require "kong.runloop.handler"
-	...
-	function Kong.rewrite()
-	  ...
-	  runloop.rewrite.before(ctx)
-	    ...
-	    plugin.handler:rewrite(plugin_conf)
-	    ...
-	  runloop.rewrite.after(ctx)
-	  ...
+```lua
+-- kong/init.lua
+...
+local runloop = require "kong.runloop.handler"
+...
+function Kong.rewrite()
+  ...
+  runloop.rewrite.before(ctx)
+    ...
+    plugin.handler:rewrite(plugin_conf)
+    ...
+  runloop.rewrite.after(ctx)
+  ...
+```
 
 这些方法在kong/runloop/handler.lua中实现。
 
@@ -276,41 +300,49 @@ ACLHandler自己没有实现`init_worker()`方法，这个方法是从父类Base
 
 ACL插件的目录结构如下：
 
-	$ tree kong/plugins/acl
-	kong/plugins/acl
-	├── api.lua
-	├── daos.lua
-	├── groups.lua
-	├── handler.lua
-	├── migrations
-	│   ├── cassandra.lua
-	│   └── postgres.lua
-	└── schema.lua
+```bash
+$ tree kong/plugins/acl
+kong/plugins/acl
+├── api.lua
+├── daos.lua
+├── groups.lua
+├── handler.lua
+├── migrations
+│   ├── cassandra.lua
+│   └── postgres.lua
+└── schema.lua
+```
 
 插件的父类是BasePlugin:extend()，并且需要设置优先级、版本，和名称：
 
-	-- kong/plugins/acl/handler.lua
-	local ACLHandler = BasePlugin:extend()
-	
-	ACLHandler.PRIORITY = 950
-	ACLHandler.VERSION = "0.1.1"
-	
-	function ACLHandler:new()
-	  ACLHandler.super.new(self, "acl")
-	end
-	...
+```lua
+-- kong/plugins/acl/handler.lua
+local ACLHandler = BasePlugin:extend()
+
+ACLHandler.PRIORITY = 950
+ACLHandler.VERSION = "0.1.1"
+
+function ACLHandler:new()
+  ACLHandler.super.new(self, "acl")
+end
+...
+```
 
 它的handler.lua中只实现了`access()`方法：
 
-	-- kong/plugins/acl/handler.lua
-	function ACLHandler:access(conf)
-	  ...
+```lua
+-- kong/plugins/acl/handler.lua
+function ACLHandler:access(conf)
+  ...
+```
 
 即该插件只在access_by_lua_block阶段生效：
 
-	        access_by_lua_block {
-	            Kong.access()
-	        }
+```bash
+        access_by_lua_block {
+            Kong.access()
+        }
+```
 
 插件如果实现了多个方法，则会在多个阶段被调用。
 
@@ -319,18 +351,22 @@ ACL插件的目录结构如下：
 
 [bot-detection](https://docs.konghq.com/hub/kong-inc/bot-detection/)是用来识别机器人插件：
 
-	$ tree kong/plugins/bot-detection
-	kong/plugins/bot-detection
-	├── handler.lua
-	├── rules.lua
-	└── schema.lua
+```bash
+$ tree kong/plugins/bot-detection
+kong/plugins/bot-detection
+├── handler.lua
+├── rules.lua
+└── schema.lua
+```
 
 它的handler也只实现了access方法：
 
-	function BotDetectionHandler:access(conf)
-		...
-		local user_agent, err = get_user_agent()
-		...
+```lua
+function BotDetectionHandler:access(conf)
+	...
+	local user_agent, err = get_user_agent()
+	...
+```
 
 它的用途是检查http请求中的user agent，如果user agent在黑名单中，或者被判定为机器人，则拒绝请求。
 
