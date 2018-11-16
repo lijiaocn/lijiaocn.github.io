@@ -110,7 +110,7 @@ ACLHandler自己没有实现`init_worker()`方法，这个方法是从父类Base
 	  end
 	end
 
-## 数据平面的请求处理过程
+## 请求处理过程
 
 [API网关Kong（六）：Kong数据平面的实现分析: nginx启动][2]中摘出了OpenResty定制的nginx启动使用的配置文件：
 
@@ -205,18 +205,18 @@ ACLHandler自己没有实现`init_worker()`方法，这个方法是从父类Base
 	  repeat
 	        if route_id and service_id and consumer_id then
 	          plugin_configuration = load_plugin_configuration(route_id, service_id, consumer_id, plugin_name, nil)
-	          if plugin_configuration then
-	            break
-	          end
-	        end
-	    ...
+	           ...
 	  end
-	    if plugin_configuration then
-	      ctx.plugins_for_request[plugin.name] = plugin_configuration
-	    end
+	
+	  -- return the plugin configuration
+	  local plugins_for_request = ctx.plugins_for_request
+	  if plugins_for_request[plugin.name] then
 	    return plugin, plugins_for_request[plugin.name]
+	  end
+	
+	 return plugin, plugins_for_request[plugin.name]
 
-第一个返回值是全局变量`loaded_plugins`中的plugin，第二个返回值是数据库中对应插件的配置。
+第一个返回值是全局变量`loaded_plugins`中的plugin，第二个返回值是存储在数据库中对应的插件配置。
 
 读取数据库中插件配置的时候，是有顺序的，查询条件依次放松（在上面的代码的repeat和end之间）：
 

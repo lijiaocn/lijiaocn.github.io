@@ -19,6 +19,69 @@ Kong的介绍和使用方法参考：[Nginx、OpenResty和Kong的基本概念与
 
 这里记录使用Kong时遇到的问题，以及找到的解决方法。
 
+## 添加新插件后，启动失败: postgres database 'kong' is missing migration: (path-rewrite) 
+
+开发了一个名为`path-rewrite`的插件，安装配置后，启动kong报错：
+
+	2018/11/13 16:54:57 [warn] 28677#28677: [lua] log.lua:63: log(): postgres database 'kong' is missing migration: (path-rewrite) 2018-11-09_multiple_orgins
+	2018/11/13 16:54:57 [error] 28677#28677: init_by_lua error: /usr/share/lua/5.1/kong/init.lua:200: [postgres error] the current database schema does not match this version of Kong. Please run `kong migrations up` to update/initialize the database schema. Be aware that Kong migrations should only run from a single node, and that nodes running migrations concurrently will conflict with each other and might corrupt your database schema!
+	stack traceback:
+			[C]: in function 'assert'
+			/usr/share/lua/5.1/kong/init.lua:200: in function 'init'
+			init_by_lua:3: in main chunk
+
+在使用新插件之前，需要用`migrations`子命令更新一下数据库：
+
+	$ bash ./resty.sh kong/bin/kong  migrations up -c kong.conf
+	migrating path-rewrite for database kong
+	path-rewrite migrated up to: 2018-11-09_multiple_orgins
+	1 migrations ran
+
+## [postgres error] could not retrieve server_version: timeout
+
+数据库配置错误，kong连不上postgres，导致的错误：
+
+	2018/11/13 16:16:37 [error] 25993#25993: init_by_lua error: /usr/share/lua/5.1/kong/init.lua:197: [postgres error] could not retrieve server_version: timeout
+	stack traceback:
+	        [C]: in function 'error'
+	        /usr/share/lua/5.1/kong/init.lua:197: in function 'init'
+	        init_by_lua:3: in main chunk
+
+## nginx: [emerg] host not found in syslog server "kong-hf.mashape.com:61828"
+
+kong不能启动，查看日志发现：
+
+	systemd[1]: Starting kong-proxy...
+	openresty[433]: nginx: [emerg] host not found in syslog server "kong-hf.mashape.com:61828" in /usr/local/kong-proxy/nginx-kong.conf:3
+	systemd[1]: kong-proxy.service: main process exited, code=exited, status=1/FAILURE
+	systemd[1]: Unit kong-proxy.service entered failed state.
+	systemd[1]: kong-proxy.service failed.
+	systemd[1]: kong-proxy.service holdoff time over, scheduling restart.
+	systemd[1]: start request repeated too quickly for kong-proxy.service
+	systemd[1]: Failed to start kong-proxy.
+	systemd[1]: Unit kong-proxy.service entered failed state.
+	systemd[1]: kong-proxy.service failed.
+
+重点是第二行日志：
+
+	openresty[433]: nginx: [emerg] host not found in syslog server "kong-hf.mashape.com:61828" in /usr/local/kong-proxy/nginx-kong.conf:3
+
+`kong-hf.mashape.com:61828`这个syslog server连接不上，nginx-kong.conf中配置了这个syslog服务器：
+
+	error_log syslog:server=kong-hf.mashape.com:61828 error;
+
+搜索到这个解答：[nginx.conf points to mashape syslog server #1478](https://github.com/Kong/kong/issues/1478)
+
+kong的配置中有一个匿名报告的配置项，默认是开启的，会把kong运行产生的错误信息上传到kong公司的日志服务器：
+
+	#anonymous_reports = on          # Send anonymous usage data such as error
+	                                 # stack traces to help improve Kong.
+
+将这行配置去掉注释，并且修改为off：
+
+	anonymous_reports = off          # Send anonymous usage data such as error
+	                                 # stack traces to help improve Kong.
+
 ## kong prepare时，提示找不到kong模块： error loading module 'kong' 
 
 	$ resty -I /usr/lib64/lua/5.1  kong/bin/kong prepare -c ./kong.conf

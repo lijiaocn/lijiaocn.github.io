@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  API网关Kong（六）：Kong数据平面的实现分析
+title:  API网关Kong（六）：Kong数据平面的事件、初始化与插件加载
 author: 李佶澳
 createdate: 2018/10/22 15:07:00
 changedate: 2018/10/22 15:07:00
@@ -464,7 +464,7 @@ cluster_event是被记录在数据库中、被所有的kong实例监控的事件
 	  local conf_path = pl_path.join(ngx.config.prefix(), ".kong_env")
 	  local config = assert(conf_loader(conf_path))
 
-配置文件加载在kong/conf_loader.lua中实现的，plugins为`bundled`时，加载`constants.BUNDLED_PLUGINS`中的插件，和配置参数custom_plugins指定的插件：
+配置文件加载在`kong/conf_loader.lua`中实现的，plugins为`bundled`时，加载`constants.BUNDLED_PLUGINS`中的插件，和配置参数custom_plugins指定的插件：
 
 	-- kong/conf_loader.lua
 	local function load(path, custom_conf)
@@ -493,6 +493,13 @@ cluster_event是被记录在数据库中、被所有的kong实例监控的事件
 	      __tostring = function() return "" end,
 	    })
 	  end
+
+插件在配置文件kong.conf中配置，可以用“,”间隔，指定多个：
+
+	#plugins = bundled               # Comma-separated list of plugins this node
+	                                 # should load. By default, only plugins
+	                                 # bundled in official distributions are
+	                                 # loaded via the `bundled` keyword.
 
 bundled插件都有以下这些：
 
@@ -633,7 +640,7 @@ db和dao是kong中操作数据库的基本方式，它们的创建过程中，�
 
 migrations_modules中记录了每个数据表的创建方式、销毁方式，以及一些设置操作，`kong/dao/migrations`目录中modules和插件目录中的modules格式相同。
 
-例如kong/dao/migrations/postgres.lua:
+例如`kong/dao/migrations/postgres.lua`:
 
 	-- kong/dao/migrations/postgres.lua:
 	local utils = require "kong.tools.utils"
@@ -654,7 +661,7 @@ migrations_modules中记录了每个数据表的创建方式、销毁方式，�
 	  },
 	  ...
 
-和插件kong/plugins/acl/migrations/postgres.lua中的内容，结构是一致的：
+和插件`kong/plugins/acl/migrations/postgres.lua`中的内容，结构是一致的：
 
 	--kong/plugins/acl/migrations/postgres.lua中
 	return {
@@ -712,7 +719,7 @@ kong/db中有一个目录也叫dao：`kong/db/dao`。怀疑kong/dao是早先的�
 
 通过kong/db创建的db对象会被保存到通过kong/dao创建的dao对象的db.new_db成员中，根据名字判断，通过kong/db创建的db对于通过kong/dao创建的dao对象来说，是一个新的db。
 
-### kong/db
+### kong/db：DB.new()
 
 `kong/db`用来初始化数据库连接器(connector)，strategy是数据库类型，并生成核心Schema的DAO：
 
@@ -796,7 +803,7 @@ db自定义了元方法，在用db.plugins的方式引用名为plugins的变量�
 
 DAO的对象的创建过程，后面单独分析。
 
-#### Entity的加载：Entity.New()
+#### kong/db中Entity的加载：Entity.New()
 
 Entity是用kong/db/schema/entity.lua中的`Entity.new()`创建的，参数entity_schema是从`kong/db/schema/entities`中加载的Entity：
 
@@ -1087,7 +1094,7 @@ kong/db/schema/entities/consumers.lua绑定的kong/db/dao/consumers.lua中实现
 	  ...
 	    self:post_crud_event("create", row)
 
-### kong/dao 
+### kong/dao: DAOFactory.new()
 
 `Kong.init()`函数中，除了创建db，还单独调用`DAOFactory.new()`创建Dao，并将创建的db作为参数传入：
 
@@ -1229,7 +1236,7 @@ kong/db/schema/entities/consumers.lua绑定的kong/db/dao/consumers.lua中实现
 
 总结一下，Kong.init()的时候，用kong/db中的方法创建了一个db，然后将这个db传给/kong/dao中DAOFactory.new()，创建了一个dao。在创建这个dao的过程中，又创建了一个db，传入的db被保存为new_db。dao的创建过程中，还加载了kong/dao/schemas目录中entity，和插件目录中的daos.lua。最后加载的所有entity生成了对应的DAO对象，这些DAO对象拥有find、insert等方法。
 
-### kong/dao中的init()
+### kong/dao中dao的init()方法
 
 Kong.init()中创建了dao之后，首先调用了它的init()方法：
 
