@@ -27,16 +27,18 @@ description: 模仿kong中已经有的插件，自己动手写一个，熟悉插
 
 [API网关Kong（七）：Kong数据平面Plugin的调用与实现][4]中大概介绍了插件是如何被调用的，但没有分析插件的具体实现方法，这里先详细分析一下ACL插件的实现，搞清楚每个细节，然后再仿照写一个插件。
 
-	$ tree kong/plugins/acl
-	kong/plugins/acl
-	├── api.lua
-	├── daos.lua
-	├── groups.lua
-	├── handler.lua
-	├── migrations
-	│   ├── cassandra.lua
-	│   └── postgres.lua
-	└── schema.lua
+```bash
+$ tree kong/plugins/acl
+kong/plugins/acl
+├── api.lua
+├── daos.lua
+├── groups.lua
+├── handler.lua
+├── migrations
+│   ├── cassandra.lua
+│   └── postgres.lua
+└── schema.lua
+```
 
 ### 与数据库操作有关的代码
 
@@ -46,34 +48,36 @@ acl插件有自己的一张表，有的插件不需要自己的表，就没有�
 
 acl插件在数据库中创建了自己的一张表，表名为acl，kong/plugins/acl/migrations/postgres.lua中给出了表的创建和销毁方法：
 
-	-- kong/plugins/acl/migrations/postgres.lua
-	return {
-	  {
-	    name = "2015-08-25-841841_init_acl",
-	    up = [[
-	      CREATE TABLE IF NOT EXISTS acls(
-	        id uuid,
-	        consumer_id uuid REFERENCES consumers (id) ON DELETE CASCADE,
-	        "group" text,
-	        created_at timestamp without time zone default (CURRENT_TIMESTAMP(0) at time zone 'utc'),
-	        PRIMARY KEY (id)
-	      );
-	
-	      DO $$
-	      BEGIN
-	        IF (SELECT to_regclass('acls_group')) IS NULL THEN
-	          CREATE INDEX acls_group ON acls("group");
-	        END IF;
-	        IF (SELECT to_regclass('acls_consumer_id')) IS NULL THEN
-	          CREATE INDEX acls_consumer_id ON acls(consumer_id);
-	        END IF;
-	      END$$;
-	    ]],
-	    down = [[
-	      DROP TABLE acls;
-	    ]]
-	  }
-	}
+```lua
+-- kong/plugins/acl/migrations/postgres.lua
+return {
+  {
+    name = "2015-08-25-841841_init_acl",
+    up = [[
+      CREATE TABLE IF NOT EXISTS acls(
+        id uuid,
+        consumer_id uuid REFERENCES consumers (id) ON DELETE CASCADE,
+        "group" text,
+        created_at timestamp without time zone default (CURRENT_TIMESTAMP(0) at time zone 'utc'),
+        PRIMARY KEY (id)
+      );
+
+      DO $$
+      BEGIN
+        IF (SELECT to_regclass('acls_group')) IS NULL THEN
+          CREATE INDEX acls_group ON acls("group");
+        END IF;
+        IF (SELECT to_regclass('acls_consumer_id')) IS NULL THEN
+          CREATE INDEX acls_consumer_id ON acls(consumer_id);
+        END IF;
+      END$$;
+    ]],
+    down = [[
+      DROP TABLE acls;
+    ]]
+  }
+}
+```
 
 [API网关Kong（六）：Kong数据平面的实现分析: 数据库表的创建][6]中分析过，kong的数据库创建的时候会加载每个插件的migrations子目录中的模块文件，执行其中的SQL语句。
 
@@ -83,26 +87,28 @@ migrations子目录有两个lua文件，对应同名的数据库，kong现在(20
 
 除了在acl/migrations/postgres.lua中填写数据库表的创建删除方法，还需要在`acl/daos.lua`中给出表结构定义：
 
-	-- kong/plugins/acl/daos.lua
-	local singletons = require "kong.singletons"
-	
-	local function check_unique(group, acl)
-	   ...
-	end
-	...
-	local SCHEMA = {
-	  primary_key = {"id"},
-	  table = "acls",
-	  cache_key = { "consumer_id" },
-	  fields = {
-	    id = { type = "id", dao_insert_value = true },
-	    created_at = { type = "timestamp", dao_insert_value = true },
-	    consumer_id = { type = "id", required = true, foreign = "consumers:id" },
-	    group = { type = "string", required = true, func = check_unique }
-	  },
-	}
-	
-	return {acls = SCHEMA}
+```lua
+-- kong/plugins/acl/daos.lua
+local singletons = require "kong.singletons"
+
+local function check_unique(group, acl)
+   ...
+end
+...
+local SCHEMA = {
+  primary_key = {"id"},
+  table = "acls",
+  cache_key = { "consumer_id" },
+  fields = {
+    id = { type = "id", dao_insert_value = true },
+    created_at = { type = "timestamp", dao_insert_value = true },
+    consumer_id = { type = "id", required = true, foreign = "consumers:id" },
+    group = { type = "string", required = true, func = check_unique }
+  },
+}
+
+return {acls = SCHEMA}
+```
 
 [API网关Kong（六）：Kong数据平面的实现分析: kong/dao: DAOFactory.new()][7]中分析过，kong/dao/在创建dao的时候，会加载每个插件中的daos.lua文件，生成一个对应的entity。
 
@@ -110,84 +116,94 @@ migrations子目录有两个lua文件，对应同名的数据库，kong现在(20
 
 kong中每个插件的配置存放在plugins表中的config字段，是一段json文本：
 
-	kong=# \d plugins
-	                                                Table "public.plugins"
-	   Column    |            Type             |                                 Modifiers
-	-------------+-----------------------------+---------------------------------------------------------------------------
-	 id          | uuid                        | not null
-	 name        | text                        | not null
-	 api_id      | uuid                        |
-	 consumer_id | uuid                        |
-	 config      | json                        | not null
-	 enabled     | boolean                     | not null
-	 created_at  | timestamp without time zone | default timezone('utc'::text, ('now'::text)::timestamp(0) with time zone)
-	 route_id    | uuid                        |
-	 service_id  | uuid                        |
+```bash
+kong=# \d plugins
+                                                Table "public.plugins"
+   Column    |            Type             |                                 Modifiers
+-------------+-----------------------------+---------------------------------------------------------------------------
+ id          | uuid                        | not null
+ name        | text                        | not null
+ api_id      | uuid                        |
+ consumer_id | uuid                        |
+ config      | json                        | not null
+ enabled     | boolean                     | not null
+ created_at  | timestamp without time zone | default timezone('utc'::text, ('now'::text)::timestamp(0) with time zone)
+ route_id    | uuid                        |
+ service_id  | uuid                        |
+ ```
 
-acl/schema.lua中给出插件的json配置文件的定义，
+schema.lua中给出插件的json配置文件的定义，
 
-	-- kong/plugins/acl/schema.lua
-	local Errors = require "kong.dao.errors"
-	
-	return {
-	  no_consumer = true,
-	  fields = {
-	    whitelist = { type = "array" },
-	    blacklist = { type = "array" },
-	    hide_groups_header = { type = "boolean", default = false },
-	  },
-	  self_check = function(schema, plugin_t, dao, is_update)
-	    if next(plugin_t.whitelist or {}) and next(plugin_t.blacklist or {}) then
-	      return false, Errors.schema "You cannot set both a whitelist and a blacklist"
-	    elseif not (next(plugin_t.whitelist or {}) or next(plugin_t.blacklist or {})) then
-	      return false, Errors.schema "You must set at least a whitelist or blacklist"
-	    end
-	    return true
-	  end
-	}
+```lua
+-- kong/plugins/acl/schema.lua
+local Errors = require "kong.dao.errors"
+
+return {
+  no_consumer = true,
+  fields = {
+    whitelist = { type = "array" },
+    blacklist = { type = "array" },
+    hide_groups_header = { type = "boolean", default = false },
+  },
+  self_check = function(schema, plugin_t, dao, is_update)
+    if next(plugin_t.whitelist or {}) and next(plugin_t.blacklist or {}) then
+      return false, Errors.schema "You cannot set both a whitelist and a blacklist"
+    elseif not (next(plugin_t.whitelist or {}) or next(plugin_t.blacklist or {})) then
+      return false, Errors.schema "You must set at least a whitelist or blacklist"
+    end
+    return true
+  end
+}
+```
 
 [API网关Kong（六）：Kong数据平面的实现分析: plugin的加载和初始化][8]中分析过，Kong.init()在加载插件的时候，会将插件目录中的schema.lua和handler.lua加载：
 
-	--kong/conf_loader.lua
-	local function load_plugins(kong_conf, dao)
-	...
-	
-	    local ok, handler = utils.load_module_if_exists("kong.plugins." .. plugin .. ".handler")
-	    ...
-	    local ok, schema = utils.load_module_if_exists("kong.plugins." .. plugin .. ".schema")
-	    ...
-	    sorted_plugins[#sorted_plugins+1] = {
-	      name = plugin,
-	      handler = handler(),
-	      schema = schema
-	    }
-	 ...
+```lua
+--kong/init.lua
+local function load_plugins(kong_conf, dao)
+...
 
-### 插件功能的实现：acl/handler.lua
+    local ok, handler = utils.load_module_if_exists("kong.plugins." .. plugin .. ".handler")
+    ...
+    local ok, schema = utils.load_module_if_exists("kong.plugins." .. plugin .. ".schema")
+    ...
+    sorted_plugins[#sorted_plugins+1] = {
+      name = plugin,
+      handler = handler(),
+      schema = schema
+    }
+ ...
+```
+
+#### 插件功能的实现：acl/handler.lua
 
 `acl/handler.lua`中实现了插件的功能，这个插件中定义的方法，会在处理请求和响应的时候被调用。
 [API网关Kong（七）：Kong数据平面Plugin的调用与实现][9]分析过调用过程。
 
 acl插件实现了`new()`和`access()`两个方法，只在access阶段发挥作用：
 
-	-- kong/plugins/acl/handler.lua
-	...
-	function ACLHandler:new()
-	  ACLHandler.super.new(self, "acl")
-	end
-	
-	function ACLHandler:access(conf)
-	  ACLHandler.super.access(self)
-	...
+```lua
+-- kong/plugins/acl/handler.lua
+...
+function ACLHandler:new()
+  ACLHandler.super.new(self, "acl")
+end
+
+function ACLHandler:access(conf)
+  ACLHandler.super.access(self)
+...
+```
 
 [插件的调用过程：以Kong.ssl_certificate()为例][10]中分析了调用过程，这里传入的参数conf，就是当前请求对应的插件配置，从ctx.plugins_for_request中也可以获得当前请求对应的插件配置：
 
-	--kong/runloop/plugins_iterator.lua
-	local function get_next(self)
-	   ...
-	   ctx.plugins_for_request[plugin.name] = plugin_configuration
-	   ...
-	 return plugin, plugins_for_request[plugin.name]
+```lua
+--kong/runloop/plugins_iterator.lua
+local function get_next(self)
+   ...
+   ctx.plugins_for_request[plugin.name] = plugin_configuration
+   ...
+return plugin, plugins_for_request[plugin.name]
+```
 
 ## 准备插件文件
 
@@ -195,23 +211,25 @@ acl插件实现了`new()`和`access()`两个方法，只在access阶段发挥作
 
 	mkdir kong/plugins/http-rewrite
 
-### 创建数据库表与数据库检查：migrations/*.lua
+### 创建数据库表与数据库检查：migrations
 
 在kong/plugins/http-rewrite/migrations中创建文件`postgres.lua`：
 
-	return {
-	    {
-	        name = "2018-11-09_multiple_orgins",
-	        up = function(db)
-	            local rows, err = db:query([[
-	        SELECT * FROM plugins WHERE name = 'http-rewrite'
-	      ]])
-	            if err then
-	                return err
-	            end
-	        end,
-	    }
-	}
+```lua
+return {
+    {
+        name = "2018-11-09_multiple_orgins",
+        up = function(db)
+            local rows, err = db:query([[
+        SELECT * FROM plugins WHERE name = 'http-rewrite'
+      ]])
+            if err then
+                return err
+            end
+        end,
+    }
+}
+```
 
 如果插件有自己的数据库表，或者对数据库表或表中数据有要求，在插件目录中创建`migrations`目录：
 
@@ -222,65 +240,69 @@ acl插件实现了`new()`和`access()`两个方法，只在access阶段发挥作
 postgres.lua返回的是一个table，包含`name`、`up`、`down`三个成员，name是字符串，up和down可以是任意的SQL语句，也可以是lua函数。
 例如acl插件中的up和down是两段SQL语句：
 
-	-- kong/plugins/acl/migrations/postgres.lua
-	return {
-	  {
-	    name = "2015-08-25-841841_init_acl",
-	    up = [[
-	      CREATE TABLE IF NOT EXISTS acls(
-	        id uuid,
-	        consumer_id uuid REFERENCES consumers (id) ON DELETE CASCADE,
-	        "group" text,
-	        created_at timestamp without time zone default (CURRENT_TIMESTAMP(0) at time zone 'utc'),
-	        PRIMARY KEY (id)
-	      );
-	
-	      DO $$
-	      BEGIN
-	        IF (SELECT to_regclass('acls_group')) IS NULL THEN
-	          CREATE INDEX acls_group ON acls("group");
-	        END IF;
-	        IF (SELECT to_regclass('acls_consumer_id')) IS NULL THEN
-	          CREATE INDEX acls_consumer_id ON acls(consumer_id);
-	        END IF;
-	      END$$;
-	    ]],
-	    down = [[
-	      DROP TABLE acls;
-	    ]]
-	  }
-	}
+```lua
+-- kong/plugins/acl/migrations/postgres.lua
+return {
+  {
+    name = "2015-08-25-841841_init_acl",
+    up = [[
+      CREATE TABLE IF NOT EXISTS acls(
+        id uuid,
+        consumer_id uuid REFERENCES consumers (id) ON DELETE CASCADE,
+        "group" text,
+        created_at timestamp without time zone default (CURRENT_TIMESTAMP(0) at time zone 'utc'),
+        PRIMARY KEY (id)
+      );
+
+      DO $$
+      BEGIN
+        IF (SELECT to_regclass('acls_group')) IS NULL THEN
+          CREATE INDEX acls_group ON acls("group");
+        END IF;
+        IF (SELECT to_regclass('acls_consumer_id')) IS NULL THEN
+          CREATE INDEX acls_consumer_id ON acls(consumer_id);
+        END IF;
+      END$$;
+    ]],
+    down = [[
+      DROP TABLE acls;
+    ]]
+  }
+}
+```
 
 而cors插件中，up是一个函数，down不存在：
 
-	-- kong/plugins/cors/migrations/postgres.lua
-	return {
-	  {
-	    name = "2017-03-14_multiple_orgins",
-	    up = function(db)
-	      local cjson = require "cjson"
-	
-	      local rows, err = db:query([[
-	        SELECT * FROM plugins WHERE name = 'cors'
-	      ]])
-	      if err then
-	        return err
-	      end
-	
-	      for _, row in ipairs(rows) do
-	        row.config.origins = { row.config.origin }
-	        row.config.origin = nil
-	
-	        local _, err = db:query(string.format([[
-	          UPDATE plugins SET config = '%s' WHERE id = '%s'
-	        ]], cjson.encode(row.config), row.id))
-	        if err then
-	          return err
-	        end
-	      end
-	    end,
-	  }
-	}
+```lua
+-- kong/plugins/cors/migrations/postgres.lua
+return {
+  {
+    name = "2017-03-14_multiple_orgins",
+    up = function(db)
+      local cjson = require "cjson"
+
+      local rows, err = db:query([[
+        SELECT * FROM plugins WHERE name = 'cors'
+      ]])
+      if err then
+        return err
+      end
+
+      for _, row in ipairs(rows) do
+        row.config.origins = { row.config.origin }
+        row.config.origin = nil
+
+        local _, err = db:query(string.format([[
+          UPDATE plugins SET config = '%s' WHERE id = '%s'
+        ]], cjson.encode(row.config), row.id))
+        if err then
+          return err
+        end
+      end
+    end,
+  }
+}
+```
 
 因为up和down可以是lua函数，因此能够做更多的检查判断，如果不满足条件就返回err。
 
@@ -292,65 +314,69 @@ postgres.lua返回的是一个table，包含`name`、`up`、`down`三个成员�
 
 创建文件`schema.lua`，定义插件使用配置：
 
-	local Errors = require "kong.dao.errors"
-	
-	return {
-	    no_consumer = true,
-	    fields = {
-	        regex = { type = "string" },
-	        replacement = { type = "string" },
-	        flag = {type = "string"},
-	    },
-	    self_check = function(schema, plugin_t, dao, is_update)
-	        -- TODO: add check
-	        return true
-	    end
-	}
+```lua
+local Errors = require "kong.dao.errors"
 
-## 插件功能实现：handler.lua
+return {
+    no_consumer = true,
+    fields = {
+        regex = { type = "string" },
+        replacement = { type = "string" },
+        flag = {type = "string"},
+    },
+    self_check = function(schema, plugin_t, dao, is_update)
+        -- TODO: add check
+        return true
+    end
+}
+```
+
+### 插件功能实现：handler.lua
 
 在kong/plugins/http-rewrite中创建文件`handler.lua`：
 
-	local BasePlugin = require "kong.plugins.base_plugin"
-	
-	local RewriteHandler= BasePlugin:extend()
-	
-	
-	RewriteHandler.PRIORITY = 2000
-	RewriteHandler.VERSION = "0.1.0"
-	
-	-- 传入参数conf是这个插件存放在数据库中配置
-	function RewriteHandler:access(conf)
-	    RewriteHandler.super.access(self)
-	
-	    local host = ngx.var.host
-	    ngx.log(ngx.DEBUG, "http-rewrite plugin, host is: ", host, " ,uri is: ",
-	            ngx.var.request_uri, " ,config is: ", json.encode(conf))
-	
-	    local replace,n,err  = ngx.re.sub(ngx.var.request_uri, conf.regex, conf.replacement)
-	    if replace and n == 0 then
-	        return
-	    end
-	
-	    if err then
-	        ngx.log(ngx.ERR, "http-rewrite plugin, ngx.re.sub err: ",err, " ,host is: ", host, " ,uri is: ",
-	                ngx.var.request_uri, " ,config is: ", json.encode(conf))
-	        return
-	    end
-	
-	    ngx.log(ngx.DEBUG, "http-rewrite plugin, replace is: ",replace)
-	    if conf.flag == "redirect" then
-	        ngx.redirect(replace,302)
-	    elseif conf.flag == "permanent" then
-	        ngx.redirect(replace,301)
-	    end
-	end
-	
-	function RewriteHandler:new()
-	    RewriteHandler.super.new(self, "http-rewrite")
-	end
-	
-	return RewriteHandler
+```lua
+local BasePlugin = require "kong.plugins.base_plugin"
+
+local RewriteHandler= BasePlugin:extend()
+
+
+RewriteHandler.PRIORITY = 2000
+RewriteHandler.VERSION = "0.1.0"
+
+-- 传入参数conf是这个插件存放在数据库中配置
+function RewriteHandler:access(conf)
+    RewriteHandler.super.access(self)
+
+    local host = ngx.var.host
+    ngx.log(ngx.DEBUG, "http-rewrite plugin, host is: ", host, " ,uri is: ",
+            ngx.var.request_uri, " ,config is: ", json.encode(conf))
+
+    local replace,n,err  = ngx.re.sub(ngx.var.request_uri, conf.regex, conf.replacement)
+    if replace and n == 0 then
+        return
+    end
+
+    if err then
+        ngx.log(ngx.ERR, "http-rewrite plugin, ngx.re.sub err: ",err, " ,host is: ", host, " ,uri is: ",
+                ngx.var.request_uri, " ,config is: ", json.encode(conf))
+        return
+    end
+
+    ngx.log(ngx.DEBUG, "http-rewrite plugin, replace is: ",replace)
+    if conf.flag == "redirect" then
+        ngx.redirect(replace,302)
+    elseif conf.flag == "permanent" then
+        ngx.redirect(replace,301)
+    end
+end
+
+function RewriteHandler:new()
+    RewriteHandler.super.new(self, "http-rewrite")
+end
+
+return RewriteHandler
+```
 
 ## 插件的启用  
 
@@ -403,6 +429,7 @@ postgres.lua返回的是一个table，包含`name`、`up`、`down`三个成员�
 
 在Kubernetes中创建下的crd，然后将其绑定到service、route或者consumer即可：
 
+```yaml
 	apiVersion: configuration.konghq.com/v1
 	kind: KongPlugin
 	metadata:
@@ -414,6 +441,7 @@ postgres.lua返回的是一个table，包含`name`、`up`、`down`三个成员�
 	  regex: "^/abc(.*)"               # nginx的正则表达式，匹配URI
 	  replacement: "/redirect/$1"      # 可以使用捕获
 	  flag: "permanent"                # 当前只支持permanent(301)和redirect(302)
+```
 
 ## 参考
 

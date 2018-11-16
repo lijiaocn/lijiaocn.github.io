@@ -3,6 +3,7 @@ paginate_path: '/page/:num'
 paginate: 30 
 future: true
 
+highlighter: rouge
 markdown: kramdown
 
 url:  "https://www.lijiaocn.com"
