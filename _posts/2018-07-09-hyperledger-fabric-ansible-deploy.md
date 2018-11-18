@@ -16,9 +16,8 @@ description: 已经是一套非常实用的Ansible部署脚本了，完全可以
 
 ## 说明
 
-这是“网易云课堂[IT技术快速入门学院](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)”使用的素材。
+这是“网易云课堂[IT技术快速入门学院](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)”使用的素材。操作、配置文件和代码讲解视频在[网易云课堂《HyperLeger Fabric进阶实战课》第三章](https://study.163.com/course/courseMain.htm?courseId=1005359012&share=2&shareId=400000000376006)中。
 
-操作、配置文件和代码讲解视频在[网易云课堂《HyperLeger Fabric进阶实战课》第三章](https://study.163.com/course/courseMain.htm?courseId=1005359012&share=2&shareId=400000000376006)中。
 
 这其实已经是一套非常实用的Ansible部署脚本了，完全可以`应用于生产`。
 脚本托管在github上：[hyperledger-fabric-ansible][5]，网易云上有视频讲解：[视频][2]。
@@ -31,9 +30,11 @@ QQ交流群：  `576555864`
 
 如果视频中有讲解不到位或需要订正的地方，可以到知识星球“区块链实践分享”中提问（二维码在文末）。
 
+>为了统一我的环境，这里的IP变为33网段了，之前视频中都是88网段的，IP变化不影响实质。
+
 ## 目标
 
-在192.168.88.10、192.168.88.11、192.168.88.12上部署一个有两个组织三个Peer组成的联盟。
+在192.168.33.11、192.168.33.12、192.168.33.13上部署一个有两个组织三个Peer组成的联盟。
 
 联盟的二级域名为： example.com。
 
@@ -43,13 +44,13 @@ QQ交流群：  `576555864`
 
 组织一中部署了一个Orderer和两个Peer，域名和IP分别为：
 
-	orderer0.member1.example.com  192.168.88.10
-	peer0.member1.example.com     192.168.88.10
-	peer1.member1.example.com     192.168.88.11
+	orderer0.member1.example.com  192.168.33.11
+	peer0.member1.example.com     192.168.33.11
+	peer1.member1.example.com     192.168.33.12
 
 组织二没有部署Orderer参与共识，只部署一个Peer：
 
-	peer0.member2.example.com     192.168.88.12
+	peer0.member2.example.com     192.168.33.13
 
 共识算法是solo，如果要切换为其它共识算法，例如kafka，需要另外部署kafka，并修改配置文件。
 
