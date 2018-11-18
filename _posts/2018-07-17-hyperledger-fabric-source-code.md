@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  "超级账本HyperLedger：Fabric源码走读(零)：源代码阅读环境准备"
+title:  "【视频】超级账本HyperLedger：Fabric源码走读(零)：源代码阅读环境准备"
 author: 李佶澳
 createdate: 2018/07/17 09:52:00
 changedate: 2018/07/26 19:34:52
