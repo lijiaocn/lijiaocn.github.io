@@ -74,3 +74,9 @@ configtxgen          discover             orderer
 configtxlator        get-docker-images.sh peer
 cryptogen            idemixgen
 ```
+
+## 后续
+
+编译过程很简单，代码入口也很找，一眼就看明白了。视频[HyperLedger Fabric进阶实战课](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)中稍微展开讲了下，主要针对对编译过程没有感性认识的朋友。
+
+后续抽时间看代码，会在这里补充一些内容，当然重要的内容会开新的页面记录。
