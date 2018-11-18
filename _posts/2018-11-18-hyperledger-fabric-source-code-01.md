@@ -25,6 +25,7 @@ description: 超级账本HyperLedger Fabric源代码走读第一部分，这里�
 git clone https://github.com/hyperledger/fabric.git
 git branch release-1.3 -t origin/release-1.3
 git checkout  release-1.3
+```
 
 下载代码后，先用`dep`命令更新一下依赖代码，需要翻qiang：
 
