@@ -1,11 +1,11 @@
 ---
 layout: default
-title:  "超级账本HyperLedger：Fabric源码走读(一)：源代码阅读环境准备"
+title:  "【视频】超级账本HyperLedger：Fabric源码走读(零)：源代码阅读环境准备"
 author: 李佶澳
 createdate: 2018/07/17 09:52:00
 changedate: 2018/07/26 19:34:52
 categories: 项目
-tags: HyperLedger
+tags: HyperLedgerCode 视频教程
 keywords: 区块链,源代码走读,Hyperledger,超级账本,Fabric
 description: 超级账本HyperLedger Fabric源代码走读第一部分，准备源代码阅读环境。
 
@@ -104,3 +104,4 @@ Go插件使idea具有goland的所有功能。
 1. [vim插件包][1]
 
 [1]: https://github.com/lijiaocn/vim-config  "https://github.com/lijiaocn/vim-config" 
+
