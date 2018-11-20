@@ -935,7 +935,7 @@ channel名字为mychannel，生成的mychannel.tx备用。
 	# 注意在浏览器打开地址为： https://github.com/introclass/hyperledger-fabric-chaincodes
 	go get github.com/introclass/hyperledger-fabric-chaincodes/demo
 
-注意代码的查看地址是：[https://github.com/lijiaocn/fabric-chaincode-example ][9]
+注意代码的查看地址是：[https://github.com/introclass/fabric-chaincode-example ][9]
 
 到`Admin@org1.example.com/`目录下，以Admin@org1.example.com的身份打包合约:
 
@@ -1055,7 +1055,7 @@ chaincode只能用Admin安装，并且需要在每个peer上都安装一次。
 [6]: http://study.163.com/course/introduction.htm?courseId=1005326005&share=2&shareId=400000000376006 "HyperLedger Fabric全手动部署网易云课堂教程"
 [7]: http://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/04/25/hyperledger-fabric-problem.html "超级账本HyperLedger的Fabric项目部署过程时遇到的问题"
 [8]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/06/19/hyperledger-channel-config-operation.html "超级账本HyperLedger Fabric中Channel配置的读取转换"
-[9]: https://github.com/lijiaocn/fabric-chaincode-example/ "https://github.com/lijiaocn/fabric-chaincode-example/"
+[9]: https://github.com/introclass/fabric-chaincode-example/ "https://github.com/lijiaocn/fabric-chaincode-example/"
 [10]: http://www.lijiaocn.com/tags/blockchain.html "更多关于超级账本和区块链的文章"
 [11]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/05/04/fabric-ca-example.html  "Fabric-CA的使用演示(两个组织一个Orderer三个Peer)"
 [12]: http://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/06/18/hyperledger-fabric-add-new-org.html "超级账本HyperLedger视频教程：Fabric，在已有的Channel中添加新的组织"
