@@ -15,6 +15,8 @@ description: 基于OpenResty的项目开发中，经常用到的操作，譬如�
 
 ## 说明
 
+这是[Web开发平台OpenResty系列文章](https://www.lijiaocn.com/tags/class.html)中的一篇。
+
 这里记录一下基于OpenResty的项目开发时，经常用到的操作，譬如读取nginx内置变量、打印调试日志等
 
 以下操作的很大一部分都是在使用[lua-nginx-module的lua api](https://github.com/openresty/lua-nginx-module#nginx-api-for-lua)
