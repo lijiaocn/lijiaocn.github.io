@@ -165,7 +165,8 @@ QQ交流群：  `576555864`
 	cd /opt/app/fabric/cli/user/member1.example.com/Admin-peer0.member1.example.com/
 	
 	//先获取合约代码，可能会比较慢，拉取代码比较耗时
-	go get github.com/lijiaocn/fabric-chaincode-example/demo
+	//注意用浏览器查看合约代码地址是： github.com/introclass/hyperledger-fabric-chaincodes/
+	go get github.com/introclass/hyperledger-fabric-chaincodes/demo
 	
 	//安装合约
 	./3_install_chaincode.sh
@@ -180,14 +181,14 @@ QQ交流群：  `576555864`
 
 	//peer1.member1.example.com
 	//先获取合约代码，可能会比较慢，拉取代码比较耗时
-	go get github.com/lijiaocn/fabric-chaincode-example/demo
+	go get github.com/introclass/hyperledger-fabric-chaincodes/demo
 	
 	cd /opt/app/fabric/cli/user/member1.example.com/Admin-peer1.member1.example.com/
 	./3_install_chaincode.sh
 	
 	//peer0.member2.example.com
 	//先获取合约代码，可能会比较慢，拉取代码比较耗时
-	go get github.com/lijiaocn/fabric-chaincode-example/demo
+	go get github.com/introclass/hyperledger-fabric-chaincodes/demo
 	
 	cd /opt/app/fabric/cli/user/member2.example.com/Admin-peer0.member2.example.com/
 	./3_install_chaincode.sh

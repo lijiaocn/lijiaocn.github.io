@@ -932,7 +932,8 @@ channel名字为mychannel，生成的mychannel.tx备用。
 
 直接用`go get`获取一份合约代码：
 
-	go get github.com/lijiaocn/fabric-chaincode-example/demo
+	# 注意在浏览器打开地址为： https://github.com/introclass/hyperledger-fabric-chaincodes
+	go get github.com/introclass/hyperledger-fabric-chaincodes/demo
 
 注意代码的查看地址是：[https://github.com/lijiaocn/fabric-chaincode-example ][9]
 
@@ -942,7 +943,7 @@ channel名字为mychannel，生成的mychannel.tx备用。
 
 执行下面命令进行合约打包与签署：
 
-	./peer.sh chaincode package demo-pack.out -n demo -v 0.0.1 -s -S -p github.com/lijiaocn/fabric-chaincode-example/demo
+	./peer.sh chaincode package demo-pack.out -n demo -v 0.0.1 -s -S -p github.com/introclass/fabric-chaincode-example/demo
 	./peer.sh chaincode signpackage demo-pack.out signed-demo-pack.out
 
 然后安装合约：
@@ -953,7 +954,7 @@ channel名字为mychannel，生成的mychannel.tx备用。
 
 	$ ./peer.sh chaincode list   --installed
 	Get installed chaincodes on peer:
-	Name: demo, Version: 0.0.1, Path: github.com/lijiaocn/fabric-chaincode-example/demo, Id: 3d733bd28accf77b06b2bec065d8ce7315bd7c5441c51beea4650982f79eab46
+	Name: demo, Version: 0.0.1, Path: github.com/introclass/fabric-chaincode-example/demo, Id: 3d733bd28accf77b06b2bec065d8ce7315bd7c5441c51beea4650982f79eab46
 	2018-04-29 18:57:54.327 CST [main] main -> INFO 001 Exiting....
 
 chaincode只能用Admin安装，并且需要在每个peer上都安装一次。
@@ -1000,7 +1001,7 @@ chaincode只能用Admin安装，并且需要在每个peer上都安装一次。
 
 执行下面命令进行合约打包与签署：
 
-	./peer.sh chaincode package demo-pack-2.out -n demo -v 0.0.2 -s -S -p github.com/lijiaocn/fabric-chaincode-example/demo
+	./peer.sh chaincode package demo-pack-2.out -n demo -v 0.0.2 -s -S -p github.com/introclass/fabric-chaincode-example/demo
 	./peer.sh chaincode signpackage demo-pack-2.out signed-demo-pack-2.out
 
 然后安装合约：
