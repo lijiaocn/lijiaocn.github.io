@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  新型监控告警工具prometheus（普罗米修斯）入门使用（附视频讲解）
+title:  【视频】新型监控告警工具prometheus（普罗米修斯）入门使用（附视频讲解）
 author: 李佶澳
 createdate: 2018/08/03 10:26:00
 changedate: 2018/09/10 08:33:13
@@ -16,13 +16,13 @@ description: prometheus是很流行的监控告警工具，特别是kubernetes�
 
 ## 说明
 
-视频讲解通过链接[网易云课堂·IT技术快速入门学院](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)进入。
+视频讲解通过链接[网易云课堂·IT技术快速入门学院](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)进入，更多[关于Prometheus的文章](https://www.lijiaocn.com/tags/monitor.html)。
 
 [Prometheus][1]是最近几年开始流行的一个新兴监控告警工具，特别是kubernetes的流行带动了prometheus的应用。
 
 Prometheus是一套完整的监控告警系统：
 
-![Prometheus系统组成](https://prometheus.io/assets/architecture-cb2ada1ece6.png)
+![Prometheus系统组成](https://prometheus.io/assets/architecture.png)
 
 Prometheus的主要特点有：
 
