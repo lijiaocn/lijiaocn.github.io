@@ -16,6 +16,8 @@ description: 最近研究kong，它的数据平面使用的语言是Lua，学习
 
 ## 说明
 
+这是[编程语言Lua系列文章](https://www.lijiaocn.com/tags/class.html)中的一篇。
+
 最近在学习[API网关Kong（六）：Kong数据平面的实现分析][1]，Kong的数据平面使用的语言是[Lua][2]，需要学习一下Lua这门语言的使用方法、项目组织方式以及配套的开发调试工具等。
 
 ## Lua简介

@@ -15,6 +15,8 @@ description: OpenResty是什么？被扩展的Nginx，扩展到可以直接执�
 
 ## 说明
 
+这是[Web开发平台OpenResty系列文章](https://www.lijiaocn.com/tags/class.html)中的一篇。
+
 [OpenResty][2]是什么？被扩展的Nginx，扩展到可以直接执行Lua代码，处理业务逻辑，访问缓存和数据库等。
 
 可以先看一下[Nginx、OpenResty和Kong的基本概念与使用方法][1]，对OpenResty有一个整体感知。

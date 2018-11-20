@@ -15,6 +15,8 @@ description: 通过火焰图观察OpenResty函数调用情况，每个函数的�
 
 ## 说明
 
+这是[Web开发平台OpenResty系列文章](https://www.lijiaocn.com/tags/class.html)中的一篇。
+
 以下操作在CentOS7上进行，[火焰图分析法][2]非常直观好用，可以用多种方式生成，也可以用于各种场景。
 
 下面的是用火焰图分析OpenResty应用的方法，用[systemtap][4]采集信息。

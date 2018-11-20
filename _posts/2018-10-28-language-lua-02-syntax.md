@@ -16,6 +16,8 @@ description: 这里简单记录Lua的语法，直接罗列语法，定位是一�
 
 ## 说明
 
+这是[编程语言Lua系列文章](https://www.lijiaocn.com/tags/class.html)中的一篇。
+
 在[编程语言Lua（一）：入门介绍、学习资料、项目管理与调试方法](https://www.lijiaocn.com/%E7%BC%96%E7%A8%8B/2018/10/22/language-lua-study.html#lua%E7%9A%84%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99)中给出了一些学习资料。
 
 其中，最适合Lua语法学习的资料有两份。

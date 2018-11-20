@@ -16,6 +16,8 @@ description: 组成OpenResty的各个模块的用途和工作过程，Nginx、Ng
 
 ## 说明
 
+这是[Web开发平台OpenResty系列文章](https://www.lijiaocn.com/tags/class.html)中的一篇。
+
 [OpenResty的网站](https://openresty.org)给出了几本[关于Lua、Nginx、OpenResty的电子书](https://openresty.org/en/ebooks.html)：
 
 1  OpenResty的主要作者章宜春写的[Programming OpenResty](https://openresty.gitbooks.io/programming-openresty/content/)，好像是刚开始写...
