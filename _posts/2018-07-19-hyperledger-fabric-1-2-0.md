@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "超级账本HyperLedger：视频教程，Fabric从1.1.0升级到1.2.0"
+title: "【视频】超级账本HyperLedger：Fabric从1.1.0升级到1.2.0"
 author: 李佶澳
 createdate: 2018/07/19 14:48:00
 changedate: 2018/07/29 13:07:00
