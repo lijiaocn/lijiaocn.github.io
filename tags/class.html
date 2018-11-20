@@ -28,6 +28,16 @@ description: 视频教程,全部标签,手册汇总,用于快速查询
 </ul>
 
 <ul>
+{% for post in site.tags.nginx %}
+	{% for t in post.tags %}
+		{% if t == "视频教程" %}
+			<li><a href="{{ site.baseurl }}{{ post.url }}">《{{ post.title }}》</a></li>
+		{% endif %}
+	{% endfor %}
+{% endfor %}
+</ul>
+
+<ul>
 {% for post in site.tags.lua %}
 	{% for t in post.tags %}
 		{% if t == "视频教程" %}

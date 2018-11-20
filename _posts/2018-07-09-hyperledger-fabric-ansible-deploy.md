@@ -56,10 +56,12 @@ QQ交流群：  `576555864`
 
 ## 准备
 
-下载Ansible脚本，这里使用Fabric1.1.x，1.2.x的部署直接参考对应分支中的README.md。
+下载Ansible脚本，这里使用Fabric1.1.x，1.2.x以及正在准备的1.3暂时没有文档，可以直接参考对应分支中的[README.md](https://github.com/introclass/hyperledger-fabric-ansible/blob/Fabric-1.2.x/README.md)。
 
-	git clone --branch=Fabric1.1.x --depth=0  https://github.com/introclass/hyperledger-fabric-ansible.git
+	git clone https://github.com/introclass/hyperledger-fabric-ansible.git
 	cd hyperledger-fabric-ansible
+	git branch Fabric-1.1.x -t origin/Fabric-1.1.x 
+	git checkout Fabric-1.1.x  
 
 0 将要部署到目标环境中的二进制文件复制到output/example.com/bin/目录中
 
