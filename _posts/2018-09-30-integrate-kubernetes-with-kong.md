@@ -121,66 +121,82 @@ KongPlugin是可以具体到用户的插件配置，注意它可是全局配置�
 	plugin: rate-limiting
 
 KongIngress是对已经存在的ingress的补充。
-Kong-ingress-controller会主动监测kuernetes集群中所有的ingress，为每个配置了host的ingress在kong中创建一个[router][15]，为每个被ingress使用的backend在kong中创建一个[service][16]。
-Ingress是kubernetes定义的([Kubernetes Ingress定义][14])，对于那些与kong相关但是Ingress不支持的配置项，需要在`KongIngress`中配置。
+
+Kong-ingress-controller会主动监测kuernetes集群中所有的ingress，为每个配置了host的ingress在kong中创建一个[route][15]，为每个被ingress使用的backend在kong中创建一个[service][16]。
+
+Ingress是kubernetes定义的([Kubernetes Ingress定义][14])，对于那些与kong相关但是Ingress不支持的配置项，需要在`KongIngress`中配置。Kong-ingress-controller在将kubernetes中Ingress同步到kong的时候，会到同一个namespace中查找Ingress的annotations（`configuration.konghq.com`）中指定的KongIngress，如果在annotations中指定，则查找同名的Ingress。
+
+```go
+// kong/kubernetes-ingress-controller/internal/ingress/controller/kong.go
+func (n *NGINXController) getKongIngress(ing *extensions.Ingress) (*configurationv1.KongIngress, error) {
+	confName := annotations.ExtractConfigurationName(ing.Annotations)
+	if confName != "" {
+		return n.store.GetKongIngress(ing.Namespace, confName)
+	}
+
+	return n.store.GetKongIngress(ing.Namespace, ing.Name)
+}
+```
 
 下面是一个完成的KongIngress定义，包含`upstream`、`proxy`和`route`三部分：
 
-	apiVersion: configuration.konghq.com/v1
-	kind: KongIngress
-	metadata:
-	  name: configuration-demo
-	upstream:
-	  hash_on: none
-	  hash_fallback: none
-	  healthchecks:
-	    active:
-	      concurrency: 10
-	      healthy:
-	        http_statuses:
-	        - 200
-	        - 302
-	        interval: 0
-	        successes: 0
-	      http_path: "/"
-	      timeout: 1
-	      unhealthy:
-	        http_failures: 0
-	        http_statuses:
-	        - 429
-	        interval: 0
-	        tcp_failures: 0
-	        timeouts: 0
-	    passive:
-	      healthy:
-	        http_statuses:
-	        - 200
-	        successes: 0
-	      unhealthy:
-	        http_failures: 0
-	        http_statuses:
-	        - 429
-	        - 503
-	        tcp_failures: 0
-	        timeouts: 0
-	    slots: 10
-	proxy:
-	  protocol: http
-	  path: /
-	  connect_timeout: 10000
-	  retries: 10
-	  read_timeout: 10000
-	  write_timeout: 10000
-	route:
-	  methods:
-	  - POST
-	  - GET
-	  regex_priority: 0
-	  strip_path: false
-	  preserve_host: true
-	  protocols:
-	  - http
-	  - https
+```yaml
+apiVersion: configuration.konghq.com/v1
+kind: KongIngress
+metadata:
+  name: configuration-demo
+upstream:
+  hash_on: none
+  hash_fallback: none
+  healthchecks:
+    active:
+      concurrency: 10
+      healthy:
+        http_statuses:
+        - 200
+        - 302
+        interval: 0
+        successes: 0
+      http_path: "/"
+      timeout: 1
+      unhealthy:
+        http_failures: 0
+        http_statuses:
+        - 429
+        interval: 0
+        tcp_failures: 0
+        timeouts: 0
+    passive:
+      healthy:
+        http_statuses:
+        - 200
+        successes: 0
+      unhealthy:
+        http_failures: 0
+        http_statuses:
+        - 429
+        - 503
+        tcp_failures: 0
+        timeouts: 0
+    slots: 10
+proxy:
+  protocol: http
+  path: /
+  connect_timeout: 10000
+  retries: 10
+  read_timeout: 10000
+  write_timeout: 10000
+route:
+  methods:
+  - POST
+  - GET
+  regex_priority: 0
+  strip_path: false
+  preserve_host: true
+  protocols:
+  - http
+  - https
+```
 
 它们的用法在后面章节演示。
 
@@ -346,44 +362,46 @@ kong.yaml中少了一个service（commit: 34e9b4165ab64318d00028f42b797e77dac65e
 
 访问效果如下，10.10.173.203是kubernetes一个node的IP:
 
-	$ curl -v -H "Host: webshell.com" 10.10.173.203:32057
-	* About to connect() to 10.10.173.203 port 32057 (#0)
-	*   Trying 10.10.173.203...
-	* Connected to 10.10.173.203 (10.10.173.203) port 32057 (#0)
-	> GET / HTTP/1.1
-	> User-Agent: curl/7.29.0
-	> Accept: */*
-	> Host: webshell.com
-	>
-	< HTTP/1.1 200 OK
-	< Content-Type: text/html; charset=utf-8
-	< Content-Length: 382
-	< Connection: keep-alive
-	< Date: Mon, 08 Oct 2018 10:59:08 GMT
-	< X-Kong-Upstream-Latency: 3
-	< X-Kong-Proxy-Latency: 9
-	< Via: kong/0.14.1
-	<
-	<html>
-	<head>
-	<meta content="text/html; charset=utf-8">
-	<title>WebShell</title>
-	</head>
-	
-	<body>
-	
-	<form method="post" accept-charset="utf-8">
-		Command: <input type="text" name="command" width="40%" value="hostname">
-		Params : <input type="text" name="params" width="80%" value="">
-		<input type="submit" value="submit">
-	</form>
-	<pre>
-	
-	webshell-cc785f4f8-2vp6c
-	
-	</pre>
-	</body>
-	</html>
+```bash
+$ curl -v -H "Host: webshell.com" 10.10.173.203:32057
+* About to connect() to 10.10.173.203 port 32057 (#0)
+*   Trying 10.10.173.203...
+* Connected to 10.10.173.203 (10.10.173.203) port 32057 (#0)
+> GET / HTTP/1.1
+> User-Agent: curl/7.29.0
+> Accept: */*
+> Host: webshell.com
+>
+< HTTP/1.1 200 OK
+< Content-Type: text/html; charset=utf-8
+< Content-Length: 382
+< Connection: keep-alive
+< Date: Mon, 08 Oct 2018 10:59:08 GMT
+< X-Kong-Upstream-Latency: 3
+< X-Kong-Proxy-Latency: 9
+< Via: kong/0.14.1
+<
+<html>
+<head>
+<meta content="text/html; charset=utf-8">
+<title>WebShell</title>
+</head>
+
+<body>
+
+<form method="post" accept-charset="utf-8">
+	Command: <input type="text" name="command" width="40%" value="hostname">
+	Params : <input type="text" name="params" width="80%" value="">
+	<input type="submit" value="submit">
+</form>
+<pre>
+
+webshell-cc785f4f8-2vp6c
+
+</pre>
+</body>
+</html>
+```
 
 ## 参考
 
@@ -401,7 +419,7 @@ kong.yaml中少了一个service（commit: 34e9b4165ab64318d00028f42b797e77dac65e
 12. [Nginx、OpenResty和Kong的基本概念与使用方法: Kong的插件][12]
 13. [PGBI/kong-dashboard][13]
 14. [Kubernetes Ingress][14]
-15. [Kong: router][15]
+15. [Kong: route][15]
 16. [Kong: service][16]
 
 [1]: https://docs.konghq.com/install/kubernetes/ "Kong CE or EE on Kubernetes"
@@ -418,5 +436,5 @@ kong.yaml中少了一个service（commit: 34e9b4165ab64318d00028f42b797e77dac65e
 [12]: https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/09/29/nginx-openresty-kong.html#kong%E7%9A%84%E6%8F%92%E4%BB%B6 "Nginx、OpenResty和Kong的基本概念与使用方法: Kong的插件"
 [13]: https://github.com/PGBI/kong-dashboard  "PGBI/kong-dashboard"
 [14]: https://kubernetes.io/docs/concepts/services-networking/ingress/ "Kubernetes Ingress"
-[15]: https://docs.konghq.com/0.14.x/admin-api/#route-object "Kong: router"
+[15]: https://docs.konghq.com/0.14.x/admin-api/#route-object "Kong: route"
 [16]: https://docs.konghq.com/0.14.x/admin-api/#service-object "Kong: service"

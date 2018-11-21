@@ -65,6 +65,10 @@ QQ群用于这门课程的学习者以及所有对Kubernetes感兴趣的人员�
 
 ## Kubernetes的文档介绍
 
+[kubectl-commands](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands)是kubectl所有子命令的用法，有例子，非常好的文档。
+
+[ https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.12/ ](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.12/)是v1.12的API索引手册。
+
 Kubernetes网站的域名是[kubernetes.io][1]，可以用短域名[k8s.io](https://k8s.io)直接访问。
 Kubernetes的[官方文档][2]，应当是学习工作中最常使用的，其它所有的资料都是二手的，包括这篇文章。
 

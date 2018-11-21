@@ -143,6 +143,23 @@ Target的权重设置为0，target将不被选用。
 
 金丝雀部署通过修改target的权重即可实现，target的权重设置为零，则不被使用，权重越高分担的流量越高。
 
+## Target的健康检查
+
+Target的健康检查是一个有坑的地方，[Health Checks and Circuit Breakers][2]中有具体描述。
+
+健康检查在Upstream中配置，有主动(active)和被动(passive)两种方式。
+
+主动方式是按照配置的，定时访问Target，判断Target是否存货。Paasive的方式被动响应结果，如果发现失败的响应，则将对应的Target标记为失败。
+
+第一个坑是，健康检查需要配置，如果不配置，默认就没有健康检查。
+
+第二个坑是，如果只使用被动的方式，当一个Target被认为失败后，就会一直被认为失败，修复以后，必须手动发起一次访问，才能将其重新加载负载均衡列表中：
+
+	$ curl -i -X POST http://localhost:8001/upstreams/my_upstream/targets/10.1.2.3:1234/healthy
+	HTTP/1.1 204 No Content
+
+一定要配置健康检查，并且最好使用主动的方式。
+
 ## SSL配置
 
 首先要创建certificates对象，certificate包含证书和私钥，以及snis，snis指定了证书绑定的host。
@@ -171,5 +188,7 @@ Target的权重设置为0，target将不被选用。
 ## 参考
 
 1. [Kong: Proxy Reference][1]
+2. [Health Checks and Circuit Breakers][2]
 
 [1]: https://docs.konghq.com/0.14.x/proxy/ "Kong: Proxy Reference"
+[2]: https://docs.konghq.com/0.14.x/health-checks-circuit-breakers/ "Health Checks and Circuit Breakers"
