@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "API网关Kong（三）：功能梳理和插件使用-基本使用过程"
+title: "API网关Kong使用教程（三）：功能梳理和插件使用-基本使用过程"
 author: 李佶澳
 createdate: "2018-10-10 14:37:53 +0800"
 changedate: "2018-10-10 14:37:53 +0800"

@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  "API网关Kong（十）：Kong在生产环境中的部署与性能测试方法"
+title:  "API网关Kong使用教程（十）：Kong在生产环境中的部署与性能测试方法"
 author: 李佶澳
 createdate: "2018-11-02 17:36:17 +0800"
 changedate: "2018-11-02 17:36:17 +0800"

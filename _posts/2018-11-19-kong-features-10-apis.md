@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "API网关Kong（十四）：Kong的Admin API概览和使用"
+title: "API网关Kong使用教程（十四）：Kong的Admin API概览和使用"
 author: 李佶澳
 createdate: "2018-11-19 17:16:07 +0800"
 changedate: "2018-11-19 17:16:07 +0800"

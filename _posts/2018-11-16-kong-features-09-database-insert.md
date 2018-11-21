@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "API网关Kong（十三）：向数据库中插入记录的过程分析"
+title: "API网关Kong使用教程（十三）：向数据库中插入记录的过程分析"
 author: 李佶澳
 createdate: "2018-11-16 18:00:46 +0800"
 changedate: "2018-11-16 18:00:46 +0800"

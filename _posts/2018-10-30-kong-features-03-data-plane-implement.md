@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  API网关Kong（六）：Kong数据平面的事件、初始化与插件加载
+title:  API网关Kong使用教程（六）：Kong数据平面的事件、初始化与插件加载
 author: 李佶澳
 createdate: 2018/10/22 15:07:00
 changedate: 2018/10/22 15:07:00

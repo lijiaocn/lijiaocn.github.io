@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "API网关Kong（七）：Kong数据平面Plugin的调用与实现"
+title: "API网关Kong使用教程（七）：Kong数据平面Plugin的调用与实现"
 author: 李佶澳
 createdate: 2018/11/01 14:18:00
 changedate: 2018/11/01 14:18:00

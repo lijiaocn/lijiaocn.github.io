@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "API网关Kong（五）：功能梳理和插件使用-安全插件使用"
+title: "API网关Kong使用教程（五）：功能梳理和插件使用-安全插件使用"
 author: 李佶澳
 createdate: 2018/10/22 10:32:00
 changedate: 2018/10/22 10:32:00

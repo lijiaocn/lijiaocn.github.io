@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  "API网关Kong（九）：Kong对WebSocket的支持"
+title:  "API网关Kong使用教程（九）：Kong对WebSocket的支持"
 author: 李佶澳
 createdate: "2018-11-06 17:17:02 +0800"
 changedate: "2018-11-06 17:17:02 +0800"

@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "API网关Kong（十一）：自己动手写一个插件"
+title: "API网关Kong使用教程（十一）：自己动手写一个插件"
 author: 李佶澳
 createdate: "2018-11-09 16:22:33 +0800"
 changedate: "2018-11-09 16:22:33 +0800"
