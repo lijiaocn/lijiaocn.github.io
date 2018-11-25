@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2018/05/04 21:14:00
 changedate: 2018/10/18 21:49:59
 categories: 问题
-tags: HyperLedger
+tags: 视频教程 HyperLedger
 keywords: 超级账本,视频教程演示,区块链实践,hyperledger,fabric,区块链问题
 description: "这里记录部署hyperledger fabric时遇到的一些问题"
 
