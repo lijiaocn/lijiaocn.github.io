@@ -107,6 +107,22 @@ QQ交流群：  `576555864`
 	Generating public/private rsa key pair.
 	Enter file in which to save the key (/Users/lijiao/.ssh/id_rsa):
 
+开始下面的操作之前，你需要确认本机已经正确设置了/etc/hosts：
+
+	$ cat /etc/hosts
+	127.0.0.1 localhost
+	
+	192.168.33.10 orderer0.member1.example.com
+	192.168.33.10 peer0.member1.example.com
+	192.168.33.11 peer1.member1.example.com
+	192.168.33.12 peer0.member2.example.com
+
+另外确认文件`inventories/example.com/hosts`和`./inventories/example.com/etc_hosts`中的IP也正确设置了。
+
+要确保能够用密码登录，设置登录的证书时候需要用密码登录:
+
+	ssh root@orderer0.member1.example.com
+
 1 初始化目标机器
 
 	export ANSIBLE_HOST_KEY_CHECKING=False
