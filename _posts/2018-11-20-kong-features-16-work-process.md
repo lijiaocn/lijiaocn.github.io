@@ -19,6 +19,14 @@ description: 刚刚才发现kong的网页上有一篇文档非常详细的介绍
 
 刚刚(2018-11-20 17:11:36)才发现kong的网页上有一篇文档非常详细的介绍了kong转发请求的过程：[Kong: Proxy Reference][1]。
 
+## 需要考虑的一些问题
+
+### 怎样设置会话粘连？
+
+可以通过哈希设置，比如说按照consumer、ip、header、cookie中的一个进行hash，使得有相同的特征的请求被同一个后端服务处理。
+
+在[upstream](https://docs.konghq.com/0.14.x/admin-api/#upstream-objects)中设置。
+
 ## 从 Route 到 Service
 
 [Route](https://docs.konghq.com/0.14.x/admin-api/#route-object)是kong的代理规则，定义了哪些请求代理给哪些service，以请求的方法、host、路径等作为转发依据，见[Route的配置](https://docs.konghq.com/0.14.x/admin-api/#request-body-3)。

@@ -19,6 +19,98 @@ Kong的介绍和使用方法参考：[Nginx、OpenResty和Kong的基本概念与
 
 这里记录使用Kong时遇到的问题，以及找到的解决方法。
 
+## 用siege压测时，连接被reset：read error Connection reset by peer sock.c
+ 
+siege压测时遇到一个问题：
+
+```bash
+[root@192.168.33.11 vagrant]# siege -q -c 10 -b -t 10s -H "host: echo.com"  192.168.33.12:7000
+[error] socket: read error Connection reset by peer sock.c:539: Connection reset by peer
+[error] socket: read error Connection reset by peer sock.c:539: Connection reset by peer
+siege aborted due to excessive socket failure; you can change the failure threshold in $HOME/.siegerc
+```
+
+可以修改`$HOME/.siege/siege.conf`中的配置，增加容忍的失败数：
+
+	failures =  1024         # 可以容忍的失败数
+
+把failures调高，是治标不治本的做法，还要找到被reset的原因，但是在nginx日志和dmesg中都没有找到日志，access.log中的请求日志全部是成功的。
+
+从[Tuning NGINX for Performance](https://www.nginx.com/blog/tuning-nginx/)知道了[keepalive_requests](https://nginx.org/en/docs/http/ngx_http_core_module.html?&_ga=2.131946575.1318856059.1542940760-488530544.1533263950#keepalive_requests)，这个参数限制了一个keep-alive连接中可以发起的请求的数量，调大即可：
+
+```bash
+	server {
+	    listen       7000 ;
+	    listen       [::]:7000 ;
+	    server_name  echo.com;                         # 在本地host配置域名
+	    keepalive_requests  10000000;
+	
+	    location / {
+	      proxy_pass http://172.16.128.20:8080;
+	    }
+	}
+```
+
+如果请求时持续时间很长，还可以修改[keepalive_timeout](https://nginx.org/en/docs/http/ngx_http_core_module.html?&_ga=2.57676906.1318856059.1542940760-488530544.1533263950#keepalive_timeout)，增加keep-alive长连接的保持时间。
+
+## 用ab压测时收到：apr_socket_recv: Connection reset by peer (104)
+
+ab用1万并发压测时，压测到一半出现错误：
+
+```bash
+Completed 10000 requests
+Completed 20000 requests
+Completed 30000 requests
+Completed 40000 requests
+Completed 50000 requests
+Completed 60000 requests
+Completed 70000 requests
+apr_socket_recv: Connection reset by peer (104)
+Total of 73057 requests completed
+
+```
+
+从[apache ab压力测试报错（apr_socket_recv: Connection reset by peer (104)）](https://www.cnblogs.com/felixzh/p/8295471.html)中得知，这是因为内核防护syn flood的功能导致。
+
+关闭`tcp_syncookies`：
+
+```
+# vim /etc/sysctl.conf 
+net.ipv4.tcp_syncookies = 0
+net.ipv4.tcp_max_syn_backlog = 1000000
+# sysctl -p
+```
+
+## kong: epoll_wait() reported that client prematurely closed connection
+
+用ab压测的用kong代理的服务的时候，被reset:
+
+```bash
+➜   ✗ ab -k -n 10000 -c 10 -H "Host: echo.com" http://192.168.33.12:8000/
+This is ApacheBench, Version 2.3 <$Revision: 1826891 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking 192.168.33.12 (be patient)
+Completed 1000 requests
+Completed 2000 requests
+Completed 3000 requests
+Completed 4000 requests
+Completed 5000 requests
+apr_socket_recv: Connection reset by peer (54)
+Total of 5049 requests completed
+```
+
+kong的日志里有一条：
+
+```bash
+2018/11/22 17:54:31 [info] 30893#30893: *23735 epoll_wait() reported that client prematurely closed connection, so upstream connection is closed too while sending request to upstream, client: 192.168.33.1, server: kong, request: "GET / HTTP/1.0", upstream: "http://172.16.128.11:8080/", host: "echo.com"
+```
+
+ab命令是在mac上执行的，目标机器是Mac上的虚拟机，如果从另一台虚拟上用ab测试，不会出现这个问题。
+
+比较奇怪的是，同样在mac上发起测试，测试目标是通一台机器上的nginx服务时，就没有这个问题，mac上的ab有一些不同的地方？
+
 ## 添加新插件后，启动失败: postgres database 'kong' is missing migration: (path-rewrite) 
 
 开发了一个名为`path-rewrite`的插件，安装配置后，启动kong报错：

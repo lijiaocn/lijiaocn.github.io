@@ -57,6 +57,8 @@ description: 最近在研究学习openresty和kong，openresty将处理逻辑直
 
 [How to do Web Server Performance Benchmark in FREE?][1]中介绍了几种常见的BenchMark测试工具。
 
+[Modern HTTP Benchmarking Tools ready for 2018 – h2load, hey & wrk][8]中介绍了另外几个比较新的压测工具。
+
 对Web应用压测之前，先要测试一下发起请求的机器与目标机器之间的带宽：[iperf、netperf等网络性能测试工具的使用][7]
 
 ### ApacheBench
@@ -118,6 +120,114 @@ ApacheBench的测试结果中包括每秒钟的请求次数、请求的处理时
 	100%  13378 (longest request)
 	[root@lab ~]#
 
+ab不支持http 1.1，如果要测试http1.1，可以使用[siege](https://www.joedog.org/siege-home/)或者[apib](https://github.com/apigee/apib)等
+
+## siege
+
+[siege](https://www.joedog.org/siege-home/)安装：
+
+	yum install -y siege
+
+siege的配置参数可以通过`siege -C`看到，配置项保存在`$HOME/.siege/siege.conf`中，比较常用的有：
+
+```bash
+protocol = HTTP/1.1      # 配置使用的协议
+connection = keep-alive  # 使用长链接 
+concurrent = 25          # 并发数量，可以用命令行参数-c覆盖
+timeout = 600            # 链接超时时间
+verbose = false          # 不显示每个请求
+failures =  1024         # 可以容忍的失败数
+```
+
+另外siege还有一些命令行参数，命令行参数优先于配置文件中的设置：
+
+```bash
+[root@192.168.33.11 vagrant]# siege -h
+SIEGE 4.0.2
+Usage: siege [options]
+       siege [options] URL
+       siege -g URL
+Options:
+  -V, --version             VERSION, prints the version number.
+  -h, --help                HELP, prints this section.
+  -C, --config              CONFIGURATION, show the current config.
+  -v, --verbose             VERBOSE, prints notification to screen.
+  -q, --quiet               QUIET turns verbose off and suppresses output.
+  -g, --get                 GET, pull down HTTP headers and display the
+                            transaction. Great for application debugging.
+  -c, --concurrent=NUM      CONCURRENT users, default is 10
+  -r, --reps=NUM            REPS, number of times to run the test.
+  -t, --time=NUMm           TIMED testing where "m" is modifier S, M, or H
+                            ex: --time=1H, one hour test.
+  -d, --delay=NUM           Time DELAY, random delay before each requst
+  -b, --benchmark           BENCHMARK: no delays between requests.
+  -i, --internet            INTERNET user simulation, hits URLs randomly.
+  -f, --file=FILE           FILE, select a specific URLS FILE.
+  -R, --rc=FILE             RC, specify an siegerc file
+  -l, --log[=FILE]          LOG to FILE. If FILE is not specified, the
+                            default is used: PREFIX/var/siege.log
+  -m, --mark="text"         MARK, mark the log file with a string.
+                            between .001 and NUM. (NOT COUNTED IN STATS)
+  -H, --header="text"       Add a header to request (can be many)
+  -A, --user-agent="text"   Sets User-Agent in request
+  -T, --content-type="text" Sets Content-Type in request
+```
+
+siege的设计思路和ab是反的，ab是指定并发数和总的请求数，运行完所有请求后，统计时间，siege是指定并发数和运行时间，统计这段时间内完成的请求数。
+
+例如下面是用10个并发，进行一分钟的benchmark测试，参数`-b`表示使用benchmark的方式：
+
+```bash
+$ siege -c 10 -b -t 1M -H "host: echo.com"  192.168.33.12:8000
+** SIEGE 4.0.2
+** Preparing 10 concurrent users for battle.
+The server is now under siege...
+
+Transactions:		      102797 hits
+Availability:		       99.01 %
+Elapsed time:		       28.07 secs
+Data transferred:	       61.37 MB
+Response time:		        0.00 secs
+Transaction rate:	     3662.17 trans/sec
+Throughput:		        2.19 MB/sec
+Concurrency:		        9.71
+Successful transactions:      102797
+Failed transactions:	        1024
+Longest transaction:	        0.03
+Shortest transaction:	        0.00
+```
+### 遇到的问题
+
+siege压测时遇到一个问题：
+
+```bash
+[root@192.168.33.11 vagrant]# siege -q -c 10 -b -t 10s -H "host: echo.com"  192.168.33.12:7000
+[error] socket: read error Connection reset by peer sock.c:539: Connection reset by peer
+[error] socket: read error Connection reset by peer sock.c:539: Connection reset by peer
+siege aborted due to excessive socket failure; you can change the failure threshold in $HOME/.siegerc
+```
+
+可以修改`$HOME/.siege/siege.conf`中的配置，增加容忍的失败数：
+
+	failures =  1024         # 可以容忍的失败数
+
+把failures调高，是治标不治本的做法，还要找到被reset的原因，但是在nginx日志和dmesg中都没有找到日志，access.log中的请求日志全部是成功的。
+
+从[Tuning NGINX for Performance](https://www.nginx.com/blog/tuning-nginx/)知道了[keepalive_requests](https://nginx.org/en/docs/http/ngx_http_core_module.html?&_ga=2.131946575.1318856059.1542940760-488530544.1533263950#keepalive_requests)，这个参数限制了一个keep-alive连接中可以发起的请求的数量，调大即可：
+
+```bash
+	server {
+	    listen       7000 ;
+	    listen       [::]:7000 ;
+	    server_name  echo.com;                         # 在本地host配置域名
+	    keepalive_requests  10000000;
+	
+	    location / {
+	      proxy_pass http://172.16.128.20:8080;
+	    }
+	}
+```
+
 ## 内在测量工具
 
 ## 性能分析工具
@@ -133,6 +243,7 @@ ApacheBench的测试结果中包括每秒钟的请求次数、请求的处理时
 5. [SystemTAP初学者手册][5]
 6. [Web开发平台OpenResty（三）：火焰图性能分析][6]
 7. [iperf、netperf等网络性能测试工具的使用][7]
+8. [Modern HTTP Benchmarking Tools ready for 2018 – h2load, hey & wrk][8]
 
 [1]: https://geekflare.com/web-performance-benchmark/ "How to do Web Server Performance Benchmark in FREE?"
 [2]: http://www.ruanyifeng.com/blog/2017/09/flame-graph.html "如何读懂火焰图？"
@@ -141,3 +252,4 @@ ApacheBench的测试结果中包括每秒钟的请求次数、请求的处理时
 [5]: https://sourceware.org/systemtap/SystemTap_Beginners_Guide/ "SystemTAP初学者手册"
 [6]: https://www.lijiaocn.com/%E7%BC%96%E7%A8%8B/2018/11/02/openresty-study-03-frame-md.html "Web开发平台OpenResty（三）：火焰图性能分析"
 [7]: https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2016/04/08/network-benchmark.html "iperf、netperf等网络性能测试工具的使用"
+[8]: https://malloc.fi/modern-http-benchmarking-tools-h2load-hey-wrk "Modern HTTP Benchmarking Tools ready for 2018 – h2load, hey & wrk"

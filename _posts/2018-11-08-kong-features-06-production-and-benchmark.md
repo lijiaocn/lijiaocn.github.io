@@ -21,7 +21,131 @@ description: 生产环境中，将kong单独部署比较好，也方便进行压
 
 下面是一个大体可用的性能测试方法，测试的场景单一，只比较了直接访问Pod，和通过Kong访问Pod的效果，没有测试不同类型应用、对比Kong与Nginx-Ingress，以及对比开启不同插件时的结果。
 
+## 订正
+
+下面的测试方法中，使用的压测工具是ab，ab不支持http 1.1，kong不支持http 1.0，ab向kong发送的是http 1.0请求，即使使用了keep-alive，依然会被kong断开连接。
+
+原生的nginx不存在这种情况，因此开启keep-alive时，对比nginx和kong的ab压测结果是没有意义的，因为压测kong时keep-alive没有生效。
+
+kong为什么会断开使用了keep-alive的http 1.0请求，这是一个疑问，需要调查一下是不是设置的原因。
+
+在此之前，可以换用支持http 1.1的[siege](https://www.lijiaocn.com/%E6%96%B9%E6%B3%95/2018/11/02/webserver-benchmark-method.html#siege)进行压测。
+
+### 用siege进行测试
+
+测试在位于同一台机器上的`两个虚拟机`之间进行的，`测试数据可能不准`，重要的是方法。
+
+[iperf](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2016/04/08/network-benchmark.html)测试结果如下：
+
+```bash
+[root@192.168.33.11 vagrant]# iperf -c 192.168.33.12
+------------------------------------------------------------
+Client connecting to 192.168.33.12, TCP port 5001
+TCP window size: 85.0 KByte (default)
+------------------------------------------------------------
+[  3] local 192.168.33.11 port 42278 connected with 192.168.33.12 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  3]  0.0-10.0 sec  3.29 GBytes  2.82 Gbits/sec
+```
+
+nginx主要配置：
+
+```bash
+worker_processes 2;
+worker_rlimit_nofile 10000;
+
+events {
+    worker_connections 10000;
+}
+
+upstream echo_upstream{
+    server 172.16.128.20:8080;
+    keepalive 10000;
+}
+
+server {
+    listen       7000 ;
+    listen       [::]:7000 ;
+    server_name  echo.com;                         # 在本地host配置域名
+    keepalive_requests  100000000;
+
+    location / {
+        proxy_pass  http://echo_upstream;
+    }
+}
+```
+
+kong的主要配置：
+
+```bash
+worker_processes 2;
+daemon off;
+
+pid pids/nginx.pid;
+error_log logs/error.log info;
+
+worker_rlimit_nofile 10000;
+
+events {
+    worker_connections 10000;
+}
+
+http {
+    keepalive_requests 100000000;
+    include 'nginx-kong.conf';
+}
+```
+
+测试nginx:
+
+```bash
+[root@192.168.33.11 vagrant]# siege -c 100 -b -t 1M -H "host: echo.com"  192.168.33.12:7000
+** SIEGE 4.0.2
+** Preparing 100 concurrent users for battle.
+The server is now under siege...
+Lifting the server siege...
+Transactions:		      289018 hits
+Availability:		      100.00 %
+Elapsed time:		       59.49 secs
+Data transferred:	      133.40 MB
+Response time:		        0.02 secs
+Transaction rate:	     4858.26 trans/sec
+Throughput:		        2.24 MB/sec
+Concurrency:		       99.77
+Successful transactions:      289018
+Failed transactions:	           0
+Longest transaction:	        0.18
+Shortest transaction:	        0.00
+```
+
+测试kong:
+
+```bash
+$ siege -c 100 -b -t 1M -H "host: echo.com"  192.168.33.12:8000
+[root@192.168.33.11 vagrant]#  siege -c 100 -b -t 1M -H "host: echo.com"  192.168.33.12:8000
+** SIEGE 4.0.2
+** Preparing 100 concurrent users for battle.
+The server is now under siege...
+Lifting the server siege...
+Transactions:		      259773 hits
+Availability:		      100.00 %
+Elapsed time:		       59.15 secs
+Data transferred:	      155.08 MB
+Response time:		        0.02 secs
+Transaction rate:	     4391.77 trans/sec
+Throughput:		        2.62 MB/sec
+Concurrency:		       99.72
+Successful transactions:      259773
+Failed transactions:	           0
+Longest transaction:	        1.16
+Shortest transaction:	        0.00
+```
+
+在这个用`本地虚拟机`组成的环境中，100并发的时候，处理速度下降了9%~10%，这是在没有启用任何插件的情况下的结果。
+
 ## 测试结果
+
+>注意：这里以及后面的内容都是用ab压测的，方法是有意义的，但得出的数据没有意义，原因见前面的“订正”章节，可以按照下面的方法进行测试，但将压测工具换成siege。
 
 测试结果：
 
@@ -86,12 +210,12 @@ Kong：4C8G，部署kong的数据平面0.14.1，响应请求
 在请求端发起测试，tcp报文大小为434时，请求端与Kong之间的带宽是`597Mbits/sec`：
  
 
-	[root@request]# iperf -p 5001 -c 10.10.64.58 -t 120 -l 434
+	[root@request]# iperf -p 5001 -c 192.168.33.12 -t 120 -l 434
 	------------------------------------------------------------
-	Client connecting to 10.10.64.58, TCP port 5001
+	Client connecting to 192.168.33.12, TCP port 5001
 	TCP window size: 45.0 KByte (default)
 	------------------------------------------------------------
-	[  3] local 10.10.199.154 port 40322 connected with 10.10.64.58 port 5001
+	[  3] local 10.10.199.154 port 40322 connected with 192.168.33.12 port 5001
 	[ ID] Interval       Transfer     Bandwidth
 	[  3]  0.0-120.0 sec  8.35 GBytes   597 Mbits/sec
 
@@ -131,7 +255,7 @@ Service的ClusterIP为`10.254.136.179`：
 	Client connecting to 10.254.136.179, TCP port 5001
 	TCP window size: 45.0 KByte (default)
 	------------------------------------------------------------
-	[  3] local 10.10.64.58 port 59508 connected with 10.254.136.179 port 5001
+	[  3] local 192.168.33.12 port 59508 connected with 10.254.136.179 port 5001
 	[ ID] Interval       Transfer     Bandwidth
 	[  3]  0.0-120.0 sec  4.64 GBytes   332 Mbits/sec
 
@@ -212,18 +336,18 @@ Service的ClusterIP为`10.254.136.179`：
 
 从请求端通过kong访问Pod，无并发时，每秒中处理`722.00`个请求，带宽为`539.39Kbytes/s`，远远没有达到饱和状态：
 
-	[root@request]# ab -k -n 100000 -c 1 -H "Host: echo.com" http://10.10.64.58:8000/
+	[root@request]# ab -k -n 100000 -c 1 -H "Host: echo.com" http://192.168.33.12:8000/
 	This is ApacheBench, Version 2.3 <$Revision: 1430300 $>
 	Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
 	Licensed to The Apache Software Foundation, http://www.apache.org/
 	
-	Benchmarking 10.10.64.58 (be patient)
+	Benchmarking 192.168.33.12 (be patient)
 	...
 	Finished 100000 requests
 	
 	
 	Server Software:        echoserver
-	Server Hostname:        10.10.64.58
+	Server Hostname:        192.168.33.12
 	Server Port:            8000
 	
 	Document Path:          /
@@ -318,18 +442,18 @@ Service的ClusterIP为`10.254.136.179`：
 
 平均每秒钟处理`5812.13`个请求，占用带宽为`4344.57Kbytes/s`，远远未达到饱和状态。
 
-	[root@request]#  ab -k -n 100000 -c 100 -H "Host: echo.com" http://10.10.64.58:8000/
+	[root@request]#  ab -k -n 100000 -c 100 -H "Host: echo.com" http://192.168.33.12:8000/
 	This is ApacheBench, Version 2.3 <$Revision: 1430300 $>
 	Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
 	Licensed to The Apache Software Foundation, http://www.apache.org/
 	
-	Benchmarking 10.10.64.58 (be patient)
+	Benchmarking 192.168.33.12 (be patient)
 	...
 	Finished 100000 requests
 	
 	
 	Server Software:        echoserver
-	Server Hostname:        10.10.64.58
+	Server Hostname:        192.168.33.12
 	Server Port:            8000
 	
 	Document Path:          /
@@ -365,6 +489,30 @@ Service的ClusterIP为`10.254.136.179`：
 	  98%     30
 	  99%     46
 	 100%    151 (longest request)
+
+## 与nginx对比
+
+在同一个机器上部署nginx，在nginx上配置到pod的代理访问：
+
+	[root@localhost ~]# cat /etc/nginx/conf.d/echo.com.conf
+	server {
+	    listen       7000 ;
+	    listen       [::]:7000 ;
+	    server_name  echo.com;                         # 在本地host配置域名
+	
+	    location / {
+	      proxy_pass http://172.16.128.11:8080;
+	    }
+	}
+
+对比nginx和kong的压测结果：
+
+	//压测nginx
+	$ ab -k -n 100000 -c 100 -H "Host: echo.com" http://192.168.33.12:7000/
+	
+	//压测kong
+	$ ab -k -n 100000 -c 100 -H "Host: echo.com" http://192.168.33.12:8000/
+
 
 ## 参考
 
