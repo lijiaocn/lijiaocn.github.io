@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "API网关Kong使用教程（七）：Kong数据平面Plugin的调用与实现"
+title: "API网关Kong学习笔记（七）：Kong数据平面Plugin的调用与实现"
 author: 李佶澳
 createdate: 2018/11/01 14:18:00
 changedate: 2018/11/01 14:18:00
@@ -16,7 +16,7 @@ description: kong的数据平面插件(plugin)的调用过程，请求处理过�
 
 ## 说明
 
-这是[API网关Kong的系列教程](https://www.lijiaocn.com/tags/class.html)中的一篇，使用过程中遇到的问题和解决方法记录在[API网关Kong的使用过程中遇到的问题以及解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/30/kong-usage-problem-and-solution.html)。
+这是[API网关Kong的学习笔记](https://www.lijiaocn.com/tags/class.html)中的一篇，使用过程中遇到的问题和解决方法记录在[API网关Kong的使用过程中遇到的问题以及解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/30/kong-usage-problem-and-solution.html)。
 
 了解一下Kong的插件的工作过程。
 

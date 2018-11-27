@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "API网关Kong使用教程（十二）：插件的目录中schema分析"
+title: "API网关Kong学习笔记（十二）：插件的目录中schema分析"
 author: 李佶澳
 createdate: 2018/11/16 14:33:00
 changedate: 2018/11/16 14:33:00
@@ -16,7 +16,7 @@ description: 模仿kong中已经有的插件，自己动手写一个，熟悉插
 
 ## 说明
 
-这是[API网关Kong的系列教程](https://www.lijiaocn.com/tags/class.html)中的一篇，使用过程中遇到的问题和解决方法记录在[API网关Kong的使用过程中遇到的问题以及解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/30/kong-usage-problem-and-solution.html)。
+这是[API网关Kong的学习笔记](https://www.lijiaocn.com/tags/class.html)中的一篇，使用过程中遇到的问题和解决方法记录在[API网关Kong的使用过程中遇到的问题以及解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/30/kong-usage-problem-and-solution.html)。
 
 这篇是[API网关Kong（十一）：自己动手写一个插件](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/11/09/kong-features-07-write-plugins.html)的继续，找到调用插件的schema的地方，确定可以在schema中定义的类型和函数。
 

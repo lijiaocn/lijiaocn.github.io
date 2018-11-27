@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  "API网关Kong使用教程（十）：Kong在生产环境中的部署与性能测试方法"
+title:  "API网关Kong学习笔记（十）：Kong在生产环境中的部署与性能测试方法"
 author: 李佶澳
 createdate: "2018-11-02 17:36:17 +0800"
 changedate: "2018-11-02 17:36:17 +0800"
@@ -15,7 +15,7 @@ description: 生产环境中，将kong单独部署比较好，也方便进行压
 
 ## 说明
 
-这是[API网关Kong的系列教程](https://www.lijiaocn.com/tags/class.html)中的一篇，使用过程中遇到的问题和解决方法记录在[API网关Kong的使用过程中遇到的问题以及解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/30/kong-usage-problem-and-solution.html)。
+这是[API网关Kong的学习笔记](https://www.lijiaocn.com/tags/class.html)中的一篇，使用过程中遇到的问题和解决方法记录在[API网关Kong的使用过程中遇到的问题以及解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/30/kong-usage-problem-and-solution.html)。
 
 生产环境中，将kong的数据平面单独部署比较好，也方便进行压力测试，以及用[火焰图进行性能分析][3]，这里将kong的管理平面和数据平面分开，数据平面独占一台机器，负责请求转发。
 

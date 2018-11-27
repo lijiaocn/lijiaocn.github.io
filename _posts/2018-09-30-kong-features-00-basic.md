@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "API网关Kong使用教程（三）：功能梳理和插件使用-基本使用过程"
+title: "API网关Kong学习笔记（三）：功能梳理和插件使用-基本使用过程"
 author: 李佶澳
 createdate: "2018-10-10 14:37:53 +0800"
 changedate: "2018-10-10 14:37:53 +0800"
@@ -15,7 +15,7 @@ description: 先通过部署一个webshell应用和为它设置key-auth插件的
 
 ## 说明
 
-这是[API网关Kong的系列教程](https://www.lijiaocn.com/tags/class.html)中的一篇，使用过程中遇到的问题和解决方法记录在[API网关Kong的使用过程中遇到的问题以及解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/30/kong-usage-problem-and-solution.html)。
+这是[API网关Kong的学习笔记](https://www.lijiaocn.com/tags/class.html)中的一篇，使用过程中遇到的问题和解决方法记录在[API网关Kong的使用过程中遇到的问题以及解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/30/kong-usage-problem-and-solution.html)。
 
 通过[Nginx、OpenResty和Kong的基本概念与使用方法][1]了解了Kong的工作原理，通过[API网关Kong与Kubernetes的集成方法][2]了解了与Kubernetes的集成方法。这里学习下[Kong的插件][3]，并尽可能压测一下感兴趣的插件。
 

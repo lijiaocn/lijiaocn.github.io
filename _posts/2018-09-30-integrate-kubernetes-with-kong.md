@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "API网关Kong使用教程（二）：Kong与Kubernetes集成的方法"
+title: "API网关Kong学习笔记（二）：Kong与Kubernetes集成的方法"
 author: 李佶澳
 createdate: "2018-09-30 16:07:13 +0800"
 changedate: "2018-09-30 16:07:13 +0800"
@@ -15,7 +15,7 @@ description: Kong是一个Api网关，也是一个特性更丰富的反向代理
 
 ## 说明
 
-这是[API网关Kong的系列教程](https://www.lijiaocn.com/tags/class.html)中的一篇，使用过程中遇到的问题和解决方法记录在[API网关Kong的使用过程中遇到的问题以及解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/30/kong-usage-problem-and-solution.html)。
+这是[API网关Kong的学习笔记](https://www.lijiaocn.com/tags/class.html)中的一篇，使用过程中遇到的问题和解决方法记录在[API网关Kong的使用过程中遇到的问题以及解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/30/kong-usage-problem-and-solution.html)。
 
 经过前面的学习([Nginx、OpenResty和Kong的基本概念与使用方法][3])，对Api网关是什么，以及Kong能够做什么已经有了足够的了解。
 现在Kubernetes一统计算资源与应用发布编排的趋势已经形成，我们更关心Kong能否和Kubernetes结合。

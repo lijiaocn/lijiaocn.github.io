@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "API网关Kong使用教程（十六）：Kong转发请求的工作过程"
+title: "API网关Kong学习笔记（十六）：Kong转发请求的工作过程"
 author: 李佶澳
 createdate: "2018-11-20 17:08:27 +0800"
 changedate: "2018-11-20 17:08:27 +0800"
@@ -15,7 +15,7 @@ description: 刚刚才发现kong的网页上有一篇文档非常详细的介绍
 
 ## 说明
 
-这是[API网关Kong的系列教程](https://www.lijiaocn.com/tags/class.html)中的一篇，使用过程中遇到的问题和解决方法记录在[API网关Kong的使用过程中遇到的问题以及解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/30/kong-usage-problem-and-solution.html)。
+这是[API网关Kong的学习笔记](https://www.lijiaocn.com/tags/class.html)中的一篇，使用过程中遇到的问题和解决方法记录在[API网关Kong的使用过程中遇到的问题以及解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/30/kong-usage-problem-and-solution.html)。
 
 刚刚(2018-11-20 17:11:36)才发现kong的网页上有一篇文档非常详细的介绍了kong转发请求的过程：[Kong: Proxy Reference][1]。
 

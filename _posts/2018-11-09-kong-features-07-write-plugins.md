@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "API网关Kong使用教程（十一）：自己动手写一个插件"
+title: "API网关Kong学习笔记（十一）：自己动手写一个插件"
 author: 李佶澳
 createdate: "2018-11-09 16:22:33 +0800"
 changedate: "2018-11-09 16:22:33 +0800"
@@ -15,7 +15,7 @@ description: 模仿kong中已经有的插件，自己动手写一个，熟悉插
 
 ## 说明
 
-这是[API网关Kong的系列教程](https://www.lijiaocn.com/tags/class.html)中的一篇，使用过程中遇到的问题和解决方法记录在[API网关Kong的使用过程中遇到的问题以及解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/30/kong-usage-problem-and-solution.html)。
+这是[API网关Kong的学习笔记](https://www.lijiaocn.com/tags/class.html)中的一篇，使用过程中遇到的问题和解决方法记录在[API网关Kong的使用过程中遇到的问题以及解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/30/kong-usage-problem-and-solution.html)。
 
 这里模仿已经有的插件，写一个http-rewrite插件，这个插件的用途是改写uri。
 
