@@ -20,4 +20,4 @@ excerpt_separator: "----"
 ICP-number:
 Copyright: Copyright @2011-2018 All rights reserved.
 footlinks: {"lijiaocn":"https://www.lijiaocn.com", "github.com":"https://www.github.com/lijiaocn"}
-pageheader: 
+pageheader:  <span><a href="https://www.lijiaocn.com/go">Go语言简明手册</a>&nbsp<a href="https://www.lijiaocn.com/nginx">nginx、openresty、lua和kong</span>
