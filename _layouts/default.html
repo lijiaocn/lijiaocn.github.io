@@ -16,17 +16,17 @@
 			</div>
 			<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 center">
 				<div class="row">
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pageheader">
-						{{ site.pageheader }}<hr style="margin-top:0px;margin-bottom:0px">
-					</div>
-				</div>
-				<div class="row">
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 content">
 						<h1>{{ page.title }}</h1>
 						{% if page.author %}
 						<p class="author">作者:&nbsp;<a href="{{ site.baseurl }}/2010/10/10/about.html">{{ page.author }}</a>&nbsp;&nbsp;&nbsp;转载请保留：<a href="{{ post.url }}">原文地址</a>&nbsp;&nbsp;&nbsp;发布时间：{{ page.createdate }}</p>
 							<p class="author"><p>
 						{% endif %}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pageheader" style="text-align:center">
+						{{ site.pageheader }}
 					</div>
 				</div>
 				<div class="row">
