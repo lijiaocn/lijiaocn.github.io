@@ -31,7 +31,7 @@ git checkout  release-1.3
 
 	dep ensure
 
-dep命令的使用参考：[Go语言简明手册：依赖代码管理](https://go.lijiaocn.com/chapter04/01-dependency.html)
+dep命令的使用参考：[Go语言简明手册：依赖代码管理](https://www.lijiaocn.com/go/chapter04/01-dependency.html)
 
 ## 编译方法
 

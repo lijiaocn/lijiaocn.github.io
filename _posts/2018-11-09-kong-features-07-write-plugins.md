@@ -430,17 +430,17 @@ return RewriteHandler
 在Kubernetes中创建下的crd，然后将其绑定到service、route或者consumer即可：
 
 ```yaml
-	apiVersion: configuration.konghq.com/v1
-	kind: KongPlugin
-	metadata:
-	  name: echo-http-rewrite
-	  namespace: demo-echo
-	disabled: false  # optional
-	plugin: http-rewrite
-	config:                            # 参照：http://nginx.org/en/docs/http/ngx_http_rewrite_module.html#rewrite
-	  regex: "^/abc(.*)"               # nginx的正则表达式，匹配URI
-	  replacement: "/redirect/$1"      # 可以使用捕获
-	  flag: "permanent"                # 当前只支持permanent(301)和redirect(302)
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: echo-http-rewrite
+  namespace: demo-echo
+disabled: false  # optional
+plugin: http-rewrite
+config:                            # 参照：http://nginx.org/en/docs/http/ngx_http_rewrite_module.html#rewrite
+  regex: "^/abc(.*)"               # nginx的正则表达式，匹配URI
+  replacement: "/redirect/$1"      # 可以使用捕获
+  flag: "permanent"                # 当前只支持permanent(301)和redirect(302)
 ```
 
 ## 参考
