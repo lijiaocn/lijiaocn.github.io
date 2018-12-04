@@ -13,6 +13,7 @@ description: 经常遇到Setting locale failed.问题，虽然不影响命令运
 * auto-gen TOC:
 {:toc}
 
+## 情况1
 
 经常遇到这样的问题，虽然不影响命令运行，但是总是出现warning，很讨厌：
 
@@ -42,3 +43,48 @@ description: 经常遇到Setting locale failed.问题，虽然不影响命令运
 	localedef -i zh_CN  -f UTF-8 zh_CN.UTF-8
 
 这个命令在CentOS上也适用。
+
+## 情况2
+
+在另一台机器上又遇到了类似问题，ssh登录时提示：
+
+	-bash: warning: setlocale: LC_CTYPE: cannot change locale (UTF-8): No such file or directory
+
+执行一些命令时（主要是perl脚本），也会出现和上面类似的情况。
+
+变量`LC_CTYPE`的值为`UTF-8`:
+
+	$ echo $LC_CTYPE
+	UTF-8
+
+根据[warning: setlocale: LC_CTYPE: cannot change locale](https://blog.csdn.net/aca_jingru/article/details/45557027)中的说法，这个`LC_CTYPE`是从登录的MAC上上传的参数，MAC上的这个变量值确实也是`UTF-8`，在目标机器上，用`locale`命令看到LC_CTYPE变量值也明显不同：
+
+```bash
+$ locale
+locale: Cannot set LC_CTYPE to default locale: No such file or directory
+locale: Cannot set LC_ALL to default locale: No such file or directory
+LANG=en_US.UTF-8
+LC_CTYPE=UTF-8
+LC_NUMERIC="en_US.UTF-8"
+LC_TIME="en_US.UTF-8"
+LC_COLLATE="en_US.UTF-8"
+LC_MONETARY="en_US.UTF-8"
+LC_MESSAGES="en_US.UTF-8"
+LC_PAPER="en_US.UTF-8"
+LC_NAME="en_US.UTF-8"
+LC_ADDRESS="en_US.UTF-8"
+LC_TELEPHONE="en_US.UTF-8"
+LC_MEASUREMENT="en_US.UTF-8"
+LC_IDENTIFICATION="en_US.UTF-8"
+LC_ALL=
+```
+
+在目标机器的`/etc/locale.conf`中明确设置LC_CTYPE：
+
+```bash
+$ cat /etc/locale.conf
+LANG="en_US.UTF-8"
+LC_CTYPE="en_US.UTF-8"
+```
+
+重新登录，问题消失。

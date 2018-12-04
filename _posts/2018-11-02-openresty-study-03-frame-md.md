@@ -19,7 +19,7 @@ description: 通过火焰图观察OpenResty函数调用情况，每个函数的�
 
 以下操作在CentOS7上进行，[火焰图分析法][2]非常直观好用，可以用多种方式生成，也可以用于各种场景。
 
-下面的是用火焰图分析OpenResty应用的方法，用[systemtap][4]采集信息。
+下面是用火焰图分析OpenResty应用性能瓶颈的方法，用[systemtap][4]采集信息。
 
 ## 安装SystemTAP
 
@@ -33,7 +33,9 @@ description: 通过火焰图观察OpenResty函数调用情况，每个函数的�
 
 	stap-prep
 
-安装kernel的debuginfo，debuginfo在单独repo中，默认没有enable，先确定文件`/etc/yum.repos.d/CentOS-Debuginfo.repo`存在：
+`stap-prep`命令会尝试安装kernel的debuginfo，但debuginfo在单独repo中，默认没有enable，通常会安装失败。
+
+先确定文件`/etc/yum.repos.d/CentOS-Debuginfo.repo`存在：
 
 	$ cat /etc/yum.repos.d/CentOS-Debuginfo.repo
 	# CentOS-Debug.repo
@@ -55,13 +57,28 @@ description: 通过火焰图观察OpenResty函数调用情况，每个函数的�
 	baseurl=http://debuginfo.centos.org/7/$basearch/
 	gpgcheck=1
 	gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-Debug-7
-	enabled=0
+	enabled=1
 	#
 
 如果文件不存在，新建，并且执行`yum makecache`，然后用下面的命令安装：
 
+	yum --enablerepo=base-debuginfo makecache
 	yum --enablerepo=base-debuginfo install -y kernel-debuginfo-$(uname -r)
 	yum install kernel-devel
+
+如果还是找不到kernel-debuginfo安装包，可以看一下`/etc/yum.conf`中是否将将kernel包排除了：
+
+	# 将/etc/yum.conf中的exclude
+	 exclude=kernel* centos-release*
+	
+	#修改为
+	  exclude=centos-release*
+
+如果还是找不到，直接到[ http://debuginfo.centos.org/7/x86_64/ ](http://debuginfo.centos.org/7/x86_64/)下载对应的RPM包。
+
+建议做完上面的操作后，重新执行`stap-prep`，防止以后遗漏依赖的RPM。
+
+	stap-prep
 
 测试一下工作状态，下面的指令的意思是，探测到vfs.read操作时，执行{}中的指令：
 
@@ -130,9 +147,11 @@ nginx.conf的内容如下：
 	git clone https://github.com/openresty/stapxx
 	export PATH=$PATH:`pwd`/stapxx
 
+>别忘了设置PATH！
+
 然后用`stapxx/samples`中的脚本抓取指定进程的数据，例如抓取nginx进程的lua级别的数据，-x指定进程号：
 
-	./stapxx/samples/lj-lua-stacks.sxx --arg time=60 --skip-badvars -x 6949 > a.bt
+	./stapxx/samples/lj-lua-stacks.sxx --arg time=60 --skip-badvars -x 6949 > resty.bt
 
 stapxx/samples目录中有很多文件，分别适用于不同情况，`lj-lua-stacks.sxx`采集lua的调用栈。
 
@@ -163,8 +182,8 @@ stapxx/samples目录中有很多文件，分别适用于不同情况，`lj-lua-s
 
 用其中的`stackcollapse-stap.pl`和`flamegraph.pl`生成火焰图：
 
-	./FlameGraph/stackcollapse-stap.pl stapxx/a.bit  >a.cbt
-	./FlameGraph/flamegraph.pl a.cbt > a.svg
+	./FlameGraph/stackcollapse-stap.pl resty.bt  >resty.cbt
+	./FlameGraph/flamegraph.pl resty.cbt > resty.svg
 
 用浏览器打开生成的a.svg，在下面的图片上右键选“在浏览器中打开”，可以看到鼠标放在图片上的动态效果：
 

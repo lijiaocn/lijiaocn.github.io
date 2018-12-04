@@ -275,7 +275,6 @@ Service的ClusterIP为`10.254.136.179`：
 	NAME                    READY     STATUS    RESTARTS   AGE       IP            NODE
 	echo-7f4c564c84-7pds2   2/2       Running   0          1h        192.168.7.2   10.10.192.35
 
-
 ### 无并发的情况
 
 对比在无并发的情况下的结果，请求端发起访问的结果。

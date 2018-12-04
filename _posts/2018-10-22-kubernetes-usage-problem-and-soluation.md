@@ -29,3 +29,31 @@ description: 这里记录Kubernetes使用过程中遇到的一些比较的问题
 	kubectl exec -ti busybox -- env COLUMNS=500 LINES=100 bash 
 
 参考：[解决kubectl exec terminal size问题](http://ju.outofmemory.cn/entry/331098)
+
+## docker无法启动：Failed to start docker.service: Unit not found
+
+在CentOS 7上安装了docker-ce 18.03，启动的时候说是找不到unit，莫名其妙：
+
+	Failed to start docker.service: Unit not found
+
+后来发现是因为机器上的flanneld服务要在docker服务之前启动：
+
+	$ cat /usr/lib/systemd/system/flanneld.service
+	[Unit]
+	Description=Flanneld overlay address etcd agent
+	After=network.target
+	After=network-online.target
+	Wants=network-online.target
+	After=etcd.service
+	Before=docker.service
+	..
+
+文件/usr/lib/systemd/system/flanneld.service早就被我删除了，但是`/etc/systemd/system/docker.service.requires/`中还有一个flanneld.service，它是个符号链接，链接的文件已经删除：
+
+	$ ls  -l /etc/systemd/system/docker.service.requires/
+	total 0
+	lrwxrwxrwx 1 root root 40 Jan 26  2018 flanneld.service -> /usr/lib/systemd/system/flanneld.service
+
+将/etc/systemd/system/docker.service.requires/flanneld.service删除后，docker启动成功。
+
+参考[docker.service启动失败：Unit not found](https://www.cnblogs.com/ggsmida/p/6738539.html)

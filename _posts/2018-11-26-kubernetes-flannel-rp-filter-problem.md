@@ -89,6 +89,14 @@ default via 10.10.0.1 dev eth0
 
 然后就立马通了，很神奇。
 
+在`/etc/sysctl.conf`中添加：
+
+	net.ipv4.conf.all.rp_filter = 0
+
+然后更新：
+
+	sysctl -p
+
 查阅rp_filter参数的说明，原来这是linux kernel中实现的一种抗DOS攻击的方法。`rp_filter`为1时，将严格检查接受报文的网卡，和访问报文的源IP的网卡是否是同一个网卡，如果不是，就丢弃。
 
 在nodeA上直接访问Service时，报文的源IP是nodeA的eth0的IP，在nodeB上，flannel0收到报文后，检查发现，回应时要使用的网卡是eth0，接收网卡和回应网卡不一致，报文被丢弃，因此docker0压根接没有看到包，也不会送给容器。
