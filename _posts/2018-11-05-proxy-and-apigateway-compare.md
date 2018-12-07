@@ -41,6 +41,14 @@ envoy，选择它的原因是因为这个一个比较活跃的项目，lyft公�
 
 1. [Envoy vs NGINX vs HAProxy: Why the open source Ambassador API Gateway chose Envoy][1]
 2. [nginx-ingress vs kong vs traefik vs haproxy vs voyager vs contour vs ambassador vs istio ingress][2]
+3. [Comparing API Gateway Performances: NGINX vs. ZUUL vs. Spring Cloud Gateway vs. Linkerd][3]
+4. [Tyk Documentation][4]
+5. [AMBASSADOR][5]
+6. [Traefik][6]
 
 [1]: https://blog.getambassador.io/envoy-vs-nginx-vs-haproxy-why-the-open-source-ambassador-api-gateway-chose-envoy-23826aed79ef "Envoy vs NGINX vs HAProxy: Why the open source Ambassador API Gateway chose Envoy"
 [2]: https://kubedex.com/nginx-ingress-vs-kong-vs-traefik-vs-haproxy-vs-voyager-vs-contour-vs-ambassador/ "nginx-ingress vs kong vs traefik vs haproxy vs voyager vs contour vs ambassador vs istio ingress"
+[3]: https://engineering.opsgenie.com/comparing-api-gateway-performances-nginx-vs-zuul-vs-spring-cloud-gateway-vs-linkerd-b2cc59c65369 "Comparing API Gateway Performances: NGINX vs. ZUUL vs. Spring Cloud Gateway vs. Linkerd"
+[4]: https://tyk.io/docs/ "Tyk Documentation"
+[5]: https://www.getambassador.io/docs "AMBASSADOR"
+[6]: https://docs.traefik.io/  "Traefik"

@@ -22,11 +22,11 @@ description: 使用linux是躲不开的kernel，但kernel的内容又实在是�
 
 百度和google都是不靠谱的，因为通过搜索只能得到零碎、不一定正确的内容，构建起知识体系，加注第一手资料的索引才是王道。
 
-Kernel源码中包含到文档很丰富、收集了kernel各个方面的内容： [Linux Kernel Documentation][1]，也可以到[Github: linux kernel][18]中查看。
+Kernel源码中包含到文档很丰富、收集了kernel各个方面的内容： [Linux Kernel Documentation][1]，也可以到[Github: linux kernel][18]中查看。[The Linux Kernel documentation][19]是一个更适合在线阅读的文档。
 
-Redhat的产品文档是特别优秀的资料：[Product Documentation for Red Hat Enterprise Linux][5]
+Redhat的产品文档是特别优秀的资料：[Product Documentation for Red Hat Enterprise Linux][5]。
 
-Redhat的知识库也是很靠谱的：[redhat knowledgebase][6]
+Redhat的知识库也是很靠谱的：[redhat knowledgebase][6]。
 
 ## 00-INDEX
 
@@ -492,6 +492,7 @@ linux提供了SELinux的管理工具
 16. [lwn.net: Memory compaction][16]
 17. [System-wide Memory Defragmenter Without Killing any application][17]
 18. [Github: linux kernel][18]
+19. [The Linux Kernel documentation][19]
 
 [1]: https://www.kernel.org/doc/Documentation/  "linux kernel documentation" 
 [2]: https://www.kernel.org/doc/Documentation/networking/ "Documentation/networking"
@@ -511,3 +512,4 @@ linux提供了SELinux的管理工具
 [16]: https://lwn.net/Articles/368869/  "lwn.net: Memory compaction"
 [17]: http://events.linuxfoundation.org/sites/events/files/slides/%5BELC-2015%5D-System-wide-Memory-Defragmenter.pdf  "System-wide Memory Defragmenter Without Killing any application"
 [18]: https://github.com/torvalds/linux "Github: linux kernel"
+[19]: https://www.kernel.org/doc/html/latest/ "The Linux Kernel documentation"
