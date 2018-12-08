@@ -10,6 +10,9 @@ keywords: go,返回值,defer函数
 description: "Go语言的手册中明确说了可以在defer中修改`命名的返回的变量（named result parameters ），但是对修改非命名的返回变量，却没有明确的说法"
 ---
 
+* auto-gen TOC:
+{:toc}
+
 ## 说明
 
 Go语言的手册中[Defer statements](https://golang.org/ref/spec#Defer_statements) 明确说了可以在defer中修改`命名的返回的变量（named result parameters ）`：
@@ -17,9 +20,6 @@ Go语言的手册中[Defer statements](https://golang.org/ref/spec#Defer_stateme
 >For instance, if the deferred function is a function literal and the surrounding function has named result parameters that are in scope within the literal, the deferred function may access and modify the result parameters before they are returned. If the deferred function has any return values, they are discarded when the function completes. (See also the section on handling panics.)
 
 但是对修改非命名的返回变量，却没有明确的说法。
-
-* auto-gen TOC:
-{:toc}
 
 ## 试验
 
