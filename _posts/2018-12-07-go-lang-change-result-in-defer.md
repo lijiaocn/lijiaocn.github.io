@@ -7,7 +7,7 @@ changedate: "2018-12-07 10:54:23 +0800"
 categories: 编程
 tags: golang
 keywords: go,返回值,defer函数
-description: "Go语言的手册中明确说了可以在defer中修改`命名的返回的变量（named result parameters ），但是对修改非命名的返回变量，却没有明确的说法"
+description: "Go语言的手册中明确说了可以在defer中修改`命名的返回的变量（named result parameters ）"
 ---
 
 * auto-gen TOC:
