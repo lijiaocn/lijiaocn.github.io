@@ -371,11 +371,13 @@ Shortest transaction:	        0.00
 
 [sample-bt](https://github.com/openresty/openresty-systemtap-toolkit#sample-bt)可以抓取用户态和内核态的调用栈：
 
-	./stapxx/samples/sample-bt.sxx --arg time=1 --skip-badvars -D  MAXSKIPPED=100000 -x 17816 >resty.bt
+	./stapxx/samples/sample-bt.sxx --arg time=20 --skip-badvars -D  MAXSKIPPED=100000 -x 17816 >resty.bt
 	./FlameGraph/stackcollapse-stap.pl resty.bt  >resty.cbt
 	./FlameGraph/flamegraph.pl resty.cbt > resty.svg
 
 直接运行可能会遇到[WARNING: Missing unwind data for a module，rerun with XXX](https://www.lijiaocn.com/2018/12/06/nginx-systemtap-toolkit-usage-md.html#warning-missing-unwind-data-for-a-modulererun-with-xxx)的问题，链接中给出了解决方法。
+
+将Kong的火焰图与Nginx的火焰图对比，可以发现多出的开销。
 
 ## 参考
 

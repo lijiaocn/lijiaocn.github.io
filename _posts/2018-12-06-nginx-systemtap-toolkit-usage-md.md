@@ -60,6 +60,7 @@ Pass 5: run failed.  [man error::pass5]
 
 看了一下stap++的帮助，有一个`-d`参数，指定加载那些目标的debug信息：
 
+```bash
 [root@10.10.64.58 app]# stap++ -h
 Usage:
     stap++ [optoins] [infile]
@@ -78,6 +79,7 @@ Options:
     --sample-pid PID  Sample process to inspect DSO objects to load via -d
     -v              Be verbose.
     -x PID          Sets target() to PID (also for $^exec_path and $^libxxx_path).
+```
 
 回头再看打印的告警信息，原来里面的`rerun with`就是答案：
 
@@ -168,6 +170,47 @@ WARNING: Skipped due to global '__global_bts' lock timeout: 88
 ```
 
 这时候10s的抓取时间，生成的文件不到900k，不过还是有一些告警，貌似没啥影响。
+
+## ERROR: Array overflow, check MAXMAPENTRIES near identifier 'bts' at <input>:17:13
+
+现象如下：
+
+```bash
+[root@10.10.64.58 app]# ./stapxx/samples/sample-bt.sxx --arg time=20 --skip-badvars -D  MAXSKIPPED=100000  -x 10730 >resty.bt
+WARNING: Start tracing process 14968 (/usr/local/openresty/nginx/sbin/nginx)...
+WARNING: Missing unwind data for a module, rerun with 'stap -d (unknown; retry with -DDEBUG_UNWIND)'
+WARNING: DWARF expression stack underflow in CFI
+WARNING: Missing unwind data for a module, rerun with 'stap -d kernel'
+WARNING: _stp_read_address failed to access memory location
+ERROR: Array overflow, check MAXMAPENTRIES near identifier 'bts' at <input>:17:13
+WARNING: Number of errors: 1, skipped probes: 26
+WARNING: Skipped due to global '__global_bts' lock timeout: 26
+WARNING: Skipped due to reentrancy: 1
+WARNING: /usr/bin/staprun exited with status: 1
+Pass 5: run failed.  [man error::pass5]
+ERROR: No stack counts found
+```
+
+在`man stap`中查找`MAXMAPENTRIES`，默认值是2048：
+
+	MAXMAPENTRIES
+		Maximum number of rows in any single global array, default 2048.  
+		Individual arrays may be declared with a larger or smaller limit instead:
+
+可以用`-D`修改，如下：：
+
+```bash
+[root@10.10.64.58 app]# ./stapxx/samples/sample-bt.sxx --arg time=20 --skip-badvars -D  MAXSKIPPED=100000 -D MAXMAPENTRIES=100000 -x 10730 >resty.bt
+WARNING: Start tracing process 14968 (/usr/local/openresty/nginx/sbin/nginx)...
+WARNING: Missing unwind data for a module, rerun with 'stap -d kernel'
+WARNING: Missing unwind data for a module, rerun with 'stap -d (unknown; retry with -DDEBUG_UNWIND)'
+WARNING: DWARF expression stack underflow in CFI
+WARNING: _stp_read_address failed to access memory location
+WARNING: Time's up. Quitting now...(it may take a while)
+WARNING: Number of errors: 0, skipped probes: 41
+WARNING: Skipped due to global '__global_bts' lock timeout: 41
+WARNING: Skipped due to reentrancy: 62
+```
 
 ## 参考
 

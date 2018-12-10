@@ -44,6 +44,13 @@ application/json格式如下：
 	    }
 	}
 
+**特别注意**：用curl调用的时默认是`application/x-www-form-urlencoded`，如果要用json格式，需要修改请求头为`Content-Type: application/json`，例如：
+
+```bash
+ADDR=10.10.64.58:8001
+curl -v -X POST -H "Content-Type: application/json" $ADDR/upstreams/ --data @00-upstream.json
+```
+
 ## 状态查询
 
 用GET方法请求`/`和`/status`分别返回node的静止状态和动态状态，可以直接在浏览器中打开。
