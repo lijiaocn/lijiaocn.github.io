@@ -150,6 +150,8 @@ div.center p {
 div.center img {
 	max-width:100%;
 	-webkit-box-shadow: 0 0 10px #555;
+	display:block;
+	margin:0 auto;
 }
 
 div.center h1 {
