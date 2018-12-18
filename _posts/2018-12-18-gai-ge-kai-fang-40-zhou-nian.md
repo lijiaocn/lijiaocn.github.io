@@ -7,7 +7,7 @@ changedate: "2018-12-18 12:43:41 +0800"
 categories: 投资
 tags: 投资
 keywords: 改革开发,40周年,纪念改革开发讲话,讲话
-description:
+description: "2018年12月18日，庆祝改革开放40周年大会上的讲话（全文）"
 ---
 
 * auto-gen TOC:
