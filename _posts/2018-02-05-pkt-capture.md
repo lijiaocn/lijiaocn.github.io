@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 网络报文抓取破解的方法
+title: PC电脑端、手机移动端通信数据报文的抓取、破解和改写的方法
 author: 李佶澳
 createdate: 2018/02/05 22:07:28
 changedate: 2018/02/06 01:01:48
@@ -37,7 +37,7 @@ charles启动时自动启动http代理服务，默认地址如下：
 
 ### 抓取网页
 
-勾选了proxy->windows proxy，或者将浏览器的代理设置为charles之后，点击工具栏中的`start recording`按钮，即开始记录有charles代理的访问。
+勾选了proxy->windows proxy，或者将浏览器的代理设置为charles之后，点击工具栏中的`start recording`按钮，即开始记录由charles代理的访问。
 
 工具栏中的`start throttling`用于减慢请求速度。
 
@@ -74,13 +74,13 @@ charles可以自动生成证书，扮演中间人。
 
 ### 移动设备捕获与解密
 
-ios系统在设置->Wi-Fi，进入连接的网络中，手动设置代理。代理地址设置为charles的地址。
+ios系统在“设置->Wi-Fi”中，手动设置代理。代理地址设置为charles的地址。
 
-移动设置介入charles代理时,charles会弹出提示，选择允许。
+移动设备接入charles代理时,charles会弹出提示，选择允许。
 
 然后点击`Help->SSL Proxying->Install Charles Root Certificate On a Mobile Device or Remote Brower`
 
-按照弹出框中的提示，在移动端用浏览器打开网址：chls.pro/ssl。按照提示完成证书安装。
+按照弹出框中的提示，在移动端用浏览器打开网址：chls.pro/ssl，按照提示完成证书安装。
 
 安装之后，还要到“通用->设置->关于本机->证书信任设置”中将安装的证书启用。
 
