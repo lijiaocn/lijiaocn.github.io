@@ -395,4 +395,11 @@ loadstring = memoize(loadstring)
 
 可以在需要被快速运行完成的地方，关闭垃圾回收，等运算完成后再重启垃圾回收。
 
-手册：[Nginx、OpenResty、Lua与Kong](https://www.lijiaocn.com/nginx/)
+## 参考
+
+1. [Nginx、OpenResty、Lua与Kong](https://www.lijiaocn.com/nginx/)
+2. [What can I do to increase the performance of a Lua program?](https://stackoverflow.com/questions/154672/what-can-i-do-to-increase-the-performance-of-a-lua-program)
+3. [Lua Performance Tips](http://www.lua.org/gems/sample.pdf)
+4. [Lua Optimisation Tips](http://lua-users.org/wiki/OptimisationTips)
+5. [luajit官方性能优化指南和注解](https://www.cnblogs.com/zwywilliam/p/5992737.html)
+6. [Numerical Computing Performance Guide](http://wiki.luajit.org/Numerical-Computing-Performance-Guide)
