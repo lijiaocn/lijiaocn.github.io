@@ -28,6 +28,8 @@ kong0.14.3，envoy 1.8.0
 
 UpStream：位于服务端的容器，Go写的Web服务
 
+envoy的配置见[Envoy（一）：新型L3~L7层访问代理软件Envoy的使用](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/12/envoy-01-usage.html#%E4%BB%A3%E7%90%86%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95)
+
 ## 低并发长连接场景
 
 ```
