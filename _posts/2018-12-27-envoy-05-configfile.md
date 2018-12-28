@@ -287,10 +287,14 @@ curl -X POST "10.10.64.58:9901/runtime_modify?health_check.min_interval=20"
 	envoy.resource_monitors.fixed_heap
 	envoy.resource_monitors.injected_resource
 
-action的`name`需要特意说明一下，它只需要是一个唯一的字符串，listener在注册回调函数的时候用到这个名字：
+目前支持的[Action](https://www.envoyproxy.io/docs/envoy/latest/configuration/overload_manager/overload_manager#overload-actions)：
 
->This is just a well-known string that listeners can use for registering callbacks. 
->Custom overload actions should be named using reverse DNS to ensure uniqueness.
+	envoy.overload_actions.stop_accepting_requests:   
+	    Envoy will immediately respond with a 503 response code to new requests
+	envoy.overload_actions.disable_http_keepalive
+	    Envoy will disable keepalive on HTTP/1.x responses
+	envoy.overload_actions.stop_accepting_connections
+	    Envoy will stop accepting new network connections on its configured listeners
 
 ## stats_\* -- 状态数据
 
@@ -344,13 +348,25 @@ envoy内置了以下stats sinks：
 
 ```json
 {
-  "http": "{...}"
+  "http": {
+    "name": "...",
+    "config": "{...}"
+  }
 }
 ```
+
+支持下列的[tracing服务](https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/trace/v2/trace.proto#config-trace-v2-tracing-http)：
+
+	envoy.lightstep
+	envoy.zipkin
+	envoy.dynamic.ot
+	envoy.tracers.datadog
 
 ## rate_limit_service  -- 限速服务
 
 [config.ratelimit.v2.RateLimitServiceConfig](https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/ratelimit/v2/rls.proto#envoy-api-msg-config-ratelimit-v2-ratelimitserviceconfig)
+
+Envoy采用的限速方案是[Global rate limiting](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/global_rate_limiting#arch-overview-rate-limit)。限速时需要对接外部的限速服务，Lyft共享了一个基于redis的限速服务：[lyft/ratelimit](https://github.com/lyft/ratelimit)。
 
 对接外部的限速服务：
 
@@ -359,6 +375,10 @@ envoy内置了以下stats sinks：
   "grpc_service": "{...}"
 }
 ```
+
+支持`Network level`和`HTTP level`级别的限速，前者在创建连接时限速，后者在发送http请求时限速。
+
+具体的限制规则在每个listener的filter中设置。
 
 ## static_resources -- 静态配置
 
@@ -435,7 +455,7 @@ envoy内置了以下stats sinks：
 
 `address`有`socket`（对应socket_address）和`unix socket`（对应pipe）两种类型。
 
-`filter_chains`是为了listener配置的插件，1.8.0提供了下面这些插件，[link](https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/listener/listener.proto#envoy-api-msg-listener-filterchain)：
+`filter_chains`是为listener配置的插件，支持下面这些插件，[listener.Filter](https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/listener/listener.proto#listener-filter)：
 
 	envoy.client_ssl_auth
 	envoy.echo
@@ -445,12 +465,74 @@ envoy内置了以下stats sinks：
 	envoy.redis_proxy
 	envoy.tcp_proxy
 
-上面列出的就是插件的名字，是`name`字段的可用值，`config`字段的格式因插件的不同而不同。
-
-`listener_filters`中的插件在`filter_chains`之前执行，1.8.0提供了下面这些插件，[link](https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/listener/listener.proto#envoy-api-msg-listener-listenerfilter)：
+`listener_filters`中的插件在`filter_chains`之前执行，支持下面这些插件，[listener.ListenerFilter](https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/listener/listener.proto#envoy-api-msg-listener-listenerfilter)：
 
 	envoy.listener.original_dst
 	envoy.listener.tls_inspector
+
+每个插件的配置都不相同，可以在各自的详情页中看到。
+
+需要特别注意的是[envoy.http_connection_manager](https://www.envoyproxy.io/docs/envoy/latest/configuration/http_conn_man/http_conn_man#config-http-conn-man)，`http_connection_manager`插件中还有`http_filters`插件。
+
+#### envoy.http_connection_manager
+
+[config.filter.network.http_connection_manager.v2.HttpConnectionManager](https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/filter/network/http_connection_manager/v2/http_connection_manager.proto#http-connection-manager)
+
+```json
+{
+  "codec_type": "...",
+  "stat_prefix": "...",
+  "rds": "{...}",
+  "route_config": "{...}",
+  "http_filters": [
+    {
+      "name": "...",
+      "config": "{...}"
+    }
+  ],
+  "add_user_agent": "{...}",
+  "tracing": "{...}",
+  "http_protocol_options": "{...}",
+  "http2_protocol_options": "{...}",
+  "server_name": "...",
+  "idle_timeout": "{...}",
+  "stream_idle_timeout": "{...}",
+  "request_timeout": "{...}",
+  "drain_timeout": "{...}",
+  "delayed_close_timeout": "{...}",
+  "access_log": [],
+  "use_remote_address": "{...}",
+  "xff_num_trusted_hops": "...",
+  "internal_address_config": "{...}",
+  "skip_xff_append": "...",
+  "via": "...",
+  "generate_request_id": "{...}",
+  "forward_client_cert_details": "...",
+  "set_current_client_cert_details": "{...}",
+  "proxy_100_continue": "...",
+  "represent_ipv4_remote_address_as_ipv4_mapped_ipv6": "...",
+  "upgrade_configs": [],
+  "bugfix_reverse_encode_order": "{...}"
+}
+```
+
+正如前面说的，它包含有`http_filters`，总共支持下面[这些插件](https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/filter/network/http_connection_manager/v2/http_connection_manager.proto#config-filter-network-http-connection-manager-v2-httpfilter)
+
+	envoy.buffer
+	envoy.cors
+	envoy.fault
+	envoy.gzip
+	envoy.http_dynamo_filter
+	envoy.grpc_http1_bridge
+	envoy.grpc_json_transcoder
+	envoy.grpc_web
+	envoy.health_check
+	envoy.header_to_metadata
+	envoy.ip_tagging
+	envoy.lua
+	envoy.rate_limit
+	envoy.router
+	envoy.squash
 
 ### clusters  -- 集群
 
