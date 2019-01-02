@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Golang实现grpc server和grpc client通信(protobuf消息格式)介绍教程"
+title: "Golang实现grpc server和grpc client(protobuf格式消息通信)介绍教程"
 author: 李佶澳
 createdate: "2019-01-02 13:19:40 +0800"
 changedate: "2019-01-02 13:19:40 +0800"
