@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Golang实现grpc server和grpc client(protobuf格式消息通信)介绍教程"
+title: "Go语言实现grpc server和grpc client(protobuf消息格式通信)介绍教程"
 author: 李佶澳
 createdate: "2019-01-02 13:19:40 +0800"
 changedate: "2019-01-02 13:19:40 +0800"
@@ -182,6 +182,33 @@ func main() {
 
 注册函数`pb.RegisterGreeterServer`也是在pb.go文件中定义的，是自动生成的。所以需要做的事情，就是创建lis，启动grpc server等很简单工作。
 
+## 消息的struct定义
+
+通过.proto生成的pb.go文件中包含每个消息的struct定义，在写代码的时候可以直接使用这些struct。
+
+以.proto中的`HelloRequest`为例：
+
+```proto
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1;
+}
+```
+
+生成的struct如下：
+
+```go
+// The request message containing the user's name.
+type HelloRequest struct {
+    Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+    XXX_NoUnkeyedLiteral struct{} `json:"-"`
+    XXX_unrecognized     []byte   `json:"-"`
+    XXX_sizecache        int32    `json:"-"`
+}
+```
+
+注意生成的结构体中多出了三个以`XXX_`开头的成员，[XXX_* type in generated .pb.go file][5]中的回答说，这些是protobuf用来存储未知的field的，并且可用来实现protobuf的扩展。目前对protobuf的了解的比较少，暂时就不深究了。
+
 ## 客户端：grpc client
 
 客户端的更简单，建立grpc连接，然后直接调用接口就可以了。
@@ -270,8 +297,10 @@ func NewGreeterClient(cc *grpc.ClientConn) GreeterClient {
 2. [package grpc][2]
 3. [GRPC Go Quick Start][3]
 4. [Language Guide (proto3) ][4]
+5. [XXX_* type in generated .pb.go file][5]
 
 [1]: https://github.com/grpc/grpc-go/tree/master/examples "gRPC in 3 minutes (Go)"
 [2]: https://godoc.org/google.golang.org/grpc "package grpc"
 [3]: https://grpc.io/docs/quickstart/go.html "GRPC Go Quick Start"
 [4]: https://developers.google.com/protocol-buffers/docs/proto3 "Language Guide (proto3) "
+[5]: https://stackoverflow.com/questions/50704319/xxx-type-in-generated-pb-go-file "XXX_* type in generated *.pb.go file"

@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Envoy Proxy使用介绍（五）：envoy的配置文件完全展开"
+title: "Envoy Proxy使用介绍（五）：envoy的配置文件完全展开介绍"
 author: 李佶澳
 createdate: "2018-12-27 10:55:12 +0800"
 changedate: "2018-12-27 10:55:12 +0800"
@@ -99,30 +99,6 @@ description: 将envoy的配置文件完全展开，形成全景式认识，适�
 }
 ```
 
-## admin  -- 管理接口
-
-[config.bootstrap.v2.Admin](https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/bootstrap/v2/bootstrap.proto#envoy-api-msg-config-bootstrap-v2-admin)
-
-```json
-{
-  "access_log_path": "...",
-  "profile_path": "...",
-  "address": {
-    "socket_address": {
-      "protocol": "...",
-      "address": "...",
-      "port_value": "...",
-      "named_port": "...",
-      "resolver_name": "...",
-      "ipv4_compat": "..."
-    },
-    "pipe": {
-      "path": "..."
-    }
-  }
-}
-```
-
 ## node -- 节点信息
 
 [core.Node](https://www.envoyproxy.io/docs/envoy/v1.8.0/api-v2/api/v2/core/base.proto#core-node)
@@ -147,6 +123,31 @@ description: 将envoy的配置文件完全展开，形成全景式认识，适�
 `id`可以用命令行参数`--service-node`指定，`cluster`可以用命令行参数`--service-cluster`指定。
 
 `metadata`是自定义的结构，会被原原本本地发送给management server。
+
+## admin  -- 管理接口
+
+[config.bootstrap.v2.Admin](https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/bootstrap/v2/bootstrap.proto#envoy-api-msg-config-bootstrap-v2-admin)
+
+```json
+{
+  "access_log_path": "...",
+  "profile_path": "...",
+  "address": {
+    "socket_address": {
+      "protocol": "...",
+      "address": "...",
+      "port_value": "...",
+      "named_port": "...",
+      "resolver_name": "...",
+      "ipv4_compat": "..."
+    },
+    "pipe": {
+      "path": "..."
+    }
+  }
+}
+```
+
 
 ## flags_path  -- 参数
 
