@@ -16,7 +16,7 @@ description: 可以通过Management Server动态配置listener、cluster、endpo
 ## 说明
 
 Envoy使用的资源可以在配置文件中静态配置，可以通过配置文件中设置的地址，进行动态配置，
-[Dynamicconfiguration](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/dynamic_configuration#arch-overview-dynamic-config)中对CDS/EDS/LDS/RDS/SDS作了介绍，其它页面中介绍了
+[Dynamic configuration](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/dynamic_configuration#arch-overview-dynamic-config)中对CDS/EDS/LDS/RDS/SDS作了介绍，其它页面中介绍了
 [ADS](https://www.envoyproxy.io/docs/envoy/latest/configuration/overview/v2_overview#aggregated-discovery-service)和
 [HDS](https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/bootstrap/v2/bootstrap.proto#config-bootstrap-v2-bootstrap)，另外
 [data-plane-api](https://github.com/envoyproxy/data-plane-api/blob/master/API_OVERVIEW.md#apis)中介绍说，还有`RLS`（Rate Limit Service）和`MS`（Metric Service）。
@@ -29,7 +29,7 @@ Envoy使用的资源可以在配置文件中静态配置，可以通过配置文
 - [x] rds:  Route（路由规则）发现
 - [ ] sds:  Secret（证书）发现
 
-- [ ] ads: Aggregated Discovery Service
+- [x] ads: Aggregated Discovery Service
 - [ ] hds: Health discovery service 
 - [ ] rls: Rate Limit Service 
 - [ ] ms:  Metric Service

@@ -3,7 +3,7 @@ layout: default
 title: "Mac系统升级后，Vim的UltiSnip插件出错：Error No module named UltiSnips"
 author: 李佶澳
 createdate: "2019-01-02 14:48:14 +0800"
-changedate: "2019-01-02 14:48:14 +0800"
+changedate: "2019-01-08 11:43:40 +0800"
 categories: 问题
 tags: 问题
 keywords: UltiSnips,vim,macvim
