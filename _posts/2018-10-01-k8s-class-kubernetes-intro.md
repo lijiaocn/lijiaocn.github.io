@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  "【视频】Kubernetes1.12从零开始（初）：课程介绍与官方文档汇总"
+title:  "Kubernetes1.12从零开始（初）：课程介绍与官方文档汇总"
 author: 李佶澳
 createdate: 2018/09/03 20:43:00
 changedate: 2018/11/11 18:14:32

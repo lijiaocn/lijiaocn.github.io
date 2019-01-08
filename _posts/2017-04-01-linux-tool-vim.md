@@ -1,12 +1,12 @@
 ---
 layout: default
-title: "vim：vim使用手册"
+title: "Vim使用教程手册，命令、配置与插件"
 author: 李佶澳
 createdate: 2017/04/01 11:00:33
 changedate: 2018/07/22 14:26:14
 categories: 技巧
 tags: linuxtool
-keywords: vim
+keywords: vim,vim手册,vim插件,vimp配置,ide
 description: vim的使用手册，包含常用的扩展方法，和一些非常有用的小技巧。
 
 ---
@@ -15,6 +15,10 @@ description: vim的使用手册，包含常用的扩展方法，和一些非常�
 {:toc}
 
 ## 摘要
+
+2019-01-02 15:38:43：现在很多IDE都有vim插件，支持vim风格的编辑，相当赞。在看代码和写代码的时候，还是使用IDE的效率更高一些。但有时候只是写点代码片段，试验一些函数的用法，不值得的打开IDE、创建项目，还是用vim立马写比较方便。
+
+--分割线--
 
 Vim折腾过好多次, 耗费了不少时间和精力。但是没有办法，谁让自己对VIM的三种模式和HJKL四个键情有独钟呢？
 而且轻量、简洁、奇妙，用了之后才会知道原来用简单的文本还可以做这么多的事情。在一个纯文本的SSH终端中,
@@ -272,9 +276,9 @@ timestamp.vimrc:
 
 以前折腾的时候, 试用过很多插件, 到最后自己也不知道都安装了多少插件, 混乱不堪，一度放弃。并一直对没有顺手的IDE这件事耿耿于怀。有一天再次折腾的时候, 看到了别人推荐的pathogen.vim, 安装了之后, 只需把其它的插件放到指定目录就可以了。
 
-[http://www.vim.org/scripts/script.php?script_id=2332](http://www.vim.org/scripts/script.php?script_id=2332)
+[http://www.vim.org/scripts/script.php?script_id=2332 ](http://www.vim.org/scripts/script.php?script_id=2332)
 
-[http://www.vim.org/scripts/script.php?script_id=2332](http://www.vim.org/scripts/script.php?script_id=2332)
+[http://www.vim.org/scripts/script.php?script_id=2332 ](http://www.vim.org/scripts/script.php?script_id=2332)
 
 
 ## 配置管理
@@ -309,9 +313,9 @@ Vim和插件都是可以有很多种配置的。最早全部配置都写在vimrc
 
 ### pathogen
 
-[http://www.vim.org/scripts/script.php?script_id=2332](http://www.vim.org/scripts/script.php?script_id=2332)
+[http://www.vim.org/scripts/script.php?script_id=2332 ](http://www.vim.org/scripts/script.php?script_id=2332)
 
-[https://github.com/tpope/vim-pathogen](https://github.com/tpope/vim-pathogen)
+[https://github.com/tpope/vim-pathogen ](https://github.com/tpope/vim-pathogen)
 
 第一个必须是管理插件的插件！
 
@@ -321,7 +325,7 @@ Vim和插件都是可以有很多种配置的。最早全部配置都写在vimrc
 
 ### markdown
 
-[https://github.com/tpope/vim-markdown](https://github.com/tpope/vim-markdown)
+[https://github.com/tpope/vim-markdown ](https://github.com/tpope/vim-markdown)
 
 从名字就可以看出来，这个是用来支持markdown语法的。markdown的插件很多,试过很多个, 有的高亮会出错, 有的则是太庞大, 导致操作很慢。这里给出的这个是感觉比较合适的。
 
@@ -332,7 +336,7 @@ Vim和插件都是可以有很多种配置的。最早全部配置都写在vimrc
 
 ### DrawIt
 
-[https://github.com/vim-scripts/DrawIt.git](https://github.com/vim-scripts/DrawIt.git)
+[https://github.com/vim-scripts/DrawIt.git ](https://github.com/vim-scripts/DrawIt.git)
 
 DrawIt插件使用户可以Vim中画出各种图形.例如:
 
@@ -355,7 +359,7 @@ DrawIt插件使用户可以Vim中画出各种图形.例如:
 
 ### conque
 
-[http://code.google.com/p/conque/](http://code.google.com/p/conque/)  需要翻墙..
+[http://code.google.com/p/conque/ ](http://code.google.com/p/conque/)  需要翻墙..
 
 使用conque插件可以直接在vim中执行交互式命令，例如bash.
 
@@ -367,9 +371,9 @@ DrawIt插件使用户可以Vim中画出各种图形.例如:
 
 ### bufexplore 与 minibufexpl
 
-bufexplore [http://www.vim.org/scripts/script.php?script_id=42](http://www.vim.org/scripts/script.php?script_id=42)
+bufexplore [http://www.vim.org/scripts/script.php?script_id=42 ](http://www.vim.org/scripts/script.php?script_id=42)
 
-minibufexpl [https://github.com/fholgado/minibufexpl.vim](https://github.com/fholgado/minibufexpl.vim)
+minibufexpl [https://github.com/fholgado/minibufexpl.vim ](https://github.com/fholgado/minibufexpl.vim)
 
 查看打开的文件, bufexplore是通过命令\be \bs \bv在新窗口查看, minibufexpl则是在顶部自动开启一个窄条显示所有打开的文件
 
@@ -381,7 +385,7 @@ minibufexpl [https://github.com/fholgado/minibufexpl.vim](https://github.com/fho
 
 ### mark
 
-[http://www.vim.org/scripts/script.php?script_id=2666](http://www.vim.org/scripts/script.php?script_id=2666)
+[http://www.vim.org/scripts/script.php?script_id=2666 ](http://www.vim.org/scripts/script.php?script_id=2666)
 
 
 这个文件格式vmb.gz, 需要用以下方式安装:
@@ -398,7 +402,7 @@ minibufexpl [https://github.com/fholgado/minibufexpl.vim](https://github.com/fho
 
 ### nerdtree
 
-[https://github.com/scrooloose/nerdtree](https://github.com/scrooloose/nerdtree)
+[https://github.com/scrooloose/nerdtree ](https://github.com/scrooloose/nerdtree)
 
 nerdtree替换了vim原来的目录浏览结构, 支持树的结构
 
@@ -421,9 +425,9 @@ nerdtree替换了vim原来的目录浏览结构, 支持树的结构
 
 ### template
 
-[http://www.vim.org/scripts/script.php?script_id=2834](http://www.vim.org/scripts/script.php?script_id=2834)
+[http://www.vim.org/scripts/script.php?script_id=2834 ](http://www.vim.org/scripts/script.php?script_id=2834)
 
-[https://github.com/thinca/vim-template](https://github.com/thinca/vim-template)
+[https://github.com/thinca/vim-template ](https://github.com/thinca/vim-template)
 
 template是一个模板插件, 在新建一个满足制定条件的文件时, 会自动插入模板内容, 非常方便。
 
@@ -449,7 +453,7 @@ template是一个模板插件, 在新建一个满足制定条件的文件时, �
 
 #### project
 
-[http://www.vim.org/scripts/script.php?script_id=69](http://www.vim.org/scripts/script.php?script_id=69)
+[http://www.vim.org/scripts/script.php?script_id=69 ](http://www.vim.org/scripts/script.php?script_id=69)
 
 project是一个vim上的项目管理插件, 按照约定的格式编写一个项目文件, 方便在项目间的快速切换。
 
@@ -463,9 +467,9 @@ project实际上是对目录浏览功能的扩展。
 
 #### Csupport
 
-[http://www.vim.org/scripts/script.php?script_id=213](http://www.vim.org/scripts/script.php?script_id=213)
+[http://www.vim.org/scripts/script.php?script_id=213 ](http://www.vim.org/scripts/script.php?script_id=213)
 
-[https://github.com/WolfgangMehner/vim-plugins](https://github.com/WolfgangMehner/vim-plugins)
+[https://github.com/WolfgangMehner/vim-plugins ](https://github.com/WolfgangMehner/vim-plugins)
 
 Csupport是一款非常强大的插件, 包含了很多功能, 因此在安装其它插件时最好先看一下Csupport是否已经具备这样的功能了。
 
@@ -509,11 +513,11 @@ Csupport是一款非常强大的插件, 包含了很多功能, 因此在安装�
 
 csupport值的好好研究, 而且作者还开发了很多对其它的语言的支持，神一般的人物...
 
-见 [https://github.com/WolfgangMehner/vim-plugins](https://github.com/WolfgangMehner/vim-plugins)
+见 [https://github.com/WolfgangMehner/vim-plugins ](https://github.com/WolfgangMehner/vim-plugins)
 
 #### a.vim 
 
-[http://www.vim.org/scripts/script.php?script_id=31](http://www.vim.org/scripts/script.php?script_id=31)
+[http://www.vim.org/scripts/script.php?script_id=31 ](http://www.vim.org/scripts/script.php?script_id=31)
 
 比较奇怪的是cuspport没有实现自己的源文件与头文件切换, 而是用了a.vim, 因此需要安装a.vim
 
@@ -530,9 +534,9 @@ csupport值的好好研究, 而且作者还开发了很多对其它的语言的�
 
 #### tagbar
 
-[http://www.vim.org/scripts/script.php?script_id=3465](http://www.vim.org/scripts/script.php?script_id=3465)
+[http://www.vim.org/scripts/script.php?script_id=3465 ](http://www.vim.org/scripts/script.php?script_id=3465)
 
-[https://github.com/majutsushi/tagbar](https://github.com/majutsushi/tagbar)
+[https://github.com/majutsushi/tagbar ](https://github.com/majutsushi/tagbar)
 
 tagbar是用来进行标签跳转。需要系统上安装有ctags程序。
 
@@ -568,9 +572,9 @@ vim本身支持基于字符的补全, 这样的补全缺少语法上的分析，
 
 在网上发现了两款基于语法的补全插件: clang_complete 和 YouCompleteMe
 
-[https://github.com/Rip-Rip/clang_complete](https://github.com/Rip-Rip/clang_complete)
+[https://github.com/Rip-Rip/clang_complete ](https://github.com/Rip-Rip/clang_complete)
 
-[https://github.com/Valloric/YouCompleteMe](https://github.com/Valloric/YouCompleteMe)
+[https://github.com/Valloric/YouCompleteMe ](https://github.com/Valloric/YouCompleteMe)
 
 clang_complete支持 C、C++、Objective-C、Objective-C++。
 
@@ -578,15 +582,18 @@ YouCompleteMe支持的语言更为丰富。
 
 下面是关于YouCompleteMe的两篇博客:
 
-[vim中的杀手级插件: YouCompleteMe](http://zuyunfei.com/2013/05/16/killer-plugin-of-vim-youcompleteme/)
+[vim中的杀手级插件: YouCompleteMe ](http://zuyunfei.com/2013/05/16/killer-plugin-of-vim-youcompleteme/)
 
-[Vim自动补全神器–YouCompleteMe](http://blog.marchtea.com/archives/161)
+[Vim自动补全神器–YouCompleteMe ](http://blog.marchtea.com/archives/161)
 
 #### YouCompleteMe
 
-[https://github.com/Valloric/YouCompleteMe](https://github.com/Valloric/YouCompleteMe)
+[https://github.com/Valloric/YouCompleteMe ](https://github.com/Valloric/YouCompleteMe)
 
-YCM需要7.4的vim，在mac系统上可以通过下面的命令升级[Mac自带的Vim怎么升级？](https://www.zhihu.com/question/34113076)：
+(2019-01-02 15:28:49) 现在用brew安装的vim，默认已经是8.X的版本了，不要换成macvim，macvim和UltiSnips插件不配套，见：
+[Mac系统升级后，Vim中的UltiSnip插件出错：No module named UltiSnips](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2019/01/02/vim-ultisnip-plugin-python3.html)
+
+YCM需要7.4的vim，在mac系统上可以通过下面的命令升级 [Mac自带的Vim怎么升级？](https://www.zhihu.com/question/34113076)：
 
 	brew install vim --with-lua --with-override-system-vi
 
@@ -689,7 +696,3 @@ YCM需要7.4的vim，在mac系统上可以通过下面的命令升级[Mac自带�
 重启开启：
 
 	:set nopaste
-
-## 文献
-
-

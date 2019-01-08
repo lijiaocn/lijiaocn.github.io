@@ -61,6 +61,20 @@ description: 最近在研究学习openresty和kong，openresty将处理逻辑直
 
 对Web应用压测之前，先要测试一下发起请求的机器与目标机器之间的带宽：[iperf、netperf等网络性能测试工具的使用][7]
 
+### wrk
+
+建议使用wrk，wrk效率非常非常，可以用10~20%的cpu将目标机器上的多个cpu打满， siege则几乎是一个cpu只能打满对方一个cpu）：
+
+	git clone https://github.com/wg/wrk.git
+	cd wrk 
+	make
+
+wrk使用方法如下：
+
+```
+./wrk -t 32 -c 64 -d 60s -H "Host: webshell.com" http://172.16.129.4/ping
+```
+
 ### ApacheBench
 
 ApacheBench的测试结果中包括每秒钟的请求次数、请求的处理时间分布、请求的平均耗时、传输的数据量，以及连接建立、处理过程的时间分布，非常详细。
@@ -122,7 +136,7 @@ ApacheBench的测试结果中包括每秒钟的请求次数、请求的处理时
 
 ab不支持http 1.1，如果要测试http1.1，可以使用[siege](https://www.joedog.org/siege-home/)或者[apib](https://github.com/apigee/apib)等
 
-## siege
+### siege
 
 [siege](https://www.joedog.org/siege-home/)安装：
 
@@ -196,7 +210,7 @@ Failed transactions:	        1024
 Longest transaction:	        0.03
 Shortest transaction:	        0.00
 ```
-### 遇到的问题
+#### 遇到的问题
 
 siege压测时遇到一个问题：
 
@@ -253,3 +267,4 @@ siege aborted due to excessive socket failure; you can change the failure thresh
 [6]: https://www.lijiaocn.com/%E7%BC%96%E7%A8%8B/2018/11/02/openresty-study-03-frame-md.html "Web开发平台OpenResty（三）：火焰图性能分析"
 [7]: https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2016/04/08/network-benchmark.html "iperf、netperf等网络性能测试工具的使用"
 [8]: https://malloc.fi/modern-http-benchmarking-tools-h2load-hey-wrk "Modern HTTP Benchmarking Tools ready for 2018 – h2load, hey & wrk"
+z
