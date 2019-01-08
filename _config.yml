@@ -18,6 +18,6 @@ imglocal:   /img
 lsi:       false
 excerpt_separator: "----"
 ICP-number:
-Copyright: Copyright @2011-2018 All rights reserved.
+Copyright: Copyright @2011-2019 All rights reserved.
 footlinks: {"lijiaocn":"https://www.lijiaocn.com", "github.com":"https://www.github.com/lijiaocn"}
-pageheader:  <span><a href="https://www.lijiaocn.com/go">Go语言简明手册</a>&nbsp<a href="https://www.lijiaocn.com/nginx">nginx、openresty、lua和kong</a>&nbsp<a href="https://www.lijiaocn.com/linux">Linux实用手册</a></span>
+pageheader:  <span><a href="https://www.lijiaocn.com/go">《Go语言简明手册》</a>&nbsp<a href="https://www.lijiaocn.com/nginx">《nginx、openresty、lua和kong》</a>&nbsp<a href="https://www.lijiaocn.com/linux">《Linux实用手册》</a></span>

@@ -3,7 +3,7 @@ layout: default
 title: "Kubernetes API 与 Operator：不为人知的开发者战争（完整篇） "
 author: "张磊、邓洪超"
 createdate: "2019-01-08 14:00:15 +0800"
-changedate: "2019-01-08 14:34:36 +0800"
+changedate: "2019-01-08 15:46:35 +0800"
 categories:  项目
 tags: kubernetes
 keywords: kubernetes,kubernets api,operator,开发者战争,分布式系统,etc,控制器模式,声明式
@@ -18,7 +18,9 @@ description: 将Operator的诞生过程娓娓道来，将容器化面临的困�
 张磊、邓洪超撰写的这两篇文章，将Operator的诞生过程娓娓道来，揭示了“我们习以为常”的功能背后、经过深思熟虑形成的设计思想，
 描绘出一幅展示Operator诞生、发展、对抗、新生等动态过程的生动画面，将容器化面临的困境、Operator提出的解决之道，和它大受欢迎的原因，和盘托出。
 
-原文发布在微信公众号Docker，转载到这里仅用于个人收藏（[原文链接](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2019/01/08/zhuanzai-kubernetes-api-and-operator.html)），对比较重要的语句进行高亮。
+原文发布在微信公众号Docker，转载到这里仅用于个人收藏（[原文链接](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2019/01/08/zhuanzai-kubernetes-api-and-operator.html)），对比较重要的语句进行了高亮。
+
+张磊在极客时间开了一个《深入剖析Kubernetes》的专栏，感兴趣的可以看下：[《深入剖析Kubernetes》专栏的阅读笔记(持续更新)](https://www.lijiaocn.com/%E5%A5%BD%E8%B4%A7/2018/12/31/geek-kubernetes-indepth-notes.html)。
 
 ## Kubernetes API 与 Operator：不为人知的开发者战争（一）
 
@@ -197,7 +199,7 @@ TPR 允许你提交一个 YAML 文件，来定义你想要的的新 API 对象�
 
 
 
-而在完成了对收 CoreOS 的收购之后，RedHat 终于在这一领域拿到了可以跟 Google 和微软一较高低的关键位置。2018年，RedHat 不失时机的发布了 Operator Framework，希望通过 Operator 周边工具和生态的进一步完善，把 Operator 确立成为分布式应用开发与管理的关键依赖。而伴随着 Operator 越来越多的介入到应用开发和部署流程之后， Kubernetes API 一定会继续向上演进，进一步影响开发者的认知和编程习惯。这，已经成为了云计算生态继续发展下去的必然趋势。
+而在完成了对收 CoreOS 的收购之后，RedHat 终于在这一领域拿到了可以跟 Google 和微软一较高低的关键位置。2018年，RedHat 不失时机的发布了 Operator Framework，希望通过 Operator 周边工具和生态的进一步完善，把 Operator 确立成为分布式应用开发与管理的关键依赖。而伴随着 Operator 越来越多的介入到应用开发和部署流程之后， `Kubernetes API 一定会继续向上演进，进一步影响开发者的认知和编程习惯`。这，已经成为了云计算生态继续发展下去的必然趋势。
 
 而作为这个趋势坚定不移的贯彻者，无论是 Istio，还是 Knative，都在用同样的经历告诉我们这样的道理：只有构建在 Kubernetes 这个云时代基础设施事实标准上的开发者工具，才有可能成为下一个开发者领域的 “Operator” 。
 
