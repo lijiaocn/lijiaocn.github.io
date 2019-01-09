@@ -2,10 +2,10 @@
 layout: default
 title: Liquid语法
 author: lijiaocn
-createdate: 2017/04/26 13:13:03
-changedate: 2017/05/17 10:04:02
-categories:
-tags: 手册
+createdate: "2017-04-26 13:13:03 +0800"
+changedate: "2019-01-09 17:35:25 +0800"
+categories: 编程
+tags: jekyll
 keywords: liquid语法,liquid,模版语言 
 description: Liquid是一个ruby开发的开源的模版语言,静态网页生成工具jekyll中使用liquid。
 
@@ -26,19 +26,31 @@ description: Liquid是一个ruby开发的开源的模版语言,静态网页生�
 
 Objects是用\{\{和\}\}围起来的liquid代码
 
+{% raw %}
+
 	Objects tell Liquid where to show content on a page. 
 	Objects and variable names are denoted by double curly braces: {{ and }}.
 
+{% endraw %}
+
 example:
+
+{% raw %}
 
 	{{ page.title }}
 
+{% endraw %}
+
 ## Tags
 
-Tags是用\{%和%\}包裹起来的liquid代码，做逻辑处理和control flow。
+Tags是用`{ %` 和`% }`包裹起来的liquid代码，做逻辑处理和control flow。
+
+{% raw %}
 
 	Tags create the logic and control flow for templates. 
 	They are denoted by curly braces and percent signs: {% and %}.
+
+{% endraw %}
 
 分为Control flow、Iteration、Variable assignments三类。
 
@@ -48,6 +60,8 @@ Control flow有三个：if-else，unless，case/when
 
 #### if/elsif/else
 
+{% raw %}
+
 	{% if customer.name == 'kevin' %}
 	  Hey Kevin!
 	{% elsif customer.name == 'anonymous' %}
@@ -56,13 +70,21 @@ Control flow有三个：if-else，unless，case/when
 	  Hi Stranger!
 	{% endif %}
 
+{% endraw %}
+
 #### unless
+
+{% raw %}
 
 	{% unless product.title == 'Awesome Shoes' %}
 	  These shoes are not awesome.
 	{% endunless %}
 
+{% endraw %}
+
 #### case/when
+
+{% raw %}
 
 	{% assign handle = 'cake' %}
 	{% case handle %}
@@ -74,11 +96,15 @@ Control flow有三个：if-else，unless，case/when
 	     This is not a cake nor a cookie
 	{% endcase %}
 
+{% endraw %}
+
 ### Iteration
 
 Iteration:  for、 
 
 #### for/break/continue
+
+{% raw %}
 
 	{% for i in (1..5) %}
 	  {% if i == 4 %}
@@ -96,14 +122,20 @@ Iteration:  for、
 	  {% endif %}
 	{% endfor %}
 
+{% endraw %}
+
 #### for（带参数)
 
 #### limit，限制循环次数
+
+{% raw %}
 
 	<!-- if array = [1,2,3,4,5,6] -->
 	{% for item in array limit:2 %}
 	  {{ item }}
 	{% endfor %}
+
+{% endraw %}
 
 Output:
 
@@ -111,10 +143,14 @@ Output:
 
 #### offset，设置开始位置
 
+{% raw %}
+
 	<!-- if array = [1,2,3,4,5,6] -->
 	{% for item in array offset:2 %}
 	  {{ item }}
 	{% endfor %}
+
+{% endraw %}
 
 Output:
 
@@ -122,23 +158,35 @@ Output:
 
 #### (), 指定范围
 
+{% raw %}
+
 	{% for i in (3..5) %}
 	  {{ i }}
 	{% endfor %}
 
+{% endraw %}
+
 也可以是使用变量:
+
+{% raw %}
 
 	{% assign num = 4 %}
 	{% for i in (1..num) %}
 	  {{ i }}
 	{% endfor %}
 
+{% endraw %}
+
 #### reversed, 逆序
+
+{% raw %}
 
 	<!-- if array = [1,2,3,4,5,6] -->
 	{% for item in array reversed %}
 	  {{ item }}
 	{% endfor %}
+
+{% endraw %}
 
 Output
 
@@ -153,10 +201,14 @@ Output
 
 example:
 
+{% raw %}
+
 	{% cycle 'one', 'two', 'three' %}
 	{% cycle 'one', 'two', 'three' %}
 	{% cycle 'one', 'two', 'three' %}
 	{% cycle 'one', 'two', 'three' %}
+
+{% endraw %}
 
 Output
 
@@ -169,13 +221,19 @@ Output
 
 生成一个table，`必须在table标签中使用`。
 
+{% raw %}
+
 	<table>
 	{% tablerow product in collection.products %}
 	  {{ product.title }}
 	{% endtablerow %}
 	</table>
 
+{% endraw %}
+
 Output:
+
+{% raw %}
 
 	<table>
 	  <tr class="row1">
@@ -191,14 +249,20 @@ Output:
 	  </tr>
 	</table>
 
+{% endraw %}
+
 ### tablerow, 参数
 
 #### cols，指定列数
 
 
+{% raw %}
+
 	{% tablerow product in collection.products cols:2 %}
 	  {{ product.title }}
 	{% endtablerow %}
+
+{% endraw %}
 
 Output
 
@@ -231,17 +295,27 @@ Output
 
 #### limit，限制表格项数目
 
+{% raw %}
+
 	{% tablerow product in collection.products cols:2 limit:3 %}
 	  {{ product.title }}
 	{% endtablerow %}
 
+{% endraw %}
+
 #### offset，指定开始位置
+
+{% raw %}
 
 	{% tablerow product in collection.products cols:2 offset:3 %}
 	  {{ product.title }}
 	{% endtablerow %}
 
+{% endraw %}
+
 #### ()，range
+
+{% raw %}
 
 	<!--variable number example-->
 	{% assign num = 4 %}
@@ -258,9 +332,13 @@ Output
 	{% endtablerow %}
 	</table>
 
+{% endraw %}
+
 ### Variable assignments
 
 #### assign，创建变量
+
+{% raw %}
 
 	{% assign my_variable = false %}
 	{% if my_variable != true %}
@@ -270,10 +348,16 @@ Output
 	{% assign foo = "bar" %}
 	{{ foo }}
 
+{% endraw %}
+
 #### capture, 捕获变量值,合并入新变量
+
+{% raw %}
 
 	{% capture my_variable %}I am being captured.{% endcapture %}
 	{{ my_variable }}
+
+{% endraw %}
 
 变量my_variable的值就是capture中字符串，如果其中有变量，变量解析成值。
 
@@ -281,9 +365,13 @@ Output
 
 初始值为0
 
+{% raw %}
+
 	{% increment my_counter %}
 	{% increment my_counter %}
 	{% increment my_counter %}
+
+{% endraw %}
 
 Output
 
@@ -293,11 +381,15 @@ Output
 
 注意increment中的变量和assign、capture创建的变量是`相互独立`的，仔细看下面列子的output:
 
+{% raw %}
+
 	{% assign var = 10 %}
 	{% increment var %}
 	{% increment var %}
 	{% increment var %}
 	{{ var }}
+
+{% endraw %}
 
 Output
 
@@ -310,9 +402,13 @@ Output
 
 初始值为-1
 
+{% raw %}
+
 	{% decrement variable %}
 	{% decrement variable %}
 	{% decrement variable %}
+
+{% endraw %}
 
 Output
 
@@ -328,7 +424,11 @@ Filters用于改变输出的值
 
 example
 
+{% raw %}
+
 	{{ "/my/fancy/url" | append: ".html" }}
+
+{% endraw %}
 
 Output
 
@@ -336,7 +436,11 @@ Output
 
 可以连续使用
 
+{% raw %}
+
 	{{ "adam!" | capitalize | prepend: "Hello " }}
+
+{% endraw %}
 
 Output
 
@@ -406,15 +510,23 @@ Output
 
 可以判断字符串中是否包含字符串:
 
+{% raw %}
+
 	{% if product.title contains 'Pack' %}
 	  This product's title contains the word Pack.
 	{% endif %}
 
+{% endraw %}
+
 也可以判断字符串数组中是否包含字符串:
+
+{% raw %}
 
 	{% if product.tags contains 'Hello' %}
 	  This product has been tagged with 'Hello'.
 	{% endif %}
+
+{% endraw %}
 
 `只能用于字符串`
 
@@ -424,17 +536,25 @@ Output
 
 All values in Liquid are truthy except nil and false.
 
+{% raw %}
+
 	{% assign tobi = "Tobi" %}
 	
 	{% if tobi %}
 	  This condition will always be true.
 	{% endif %}
 
+{% endraw %}
+
 空字符串也为真:
+
+{% raw %}
 
 	{% if settings.fp_heading %}
 	  <h1>{{ settings.fp_heading }}</h1>
 	{% endif %}
+
+{% endraw %}
 
 Output
 
@@ -446,21 +566,33 @@ Output
 
 单引号或双引号包裹:
 
+{% raw %}
+
 	{% assign my_string = "Hello World!" %}
+
+{% endraw %}
 
 ### Number
 
 支持整型和浮点型:
 
+{% raw %}
+
 	{% assign my_int = 25 %}
 	{% assign my_float = 39.756 %}
+
+{% endraw %}
 
 ### Boolean
 
 true/false:
 
+{% raw %}
+
 	{% assign foo = true %}
 	{% assign bar = false %}
+
+{% endraw %}
 
 ### Nil
 
@@ -472,25 +604,37 @@ Arrays hold lists of variables of any type.
 
 遍历:
 
+{% raw %}
+
 	<!-- if site.users = "Tobi", "Laura", "Tetsuro", "Adam" -->
 	{% for user in site.users %}
 	  {{ user }}
 	{% endfor %}
 
+{% endraw %}
+
 索引:
+
+{% raw %}
 
 	<!-- if site.users = "Tobi", "Laura", "Tetsuro", "Adam" -->
 	{{ site.users[0] }}
 	{{ site.users[1] }}
 	{{ site.users[3] }}
 
+{% endraw %}
+
 数组`不能`主动创建，只能是liquid生成，可以通过`split`将字符串转成数组。
+
+{% raw %}
 
 	{% assign beatles = "John, Paul, George, Ringo" | split: ", " %}
 	
 	{% for member in beatles %}
 	  {{ member }}
 	{% endfor %}
+
+{% endraw %}
 
 ## Liquid的变种
 
