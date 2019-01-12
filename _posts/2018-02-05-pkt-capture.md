@@ -1,6 +1,6 @@
 ---
 layout: default
-title: PC电脑端、手机移动端通信数据报文的抓取、破解和改写的方法
+title: PC电脑端、手机移动端通信数据报文的抓取、破解、改写（请求拦截）的方法
 author: 李佶澳
 createdate: 2018/02/05 22:07:28
 changedate: 2018/02/06 01:01:48
@@ -21,6 +21,10 @@ description: 有时候需要分析一些通讯协议，这些工具特别有用�
 ## charles proxy
 
 到[charlesproxy][1]下载安装包，支持windows、macOS、linux。
+
+mac上可以用brew安装：
+
+	brew cask install charles
 
 charles是一款收费软件，需要License，破解方法是有的。
 
@@ -88,14 +92,54 @@ ios系统在“设置->Wi-Fi”中，手动设置代理。代理地址设置为c
 
 在ios中手动设置的代理是http代理，可以用shadowsocks实现全局代理: [iOS通过Shadowsocks设备实现全局代理][4]
 
+使用charles解密微信的通信内容时，注意一定要在ios上设置证书信任。
+
+
+https://mp.weixin.qq.com/s?__biz=MjM5MzI5NjQxMA==&amp;amp;mid=2650776383&amp;amp;idx=1&amp;amp;sn=5e2dff72b8d86bbb26d6535b6f768264&amp;amp;chksm=be923a4a89e5b35ce71487b8b67a8264fd8d5c2da8b27dcc089a81cd6cb9a3818635e3d55c75&amp;amp;scene=27#wechat_redirect
+
+https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MjM5MzI5NjQxMA==&scene=126&bizpsid=0&sessionid=1545561318&subscene=0&devicetype=iOS12.0&version=17000027&lang=zh_CN&nettype=WIFI&a8scene=0&fontScale=100&pass_ticket=AcQ14aHj%2Fkg3tFT52SoBwsGDIUk4ZS6YHGlqN6iYe62ZbJcW4rXJpOVInRlLdGgU&wx_header=1
+
+## Fiddler
+
+[Fiddler - 超好用的http抓包工具使用介绍][5]
+
+fiddler不是原生支持mac的，在mac上运行，需要借助Mono framework，通过mono命令执行.exe文件，见[fiddler-osx-beta](https://www.telerik.com/download/fiddler/fiddler-osx-beta)
+
+```bash
+1. If you don’t have the Mono framework installed on your Mac
+
+Please download it from http://www.mono-project.com/download/#download-mac and install it. If you already have it installed, ensure you’re running the latest version.
+
+2. If you just installed Mono
+
+Please open Terminal and type in:
+
+/Library/Frameworks/Mono.framework/Versions/<Mono Version>/bin/mozroots --import --sync
+
+(The Mono framework has its own trusted root certificates store. Currently (at mono version 4.2.4) this store remains empty after installing Mono on OS X. Fiddler uses the certificates in this store to validate the certificates of the websites visited. So you need to populate this store with a set of commonly trusted root authorities to avoid getting constant certificate warnings from Fiddler. The mozroots tool imports trusted authorities from the Mozilla LXR. )
+
+3. Extract fiddler-mac.zip to a folder you have write access to.
+
+It is recommended that the full path to Fiddler install folder does not contain any Windows path illegal characters. (At present it is possible that some Fiddler functionality, e.g. various file exports or Fiddler Script won’t handle such paths.)
+
+4. Open Terminal and navigate to the folder you extracted to in step 3.
+ 
+5. Type mono Fiddler.exe in Terminal.
+```
+
+这里就不尝试了，charles就挺方便。
+
+
 ## 参考
 
 1. [charlesproxy][1]
 2. [程序员都应会的抓包工具][2]
 3. [iOS开发之抓包工具Charles的安装配置及使用详解][3]
 4. [iOS通过Shadowsocks设备实现全局代理][4]
+5. [Fiddler - 超好用的http抓包工具使用介绍][5]
 
 [1]: https://www.charlesproxy.com/  "charlesproxy" 
 [2]: https://github.com/xiyouMc/PythonGuide/wiki/%E7%A8%8B%E5%BA%8F%E5%91%98%E9%83%BD%E5%BA%94%E8%AF%A5%E4%BC%9A%E7%9A%84%E6%8A%93%E5%8C%85%E5%B7%A5%E5%85%B7-Charles  "程序员都应会的抓包工具" 
 [3]: https://www.jianshu.com/p/31fea1314a50 "iOS开发之抓包工具Charles的安装配置及使用详解" 
 [4]: https://www.maoshu.cc/3409.html "iOS通过Shadowsocks设备实现全局代理"
+[5]: http://www.hangge.com/blog/cache/detail_1697.html "Fiddler - 超好用的http抓包工具使用介绍"
