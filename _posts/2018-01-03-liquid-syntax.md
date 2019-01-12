@@ -507,7 +507,7 @@ Liquid的变种定义了自己的tag，filter等。
 3. [liquid-doc][3]
 4. [jekyll-templates][4]
 
-[1]: liquid-main  "https://shopify.github.io/liquid/"
-[2]: shopify "https://www.shopify.com/"
-[3]: liquid-doc "https://shopify.github.io/liquid/basics/introduction/"
-[4]: jekyll-templates "http://jekyllrb.com/docs/templates/"
+[1]: https://shopify.github.io/liquid/ "liquid-main"
+[2]: https://www.shopify.com/ "shopify"
+[3]: https://shopify.github.io/liquid/basics/introduction/ "liquid-doc "
+[4]: http://jekyllrb.com/docs/templates/ "jekyll-templates"
