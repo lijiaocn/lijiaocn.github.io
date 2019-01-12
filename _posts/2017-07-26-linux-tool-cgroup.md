@@ -3,7 +3,7 @@ layout: default
 title: "cgroup：linux的cgroup的使用"
 author: 李佶澳
 createdate: 2017/07/26 10:29:51
-changedate: 2018/07/22 14:27:20
+changedate: "2019-01-11 10:41:23 +0800"
 categories: 技巧
 tags:  linuxtool cgroup
 keywords: cgroup的使用
@@ -58,7 +58,7 @@ pids用来限制一个进程可以派生出的进程数量。
 	mkdir -p /sys/fs/cgroup/pids
 	mount -t cgroup -o pids none /sys/fs/cgroup/pids
 
-然后创建一个名为parent的目录，也就是一个cgrup：
+然后创建一个名为parent的目录，也就是一个cgroup：
 
 	mkdir -p /sys/fs/cgroup/pids/parent
 

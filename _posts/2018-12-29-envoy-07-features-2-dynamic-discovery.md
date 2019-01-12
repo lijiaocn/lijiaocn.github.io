@@ -3,7 +3,7 @@ layout: default
 title: "Envoy Proxy使用介绍（七）：envoy动态配置xDS的使用方法"
 author: 李佶澳
 createdate: "2018-12-29 10:53:58 +0800"
-changedate: "2018-12-29 10:53:58 +0800"
+changedate: "2019-01-09 19:46:17 +0800"
 categories: 项目
 tags: envoy 视频教程
 keywords: envoy动态配置,envoy management server,envoy服务发现,cds,lds,ads,xds协议
@@ -33,6 +33,24 @@ Envoy使用的资源可以在配置文件中静态配置，可以通过配置文
 - [ ] hds: Health discovery service 
 - [ ] rls: Rate Limit Service 
 - [ ] ms:  Metric Service
+
+[《Envoy Proxy使用介绍（一）：新型L3~L7层访问代理软件Envoy的使用》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/12/envoy-01-usage.html)
+
+[《Envoy Proxy使用介绍（二）：envoy源代码阅读、集成开发环境(IDE)》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/17/envoy-02-ide.html)
+
+[《Envoy Proxy使用介绍（三）：envoy设计思路、配置文件和功能特性概览》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/20/envoy-03-arch.html)
+
+[《Envoy Proxy使用介绍（四）：envoy源代码走读&启动过程分析》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/24/envoy-04-codes.html)
+
+[《Envoy Proxy使用介绍（五）：envoy的配置文件完全展开介绍》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/27/envoy-05-configfile.html)
+
+[《Envoy Proxy使用介绍（六）：envoy一些简单功能/基础配置的使用方法》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/28/envoy-06-features-1-basic.html)
+
+[《Envoy Proxy使用介绍（七）：envoy动态配置xDS的使用方法》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/29/envoy-07-features-2-dynamic-discovery.html)
+
+[《Envoy Proxy使用介绍（八）：envoy动态配置-聚合发现ADS的使用方法》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2019/01/07/envoy-08-features-3-dynamic-discovery-ads.html)
+
+都是边学习边记录的，时间比较紧，难免有些地方记录的比较粗糙，[查看更多相关内容](https://www.lijiaocn.com/tags/class.html)。
 
 ## 概览
 

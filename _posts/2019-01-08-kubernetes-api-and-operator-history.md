@@ -3,11 +3,11 @@ layout: default
 title: "Kubernetes API 与 Operator：不为人知的开发者战争（完整篇） "
 author: "张磊、邓洪超"
 createdate: "2019-01-08 14:00:15 +0800"
-changedate: "2019-01-08 15:46:35 +0800"
+changedate: "2019-01-09 11:29:32 +0800"
 categories:  项目
 tags: kubernetes
 keywords: kubernetes,kubernets api,operator,开发者战争,分布式系统,etc,控制器模式,声明式
-description: 将Operator的诞生过程娓娓道来，将容器化面临的困境、Operator提出的解决之道和受欢迎的原因和盘托出
+description: 介绍了将Operator的诞生过程、容器化面临的困境、Operator提出的解决之道和受欢迎的原因
 ---
 
 * auto-gen TOC:
