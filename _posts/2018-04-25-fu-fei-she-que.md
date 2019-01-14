@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2018/04/25 05:21:45"
 changedate: "2019-01-12 14:07:59 +0800"
 categories: 好货
-tags:  好货
+tags:  好货 知识星球精华
 keywords: 付费社区,不贵,知识星球,干货猛料,便宜
 description: 现在，越来越多的好内容都只出现在付费社区里了
 
