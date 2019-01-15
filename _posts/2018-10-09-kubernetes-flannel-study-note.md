@@ -3,7 +3,7 @@ layout: default
 title: "Kubernetes网络方案Flannel的学习笔记"
 author: 李佶澳
 createdate: "2018-10-09 14:15:58 +0800"
-changedate: "2019-01-15 18:30:13 +0800"
+changedate: "2019-01-15 19:14:53 +0800"
 categories: 项目
 tags: flannel kubernetes
 keywords: kubernetes,flannel,docker network,overlay,network
@@ -16,6 +16,14 @@ description: Flannel是最早接触的Kubernetes的网络，当时只了解到�
 ## 说明
 
 [Flannel][1]是Kubernetes最早期的网络方案之一，也是现在常用的方案之一。当时只了解到它采用overlay的方式，出于性能方面的考虑，重点学习calico了，后来发现用到flannel的公司还挺多，需要系统学习下。
+
+## 下载编译
+
+	git clone https://github.com/coreos/flannel.git
+	cd flannel
+	make dist/flanneld-amd64
+
+编译得到的文件`flanneld-amd64`位于dist目录中，参考[Building flannel](https://github.com/coreos/flannel/blob/master/Documentation/building.md)。
 
 ## 工作原理
 
