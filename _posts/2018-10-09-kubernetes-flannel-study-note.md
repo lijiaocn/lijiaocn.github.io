@@ -3,7 +3,7 @@ layout: default
 title: "Kubernetes网络方案Flannel的学习笔记"
 author: 李佶澳
 createdate: "2018-10-09 14:15:58 +0800"
-changedate: "2019-01-15 19:14:53 +0800"
+changedate: "2019-01-16 16:08:24 +0800"
 categories: 项目
 tags: flannel kubernetes
 keywords: kubernetes,flannel,docker network,overlay,network
@@ -16,6 +16,8 @@ description: Flannel是最早接触的Kubernetes的网络，当时只了解到�
 ## 说明
 
 [Flannel][1]是Kubernetes最早期的网络方案之一，也是现在常用的方案之一。当时只了解到它采用overlay的方式，出于性能方面的考虑，重点学习calico了，后来发现用到flannel的公司还挺多，需要系统学习下。
+
+[Flannel的IP地址段扩容方法](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/01/16/flannel-workflow-and-addr-expand.html)
 
 ## 下载编译
 
