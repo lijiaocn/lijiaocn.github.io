@@ -3,9 +3,9 @@ layout: default
 title: MAC上的SSH客户端工具
 author: 李佶澳
 createdate: 2017/03/29 18:50:52
-changedate: 2017/12/22 17:50:51
+changedate: "2019-01-17 15:15:47 +0800"
 categories: 技巧
-tags: mac ssh
+tags: mac shell
 keywords: MAC,SSH客户端,ZOC
 description:  mac上虽然有iterm等shell终端，可以直接ssh登陆，但是不能保存机器列表和密码，每次输入IP，比较烦。可以使用ZOC
 
@@ -14,21 +14,10 @@ description:  mac上虽然有iterm等shell终端，可以直接ssh登陆，但�
 * auto-gen TOC:
 {:toc}
 
-## securtCRT 
-
-收费
-
-## ZOC 
-
-收费
-
-	brew install caskroom/cask/zoc
-
 ## iterm
 
-免费
+iterm的使用方法已经单独整理出来了，见[将Mac上的iterm改造成类似于SecureCRT/Xshell的ssh登录管理器](https://www.lijiaocn.com/技巧/2019/01/17/mac-iterm-convert-securecrt.html)。
 
-	brew search iterm
 
 ### 用iterm的profile保存远程地址
 
@@ -85,7 +74,7 @@ description:  mac上虽然有iterm等shell终端，可以直接ssh登陆，但�
 
 [MAC下iterm2 实现clone session](https://blog.csdn.net/xusensen/article/details/72785592)
 
-在~目录下的.ssh文件夹冲创建一个config文件，文件内容输入：
+在`~/.ssh`目录中创建一个config文件，文件内容输入：
 
 	host *
 	ControlMaster auto
@@ -122,6 +111,16 @@ Identityfile是登陆机的私钥，公钥追加写入到目标机器的~/.ssh/a
 登陆T1:
 
 	ssh T1
+
+## securtCRT 
+
+收费
+
+## ZOC 
+
+收费
+
+	brew install caskroom/cask/zoc
 
 ## 参考
 
