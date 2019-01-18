@@ -3,7 +3,7 @@ layout: default
 title: "Kubelet从1.7.16升级到1.9.11，Sandbox以外的容器都被重建的问题调查"
 author: 李佶澳
 createdate: "2019-01-14 16:38:38 +0800"
-changedate: "2019-01-15 11:35:35 +0800"
+changedate: "2019-01-18 14:40:23 +0800"
 categories:  问题
 tags: kubernetes
 keywords: kubernetes,kubelet升级,1.7.16,1.9.11,容器重启
@@ -34,7 +34,6 @@ ed0b86b380d2        harbor.xxxx.com/google_containers/pause-amd64:3.0   "/pause"
 
 # 之后
 10-10-66-204    Ready   <none>    1h     v1.9.11   <none>    CentOS Linux 7 (Core)   3.10.0-862.9.1.el7.x86_64   docker://17.5.0
-
 ```
 
 >从1.9.11换回1.7.16，也会重建非`pause`容器。
@@ -246,3 +245,38 @@ VolumeDevices []VolumeDevice `json:"volumeDevices,omitempty" patchStrategy:"merg
 ## 解决方法
 
 只能通过改代码了，1.9.11版本计算出的hash值和1.7.16版本计算出的哈希值不相同，是因为Container的定义发生了变化，那就从Container中抽取出部分字段，组成一个新的结构体作为hash算法的输入。
+
+直接简单粗暴的修改1.9.11的`pkg/util/hash/hash.go`，将1.9.11的Container定义改变导致多出的字符去掉：
+
+```go
+package hash
+
+import (
+	"github.com/davecgh/go-spew/spew"
+	"github.com/golang/glog"
+	"hash"
+	"strings"
+)
+
+// DeepHashObject writes specified object to hash using the spew library
+// which follows pointers and prints actual values of the nested objects
+// ensuring the hash does not change when a pointer changes.
+func DeepHashObject(hasher hash.Hash, objectToWrite interface{}) {
+	hasher.Reset()
+	printer := spew.ConfigState{
+		Indent:         " ",
+		SortKeys:       true,
+		DisableMethods: true,
+		SpewKeys:       true,
+	}
+	//printer.Fprintf(hasher, "%#v", objectToWrite)
+	hashstr := printer.Sprintf("%#v", objectToWrite)
+	glog.V(2).Infof("hashstr is before: %s", hashstr)
+	hashstr = strings.Replace(hashstr, "VolumeDevices:([]v1.VolumeDevice)<nil> ", "", 1)
+	hashstr = strings.Replace(hashstr, " MountPropagation:(*v1.MountPropagationMode)<nil>", "", 1)
+	glog.V(2).Infof("hashstr is after : %s", hashstr)
+	printer.Fprintf(hasher, "%s", hashstr)
+}
+```
+
+实测可行，不过不是一个非常理想的解决方案，只是能工作而已。

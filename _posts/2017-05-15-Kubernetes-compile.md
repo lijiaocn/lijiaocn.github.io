@@ -16,9 +16,17 @@ description: kubernetes编译有两种方式，直接编译和在docker中编译
 
 ## 快速开始
 
-[k8s release binary][8]中可以直接下载已经变好的二进制文件。
+[k8s release binary][8]中可以直接下载已经变好的二进制文件，[To start developing kubernetes][6]。
 
-参考: [To start developing kubernetes][6]
+`KUBE_BUILD_PLATFORMS`指定目标平台，`WHAT`指定编译的组件，通过GOFLAGS和GOGCFLAGS传入编译时参数:
+
+	KUBE_BUILD_PLATFORMS=linux/amd64 make all WHAT=cmd/kubelet GOFLAGS=-v GOGCFLAGS="-N -l"
+
+如果不指定WHAT，则编译全部。
+
+`make all`是在本地环境中进行编译的。
+
+`make release`和`make quick-release`在容器中完成编译、打包成docker镜像。
 
 ### 使用本地环境编译
 
