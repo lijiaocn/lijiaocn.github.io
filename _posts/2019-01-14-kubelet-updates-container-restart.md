@@ -3,7 +3,7 @@ layout: default
 title: "Kubelet从1.7.16升级到1.9.11，Sandbox以外的容器都被重建的问题调查"
 author: 李佶澳
 createdate: "2019-01-14 16:38:38 +0800"
-changedate: "2019-01-18 14:40:23 +0800"
+changedate: "2019-01-18 14:50:30 +0800"
 categories:  问题
 tags: kubernetes
 keywords: kubernetes,kubelet升级,1.7.16,1.9.11,容器重启
@@ -246,7 +246,24 @@ VolumeDevices []VolumeDevice `json:"volumeDevices,omitempty" patchStrategy:"merg
 
 只能通过改代码了，1.9.11版本计算出的hash值和1.7.16版本计算出的哈希值不相同，是因为Container的定义发生了变化，那就从Container中抽取出部分字段，组成一个新的结构体作为hash算法的输入。
 
-直接简单粗暴的修改1.9.11的`pkg/util/hash/hash.go`，将1.9.11的Container定义改变导致多出的字符去掉：
+先修改代码，将hash算法的输入字符串打印出来对比：
+
+```
+1.9.11：
+
+I0118 13:38:29.285449   18645 hash.go:39] hashstr is before: (v1.Container){Name:(string)prometheus-node-exporter Image:(string)harbor.finupgroup.com/kubernetes/node-exporter:v0.16.0 Command:([]string    )<nil> Args:([]string)<nil> WorkingDir:(string) Ports:([]v1.ContainerPort)[{Name:(string)prom-node-exp HostPort:(int32)9100 ContainerPort:(int32)9100 Protocol:(v1.Protocol)TCP HostIP:(string)}] EnvFro    m:([]v1.EnvFromSource)<nil> Env:([]v1.EnvVar)<nil> Resources:(v1.ResourceRequirements){Limits:(v1.ResourceList)<nil> Requests:(v1.ResourceList)<nil>} VolumeMounts:([]v1.VolumeMount)[{Name:(string)defa    ult-token-bks80 ReadOnly:(bool)true MountPath:(string)/var/run/secrets/kubernetes.io/serviceaccount SubPath:(string) MountPropagation:(*v1.MountPropagationMode)<nil>}] VolumeDevices:([]v1.VolumeDevice    )<nil> LivenessProbe:(*v1.Probe)<nil> ReadinessProbe:(*v1.Probe)<nil> Lifecycle:(*v1.Lifecycle)<nil> TerminationMessagePath:(string)/dev/termination-log TerminationMessagePolicy:(v1.TerminationMessage    Policy)File ImagePullPolicy:(v1.PullPolicy)IfNotPresent SecurityContext:(*v1.SecurityContext)<nil> Stdin:(bool)false StdinOnce:(bool)false TTY:(bool)false}
+
+1.7.16：
+
+I0118 13:53:05.394834   19753 hash.go:39] hashstr is before: (v1.Container){Name:(string)prometheus-node-exporter Image:(string)harbor.finupgroup.com/kubernetes/node-exporter:v0.16.0 Command:([]string    )<nil> Args:([]string)<nil> WorkingDir:(string) Ports:([]v1.ContainerPort)[{Name:(string)prom-node-exp HostPort:(int32)9100 ContainerPort:(int32)9100 Protocol:(v1.Protocol)TCP HostIP:(string)}] EnvFro    m:([]v1.EnvFromSource)<nil> Env:([]v1.EnvVar)<nil> Resources:(v1.ResourceRequirements){Limits:(v1.ResourceList)<nil> Requests:(v1.ResourceList)<nil>} VolumeMounts:([]v1.VolumeMount)[{Name:(string)defa    ult-token-bks80 ReadOnly:(bool)true MountPath:(string)/var/run/secrets/kubernetes.io/serviceaccount SubPath:(string)}] LivenessProbe:(*v1.Probe)<nil> ReadinessProbe:(*v1.Probe)<nil> Lifecycle:(*v1.Lif    ecycle)<nil> TerminationMessagePath:(string)/dev/termination-log TerminationMessagePolicy:(v1.TerminationMessagePolicy)File ImagePullPolicy:(v1.PullPolicy)IfNotPresent SecurityContext:(*v1.SecurityCon    text)<nil> Stdin:(bool)false StdinOnce:(bool)false TTY:(bool)false}
+```
+
+1.9.11相比1.7.16多出来的字符串（注意引号中的空格也算）：
+
+	"VolumeDevices:([]v1.VolumeDevice)<nil> "
+	" MountPropagation:(*v1.MountPropagationMode)<nil>"
+
+直接简单粗暴地修改1.9.11的`pkg/util/hash/hash.go`，将1.9.11的Container定义改变导致多出的字符去掉：
 
 ```go
 package hash
@@ -279,4 +296,4 @@ func DeepHashObject(hasher hash.Hash, objectToWrite interface{}) {
 }
 ```
 
-实测可行，不过不是一个非常理想的解决方案，只是能工作而已。
+实测可行，1.7.16和1.9.11来回切换，容器都不会重建。不过这可能不是一个非常理想的解决方案，只是能工作而已。
