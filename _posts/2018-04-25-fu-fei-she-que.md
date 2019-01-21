@@ -3,7 +3,7 @@ layout: default
 title: 不贵、回报超高的，付费社区都有哪些?（知识星球）
 author: 李佶澳
 createdate: "2018/04/25 05:21:45"
-changedate: "2019-01-16 19:12:10 +0800"
+changedate: "2019-01-21 10:36:05 +0800"
 categories: 好货
 tags:  好货 知识星球精华
 keywords: 付费社区,不贵,知识星球,干货猛料,便宜,知识星球推荐
@@ -99,12 +99,6 @@ caoz写过很多`非常有料`的文章，你可以在[caoz的梦呓微信公众
 
 ![小道消息和他的朋友们知识星球]({{ site.imglocal }}/xiaomiquan-xiaodao.png)
 
-## 我的网课
-
-主要用于讨论关于本站上资料，以及发布的视频课程。
-
-![我的网课知识星球]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
-
 ## 小程序淘金
 
 这是冯大辉维护的星球，聚焦微信小程序。大辉是最早洞察到微信小程序潜力的人之一，他做的“抽奖助手”，是相当头部的小程序。
@@ -136,12 +130,16 @@ caoz写过很多`非常有料`的文章，你可以在[caoz的梦呓微信公众
 
 ![创业直播间]({{ site.imglocal }}/xiaomiquan-chuangye.png)
 
-
 这些星球的质量可以通过采编的部分内容感知到：[知识星球精华帖汇总](https://www.lijiaocn.com/tags/xingqiu.html)
 
 [知识星球精华帖汇总](https://www.lijiaocn.com/tags/xingqiu.html)
 
 [知识星球破解版与破解方法的注意事项，免费加入星球学知识和用星球赚钱的方法](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2018/12/24/zhishixingqiu-po-jie-mian-fei.html)
 
+## 我的网课
+
+主要用于讨论关于本站上资料，以及发布的视频课程。
+
+![我的网课知识星球]({{ site.imglocal }}/xiaomiquan-blockchain.jpg)
 
 [13]: https://www.amazon.cn/s/ref=as_li_ss_tl?_encoding=UTF8&camp=536&creative=3132&crid=11AJ8VPOWM9EM&field-keywords=%E4%BD%A0%E5%87%AD%E4%BB%80%E4%B9%88%E5%81%9A%E5%A5%BD%E4%BA%92%E8%81%94%E7%BD%91%20%E4%BB%8E%E6%8A%80%E6%9C%AF%E6%80%9D%E7%BB%B4%E5%88%B0%E5%95%86%E4%B8%9A%E9%80%BB%E8%BE%91&linkCode=ur2&sprefix=%E4%BD%A0%E5%87%AD%E4%BB%80%E4%B9%88%E5%81%9A%E5%A5%BD%2Caps%2C134&tag=znrio-23&url=search-alias%3Daps "《你凭什么做好互联网？》"
