@@ -3,11 +3,11 @@ layout: default
 title: "将Mac上的iterm改造成类似于SecureCRT/Xshell的ssh登录管理器"
 author: 李佶澳
 createdate: "2019-01-17 14:06:54 +0800"
-changedate: "2019-01-17 15:23:38 +0800"
+changedate: "2019-01-23 13:58:06 +0800"
 categories: 技巧
 tags: mac
 keywords: mac,iterm,SecureCRT,ssh
-description: SecureCRT和Xshell的最常用的功能是保存地址、会话复制、上传下载文件，用item都可以实现，并且体验很好。
+description: SecureCRT和Xshell的最常用的功能是保存地址、会话复制、上传下载文件，用item都可以实现
 ---
 
 * auto-gen TOC:
