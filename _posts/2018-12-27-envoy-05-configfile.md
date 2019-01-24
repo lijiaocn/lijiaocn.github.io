@@ -166,7 +166,6 @@ description: 将envoy的配置文件完全展开，形成全景式认识，适�
 }
 ```
 
-
 ## flags_path  -- 参数
 
 [flags_path](https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/bootstrap/v2/bootstrap.proto)
@@ -319,7 +318,7 @@ Envoy采用的限速方案是[Global rate limiting](https://www.envoyproxy.io/do
 }
 ```
 
-支持`Network level`和`HTTP level`级别的限速，前者在创建连接时限速，后者在发送http请求时限速。
+支持`Network level`和`HTTP level`级别的限速，前者在连接建立时限速，后者在发送http请求时限速。
 
 具体的限制规则在每个listener的filter中设置。
 
@@ -327,7 +326,7 @@ Envoy采用的限速方案是[Global rate limiting](https://www.envoyproxy.io/do
 
 [config.bootstrap.v2.Bootstrap.StaticResources](https://www.envoyproxy.io/docs/envoy/v1.8.0/api-v2/config/bootstrap/v2/bootstrap.proto#envoy-api-msg-config-bootstrap-v2-bootstrap-staticresources)
 
-`static_resources`中是静态配置的资源，这里的资源也就是envoy要承担的核心工作，由`listeners`、`clusters`和`secrets`三部分组成。
+`static_resources`中是静态配置的资源，是envoy核心工作需要的资源，由`listeners`、`clusters`和`secrets`三部分组成。
 
 ```json
 {
@@ -457,7 +456,7 @@ Envoy采用的限速方案是[Global rate limiting](https://www.envoyproxy.io/do
 }
 ```
 
-正如前面说的，它包含有`http_filters`，总共支持下面[这些插件](https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/filter/network/http_connection_manager/v2/http_connection_manager.proto#config-filter-network-http-connection-manager-v2-httpfilter)
+正如前面说的，它包含有`http_filters`，支持下面[这些插件](https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/filter/network/http_connection_manager/v2/http_connection_manager.proto#config-filter-network-http-connection-manager-v2-httpfilter)
 
 	envoy.buffer
 	envoy.cors
