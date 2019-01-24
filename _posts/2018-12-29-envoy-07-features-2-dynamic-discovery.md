@@ -15,8 +15,8 @@ description: 可以通过Management Server动态配置listener、cluster、endpo
 
 ## 说明
 
-Envoy使用的资源可以在配置文件中静态配置，可以通过配置文件中设置的地址，进行动态配置，
-[Dynamic configuration](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/dynamic_configuration#arch-overview-dynamic-config)中对CDS/EDS/LDS/RDS/SDS作了介绍，其它页面中介绍了
+Envoy中的资源可以在配置文件中静态配置，也从配置文件中设置的地址动态获取，
+[Dynamic configuration](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/dynamic_configuration#arch-overview-dynamic-config)对CDS/EDS/LDS/RDS/SDS作了介绍，其它页面中介绍了
 [ADS](https://www.envoyproxy.io/docs/envoy/latest/configuration/overview/v2_overview#aggregated-discovery-service)和
 [HDS](https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/bootstrap/v2/bootstrap.proto#config-bootstrap-v2-bootstrap)，另外
 [data-plane-api](https://github.com/envoyproxy/data-plane-api/blob/master/API_OVERVIEW.md#apis)中介绍说，还有`RLS`（Rate Limit Service）和`MS`（Metric Service）。
@@ -102,20 +102,20 @@ static_resources:
 ## Management Server
 
 要实现动态配置，需要有一个实现了[data-plane-api](https://github.com/envoyproxy/data-plane-api)的Management Server。
-Data-plane-api是envoy项目定义的，目标是成为数据平面的接口标准，api的详细定义参阅：[API_OVERVIEW.md](https://github.com/envoyproxy/data-plane-api/blob/master/API_OVERVIEW.md#apis)，这个文件中以及包含的链接中的介绍，比envoy的官方的文档清晰、细致。
+Data-plane-api是envoy项目设计的，目标是成为数据平面的接口标准，api的详细定义参阅：[API_OVERVIEW.md](https://github.com/envoyproxy/data-plane-api/blob/master/API_OVERVIEW.md#apis)（这个页面以及它链向的网页中的介绍，比envoy官方文档清晰、细致）。
 
-Data-plane-api的定义有以下特定：
+Data-plane-api的定义有以下特征：
 
-1. 使用GRPC协议，支持转换成Json（gRPC-JSON）。
-2. 通过xDS发现的内容是最终一致的，CDS/LDS等不同渠道的服务发现有先有后，可以通过ADS保证配置的下发顺序。
+1. 使用GRPC协议，支持转换成json（gRPC-JSON）。
+2. 通过xDS发现的资源是最终一致的，如果有多个发现渠道，资源发现顺序是不确定的，被依赖的资源可能被后发现，可以用ADS保证它们的下发顺序。
 3. Listener发生变化的时候，需要等已有的连接被“排空”，或者排空等待超时后，才会应用最新的配置。
-4. CDS/EDS/LDS/RDS/SDS有REST-JSON接口，HDS,/ADS/EDS multi-dimensional LB只支持GRPC。
+4. CDS/EDS/LDS/RDS/SDS有REST-JSON接口，HDS/ADS/EDS multi-dimensional LB只支持GRPC。
 
-Envoy提供了一个用Go语言实现的[go-control-plane](https://github.com/envoyproxy/go-control-plane)，是data-plane-api的go语言代码接口。 
+Envoy提供了一个[go-control-plane](https://github.com/envoyproxy/go-control-plane)，是data-plane-api的go语言实现。 
 
 ### xDS协议
 
-[xDS REST and gRPC protocol][3]详细介绍了xDS协议，采用长连接、流式更新（stream）。 
+[xDS REST and gRPC protocol][3]详细介绍了xDS协议，采用长连接、流更新（stream）等。 
 
 下面是阅读[xDS REST and gRPC protocol][3]时做的摘要，如有冲突，以原始文档为准。
 
@@ -144,13 +144,13 @@ nonce: A
 
 Envoy需要给Management Server回馈，之后只有当Envoy请求的资源发生变化的时候，Management Server才会主动向Envoy推送更新。
 
-由envoy决定要监控哪些资源，对于CDS和LDS，如果`resource_names`为空，表示监控所有Cluster和Listener的变化，EDS和RDS则是从属于各自的CDS和LDS。
+由envoy决定要订阅的资源，对于CDS和LDS，如果`resource_names`为空，表示订阅所有Cluster和Listener，EDS和RDS则从属于各自的CDS和LDS。
 
 Management Server对EDS和RDS的响应有些特别，响应中可能不包含请求的资源，并且可能会多回应一些资源。这是因为Management Server会根据node的ID，推断Envoy需要哪些EDS/RDS。
 
-Envoy可以用同样的版本号再次向Management Server发送请求，通过在这个请求中更改resource_names，从而变更要监控的资源。
+Envoy可以用同样的版本号再次向Management Server发送请求，通过在这个请求中更改resource_names，变更订阅的资源。
 
-请求与响应之间是通过`nonce`字段关联的，注意不是通过`version_info`，因为envoy在更新要监控的资源时，会使用相同的version_info。
+请求与响应之间通过`nonce`字段关联，注意不是通过`version_info`，因为envoy在变更订阅的资源时，会使用相同的version_info。
 
 ![envoy监控的资源更新过程](https://raw.githubusercontent.com/envoyproxy/data-plane-api/master/diagrams/update-race.svg?sanitize=true)
 
@@ -162,12 +162,10 @@ Envoy可以用同样的版本号再次向Management Server发送请求，通过�
 
 比方说CDS和LDS可以分别连接两个不同的Management Server，它们各自的EDS以及RDS可以继续连接其它的Management Server。
 
-不同的xDS可以分别连接不同的Management Server，因此更新会有先后，因此可能出现数据不一致的情况。
-比如一个路由规则更新了，需要转发到另一个新加的cluster，但是新的cluster配置可能还没有收到，这时候请求无处转发。
+不同的xDS可以分别连接不同的Management Server，因此更新会有先后，可能出现数据短暂不一致的情况。
+比如一个路由规则更新了，变为转发到另一个新加的cluster，但是新的cluster可能还没有收到，这时候请求无处转发。
 
-data-plane-api保证的是`最终一致性`，保证envoy最终会得到完整一直的配置，但是数据不一致期间可能会丢失一些请求，
-
-可以在实现Management Server时，严格控制的响应的顺序，避免这种情况：
+data-plane-api保证的是`最终一致性`，保证envoy最终会得到完整的配置，但是数据不一致期间可能会丢失一些请求，可以在实现Management Server时，严格控制的响应的顺序，避免这种情况：
 
 	CDS updates (if any) must always be pushed first.
 	EDS updates (if any) must arrive after CDS updates for the respective clusters.
@@ -179,20 +177,20 @@ data-plane-api保证的是`最终一致性`，保证envoy最终会得到完整�
 
 ![ADS](https://raw.githubusercontent.com/envoyproxy/data-plane-api/master/diagrams/ads.svg?sanitize=true)
 
-[go-control-plane][1]已经通过了提供ADS接口。
+[go-control-plane][1]中有ADS接口。
 
-使用GRPC协议的`ADS`、`CDS`和`RDS`支持`增量更新（Incremental xDS）`，即Management Server只返回发生变化的资源。
+使用GRPC协议的ADS、CDS和RDS支持`增量更新（Incremental xDS）`，即Management Server只返回发生变化的资源。
 
 ### go-control-plane
 
-[go-control-plane][1]。
+Github地址：[go-control-plane][1]
 
 #### go-control-plane不是Manager Server
 
-需要注意的是[go-control-plane](https://github.com/envoyproxy/go-control-plane)本身不是manager server，它是一个实现了[data-plane-api][4]的代码库。
+需要注意的是[go-control-plane](https://github.com/envoyproxy/go-control-plane)不是manager server，它是一个实现了[data-plane-api][4]的代码库（Library）。
 
-go-control-plane将grpc通信的功能都实现了，可以直接用于Management Server开发，是可以直接使用的`数据平面的SDK`。
-在go-control-plane的基础上开发manager server时，只需要考虑配置数据的存取，不需要考虑如何与eonvy通信。
+go-control-plane将grpc通信的功能都实现了，可以直接用于Management Server开发，它是`数据平面的SDK`。
+在go-control-plane的基础上开发manager server时，只需要考虑配置数据的存取，不需要考虑与eonvy的通信细节。
 
 逻辑层次如下：
 
@@ -211,7 +209,7 @@ go-control-plane将grpc通信的功能都实现了，可以直接用于Managemen
                                 Manager Server实现
                   +--------------------------------------------+
                   |                                            |
-                  |           实现配置的存储逻辑               |
+                  |           实现配置的存储逻辑                 |
                   |                                            |
                   |--------------------------------------------|
                   |             go-control-plane               |
@@ -229,7 +227,7 @@ go-control-plane将grpc通信的功能都实现了，可以直接用于Managemen
 
 #### 安装go-control-plane
 
-本地需要安装protobuf，make运行时指定的脚本中用到`protoc`命令来自于protobuf，go-control-plane要求grpc是3.5.0及以上版本。
+本地需要安装protobuf，make运行时用到的脚本中的`protoc`命令来自于protobuf，go-control-plane要求grpc是3.5.0及以上版本（2019-01-24 21:38:21）：
 
 ```bash
 echo "Expecting protoc version >= 3.5.0:"
@@ -297,10 +295,10 @@ func main() {
 }
 ```
 
-这是[go-control-plane][1]给出的示例，这个实例代码有一些小问题，会编译失败，这里只是借助这个代码了解一下go-control-plane的用法。
+这是[go-control-plane][1]给出的示例，这个代码有一些小问题，会编译失败，这里只是借助这个代码了解一下go-control-plane的用法。
 能够通过编译、并实现了配置下发功能的例子见下一章节。
 
-如果不了解怎样用Go实现GRPC通信，一定要先阅读一下[Go实现grpc server和grpc client(protobuf消息格式通信)介绍教程][5]，不然会完全搞不清楚这些代码是在做什么，以及掉进自动生成的pb.go文件。
+如果不了解怎样用Go实现GRPC通信，一定要先阅读一下[Go语言实现grpc server和grpc client][5]，不然会完全搞不清楚这些代码是在做什么，以及掉进自动生成的pb.go文件。
 
 `xds.NewServer()`的参数有两个，一个是存放所有配置的cache，另一个是在处理envoy的请求时会调用的回调函数：
 
@@ -310,7 +308,7 @@ func NewServer(config cache.Cache, callbacks Callbacks) Server {
 }
 ```
 
-所有的FetchXXX函数（处理envoy请求的的函数）最终调用的都是`Fetch()`，它的实现如下：
+所有的FetchXXX函数（处理envoy请求的函数）最终调用的都是`Fetch()`，它的实现如下：
 
 ```go
 // Fetch is the universal fetch method.
@@ -332,9 +330,9 @@ func (s *server) Fetch(ctx context.Context, req *v2.DiscoveryRequest) (*v2.Disco
 }
 ```
 
-可以看到返回给enovy的数据是通过`s.cache.Fetch(ctx, *req)`获取的， req是envoy发送的请求消息，protobuf格式。
+可以看到返回给enovy的数据是通过`s.cache.Fetch(ctx, *req)`获取的， req是envoy发送的protobuf格式的请求。
 
-`cache.Cache`是一个接口，实现了下面接口的变量都可以作为`NewServer(config cache.Cache, callbacks Callbacs)`的第一个参数：
+`cache.Cache`是一个接口，实现了这个接口的变量都可以作为`NewServer(config cache.Cache, callbacks Callbacs)`的第一个参数：
 
 ```go
 // envoyproxy/go-control-plane/pkg/cache/cache.go: 46
@@ -368,7 +366,9 @@ func NewSnapshotCache(ads bool, hash NodeHash, logger log.Logger) SnapshotCache 
 }
 ```
 
-至于Cache中的配置如何更新，就各显神通，自由发挥了，SnapshotCache实现了`SetSnapshot()`接口：
+至于Cache中的配置如何更新，就各显神通、自由发挥了。
+
+SnapshotCache实现的`SetSnapshot()`接口：
 
 ```go
 // SetSnapshotCache updates a snapshot for a node.
@@ -377,7 +377,7 @@ func (cache *snapshotCache) SetSnapshot(node string, snapshot Snapshot) error {
 }
 ```
 
-`Snapshot`是对应node上的全量配置：
+第二个参数Snapshot是对应node上的全量配置：
 
 ```go
 type Snapshot struct {
@@ -399,11 +399,11 @@ type Snapshot struct {
 
 ## 一个简单的Management Server实现
 
-这里实现一个超级简单的Envoy Management Server：直接在代码中注入了一个Envoy的配置。
+这里实现一个超级简单的Envoy Management Server：直接在代码中注入了一个Envoy的资源。
 
-这个超级的简单的实现，很形象地说明了[go-control-plane][1]的用法，可以用来做简单的测试。
+这个超级简单的实现，很形象地说明了[go-control-plane][1]的用法，可以用来做简单的测试。
 
-代码全部列出不方便查看，下面只给出了轮廓，具体的配置定义分散后面的各个章节中。
+代码全部列出来不方便查看，下面只给出轮廓，具体的资源定义分散在后面的各个章节中。
 
 main.go文件位于`go-control-plane`目录中，这里用的go-control-plane版本是`v0.6.5`。
 
@@ -546,9 +546,7 @@ func main() {
 }
 ```
 
-运行后，每键入一次回车，下发一个配置。
-
-注入的配置是ID为`envoy-64.58`的node的：
+运行后，每键入一次回车，下发一次配置，下发的配置ID为`envoy-64.58`，这个id是需要接收该配置的node的id：
 
 ```go
     node := &core.Node{
@@ -558,7 +556,7 @@ func main() {
     UpdateSnapshotCache(snapshotCache, node)
 ```
 
-在配置文件envoy.yaml中配置了同样ID的envoy才能收到这里设置的配置：
+配置文件envoy.yaml中配置同样ID的envoy才能收到这里下发的配置：
 
 ```
 node:
@@ -568,7 +566,7 @@ node:
 
 ## 配置Management Server
 
-Mnagement Server的地址在每个envoy的配置文件静态配置，要在`static_resource`中配置。
+Management Server的地址在每个envoy的配置文件中静态配置，在`static_resource`中。
 
 ```yaml
 static_resources:
@@ -589,9 +587,9 @@ static_resources:
                 port_value: 5678
 ```
 
-clusters的名字自行选取，后面的配置通过它的名字进行引用。
+clusters的name是自定义的，后面的配置会用到这里设置的name，表明要使用的cluster。
 
-接下来就是在`dynamic_resources`以及Cluster和Listener中配置envoy支持的多种动态配置。
+接下来就是在`dynamic_resources`，以及Cluster和Listener中配置envoy支持的多种资源的动态获取。
 
 这里使用的envoy的完整配置如下：
 
@@ -675,7 +673,7 @@ dynamic_resources:
           cluster_name: xds_cluster
 ```
 
-前面实现的简单的Management Server注入一个使用静态Endpoint配置的Cluster：
+前面实现的超级简单的Management Server注入了一个使用静态Endpoint的Cluster：
 
 ```go
 func ADD_Cluster_With_Static_Endpoint(n *NodeConfig) {
@@ -732,7 +730,7 @@ resources:
             cluster_name: xds_cluster
 ```
 
-启动envoy之后，通过admin地址`/config_dum`能够查看envoy的配置，配置下发以后，会发现多出了一个`dynamic_active_clusters`：
+启动envoy之后，通过admin地址`/config_dump`能够查看envoy的配置，配置下发以后，会发现多出了一个`dynamic_active_clusters`：
 
 ```json
 "dynamic_active_clusters": [
@@ -768,7 +766,7 @@ resources:
 
 ### EDS：Upstream Server发现
 
-EDS隶属于Cluster，要在每个Cluster中配置，下面是一个配置了eds的Cluster：
+EDS隶属于Cluster，需要在Cluster中配置，下面是一个配置了EDS的Cluster：
 
 ```yaml
   clusters:
@@ -785,7 +783,7 @@ EDS隶属于Cluster，要在每个Cluster中配置，下面是一个配置了eds
               cluster_name: xds_cluster
 ```
 
-Management Server中下发了一个使用eds的Cluster：
+Management Server下发使用EDS的Cluster，这个例子需要说明一下，它下发了一个配置了EDS的Cluster，配置的EDS就是下发这个Cluster的Management Server，所以你会看到这里同时填充了Endpoint：
 
 ```go
 func ADD_Cluster_With_Dynamic_Endpoint(n *NodeConfig) {
@@ -878,7 +876,7 @@ resources:
 
 和前面类似，在admin地址`/config_dump`中可以看到多出了一个cluster。
 
-需要注意的是动态下发的endpoint在`/config_dump`中不可见，需要到`/clusters`中查看：
+需要注意的是下发的endpoint在`/config_dump`中不可见，需要到`/clusters`中查看：
 
 ```
 ...
@@ -1043,7 +1041,7 @@ resources:
         - name: envoy.router
 ```
 
-下发了listener之后，在admin地址`/config_dump`中，会发现多出了两组配置：
+下发了listener之后，在envoy的admin地址`/config_dump`中，会发现多出了两组配置：
 
 ```
 {
@@ -1197,7 +1195,7 @@ resources:
       route: { cluster: some_service }
 ```
 
-配置下发后，在admin的`/config_dump`中可以看到动态下发的路由：
+配置下发后，在envoy的admin地址`/config_dump`中可以看到动态下发的路由：
 
 ```json
 "dynamic_route_configs": [
