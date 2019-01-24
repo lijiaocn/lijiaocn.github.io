@@ -7,7 +7,7 @@ changedate: "2019-01-23 13:58:06 +0800"
 categories: 技巧
 tags: mac
 keywords: mac,iterm,SecureCRT,ssh
-description: SecureCRT和Xshell的最常用的功能是保存地址、会话复制、上传下载文件，用item都可以实现
+description: SecureCRT和Xshell的最常用的功能是保存地址、会话复制、上传下载文件，用iterm都可以实现
 ---
 
 * auto-gen TOC:
@@ -25,11 +25,11 @@ SecureCRT和Xshell的最常用的功能其实就下面三个：
 2. Session窗口的Clone，可以直接clone当前登录的session，不需要再次登录
 3. 用sz/rz命令快速的上传、下载文件 
 
-这三个功能用item都可以实现，并且体验很好。
+这三个功能用iterm都可以实现，并且体验很好。
 
 ## 实现登录地址保存
 
-详细的配置过程见：[Mac的iterm保存ssh登陆信息方法，类似SecureCRT][4]
+详细的配置过程见：[Mac的iterm保存ssh登陆信息方法，类似SecureCRT](https://jingyan.baidu.com/article/af9f5a2d72b16143140a459b.html)
 
 可以为每个远程地址创建一个profile，通过切换profile直接登陆对应的地址。
 
@@ -102,7 +102,7 @@ SecureCRT和Xshell的最常用的功能其实就下面三个：
 	Parameters: /usr/local/bin/iterm2-recv-zmodem.sh
 	Instant: checked
 
-这种方式直接将rz/sz与item关联起来了，可以在item中直接使用rz/sz命令，并且会自动在mac上打开文件窗口，便于选取要发送的文件和选择接收文件的存放路径。
+这种方式直接将rz/sz与iterm关联起来了，可以在iterm中直接使用rz/sz命令，并且会自动在mac上打开文件窗口，便于选取要发送的文件和选择接收文件的存放路径。
 
 但是这种方法有一个问题，如果使用expect登录的，rz和sz命令会无响应。
 
