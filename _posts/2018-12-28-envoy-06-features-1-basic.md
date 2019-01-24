@@ -15,8 +15,6 @@ description: envoy的一些简单功能，例如管理接口、运行参数、�
 
 ## 说明
 
-该系列所有笔记可以在[系列教程汇总](https://www.lijiaocn.com/tags/class.html)中找到。
-
 **TODO:**
 
 - [X] admin接口
@@ -37,6 +35,10 @@ description: envoy的一些简单功能，例如管理接口、运行参数、�
 - [ ] rate limit service 对接
 - [ ] zipkin对接
 - [ ] cluster manager 用途研究
+
+动态配置的使用，即xDS的用法，见[Envoy Proxy使用介绍教程（七）：envoy动态配置xDS的使用方法](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/29/envoy-07-features-2-dynamic-discovery.html)
+
+该系列所有笔记可以在[系列教程汇总](https://www.lijiaocn.com/tags/class.html)中找到。
 
 [《Envoy Proxy使用介绍教程（一）：新型L3~L7层访问代理软件Envoy的使用》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/12/envoy-01-usage.html)
 
@@ -77,11 +79,11 @@ admin:
 
 ## File system flags
 
-Envoy支持[File system flags](https://www.envoyproxy.io/docs/envoy/latest/operations/fs_flags.html?highlight=flags_path)，使envoy启动前后的一些参数不变。
+Envoy支持[File system flags](https://www.envoyproxy.io/docs/envoy/latest/operations/fs_flags.html?highlight=flags_path)，这个功能使envoy启动前后的一些参数不变。
 
-[File system flags](https://www.envoyproxy.io/docs/envoy/latest/operations/fs_flags.html?highlight=flags_path)中目前只有`drain`，解释说如果这个文件存在，Envoy就以`HC failing mode`的模式启动。
+[File system flags](https://www.envoyproxy.io/docs/envoy/latest/operations/fs_flags.html?highlight=flags_path)中目前只有`drain`，文档介绍说如果这个文件存在，Envoy就以`HC failing mode`的模式启动。
 
-我对这个功能的理解是，它有一点像内核参数，内核参数我们可以通过/proc目录下的文件进行修改，envoy似乎也在学习这种方式，现在只有`drain`一个文件可用。
+我对这个功能的理解是，它类似内核参数，内核参数可以通过/proc目录下的文件进行修改，envoy似乎也在学习这种方式，现在只有`drain`一个文件可用（2019-01-24 23:27:32）。
 
 [flags_path](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/27/envoy-05-configfile.html#flags_path---%E5%8F%82%E6%95%B0)指定参数目录，例如：
 
@@ -136,7 +138,7 @@ runtime:
   override_subdirectory: envoy_override
 ```
 
-`subdirectory`指定要加载的子目录，`override_subdirectory`指定的目录中 ，与` --service-cluster`指定的cluster同名的子目录中的文件内容，会覆盖在其它流程中的读取的数值。
+`subdirectory`指定要加载的子目录。`override_subdirectory`指定的目录中与`--service-cluster`指定的cluster同名的子目录中的文件内容，会覆盖在其它流程中的读取的数值。（是不是很拗口？最近折腾了几周kubernetes，回头看到这句话，我也很蒙.... 2019-01-24 23:33:57）
 
 ```bash
 mkdir v1/envoy
@@ -173,7 +175,7 @@ echo "10" > v1/envoy/health_check/min_interval
 curl -X POST "10.10.64.58:9901/runtime_modify?health_check.min_interval=20"
 ```
 
-注意修改后，文件中的数值`不会被修改`，在runtime中看到的数据是多了一层：
+注意修改后，文件的内容`不会被修改`， 而在runtime中看到的是多了一层：
 
 ```json
 {
@@ -193,11 +195,11 @@ curl -X POST "10.10.64.58:9901/runtime_modify?health_check.min_interval=20"
 }
 ```
 
-通过runtime_modify修改的数值只记录在envoy中，并且覆盖了从文件中读取的数值，文件中的内容不变。
+通过runtime_modify修改的数值只记录在envoy中，覆盖了envoy从文件中读取的数值，文件的内容是不变的。
 
 ## 设置看门狗（watchdog）
 
-Watchdog的作用是在envoy出现僵死时，自动将envoy进程杀死，[watchdog – 看门狗设置](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/27/envoy-05-configfile.html#watchdog---%E7%9C%8B%E9%97%A8%E7%8B%97%E8%AE%BE%E7%BD%AE)。
+Watchdog的作用是：在envoy僵死时，自动将envoy进程杀死，[watchdog – 看门狗设置](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/27/envoy-05-configfile.html#watchdog---%E7%9C%8B%E9%97%A8%E7%8B%97%E8%AE%BE%E7%BD%AE)。
 
 ```yaml
 watchdog:
@@ -221,7 +223,7 @@ watchdog:
 
 ### 输出到hystrix-dashboard
 
->hystrix-dashboard 中没有展示出数据，原因不明。2018-12-28 16:13:13
+>hystrix-dashboard中没有展示出数据，原因不明。2018-12-28 16:13:13
 
 ```bash
 docker run -d -p 8080:9002 --name hystrix-dashboard mlabouardy/hystrix-dashboard:latest

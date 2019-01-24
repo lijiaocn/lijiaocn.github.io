@@ -15,12 +15,6 @@ description: 可以通过Management Server动态配置listener、cluster、endpo
 
 ## 说明
 
-Envoy中的资源可以在配置文件中静态配置，也从配置文件中设置的地址动态获取，
-[Dynamic configuration](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/dynamic_configuration#arch-overview-dynamic-config)对CDS/EDS/LDS/RDS/SDS作了介绍，其它页面中介绍了
-[ADS](https://www.envoyproxy.io/docs/envoy/latest/configuration/overview/v2_overview#aggregated-discovery-service)和
-[HDS](https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/bootstrap/v2/bootstrap.proto#config-bootstrap-v2-bootstrap)，另外
-[data-plane-api](https://github.com/envoyproxy/data-plane-api/blob/master/API_OVERVIEW.md#apis)中介绍说，还有`RLS`（Rate Limit Service）和`MS`（Metric Service）。
-
 **TODO:**
 
 - [x] cds:  Cluster（upstream cluster）发现
@@ -33,6 +27,8 @@ Envoy中的资源可以在配置文件中静态配置，也从配置文件中设
 - [ ] hds: Health discovery service 
 - [ ] rls: Rate Limit Service 
 - [ ] ms:  Metric Service
+
+Envoy中的资源可以在配置文件中静态配置，也从配置文件中设置的地址动态获取，[Dynamic configuration](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/dynamic_configuration#arch-overview-dynamic-config)对CDS/EDS/LDS/RDS/SDS作了介绍，其它页面中介绍了[ADS](https://www.envoyproxy.io/docs/envoy/latest/configuration/overview/v2_overview#aggregated-discovery-service)和[HDS](https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/bootstrap/v2/bootstrap.proto#config-bootstrap-v2-bootstrap)，另外[data-plane-api](https://github.com/envoyproxy/data-plane-api/blob/master/API_OVERVIEW.md#apis)中介绍说，还有`RLS`（Rate Limit Service）和`MS`（Metric Service）。
 
 [《Envoy Proxy使用介绍教程（一）：新型L3~L7层访问代理软件Envoy的使用》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/12/envoy-01-usage.html)
 
@@ -50,7 +46,7 @@ Envoy中的资源可以在配置文件中静态配置，也从配置文件中设
 
 [《Envoy Proxy使用介绍教程（八）：envoy动态配置-聚合发现ADS的使用方法》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2019/01/07/envoy-08-features-3-dynamic-discovery-ads.html)
 
-都是边学习边记录的，时间比较紧，难免有些地方记录的比较粗糙，[查看更多相关内容](https://www.lijiaocn.com/tags/class.html)。
+都是边学习边记录的，时间比较紧，记录的比较粗糙，[查看更多相关内容](https://www.lijiaocn.com/tags/class.html)。
 
 ## 概览
 
