@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Envoy Proxy使用介绍（八）：envoy动态配置-聚合发现ADS的使用方法"
+title: "Envoy Proxy使用介绍教程（八）：envoy动态配置-聚合发现ADS的使用方法"
 author: 李佶澳
 createdate: "2019-01-07 11:27:27 +0800"
 changedate: "2019-01-09 19:47:09 +0800"
@@ -15,23 +15,23 @@ description: ADS(Aggregated Discovery Service)可以将所有的动态配置聚�
 
 ## 说明
 
-这里记录的比较简单，如果对Envoy动态配置不了解，建议参阅[Envoy Proxy使用介绍（七）：envoy动态配置xDS的使用方法][7]。
+这里记录的比较简单，如果对Envoy动态配置不了解，建议参阅[Envoy Proxy使用介绍教程（七）：envoy动态配置xDS的使用方法][7]。
 
-[《Envoy Proxy使用介绍（一）：新型L3~L7层访问代理软件Envoy的使用》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/12/envoy-01-usage.html)
+[《Envoy Proxy使用介绍教程（一）：新型L3~L7层访问代理软件Envoy的使用》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/12/envoy-01-usage.html)
 
-[《Envoy Proxy使用介绍（二）：envoy源代码阅读、集成开发环境(IDE)》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/17/envoy-02-ide.html)
+[《Envoy Proxy使用介绍教程（二）：envoy源代码阅读、集成开发环境(IDE)》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/17/envoy-02-ide.html)
 
-[《Envoy Proxy使用介绍（三）：envoy设计思路、配置文件和功能特性概览》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/20/envoy-03-arch.html)
+[《Envoy Proxy使用介绍教程（三）：envoy设计思路、配置文件和功能特性概览》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/20/envoy-03-arch.html)
 
-[《Envoy Proxy使用介绍（四）：envoy源代码走读&启动过程分析》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/24/envoy-04-codes.html)
+[《Envoy Proxy使用介绍教程（四）：envoy源代码走读&启动过程分析》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/24/envoy-04-codes.html)
 
-[《Envoy Proxy使用介绍（五）：envoy的配置文件完全展开介绍》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/27/envoy-05-configfile.html)
+[《Envoy Proxy使用介绍教程（五）：envoy的配置文件完全展开介绍》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/27/envoy-05-configfile.html)
 
-[《Envoy Proxy使用介绍（六）：envoy一些简单功能/基础配置的使用方法》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/28/envoy-06-features-1-basic.html)
+[《Envoy Proxy使用介绍教程（六）：envoy一些简单功能/基础配置的使用方法》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/28/envoy-06-features-1-basic.html)
 
-[《Envoy Proxy使用介绍（七）：envoy动态配置xDS的使用方法》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/29/envoy-07-features-2-dynamic-discovery.html)
+[《Envoy Proxy使用介绍教程（七）：envoy动态配置xDS的使用方法》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/29/envoy-07-features-2-dynamic-discovery.html)
 
-[《Envoy Proxy使用介绍（八）：envoy动态配置-聚合发现ADS的使用方法》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2019/01/07/envoy-08-features-3-dynamic-discovery-ads.html)
+[《Envoy Proxy使用介绍教程（八）：envoy动态配置-聚合发现ADS的使用方法》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2019/01/07/envoy-08-features-3-dynamic-discovery-ads.html)
 
 都是边学习边记录的，时间比较紧，难免有些地方记录的比较粗糙，[查看更多相关内容](https://www.lijiaocn.com/tags/class.html)。
 
@@ -338,7 +338,7 @@ func ADD_Listener_With_ADS_Route(n *NodeConfig) {
 }
 ```
 
-这里记录的比较简单，如果对Envoy动态配置不了解，建议参阅[Envoy Proxy使用介绍（七）：envoy动态配置xDS的使用方法][7]。
+这里记录的比较简单，如果对Envoy动态配置不了解，建议参阅[Envoy Proxy使用介绍教程（七）：envoy动态配置xDS的使用方法][7]。
 
 ## 参考
 
@@ -348,7 +348,7 @@ func ADD_Listener_With_ADS_Route(n *NodeConfig) {
 4. [go-control-plane][4]
 5. [core.ConfigSource][5]
 6. [core.AggregatedConfigSource][6]
-7. [Envoy Proxy使用介绍（七）：envoy动态配置xDS的使用方法][7]
+7. [Envoy Proxy使用介绍教程（七）：envoy动态配置xDS的使用方法][7]
 
 [1]: https://www.envoyproxy.io/docs/envoy/latest/configuration/overview/v2_overview#aggregated-discovery-service  "Aggregated Discovery Service"
 [2]: https://github.com/envoyproxy/data-plane-api/blob/master/XDS_PROTOCOL.md#aggregated-discovery-services-ads "xDS REST and gRPC protocol: Aggregated Discovery Services (ADS)"
@@ -356,4 +356,4 @@ func ADD_Listener_With_ADS_Route(n *NodeConfig) {
 [4]: https://github.com/envoyproxy/go-control-plane "go-control-plane"
 [5]: https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/core/config_source.proto#envoy-api-msg-core-configsource "core.ConfigSource"
 [6]: https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/core/config_source.proto#envoy-api-msg-core-aggregatedconfigsource "core.AggregatedConfigSource"
-[7]: https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/29/envoy-07-features-2-dynamic-discovery.html "Envoy Proxy使用介绍（七）：envoy动态配置xDS的使用方法"
+[7]: https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/29/envoy-07-features-2-dynamic-discovery.html "Envoy Proxy使用介绍教程（七）：envoy动态配置xDS的使用方法"
