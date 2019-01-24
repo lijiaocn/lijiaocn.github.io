@@ -3,7 +3,7 @@ layout: default
 title: "Kubelet1.7.16使用kubeconfig时，没有设置--require-kubeconfig，导致node不能注册"
 author: 李佶澳
 createdate: "2019-01-14 11:08:17 +0800"
-changedate: "2019-01-14 16:13:29 +0800"
+changedate: "2019-01-23 16:00:00 +0800"
 categories: 问题
 tags: kubernetes
 keywords: kubernetes,kubelet,node

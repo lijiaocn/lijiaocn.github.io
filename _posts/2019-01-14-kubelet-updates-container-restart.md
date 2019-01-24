@@ -3,7 +3,7 @@ layout: default
 title: "Kubelet从1.7.16升级到1.9.11，Sandbox以外的容器都被重建的问题调查"
 author: 李佶澳
 createdate: "2019-01-14 16:38:38 +0800"
-changedate: "2019-01-18 14:50:30 +0800"
+changedate: "2019-01-24 10:45:52 +0800"
 categories:  问题
 tags: kubernetes
 keywords: kubernetes,kubelet升级,1.7.16,1.9.11,容器重启
@@ -289,11 +289,13 @@ func DeepHashObject(hasher hash.Hash, objectToWrite interface{}) {
 	//printer.Fprintf(hasher, "%#v", objectToWrite)
 	hashstr := printer.Sprintf("%#v", objectToWrite)
 	glog.V(2).Infof("hashstr is before: %s", hashstr)
-	hashstr = strings.Replace(hashstr, "VolumeDevices:([]v1.VolumeDevice)<nil> ", "", 1)
-	hashstr = strings.Replace(hashstr, " MountPropagation:(*v1.MountPropagationMode)<nil>", "", 1)
+	hashstr = strings.Replace(hashstr, "VolumeDevices:([]v1.VolumeDevice)<nil> ", "", -1)
+	hashstr = strings.Replace(hashstr, " MountPropagation:(*v1.MountPropagationMode)<nil>", "", -1)
 	glog.V(2).Infof("hashstr is after : %s", hashstr)
 	printer.Fprintf(hasher, "%s", hashstr)
 }
 ```
 
 实测可行，1.7.16和1.9.11来回切换，容器都不会重建。不过这可能不是一个非常理想的解决方案，只是能工作而已。
+
+七牛提供了一个类似的解决方案，更完善一些：[Hack container hash method to make it compatible when upgrading cluster from 1.7/1.8 to 1.9.](https://github.com/qbox/kubernetes/pull/53)
