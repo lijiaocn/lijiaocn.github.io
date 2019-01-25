@@ -17,7 +17,7 @@
 }
 
 .noticerow {
-
+	text-align: center;
 }
 
 .main {
@@ -99,6 +99,7 @@ div.rsidebar-element img{
 .pageheader {
 	padding:2px;
 	margin:0px;
+	text-align: center;
 }
 
 .postlist {

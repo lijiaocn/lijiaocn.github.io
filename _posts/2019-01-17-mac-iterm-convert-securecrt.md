@@ -3,7 +3,7 @@ layout: default
 title: "将Mac上的iterm改造成类似于SecureCRT/Xshell的ssh登录管理器"
 author: 李佶澳
 createdate: "2019-01-17 14:06:54 +0800"
-changedate: "2019-01-23 13:58:06 +0800"
+changedate: "2019-01-25 15:34:30 +0800"
 categories: 技巧
 tags: mac
 keywords: mac,iterm,SecureCRT,ssh
@@ -109,6 +109,8 @@ SecureCRT和Xshell的最常用的功能其实就下面三个：
 Github Issuer：[Does not work w/`expect`, `tmux`, `screen`, etc...](https://github.com/mmastrac/iterm2-zmodem/issues/25)
 
 ### 方法2：zssh + lrzsz 
+
+>zssh上传下载文件特别特别慢，几个字节的文件还行，几兆的文件要很久很久很久，完全不可用。。。2019-01-25 15:32:55
 
 在Mac上安装lrzsz：
 
