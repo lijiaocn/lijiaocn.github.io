@@ -122,7 +122,7 @@ func (esr *etcdSubnetRegistry) createSubnet(ctx context.Context, network string,
 
 ## Flannel网段扩容
 
-根据上面的分析，可以得到初步结论： 只要每个node上的子网前缀是不变的，调整flannel整个网段的前缀就是安全的，原先的node分配的网段不会发生变化，新增node的网段不会与其它node的网段重叠。
+根据上面的分析，可以得到初步结论： 只要每个node上的子网前缀是不变的，调整flannel整个网段的前缀就是安全的，已有node分配的网段不会发生变化，新增node的网段不会与其它node的网段重叠。
 
 直接修改Flannel网段：
 
@@ -141,8 +141,8 @@ FLANNEL_SUBNET=11.0.47.1/24
 FLANNEL_MTU=1426
 FLANNEL_IPMASQ=false
 ```
- 
-原有的node的上的网段还是以前的配置，
+
+已有node的上的网段还是以前的配置，
  
 ```
 $ cat /run/flannel/subnet.env
@@ -152,7 +152,7 @@ FLANNEL_MTU=1426
 FLANNEL_IPMASQ=false
 ```
  
-Pod之间的通信不受影响，并且将原有node上flannel重启后，子网配置会自动刷新：
+Pod之间的通信不受影响，并且将已有node上的flannel重启后，子网配置会自动刷新：
 
 ```
 $ cat /run/flannel/subnet.env
@@ -164,7 +164,7 @@ FLANNEL_IPMASQ=false
 
 ## Flannel多网段
 
-Flannel曾经支持“多网段的方式”，但是后来又将这个特性移除了（https://github.com/coreos/flannel/pull/633 ），因此不考虑也无须考虑多网段方案。
+Flannel曾经支持“多网段的方式”，但是后来又将这个特性移除了[Remove the experimental support for multiple networks](https://github.com/coreos/flannel/pull/633)，因此不考虑也无须考虑多网段方案。
 
 ## 参考
 

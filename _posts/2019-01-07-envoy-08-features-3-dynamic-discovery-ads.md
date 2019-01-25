@@ -15,7 +15,7 @@ description: ADS(Aggregated Discovery Service)可以将所有的动态配置聚�
 
 ## 说明
 
-这里记录的比较简单，如果对Envoy动态配置不了解，建议参阅[Envoy Proxy使用介绍教程（七）：envoy动态配置xDS的使用方法][7]。
+这里记录的比较简单，如果对Envoy的动态配置不了解，建议参阅[Envoy Proxy使用介绍教程（七）：envoy动态配置xDS的使用方法][7]。
 
 [《Envoy Proxy使用介绍教程（一）：新型L3~L7层访问代理软件Envoy的使用》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/12/envoy-01-usage.html)
 
@@ -33,11 +33,11 @@ description: ADS(Aggregated Discovery Service)可以将所有的动态配置聚�
 
 [《Envoy Proxy使用介绍教程（八）：envoy动态配置-聚合发现ADS的使用方法》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2019/01/07/envoy-08-features-3-dynamic-discovery-ads.html)
 
-都是边学习边记录的，时间比较紧，难免有些地方记录的比较粗糙，[查看更多相关内容](https://www.lijiaocn.com/tags/class.html)。
+都是边学习边记录的，时间比较紧，记录的比较粗糙，[查看更多相关内容](https://www.lijiaocn.com/tags/class.html)。
 
 ## 概要
 
-[Aggregated Discovery Service][1]中简单介绍了ADS，简单说就是，CDS/EDS/RDS等动态配置的Managerment Server可以是同一个ADS。[xDS REST and gRPC protocol: Aggregated Discovery Services (ADS)][2]给出了一个例子：
+[Aggregated Discovery Service][1]中简单介绍了ADS，简单说就是：CDS/EDS/RDS等动态配置的Managerment Server可以是同一个ADS。[xDS REST and gRPC protocol: Aggregated Discovery Services (ADS)][2]给出了一个例子：
 
 ```yaml
 node:
@@ -65,7 +65,7 @@ static_resources:
 
 ## 准备支持ADS的Management Server
 
-[go-control-plane][4]提供了实现ADS功能的API，[一个简单的Management Server实现][3]中的Management Server用go-control-plane提供的API实现了ADS，如下：
+[go-control-plane][4]提供了ADS API，[一个简单的Management Server实现][3]中的Management Server用go-control-plane提供的API实现了ADS，如下：
 
 ```
 func main() {
@@ -73,7 +73,8 @@ func main() {
 	server := xds.NewServer(snapshotCache, nil)
 	grpcServer := grpc.NewServer()
 	lis, _ := net.Listen("tcp", ":5678")
-
+	
+	//ADS
 	discovery.RegisterAggregatedDiscoveryServiceServer(grpcServer, server)
 	...
 ```
@@ -169,64 +170,66 @@ static_resources:
 
 ## 使用ADS的EDS
 
+下面的代码中，直接初始化了一个层次很深很深的结构体，故意这样做的，这样子才能一眼看清结构体都包含哪些内容。生产实践时还是更具实际情况进行，不然代码太长、缩进太多了。
+
 ```go
 func ADD_Cluster_With_ADS_Endpoint(n *NodeConfig) {
-	endpoint := &api.ClusterLoadAssignment{
-		ClusterName: "ads_endpoint",
-		Endpoints: []endpoint.LocalityLbEndpoints{
-			endpoint.LocalityLbEndpoints{
-				LbEndpoints: []endpoint.LbEndpoint{
-					endpoint.LbEndpoint{
-						Endpoint: &endpoint.Endpoint{
-							Address: &core.Address{
-								Address: &core.Address_SocketAddress{
-									SocketAddress: &core.SocketAddress{
-										Protocol: core.TCP,
-										Address:  "192.16.129.26",
-										PortSpecifier: &core.SocketAddress_PortValue{
-											PortValue: 80,
-										},
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-		},
-		Policy: &api.ClusterLoadAssignment_Policy{
-			DropOverloads: []*api.ClusterLoadAssignment_Policy_DropOverload{
-				&api.ClusterLoadAssignment_Policy_DropOverload{
-					Category: "drop_policy1",
-					DropPercentage: &envoy_type.FractionalPercent{
-						Numerator:   3,
-						Denominator: envoy_type.FractionalPercent_HUNDRED,
-					},
-				},
-			},
-			OverprovisioningFactor: &proto_type.UInt32Value{
-				Value: 140,
-			},
-		},
-	}
+    endpoint := &api.ClusterLoadAssignment{
+        ClusterName: "ads_endpoint",
+        Endpoints: []endpoint.LocalityLbEndpoints{
+            endpoint.LocalityLbEndpoints{
+                LbEndpoints: []endpoint.LbEndpoint{
+                    endpoint.LbEndpoint{
+                        Endpoint: &endpoint.Endpoint{
+                            Address: &core.Address{
+                                Address: &core.Address_SocketAddress{
+                                    SocketAddress: &core.SocketAddress{
+                                        Protocol: core.TCP,
+                                        Address:  "192.16.129.26",
+                                        PortSpecifier: &core.SocketAddress_PortValue{
+                                            PortValue: 80,
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        },
+        Policy: &api.ClusterLoadAssignment_Policy{
+            DropOverloads: []*api.ClusterLoadAssignment_Policy_DropOverload{
+                &api.ClusterLoadAssignment_Policy_DropOverload{
+                    Category: "drop_policy1",
+                    DropPercentage: &envoy_type.FractionalPercent{
+                        Numerator:   3,
+                        Denominator: envoy_type.FractionalPercent_HUNDRED,
+                    },
+                },
+            },
+            OverprovisioningFactor: &proto_type.UInt32Value{
+                Value: 140,
+            },
+        },
+    }
 
-	cluster := &api.Cluster{
-		Name:           "cluster_with_ads_endpoint",
-		ConnectTimeout: 1 * time.Second,
-		Type:           api.Cluster_EDS,
-		LbPolicy:       api.Cluster_ROUND_ROBIN,
-		EdsClusterConfig: &api.Cluster_EdsClusterConfig{
-			EdsConfig: &core.ConfigSource{
-				ConfigSourceSpecifier: &core.ConfigSource_Ads{
-					Ads: &core.AggregatedConfigSource{}, //使用ADS
-				},
-			},
-			ServiceName: "ads_endpoint", //与endpoint中的ClusterName对应。
-		},
-	}
+    cluster := &api.Cluster{
+        Name:           "cluster_with_ads_endpoint",
+        ConnectTimeout: 1 * time.Second,
+        Type:           api.Cluster_EDS,
+        LbPolicy:       api.Cluster_ROUND_ROBIN,
+        EdsClusterConfig: &api.Cluster_EdsClusterConfig{
+            EdsConfig: &core.ConfigSource{
+                ConfigSourceSpecifier: &core.ConfigSource_Ads{
+                    Ads: &core.AggregatedConfigSource{}, //使用ADS
+                },
+            },
+            ServiceName: "ads_endpoint", //与endpoint中的ClusterName对应。
+        },
+    }
 
-	n.endpoints = append(n.endpoints, endpoint)
-	n.clusters = append(n.clusters, cluster)
+    n.endpoints = append(n.endpoints, endpoint)
+    n.clusters = append(n.clusters, cluster)
 }
 ```
 
@@ -234,107 +237,107 @@ func ADD_Cluster_With_ADS_Endpoint(n *NodeConfig) {
 
 ```go
 func ADD_Listener_With_ADS_Route(n *NodeConfig) {
-	route := &api.RouteConfiguration{
-		Name: "ads_route",
-		VirtualHosts: []route.VirtualHost{
-			route.VirtualHost{
-				Name: "local",
-				Domains: []string{
-					"ads.webshell.com",
-				},
-				Routes: []route.Route{
-					route.Route{
-						Match: route.RouteMatch{
-							PathSpecifier: &route.RouteMatch_Prefix{
-								Prefix: "/",
-							},
-							CaseSensitive: &proto_type.BoolValue{
-								Value: false,
-							},
-						},
-						Action: &route.Route_Route{
-							Route: &route.RouteAction{
-								ClusterSpecifier: &route.RouteAction_Cluster{
-									Cluster: "cluster_with_ads_endpoint",
-								},
-								HostRewriteSpecifier: &route.RouteAction_HostRewrite{
-									HostRewrite: "webshell.com",
-								},
-							},
-						},
-					},
-				},
-			},
-		},
-	}
+    route := &api.RouteConfiguration{
+        Name: "ads_route",
+        VirtualHosts: []route.VirtualHost{
+            route.VirtualHost{
+                Name: "local",
+                Domains: []string{
+                    "ads.webshell.com",
+                },
+                Routes: []route.Route{
+                    route.Route{
+                        Match: route.RouteMatch{
+                            PathSpecifier: &route.RouteMatch_Prefix{
+                                Prefix: "/",
+                            },
+                            CaseSensitive: &proto_type.BoolValue{
+                                Value: false,
+                            },
+                        },
+                        Action: &route.Route_Route{
+                            Route: &route.RouteAction{
+                                ClusterSpecifier: &route.RouteAction_Cluster{
+                                    Cluster: "cluster_with_ads_endpoint",
+                                },
+                                HostRewriteSpecifier: &route.RouteAction_HostRewrite{
+                                    HostRewrite: "webshell.com",
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        },
+    }
 
-	http_filter_router_ := &http_router.Router{
-		DynamicStats: &proto_type.BoolValue{
-			Value: true,
-		},
-	}
-	http_filter_router, err := util.MessageToStruct(http_filter_router_)
-	if err != nil {
-		glog.Error(err)
-		return
-	}
+    http_filter_router_ := &http_router.Router{
+        DynamicStats: &proto_type.BoolValue{
+            Value: true,
+        },
+    }
+    http_filter_router, err := util.MessageToStruct(http_filter_router_)
+    if err != nil {
+        glog.Error(err)
+        return
+    }
 
-	listen_filter_http_conn_ := &http_conn_manager.HttpConnectionManager{
-		StatPrefix: "ingress_http",
-		RouteSpecifier: &http_conn_manager.HttpConnectionManager_Rds{
-			Rds: &http_conn_manager.Rds{
-				RouteConfigName: "ads_route",
-				ConfigSource: core.ConfigSource{
-					ConfigSourceSpecifier: &core.ConfigSource_Ads{
-						Ads: &core.AggregatedConfigSource{},   //使用ADS
-					},
-				},
-			},
-		},
-		HttpFilters: []*http_conn_manager.HttpFilter{
-			&http_conn_manager.HttpFilter{
-				Name: "envoy.router",
-				ConfigType: &http_conn_manager.HttpFilter_Config{
-					Config: http_filter_router,
-				},
-			},
-		},
-	}
-	listen_filter_http_conn, err := util.MessageToStruct(listen_filter_http_conn_)
-	if err != nil {
-		glog.Error(err)
-		return
-	}
+    listen_filter_http_conn_ := &http_conn_manager.HttpConnectionManager{
+        StatPrefix: "ingress_http",
+        RouteSpecifier: &http_conn_manager.HttpConnectionManager_Rds{
+            Rds: &http_conn_manager.Rds{
+                RouteConfigName: "ads_route",
+                ConfigSource: core.ConfigSource{
+                    ConfigSourceSpecifier: &core.ConfigSource_Ads{
+                        Ads: &core.AggregatedConfigSource{},   //使用ADS
+                    },
+                },
+            },
+        },
+        HttpFilters: []*http_conn_manager.HttpFilter{
+            &http_conn_manager.HttpFilter{
+                Name: "envoy.router",
+                ConfigType: &http_conn_manager.HttpFilter_Config{
+                    Config: http_filter_router,
+                },
+            },
+        },
+    }
+    listen_filter_http_conn, err := util.MessageToStruct(listen_filter_http_conn_)
+    if err != nil {
+        glog.Error(err)
+        return
+    }
 
-	listener := &api.Listener{
-		Name: "listener_with_dynamic_route_port_9002",
-		Address: core.Address{
-			Address: &core.Address_SocketAddress{
-				SocketAddress: &core.SocketAddress{
-					Protocol: core.TCP,
-					Address:  "0.0.0.0",
-					PortSpecifier: &core.SocketAddress_PortValue{
-						PortValue: 9002,
-					},
-				},
-			},
-		},
-		FilterChains: []listener.FilterChain{
-			listener.FilterChain{
-				Filters: []listener.Filter{
-					listener.Filter{
-						Name: "envoy.http_connection_manager",
-						ConfigType: &listener.Filter_Config{
-							Config: listen_filter_http_conn,
-						},
-					},
-				},
-			},
-		},
-	}
+    listener := &api.Listener{
+        Name: "listener_with_dynamic_route_port_9002",
+        Address: core.Address{
+            Address: &core.Address_SocketAddress{
+                SocketAddress: &core.SocketAddress{
+                    Protocol: core.TCP,
+                    Address:  "0.0.0.0",
+                    PortSpecifier: &core.SocketAddress_PortValue{
+                        PortValue: 9002,
+                    },
+                },
+            },
+        },
+        FilterChains: []listener.FilterChain{
+            listener.FilterChain{
+                Filters: []listener.Filter{
+                    listener.Filter{
+                        Name: "envoy.http_connection_manager",
+                        ConfigType: &listener.Filter_Config{
+                            Config: listen_filter_http_conn,
+                        },
+                    },
+                },
+            },
+        },
+    }
 
-	n.listeners = append(n.listeners, listener)
-	n.routes = append(n.routes, route)
+    n.listeners = append(n.listeners, listener)
+    n.routes = append(n.routes, route)
 }
 ```
 
