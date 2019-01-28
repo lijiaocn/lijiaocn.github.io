@@ -7,7 +7,7 @@ changedate: "2019-01-25 20:38:57 +0800"
 categories: 问题
 tags: kubernetes
 keywords: kubernetes,cgroup,system.slice,unkown container
-description: 'summary.go:92] Failed to get system container stats for "/systemd/system.slice"..failed to get cgroup stats for "/systemd/system.slice"..failed to get container info for..unknown container "/systemd/system.slice"'
+description: 'summary.go Failed to get system container stats for "/systemd/system.slice"cgroup stats'
 ---
 
 * auto-gen TOC:
