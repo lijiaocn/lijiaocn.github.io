@@ -833,9 +833,9 @@ prometheus支持修改标签。metric的标签可以在采集端采集的时候�
 
 监测cpu:
 
-https://stackoverflow.com/questions/49083348/cadvisor-prometheus-integration-returns-container-cpu-load-average-10s-as-0
+[https://stackoverflow.com/questions/49083348/cadvisor-prometheus-integration-returns-container-cpu-load-average-10s-as-0 ](https://stackoverflow.com/questions/49083348/cadvisor-prometheus-integration-returns-container-cpu-load-average-10s-as-0)
 
-In order to get the metric "container_cpu_load_average_10s" the cAdvisor must run with the option "--enable_load_reader=true",
+In order to get the metric "container_cpu_load_average_10s" the cAdvisor must run with the option "--enable_load_reader=true"
 
 设置kubelet的参数：--enable-load-reader
 
