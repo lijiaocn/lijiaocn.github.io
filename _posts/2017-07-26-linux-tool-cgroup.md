@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "cgroup：linux的cgroup的使用"
+title: "Linux中cgroup的初级使用方法"
 author: 李佶澳
 createdate: 2017/07/26 10:29:51
-changedate: "2019-01-11 10:41:23 +0800"
+changedate: "2019-01-28 15:52:23 +0800"
 categories: 技巧
 tags:  linuxtool cgroup
 keywords: cgroup的使用
