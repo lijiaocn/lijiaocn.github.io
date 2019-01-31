@@ -55,6 +55,6 @@ description: 百度的团圆大奖，一起组队，最佳策略就是所有人�
 <span style="display:block;text-align:center">![百度团圆大奖团队]({{ site.imglocal}}/zuiniur.jpeg){: width="300px"}</span>
 
 
-另外还有更多玩法，参考：[组队，8000人分1000万！][1]
+另外还有更多玩法，参考文章：[组队，8000人分1000万！][1]。
 
 [1]: https://mp.weixin.qq.com/s/7sdCJBhCNVuNEpdo-bV-NQ  "组队，8000人分1000万！"
