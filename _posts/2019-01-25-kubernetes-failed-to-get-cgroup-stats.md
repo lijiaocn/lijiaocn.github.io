@@ -3,11 +3,11 @@ layout: default
 title: "Kubernetes问题调查：failed to get cgroup stats for /systemd/system.slice"
 author: 李佶澳
 createdate: "2019-01-25 11:28:17 +0800"
-changedate: "2019-01-25 20:38:57 +0800"
+changedate: "2019-01-29 14:38:16 +0800"
 categories: 问题
 tags: kubernetes
 keywords: kubernetes,cgroup,system.slice,unkown container
-description: 'summary.go Failed to get system container stats for "/systemd/system.slice"cgroup stats'
+description: 'summary.go:92] Failed to get system container stats for "/systemd/system.slice" cgroup stats'
 ---
 
 * auto-gen TOC:
@@ -223,7 +223,7 @@ $ ./cadvisor --name=/system.slice/kubelet.service
 
 陷入僵局。
 
-## 继续调查
+## 直接用cadvisor查询所有cgroup
 
 猛然想起还有另一个集群，在那个集群中似乎没有见过这个错误，两个集群使用的是同一个版本的kubelet。
 
