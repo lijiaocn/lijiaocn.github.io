@@ -3,7 +3,7 @@ layout: default
 title: "流浪地球BT种子、百度云盘与磁力链magnet可用地址汇总"
 author: noname
 createdate: "2019-02-11 11:18:09 +0800"
-changedate: "2019-02-11 11:39:16 +0800"
+changedate: "2019-02-11 11:42:56 +0800"
 categories: hidden
 tags: 好货
 keywords: 流浪地球,bt种子,magnet,磁力链,在线播放,1080p,中国大陆
@@ -15,7 +15,7 @@ description: "以下内容都是从互联网上搜集的，目测比较可信（
 
 以下内容都是从互联网上搜集的，目测比较可信（没有全部验证）。
 
-**支持去影院观看，效果最好，现在报销电影票的活动**：[报销《流浪地球》电影票3张！](https://mp.weixin.qq.com/s/KkEHwwd_iiqXvQAiyAftlw)。
+**支持去影院观看，效果最好，现在有报销流浪地球电影票的活动**：[报销《流浪地球》电影票3张！](https://mp.weixin.qq.com/s/KkEHwwd_iiqXvQAiyAftlw)。
 
 需要`百度盘下载地址`的 **关注微信公众号“团购好货”，回复“流浪地球”** 。
 
