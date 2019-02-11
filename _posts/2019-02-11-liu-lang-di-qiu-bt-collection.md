@@ -3,7 +3,7 @@ layout: default
 title: "流浪地球BT种子、百度云盘与磁力链magnet可用地址汇总"
 author: noname
 createdate: "2019-02-11 11:18:09 +0800"
-changedate: "2019-02-11 11:34:56 +0800"
+changedate: "2019-02-11 11:39:16 +0800"
 categories: hidden
 tags: 好货
 keywords: 流浪地球,bt种子,magnet,磁力链,在线播放,1080p,中国大陆
@@ -15,9 +15,9 @@ description: "以下内容都是从互联网上搜集的，目测比较可信（
 
 以下内容都是从互联网上搜集的，目测比较可信（没有全部验证）。
 
-支持去影院观看，效果最好，**活动**：[报销《流浪地球》电影票3张！](https://mp.weixin.qq.com/s/KkEHwwd_iiqXvQAiyAftlw)
+**支持去影院观看，效果最好，现在报销电影票的活动**：[报销《流浪地球》电影票3张！](https://mp.weixin.qq.com/s/KkEHwwd_iiqXvQAiyAftlw)。
 
-需要百度盘下载地址的**关注微信公众号“团购好货”**，回复“流浪地球”。
+需要`百度盘下载地址`的 **关注微信公众号“团购好货”，回复“流浪地球”** 。
 
 下面是流浪地球的磁力链magnet可用地址（没有全部验证）：
 
@@ -62,6 +62,6 @@ description: "以下内容都是从互联网上搜集的，目测比较可信（
 	magnet:?xt=urn:btih:a6181add8282e4ef7a362c556ec50f8ce14631e6&dn=%E6%B5%81%E6%B5%AA%E5%9C%B0%E7%90%83.The.Wandering.Earth.2019.1080p.HDTC.X264.AAC-%E5%9B%BD%E8%AF%AD%E4%B8%AD%E5%AD%97-MP4BA
 
 
-**扫码关注后，回复“流浪地球”**
+**微信扫码关注后，回复“流浪地球”**
 
 <span style="display:block;text-align:center">![微信公众号团购好货，好商品自己会说话]( {{ site.imglocal }}/ercode/tuan-gou-hao-huo.png ){: width="400px"}</span>
