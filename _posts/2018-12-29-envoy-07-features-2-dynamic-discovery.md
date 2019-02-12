@@ -3,7 +3,7 @@ layout: default
 title: "Envoy Proxy使用介绍教程（七）：envoy动态配置xDS的使用方法"
 author: 李佶澳
 createdate: "2018-12-29 10:53:58 +0800"
-changedate: "2019-01-09 19:46:17 +0800"
+changedate: "2019-02-12 16:14:03 +0800"
 categories: 项目
 tags: envoy 视频教程
 keywords: envoy动态配置,envoy management server,envoy服务发现,cds,lds,ads,xds协议
@@ -45,6 +45,8 @@ Envoy中的资源可以在配置文件中静态配置，也从配置文件中设
 [《Envoy Proxy使用介绍教程（七）：envoy动态配置xDS的使用方法》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/29/envoy-07-features-2-dynamic-discovery.html)
 
 [《Envoy Proxy使用介绍教程（八）：envoy动态配置-聚合发现ADS的使用方法》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2019/01/07/envoy-08-features-3-dynamic-discovery-ads.html)
+
+[《Envoy Proxy使用介绍教程（九）：envoy的应用方法与使用约束》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2019/01/07/envoy-09-usage-rules.html)
 
 都是边学习边记录的，时间比较紧，记录的比较粗糙，[查看更多相关内容](https://www.lijiaocn.com/tags/class.html)。
 

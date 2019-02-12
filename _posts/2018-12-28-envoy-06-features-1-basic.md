@@ -3,7 +3,7 @@ layout: default
 title: "Envoy Proxy使用介绍教程（六）：envoy一些简单功能/基础配置的使用方法"
 author: 李佶澳
 createdate: "2018-12-28 11:26:10 +0800"
-changedate: "2019-01-09 19:46:09 +0800"
+changedate: "2019-02-12 16:13:52 +0800"
 categories: 项目
 tags: envoy 视频教程
 keywords: envoy使用,envoy监控数据采集,runtime,watchdog,filter
@@ -55,6 +55,8 @@ description: envoy的一些简单功能，例如管理接口、运行参数、�
 [《Envoy Proxy使用介绍教程（七）：envoy动态配置xDS的使用方法》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/29/envoy-07-features-2-dynamic-discovery.html)
 
 [《Envoy Proxy使用介绍教程（八）：envoy动态配置-聚合发现ADS的使用方法》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2019/01/07/envoy-08-features-3-dynamic-discovery-ads.html)
+
+[《Envoy Proxy使用介绍教程（九）：envoy的应用方法与使用约束》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2019/01/07/envoy-09-usage-rules.html)
 
 都是边学习边记录的，时间比较紧，难免有些地方记录的比较粗糙，[查看更多相关内容](https://www.lijiaocn.com/tags/class.html)。
 
