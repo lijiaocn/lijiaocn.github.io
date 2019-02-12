@@ -3,7 +3,7 @@ layout: default
 title: "Linux FUSE（用户态文件系统）的使用：用libfuse创建FUSE文件系统"
 author: 李佶澳
 createdate: "2019-01-21 10:57:16 +0800"
-changedate: "2019-02-12 17:16:36 +0800"
+changedate: "2019-02-12 17:21:31 +0800"
 categories: 技巧
 tags: linux
 keywords: linux,fuse,libfuse,用户态文件系统
@@ -338,7 +338,7 @@ input: /abc
   option is only valid for 'fuseblk' type mounts.
 ```
 
-## Lxcfs中的libfuse用法
+## lxcfs中的libfuse用法
 
 [lxc/lxcfs][3]是一个使用了libfuse的程序，下面把它对libfuse的用法摘出来，作为libfuse用法的例子：
 
@@ -385,7 +385,7 @@ if (!fuse_main(nargs, newargv, &lxcfs_ops, NULL))
     fuse_main_real(argc, argv, op, sizeof(*(op)), user_data)
 ```
 
-### Lxcfs中fuse_main的输入参数: argc、argv，命令行参数
+### lxcfs中fuse_main的输入参数: argc、argv，命令行参数
 
 `fuse_main()`的第一个参数`argc`是输入参数的个数，等于第二个参数`argv`数组的长度。
 
@@ -400,7 +400,7 @@ if (!fuse_main(nargs, newargv, &lxcfs_ops, NULL))
 
 	allow_other,direct_io,entry_timeout=0.5,attr_timeout=0.5,nonempty
 
-### Lxcfs中fuse_main的输入参数：op，文件操作函数
+### lxcfs中fuse_main的输入参数：op，文件操作函数
 
 `fuse_main()`的第三个参数`op`非常关键，里面设置了所有文件操作对应的处理函数。
 
