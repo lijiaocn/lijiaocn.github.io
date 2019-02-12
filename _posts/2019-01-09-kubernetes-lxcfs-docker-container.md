@@ -3,7 +3,7 @@ layout: default
 title: "LXCFS是什么？通过LXCFS在容器内显示容器的CPU、内存状态"
 author: 李佶澳
 createdate: "2019-01-09 14:12:25 +0800"
-changedate: "2019-01-11 11:07:52 +0800"
+changedate: "2019-02-12 17:28:46 +0800"
 categories: 技巧
 tags: kubernetes docker
 keywords: kubernetes,lxcfs,docker,container,top,memory,disk
@@ -127,7 +127,7 @@ docker run -it -m 256m \
       ubuntu:latest /bin/bash
 ```
 
-在容器看到内存大小是256M：
+在容器内看到内存大小是256M：
 
 ```
 # free -h
@@ -136,14 +136,14 @@ Mem:           256M        1.2M        254M        6.1M        312K        254M
 Swap:          256M          0B        256M
 ```
 
-注意，如果是alpine镜像看到还是宿主机上的内存状态，alpine中的free命令，似乎是通过其它渠道获得内存状态的。
+**注意**：如果是alpine镜像看到还是宿主机上的内存状态，alpine中的free命令，似乎是通过其它渠道获得内存状态的。
 
 ### 查看容器CPU状态
 
-容器的CPU设置有两个维度，一个是`--cpus 2`，限定容器最多只能使用两个逻辑CPU，另一个是`--cpuset-cpus "0,1"`，限定容器
-能够使用的宿主机CPU。
+容器的CPU设置有两种方式，一个是`--cpus 2`，限定容器最多只能使用两个逻辑CPU，另一个是`--cpuset-cpus "0,1"`，限定容器
+可以使用的宿主机CPU。
 
-top命令显示的是容器可以使用的宿主机cpu，如果使用`--cpus 2`，看到的cpu个数是宿主机上的cpu个数。
+top命令显示的是容器 `可以使用的` 宿主机cpu，如果使用`--cpus 2`，看到的cpu个数是宿主机上的cpu个数。
 使用`--cpuset-cpus "0,1"`的时候，在容器看到cpu个数是`--cpuset`指定的cpu的个数。
 
 ```
@@ -157,7 +157,7 @@ docker run -it --rm -m 256m  --cpus 2 --cpuset-cpus "0,1" \
       ubuntu:latest /bin/sh
 ```
 
-这时候看到的CPU个数2个：
+这时候在容器内看到的CPU个数是2个：
 
 ```
 top - 07:30:32 up 0 min,  0 users,  load average: 0.03, 0.09, 0.13
@@ -165,16 +165,14 @@ Tasks:   2 total,   1 running,   1 sleeping,   0 stopped,   0 zombie
 %Cpu0  :  0.6 us,  0.6 sy,  0.0 ni, 98.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
 %Cpu1  :  0.6 us,  0.0 sy,  0.0 ni, 99.4 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
 ```
-特别注意：在容器内看到的CPU的使用率依然是宿主机上的CPU的使用率！ 
-这个功能似乎有点鸡肋。
+
+**注意**：在容器内看到的CPU的使用率依然是宿主机上的CPU的使用率！ 这个功能似乎有点鸡肋。
 
 指定容器只能在指定的CPU上运行应当是利大于弊，就是在创建容器的时候需要额外做点工作，合理分配cpuset。
 
-根据cpu-share和cpu-quota的显示cpu信息的问题在[Does lxcfs have plans to support cpu-shares and cpu-quota?](https://github.com/lxc/lxcfs/issues/239)中有讨论。
+根据cpu-share和cpu-quota显示cpu信息的问题在[Does lxcfs have plans to support cpu-shares and cpu-quota?](https://github.com/lxc/lxcfs/issues/239)中有讨论。
 
-更具cpu-share和cpu-quota的显示cpu的问题
-
-使用lxcfs之后，在容器中用`uptime`看到的系统运行时间是容器的运行，但是后面的load还是宿主机的负载。
+**注意**：使用lxcfs之后，在容器中用`uptime`看到的系统运行时间是容器的运行，但是后面的load还是宿主机的负载。
 
 ## 在kubernetes中使用lxcfs
 
@@ -204,10 +202,12 @@ github有一个例子：[lxcfs-initializer][5]。
 
 ## 关于
 
- git clone https://github.com/aither64/lxcfs.git
- cd lxcfs
- git  branch  cpu-views -t  origin/cpu-views
- git checkout   cpu-views
+```
+git clone https://github.com/aither64/lxcfs.git
+cd lxcfs
+git  branch  cpu-views -t  origin/cpu-views
+git checkout   cpu-views
+```
 
 ## 参考
 

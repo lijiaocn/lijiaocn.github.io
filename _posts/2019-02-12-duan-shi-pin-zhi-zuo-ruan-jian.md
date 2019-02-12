@@ -3,11 +3,11 @@ layout: default
 title: "短视频制作工具软件收集：快影、Premiere、会声会影、Final Cut Pro等"
 author: 李佶澳
 createdate: "2019-02-12 17:38:23 +0800"
-changedate: "2019-02-12 18:01:22 +0800"
+changedate: "2019-02-12 18:03:37 +0800"
 categories: 技巧
 tags: 短视频
 keywords: 短视频,短视频制作,视频软件,视频制作软件
-description: 收集一下常见的短视频制作工具软件
+description: 收集一下常见的短视频制作工具软件，快影、Premiere、会声会影、Final Cut Pro等
 ---
 
 * auto-gen TOC:
