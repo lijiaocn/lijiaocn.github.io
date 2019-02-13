@@ -13,7 +13,7 @@ description: "以下内容都是从互联网上搜集的，目测比较可信（
 * auto-gen TOC:
 {:toc}
 
-以下内容都是从互联网上搜集的，目测比较可信（没有全部验证）。
+以下内容都是从互联网上搜集的，目测比较可信（没有全部验证），仅作为个人收藏，请勿传播扩散使用。
 
 **支持去影院观看，效果最好，现在有报销《流浪地球》电影票的活动**：[报销《流浪地球》电影票3张！](https://mp.weixin.qq.com/s/KkEHwwd_iiqXvQAiyAftlw)。
 
@@ -67,3 +67,4 @@ description: "以下内容都是从互联网上搜集的，目测比较可信（
 **微信扫码关注后，回复“流浪地球”**
 
 <span style="display:block;text-align:center">![微信公众号团购好货，好商品自己会说话]( {{ site.imglocal }}/ercode/tuan-gou-hao-huo.png ){: width="400px"}</span>
+
