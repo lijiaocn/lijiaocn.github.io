@@ -33,9 +33,7 @@ description: "以下内容都是从互联网上搜集的，目测比较可信（
 
 `如果迅雷提示因为版权原因不能下载，换其它的bt下载工具，到【团购好货】公众号中回复“下载工具”，亲测可行`
 
-<span style="display:block;text-align:center">![微信公众号团购好货，好商品自己会说话]( {{ site.imglocal }}/ercode/tuan-gou-hao-huo.png ){: width="400px"}</span>
-
-下面是流浪地球的磁力链magnet可用地址（没有全部验证）：
+下面是流浪地球的其它磁力链magnet可用地址（没有全部验证）：
 
 
 2 [91xinpian.com]流浪地球HC1080P清晰国语中字.mp4.torrent： 2.64G
