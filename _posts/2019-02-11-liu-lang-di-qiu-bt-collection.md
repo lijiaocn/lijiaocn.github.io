@@ -13,25 +13,33 @@ description: "以下内容都是从互联网上搜集的，目测比较可信（
 * auto-gen TOC:
 {:toc}
 
-以下内容都是从互联网上搜集的，目测比较可信（没有全部验证）。
+以下内容都是从互联网上搜集的，目测比较可信（没有全部验证），仅作为个人收藏，请勿传播扩散使用。
 
 **支持去影院观看，效果最好，现在有报销《流浪地球》电影票的活动**：[报销《流浪地球》电影票3张！](https://mp.weixin.qq.com/s/KkEHwwd_iiqXvQAiyAftlw)。
+
+`推荐下载这个，其它视频都是基于这个做的，被在屏幕中央打了水印，这个是原始视频，没有水印`
+
+`迅雷已经封了“应版权方要求不能提供下载”，不知道怎样下载的，到【团购好货】公众号中回复“下载工具”，亲测可行`
+
+`已经加密上传到百度云盘，到【团购好货】公众号中回复“流浪地球”`
+
+1 流浪地球.HC版.HD.1080P.MP4.2018.中国大陆.科幻.灾难.中文字幕.torrent： 2.89G
+
+	magnet:?xt=urn:btih:0a8c9acff20fa520c867802d281cad97002cdd39&dn=%E6%B5%81%E6%B5%AA%E5%9C%B0%E7%90%83.HC%E7%89%88.HD.1080P.MP4.2018.%E4%B8%AD%E5%9B%BD%E5%A4%A7%E9%99%86.%E7%A7%91%E5%B9%BB.%E7%81%BE%E9%9A%BE.%E4%B8%AD%E6%96%87%E5%AD%97%E5%B9%95
+
+![流浪地球地球下载工具]({{ site.imglocal}}/liu-lang-di-qiu/download.jpg)
 
 需要`百度盘下载地址`的 **关注微信公众号“团购好货”，回复“流浪地球”** ：
 
 `如果迅雷提示因为版权原因不能下载，换其它的bt下载工具，到【团购好货】公众号中回复“下载工具”，亲测可行`
 
-<span style="display:block;text-align:center">![微信公众号团购好货，好商品自己会说话]( {{ site.imglocal }}/ercode/tuan-gou-hao-huo.png ){: width="400px"}</span>
+下面是流浪地球的其它磁力链magnet可用地址（没有全部验证）：
 
-下面是流浪地球的磁力链magnet可用地址（没有全部验证）：
 
-1 [91xinpian.com]流浪地球HC1080P清晰国语中字.mp4.torrent： 2.64G
+2 [91xinpian.com]流浪地球HC1080P清晰国语中字.mp4.torrent： 2.64G
 
 	magnet:?xt=urn:btih:066b94be651df53e54c9726102c138c932381133&dn=%5B91xinpian.com%5D%E6%B5%81%E6%B5%AA%E5%9C%B0%E7%90%83HC1080P%E6%B8%85%E6%99%B0%E5%9B%BD%E8%AF%AD%E4%B8%AD%E5%AD%97.mp4
 
-2 流浪地球.HC版.HD.1080P.MP4.2018.中国大陆.科幻.灾难.中文字幕.torrent： 2.89G
-
-	magnet:?xt=urn:btih:0a8c9acff20fa520c867802d281cad97002cdd39&dn=%E6%B5%81%E6%B5%AA%E5%9C%B0%E7%90%83.HC%E7%89%88.HD.1080P.MP4.2018.%E4%B8%AD%E5%9B%BD%E5%A4%A7%E9%99%86.%E7%A7%91%E5%B9%BB.%E7%81%BE%E9%9A%BE.%E4%B8%AD%E6%96%87%E5%AD%97%E5%B9%95
 
 3 [ViPHD.co]流浪地球（纯净首发独占） The.Wandering .Earth.2019.HCRip.1080P.H264.AAC-JBY.rar.torrent：5.23G
 
@@ -69,3 +77,4 @@ description: "以下内容都是从互联网上搜集的，目测比较可信（
 **微信扫码关注后，回复“流浪地球”**
 
 <span style="display:block;text-align:center">![微信公众号团购好货，好商品自己会说话]( {{ site.imglocal }}/ercode/tuan-gou-hao-huo.png ){: width="400px"}</span>
+
