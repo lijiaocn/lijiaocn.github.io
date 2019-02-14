@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "LXCFS是什么？通过LXCFS在容器内显示容器的CPU、内存状态"
+title: "lxcfs是什么？通过lxcfs在容器内显示容器的CPU、内存状态"
 author: 李佶澳
 createdate: "2019-01-09 14:12:25 +0800"
-changedate: "2019-02-12 17:28:46 +0800"
+changedate: "2019-02-14 18:48:27 +0800"
 categories: 技巧
 tags: kubernetes docker
 keywords: kubernetes,lxcfs,docker,container,top,memory,disk
@@ -30,26 +30,28 @@ LXCFS，[FUSE filesystem for LXC][2]是一个常驻服务，它启动以后会�
 
 ## 安装
 
+### yum安装
+
 ```
 wget https://copr-be.cloud.fedoraproject.org/results/ganto/lxd/epel-7-x86_64/00486278-lxcfs/lxcfs-2.0.5-3.el7.centos.x86_64.rpm
 yum install lxcfs-2.0.5-3.el7.centos.x86_64.rpm  
 ```
+### 编译安装
 
-## 编译
+也可以自己编译，需要提前安装fuse-devel：
 
-也可以自己编译：
+```
+yum install -y fuse-devel
+```
+
+下载代码编译，`bootstrap.sh`执行结束后，会在生成`configure`等文件，编译安装方法在`INSTALL`文件中：
 
 ```
 git clone https://github.com/lxc/lxcfs.git
 cd lxcfs
 git checkout lxcfs-3.0.3
 ./bootstrap.sh
-```
 
-`bootstrap.sh`执行结束后，会在生成`configure`等文件，编译安装方法在`INSTALL`文件中。
-
-```
-yum install -y fuse-devel
 ./configure --prefix=/
 make
 make install
@@ -166,23 +168,29 @@ Tasks:   2 total,   1 running,   1 sleeping,   0 stopped,   0 zombie
 %Cpu1  :  0.6 us,  0.0 sy,  0.0 ni, 99.4 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
 ```
 
-**注意**：在容器内看到的CPU的使用率依然是宿主机上的CPU的使用率！ 这个功能似乎有点鸡肋。
-
 指定容器只能在指定的CPU上运行应当是利大于弊，就是在创建容器的时候需要额外做点工作，合理分配cpuset。
 
-根据cpu-share和cpu-quota显示cpu信息的问题在[Does lxcfs have plans to support cpu-shares and cpu-quota?](https://github.com/lxc/lxcfs/issues/239)中有讨论。
+根据cpu-share和cpu-quota显示cpu信息的问题在[Does lxcfs have plans to support cpu-shares and cpu-quota?](https://github.com/lxc/lxcfs/issues/239)中有讨论。[aither64](https://github.com/aither64)修改lxcfs的实现，实现了按照cpu的配额计算应该展现的cpu的数量：
 
-**注意**：使用lxcfs之后，在容器中用`uptime`看到的系统运行时间是容器的运行，但是后面的load还是宿主机的负载。
+>Yes, I have it [implemented](https://github.com/lxc/lxcfs/compare/master...aither64:cpu-views), but I haven't gotten around to cleaning it up and making a PR yet. It works with CPU quotas set e.g. using `lxc.cgroup.cpu.cfs_{quota,period}_us`, CPU shares didn't make sense to me.
+
+lxc/lxcfs的master分支已经合入了aither64的修改，stable-3.0和stable-2.0分支没有合入：[Merge pull request #260 from aither64/cpu-views ](https://github.com/lxc/lxcfs/commit/ea1e6b3776221917464c7dd70d179409719dc41c)。lxcfs的实现分析见：[修改lxcfs，根据cpu-share和cpu-quota生成容器的cpu状态文件（一）：lxcfs的实现学习（源码分析）][6]
+
+**注意**：在容器中用`uptime`看到的系统运行时间是容器的运行时间，但是后面的load还是宿主机的load。
+
+**注意**：在容器内看到的CPU的使用率依然是宿主机上的CPU的使用率！ 这个功能似乎有点鸡肋。
 
 ## 在kubernetes中使用lxcfs
 
-在kubernetes中使用lxcfs需要解决两个问题，第一个问题是每个node上都要启动lxcfs，这个简单，部署一个daemonset就可以了。
+在kubernetes中使用lxcfs需要解决两个问题：
 
-第二个问题是将lxcfs维护的/proc文件挂载到每个容器中，阿里云用[Initializers][3]实现的做法，值得借鉴，[Kubernetes之路 2 - 利用LXCFS提升容器资源可见性][1]。
+第一个问题是每个node上都要启动lxcfs，这个简单，部署一个daemonset就可以了。
+
+第二个问题是将lxcfs维护的/proc文件挂载到每个容器中，阿里云用[Initializers][3]实现的做法，值得借鉴：[Kubernetes之路 2 - 利用LXCFS提升容器资源可见性][1]。
 
 ### 开启initializers功能
 
-initializers的工作过程见《[Kubernetes initializer功能的使用方法：在Pod落地前修改Pod][4]》。
+initializers的工作过程见[Kubernetes initializer功能的使用方法：在Pod落地前修改Pod][4]。
 
 在Kubernetes 1.13中[initializers][3]还是一个alpha特性，需要在Kube-apiserver中添加参数开启。
 
@@ -200,14 +208,9 @@ initializers的工作过程见《[Kubernetes initializer功能的使用方法：
 
 github有一个例子：[lxcfs-initializer][5]。
 
-## 关于
+## 延伸内容
 
-```
-git clone https://github.com/aither64/lxcfs.git
-cd lxcfs
-git  branch  cpu-views -t  origin/cpu-views
-git checkout   cpu-views
-```
+[修改lxcfs，支持根据cpu-share和cpu-quota显示容器的cpu状态][6]
 
 ## 参考
 
@@ -216,9 +219,11 @@ git checkout   cpu-views
 3. [Kubernetes Initializers][3]
 4. [Kubernetes initializer功能的使用方法：在Pod落地前修改Pod][4]
 5. [lxcfs-initializer][5]
+6. [修改lxcfs，根据cpu-share和cpu-quota生成容器的cpu状态文件（一）：lxcfs的实现学习（源码分析）][6]
 
 [1]: https://yq.aliyun.com/articles/566208/ "Kubernetes之路 2 - 利用LXCFS提升容器资源可见性 "
 [2]: https://github.com/lxc/lxcfs "FUSE filesystem for LXC"
 [3]: https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#initializers "Kubernetes Initializers"
 [4]: https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/01/09/kubernetes-initializer-usage.html "Kubernetes initializer功能的使用方法：在Pod落地前修改Pod"
 [5]: https://github.com/lijiaocn/lxcfs-initializer "lxcfs-initializer"
+[6]: https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/02/11/lxcfs-support-cpu-share-and-cpu-quota-1.html "修改lxcfs，根据cpu-share和cpu-quota生成容器的cpu状态文件（一）：lxcfs的实现学习（源码分析）"
