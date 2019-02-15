@@ -77,8 +77,3 @@ description: "都是从互联网上搜集的，验证了一部分：流浪地球
 
 	magnet:?xt=urn:btih:a6181add8282e4ef7a362c556ec50f8ce14631e6&dn=%E6%B5%81%E6%B5%AA%E5%9C%B0%E7%90%83.The.Wandering.Earth.2019.1080p.HDTC.X264.AAC-%E5%9B%BD%E8%AF%AD%E4%B8%AD%E5%AD%97-MP4BA
 
-
-**微信扫码关注后，回复“流浪地球”**
-
-<span style="display:block;text-align:center">![微信公众号团购好货，好商品自己会说话]( {{ site.imglocal }}/ercode/tuan-gou-hao-huo.png ){: width="400px"}</span>
-
