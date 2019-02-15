@@ -13,13 +13,19 @@ description: "都是从互联网上搜集的，验证了一部分：流浪地球
 * auto-gen TOC:
 {:toc}
 
+## 说明
+
 **以下内容都是从互联网上搜集的，目测比较可信（没有全部验证），仅作为个人收藏，请勿传播扩散。**
+
+## 更新
 
 `《疯狂的外星人》、《飞驰人生》、《新喜剧之王》`也已经下载验证了，挑出了几个清晰度还不错的：[2019春节档电影可用BT种子、百度云盘与磁力链magnet地址收藏](https://www.lijiaocn.com/hidden/2019/02/15/chun-jie-dang-movie-resource.html)。都已经加密私藏，仅用于个人研究学习、禁止传播，有分析研究需要的关注微信公众号【团购好货】，回复密码。`
 
-**支持去影院观看，效果最好，现在有报销《流浪地球》电影票的活动**：[报销《流浪地球》电影票3张！](https://mp.weixin.qq.com/s/KkEHwwd_iiqXvQAiyAftlw)。
+## 流浪地球的建议使用的磁力链地址
 
-`《流浪地球》推荐下载这个，其它视频似乎都是基于这个做的，被在屏幕中央打了水印，这个中央没有水印`
+**支持去影院观看，效果最好，现在有报销《流浪地球》电影票的活动**：[报销《流浪地球》电影票3张！](https://mp.weixin.qq.com/s/KkEHwwd_iiqXvQAiyAftlw)
+
+`《流浪地球》推荐使用这个，其它视频似乎都是基于这个做的，被在屏幕中央打了水印，这个中央没有水印`
 
 `迅雷因为“应版权方要求不能提供下载”，BT种子需要用其它工具下载，到公众号【团购好货】中回复“下载工具”，亲测可行`
 
@@ -35,13 +41,13 @@ description: "都是从互联网上搜集的，验证了一部分：流浪地球
 
 `如果迅雷提示因为版权原因不能下载，换其它的bt下载工具，到【团购好货】公众号中回复“下载工具”，亲测可行`
 
-下面是流浪地球的其它磁力链magnet可用地址（没有全部验证）：
+## 流浪地球其它可用磁力链magnet地址
 
+下面是流浪地球的其它磁力链magnet可用地址（没有全部验证）：
 
 2 [91xinpian.com]流浪地球HC1080P清晰国语中字.mp4.torrent： 2.64G
 
 	magnet:?xt=urn:btih:066b94be651df53e54c9726102c138c932381133&dn=%5B91xinpian.com%5D%E6%B5%81%E6%B5%AA%E5%9C%B0%E7%90%83HC1080P%E6%B8%85%E6%99%B0%E5%9B%BD%E8%AF%AD%E4%B8%AD%E5%AD%97.mp4
-
 
 3 [ViPHD.co]流浪地球（纯净首发独占） The.Wandering .Earth.2019.HCRip.1080P.H264.AAC-JBY.rar.torrent：5.23G
 
@@ -74,4 +80,3 @@ description: "都是从互联网上搜集的，验证了一部分：流浪地球
 10 流浪地球.The.Wandering.Earth.2019.1080p.HDTC.X264.AAC-国语中字-MP4BA.torrent：2.22G
 
 	magnet:?xt=urn:btih:a6181add8282e4ef7a362c556ec50f8ce14631e6&dn=%E6%B5%81%E6%B5%AA%E5%9C%B0%E7%90%83.The.Wandering.Earth.2019.1080p.HDTC.X264.AAC-%E5%9B%BD%E8%AF%AD%E4%B8%AD%E5%AD%97-MP4BA
-
