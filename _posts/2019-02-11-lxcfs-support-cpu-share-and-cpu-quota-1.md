@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "修改lxcfs，根据cpu-share和cpu-quota生成容器的cpu状态文件（一）：lxcfs的实现学习（源码分析）"
+title: "lxcfs根据cpu-share和cpu-quota等cgroup信息生成容器内的/proc文件（一）"
 author: 李佶澳
 createdate: "2019-02-11 10:49:45 +0800"
-changedate: "2019-02-14 18:47:36 +0800"
+changedate: "2019-02-15 11:08:45 +0800"
 categories: 技巧
 tags: cgroup docker
 keywords: lxcfs,cgroup,cpu-share,cpu-quota,
