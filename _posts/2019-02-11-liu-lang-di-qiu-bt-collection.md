@@ -19,7 +19,7 @@ description: "都是从互联网上搜集的，验证了一部分：流浪地球
 
 ## 更新
 
-`《疯狂的外星人》、《飞驰人生》、《新喜剧之王》`也已经下载验证了，挑出了几个清晰度还不错的：[2019春节档电影可用BT种子、百度云盘与磁力链magnet地址收藏](https://www.lijiaocn.com/hidden/2019/02/15/chun-jie-dang-movie-resource.html)。都已经加密私藏，仅用于个人研究学习、禁止传播，有分析研究需要的关注微信公众号【团购好货】，回复密码。
+`《疯狂的外星人》、《飞驰人生》、《新喜剧之王》`也已经下载验证了，挑出了几个清晰度还不错的：[2019春节档电影可用BT种子、百度云盘与磁力链magnet地址收藏](https://www.lijiaocn.com/hidden/2019/02/15/chun-jie-dang-movie-resource.html)。都已经加密私藏，仅用于个人研究学习、禁止传播，有分析研究需要的关注微信公众号【[团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png)】，回复密码。
 
 ## 流浪地球的建议使用的磁力链地址
 
