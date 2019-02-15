@@ -1,13 +1,13 @@
 ---
 layout: default
-title: "Linux的资源限制功能cgroups v1和cgroups v2的详细介绍"
+title: "Linux的资源限制功能cgroup v1和cgroup v2的详细介绍"
 author: 李佶澳
 createdate: "2019-01-28 15:52:58 +0800"
 changedate: "2019-01-31 16:46:42 +0800"
 categories: 技巧
 tags: linuxtool cgroup
 keywords: cgroup
-description: "详细介绍cgroups v1和cgroups v2，cgroups v2从kernel 3.10开始存在，kernel 4.5.0时成为正式特性"
+description: "详细介绍cgroup v1和cgroup v2，cgroup v2从kernel 3.10开始存在，kernel 4.5.0时成为正式特性"
 ---
 
 * auto-gen TOC:
@@ -15,28 +15,29 @@ description: "详细介绍cgroups v1和cgroups v2，cgroups v2从kernel 3.10开�
 
 ## cgroups - Linux control groups
 
-早些时候简单了解过cgroup（[Linux中cgroup的初级方法][1])，当时了解地太浅了，想要做一些或调查一些和cgroup有关的问题时，感觉无法下手。
-需要深入学习一下cgroup。Linux手册中有对cgroup的介绍，这篇笔记中内容主要来自这份文档：man 7 cgroups，[cgroups - Linux control groups][2]。
+之前简单学习过cgroup（间[Linux中cgroup的初级方法][1])，当时了解地太浅了，遇到问题的时候，还是无法下手，于是深入学习了下。
+
+这篇笔记中的内容主要来自Linux手册：man 7 cgroups，[cgroups - Linux control groups][2]。
 
 ### 术语
 
-这篇笔记有可能是第一篇详细、全面介绍了cgroup的中文资料，有必要约定术语、统一口径，这样可以减少交流障碍。
+这篇笔记有可能是第一篇详细、全面介绍了cgroup v1和cgroup v2的中文资料，有必要约定术语、统一口径，可以减少交流障碍。
 
 `process`是“**进程**”，`task`是“**线程**”。
 
-`subsystem`或者`resource controllers`是cgroup中某一类资源的管理器，例如管理cpu资源cpu controller，管理内存的memory controller，统一称呼为“**控制器**”。
+`subsystem`或者`resource controllers`是cgroup中某一类资源的管理器，例如管理cpu的叫做cpu controller，管理内存的叫做memory controller，统一称呼为“**cgroup控制器**”。
 
-controller要用使用`mount -t cgroup`样式的命令挂载到一个目录中，这个操作称呼为“**挂载**”。
+controller要使用`mount -t cgroup`样式的命令挂载到一个目录中，这个操作称呼为“**挂载cgroup controller**”。
 
-从linux kernel 4.14开始，cgroup v2 引入了`thread mode`（线程模式），controller被分为`domain controller`和`threaded controller`两类，前者称呼为“**进程控制器**”，后者称呼为“**线程控制器**”。
+从linux kernel 4.14开始，cgroup v2 引入了`thread mode`（线程模式），controller被分为`domain controller`和`threaded controller`，前者称为“**cgroup进程控制器**”，后者称为“**cgroup线程控制器**”。
 
-从使用的角度看，cgroup就是一个目录树，目录中可以创建子目录，这些目录称呼为“**cgroup 目录**”，在一些场景中为了体现层级关系，还会有“**cgroup 子目录**”的叫法。
+从使用的角度看，cgroup就是一个目录树，目录中可以创建子目录，这些目录称为“**cgroup 目录**”，在一些场景中为了体现层级关系，还会称为“**cgroup 子目录**”。
 
-每个目录中有一些用来设置对应controller的文件，这些文件称呼为“**控制器的文件接口**”。
+每个目录中有一些用来设置对应controller的文件，这些文件称呼为“**cgroup控制器的文件接口**”。
 
-cgroup v2引入了thread mode（线程模式）之后，cgroup目录有了类型之分：原先的只面对进程的cgroup目录是`domain cgroup`，称呼为“**进程(子)目录**”；新增的面对线程的cgroup目录称为`threaded cgroup`，称呼为“**线程子目录**”。
+cgroup v2引入了thread mode（线程模式）之后，cgroup目录有了类型之分：只管理进程的cgroup目录是`domain cgroup`，称为“**进程(子)目录**”；新增的管理线程的cgroup目录是`threaded cgroup`，称为“**线程子目录**”。
 
-**一句话介绍cgroup**：把一个cgroup目录中的资源划分给它的子目录，子目录可以把资源继续划分给它的子目录，为子目录分配的资源之和不能超过父目录，进程或者线程可以使用的资源受到它们委身的目录的限制。
+**一句话介绍cgroup**：把一个cgroup目录中的资源划分给它的子目录，子目录可以把资源继续划分给它的子目录，为子目录分配的资源之和不能超过父目录，进程或者线程可以使用的资源受到它们委身的目录中的资源的限制。
 
 ### 版本
 
@@ -412,7 +413,7 @@ cgroup v1 中的release_agent和notify_on_release被移除了，cgroup v2 提供
 
 需要注意的是/dlgt_grp目录中controller的`接口文件的所有者`不应当被修改，这是上层cgroup目录授予当前目录的。
 
-#### 授权边界：用挂载参数`nsdelegate`开启
+#### 授权边界：用挂载参数nsdelegate开启
 
 在挂载cgroup v2的时候，使用参数`nsdelegate`开启授权边界，如果cgroup v2已经挂载，可以`remount`开启，如下：
 
