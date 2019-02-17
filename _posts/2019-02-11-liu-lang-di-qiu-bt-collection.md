@@ -7,7 +7,8 @@ changedate: "2019-02-16 00:12:50 +0800"
 categories: hidden
 tags: 好货
 keywords: 流浪地球,bt种子,magnet,磁力链,在线播放,1080p,中国大陆
-description: "互联网上搜集的资源，验证了一部分，内置电影流浪地球的百度云盘资源、百度网盘连接、BT种子、磁力链magnet下载地址和下载方法。推荐使用“流浪地球HC1080P清晰国语中字.mp4.torrent”、“流浪地球.The.Wandering.Earth.2019.HD.1080P.X264.AAC.CHS.mp4.torrent”。电影疯狂的外星人、飞驰人生、新喜剧之王也已经下载验证。
+description: "互联网上搜集的资源，验证了一部分，内置电影流浪地球的百度云盘资源、百度网盘连接、BT种子、磁力链magnet下载地址和下载方法。推荐使用“流浪地球HC1080P清晰国语中字.mp4.torrent”、“流浪地球.The.Wandering.Earth.2019.HD.1080P.X264.AAC.CHS.mp4.torrent”。电影疯狂的外星人、飞驰人生、新喜剧之王也已经下载验证。" 
+
 ---
 
 * auto-gen TOC:
