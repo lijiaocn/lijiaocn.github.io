@@ -51,3 +51,8 @@ description: 2018年下半年（2018年12月份）英语四六级考试成绩查
 3、如考生的口试成绩为D等，成绩报告单上则不报道其口语成绩。
 
 [大学英语四、六级考试分数解释](http://www.cet.edu.cn/cet2011.htm)、[申请补办 CET（纸笔考试）成绩证明的方法](http://www.cet.edu.cn/cet_kw1.htm)
+
+![新东方英语四六级通关考试教学视频目录]({{ site.imglocal }}/xdf/xdf-4-6-video.jpeg)
+
+![新东方英语四六级通关考试王江涛写作教学目录]({{ site.imglocal }}/xdf/xiezuo.jpeg)
+
