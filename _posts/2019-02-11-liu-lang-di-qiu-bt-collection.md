@@ -3,7 +3,7 @@ layout: default
 title: "流浪地球BT种子、百度云盘与磁力链magnet可用地址汇总"
 author: noname
 createdate: "2019-02-11 11:18:09 +0800"
-changedate: "2019-02-15 19:05:14 +0800"
+changedate: "2019-02-16 00:12:50 +0800"
 categories: hidden
 tags: 好货
 keywords: 流浪地球,bt种子,magnet,磁力链,在线播放,1080p,中国大陆
@@ -21,7 +21,7 @@ description: "都是从互联网上搜集的，验证了一部分：流浪地球
 
 `《疯狂的外星人》、《飞驰人生》、《新喜剧之王》`也已经下载验证了，挑出了几个清晰度还不错的：[2019春节档电影可用BT种子、百度云盘与磁力链magnet地址收藏](https://www.lijiaocn.com/hidden/2019/02/15/chun-jie-dang-movie-resource.html)。都已经加密私藏，仅用于个人研究学习、禁止传播，有分析研究需要的关注微信公众号【[团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png)】，回复密码。
 
-## 流浪地球的建议使用的磁力链地址
+## 流浪地球建议使用的磁力链地址
 
 **支持去影院观看，效果最好，现在有报销《流浪地球》电影票的活动**：[报销《流浪地球》电影票3张！](https://mp.weixin.qq.com/s/KkEHwwd_iiqXvQAiyAftlw)
 
