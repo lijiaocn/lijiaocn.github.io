@@ -1,18 +1,28 @@
 ---
 layout: default
-title: "Linux中cgroup的初级使用方法"
+title: "Linux的cgroup功能（一）：初级入门使用方法"
 author: 李佶澳
 createdate: 2017/07/26 10:29:51
-changedate: "2019-01-28 15:52:23 +0800"
+changedate: "2019-02-18 14:00:44 +0800"
 categories: 技巧
 tags:  linuxtool cgroup
-keywords: cgroup的使用
-description: linux的cgroup的使用
+keywords: cgroup使用,cgroup.procs,cgroup v1,cgroup v2,cgroup controller,linux资源控制器,资源隔离
+description: linux的cgroup功能的初级入门使用，在每个subsystem目录下建立多个目录，每个目录就是一个cgroup，可以分别设置每个cgroup，cgroup中可以继续创建cgroup。
 
 ---
 
 * auto-gen TOC:
 {:toc}
+
+## 说明
+
+这篇笔记记录时间较早，当时对cgroup了解十分有限，笔记中存在有一些表述不对的地方，譬如`进程的关联与解除`章节中，写入task文件的应该是线程号，并且只是cgroup v1支持task文件，绑定进程应该使用接口文件`cgroup.procsi`。
+
+结合最近一篇更详细的笔记：[Linux的资源限制功能cgroup v1和cgroup v2的详细介绍](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/01/28/linux-tool-cgroup-detail.html#cgroups-v1cgroup%E7%9A%84%E5%88%9B%E5%BB%BA%E5%92%8C%E8%BF%9B%E7%A8%8B%E7%BB%91%E5%AE%9A)
+
+1. [Linux的cgroup功能（一）：初级入门使用方法](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2017/07/26/linux-tool-cgroup.html)
+2. [Linux的cgroup功能（二）：资源限制cgroup v1和cgroup v2的详细介绍](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/01/28/linux-tool-cgroup-detail.html)
+3. [Linux的cgroup功能（三）：cgroup controller汇总和控制器的参数（文件接口）](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/02/18/linux-tool-cgroup-parameters.html)
 
 ## 介绍
 
@@ -45,6 +55,8 @@ cgroup中可以继续创建cgroup。
 
 将进程号写入对应的一个cgroup目录的task文件中，即将进程纳入了对应的cgroup。
 
+**纠错**：写入task文件的是线程号，并且只有cgroup v1支持task文件，进程号应该写入接口文件`cgroup.procs`，见[cgroups v1：cgroup的创建和进程绑定](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/01/28/linux-tool-cgroup-detail.html#cgroups-v1cgroup%E7%9A%84%E5%88%9B%E5%BB%BA%E5%92%8C%E8%BF%9B%E7%A8%8B%E7%BB%91%E5%AE%9A)。@2019-02-18 11:45:26
+
 将进程号写入另一个cgroup的task或者cgroup.procs文件后，自动将其从原先的cgroup的移除。
 
 cgroup.procs会将同一个threadgroup中所有的进程都关联到cgroup。
@@ -76,12 +88,10 @@ pids用来限制一个进程可以派生出的进程数量。
 2. [kernel documentation: cgroup-v2][2]
 3. [linux manual: systemd.cgroup][3]
 4. [how-to-manage-processes-with-cgroup-on-systemd][4]
-5. [systemd.resource-control][5]
-6. [The New Control Group Interfaces][6]
+5. [The New Control Group Interfaces][5]
 
 [1]: https://www.kernel.org/doc/Documentation/cgroup-v1/  "cgroup-v1" 
 [2]: https://www.kernel.org/doc/Documentation/cgroup-v2.txt  "cgroup-v2"
 [3]: http://man7.org/linux/man-pages/man5/systemd.cgroup.5.html  "systemd.cgroup"
 [4]: https://linuxaria.com/article/how-to-manage-processes-with-cgroup-on-systemd  "how-to-manage-processes-with-cgroup-on-systemd"
-[5]: https://www.freedesktop.org/software/systemd/man/systemd.resource-control.html "systemd.resource-control"
-[6]: https://www.freedesktop.org/wiki/Software/systemd/ControlGroupInterface/ "The New Control Group Interfaces"
+[5]: https://www.freedesktop.org/wiki/Software/systemd/ControlGroupInterface/ "The New Control Group Interfaces"
