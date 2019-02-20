@@ -259,7 +259,7 @@ Real-Time group是一些需要`间歇性实时运行`的任务（后面简称实
 1. [Managing system resources on Red Hat Enterprise Linux 7][1]
 2. [Namespace and cgroups, the Building Blocks of Linux containers][2]
 3. [Control Group v2][3]
-4. [Linux-85 关于sched_rt_runtime_us 和 sched_rt_period_us][85]
+4. [Linux-85 关于sched_rt_runtime_us 和 sched_rt_period_us][4]
 5. [3.12. Real Time Throttling][5]
 6. [CFS Bandwidth Control][6]
 7. [Real-Time group scheduling][7]
