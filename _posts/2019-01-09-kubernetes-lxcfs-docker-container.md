@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "lxcfs是什么？通过lxcfs在容器内显示容器的CPU、内存状态"
+title: "Lxcfs是什么？ 怎样通过lxcfs在容器内显示容器的CPU、内存状态"
 author: 李佶澳
 createdate: "2019-01-09 14:12:25 +0800"
-changedate: "2019-02-14 18:48:27 +0800"
+changedate: "2019-02-20 16:44:15 +0800"
 categories: 技巧
 tags: kubernetes docker
 keywords: kubernetes,lxcfs,docker,container,top,memory,disk
@@ -28,6 +28,20 @@ description:  LXCFS，FUSE filesystem for LXC，运行时会维护一组与/proc
 
 LXCFS，[FUSE filesystem for LXC][2]是一个常驻服务，它启动以后会在指定目录中自行维护与上面列出的/proc目录中的文件同名的文件，容器从lxcfs维护的/proc文件中读取数据时，得到的是容器的状态数据，而不是整个宿主机的状态。
 
+相关笔记：
+
+[Lxcfs是什么？怎样通过lxcfs在容器内显示容器的CPU、内存状态](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/01/09/kubernetes-lxcfs-docker-container.html)
+
+[Lxcfs根据cpu-share、cpu-quota等cgroup信息生成容器内的/proc文件（上）](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/02/11/lxcfs-support-cpu-share-and-cpu-quota-1.html)
+
+[Lxcfs根据cpu-share、cpu-quota等cgroup信息生成容器内的/proc文件（下）](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/02/15/lxcfs-support-cpu-share-and-cpu-quota-2.html)
+
+[Linux的cgroup功能（三）：cgroup controller汇总和控制器的参数（文件接口）](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/02/18/linux-tool-cgroup-parameters.html)
+
+[Linux的cgroup功能（二）：资源限制cgroup v1和cgroup v2的详细介绍](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/01/28/linux-tool-cgroup-detail.html)
+
+[Linux的cgroup功能（一）：初级入门使用方法](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2017/07/26/linux-tool-cgroup.html)
+
 ## 安装
 
 ### yum安装
@@ -50,8 +64,8 @@ yum install -y fuse-devel
 git clone https://github.com/lxc/lxcfs.git
 cd lxcfs
 git checkout lxcfs-3.0.3
-./bootstrap.sh
 
+./bootstrap.sh
 ./configure --prefix=/
 make
 make install

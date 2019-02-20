@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "lxcfs根据cpu-share和cpu-quota等cgroup信息生成容器内的/proc文件（一）"
+title: "Lxcfs根据cpu-share、cpu-quota等cgroup信息生成容器内的/proc文件（上）"
 author: 李佶澳
 createdate: "2019-02-11 10:49:45 +0800"
-changedate: "2019-02-15 11:08:45 +0800"
+changedate: "2019-02-20 16:46:22 +0800"
 categories: 技巧
 tags: cgroup docker
 keywords: lxcfs,cgroup,cpu-share,cpu-quota,
@@ -19,9 +19,21 @@ description: 使用lxcfs，在容器中看到的还是宿主机的CPU状态，�
 
 	使用lxcfs之后，在容器中看到CPU状态还是宿主机的CPU状态。
 
-这里研究一下，看看是否可以通过修改lxcfs，支持按照cpu-share和cpu-quota展示容器的cpu状态。
+研究一下，看看是否可以通过修改lxcfs，支持按照cpu-share和cpu-quota展示容器的cpu状态。计划写两篇笔记，这是第一篇，先学习一下lxcfs的实现。
 
-计划写两篇笔记，这是第一篇，学习一下lxcfs的实现。
+相关笔记：
+
+[Lxcfs是什么？怎样通过lxcfs在容器内显示容器的CPU、内存状态](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/01/09/kubernetes-lxcfs-docker-container.html)
+
+[Lxcfs根据cpu-share、cpu-quota等cgroup信息生成容器内的/proc文件（上）](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/02/11/lxcfs-support-cpu-share-and-cpu-quota-1.html)
+
+[Lxcfs根据cpu-share、cpu-quota等cgroup信息生成容器内的/proc文件（下）](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/02/15/lxcfs-support-cpu-share-and-cpu-quota-2.html)
+
+[Linux的cgroup功能（三）：cgroup controller汇总和控制器的参数（文件接口）](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/02/18/linux-tool-cgroup-parameters.html)
+
+[Linux的cgroup功能（二）：资源限制cgroup v1和cgroup v2的详细介绍](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/01/28/linux-tool-cgroup-detail.html)
+
+[Linux的cgroup功能（一）：初级入门使用方法](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2017/07/26/linux-tool-cgroup.html)
 
 ## libfuse的使用方法
 
@@ -770,6 +782,10 @@ func checkMountDestination(rootfs, dest string) error {
 	 eth0: 1215645    2751    0    0    0     0          0         0  1782404    4324    0    0    0   427       0          0
 	 ppp0: 1622270    5552    1    0    0     0          0         0   354130    5669    0    0    0     0       0          0
 	 tap0:    7714      81    0    0    0     0          0         0     7714      81    0    0    0     0       0          0
+
+## 下篇
+
+下篇分析proc文件的内容是怎么生成的：[lxcfs（二）：根据cpu-share、cpu-quota等cgroup信息生成容器内的/proc文件（下）](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/02/15/lxcfs-support-cpu-share-and-cpu-quota-2.html#aither64%E5%AF%B9procstat%E7%9A%84%E4%BF%AE%E6%AD%A3)
 
 ## 参考
 
