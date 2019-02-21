@@ -26,7 +26,7 @@ description: 权力的游戏/权利的游戏第八季Game of Thrones Season 8将
 
 [权力的游戏第八季](https://baike.baidu.com/item/%E6%9D%83%E5%8A%9B%E7%9A%84%E6%B8%B8%E6%88%8F%E7%AC%AC%E5%85%AB%E5%AD%A3/17518467?fr=aladdin)将于美国时间`2019年4月14日`首次播出，这一季只有6集，但是每集长达80分钟。
 
-**`2019年4月14日（美国时间）回归播出，敬请期待，关注公众号【[团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png)】，最先知道`**
+**`2019年4月14日（美国时间）回归播出，敬请期待，关注公众号`** 【[团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png)】 **`，最先知道`**
 
 ## 权力（权利）的游戏/冰与火之歌（Game of Thrones）——第七季
 
