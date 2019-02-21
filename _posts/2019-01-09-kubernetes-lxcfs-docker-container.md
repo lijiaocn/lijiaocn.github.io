@@ -3,7 +3,7 @@ layout: default
 title: "Lxcfs是什么？ 怎样通过lxcfs在容器内显示容器的CPU、内存状态"
 author: 李佶澳
 createdate: "2019-01-09 14:12:25 +0800"
-changedate: "2019-02-20 16:44:15 +0800"
+changedate: "2019-02-21 13:43:56 +0800"
 categories: 技巧
 tags: kubernetes docker
 keywords: kubernetes,lxcfs,docker,container,top,memory,disk
@@ -34,7 +34,9 @@ LXCFS，[FUSE filesystem for LXC][2]是一个常驻服务，它启动以后会�
 
 [Lxcfs根据cpu-share、cpu-quota等cgroup信息生成容器内的/proc文件（上）](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/02/11/lxcfs-support-cpu-share-and-cpu-quota-1.html)
 
-[Lxcfs根据cpu-share、cpu-quota等cgroup信息生成容器内的/proc文件（下）](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/02/15/lxcfs-support-cpu-share-and-cpu-quota-2.html)
+[Lxcfs根据cpu-share、cpu-quota等cgroup信息生成容器内的/proc文件（中）](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/02/15/lxcfs-support-cpu-share-and-cpu-quota-2.html)
+
+[Lxcfs根据cpu-share、cpu-quota等cgroup信息生成容器内的/proc文件（下）](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/02/21/lxcfs-support-cpu-share-and-cpu-quota-3.html)
 
 [Linux的cgroup功能（三）：cgroup controller汇总和控制器的参数（文件接口）](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/02/18/linux-tool-cgroup-parameters.html)
 
@@ -159,8 +161,10 @@ Swap:          256M          0B        256M
 容器的CPU设置有两种方式，一个是`--cpus 2`，限定容器最多只能使用两个逻辑CPU，另一个是`--cpuset-cpus "0,1"`，限定容器
 可以使用的宿主机CPU。
 
-top命令显示的是容器 `可以使用的` 宿主机cpu，如果使用`--cpus 2`，看到的cpu个数是宿主机上的cpu个数。
-使用`--cpuset-cpus "0,1"`的时候，在容器看到cpu个数是`--cpuset`指定的cpu的个数。
+top命令显示的是容器 `可以使用的` 宿主机cpu，如果使用`--cpus 2`，看到的cpu个数是宿主机上的cpu个数。使用`--cpuset-cpus "0,1"`的时候，在容器看到cpu个数是`--cpuset`指定的cpu的个数。
+
+**订正**：这个问题已经解决，见[Lxcfs根据cpu-share、cpu-quota等cgroup信息生成容器内的/proc文件（下）](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/02/21/lxcfs-support-cpu-share-and-cpu-quota-3.html)。
+
 
 ```
 docker run -it --rm -m 256m  --cpus 2 --cpuset-cpus "0,1" \

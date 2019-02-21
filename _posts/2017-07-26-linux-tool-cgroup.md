@@ -3,7 +3,7 @@ layout: default
 title: "Linux的cgroup功能（一）：初级入门使用方法"
 author: 李佶澳
 createdate: 2017/07/26 10:29:51
-changedate: "2019-02-18 14:00:44 +0800"
+changedate: "2019-02-21 13:52:27 +0800"
 categories: 技巧
 tags:  linuxtool cgroup
 keywords: cgroup使用,cgroup.procs,cgroup v1,cgroup v2,cgroup controller,linux资源控制器,资源隔离
@@ -16,9 +16,9 @@ description: linux的cgroup功能的初级入门使用，在每个subsystem目�
 
 ## 说明
 
-这篇笔记记录时间较早，当时对cgroup了解十分有限，笔记中存在有一些表述不对的地方，譬如`进程的关联与解除`章节中，写入task文件的应该是线程号，并且只是cgroup v1支持task文件，绑定进程应该使用接口文件`cgroup.procsi`。
+这篇笔记记录时间较早，当时对cgroup了解十分有限，笔记中存在有一些表述不对的地方，譬如`进程的关联与解除`一节中，写入task文件的应该是线程号（cgroup v1支持task文件），绑定进程应该使用接口文件`cgroup.procsi`，见[Linux的资源限制功能cgroup v1和cgroup v2的详细介绍](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/01/28/linux-tool-cgroup-detail.html#cgroups-v1cgroup%E7%9A%84%E5%88%9B%E5%BB%BA%E5%92%8C%E8%BF%9B%E7%A8%8B%E7%BB%91%E5%AE%9A)。
 
-结合最近一篇更详细的笔记：[Linux的资源限制功能cgroup v1和cgroup v2的详细介绍](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/01/28/linux-tool-cgroup-detail.html#cgroups-v1cgroup%E7%9A%84%E5%88%9B%E5%BB%BA%E5%92%8C%E8%BF%9B%E7%A8%8B%E7%BB%91%E5%AE%9A)
+cgroup相关的学习笔记：
 
 1. [Linux的cgroup功能（一）：初级入门使用方法](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2017/07/26/linux-tool-cgroup.html)
 2. [Linux的cgroup功能（二）：资源限制cgroup v1和cgroup v2的详细介绍](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/01/28/linux-tool-cgroup-detail.html)

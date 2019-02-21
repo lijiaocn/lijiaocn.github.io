@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "Lxcfs根据cpu-share、cpu-quota等cgroup信息生成容器内的/proc文件（下）"
+title: "Lxcfs根据cpu-share、cpu-quota等cgroup信息生成容器内的/proc文件（中）"
 author: 李佶澳
 createdate: "2019-02-15 10:33:52 +0800"
-changedate: "2019-02-20 16:45:46 +0800"
+changedate: "2019-02-21 13:46:41 +0800"
 categories: 技巧
 tags: cgroup docker
 keywords: lxcfs,cgroup,cpu-share,cpu-quota,
@@ -28,13 +28,15 @@ git checkout   cpu-views
 
 在`man proc`中可以找到所有proc文件的内容格式和说明。
 
-相关笔记：
-
-[Lxcfs是什么？怎样通过lxcfs在容器内显示容器的CPU、内存状态](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/01/09/kubernetes-lxcfs-docker-container.html)
+**相关笔记**：
 
 [Lxcfs根据cpu-share、cpu-quota等cgroup信息生成容器内的/proc文件（上）](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/02/11/lxcfs-support-cpu-share-and-cpu-quota-1.html)
 
-[Lxcfs根据cpu-share、cpu-quota等cgroup信息生成容器内的/proc文件（下）](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/02/15/lxcfs-support-cpu-share-and-cpu-quota-2.html)
+[Lxcfs根据cpu-share、cpu-quota等cgroup信息生成容器内的/proc文件（中）](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/02/15/lxcfs-support-cpu-share-and-cpu-quota-2.html)
+
+[Lxcfs根据cpu-share、cpu-quota等cgroup信息生成容器内的/proc文件（下）](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/02/21/lxcfs-support-cpu-share-and-cpu-quota-3.html)
+
+[Lxcfs是什么？怎样通过lxcfs在容器内显示容器的CPU、内存状态](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/01/09/kubernetes-lxcfs-docker-container.html)
 
 [Linux的cgroup功能（三）：cgroup controller汇总和控制器的参数（文件接口）](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/02/18/linux-tool-cgroup-parameters.html)
 
@@ -467,12 +469,9 @@ blkio.io_service_time_recursive
 
 参考`/proc/meminfo文件内容的生成`，swaps中的信息是meminfo信息的子集，swap_total和swap_free的获取方式相同。
 
-### 阶段小结
+## 小结
 
-事实上需要掌握的内容只有一样： `所有/proc文件的内容格式和含义、所有cgroup文件接口的内容格式和含义`。
-
-嗯..这个任务..很艰巨...
-
+事实上需要掌握的内容只有一样： `所有/proc文件的内容格式和含义、所有cgroup文件接口的内容格式和含义`。嗯..这个任务..很艰巨...收录在[Linux的cgroup功能（三）：cgroup controller汇总和控制器的参数（文件接口）](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/02/18/linux-tool-cgroup-parameters.html)
 
 ## 参考
 

@@ -3,7 +3,7 @@ layout: default
 title: "Linux的cgroup功能（二）：资源限制cgroup v1和cgroup v2的详细介绍"
 author: 李佶澳
 createdate: "2019-01-28 15:52:58 +0800"
-changedate: "2019-02-18 13:58:41 +0800"
+changedate: "2019-02-21 13:48:52 +0800"
 categories: 技巧
 tags: linuxtool cgroup
 keywords: cgroup介绍文档,cgroup v1,cgroup v2,cgroup controller,linux资源隔离,linux资源控制器
@@ -16,8 +16,9 @@ description: "详细介绍cgroup v1和cgroup v2，cgroup v2从kernel 3.10开始�
 ## cgroups - Linux control groups
 
 之前简单学习过cgroup，当时了解地太浅了，遇到问题的时候，还是无法下手，于是深入学习下。
-
 这篇笔记中的内容主要来自Linux手册：man 7 cgroups（奇怪的是centos7上没有该页），[cgroups - Linux control groups][2]。
+
+cgroup相关的学习笔记：
 
 1. [Linux的cgroup功能（一）：初级入门使用方法](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2017/07/26/linux-tool-cgroup.html)
 2. [Linux的cgroup功能（二）：资源限制cgroup v1和cgroup v2的详细介绍](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/01/28/linux-tool-cgroup-detail.html)
