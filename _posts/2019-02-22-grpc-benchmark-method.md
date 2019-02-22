@@ -7,7 +7,7 @@ changedate: "2019-02-22 16:28:30 +0800"
 categories: 技巧
 tags: grpc
 keywords: grpc性能压测,grpc benchmark,ghz
-description: github中搜索“grpc benchmark”，ghz排在比较靠前的位置，也有文章分享了用Locust进行grpc压测的方法
+description: github中搜索“grpc benchmark”，ghz位置比较靠前，也有文章分享了用Locust进行grpc压测的方法
 ---
 
 * auto-gen TOC:
