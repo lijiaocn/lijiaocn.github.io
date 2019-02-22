@@ -3,7 +3,7 @@ layout: default
 title: "Go语言实现grpc server和grpc client，用protobuf格式的消息通信（GRPC）"
 author: 李佶澳
 createdate: "2019-01-02 13:19:40 +0800"
-changedate: "2019-01-08 11:44:44 +0800"
+changedate: "2019-02-21 14:44:15 +0800"
 categories: 技巧
 tags: grpc
 keywords: golang,protobuf
@@ -17,9 +17,9 @@ description: 用Go语言实现grpc通信，即用protobuf消息格式实现clien
 
 下面使用的例子是[grpc-go](https://github.com/grpc/grpc-go)中的[gRPC in 3 minutes (Go)][1]，没有将完整的代码复制粘贴到这里，只截取了一些代码片段。
 
-## 生成定义文件
+## 安装grpc工具
 
-先安装需要的工具、下载代码，后面再分析是怎样做的。
+需要先安装需要的工具，用来根据grpc的消息格式定义文件生成响应的.go文件。
 
 安装protobuf compile，安装以后，本地会有一个`protoc`命令可用，在mac上可以直接用brew安装：
 
@@ -35,13 +35,42 @@ $ which protoc-gen-go
 /Users/lijiao/Work/Bin/gopath/bin/protoc-gen-go
 ```
 
+## grpc通信示例
+
 下载示例代码，分为client和server两部分：
 
 ```bash
 $ go get -u google.golang.org/grpc/examples/helloworld/greeter_client
 $ go get -u google.golang.org/grpc/examples/helloworld/greeter_server
+
 $ cd $GOPATH/src/google.golang.org/grpc/examples/helloworld
 ```
+
+编译：
+
+```bash
+cd greeter_server
+go build
+
+cd greeter_client
+go build
+
+```
+
+启动服务端：
+
+```bash
+./greeter_server      #监听端口50051，代码中写死了
+```
+
+客户端发起请求：
+
+```bash
+$ ./greeter_client
+2019/02/21 14:41:43 Greeting: Hello world
+```
+
+## 代码实现说明
 
 `helloworld/helloworld.proto`是用grpc的语法定义的消息格式，这个文件无法被直接使用的，需要转成对应语言的文件。
 
