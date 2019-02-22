@@ -92,7 +92,7 @@ Status code distribution:
     Total number of requests cannot be smaller than the concurrency level. Default is 50.
 ```
 
-压测时观察连接情况，发现无论-c指定的参数是多少，都只有建立一个tcp连接，-c所指的并发似乎指定是并发的往一个grpc连接中发请求，而不是模拟多个client。
+压测时观察连接情况，发现无论-c指定的参数是多少，都只建立了一个tcp连接，-c所指的并发似乎是并发的往一个grpc连接中发请求，而不是模拟多个client。
 
 ## 参考
 
