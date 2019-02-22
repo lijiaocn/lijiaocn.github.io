@@ -1,7 +1,6 @@
 ---
 layout: default
 title: "权力的游戏/冰与火之歌第八季（全季）未删减版百度云网盘、迅雷BT种子下载"
-author: noname
 createdate: "2019-02-21 22:52:17 +0800"
 changedate: "2019-02-21 22:52:17 +0800"
 categories: hidden

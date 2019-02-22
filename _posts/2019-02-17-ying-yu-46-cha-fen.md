@@ -1,7 +1,6 @@
 ---
 layout: default
 title: "【2019】英语四六级考试成绩查询与42.9G英语学习通关资源"
-author: noname
 createdate: "2019-02-17 15:21:05 +0800"
 changedate: "2019-02-19 16:55:14 +0800"
 categories: hidden

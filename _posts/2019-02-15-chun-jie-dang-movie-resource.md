@@ -1,7 +1,6 @@
 ---
 layout: default
 title: "2019春节档热门电影可用BT种子、百度云盘与磁力链magnet地址收藏"
-author: noname
 createdate: "2019-02-15 01:02:46 +0800"
 changedate: "2019-02-16 00:15:46 +0800"
 categories: hidden
@@ -18,7 +17,10 @@ description: "都是从互联网上搜集的，已经验证。包括流浪地球
 
 **以下内容都是从互联网上搜集的，目测比较可信（没有全部验证），仅作为个人收藏，请勿传播扩散。**
 
-`关注公众号`【[团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png)】`，回复有惊喜`
+`如果迅雷提示“应版权方要求不能提供下载”，要用替代工具，到公众号【团购好货】中回复“下载工具”，亲测可行`
+
+<span style="display:block;text-align:center">![团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png){: width="300px"}</span>
+
 
 ## 已经通过验证的私人收藏，谢绝传播
 
