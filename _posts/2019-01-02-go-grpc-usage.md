@@ -3,10 +3,10 @@ layout: default
 title: "Go语言实现grpc server和grpc client，用protobuf格式的消息通信（GRPC）"
 author: 李佶澳
 createdate: "2019-01-02 13:19:40 +0800"
-changedate: "2019-02-21 14:44:15 +0800"
+changedate: "2019-02-22 14:01:23 +0800"
 categories: 技巧
 tags: grpc
-keywords: golang,protobuf
+keywords: grpc,protobuf,golang,go
 description: 用Go语言实现grpc通信，即用protobuf消息格式实现client和server之间的高效通信
 ---
 
@@ -16,6 +16,12 @@ description: 用Go语言实现grpc通信，即用protobuf消息格式实现clien
 ## 说明
 
 下面使用的例子是[grpc-go](https://github.com/grpc/grpc-go)中的[gRPC in 3 minutes (Go)][1]，没有将完整的代码复制粘贴到这里，只截取了一些代码片段。
+
+**相关笔记**：
+
+[Go语言实现grpc server和grpc client，用protobuf格式的消息通信（GRPC）](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/01/02/go-grpc-usage.html)
+
+[Grpc性能压测方法：用ghz进行压测](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/02/22/grpc-benchmark-method.html)
 
 ## 安装grpc工具
 
