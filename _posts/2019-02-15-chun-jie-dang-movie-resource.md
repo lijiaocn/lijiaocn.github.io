@@ -16,9 +16,6 @@ description: "都是从互联网上搜集的，已经验证。包括流浪地球
 
 `如果迅雷提示“应版权方要求不能提供下载”，要用替代工具，到公众号【团购好货】中回复“下载工具”，亲测可行`
 
-<span style="display:block;text-align:center">![团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png){: width="300px"}</span>
-
-
 ## 已经通过验证的私人收藏，谢绝传播
 
 `私人收藏，谢绝传播！有研究需求的，关注公众号【团购好货】，回复“密码”`

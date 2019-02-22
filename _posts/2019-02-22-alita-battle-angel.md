@@ -15,13 +15,13 @@ description: "电影《阿丽塔:战斗天使》下载地址大全：百度云�
 
 **现在能找到视频都是`私拍画质`，国内上映后估计会有画质好的**，**关注公众号【[团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png)】等通知吧**
 
-<span style="display:block;text-align:center">![团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png){: width="300px"}</span>
-
 ## 《阿丽塔：战斗天使》迅雷种子、磁力链汇总
 
 想尝鲜的试试下面的magnet链接，优先用迅雷下载，迅雷速度最快。
 
 `如果迅雷提示“应版权方要求不能提供下载”，需要用替代工具，到公众号【团购好货】中回复“下载工具”，亲测可行`
+
+<span style="display:block;text-align:center">![团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png){: width="300px"}</span>
 
 ### 【1.1G】百度云网盘，阿丽塔：战斗天使
 
