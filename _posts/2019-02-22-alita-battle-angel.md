@@ -32,7 +32,7 @@ description: "《阿丽塔:战斗天使》高清1080P下载地址大全：百度
 
 <span style="display:block;text-align:center">![团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png){: width="300px"}</span>
 
-## 《阿丽塔：战斗天使》迅雷种子、磁力链前期汇总（下面这些种子画质较差）
+## 《阿丽塔：战斗天使》迅雷种子、磁力链前期汇总（下面这些画质较差）
 
 `如果迅雷提示“应版权方要求不能提供下载”，用替代下载工具，到公众号【团购好货】中回复“下载工具”，亲测可行`
 
