@@ -20,6 +20,8 @@ description: "都是从互联网上搜集的，已经验证。包括流浪地球
 
 `好莱坞最新大片，耗资2亿美元制作：` **[《阿丽塔·战斗天使》1080P高清](https://www.lijiaocn.com/hidden/2019/02/22/alita-battle-angel.html)**
 
+`国产科幻元年，41亿票房大作`： **[《流浪地球》](https://www.lijiaocn.com/hidden/2019/02/11/liu-lang-di-qiu-bt-collection.html)**
+
 ## 私人收藏，谢绝传播
 
 `迅雷提示“应版权方要求不能提供下载”，需要用替代工具，到公众号【团购好货】中回复“下载工具”，亲测可行`
