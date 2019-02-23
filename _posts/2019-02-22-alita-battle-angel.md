@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "阿丽塔战斗天使免费下载汇总，百度云网盘、迅雷BT种子、磁力链magnet"
+title: "阿丽塔战斗天使高清下载！百度云网盘、迅雷BT种子、磁力链magnet"
 createdate: "2019-02-22 23:29:10 +0800"
 changedate: "2019-02-22 23:29:10 +0800"
 categories: hidden
@@ -13,30 +13,43 @@ description: "电影《阿丽塔:战斗天使》下载地址大全：百度云�
 
 **以下内容都是从互联网上搜集的，全部经过验证，仅作为个人收藏，请勿传播扩散。**
 
-**现在能找到视频都是`私拍画质`，国内上映后估计会有画质好的**，**关注公众号【[团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png)】等通知吧**
+## 【2.42G】高清！！1080P 阿丽塔：战斗天使.Alita.Battle.Angel.2019.HD1080P.X264.AAC.CHS
 
-## 《阿丽塔：战斗天使》迅雷种子、磁力链汇总
+终于找到高清的资源了！遗憾的是部分画面被在屏幕中央打上文字水印了，和[《流浪地球》](https://www.lijiaocn.com/hidden/2019/02/11/liu-lang-di-qiu-bt-collection.html)的情况一样，显然是同一批人搞出来的，他们到底是谁、何方神圣。。。。（低调使用不要传播了！）
+
+![阿丽塔：战斗天使.Alita.Battle.Angel.2019.HD1080P.X264.AAC.CHS-1]({{ site.imglocal}}/movie/alita1.jpeg)
+
+![阿丽塔：战斗天使.Alita.Battle.Angel.2019.HD1080P.X264.AAC.CHS-2]({{ site.imglocal}}/movie/alita2.jpeg)
+
+![阿丽塔：战斗天使.Alita.Battle.Angel.2019.HD1080P.X264.AAC.CHS-3]({{ site.imglocal}}/movie/alita3.jpeg)
+
+	百度云网盘地址: https://pan.baidu.com/s/1RChi5_zCbt4d6qZMSKwY-Q 
+	提取码: vxrf 
+
+**迅雷下载用到的BT种子或磁力链，到公众号【团购好货】中回复“战斗天使”。**
+
+<span style="display:block;text-align:center">![团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png){: width="300px"}</span>
+
+## 《阿丽塔：战斗天使》迅雷种子、磁力链汇总（下面这些种子画质较差）
 
 想尝鲜的试试下面的magnet链接，优先用迅雷下载，迅雷速度最快。
 
 `如果迅雷提示“应版权方要求不能提供下载”，需要用替代工具，到公众号【团购好货】中回复“下载工具”，亲测可行`
 
-<span style="display:block;text-align:center">![团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png){: width="300px"}</span>
-
-### 【1.1G】百度云网盘，阿丽塔：战斗天使
+### 【1.1G】模糊，百度云网盘，阿丽塔：战斗天使
 
 加密私藏，对白英语，有中文字幕，私拍画质模糊（比后面的略好），能看剧情，不要传播
 
 	百度云网盘: https://pan.baidu.com/s/1RChi5_zCbt4d6qZMSKwY-Q 
 	提取码: vxrf 
 
-### 【1.1G】阿丽塔：战斗天使.torrent
+### 【1.1G】模糊，阿丽塔：战斗天使.torrent
 
 对白英语，有中文字幕，私拍画质模糊（比后面的略好），能看剧情，复制地址到迅雷或其它下载软件中添加下载
 
 	magnet:?xt=urn:btih:430098beadc1a6eedc118124070584c32c206c16&dn=阿丽塔：战斗天使
 
-### 【1.04G】阿丽塔：战斗天使HDTC英语中字.mkv.torrent
+### 【1.04G】模糊，阿丽塔：战斗天使HDTC英语中字.mkv.torrent
 
 对白是英语，有中文字幕，私拍画质模糊，能看剧情，复制下面地址到迅雷或其它下载软件中添加下载
 
