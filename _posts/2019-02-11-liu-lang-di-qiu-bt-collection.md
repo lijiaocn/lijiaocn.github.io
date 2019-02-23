@@ -18,6 +18,8 @@ description: "互联网上搜集的资源，验证了一部分，内置电影流
 
 ## 资源更新
 
+好莱坞最新大片，耗资2亿美元制作， **[《阿丽塔·战斗天使》](https://www.lijiaocn.com/hidden/2019/02/22/alita-battle-angel.html)**
+
 电影`《疯狂的外星人》、《飞驰人生》、《新喜剧之王》`的百度云盘资源、百度网盘连接、BT种子、magnet下载连接也已经下载验证，挑出了几个清晰度还不错的：[2019春节档电影可用BT种子、百度云盘与磁力链magnet地址收藏](https://www.lijiaocn.com/hidden/2019/02/15/chun-jie-dang-movie-resource.html)。
 
 电影流浪地球的百度云盘资源、百度网盘连接、BT种子、磁力链magnet下载地址和下载方法均已验证，推荐使用“ **流浪地球.HC版.HD.1080P.MP4.2018.中国大陆.科幻.灾难.中文字幕.torrent** ”。
