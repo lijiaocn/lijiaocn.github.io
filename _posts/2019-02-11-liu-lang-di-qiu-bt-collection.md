@@ -12,19 +12,19 @@ description: "互联网上搜集的资源，验证了一部分，内置电影流
 
 ## 资源说明
 
-**以下内容都是从互联网上搜集的，目测比较可信（没有全部验证），仅作为个人收藏，请勿传播扩散。**
-
-`如果迅雷提示“应版权方要求不能提供下载”，要用替代工具，到公众号【团购好货】中回复“下载工具”，亲测可行`
+**以下内容都是从互联网上搜集的，全部经过验证，仅作为个人收藏，请勿传播扩散。**
 
 ## 资源更新
 
 `好莱坞最新大片，耗资2亿美元制作：` **[《阿丽塔·战斗天使》1080P高清](https://www.lijiaocn.com/hidden/2019/02/22/alita-battle-angel.html)**
 
-`《疯狂的外星人》、《飞驰人生》、《新喜剧之王》`：**[2019年春节档电影](https://www.lijiaocn.com/hidden/2019/02/15/chun-jie-dang-movie-resource.html)**
+`国产科幻元年，41亿票房大作`： **[《流浪地球》](https://www.lijiaocn.com/hidden/2019/02/11/liu-lang-di-qiu-bt-collection.html)无水印高清**
 
-推荐使用“ **流浪地球.HC版.HD.1080P.MP4.2018.中国大陆.科幻.灾难.中文字幕.torrent** ”。
+`《疯狂的外星人》、《飞驰人生》、《新喜剧之王》`：**[2019年春节档电影汇总](https://www.lijiaocn.com/hidden/2019/02/15/chun-jie-dang-movie-resource.html)**
 
-## 流浪地球百度云网盘地址
+推荐“ **流浪地球.HC版.HD.1080P.MP4.2018.中国大陆.科幻.灾难.中文字幕.torrent** ”。
+
+## 流浪地球百度云网盘私人收藏
 
 **流浪地球已经加密私藏到百度云盘（百度网盘），到公众号【团购好货】中回复“流浪地球”**
 
@@ -32,7 +32,7 @@ description: "互联网上搜集的资源，验证了一部分，内置电影流
 
 <span style="display:block;text-align:center">![团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png){: width="300px"}</span>
 
-## 流浪地球建议使用的磁力链下载地址
+## 流浪地球优质磁力链下载地址收藏
 
 **支持去影院观看，效果最好，现在有报销《流浪地球》电影票的活动**：[报销《流浪地球》电影票3张！](https://mp.weixin.qq.com/s/KkEHwwd_iiqXvQAiyAftlw)
 
@@ -48,7 +48,7 @@ description: "互联网上搜集的资源，验证了一部分，内置电影流
 
 `如果迅雷提示因为版权原因不能下载，换其它的bt下载工具，到【团购好货】公众号中回复“下载工具”，亲测可行`
 
-## 流浪地球其它可用磁力链magnet地址
+## 流浪地球可用磁力链magnet地址收藏
 
 下面是流浪地球的其它磁力链magnet可用地址（没有全部验证）：
 

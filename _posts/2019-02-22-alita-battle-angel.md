@@ -9,9 +9,17 @@ keywords: 阿丽塔战斗天使,阿丽塔,战斗天使,下载,在线电影,百�
 description: "《阿丽塔:战斗天使》高清1080P下载地址大全：百度云网盘下载、迅雷BT种子下载、磁力链magnet下载地址，推荐下载【2.42G】高清！！1080P 阿丽塔：战斗天使.Alita.Battle.Angel.2019.HD1080P.X264.AAC.CHS.torrent，高清经过验证"
 ---
 
-## 资源下载说明
+## 资源说明
 
 **以下内容都是从互联网上搜集的，全部经过验证，仅作为个人收藏，请勿传播扩散。**
+
+## 资源更新
+
+`好莱坞最新大片，耗资2亿美元制作：` **[《阿丽塔·战斗天使》1080P高清](https://www.lijiaocn.com/hidden/2019/02/22/alita-battle-angel.html)**
+
+`国产科幻元年，41亿票房大作`： **[《流浪地球》](https://www.lijiaocn.com/hidden/2019/02/11/liu-lang-di-qiu-bt-collection.html)无水印高清**
+
+`《疯狂的外星人》、《飞驰人生》、《新喜剧之王》`：**[2019年春节档电影汇总](https://www.lijiaocn.com/hidden/2019/02/15/chun-jie-dang-movie-resource.html)**
 
 ## 【2.42G】高清！！1080P 阿丽塔：战斗天使.Alita.Battle.Angel.2019.HD1080P.X264.AAC.CHS
 
