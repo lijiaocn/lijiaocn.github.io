@@ -22,15 +22,11 @@ description: "互联网上搜集的资源，验证了一部分，内置电影流
 
 `《疯狂的外星人》、《飞驰人生》、《新喜剧之王》：` **[2019年春节档电影汇总](https://www.lijiaocn.com/hidden/2019/02/15/chun-jie-dang-movie-resource.html)**
 
-推荐“ **流浪地球.HC版.HD.1080P.MP4.2018.中国大陆.科幻.灾难.中文字幕.torrent** ”。
-
 ## 流浪地球百度云网盘私人收藏
 
-**流浪地球已经加密私藏到百度云盘（百度网盘），到公众号【团购好货】中回复“流浪地球”**
+**流浪地球已经加密私藏到百度云盘（百度网盘），关注公众号“团购好货”，回复“流浪地球”** ：
 
-需要`百度云网盘下载地址`的 **关注微信公众号“团购好货”，回复“流浪地球”** ：
-
-<span style="display:block;text-align:center">![团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png){: width="300px"}</span>
+![流浪地球地球下载工具]({{ site.imglocal}}/liu-lang-di-qiu/download.jpg)
 
 ## 流浪地球优质磁力链下载地址收藏
 
@@ -43,8 +39,6 @@ description: "互联网上搜集的资源，验证了一部分，内置电影流
 1 流浪地球.HC版.HD.1080P.MP4.2018.中国大陆.科幻.灾难.中文字幕.torrent： 2.89G
 
 	magnet:?xt=urn:btih:0a8c9acff20fa520c867802d281cad97002cdd39&dn=%E6%B5%81%E6%B5%AA%E5%9C%B0%E7%90%83.HC%E7%89%88.HD.1080P.MP4.2018.%E4%B8%AD%E5%9B%BD%E5%A4%A7%E9%99%86.%E7%A7%91%E5%B9%BB.%E7%81%BE%E9%9A%BE.%E4%B8%AD%E6%96%87%E5%AD%97%E5%B9%95
-
-![流浪地球地球下载工具]({{ site.imglocal}}/liu-lang-di-qiu/download.jpg)
 
 `如果迅雷提示因为版权原因不能下载，换其它的bt下载工具，到【团购好货】公众号中回复“下载工具”，亲测可行`
 
