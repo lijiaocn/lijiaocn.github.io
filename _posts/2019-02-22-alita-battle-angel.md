@@ -23,18 +23,16 @@ description: "《阿丽塔:战斗天使》高清1080P下载地址大全：百度
 
 ![阿丽塔：战斗天使.Alita.Battle.Angel.2019.HD1080P.X264.AAC.CHS-3]({{ site.imglocal}}/movie/alita3.jpeg)
 
-	百度云网盘地址: https://pan.baidu.com/s/1RChi5_zCbt4d6qZMSKwY-Q 
+	百度云网盘下载: https://pan.baidu.com/s/1RChi5_zCbt4d6qZMSKwY-Q 
 	提取码: vxrf 
 
-**迅雷下载用到的BT种子或磁力链，到公众号【团购好货】中回复“战斗天使”。**
+**BT种子、磁力链，到公众号【团购好货】中回复“战斗天使”。**
 
 `如果迅雷提示“应版权方要求不能提供下载”，需要用替代工具，到公众号【团购好货】中回复“下载工具”，亲测可行`
 
 <span style="display:block;text-align:center">![团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png){: width="300px"}</span>
 
-## 《阿丽塔：战斗天使》迅雷种子、磁力链汇总（下面这些种子画质较差）
-
-想尝鲜的试试下面的magnet链接，优先用迅雷下载，迅雷速度最快。
+## 《阿丽塔：战斗天使》迅雷种子、磁力链前期汇总（下面这些种子画质较差）
 
 `如果迅雷提示“应版权方要求不能提供下载”，需要用替代工具，到公众号【团购好货】中回复“下载工具”，亲测可行`
 
@@ -62,5 +60,3 @@ description: "《阿丽塔:战斗天使》高清1080P下载地址大全：百度
 [《阿丽塔：战斗天使》](https://baike.baidu.com/item/%E9%98%BF%E4%B8%BD%E5%A1%94%EF%BC%9A%E6%88%98%E6%96%97%E5%A4%A9%E4%BD%BF/22246300?fr=aladdin)是由二十世纪福斯电影公司出品的科幻动作片，由罗伯特·罗德里格兹执导，罗莎·萨拉扎尔、克里斯托弗·瓦尔兹、马赫沙拉·阿里、詹妮弗·康纳利联合主演。该片于2019年2月14日在美国上映，于2019年2月22日在中国内地上映。
 
 《阿丽塔：战斗天使》根据日本漫画家木城雪户的小说《铳梦》改编，影片故事背景设定在在26世纪，讲述了身处末世，幸运重生的机械女孩为了改变世界而勇敢奋斗、踏上探索真相旅程的故事。
-
-<span style="display:block;text-align:center">![团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png){: width="300px"}</span>
