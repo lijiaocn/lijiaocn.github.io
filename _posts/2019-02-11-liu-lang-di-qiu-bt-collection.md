@@ -22,15 +22,13 @@ description: "互联网上搜集的资源，验证了一部分，内置电影流
 
 `《疯狂的外星人》、《飞驰人生》、《新喜剧之王》`：**[2019年春节档电影](https://www.lijiaocn.com/hidden/2019/02/15/chun-jie-dang-movie-resource.html)**
 
-电影流浪地球的百度云盘资源、百度网盘连接、BT种子、磁力链magnet下载地址和下载方法均已验证，推荐使用“ **流浪地球.HC版.HD.1080P.MP4.2018.中国大陆.科幻.灾难.中文字幕.torrent** ”。
-
-<span style="display:block;text-align:center">![团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png){: width="300px"}</span>
-
-## 百度云网盘地址
+## 流浪地球百度云网盘地址
 
 **流浪地球已经加密私藏到百度云盘（百度网盘），到公众号【团购好货】中回复“流浪地球”**
 
 需要`百度云网盘下载地址`的 **关注微信公众号“团购好货”，回复“流浪地球”** ：
+
+<span style="display:block;text-align:center">![团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png){: width="300px"}</span>
 
 ## 流浪地球建议使用的磁力链下载地址
 
