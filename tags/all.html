@@ -7,10 +7,12 @@ description: 视频教程,全部标签,手册汇总,用于快速查询
 ---
 
 {% for tag in site.tags %}
+{% if tag[0] != "好货" %}
 	<h5>{{ tag[0] }}:</h5>
 	<ul>
 	{% for post in tag[1] %}
 	<li><a href="{{ site.baseurl }}{{ post.url }}">《{{ post.title }}》</a></li>
 	{% endfor %}
 	</ul>
+{% endif %}
 {% endfor %}

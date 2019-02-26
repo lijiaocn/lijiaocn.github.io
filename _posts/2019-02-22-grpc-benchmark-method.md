@@ -7,7 +7,7 @@ changedate: "2019-02-22 16:28:30 +0800"
 categories: 技巧
 tags: grpc
 keywords: grpc性能压测,grpc benchmark,ghz
-description: github中搜索“grpc benchmark”，ghz排在比较靠前的位置，也有文章分享了用Locust进行grpc压测的方法
+description: github中搜索“grpc benchmark”，ghz位置比较靠前，也有文章分享了用Locust进行grpc压测的方法
 ---
 
 * auto-gen TOC:
@@ -92,7 +92,7 @@ Status code distribution:
     Total number of requests cannot be smaller than the concurrency level. Default is 50.
 ```
 
-压测时观察连接情况，发现无论-c指定的参数是多少，都只有建立一个tcp连接，-c所指的并发似乎指定是并发的往一个grpc连接中发请求，而不是模拟多个client。
+压测时观察连接情况，发现无论-c指定的参数是多少，都只建立了一个tcp连接，-c所指的并发似乎是并发的往一个grpc连接中发请求，而不是模拟多个client。
 
 ## 参考
 

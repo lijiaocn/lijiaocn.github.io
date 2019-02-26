@@ -95,7 +95,7 @@ func run(s *options.KubeletServer, kubeDeps *kubelet.Dependencies) (err error) {
 	}
 ```
 
-参照kubelet的做法，写一个从cadvisor中查询容器信息的小程序，看一下从cadvisor中到底能不能查找到目标容器：
+参照kubelet，写一个从cadvisor中查询容器信息工具，看一下从cadvisor中到底能不能查找到目标容器：
 
 ```go
 // Copyright (C) 2019 lijiaocn <lijiaocn@foxmail.com>
@@ -246,7 +246,6 @@ $ ./cadvisor --name=/system.slice/kubelet.service
 ```
 
 需要特别注意的是，这里的kubelet和docker，是在CentOS上用systemctl启动的，这两个cgroup都是systemd创建的。
-
 如果不用systemctl启动，而是直接在命令行运行kubelet，例如：
 
 	./kubelet --kubelet-cgroups=/system.slice/kubelet.service --XXXX（省略）

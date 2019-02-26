@@ -1,7 +1,6 @@
 ---
 layout: default
 title: "流浪地球BT种子、百度云盘与磁力链magnet可用下载地址汇总"
-author: noname
 createdate: "2019-02-11 11:18:09 +0800"
 changedate: "2019-02-22 16:28:54 +0800"
 categories: hidden
@@ -13,17 +12,23 @@ description: "互联网上搜集的资源，验证了一部分，内置电影流
 
 ## 资源说明
 
-**以下内容都是从互联网上搜集的，目测比较可信（没有全部验证），仅作为个人收藏，请勿传播扩散。**
-
-电影流浪地球的百度云盘资源、百度网盘连接、BT种子、磁力链magnet下载地址和下载方法均已验证，推荐使用“流浪地球.HC版.HD.1080P.MP4.2018.中国大陆.科幻.灾难.中文字幕.torrent”。
-
-`关注公众号`【[团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png)】`，回复有惊喜`
+**以下内容都是从互联网上搜集的，全部经过验证，仅作为个人收藏，请勿传播扩散。**
 
 ## 资源更新
 
-电影`《疯狂的外星人》、《飞驰人生》、《新喜剧之王》`的百度云盘资源、百度网盘连接、BT种子、magnet下载连接也已经下载验证，挑出了几个清晰度还不错的：[2019春节档电影可用BT种子、百度云盘与磁力链magnet地址收藏](https://www.lijiaocn.com/hidden/2019/02/15/chun-jie-dang-movie-resource.html)。
+`好莱坞最新大片，耗资2亿美元制作：` **[《阿丽塔·战斗天使》1080P高清](https://www.lijiaocn.com/hidden/2019/02/22/alita-battle-angel.html)**
 
-## 流浪地球建议使用的磁力链下载地址
+`国产科幻元年，41亿票房大作：` **[《流浪地球》无水印高清](https://www.lijiaocn.com/hidden/2019/02/11/liu-lang-di-qiu-bt-collection.html)**
+
+`《疯狂的外星人》、《飞驰人生》、《新喜剧之王》：` **[2019年春节档电影汇总](https://www.lijiaocn.com/hidden/2019/02/15/chun-jie-dang-movie-resource.html)**
+
+## 流浪地球百度云网盘私人收藏
+
+**流浪地球已经加密私藏到百度云网盘，关注公众号“团购好货”，回复“流浪地球”** ：
+
+![流浪地球地球下载工具]({{ site.imglocal}}/liu-lang-di-qiu/download.jpg)
+
+## 流浪地球优质磁力链下载地址收藏
 
 **支持去影院观看，效果最好，现在有报销《流浪地球》电影票的活动**：[报销《流浪地球》电影票3张！](https://mp.weixin.qq.com/s/KkEHwwd_iiqXvQAiyAftlw)
 
@@ -31,19 +36,13 @@ description: "互联网上搜集的资源，验证了一部分，内置电影流
 
 `迅雷“应版权方要求不能提供下载”，BT种子需要用其它工具下载，到公众号【团购好货】中回复“下载工具”，亲测可行`
 
-`流浪地球已经加密私藏到百度云盘（百度网盘），到公众号【团购好货】中回复“流浪地球”`
-
 1 流浪地球.HC版.HD.1080P.MP4.2018.中国大陆.科幻.灾难.中文字幕.torrent： 2.89G
 
 	magnet:?xt=urn:btih:0a8c9acff20fa520c867802d281cad97002cdd39&dn=%E6%B5%81%E6%B5%AA%E5%9C%B0%E7%90%83.HC%E7%89%88.HD.1080P.MP4.2018.%E4%B8%AD%E5%9B%BD%E5%A4%A7%E9%99%86.%E7%A7%91%E5%B9%BB.%E7%81%BE%E9%9A%BE.%E4%B8%AD%E6%96%87%E5%AD%97%E5%B9%95
 
-![流浪地球地球下载工具]({{ site.imglocal}}/liu-lang-di-qiu/download.jpg)
-
-需要`百度云网盘下载地址`的 **关注微信公众号“团购好货”，回复“流浪地球”** ：
-
 `如果迅雷提示因为版权原因不能下载，换其它的bt下载工具，到【团购好货】公众号中回复“下载工具”，亲测可行`
 
-## 流浪地球其它可用磁力链magnet地址
+## 流浪地球可用磁力链magnet地址收藏
 
 下面是流浪地球的其它磁力链magnet可用地址（没有全部验证）：
 

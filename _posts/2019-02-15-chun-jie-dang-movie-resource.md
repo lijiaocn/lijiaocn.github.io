@@ -1,7 +1,6 @@
 ---
 layout: default
 title: "2019春节档热门电影可用BT种子、百度云盘与磁力链magnet地址收藏"
-author: noname
 createdate: "2019-02-15 01:02:46 +0800"
 changedate: "2019-02-22 16:29:10 +0800"
 categories: hidden
@@ -11,17 +10,19 @@ description: "都是从互联网上搜集的，已经验证。包括流浪地球
 
 ---
 
-## 说明
+## 资源说明
 
-**以下内容都是从互联网上搜集的，目测比较可信（没有全部验证），仅作为个人收藏，请勿传播扩散。**
+**以下内容都是从互联网上搜集的，全部经过验证，仅作为个人收藏，请勿传播扩散。**
 
-`关注公众号`【[团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png)】`，回复有惊喜`
+## 资源更新
 
-## 已经通过验证的私人收藏，谢绝传播
+`好莱坞最新大片，耗资2亿美元制作：` **[《阿丽塔·战斗天使》1080P高清](https://www.lijiaocn.com/hidden/2019/02/22/alita-battle-angel.html)**
 
-`私人收藏，谢绝传播！`
+`国产科幻元年，41亿票房大作：` **[《流浪地球》无水印高清](https://www.lijiaocn.com/hidden/2019/02/11/liu-lang-di-qiu-bt-collection.html)**
 
-`有研究需求的，关注公众号【团购好货】，回复“密码”`
+`《疯狂的外星人》、《飞驰人生》、《新喜剧之王》：` **[2019年春节档电影汇总](https://www.lijiaocn.com/hidden/2019/02/15/chun-jie-dang-movie-resource.html)**
+
+## 2019年春节档电影私人收藏
 
 `迅雷提示“应版权方要求不能提供下载”，需要用替代工具，到公众号【团购好货】中回复“下载工具”，亲测可行`
 
@@ -47,7 +48,7 @@ description: "都是从互联网上搜集的，已经验证。包括流浪地球
 	百度云盘: https://pan.baidu.com/s/1gCxWbSo6ly79QhnevIvpVg  提取码: kemw
 	BT种子收藏：https://pan.baidu.com/s/1xQZfgi_tJ4dJzXiFxBeuCg
 
-##  收藏的magnet链接，只验证了一部分
+## 2019年春节档电影磁力链magnet地址收藏
 
 以下内容都是从互联网上搜集的，目测比较可信（没有全部验证），仅作为个人收藏，请勿传播扩散使用。
 
