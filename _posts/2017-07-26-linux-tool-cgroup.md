@@ -3,7 +3,7 @@ layout: default
 title: "Linux的cgroup功能（一）：初级入门使用方法"
 author: 李佶澳
 createdate: 2017/07/26 10:29:51
-changedate: "2019-02-21 13:52:27 +0800"
+changedate: "2019-02-25 11:13:59 +0800"
 categories: 技巧
 tags:  linuxtool cgroup
 keywords: cgroup使用,cgroup.procs,cgroup v1,cgroup v2,cgroup controller,linux资源控制器,资源隔离
@@ -89,9 +89,11 @@ pids用来限制一个进程可以派生出的进程数量。
 3. [linux manual: systemd.cgroup][3]
 4. [how-to-manage-processes-with-cgroup-on-systemd][4]
 5. [The New Control Group Interfaces][5]
+6. [美团技术团队：Linux资源管理之cgroups简介][6]
 
 [1]: https://www.kernel.org/doc/Documentation/cgroup-v1/  "cgroup-v1" 
 [2]: https://www.kernel.org/doc/Documentation/cgroup-v2.txt  "cgroup-v2"
 [3]: http://man7.org/linux/man-pages/man5/systemd.cgroup.5.html  "systemd.cgroup"
 [4]: https://linuxaria.com/article/how-to-manage-processes-with-cgroup-on-systemd  "how-to-manage-processes-with-cgroup-on-systemd"
 [5]: https://www.freedesktop.org/wiki/Software/systemd/ControlGroupInterface/ "The New Control Group Interfaces"
+[6]: https://tech.meituan.com/2015/03/31/cgroups.html "美团技术团队：Linux资源管理之cgroups简介"
