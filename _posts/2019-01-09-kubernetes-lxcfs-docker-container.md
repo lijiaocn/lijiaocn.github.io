@@ -3,7 +3,7 @@ layout: default
 title: "Lxcfs是什么？ 怎样通过lxcfs在容器内显示容器的CPU、内存状态"
 author: 李佶澳
 createdate: "2019-01-09 14:12:25 +0800"
-changedate: "2019-02-21 13:43:56 +0800"
+changedate: "2019-02-26 14:39:49 +0800"
 categories: 技巧
 tags: kubernetes docker
 keywords: kubernetes,lxcfs,docker,container,top,memory,disk
@@ -71,6 +71,12 @@ git checkout lxcfs-3.0.3
 ./configure --prefix=/
 make
 make install
+```
+
+如果要调试，可以设置为DEBUG模式：
+
+```
+CFLAGS="-O0 -DDEBUG"  ./configure --prefix=/data/lxcfs/lxcfs_install/
 ```
 
 可以用下面的方法启动：
