@@ -3,7 +3,7 @@ layout: default
 title: "Linux内核功能eBPF入门学习（一）：BPF、eBPF、BCC等基本概念"
 author: 李佶澳
 createdate: "2019-02-22 17:11:28 +0800"
-changedate: "2019-02-26 11:05:22 +0800"
+changedate: "2019-02-26 18:17:22 +0800"
 categories:  技巧
 tags: linux
 keywords: ebpf,bpf,bcc,入门介绍
@@ -22,6 +22,7 @@ eBPF支持在用户态将C语言编写的一小段“内核代码”注入到内
 
 [BCC][2]是一个python库，实现了map创建、代码编译、解析、注入等操作，使开发人员只需聚焦于用C语言开发要注入的内核代码。
 文章[eBPF简史][1]从eBPF的前身BPF讲起，将eBPF的来龙去脉介绍的很明白，是难得的好文章，建议直接过去阅读，这里就不摘抄了。
+[BPF: the universal in-kernel virtual machine][18]介绍了BPF从网络子系统中的报文复制功能到内核通用虚拟机eBPF的演变过程。
 
 ## BPF
 
@@ -78,7 +79,7 @@ int bpf(int cmd, union bpf_attr *attr, unsigned int size);
 
 `cmd`是eBPF支持的cmd，分为三类： 操作注入的代码、操作用于通信的map、前两个操作的混合。
 
-通过eBPF可以做更多的事情，不再仅仅是进行报文复制和过滤，网络方面可以切入到更深的层次，在更“靠前”的阶段进行干预，例如[XDP][7]借助eBPF在报文刚收到的时候就进行干预。
+通过eBPF可以做更多的事情，不再仅仅是进行报文复制和过滤，网络方面可以切入到更深的层次，在更“靠前”的阶段进行干预，例如[XDP][7]借助eBPF在报文刚收到的时候就进行干预，[使用XDP(eXpress Data Path)防御DDoS攻击][19]。
 
 还可以：
 
@@ -186,6 +187,8 @@ BCC的命令较多，单开一篇笔记，这篇到此为止。
 15. [Installing BCC][15]
 16. [bcc Tutorial][16]
 17. [bcc Python Developer Tutorial][17]
+18. [BPF: the universal in-kernel virtual machine][18]
+19. [使用XDP(eXpress Data Path)防御DDoS攻击][19]
 
 [1]: https://www.ibm.com/developerworks/cn/linux/l-lo-eBPF-history/index.html "张亦鸣: eBPF 简史"
 [2]: https://github.com/iovisor/bcc "BCC - Tools for BPF-based Linux IO analysis, networking, monitoring, and more "
@@ -204,3 +207,5 @@ BCC的命令较多，单开一篇笔记，这篇到此为止。
 [15]: https://github.com/iovisor/bcc/blob/master/INSTALL.md "Installing BCC"
 [16]: https://github.com/iovisor/bcc/blob/master/docs/tutorial.md "bcc Tutorial"
 [17]: https://github.com/iovisor/bcc/blob/master/docs/tutorial_bcc_python_developer.md "bcc Python Developer Tutorial"
+[18]: https://lwn.net/Articles/599755/ "BPF: the universal in-kernel virtual machine"
+[19]: https://blog.csdn.net/dog250/article/details/77993218 "使用XDP(eXpress Data Path)防御DDoS攻击"
