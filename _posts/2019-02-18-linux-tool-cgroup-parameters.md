@@ -3,9 +3,9 @@ layout: default
 title: "Linux的cgroup功能（三）：cgroup controller汇总和控制器的参数（文件接口）"
 author: 李佶澳
 createdate: "2019-02-18 13:49:30 +0800"
-changedate: "2019-02-20 16:46:24 +0800"
+changedate: "2019-02-28 19:06:51 +0800"
 categories: 技巧
-tags: linuxtool cgroup
+tags: linux  cgroup
 keywords: cgroup参数,cgroup v1,cgroup v2,cgroup controller,linux资源隔离,linux资源控制器
 description: "多个cgroup controller的用途和配置参数：blkio、cpu、cpuacct、cpuset、devices、freezer、memory、net_cls、perf_event、hugetlb、pids、net_prio、rdma controller"
 ---

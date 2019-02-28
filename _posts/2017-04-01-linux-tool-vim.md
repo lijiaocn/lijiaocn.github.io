@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Vim使用教程手册，命令、配置与插件"
+title: "vim：使用教程手册，命令、配置与插件"
 author: 李佶澳
 createdate: 2017/04/01 11:00:33
 changedate: 2018/07/22 14:26:14

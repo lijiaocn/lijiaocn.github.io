@@ -7,7 +7,7 @@ changedate: 2018/09/01 15:27:24
 categories: 技巧
 tags: linux
 keywords: linux iptables conntrack debuging 网络调试
-description: 突然发现，没有掌握一套行之有效的调试iptables规则、追踪linux上的连接、报文的方法
+description: 突然发现，一直没有掌握一套行之有效的调试iptables规则、追踪linux上的连接、报文的方法
 
 ---
 
@@ -54,7 +54,8 @@ description: 突然发现，没有掌握一套行之有效的调试iptables规�
 
 在`iptables-extensions`中可以找到对`TRACE`的介绍：
 
-	This target marks packets so that the kernel will log every rule which match the packets as those traverse the tables, chains, rules.
+	This target marks packets so that the kernel will log every rule which match
+	the packets as those traverse the tables, chains, rules.
 
 还需要加载内核模块：
 

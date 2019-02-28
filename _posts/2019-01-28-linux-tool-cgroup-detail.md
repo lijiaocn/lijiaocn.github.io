@@ -3,9 +3,9 @@ layout: default
 title: "Linux的cgroup功能（二）：资源限制cgroup v1和cgroup v2的详细介绍"
 author: 李佶澳
 createdate: "2019-01-28 15:52:58 +0800"
-changedate: "2019-02-21 13:48:52 +0800"
+changedate: "2019-02-28 19:06:25 +0800"
 categories: 技巧
-tags: linuxtool cgroup
+tags: linux cgroup
 keywords: cgroup介绍文档,cgroup v1,cgroup v2,cgroup controller,linux资源隔离,linux资源控制器
 description: "详细介绍cgroup v1和cgroup v2，cgroup v2从kernel 3.10开始存在，kernel 4.5.0时成为正式特性"
 ---

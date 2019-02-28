@@ -3,9 +3,9 @@ layout: default
 title: "Linux的cgroup功能（一）：初级入门使用方法"
 author: 李佶澳
 createdate: 2017/07/26 10:29:51
-changedate: "2019-02-25 11:13:59 +0800"
+changedate: "2019-02-28 19:06:10 +0800"
 categories: 技巧
-tags:  linuxtool cgroup
+tags:  linux cgroup
 keywords: cgroup使用,cgroup.procs,cgroup v1,cgroup v2,cgroup controller,linux资源控制器,资源隔离
 description: linux的cgroup功能的初级入门使用，在每个subsystem目录下建立多个目录，每个目录就是一个cgroup，可以分别设置每个cgroup，cgroup中可以继续创建cgroup。
 
