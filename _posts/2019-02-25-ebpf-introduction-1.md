@@ -3,11 +3,11 @@ layout: default
 title: "Linux内核功能eBPF入门学习（一）：BPF、eBPF、BCC等基本概念"
 author: 李佶澳
 createdate: "2019-02-22 17:11:28 +0800"
-changedate: "2019-02-26 18:17:22 +0800"
+changedate: "2019-03-01 14:51:52 +0800"
 categories:  技巧
 tags: linux
 keywords: ebpf,bpf,bcc,入门介绍
-description: eBPF支持在用户态将C语言编写的“内核代码”注入到内核中运行，bcc是一个python库使开发人员聚焦于要注入的C代码的开发
+description: eBPF支持在用户态将C语言编写的“内核代码”注入到内核中运行，bcc是python库封装了C代码的注入操作
 ---
 
 * auto-gen TOC:

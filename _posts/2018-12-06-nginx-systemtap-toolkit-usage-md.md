@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "火焰图生成工具nginx-systemtap-toolkit的使用时遇到的问题"
+title: "火焰图生成工具nginx-systemtap-toolkit使用时遇到的问题"
 author: 李佶澳
 createdate: "2018-12-06 14:20:35 +0800"
-changedate: "2018-12-06 14:20:35 +0800"
+changedate: "2019-03-01 17:11:47 +0800"
 categories: 问题
 tags: linux
 keywords: linux,flame,stap,sytemtap,火焰图,性能分析
@@ -171,7 +171,7 @@ WARNING: Skipped due to global '__global_bts' lock timeout: 88
 
 这时候10s的抓取时间，生成的文件不到900k，不过还是有一些告警，貌似没啥影响。
 
-## ERROR: Array overflow, check MAXMAPENTRIES near identifier 'bts' at <input>:17:13
+## ERROR: Array overflow, check MAXMAPENTRIES near identifier 'bts' at input:17:13
 
 现象如下：
 
