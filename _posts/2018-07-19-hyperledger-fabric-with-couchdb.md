@@ -22,13 +22,11 @@ description: HyperLedger Fabric当前版本(1.1~1.2)的Peer的数据存储支持
 
 [LevelDB][2]是Google实现的高效kv数据库，可以应用于很多平台，是很多大数据系统的底层存储方案。
 
-[CouchDB][3]是Apache旗下的文档型数据库，提供了更多样的数据操作，支持数据同步，技术细节见：[CouchDB Technical Overview][4]。
+[CouchDB][3]是Apache旗下的文档型数据库，提供了更多样的数据操作，支持数据同步，[CouchDB Technical Overview][4]。
 
 文档型数据库是相对于关系型数据而言的，文档数据库中可以直接存、取包含多种信息的文本，相比预先设计表结构的关系型数据库，文档数据库能应对变化、多样的数据。
 
-Fabric的Peer在CouchDB中存储的是json数据，所有写入Fabric的数据都需要转换成json格式。
-
-Fabric部署之后，不支持在CouchDB和LevelDB之间切换！
+Fabric的Peer在CouchDB中存储的是json数据，所有写入Fabric的数据都需要转换成json格式。Fabric部署之后，不支持在CouchDB和LevelDB之间切换！
 
 **相关笔记**，都是一边学习一边记录的，时间紧难免粗糙，[查看更多相关内容](https://www.lijiaocn.com/tags/blockchain.html)：
 
