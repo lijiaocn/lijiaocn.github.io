@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "PostgreSQL的用户到底是这么回事？新用户怎样才能用密码登陆？"
+title: "PostgreSQL的用户到底是这么回事？新建用户怎样才能用密码登陆？"
 author: 李佶澳
 createdate: "2018-09-28 15:54:43 +0800"
-changedate: "2018-09-28 15:54:43 +0800"
+changedate: "2019-03-04 16:17:15 +0800"
 categories: 技巧
 tags: PostgreSQL
 keywords: postgres,PostgreSQL,用户登陆,pg_hab.conf,数据库
@@ -18,7 +18,11 @@ description: PostgreSQL数据库的用法和MySQL很不一样，新创建的用�
 
 PostgreSQL数据库的用法和MySQL很不一样，新创建的用户的创建要和pg_hba.conf中的配置对应才能成功登陆。很多人在这个地方卡壳，用Google或者Baidu搜索到一些资料，说得也不清楚。这里特别阐述一下。
 
-PostgreSQL的部署启动参考：[PostgreSQL数据库的基本使用][8]。
+**相关笔记**，这些笔记都是边学习边记录的，时间比较紧，难免有些地方记录的比较粗糙，[查看更多技术笔记](https://www.lijiaocn.com/tags/all.html)：
+
+[PostgresSQL数据库的基本使用——新手入门](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2017/08/31/postgre-usage.html)
+
+[PostgreSQL的用户到底是这么回事？新建用户怎样才能用密码登陆？](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2018/09/28/postgres-user-manage.html)
 
 ## User与Role
 

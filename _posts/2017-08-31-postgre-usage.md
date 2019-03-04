@@ -1,6 +1,6 @@
 ---
 layout: default
-title: PostgresSQL数据库的基本使用——新手入门学习
+title: PostgresSQL数据库的基本使用——新手入门
 author: lijiaocn
 createdate: 2017/08/31 09:43:20
 changedate: 2017/09/08 14:26:42
@@ -17,6 +17,12 @@ description: postgresql的基本使用，最常用的操作，postgresql是一�
 ## 介绍 
 
 postgresql是一个老牌的数据库，它的文档[postgresql manuals][1]中包含更多的内容。
+
+**相关笔记**，这些笔记都是边学习边记录的，时间比较紧，难免有些地方记录的比较粗糙，[查看更多技术笔记](https://www.lijiaocn.com/tags/all.html)：
+
+[PostgresSQL数据库的基本使用——新手入门](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2017/08/31/postgre-usage.html)
+
+[PostgreSQL的用户到底是这么回事？新建用户怎样才能用密码登陆？](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2018/09/28/postgres-user-manage.html)
 
 ## 部署启动
 
@@ -40,6 +46,20 @@ postgresql是一个老牌的数据库，它的文档[postgresql manuals][1]中�
 
 	su - postgres
 	psql
+
+安装非默认版本的PostgreSQL，以9.6为例，如果安装其它版本将下面连接中的9.6换成对应版本号：
+
+	yum install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm
+	yum install postgresql96
+	yum install postgresql96-server
+	export PATH=$PATH:/usr/pgsql-9.6/bin/
+	postgresql96-setup initdb
+	systemctl start postgresql-9.6
+	su - postgres 
+	psql
+	CREATE USER kong; CREATE DATABASE kong OWNER kong;
+	alter user kong with encrypted password '123456';
+	\q
 
 ### 2. 在容器中启动
 
@@ -66,6 +86,19 @@ postgresql是一个老牌的数据库，它的文档[postgresql manuals][1]中�
 		-e POSTGRES_DB="alice"  \
 		-p 5432:5432  \
 		mypostgres:latest
+
+## 配置
+
+在CentOS中，postgre默认使用的数据目录是`/var/lib/pgsql/9.6/`，配置文件是`/var/lib/pgsql/9.6/data/postgresql.conf`，[Setting Parameters](https://www.postgresql.org/docs/9.6/config-setting.html)。
+
+### 配置服务监听地址
+
+Postgre默认监听`localhost:5432`，相关参数为`listen_addresses`和`port`：
+
+```
+listen_addresses='localhost,10.10.64.58'
+port=5432
+```
 
 ## postgres用户创建/删除
 
@@ -110,9 +143,11 @@ Postgresql的client命令是psql，通过`psql --help`可以查看具体用法�
 	  -w, --no-password        never prompt for password
 	  -W, --password           force password prompt (should happen automatically)
 
-退出命令为`\q`。
+例如： 
 
-控制台命令:
+	psql -h 172.19.133.100  -p 40001 -U kong
+
+退出命令为`\q`，其它控制台命令:
 
 	\h：查看SQL命令的解释，比如\h select。
 	\?：查看psql命令列表。

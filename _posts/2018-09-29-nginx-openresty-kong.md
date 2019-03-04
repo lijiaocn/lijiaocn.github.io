@@ -3,7 +3,7 @@ layout: default
 title: "API网关Kong学习笔记（一）：Nginx、OpenResty和Kong入门，基础概念和使用方法"
 author: 李佶澳
 createdate: "2018-09-29 15:41:50 +0800"
-changedate: "2019-03-04 15:58:47 +0800"
+changedate: "2019-03-04 16:56:26 +0800"
 categories: 项目
 tags: 视频教程 kong
 keywords: kong,openresty,nginx,apigateway,API网关
@@ -397,9 +397,8 @@ Kong依赖外部的数据库。
 
 >注意，如果使用其它版本的PostgreSQL，将下面连接中的9.6换成对应版本号。
 
-	yum install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm
-	yum install postgresql96
-	yum install postgresql96-server
+	yum install -y https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm
+	yum install -y postgresql96 postgresql96-server
 	export PATH=$PATH:/usr/pgsql-9.6/bin/
 	postgresql96-setup initdb
 	systemctl start postgresql-9.6
@@ -409,13 +408,15 @@ Kong依赖外部的数据库。
 	alter user kong with encrypted password '123456';
 	\q
 
-在/var/lib/pgsql/9.6/data/pg_hba.conf的`开始处`添加规则下面规则，允许用户kong以密码方式登录访问kong数据库:
+在/var/lib/pgsql/9.6/data/pg_hba.conf中添加规则下面规则，允许用户kong以密码方式登录访问kong数据库:
 
 	host    kong            kong            127.0.0.1/32            md5
+	host    kong            kong            10.10.64.58/32          md5
 
 `重启PostgreSQL`，确保能用下面的命令登陆PostgreSQL：
 
-	# psql -h 127.0.0.1 -U kong kong -W
+	$ systemctl restart   postgresql-9.6
+	$ psql -h 127.0.0.1 -U kong kong -W
 	Password for user kong:
 	psql (9.6.10)
 	Type "help" for help.
