@@ -7,8 +7,7 @@ changedate: 2018/07/29 13:02:43
 categories: 项目
 tags: 视频教程 HyperLedger
 keywords: HyperLedger,超级账本,视频教程,组织添加
-description: "这里演示如何在已经创建的channel中增加新的组织，建立一个名为"mychannel"的频道，频道中有两个org1和org2两个成员”
-
+description: "这里演示如何在已经创建的channel中增加新的组织，建立一个名为mychannel的频道，频道中有两个org1和org2两个成员"
 ---
 
 * auto-gen TOC:
