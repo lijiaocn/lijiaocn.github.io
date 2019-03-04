@@ -23,7 +23,7 @@ description: 模仿kong中已经有的插件，自己动手写一个，熟悉插
 
 插件开发过程中，一些常规操作的方法可以在[Web开发平台OpenResty（四）：项目开发中常用的操作][1]中找到，可以使用的Nginx变量都收录在[Nginx: Alphabetical index of variables][2]中，可以用的Lua API位于[Nginx API for Lua][3]中，Lua的标准库方法可以到[Lua 5.1 Reference Manual][5]中查看。
 
-**相关笔记**，这些笔记是学习过程做的记录，写的比较仓促，有疑惑的地方以Kong官方文档为准：
+**相关笔记**，这些笔记是学习过程中做的记录，写的比较仓促，有疑惑的地方以Kong官方文档为准：
 
 [《API网关Kong学习笔记（零）：使用过程中遇到的问题以及解决方法》](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/29/kong-usage-problem-and-solution.html)
 

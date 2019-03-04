@@ -19,7 +19,7 @@ description: 刚刚才发现kong的网页上有一篇文档非常详细的介绍
 
 刚刚(2018-11-20 17:11:36)才发现kong的网页上有一篇文档非常详细的介绍了kong转发请求的过程：[Kong: Proxy Reference][1]。
 
-**相关笔记**，这些笔记是学习过程做的记录，写的比较仓促，有疑惑的地方以Kong官方文档为准：
+**相关笔记**，这些笔记是学习过程中做的记录，写的比较仓促，有疑惑的地方以Kong官方文档为准：
 
 [《API网关Kong学习笔记（零）：使用过程中遇到的问题以及解决方法》](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/29/kong-usage-problem-and-solution.html)
 

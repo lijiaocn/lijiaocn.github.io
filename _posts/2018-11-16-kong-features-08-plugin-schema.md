@@ -20,7 +20,7 @@ description: 模仿kong中已经有的插件，自己动手写一个，熟悉插
 
 这篇是[API网关Kong（十一）：自己动手写一个插件](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/11/09/kong-features-07-write-plugins.html)的继续，找到调用插件的schema的地方，确定可以在schema中定义的类型和函数。
 
-**相关笔记**，这些笔记是学习过程做的记录，写的比较仓促，有疑惑的地方以Kong官方文档为准：
+**相关笔记**，这些笔记是学习过程中做的记录，写的比较仓促，有疑惑的地方以Kong官方文档为准：
 
 [《API网关Kong学习笔记（零）：使用过程中遇到的问题以及解决方法》](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/29/kong-usage-problem-and-solution.html)
 

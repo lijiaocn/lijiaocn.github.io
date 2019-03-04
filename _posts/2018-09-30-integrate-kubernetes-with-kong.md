@@ -24,7 +24,7 @@ Kong是一个Api网关，也是一个特性更丰富的反向代理。既然它�
 
 Kong实现了一个[Kubernetes Ingress Controller][2]（后面用kong-ingress-controller指代这个项目）来做这件事。另外把整个Kong部署在Kubernetes中也是可行的，见[Kong CE or EE on Kubernetes][1]。
 
-**相关笔记**，这些笔记是学习过程做的记录，写的比较仓促，有疑惑的地方以Kong官方文档为准：
+**相关笔记**，这些笔记是学习过程中做的记录，写的比较仓促，有疑惑的地方以Kong官方文档为准：
 
 [《API网关Kong学习笔记（零）：使用过程中遇到的问题以及解决方法》](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/29/kong-usage-problem-and-solution.html)
 

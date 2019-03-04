@@ -19,7 +19,7 @@ description: 向数据库中插入记录的时候，会进行插入校验，校�
 
 向数据库中插入记录的时候，会进行插入校验，校验过程会用到schema中定义的类型以及校验函数。这里在[数据库操作封装](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/30/kong-features-03-data-plane-implement.html#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C%E5%B0%81%E8%A3%85)的基础之上，分析`kong/dao/dao.lua`中`DAO:insert()`的实现。
 
-**相关笔记**，这些笔记是学习过程做的记录，写的比较仓促，有疑惑的地方以Kong官方文档为准：
+**相关笔记**，这些笔记是学习过程中做的记录，写的比较仓促，有疑惑的地方以Kong官方文档为准：
 
 [《API网关Kong学习笔记（零）：使用过程中遇到的问题以及解决方法》](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/29/kong-usage-problem-and-solution.html)
 

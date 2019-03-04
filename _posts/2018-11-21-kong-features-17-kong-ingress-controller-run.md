@@ -19,7 +19,7 @@ description: 之前看过kong的ingresss controller的实现，这里记录一�
 
 之前看过kong的[ingresss controller][2]的实现：[API网关Kong学习笔记（八）：Kong Ingress Controller的实现][1]。这里记录一下它的用法。
 
-**相关笔记**，这些笔记是学习过程做的记录，写的比较仓促，有疑惑的地方以Kong官方文档为准：
+**相关笔记**，这些笔记是学习过程中做的记录，写的比较仓促，有疑惑的地方以Kong官方文档为准：
 
 [《API网关Kong学习笔记（零）：使用过程中遇到的问题以及解决方法》](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/29/kong-usage-problem-and-solution.html)
 

@@ -3,7 +3,7 @@ layout: default
 title: "API网关Kong学习笔记（零）：使用过程中遇到的问题以及解决方法"
 author: 李佶澳
 createdate: "2018-10-15 11:50:58 +0800"
-changedate: "2019-03-04 14:32:05 +0800"
+changedate: "2019-03-04 15:45:20 +0800"
 categories: 问题
 tags: kong 视频教程
 keywords: kong,apigatway,问题解决,kong的使用
@@ -17,7 +17,7 @@ description: 这里记录使用Kong时遇到的问题，以及找到的解决方
 
 这里记录使用Kong时遇到的问题，以及找到的解决方法。
 
-**相关笔记**，这些笔记是学习过程做的记录，写的比较仓促，有疑惑的地方以Kong官方文档为准：
+**相关笔记**，这些笔记是学习过程中做的记录，写的比较仓促，有疑惑的地方以Kong官方文档为准：
 
 [《API网关Kong学习笔记（零）：使用过程中遇到的问题以及解决方法》](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/29/kong-usage-problem-and-solution.html)
 
@@ -58,6 +58,44 @@ description: 这里记录使用Kong时遇到的问题，以及找到的解决方
 [《API网关Kong学习笔记（十八）：Kong Ingress Controller的CRD详细说明》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/11/30/kong-features-18-kong-ingress-controller-crd.html)
 
 [《API网关Kong学习笔记（十九）：Kong的性能测试（与Nginx对比）》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/03/kong-features-19-kong-performance.html)
+
+
+## ERROR:  module 'socket' not found:No LuaRocks module found for socket
+
+启动的时候：
+
+	# ./bin/kong start -c ./kong.conf
+	...
+	ERROR: ./kong/globalpatches.lua:63: module 'socket' not found:No LuaRocks module found for socket
+	...
+
+这是因为编译kong之后，重新编译了luarocks，并且将luarocks安装在了其它位置。重新编译kong之后解决。
+
+## ERROR: function to_regclass(unknown) does not exist (8)
+
+创建数据库的时候：
+
+	# kong migrations up -c ./kong.conf
+	...
+	[postgres error] could not retrieve current migrations: [postgres error] ERROR: function to_regclass(unknown) does not exist (8)
+	...
+
+这是因为PostgreSQL的版本太低了，`to_regclass`在PostgreSQL 9.4及以上的版本中才存在。
+
+	yum install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm
+	yum install postgresql96
+	yum install postgresql96-server
+
+## nginx: [emerg] unknown directive "real_ip_header" in /usr/local/kong/nginx-kong.conf:73
+
+	nginx: [emerg] unknown directive "real_ip_header" in /usr/local/kong/nginx-kong.conf:73
+
+这是因为编译的openresty的时候，没有指定`--with-http_realip_module`，重新编译安装：
+
+	./configure --with-pcre-jit --with-http_ssl_module --with-http_realip_module --with-http_stub_status_module --with-http_v2_module
+	make -j2
+	make install     //默认安装在/usr/local/bin/openresty
+	export PATH=/usr/local/openresty/bin:$PATH
 
 ## 用siege压测时，连接被reset：read error Connection reset by peer sock.c
  

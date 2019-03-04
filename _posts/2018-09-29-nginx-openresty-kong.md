@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "API网关Kong学习笔记（一）：Nginx、OpenResty和Kong的基本概念与使用方法"
+title: "API网关Kong学习笔记（一）：Nginx、OpenResty和Kong入门，基础概念和使用方法"
 author: 李佶澳
 createdate: "2018-09-29 15:41:50 +0800"
-changedate: "2019-03-04 14:33:02 +0800"
+changedate: "2019-03-04 15:58:47 +0800"
 categories: 项目
 tags: 视频教程 kong
 keywords: kong,openresty,nginx,apigateway,API网关
@@ -18,11 +18,14 @@ description: Nginx、OpenRestry、Kong这三个项目紧密相连，OpenResty是
 这是[API网关Kong的学习笔记](https://www.lijiaocn.com/tags/class.html)中的一篇，使用过程中遇到的问题和解决方法记录在[API网关Kong的使用过程中遇到的问题以及解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/30/kong-usage-problem-and-solution.html)。
 
 [Nginx][1]、[OpenRestry][2]、[Kong][3]这三个项目紧密相连：
-Nginx是模块化设计的反向代理软件，C语言开发；
-OpenResty是以Nginx为核心的Web开发平台，可以解析执行Lua脚本（OpenResty与Lua的关系，类似于Jvm与Java，不过Java可以做的事情太多了，OpenResty主要用来做Web、API等）；
-Kong是一个OpenResty应用，是一个api gateway，具有API管理和请求代理的功能。
 
-**相关笔记**，这些笔记是学习过程做的记录，写的比较仓促，有疑惑的地方以Kong官方文档为准：
+1. Nginx是模块化设计的反向代理软件，C语言开发;
+2. OpenResty是以Nginx为核心的Web开发平台，可以解析执行Lua脚本；
+3. Kong是一个OpenResty应用，一个api gateway。
+
+OpenResty与Lua的关系类似于Jvm与Java，不过OpenResty是基于nginx的，主要用于Web、API类应用。
+
+**相关笔记**，这些笔记是学习过程中做的记录，写的比较仓促，有疑惑的地方以Kong官方文档为准：
 
 [《API网关Kong学习笔记（零）：使用过程中遇到的问题以及解决方法》](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/29/kong-usage-problem-and-solution.html)
 
@@ -66,7 +69,7 @@ Kong是一个OpenResty应用，是一个api gateway，具有API管理和请求�
 
 ## Nginx
 
-Nginx是HTTP Server、反向代理服务器、邮件代理服务器、通用的TCP/UDP代理服务器。[nginx features][5]详细列出了nginx的功能特性。
+Nginx是HTTP Server、反向代理、邮件代理、通用的TCP/UDP代理服务器，[nginx features][5]详细列出了nginx的功能特性。
 
 ### Nginx配置文件，指令与变量
 
@@ -75,7 +78,6 @@ Nginx的配置文件由`单指令(simple directive)`和`块指令(block directiv
 有些块指令后的花括号中可以继续包含单指令，这样的块指令被成为`配置上下文(context)`，这样的指令有：events、http、server、location等。
 
 context是嵌套的，最外层的context是`main context`，配置文件中不在`{}`的中指令都是位于`main context`中。
-
 events和http指令位于main context，server位于http context，location位于server context：
 
 	main context
@@ -84,7 +86,7 @@ events和http指令位于main context，server位于http context，location位�
 	  - server
 	    - location
 
-配置文件示例见： [Beginner’s Guide][10]，例如：
+配置文件示例见[Beginner’s Guide][10]，例如：
 
 	http {
 	    server {
@@ -121,7 +123,7 @@ events和http指令位于main context，server位于http context，location位�
 	    }
 	}
 
-上面的例子中的`proxy_pass`和`factcgi_pass`分别是nginx的[http proxy module][12]和[http fastcgi moudle][11]中指令。
+`proxy_pass`和`factcgi_pass`分别是nginx的[http proxy module][12]和[http fastcgi moudle][11]中指令。
 
 Nginx有很多的module，在[Nginx Documents][13]中可以查看每个modules的用法。
 
@@ -129,13 +131,13 @@ Nginx有很多的module，在[Nginx Documents][13]中可以查看每个modules�
 
 [Nginx: Alphabetical index of variables][9]中列出了可以在配置文件中使用的所有变量。
 
-在查看Nginx指令用法的时候，注意指令的context：
+在查看Nginx指令用法的时候，要注意指令的context，只有在这些context中才可以使用该指令：
 
 	Syntax:     gzip on | off;
 	Default:    gzip off;
 	Context:    http, server, location, if in location   # 可以使用gzip指令的地方
 
-一个最常用的模块是[ngx_http_upstream_module](http://nginx.org/en/docs/http/ngx_http_upstream_module.html)，使用该模块后，可以用upstream指令选定一组server:
+最常用的模块是[ngx_http_upstream_module](http://nginx.org/en/docs/http/ngx_http_upstream_module.html)，该模块后的upstream指令用来指定一组server:
 
 	resolver 10.0.0.1;
 	
@@ -163,9 +165,9 @@ Nginx有很多的module，在[Nginx Documents][13]中可以查看每个modules�
 
 Nginx原本只能做7层(http)代理，在1.9.0版本中增加了4层(TCP/UDP)代理功能。
 
-4层代理功能在Nginx的[ngx_stream_core_module][14]模块中实现，但默认没有编译，需要在编译时指定： --with-stream。
+4层代理功能在Nginx的[ngx_stream_core_module][14]模块中实现，默认不包含，需要在编译时指定：`--with-stream`。
 
-使用配置如下：
+stream的使用方法如下：
 
 	worker_processes auto;
 	
@@ -216,9 +218,9 @@ Nginx是用C语言开发软件，采用模块化设计，可以通过开发模�
 
 [Nginx Development guide][18]中介绍了Nginx模块开发的方法[Nginx Module develop][19]。
 
-插件可以编译成.so以后动态加载，也可以直接编译到nginx中，编译是通过`--add-module`指定要集成的模块。
+Nginx Module可以编译成.so文件动态加载，也可以直接编译到nginx中，编译nginx时用`--add-module`指定要集成的模块。
 
-例如[lua-nginx-module](https://github.com/openresty/lua-nginx-module#readme)：
+例如，[lua-nginx-module](https://github.com/openresty/lua-nginx-module#readme)：
 
 	./configure --prefix=/opt/nginx \
 		 --with-ld-opt="-Wl,-rpath,/path/to/luajit-or-lua/lib" \
@@ -226,17 +228,17 @@ Nginx是用C语言开发软件，采用模块化设计，可以通过开发模�
 		 --add-module=/path/to/lua-nginx-module
 
 ## OpenResty
-[OpenResty][15]是一个集成了Nginx、LuaJIT和其它很多moudels的平台，用来托管完整的web应用——包含业务逻辑，而不单纯是静态文件服务器: 
+[OpenResty][15]是由Nginx、LuaJIT和很多Moudels组成的平台，用来托管完整的web应用，包含业务逻辑，而不只是静态文件服务器和反向代理: 
 
 	OpenResty® aims to run your server-side web app completely in the Nginx server, 
 	leveraging Nginx's event model to do non-blocking I/O not only with the HTTP 
 	clients, but also with remote backends like MySQL, PostgreSQL, Memcached, and Redis.
 
-[OpenResty Components][16]中列出了OpenResty集成的组件，数量不少，这里就不列出来了。
+[OpenResty Components][16]中列出了OpenResty集成的组件，数量很多，这里就不列出来了。
 
-先通过[OpenResty Getting Started][17]感受一下OpenResty是咋回事。
+可以先通过[OpenResty Getting Started][17]感受一下OpenResty是咋回事。
 
-OpenResty集成了[LuaJit](http://luajit.org/luajit.html)，一个Lua代码的实时编译器，支持使用Lua代码。
+OpenResty集成了[LuaJit](http://luajit.org/luajit.html)，一个Lua代码的实时编译器，支持使用Lua代码，业务逻辑就是用Lua代码编写的。
 
 ### OpenResty安装
 
@@ -247,17 +249,17 @@ Centos安装方式：
 	sudo yum install openresty
 	sudo yum install openresty-resty
 
-通过源代码编译：
+源代码编译安装：
 
 	wget https://openresty.org/download/openresty-1.13.6.2.tar.gz
 	tar -xvf openresty-1.13.6.2.tar.gz
 	cd openresty-1.13.6.2/
 	./configure --with-pcre-jit --with-http_ssl_module --with-http_realip_module --with-http_stub_status_module --with-http_v2_module --prefix=/usr/local/bin/openresty
 	make -j2
-	make install     //默认安装在--prefix指定的目录：/usr/local/bin/openresty
+	make install     //默认安装在--prefix指定的目录，这里是：/usr/local/bin/openresty
 	export PATH=/usr/local/openresty/bin:$PATH
 
->为了后面顺利的使用kong，执行./configure时要指定kong依赖的模块。
+>为了后面顺利的使用kong，执行./configure时要指定kong依赖的模块：--with-pcre-jit --with-http_ssl_module --with-http_realip_module --with-http_stub_status_module --with-http_v2_module。
 
 ### OpenResty使用
 
@@ -281,7 +283,7 @@ OpenResty的安装目录包含以下文件：
 	|   `-- share
 	...
 
-注意`openresty命令就是nginx命令`，OpenResty可以理解为一个集成了很多模块的定制版nginx：
+注意`openresty命令就是nginx命令`，OpenResty可以理解为集成了很多模块的定制加强版nginx：
 
 	$ openresty -h
 	nginx version: openresty/1.13.6.2
@@ -299,11 +301,9 @@ OpenResty的安装目录包含以下文件：
 	  -c filename   : set configuration file (default: conf/nginx.conf)
 	  -g directives : set global directives out of configuration file
 
-nginx集成了很多模块之后，可以执行lua代码。
-
 #### 用resty直接执行lua代码
 
-OpenResty的安装目录中有一个`resty`文件，它是一个perl脚本，可以直接给它传入lua代码：
+OpenResty的安装目录中有一个`resty`命令，它是一个perl脚本，可以执行传入的lua代码：
 
 	$ resty -e 'print("hello, world!")'
 	hello, world!
@@ -315,15 +315,14 @@ OpenResty的安装目录中有一个`resty`文件，它是一个perl脚本，可
 	my @cmd = ($nginx_path, '-p', "$prefix_dir/", '-c', "conf/nginx.conf");
 	...
 
-OpenResty本质上就是一个定制的nginx，通过支持在配置文件中使用lua代码，成为一个完善的应用开发平台。
+所以说，OpenResty就是一个定制加强版的nginx，支持在配置文件中使用lua代码，从而能够成为一个完善的应用开发平台。
+这时候的nginx成为lua代码的解释器。
 
-API网关Kong是一个典型的OpenResty应用，它的[数据平面实现](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/22/kong-data-plane-implement.html)中，直接生成了一个使用了kong模块的nginx.conf文件，然后直接给nginx指定这个配置启动。
-
-这时候的nginx有点类似于可以加载执行lua代码的解释器。
+API网关Kong是一个典型的OpenResty应用，它的[数据平面实现](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/22/kong-data-plane-implement.html)就是生成一个引入了kong模块（lua代码包）的nginx.conf文件，OpenResyt也就是定制的Nginx使用这个引入了kong模块的nginx.conf文件启动后，就可以接受请求进行处理，核心代码是引入的lua代码包。
 
 #### 执行配置文件中的lua代码
 
-OpenResty的配置文件中也可以写入lua代码：
+OpenResty的配置文件中可以写lua代码：
 
 	$ cat nginx.conf
 	worker_processes  1;
@@ -358,21 +357,21 @@ OpenResty的配置文件中也可以写入lua代码：
 
 ### Kong编译安装
 
-Kong[编译安装](https://docs.konghq.com/install/source/?_ga=2.8480690.66649192.1538042077-515173955.1536914658)时需要先安装OpenResty。
-
-还需要lua包管理工具[luarocks](https://luarocks.org/):
+Kong[编译安装](https://docs.konghq.com/install/source/?_ga=2.8480690.66649192.1538042077-515173955.1536914658)时需要先安装OpenResty和lua包管理工具[luarocks](https://luarocks.org/)。
+OpenResty的安装方法见前面章节，luarocks的安装方法如下：
 
 	git clone git://github.com/luarocks/luarocks.git
 	./configure --lua-suffix=jit --with-lua=/usr/local/openresty/luajit --with-lua-include=/usr/local/openresty/luajit/include/luajit-2.1
 	make install
 
-下载kong代码编译：
+kong源代码编译安装：
 
 	git clone https://github.com/Kong/kong.git
 	cd kong
+	// git checkout 切换到你要安装的版本
 	make install
 
-编译完成之后会在当前目录生成一个bin目录：
+编译完成之后会在`当前目录`生成一个bin目录：
 
 	$ ls bin/
 	busted  kong
@@ -390,9 +389,13 @@ Kong[编译安装](https://docs.konghq.com/install/source/?_ga=2.8480690.6664919
 
 ### 启动Kong
 
-先准备数据库，kong支持PostgreSQL和Cassandra 3.x.x，这里使用PostgreSQL（需要版本在9.4及以上）:
+Kong依赖外部的数据库。
 
->注意，如果使用其它版本的PostgreSQL，将下面的9.6换成对应版本号。
+#### 启动Kong——准备数据库
+
+准备数据库，kong支持PostgreSQL（9.4及以上）和Cassandra 3.x.x，这里使用PostgreSQL 9.6.3：
+
+>注意，如果使用其它版本的PostgreSQL，将下面连接中的9.6换成对应版本号。
 
 	yum install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm
 	yum install postgresql96
@@ -406,11 +409,11 @@ Kong[编译安装](https://docs.konghq.com/install/source/?_ga=2.8480690.6664919
 	alter user kong with encrypted password '123456';
 	\q
 
-在/var/lib/pgsql/9.6/data/pg_hba.conf的`开始处`添加规则下面规则:
+在/var/lib/pgsql/9.6/data/pg_hba.conf的`开始处`添加规则下面规则，允许用户kong以密码方式登录访问kong数据库:
 
 	host    kong            kong            127.0.0.1/32            md5
 
-然后`重启PostgreSQL`，确保下面的命令能登陆PostgreSQL：
+`重启PostgreSQL`，确保能用下面的命令登陆PostgreSQL：
 
 	# psql -h 127.0.0.1 -U kong kong -W
 	Password for user kong:
@@ -419,7 +422,12 @@ Kong[编译安装](https://docs.konghq.com/install/source/?_ga=2.8480690.6664919
 
 	kong=>
 
-PostgreSQL的部署使用和通过密码登陆方式的设置参考：[PostgresSQL数据库的基本使用][21]、[PostgreSQL的用户到底是这么回事？新用户怎样才能用密码登陆？][20]。
+PostgreSQL的基本使用方法和设置密码登录的方法参考：
+
+1. [PostgresSQL数据库的基本使用][21]
+2. [PostgreSQL的用户到底是这么回事？新用户怎样才能用密码登陆？][20]。
+
+#### 启动Kong——配置启动
 
 准备kong的配置文件，
 
@@ -442,7 +450,7 @@ kong默认的代理地址是：
 
 	admin_listen = 127.0.0.1:8001, 127.0.0.1:8444 ssl
 
-返回的是json字符串：
+访问admin接口返回的是json字符串：
 
 	$ curl -i http://localhost:8001/
 	HTTP/1.1 200 OK
@@ -455,7 +463,7 @@ kong默认的代理地址是：
 	
 	{"plugins":{"enabled_in_cluster":[],"availab...
 
-### 部署Kong Dashboard
+### 扩展：部署Kong Dashboard
 
 [PGBI/kong-dashboard][27]是一个第三方的Dashboard。
 
@@ -463,7 +471,7 @@ kong默认的代理地址是：
 	  --kong-url http://kong:8001
 	  --basic-auth user1=password1 user2=password2
 
-### Kong的使用
+### Kong的基本使用
 
 停止:
 
@@ -476,7 +484,6 @@ kong默认的代理地址是：
 #### 注册API：添加服务、配置路由
 
 添加服务[Configuring a Service](https://docs.konghq.com/0.14.x/getting-started/configuring-a-service/)。
-
 添加一个名为`example-service`的服务，服务地址是`http://mockbin.org`：
 
 	 curl -i -X POST \
@@ -507,9 +514,7 @@ kong默认的代理地址是：
 	  --url http://localhost:8001/services/example-service/routes \
 	  --data 'hosts[]=example.com'
 
-这里配置的route条件是：host为example.com。
-
-返回：
+上面配置的route条件是`host为example.com`，创建成功后返回下面内容：
 
 	{
 	    "created_at": 1538185340,
@@ -538,19 +543,19 @@ kong默认的代理地址是：
 	  --url http://localhost:8000/ \
 	  --header 'Host: example.com'
 
-可以在/etc/hostsname中将example.com地址配置为kong所在的机器的地址：
+可以在/etc/hosts中将example.com地址配置为kong所在的机器的地址：
 
 	10.10.192.35 example.com
 
-然后就可以通过`example.com:8000`打开http://mockbin.org。
+然后就可以通过`example.com:8000`访问[http://mockbin.org ](http://mockbin.org)。
 
-#### 插件启用方法
+#### 插件的启用方法
 
 插件是用来扩展API的，例如为API添加认证、设置ACL、限制速率等、集成oauth、ldap等。
 
-[Kong Plugins][24]中列出了已有的所有插件。
+[Kong Plugins][24]中列出了已有的所有插件，本页后面章节也有列出。
 
-这里演示[key-auth](https://docs.konghq.com/plugins/key-authentication/)插件的用法，[Kong Enabling Plugins][22]，。
+这里演示[key-auth](https://docs.konghq.com/plugins/key-authentication/)插件的用法，为前面创建的example-service启动key-auth插件，[Kong Enabling Plugins][22]：
 
 	 curl -i -X POST \
 	  --url http://localhost:8001/services/example-service/plugins/ \
@@ -575,7 +580,7 @@ kong默认的代理地址是：
 	    "service_id": "ebed2707-e2fb-4694-9e8e-fb66fe9dd7c8"
 	}
 
-这时候直接访问example.com，会返回401:
+这时候访问example.com，会返回401:
 
 	curl -i -X GET \
 	>   --url http://localhost:8000/ \
@@ -618,18 +623,15 @@ kong默认的代理地址是：
 	    "key": "123456"
 	}
 
-这时候可以用Jason的key访问API:
+这时候可以用用户Jason的key访问API:
 
 	 curl -i -X GET \
 	  --url http://localhost:8000 \
 	  --header "Host: example.com" \
 	  --header "apikey: 123456"
 
-返回的是mockbin.org的首页。
-
-key-auth插件的详细用法参考[Kong Plugin: key-auth][23]。插件的作用范围可以是全局(global)、服务(service)、路由(router)。
-
-启用key-auth后，通过认证的请求被转发给上游服务时，key-auth会增设下面的字段：
+key-auth插件的详细用法参考[Kong Plugin: key-auth][23]，插件的作用范围可以是全局(global)、服务(service)、路由(router)。
+启用key-auth插件后，通过认证的请求被转发给上游服务时，请求头中会带有下面的字段，上游服务通过key-auth插件增加的这些字段知道发起请求的用户是谁：
 
 	X-Consumer-ID, the ID of the Consumer on Kong
 	X-Consumer-Custom-ID, the custom_id of the Consumer (if set)
@@ -637,11 +639,11 @@ key-auth插件的详细用法参考[Kong Plugin: key-auth][23]。插件的作用
 	X-Credential-Username, the username of the Credential (only if the consumer is not the 'anonymous' consumer)
 	X-Anonymous-Consumer, will be set to true when authentication failed, and the 'anonymous' consumer was set instead.
 
-### Kong的插件
+### Kong的插件列表
 
-[Kong Plugins][24]中列出了已有的所有插件，有些插件只能在企业版使用，有些插件是社区成员开发的，大部分是Kong公司开发，并集成到社区版中。
+[Kong Plugins][24]中列出了已有的所有插件，大部分是Kong公司开发的，有些插件只能在企业版使用。
 
-下面是社区版集成的、Kong公司维护的插件(2018-09-30 14:33:03)：
+下面是社区版集成的、由Kong公司维护的插件(2018-09-30 14:33:03)：
 
 认证插件：
 
@@ -702,52 +704,17 @@ key-auth插件的详细用法参考[Kong Plugin: key-auth][23]。插件的作用
 
 ### Kong与Kubernetes的集成
 
-经过前面的学习，对Api网关是什么，以及Kong能够做什么已经有了足够的了解。现在Kubernetes一统计算资源与应用发布编排的趋势已经形成，我们更关心Kong能否和Kubernetes结合。
+经过前面的学习，对Api网关是什么，以及Kong能够做什么已经有了足够的了解。现在Kubernetes一统计算资源管理与应用发布编排的趋势已经形成，Kong能否和Kubernetes结合？
 
-Kong是一个Api网关，也是一个特性更丰富的反向代理，既然它有代理流量的功能，那么能不能直接成为Kubernetes的流量入口？使Kubernetes内部的服务都通过Kong发布。
+Kong是一个Api网关，即一个特性更丰富的反向代理。既然它有代理流量的功能，那么能不能作为Kubernetes的流量入口，使Kubernetes内部的服务都通过Kong发布？
 
-Kong实现了一个[Kubernetes Ingress Controller][26]来做这件事。在Kubernetes中部署kong的方法见[Kong CE or EE on Kubernetes][25]。
+Kong实现了一个[Kubernetes Ingress Controller][26]来做这件事，在Kubernetes中部署kong的方法：[Kong CE or EE on Kubernetes][25]。
 
 这部分内容比较多，单独开篇了: [Kubernetes与API网关Kong的集成](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/09/30/integrate-kubernetes-with-kong.html)。
 
 ## 遇到的问题
 
-### ERROR:  module 'socket' not found:No LuaRocks module found for socket
-
-启动的时候：
-
-	# ./bin/kong start -c ./kong.conf
-	...
-	ERROR: ./kong/globalpatches.lua:63: module 'socket' not found:No LuaRocks module found for socket
-	...
-
-这是因为编译kong之后，重新编译了luarocks，并且将luarocks安装在了其它位置。重新编译kong之后解决。
-
-### ERROR: function to_regclass(unknown) does not exist (8)
-
-创建数据库的时候：
-
-	# kong migrations up -c ./kong.conf
-	...
-	[postgres error] could not retrieve current migrations: [postgres error] ERROR: function to_regclass(unknown) does not exist (8)
-	...
-
-这是因为PostgreSQL的版本太低了，`to_regclass`在PostgreSQL 9.4及以上的版本中才存在。
-
-	yum install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm
-	yum install postgresql96
-	yum install postgresql96-server
-
-### nginx: [emerg] unknown directive "real_ip_header" in /usr/local/kong/nginx-kong.conf:73
-
-	nginx: [emerg] unknown directive "real_ip_header" in /usr/local/kong/nginx-kong.conf:73
-
-这是因为编译的openresty的时候，没有指定`--with-http_realip_module`，重新编译安装：
-
-	./configure --with-pcre-jit --with-http_ssl_module --with-http_realip_module --with-http_stub_status_module --with-http_v2_module
-	make -j2
-	make install     //默认安装在/usr/local/bin/openresty
-	export PATH=/usr/local/openresty/bin:$PATH
+见：[《API网关Kong学习笔记（零）：使用过程中遇到的问题以及解决方法》](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/29/kong-usage-problem-and-solution.html)。
 
 ## 参考
 

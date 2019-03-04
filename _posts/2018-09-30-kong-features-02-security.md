@@ -44,7 +44,7 @@ Kong-Ingress-Controller的版本是0.2.0，Kong的版本是0.14.1，是用下面
 	kong          postgres                  ClusterIP   172.16.97.45     <none>        5432/TCP                     10h       app=postgres
 	kube-system   kube-dns                  ClusterIP   172.16.0.2       <none>        53/UDP,53/TCP                10h       k8s-app=kube-dns
 
-**相关笔记**，这些笔记是学习过程做的记录，写的比较仓促，有疑惑的地方以Kong官方文档为准：
+**相关笔记**，这些笔记是学习过程中做的记录，写的比较仓促，有疑惑的地方以Kong官方文档为准：
 
 [《API网关Kong学习笔记（零）：使用过程中遇到的问题以及解决方法》](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/29/kong-usage-problem-and-solution.html)
 

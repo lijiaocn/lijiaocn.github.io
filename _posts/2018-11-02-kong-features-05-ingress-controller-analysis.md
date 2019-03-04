@@ -20,7 +20,7 @@ description: Ingress Controller可以将Kong与Kubernetes无缝集成，自动�
 [Kong Ingress Controller][1]可以将Kong与Kubernetes无缝集成，自动将kubernetes中的操作同步到kong中。
 [API网关Kong（二）：Kong与Kubernetes集成的方法][2]有过介绍，这里做代码级别的了解，部署与使用方法参考[API网关Kong（二）：Kong与Kubernetes集成的方法][2]。
 
-**相关笔记**，这些笔记是学习过程做的记录，写的比较仓促，有疑惑的地方以Kong官方文档为准：
+**相关笔记**，这些笔记是学习过程中做的记录，写的比较仓促，有疑惑的地方以Kong官方文档为准：
 
 [《API网关Kong学习笔记（零）：使用过程中遇到的问题以及解决方法》](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/29/kong-usage-problem-and-solution.html)
 
