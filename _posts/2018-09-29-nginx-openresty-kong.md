@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "API网关Kong学习笔记（一）：Nginx、OpenResty和Kong入门，基础概念和使用方法"
+title: "API网关Kong学习笔记（一）：Nginx、OpenResty和Kong入门，基础概念和安装部署"
 author: 李佶澳
 createdate: "2018-09-29 15:41:50 +0800"
-changedate: "2019-03-05 14:53:20 +0800"
+changedate: "2019-03-05 16:27:59 +0800"
 categories: 项目
 tags: 视频教程 kong
 keywords: kong,openresty,nginx,apigateway,API网关
@@ -315,14 +315,19 @@ OpenResty的配置文件中可以写lua代码：
 
 [Kong][3]是一个基于OpenResty的应用，是一个API网关。
 
-### Kong编译安装
+### 用源码的方式部署Kong
 
-Kong[编译安装](https://docs.konghq.com/install/source/?_ga=2.8480690.66649192.1538042077-515173955.1536914658)时需要先安装OpenResty和lua包管理工具[luarocks](https://luarocks.org/)。
-OpenResty的安装方法见前面章节，luarocks的安装方法如下：
+通过[源码编译安装](https://docs.konghq.com/install/source/?_ga=2.8480690.66649192.1538042077-515173955.1536914658)kong时，需要先安装OpenResty和lua的包管理工具[luarocks](https://luarocks.org/)。
+
+#### 准备OpenResty和Luarocks
+
+OpenResty的安装方法见[前面章节](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/09/29/nginx-openresty-kong.html#openresty%E5%AE%89%E8%A3%85)，luarocks的安装方法如下：
 
 	git clone git://github.com/luarocks/luarocks.git
 	./configure --lua-suffix=jit --with-lua=/usr/local/openresty/luajit --with-lua-include=/usr/local/openresty/luajit/include/luajit-2.1
 	make install
+
+#### 下载Kong源码，编译安装
 
 kong源代码编译安装：
 
