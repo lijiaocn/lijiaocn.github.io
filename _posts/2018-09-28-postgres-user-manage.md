@@ -3,7 +3,7 @@ layout: default
 title: "PostgreSQL的用户到底是这么回事？新建用户怎样才能用密码登陆？"
 author: 李佶澳
 createdate: "2018-09-28 15:54:43 +0800"
-changedate: "2019-03-04 16:17:15 +0800"
+changedate: "2019-03-06 18:26:49 +0800"
 categories: 技巧
 tags: PostgreSQL
 keywords: postgres,PostgreSQL,用户登陆,pg_hab.conf,数据库
@@ -165,6 +165,8 @@ pg_hba.conf文件内容如下：
 	20.3.11. BSD Authentication
 
 其中最常接触到的是`peer`、`ident`和`paasword`。
+
+address样式是`127.0.0.1/32`、`::1/128`，如果要表示任意IP，使用`0.0.0.0/0`、`::0/0`。
 
 ## 提前填坑：如果同时匹配了pg_hba.conf中的多个规则，选用第一个
 

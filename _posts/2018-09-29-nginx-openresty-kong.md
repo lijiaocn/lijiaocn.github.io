@@ -3,7 +3,7 @@ layout: default
 title: "API网关Kong学习笔记（一）：Nginx、OpenResty和Kong入门，基础概念和安装部署"
 author: 李佶澳
 createdate: "2018-09-29 15:41:50 +0800"
-changedate: "2019-03-05 16:27:59 +0800"
+changedate: "2019-03-06 12:01:20 +0800"
 categories: 项目
 tags: 视频教程 kong
 keywords: kong,openresty,nginx,apigateway,API网关
@@ -322,6 +322,13 @@ OpenResty的配置文件中可以写lua代码：
 #### 准备OpenResty和Luarocks
 
 OpenResty的安装方法见[前面章节](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/09/29/nginx-openresty-kong.html#openresty%E5%AE%89%E8%A3%85)，luarocks的安装方法如下：
+
+直接用yum安装：
+
+	yum install -y epel-release
+	yum install -y luarocks
+
+源码编译安装：
 
 	git clone git://github.com/luarocks/luarocks.git
 	./configure --lua-suffix=jit --with-lua=/usr/local/openresty/luajit --with-lua-include=/usr/local/openresty/luajit/include/luajit-2.1

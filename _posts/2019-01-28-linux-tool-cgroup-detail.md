@@ -3,7 +3,7 @@ layout: default
 title: "Linux的cgroup功能（二）：资源限制cgroup v1和cgroup v2的详细介绍"
 author: 李佶澳
 createdate: "2019-01-28 15:52:58 +0800"
-changedate: "2019-02-28 19:06:25 +0800"
+changedate: "2019-03-07 16:15:16 +0800"
 categories: 技巧
 tags: linux cgroup
 keywords: cgroup介绍文档,cgroup v1,cgroup v2,cgroup controller,linux资源隔离,linux资源控制器
@@ -220,12 +220,12 @@ release_agent也可以在挂载cgroup的时候设置：
 
 ## cgroups version 2
 
-[cgroups v2][5]支持的所有controller使用统一约定的、固定格式的cgroup目录，并且进程只能绑定到cgroup的“`/`”目录和目录树中的叶子节点，`不能绑定到中间目录`。变化还是比较大的，需要特别注意。
+[cgroups v2][5]支持的所有controller使用统一约定的、固定格式的cgroup目录，并且进程只能绑定到cgroup的“`/`”目录和目录树中的叶子节点，`不能绑定到中间目录`。变化还是比较大的，需要特别注意：
 
-1. cgorup v2支持的controller都自动挂载，并且挂载点中的目录结构是固定的
+1. cgorup v2支持的controller默认自动挂载，并且挂载点中的目录结构是固定的
 2. 进程只能绑定到cgroup的“`/`”目录和cgroup目录树中的`叶子节点`
-3. 通过cgroup.controllers和cgroup.subtree_control设置cgroup目录中可用的controller
-4. cgroup v1中的tasks文件被移除，cpuset controller的cgroup.clone_children文件也被移除
+3. 在cgroup.controllers和cgroup.subtree_control中设置cgroup目录中可用的controller
+4. cgroup v1中的tasks文件被移除，cpuset controller中的cgroup.clone_children文件也被移除
 5. cgroup目录为空时的通知机制得到改进，通过`cgroup.events`文件通知
 
 内核文档[Documentation/cgroup-v2.txt][5]中有更详细的描述。
