@@ -2,7 +2,7 @@
 layout: default
 title: "【附截图】惊奇队长高清1080P下载！百度云网盘、迅雷BT种子、磁力链magnet"
 createdate: 2019/03/10 00:02:54
-changedate: 2019/03/10 00:36:49
+changedate: 2019/03/10 00:48:26
 categories: hidden
 tags: 好货
 keywords: 惊奇队长,captain marvel,下载,在线电影,百度云网盘,迅雷BT种子,磁力链magnet
@@ -24,11 +24,11 @@ description: "《惊奇队长》高清1080P下载地址大全：百度云网盘�
 
 另一个是下面这个，高清就是这个样子....这个是已知质量最好的片子，想看的还是去电影院吧...
 
-![惊奇队长,captain marvel]({{ site.imglocal}}/movie/caption1)
+![惊奇队长,captain marvel]({{ site.imglocal}}/movie/caption1.jpg)
 
-![惊奇队长,captain marvel]({{ site.imglocal}}/movie/caption2)
+![惊奇队长,captain marvel]({{ site.imglocal}}/movie/caption2.jpg)
 
-![惊奇队长,captain marvel]({{ site.imglocal}}/movie/caption3)
+![惊奇队长,captain marvel]({{ site.imglocal}}/movie/caption3.jpg)
 
 在视频开头2分钟的位置插入了一段广告，另外没有字幕。
 
