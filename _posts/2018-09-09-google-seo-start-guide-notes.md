@@ -20,6 +20,8 @@ description: 在网站SEO方面，Google官方给出了很详细的建议，分�
 
 这是阅读[Search Engine Optimization (SEO) Starter Guide][1]手册时做的摘要。
 
+{% include google_list.md %}
+
 ## 工具
 
 [Google Webmaster Guidelines][2]提供了建站建议，怎样的网页是对Google友好的。
