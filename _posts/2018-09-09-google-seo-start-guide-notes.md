@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  Google搜索引擎优化(SEO)手册学习笔记-要点记录
+title:  Google搜索引擎优化手册（SEO手册）学习笔记-要点记录
 author: 李佶澳
 createdate: 2018/09/09 12:00:00
 changedate: 2018/09/11 16:37:31
