@@ -3,7 +3,7 @@ layout: default
 title: "Linux的cgroup功能（二）：资源限制cgroup v1和cgroup v2的详细介绍"
 author: 李佶澳
 createdate: "2019-01-28 15:52:58 +0800"
-changedate: "2019-03-07 16:15:16 +0800"
+changedate: "2019-03-08 11:07:22 +0800"
 categories: 技巧
 tags: linux cgroup
 keywords: cgroup介绍文档,cgroup v1,cgroup v2,cgroup controller,linux资源隔离,linux资源控制器

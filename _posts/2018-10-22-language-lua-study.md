@@ -266,7 +266,7 @@ Lua5.2开始，可以加上`-E`参数强制使用编译在Lua命令中的默认�
 	        no file '.\X.dll'
 	        no file 'C:\Program Files\Lua502\dll\X.dll'
 
-#### Module的版本管理
+#### module的版本管理
 
 module名称中可以带有`-版本号`后缀，例如：
 
@@ -291,11 +291,13 @@ package就是一个module目录树，是比module更高一层的概念，Lua的�
 
 ## Lua的项目管理工具
 
+先介绍用于lua项目的包管理工具luarocks的基本用法，然后介绍怎样在IDE中管理、操作lua项目。
+
 ### 依赖管理与发布打包：luarocks
 
 [LuaRocks][8]既可以管理lua项目依赖的package，也可以将lua项目发布、安装，以及推送到luarocks中共享，类似于nodejs的npm，可以参考[luarocks documents][13]。
 
-luarocks支持多个版本的lua，可以用`--lua-dir`指定另一个版本的lua，例如在lua@5.1中安装say：
+luarocks支持不同版本的lua，用`--lua-dir`指定lua路径，例如在lua@5.1中安装say：
 
 	luarocks --lua-dir=/usr/local/opt/lua@5.1 install say
 
@@ -317,13 +319,11 @@ luarocks支持多个版本的lua，可以用`--lua-dir`指定另一个版本的l
 	├── luarocks
 	└── luarocks-dev-1.rockspec
 
-其中`lua`和`luarocks`是两个可执行脚本，使用项目中的`./lua`和`./luarocks`，可以将依赖的文件安装到项目本地目录中，不干扰系统上的Lua安装目录。
+其中`lua`和`luarocks`是两个可执行脚本，使用项目中的`./lua`和`./luarocks`，可以将依赖的文件安装到项目本地目录中，不干扰系统上的Lua安装目录。`luarocks-dev-1.rockspec`是自动生成的rockspec文件，记录了依赖的lua包。
 
-luarocks-dev-1.rockspec是自动生成的rockspec文件，用途在后面讲。
+#### luarocks安装依赖包
 
-#### luarocks安装依赖
-
-使用初始化时，在项目本地生成的`./luarocks`执行`search`子命令，查找可以安装的依赖以及版本，例如查找名为`mobdebug`的Package：
+初始化时，用项目本地的`./luarocks`命令执行`search`操作查找可以安装的依赖包，例如查找名为`mobdebug`的Lua Package：
 
 	$ ./luarocks search mobdebug
 	mobdebug - Search results for Lua 5.1:
@@ -351,9 +351,9 @@ luarocks-dev-1.rockspec是自动生成的rockspec文件，用途在后面讲。
 
 	./luarocks install mobdebug 0.70-1
 
->注意rockspec文件不会自动更新，好像没有自动更新项目的rockspec文件的命令 2018-10-27 16:10:36
+>注意rockspec文件不会自动更新，现在好像没有自动更新项目的rockspec文件的命令 2018-10-27 16:10:36
 
-用`list`子命令可以查看已经安装的Package：
+用`list`子命令可以查看已经安装的Lua Package：
 
 	$ ./luarocks list
 	
@@ -369,17 +369,18 @@ luarocks-dev-1.rockspec是自动生成的rockspec文件，用途在后面讲。
 	mobdebug
 	   0.70-1 (installed) - /Users/lijiao/Work-Finup/workspace/studys/study-Lua/first-demo/lua_modules/lib/luarocks/rocks-5.1
 
-依赖的package被安装在lua_modules目录中：
+依赖的Lua Package安装在本地的lua_modules目录中：
 
 	$ ls lua_modules/share/lua/5.1
 	ltn12.lua        mime.lua        mobdebug.lua       socket       socket.lua
 
-lua_modules目录中将lua package按照Lua的版本分开了。
-在安装了EmmyLua插件的IntelliJ Idea中，代码跳转的时候，会从lua_modules中寻找代码，优先使用最新的版本的代码。
+在安装了EmmyLua插件的IntelliJ Idea中，代码跳转的时候，先从lua_modules中寻找代码，优先使用最新的版本的代码。
+
+**注意**：如果使用的不是本地的`./luarocks`命令而是系统的`luarocks`命令，那么Lua Package被安装到系统目录中，而非项目本地，不建议使用系统上的luarocks命令。
 
 #### 记录依赖的rockspec文件
 
-rockspec文件不仅记录Lua项目依赖的package，还包括了Lua项目打包发布方式，以[kong的rockspec文件](https://github.com/Kong/kong/blob/master/kong-0.14.1-0.rockspec)为例：
+rockspec文件不仅记录Lua项目依赖的package，还设置了Lua项目的发布方式，以[kong的rockspec文件](https://github.com/Kong/kong/blob/master/kong-0.14.1-0.rockspec)为例：
 
 	package = "kong"
 	version = "0.14.1-0"
@@ -409,13 +410,13 @@ rockspec文件不仅记录Lua项目依赖的package，还包括了Lua项目打�
 	  }
 	}
 
-`dependencies`中记录了项目依赖，`build`中记录项目代码的发布方式，即lua文件与module的对应。
+`dependencies`中记录了项目依赖，`build`中记录项目代码的发布方式，即lua文件与module的对应关系。
 
->还没有找到自动更新rockspec文件的方法，如果需要手工在rockspec中输入依赖的package，就太麻烦了。最好有一个自动将依赖的package更新到rockspec文件中的方法。2018-10-27 16:22:44
+>还没有找到自动更新rockspec文件的方法，需要手工在rockspec中输入依赖的package，这样太麻烦了。最好有一个工具能够自动将依赖的package更新到rockspec文件。2018-10-27 16:22:44
 
-#### 项目的安装
+#### lua项目的安装
 
-`build`子命令安装当前目录中的lua代码，自动下载项目的rockspec文件中指定的lua package：
+`build`子命令安装当前目录中的lua代码，安装时自动下载rockspec文件中指定的lua package：
 
 	$ ./luarocks build
 	Missing dependencies for kong 0.14.1-0:
@@ -430,17 +431,15 @@ rockspec文件不仅记录Lua项目依赖的package，还包括了Lua项目打�
 	     Installing https://luarocks.org/inspect-3.1.1-0.src.rock
 	   ...
 
-如果项目中的`./luarocks`，将会安装到项目本地的lua_modules中，如果使用系统的`luarocks`命令，将会安装到系统的目录中。
-
-也可以用`make`子命令，make子命令只安装项目，不自动下载依赖。
+使用项目中的`./luarocks`命令，依赖包将会安装到项目本地的lua_modules中，使用系统的`luarocks`命令，将会安装到系统的目录中。还有一个`make`子命令，make子命令只安装当前项目，不下载依赖代码。
 
 ### IntelliJ Idea
 
-IntelliJ Idea中有两个Lua插件，一个是`Lua`，一个是`EmmyLua`，实测[EmmyLua](https://github.com/EmmyLua)对代码跳转的支持更好一些，国人开发的，也比较活跃。
+IntelliJ Idea中有两个Lua插件，一个是`Lua`，一个是`EmmyLua`。实测结果是[EmmyLua](https://github.com/EmmyLua)对代码跳转的支持更好一些，这个插件是国人开发的，也比较活跃。安装EmmyLua插件后，用luarocks初始化一个lua项目，然后在Idea中直接将项目目录导入。
 
-可以先用luarocks初始化一个lua项目，然后在Idea中直接将项目目录导入：
+初始化一个lua项目：
 
-	$ luarocks init --lua-dir=/usr/local/opt/lua@5.3
+	$ luarocks init --lua-dir=/usr/local/opt/lua@5.1
 	$ tree .
 	.
 	├── lua
@@ -451,79 +450,97 @@ IntelliJ Idea中有两个Lua插件，一个是`Lua`，一个是`EmmyLua`，实�
 	├── luarocks
 	└── luarocks-dev-1.rockspec
 
+对于已经存在的lua项目，也用luarocks进行初始化，以kong为例：
+
+	git clone https://github.com/Kong/kong.git
+	cd kong
+	luarocks init --lua-dir=/usr/local/opt/lua@5.1
+
+用luarocks完成项目初始化后，目录下多出两个可执行文件`lua`和`luarocks`，以及`lua_modules`目录。后续操作都用当前目录中的./lua和./luarocks文件，这样该项目依赖的文件都存放在当前目录，管理方便且不易出错。
+
+Kong已经是一个luarocks项目，代码中已经有.rockspec文件了，需要多一步操作，用`luarocks build`安装依赖文件：
+
+	./luarocks build
+
+执行这个命令的时候，在Mac上可能会遇到下面错误： 
+
+```
+Error: Failed installing dependency: https://luarocks.org/luasec-0.7-1.src.rock - Could not find header file for OPENSSL
+  No file openssl/ssl.h in /usr/local/include
+  No file openssl/ssl.h in /usr/include
+  No file openssl/ssl.h in /include
+You may have to install OPENSSL in your system and/or pass OPENSSL_DIR or OPENSSL_INCDIR to the luarocks command.
+```
+
+这是因为没有安装openssl或者openssl文件位于其它目录中，如果是用brew命令安装的openssl，可以用`brew info openssl`找到openssl文件路径：
+
+```
+$ brew info openssl
+openssl: stable 1.0.2q (bottled) [keg-only]
+SSL/TLS cryptography library
+...省略...
+For compilers to find openssl you may need to set:
+  export LDFLAGS="-L/usr/local/opt/openssl/lib"
+  export CPPFLAGS="-I/usr/local/opt/openssl/include"
+```
+
+用`OPENSSL_DIR`明确指定OPENSSL目录就可以了，如下：
+
+	$ ./luarocks build OPENSSL_DIR=/usr/local/opt/openssl   CRYPTO_DIR=/usr/local/opt/openssl
+	...
+	kong 1.0.3-0 is now installed in ... / (license: Apache 2.0)
+
 EmmyLua插件在执行代码跳转时，先从项目源代码中查找，然后从`lua_modules/lib/luarocks`中`最新`版本的Lua目录中查找，最后从SDK的ClassPath/SourcePath目录中查找。
 
-不在项目目录内的Lua代码，要正确跳转过去，需要它们所在的目录将添加到Idea的SDK中：
+`SDK的ClassPath/SourcePath`设置面板：
 
 	File -> Project Structure->SDKs
-	在SDK窗口中选择当前使用的SDK，在它的ClassPath/SourcePath目录中添加项目目录之外的代码目录
 
-通常至少要把本地安装的Lua的模块目录添加到SDK的ClassPath/SourcePath中。
+在SDK窗口中选择当前使用的SDK，譬如LuaJ，在它的`ClassPath`、`SourcePath`中添加项目目录外的代码路径，点击界面下方的“+”添加。至少要把本地安装的Lua模块目录添加到SDK的ClassPath/SourcePath中，例如在Mac上，lua代码被安装在：
 
-例如在Mac上，lua代码被安装在：
+	/usr/local/share/lua/5.1/
 
-	/usr/local/share/lua/5.1/`
-
-需要把这个目录添加到SDK的ClassPath/SourcePath。
-
-在Mac上，为Idea的SDK添加代码目录时，可能看不到/usr目录，可以做一个符号连接，将符号连接添加到SDK中，例如：
+在Mac上为Idea的SDK添加代码目录时，在“+”弹出的对话框中可能找不到/usr目录，可以做一个符号连接，将符号连接添加到SDK中，例如：
 
 	ln -s /usr/local/share/lua/5.1 ~/Bin/lua-5.1-sdk
 
-如果项目用到了OpenResty，还需要将OpenResty的模块添加到SDK的ClassPath/SourcePath中。
-
-Mac上用brew安装的OpenResty的package目录是：
+如果项目用到了OpenResty，将OpenResty的模块路径添加到SDK的ClassPath/SourcePath中，Mac上用brew安装的OpenResty的package目录是：
 
 	/usr/local/Cellar/openresty/1.13.6.2/lualib/
 
-可能同样需要为它做一个符号连接，将符号连接加到SDK中：
+可能也需要做符号连接：
 
 	ln -s /usr/local/Cellar/openresty/1.13.6.2/lualib ~/Bin/openresty-1.13.6.2-lualib
 
 ## Lua代码的调试方法
 
-依赖管理可以使用前面提到的luarocks，Lua项目开发可以用`Intelli Idea + EmmyLua插件`。
-
-Lua代码的运行前面也提到过，可以直接用`lua`或者`luajit`等lua代码解释器加载运行。
-
-剩下的一个比较关键的问题就是lua代码的调试方法了。
+依赖管理使用前面提到的luarocks，开发环境用`Intelli Idea + EmmyLua插件`，代码的运行用`lua`或`luajit`等解释器，剩下的一个比较关键的问题就是lua代码的调试方法。
 
 ### 在IntelliJ IDEA中调试Lua代码
 
-在IntelliJ IDEA中运行Lua代码比较简单。在`Run`菜单中选择Run，会弹出一个运行配置对话框，在`0 Edit Configuration`中，设置Lua代码的运行环境。
-
-最主要的加载执行lua代码的命令的完整路径：
+在IntelliJ IDEA中运行Lua代码比较简单。在`Run`菜单中选择Run，会弹出一个运行配置对话框，在`0 Edit Configuration`中，设置Lua代码的运行环境。最主要的配置是lua代码解释器的路径：
 
 	Program: /usr/local/bin/lua-5.1    执行lua代码的lua命令
 
-可以用快捷键`ctrl+alt+r`直接调出运行窗口。
+之后用快捷键`ctrl+alt+r`调出运行窗口。
 
-#### IDEA中使用Remote Debugger
+#### 使用IntelliJ IDEA的Remote Debugger
 
-在Idea中调试Lua代码，用快捷键`ctrl+alt+d`直接调出Debug窗口，在`0 Edit Configuration`中选择Debugger：
+用快捷键`ctrl+alt+d`调出Debug窗口，在`0 Edit Configuration`中选择Debugger：
 
 	Remote Debugger(MobDebug)
 
-Apply之后选择Debug运行，这时候Idea窗口下方会弹出Debugger对话框。
+Apply之后选择Debug运行，这时候Idea窗口下方会弹出Debugger对话框。`alt+command+r`开始执行到下一个断点，`F8`单步执行不进入函数，`F7`单步执行进入函数，`command+r`重新执行。
 
-`alt+command+r`开始执行到下一个断点，`F8`单步执行不进入函数，`F7`单步执行进入函数，`command+r`重新执行。
-
-##### 可能需要引用mobdebug模块
-
-[EmmyLua的文档](https://emmylua.github.io/run/remote.html)中说设置Remote Debug远程调试，需要在lua代码中引入mobdebug模块：
+可能需要引用mobdebug模块，[EmmyLua的文档](https://emmylua.github.io/run/remote.html)中说设置Remote Debug远程调试，需要在lua代码中引入mobdebug模块：
 
 	require("mobdebug").start()
 	-- 或者
 	require("mobdebug").start("host-ip", port) --默认值为 "localhost", 8172
 
-不过我在Idea中试验了下，不安装mobdebug也可以进行调试，或许还有我不知道的与mobdebug有关的内容，这里先记录下这件事。2018-10-27 17:03:13
+不过我在Idea中试验了下，不安装mobdebug也可以进行调试，或许还有我不知道的内容，这里先记录下这件事。2018-10-27 17:03:13
 
-可以用luarocks安装mobdebug，先到项目目录中执行`luarock init`完成初始化设置：
-
-	$ luarocks init
-	Initializing project first-demo ...
-
-然后用项目本地生成的`./luarocks`执行`search`子命令，查看可以安装的版本：
+用项目本地生成的`./luarocks`执行`search`子命令，查看可以安装的版本：
 
 	$ ./luarocks search mobdebug
 	mobdebug - Search results for Lua 5.1:
@@ -547,7 +564,7 @@ Apply之后选择Debug运行，这时候Idea窗口下方会弹出Debugger对话�
 	   0.48-1 (rockspec) - https://luarocks.org
 	   0.48-1 (src) - https://luarocks.org
 
-最后用`install`子命令安装指定的版本：
+用`install`子命令安装：
 
 	./luarocks install mobdebug 0.70-1
 
