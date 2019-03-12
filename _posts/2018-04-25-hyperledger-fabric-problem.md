@@ -33,11 +33,12 @@ description: "这里记录部署hyperledger fabric时遇到的一些问题"
 
 当不通的时候，先确认域名对应的IP是否正确，然后用telnet检查服务端口：
 
+	ping peer0.org1.example.com
 	telnet peer0.org1.example.com 7051
 
 如果不通，检查一下/etc/hosts中是否设置了域名和IP的对应关系是否正确。
 
-如果还是不通，看一下系统有没有防火墙，是否不是7051端口被防火墙禁止了。
+如果还是不通，看一下系统有没有防火墙，7051端口有没有被防火墙禁止。
 
 ## ID不合法导致Orderer Panic
 
