@@ -371,7 +371,7 @@ not的返回结果是true或者false。
 
 ## 控制结构
 
-Lua支持一下控制结构：
+Lua支持下列控制结构：
 
 	if
 	while
