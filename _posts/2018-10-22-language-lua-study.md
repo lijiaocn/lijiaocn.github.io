@@ -462,7 +462,7 @@ Kong已经是一个luarocks项目，代码中已经有.rockspec文件了，需�
 
 	./luarocks build
 
-执行这个命令的时候，在Mac上可能会遇到下面错误： 
+在Mac上执行这个命令可能会遇到下面错误： 
 
 ```
 Error: Failed installing dependency: https://luarocks.org/luasec-0.7-1.src.rock - Could not find header file for OPENSSL
@@ -512,17 +512,17 @@ EmmyLua插件在执行代码跳转时，先从项目源代码中查找，然后�
 
 	ln -s /usr/local/Cellar/openresty/1.13.6.2/lualib ~/Bin/openresty-1.13.6.2-lualib
 
-## Lua代码的调试方法
+## Lua代码的运行和调试
 
 依赖管理使用前面提到的luarocks，开发环境用`Intelli Idea + EmmyLua插件`，代码的运行用`lua`或`luajit`等解释器，剩下的一个比较关键的问题就是lua代码的调试方法。
 
-### 在IntelliJ IDEA中调试Lua代码
+### 在IntelliJ IDEA中运行Lua代码
 
 在IntelliJ IDEA中运行Lua代码比较简单。在`Run`菜单中选择Run，会弹出一个运行配置对话框，在`0 Edit Configuration`中，设置Lua代码的运行环境。最主要的配置是lua代码解释器的路径：
 
 	Program: /usr/local/bin/lua-5.1    执行lua代码的lua命令
 
-之后用快捷键`ctrl+alt+r`调出运行窗口。
+用快捷键`ctrl+alt+r`调出运行窗口。
 
 #### 使用IntelliJ IDEA的Remote Debugger
 

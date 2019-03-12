@@ -22,7 +22,7 @@ description:  在试验Kong的安全插件时，发现不起作用，需要分�
 
 Kong-Ingress-Controller的版本是0.2.0，Kong的版本是0.14.1，是用下面的方式部署的：
 
-./kubectl.sh create -f https://raw.githubusercontent.com/introclass/kubernetes-yamls/master/all-in-one/kong-all-in-one.yaml
+	./kubectl.sh create -f https://raw.githubusercontent.com/introclass/kubernetes-yamls/master/all-in-one/kong-all-in-one.yaml
 
 {% include kong_pages_list.md %}
 
