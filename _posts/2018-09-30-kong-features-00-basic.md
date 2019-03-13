@@ -3,7 +3,7 @@ layout: default
 title: "API网关Kong学习笔记（三）：功能梳理和插件使用-基本使用过程"
 author: 李佶澳
 createdate: "2018-10-10 14:37:53 +0800"
-changedate: "2019-03-05 14:54:59 +0800"
+changedate: "2019-03-13 16:38:56 +0800"
 categories: 项目
 tags: kong 视频教程
 keywords: kubernetes,kong,api,api网关
@@ -15,7 +15,7 @@ description: 先通过部署一个webshell应用和为它设置key-auth插件的
 
 ## 说明
 
-这是[API网关Kong的学习笔记](https://www.lijiaocn.com/tags/class.html)中的一篇，使用过程中遇到的问题和解决方法记录在[API网关Kong的使用过程中遇到的问题以及解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/30/kong-usage-problem-and-solution.html)。
+
 
 通过[Nginx、OpenResty和Kong的基本概念与使用方法][1]了解了Kong的工作原理，通过[API网关Kong与Kubernetes的集成方法][2]了解了与Kubernetes的集成方法。这里学习下[Kong的插件][3]，并尽可能压测一下感兴趣的插件。
 
@@ -225,9 +225,11 @@ Kong的[数据平面][4]用NodePort的方式暴露，端口是30939，下面随�
 
 这时候可以在kong-dashboard中看到名为user1的consumer，key为`62eb165c070a41d5c1b58d9d3d725ca1`。
 
+key此时还没有效果，需要启用了key-auth插件以后才生效，key-auth插件可以是全局的，也是绑定service的。
+
 ### 配置全局的key-auth插件
 
-在kubernetes中创建下面的global插件：
+在kubernetes中创建全局的key-auth插件：
 
 	apiVersion: configuration.konghq.com/v1
 	kind: KongPlugin
@@ -240,7 +242,7 @@ Kong的[数据平面][4]用NodePort的方式暴露，端口是30939，下面随�
 	config:
 	plugin: key-auth
 
-全局的插件不能重名。kong-ingress-controller（0.2.0）版本不关心全局插件所在的namespace，在任何一个namespace中都可以创建global plugin，实践中需要注意进行限制。
+全局的插件不能重名，kong-ingress-controller（0.2.0）版本不关心全局插件所在的namespace，在任何一个namespace中都可以创建global plugin，实践中需要注意进行限制，不要让全局插件到处都是。
 
 这时候直接访问Service，会提示缺少API key：
 
@@ -257,7 +259,7 @@ Kong的Route对应Kubernetes的Ingress中的一个PATH。在Ingress中通过[Kon
 
 	plugins.konghq.com: high-rate-limit, docs-site-cors
 
-在demo-webshell空间中创建一个`KongPlugin`：
+在demo-webshell中创建一个`KongPlugin`：
 
 	apiVersion: configuration.konghq.com/v1
 	kind: KongPlugin
@@ -272,9 +274,7 @@ Kong的Route对应Kubernetes的Ingress中的一个PATH。在Ingress中通过[Kon
 
 Config中是[key-auth插件的配置参数][8]，前面的global plugin中没有设置config，使用的是默认配置。
 
-`key_names`设置用来认证的key的名称，默认是apikey，这里修改成了key，后面访问的时候需要在header中添加的是`key`字段。
-
-在同一个namespace的Ingress上添加annotations，指定使用刚创建的名为plugin-key-auth-user1的KongPlugin:
+`key_names`设置用于认证的key的名称，默认是apikey，这里修改成了key，后面访问的时候需要在header中添加`key`字段。在同一个namespace的Ingress上添加annotations，指定使用刚创建的名为plugin-key-auth-user1的KongPlugin:
 
 	metadata:
 	  annotations:

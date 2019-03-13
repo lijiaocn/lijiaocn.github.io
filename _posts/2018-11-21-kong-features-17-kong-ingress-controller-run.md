@@ -15,7 +15,7 @@ description: 之前看过kong的ingresss controller的实现，这里记录一�
 
 ## 说明
 
-这是[API网关Kong的学习笔记](https://www.lijiaocn.com/tags/class.html)中的一篇，使用过程中遇到的问题和解决方法记录在[API网关Kong的使用过程中遇到的问题以及解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/30/kong-usage-problem-and-solution.html)。
+
 
 之前看过kong的[ingresss controller][2]的实现：[API网关Kong学习笔记（八）：Kong Ingress Controller的实现][1]。这里记录一下它的用法。
 

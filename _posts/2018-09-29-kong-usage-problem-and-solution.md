@@ -3,7 +3,7 @@ layout: default
 title: "API网关Kong学习笔记（零）：使用过程中遇到的问题以及解决方法"
 author: 李佶澳
 createdate: "2018-10-15 11:50:58 +0800"
-changedate: "2019-03-05 15:00:53 +0800"
+changedate: "2019-03-13 15:24:58 +0800"
 categories: 问题
 tags: kong 视频教程
 keywords: kong,apigatway,问题解决,kong的使用
@@ -282,7 +282,7 @@ kong的配置中有一个匿名报告的配置项，默认是开启的，会把k
 	./?.lua;/usr/share/lua/5.1/?.lua;/usr/share/lua/5.1/?/init.lua;/usr/lib64/lua/5.1/?.lua;/usr/lib64/lua/5.1/?/init.lua
 	>
 
-在resty中答应package.path，发现没有包含/usr/lib64/路径：
+在resty中打印package.path，发现没有包含/usr/lib64/路径：
 
 	$ cat a.lua
 	print(package.path)

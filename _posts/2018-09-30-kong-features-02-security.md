@@ -16,7 +16,7 @@ description: Kong的plugins中列出了Kong的社区版支持的一些插件，�
 
 ## 说明
 
-这是[API网关Kong的学习笔记](https://www.lijiaocn.com/tags/class.html)中的一篇，使用过程中遇到的问题和解决方法记录在[API网关Kong的使用过程中遇到的问题以及解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/30/kong-usage-problem-and-solution.html)。
+
 
 [Kong的plugins](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/09/29/nginx-openresty-kong.html#kong%E7%9A%84%E6%8F%92%E4%BB%B6)中列出了Kong的社区版支持的一些插件，这里尝试使用一下其中的认证插件：
 

@@ -16,7 +16,7 @@ description: 这里详细介绍Kkong Ingress Controller定义的CRD的使用方�
 
 ## 说明
 
-这是[API网关Kong的学习笔记](https://www.lijiaocn.com/tags/class.html)中的一篇，使用过程中遇到的问题和解决方法记录在[API网关Kong的使用过程中遇到的问题以及解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/30/kong-usage-problem-and-solution.html)。
+
 
 [API网关Kong学习笔记（二）：Kong与Kubernetes集成的方法][1]中介绍过Kong Ingress Controller定义的`CustomResourceDefinitions`，那时候了解不多，没详细记录用法。把Kong Ingress Controller的代码读了以后，基本上摸清了它的工作过程，这里详细记录一下`KongPlugin`、`KongConsumer`、`KongIngress`和`KongCredential`的用法。
 

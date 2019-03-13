@@ -3,7 +3,7 @@ layout: default
 title: "API网关Kong学习笔记（一）：Nginx、OpenResty和Kong入门，基础概念和安装部署"
 author: 李佶澳
 createdate: "2018-09-29 15:41:50 +0800"
-changedate: "2019-03-06 12:01:20 +0800"
+changedate: "2019-03-13 16:38:35 +0800"
 categories: 项目
 tags: 视频教程 kong
 keywords: kong,openresty,nginx,apigateway,API网关
@@ -14,8 +14,6 @@ description: Nginx、OpenRestry、Kong这三个项目紧密相连，OpenResty是
 {:toc}
 
 ## 说明
-
-这是[API网关Kong的学习笔记](https://www.lijiaocn.com/tags/class.html)中的一篇，使用过程中遇到的问题和解决方法记录在[API网关Kong的使用过程中遇到的问题以及解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/30/kong-usage-problem-and-solution.html)。
 
 [Nginx][1]、[OpenRestry][2]、[Kong][3]这三个项目紧密相连：
 

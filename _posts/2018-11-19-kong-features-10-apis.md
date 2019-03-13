@@ -15,7 +15,7 @@ description: 了解了kong的工作原理，对代码结构也熟悉了，接下
 
 ## 说明
 
-这是[API网关Kong的学习笔记](https://www.lijiaocn.com/tags/class.html)中的一篇，使用过程中遇到的问题和解决方法记录在[API网关Kong的使用过程中遇到的问题以及解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/30/kong-usage-problem-and-solution.html)。
+
 
 了解了kong的工作原理，对代码结构也熟悉了，接下来需要了解kong的api，掌握了api才能更熟练的应用kong，比如开发自己的管理系统，调用kong的api下发相关的配置。[Kong Admin API][1]中列出了Kong的所有API，这里使用的kong的版本是0.14.1。
 

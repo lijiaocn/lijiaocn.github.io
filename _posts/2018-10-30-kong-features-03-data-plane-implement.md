@@ -16,7 +16,7 @@ description:  在试验Kong的安全插件时，发现不起作用，需要分�
 
 ## 说明
 
-这是[API网关Kong的学习笔记](https://www.lijiaocn.com/tags/class.html)中的一篇，使用过程中遇到的问题和解决方法记录在[API网关Kong的使用过程中遇到的问题以及解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/30/kong-usage-problem-and-solution.html)。
+
 
 在试验Kong的安全插件时，需要了解一下Kong的数据平面的实现。
 
