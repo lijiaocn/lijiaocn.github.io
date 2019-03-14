@@ -3,8 +3,9 @@
 
 `如果是刚开始学习kong，直接从1.x开始，0.x已经不再维护，0.15是0.x的最后一个版本。`
 
-这是学习过程中做的笔记，写的比较仓促，有疑惑的地方以Kong官方文档为准。一到十九篇使用的是kong 0.14.1，细节可能有变化，原理不变。
-从0.x到1.x最需要关注的变化有：1. 插件机制使用pdk，2. 0.x中不鼓励使用的特性都被移除了，3. 全部使用kong.db，以前的dao彻底清除了。
+前19篇笔记是刚开始接触kong时记录的，使用的版本是0.14.1，当时对kong一知半解，笔记可能比较杂乱，从第二十篇开始是再次折腾时的笔记，使用的版本是1.0.3，笔记相对好一些。
+
+从0.x到1.x最需要关注的变化有：1. 插件部分全部使用pdk；2. 0.x中不鼓励使用的特性都被移除了；3. 全部使用kong.db，以前的独立的dao彻底清除，代码简洁清晰了。
 
 [《API网关Kong学习笔记（零）：使用过程中遇到的问题以及解决方法》](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/09/29/kong-usage-problem-and-solution.html)
 
@@ -51,3 +52,5 @@
 [《API网关Kong学习笔记（二十一）：Kong的开发环境（IntelliJ Idea）》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2019/03/11/kong-development-enviroment.html)
 
 [《API网关Kong学习笔记（二十二）：Kong 1.0.3源代码快速走读》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2019/03/12/kong-22-1-0-3-codes.html)
+
+[《API网关Kong学习笔记（二十三）：Kong 1.0.3的plugin/插件机制的实现》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2019/03/13/kong-23-plugin-mechanism.html)
