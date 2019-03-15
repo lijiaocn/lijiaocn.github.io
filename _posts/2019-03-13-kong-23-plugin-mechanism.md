@@ -3,7 +3,7 @@ layout: default
 title: "API网关Kong学习笔记（二十三）：Kong 1.0.3的plugin/插件机制的实现"
 author: 李佶澳
 createdate: "2019-03-13 18:08:46 +0800"
-changedate: "2019-03-14 18:22:05 +0800"
+changedate: "2019-03-15 13:57:12 +0800"
 categories: 项目
 tags: kong 视频教程
 keywords: kong,kong 1.0.3,代码学习
@@ -415,6 +415,121 @@ local has_daos, daos_schemas = utils.load_module_if_exists("kong.plugins." .. pl
 2. 插件代码必须在kong/plugins目录中，并且每个插件占用一个同名目录。
 
 3. 插件的入口是插件中的handler.lua，插件自己的表对应的entity是插件中的schema.lua，插件的daos扩展是插件中的daos.lua，插件自己的数据库表的创建和更新文件位于插件中的migrations目录中。
+
+## 实现一个插件
+
+在kong/plugins中创建与插件同名的目录`http-redirect`。
+
+在schema.lua中定义插件的配置项：
+
+```lua
+-- kong/plugins/http-redirect/schema.lua
+local typedefs = require "kong.db.schema.typedefs"
+
+return {
+    name = "http-redirect",
+    fields = {
+      { consumer = typedefs.no_consumer },
+      { run_on = typedefs.run_on_first },
+      { config = {
+          type = "record",
+          fields = {
+            { regex   = { type = "string",required = true  },},
+            { replace = { type = "string",required = true  },},
+            { flag = {type="string", default="redirect", required =true},},
+          }
+        }
+      }
+    },
+}
+```
+
+在handler.lua中实现插件的功能：
+
+```lua
+-- kong/plugins/http-redirect/handler.lua
+local BasePlugin = require "kong.plugins.base_plugin"
+
+local RedirectHandler= BasePlugin:extend()
+local json = require "json"
+
+
+RedirectHandler.PRIORITY = 2000
+RedirectHandler.VERSION = "0.1.0"
+
+-- conf is plugin's conf, stored in db
+function RedirectHandler:access(conf)
+    RedirectHandler.super.access(self)
+
+    local host = ngx.var.host
+    ngx.log(ngx.DEBUG, "http-redirect plugin, host is: ", host, " ,uri is: ",
+            ngx.var.request_uri, " ,config is: ", json.encode(conf))
+
+    local replace,n,err  = ngx.re.sub(ngx.var.request_uri, conf.regex, conf.replacement)
+    if replace and n == 0 then
+        return
+    end
+
+    if err then
+        ngx.log(ngx.ERR, "http-redirect plugin, ngx.re.sub err: ",err, " ,host is: ", host, " ,uri is: ",
+                ngx.var.request_uri, " ,config is: ", json.encode(conf))
+        return
+    end
+
+    ngx.log(ngx.DEBUG, "http-redirect plugin, replace is: ",replace)
+    if conf.flag == "redirect" then
+        ngx.redirect(replace,302)
+    elseif conf.flag == "permanent" then
+        ngx.redirect(replace,301)
+    end
+end
+
+function RedirectHandler:new()
+    RedirectHandler.super.new(self, "http-redirect")
+end
+
+return RedirectHandler
+
+```
+
+插件开发完成之后，在`kong/kong-1.0.3-0.rockspec`中设置modules：
+
+	["kong.plugins.http-redirect.handler"] = "kong/plugins/http-redirect/handler.lua",
+	["kong.plugins.http-redirect.schema"] = "kong/plugins/http-redirect/schema.lua",
+
+如果插件代码中引入了第三方的lua包，记得把新增加的依赖添加到kong/kong-1.0.3-0.rockspec文件的`dependencies`字段中，例如： 
+
+	-- add rely
+	"luajson==1.3.4-1",
+
+然后就可以在kong.conf中配置新增加的插件了：
+
+	plugins = bundled,http-redirect
+
+如果想把新开发的插件作为bundled插件，在kong/constans.lua中plugins变量中添加新插件的名称。
+
+插件对应的KongPlugin示例：
+
+```yaml
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: echo-http-redirect
+  namespace: demo-echo
+disabled: false  # optional
+plugin: http-redirect
+config:                            # 参照：http://nginx.org/en/docs/http/ngx_http_redirect_module.html#redirect
+  regex: "^/abc(.*)"               # nginx的正则表达式，匹配URI
+  replace: "/redirect/$1"          # 可以使用捕获
+  flag: "permanent"                # 当前只支持permanent(301)和redirect(302)
+```
+
+引用插件的方法，在ingress中设置annotation：
+
+```yaml
+annotations:
+  plugins.konghq.com: echo-http-redirect
+```
 
 ## 参考
 
