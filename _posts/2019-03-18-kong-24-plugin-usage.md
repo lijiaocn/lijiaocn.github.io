@@ -3,7 +3,7 @@ layout: default
 title: "API网关Kong学习笔记（二十四）： 在kubernetes中启用kong的插件"
 author: 李佶澳
 createdate: "2019-03-18 17:23:38 +0800"
-changedate: "2019-03-19 19:30:04 +0800"
+changedate: "2019-03-20 17:42:55 +0800"
 categories: 项目
 tags: kong 视频教程
 keywords: kong,kong 1.0.3,kong插件,kubernetes中使用kong,代码学习
@@ -21,7 +21,7 @@ description: 在kubernetes中启用kong插件，创建kongplugins，绑定到ser
 
 插件的启用方法和作用范围没有变，[Kong Custom Resource Definitions][1]:
 
-1. 全局插件，global："true"，设置为启用后，对所有请求进行处理；
+1. 全局插件，global: "true"，设置为启用后，对所有请求进行处理；
 
 2. 局部插件，global: "false"，设置为启用后，在ingress中用annotations绑定；
 
@@ -348,6 +348,76 @@ $ curl -v  -H "host: echo.com"  -H "User-Agent: curl/7.54.1"  10.10.64.58:8000/
 * Connection #0 to host 10.10.64.58 left intact
 {"message":"API rate limit exceeded"}%
 ```
+
+## 调用链路跟踪
+
+部署一个单机版的[Zipkin](https://zipkin.io/pages/quickstart)：
+
+	docker run -d -p 9411:9411 openzipkin/zipkin
+
+在浏览器用地址`http://IP:9411/zipkin/`查看zipkin中的数据。
+
+[Zipkin](https://docs.konghq.com/hub/kong-inc/zipkin/)，在kubernetes中创建KongPlugin：
+
+```yaml
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: echo-http-zipkin-trace
+  namespace: demo-echo
+  labels:
+    global: "false"
+enabled: true  # optional
+plugin: zipkin
+config:
+  http_endpoint: "http://10.10.173.203:9411/api/v2/spans"
+  sample_ratio: 1  # 不带tracid的请求的采样比率，1是100%，全部采集
+```
+
+```bash
+$ ./kubectl.sh -n demo-echo get kp -o wide
+echo-http-zipkin-trace   zipkin   8s   map[http_endpoint:http://10.10.173.203:9411/api/v2/spans sample_ratio:1]
+```
+
+在ingress中设置绑定：
+
+```yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    plugins.konghq.com: echo-http-zipkin-trace
+...
+```
+
+这时候发起请求，会发现kong在请求头中打上了tarceid和spanid，x-b3-parentspanid、x-b3-spanid、x-b3-traceid、x-b3-sampled：
+
+```
+$ curl -H "host: echo.com"  -H "User-Agent: curl/7.54.1"  10.10.64.58:8000/ddddddd
+...
+Request Headers:
+	accept=*/*
+	connection=keep-alive
+	host=172.16.129.47:8080
+	kong-correlation-id=4f34701a-fb47-4ee1-8884-657130b4353a#10
+	user-agent=curl/7.54.1
+	x-b3-parentspanid=e357326aaa445213
+	x-b3-sampled=0
+	x-b3-spanid=98cffa4b4f60b8c5
+	x-b3-traceid=ddda77bee1ef08eb686ca5006aa8b3a0
+	x-forwarded-for=10.255.3.1
+	x-forwarded-host=echo.com
+	x-forwarded-port=8000
+	x-forwarded-proto=http
+	x-real-ip=10.255.3.1
+...
+```
+
+这里直接用curl发起的请求是没有自带traceID的，kong在转发的请求的时候会设置traceID。因为对于这种不带traceID的请求，前面配置的采样比是1，所以每个请求的信息都被发送到了zipkin。
+
+在zipkin中能看到下面的信息：
+
+![用zipkin查看kong的调用链延迟信息]({{ site.imglocal}}/kong/kong-zipkin.png)
 
 ## 参考
 
