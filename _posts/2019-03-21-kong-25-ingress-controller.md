@@ -3,7 +3,7 @@ layout: default
 title: "API网关Kong学习笔记（二十五）：重温 kong ingress controller"
 author: 李佶澳
 createdate: "2019-03-21 11:02:23 +0800"
-changedate: "2019-03-21 17:04:53 +0800"
+changedate: "2019-03-21 18:42:47 +0800"
 categories: 项目
 tags: kong 视频教程
 keywords: kong,kong 1.0.3,代码学习
@@ -93,7 +93,7 @@ CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -installsuffix cgo \
 
 ### 制作镜像
 
-`make container`生成镜像，通过修改Makefile中变量，来调整镜像名称：
+`make all`生成镜像，通过修改Makefile中变量，来调整镜像名称：
 
 ```Make
 TAG?=0.3.0
@@ -130,7 +130,7 @@ kong-ingress-controller需要访问kubernetes的apiserver，监听kubernetes集�
 
 如果service的类型是`LoadBalancer`，则取出其中配置的IP，如果是其它类型取出对应的Pod所在的Node的IP。
 
-如果使用了参数`--publish-status-address`，忽略--publish-service，使用这个参数指定的IP。
+`--publish-status-address`，如果使用了参数，忽略--publish-service，使用这个参数指定的IP。
 
 `--update-status`和`--update-status-on-shutdown`是ingress状态更新开关，默认都是true，即更改ingress的status。
 
