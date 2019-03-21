@@ -3,7 +3,7 @@ layout: default
 title: "API网关Kong学习笔记（二十五）：重温 kong ingress controller"
 author: 李佶澳
 createdate: "2019-03-21 11:02:23 +0800"
-changedate: "2019-03-21 16:46:54 +0800"
+changedate: "2019-03-21 17:04:53 +0800"
 categories: 项目
 tags: kong 视频教程
 keywords: kong,kong 1.0.3,代码学习
@@ -37,10 +37,10 @@ Kong ingress controller项目名是[kubernetes-ingress-controller](https://githu
 
 ### 下载依赖代码
 
-依赖包用[dep](https://www.lijiaocn.com/programming/chapter-go/chapter04/01-dependency.html#dep)命令管理，项目代码需要在GOPATH/src目录下，如果不愿把代码在src目录中，在src目录可以做一个符号链接，连接到位于其它位置的代码目录。如果项目不在GOPATH/src中，会报下面的错误：
+依赖包用[dep](https://www.lijiaocn.com/programming/chapter-go/chapter04/01-dependency.html#dep)命令管理，项目代码需要在GOPATH/src目录下，如果不愿把代码在src目录中，可以在src目录中做一个符号链接，连接到位于其它位置的代码目录。如果项目不在GOPATH/src中，会报下面的错误：
 
 ```sh
-➜  kong-ingress-controller git:(dev) ✗ make deps
+$ make deps
 dep ensure -v -vendor-only
 /Users/lijiao/Work/kong-ingress-controller is not within a known GOPATH/src
 make: *** [deps] Error 1
@@ -54,7 +54,7 @@ cd  $GOPATH/src/github.com/Kong/kubernetes-ingress-controller
 make deps
 ```
 
-`make deps`依赖的一些代码在Q内不能访问，需要翻墙，否则可能会爆下面的错误：
+`make deps`依赖的一些代码在Q内不能访问，需要翻qiang，否则可能会爆下面的错误：
 
 ```sh
 grouped write of manifest, lock and vendor: error while writing out vendor tree: failed to write dep tree:
@@ -64,7 +64,7 @@ Get http://cloud.google.com/go?go-get=1: dial tcp 172.217.160.110:80: i/o timeou
 make: *** [deps] Error 1
 ```
 
-`make deps`在安装Go deps的时候如果出现错误，可能是因为系统上有多个不同版本的go命令，go命令与GOROOT不匹配：
+`make deps`在安装Go deps的时候如果出现下面的错误，可能是因为系统上有多个不同版本的go命令，用到的go命令与GOROOT指定的路径不匹配：
 
 ```sh
 go get github.com/golang/dep/cmd/dep
@@ -85,15 +85,15 @@ compile: version "go1.12.1" does not match go tool version "go1.12"
 ```sh
 $ make build
 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -installsuffix cgo \
-		-ldflags "-s -w -X github.com/kong/kubernetes-ingress-controller/version.RELEASE=0.3.0 -X github.com/kong/kubernetes-ingress-controller/version.COMMIT=git-020ae33 -X github.com/kong/kubernetes-ingress-controller/version.REPO=http://gitlab.puhuitech.cn/infrastructure/kong-ingress-controller.git" -gcflags=-trimpath=/Users/lijiao/Work-Finup/Bin/gopath/src/github.com/Kong/kubernetes-ingress-controller -asmflags=-trimpath=/Users/lijiao/Work-Finup/Bin/gopath/src/github.com/Kong/kubernetes-ingress-controller \
-		-o /var/folders/c_/q1wyxzx14l713h58k4hkff180000gp/T/tmp.LKqTFGXr/rootfs/kong-ingress-controller github.com/kong/kubernetes-ingress-controller/cli/ingress-controller
+    -ldflags "-s -w -X github.com/kong/kubernetes-ingress-controller/version.RELEASE=0.3.0 -X github.com/kong/kubernetes-ingress-controller/version.COMMIT=git-020ae33 -X github.com/kong/kubernetes-ingress-controller/version.REPO=http://gitlab.puhuitech.cn/infrastructure/kong-ingress-controller.git" -gcflags=-trimpath=/Users/lijiao/Work-Finup/Bin/gopath/src/github.com/Kong/kubernetes-ingress-controller -asmflags=-trimpath=/Users/lijiao/Work-Finup/Bin/gopath/src/github.com/Kong/kubernetes-ingress-controller \
+    -o /var/folders/c_/q1wyxzx14l713h58k4hkff180000gp/T/tmp.LKqTFGXr/rootfs/kong-ingress-controller github.com/kong/kubernetes-ingress-controller/cli/ingress-controller
 ```
 
 生成的kong-ingress-controller默认是ELF格式的。
 
 ### 制作镜像
 
-`make container`生成镜像，可以修改Makefile中变量调整镜像名称：
+`make container`生成镜像，通过修改Makefile中变量，来调整镜像名称：
 
 ```Make
 TAG?=0.3.0
@@ -110,31 +110,39 @@ MULTI_ARCH_IMG = $(IMAGE)-$(ARCH)
 
 ## 工作原理
 
-代码是不停更新的，不记录走读笔记了，可以参考以前的：[API网关Kong学习笔记（八）：Kong Ingress Controller的实现](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/11/02/kong-features-05-ingress-controller-analysis.html)。
+不记录走读笔记了，可以参考以前的：[API网关Kong学习笔记（八）：Kong Ingress Controller的实现](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/11/02/kong-features-05-ingress-controller-analysis.html)。
 
 ## 运行参数
 
 kong-ingress-controller需要访问kubernetes的apiserver，监听kubernetes集群中的资源，如果被部署在kubernetes中，它会自动读取pod中的serviceAccount信息，不需要指定访问凭证。
 
-如果在kubernetes集群外部运行，用`--kubeconfig`指定访问kubernetes集群的kubeconfig文件。
+在kubernetes集群外部运行，用`--kubeconfig`指定访问kubernetes集群使用的kubeconfig文件。
 
-`--ingress-class`指定负责处理ingress，该参数的值对应的是ingress中名为`kubernetes.io/ingress.class`的annotations。
+`--ingress-class`指定要处理ingress类型，该参数的值对应的是ingress中名为`kubernetes.io/ingress.class`的annotations。
 
-`--election-id`指定的是参与的Leader选举组，这个参数的目的是防止同一个集群中`多套`kong-ingress-controller互相干扰，每套kong-ingress-controller都用不同的--election-id，通一套中的kong-ingress-controller使用相同的--election-id。
+`--election-id`指定Leader选举组，这个参数的目的是防止同一个集群中`多套`kong-ingress-controller互相干扰，每套kong-ingress-controller都用不同的--election-id，属于同一套的kong-ingress-controller使用相同的--election-id。
 
 `--kong-url`指定对接的kong admin。
 
-`--watch-namespace`指定监控的namespace，默认是全部。
+`--watch-namespace`指定监听的namespace，默认是全部。
 
-`--publish-service`指定用来接收请求的kong-proxy服务，kong-ingress-controller会取出这个service的地址，并将这个service的IP地址更新到每个ingress的status字段中。如果指定的类型是`LoadBalancer`取出配置的IP，如果是其它类型取出对应的Pod所在的Node的IP。如果使用了参数`--publish-status-address`，那么用这个参数指定的IP，忽略--publish-service。
+`--publish-service`指定部署在kubernetes中的kong-proxy服务，kong-ingress-controller会取出这个service的IP，并将其更新到每个ingress的status字段中。
+
+如果service的类型是`LoadBalancer`，则取出其中配置的IP，如果是其它类型取出对应的Pod所在的Node的IP。
+
+如果使用了参数`--publish-status-address`，忽略--publish-service，使用这个参数指定的IP。
 
 `--update-status`和`--update-status-on-shutdown`是ingress状态更新开关，默认都是true，即更改ingress的status。
 
-`--default-backend-service`提供404页面的服务，uri不存在的时候转发到该服务，选用指定的namspace/service的第一个node port。
+`--default-backend-service`指定kubernetes中的一个服务，用于提供404页面的服务，当uri不存在的时候转发到该服务， 选用服务的第一个node port地址。
 
---publish-service和--default-backend-service都是指定kubernetes集群中的service，`应该支持`直接使用IP。
+	--publish-service和--default-backend-service都是指定kubernetes集群中的service，不支持IP。
+	
+	应该改进一下
 
-`--sync-period`和`--sync-rate-limit`限制刷新频率、刷新速率。还有一些日志参数，这里不列出了。
+`--sync-period`和`--sync-rate-limit`限制刷新频率、刷新速率。
+
+另外还有一些日志参数，这里不列出了。
 
 **--update-status的IP获取过程**：
 
@@ -187,7 +195,7 @@ func (s *statusSync) runningAddresses() ([]string, error) {
 ## 可以识别的annotations
 
 kong ingress controller支持的[annotations](https://github.com/Kong/kubernetes-ingress-controller/blob/cc8ccdbdafbb1fb6f0918d0944b6180b7dfc3a3d/docs/annotations.md)，
-这些annotations都是在ingress中设置：
+这些annotations都是在ingress中设置。
 
 ### kubernetes.io/ingress.class  
 
