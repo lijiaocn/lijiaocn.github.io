@@ -3,7 +3,7 @@ layout: default
 title: "API网关Kong学习笔记（十七）：Kong Ingress Controller的使用"
 author: 李佶澳
 createdate: "2018-11-21 16:08:54 +0800"
-changedate: "2019-03-05 14:59:49 +0800"
+changedate: "2019-03-21 14:48:06 +0800"
 categories: 项目
 tags: 视频教程 kong 
 keywords: kong,apigateway,API网关
@@ -42,7 +42,12 @@ description: 之前看过kong的ingresss controller的实现，这里记录一�
 
 可以用下面的命令运行：
 
-	./kong-ingress-controller  --kubeconfig ./kubeconfig-single.yml  --default-backend-service kong/kong-proxy --publish-service kong/kong-ingress-controller  --kong-url 192.168.33.12:8001 --update-status=false
+	$ ./kong-ingress-controller  \
+	  --kubeconfig ./kubeconfig-single.yml  \
+	  --default-backend-service kong/kong-proxy \
+	  --publish-service kong/kong-ingress-controller  \
+	  --kong-url 192.168.33.12:8001 \
+	  --update-status=false
 
 ## 参考
 
