@@ -3,7 +3,7 @@ layout: default
 title: "GitBook项目中用插件的方式安装github上的第三方模板"
 author: 李佶澳
 createdate: "2019-03-15 14:32:16 +0800"
-changedate: "2019-03-15 16:21:58 +0800"
+changedate: "2019-03-23 21:12:10 +0800"
 categories: 技巧
 tags: gitbook
 keywords: gitbook,theme-default,gitbook模板,gitbook插件
@@ -127,6 +127,21 @@ gitbook serve --port 4005 --lrport 35735
 theme-lijiaocn插件更新之后，在使用该插件的gitbook项目中直接重新安装一遍插件，就会应用最新的版本：
 
 	gitbook install 
+
+## 安装sitemap插件
+
+[sitemap插件](https://plugins.gitbook.com/plugin/sitemap)：
+
+```json
+{
+    "plugins": ["sitemap"],
+    "pluginsConfig": {
+        "sitemap": {
+            "hostname": "http://mybook.com/"
+        }
+    }
+}
+```
 
 ## 参考
 
