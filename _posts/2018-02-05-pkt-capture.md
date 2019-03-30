@@ -1,13 +1,14 @@
 ---
 layout: default
-title: PC电脑端、手机移动端通信数据报文的抓取、破解、改写（请求拦截）的方法
+title:  用charles和Fiddler抓取、破解、改写（请求拦截）PC端、手机移动端通信数据
 author: 李佶澳
 createdate: 2018/02/05 22:07:28
 changedate: 2018/02/06 01:01:48
 categories: 技巧
 tags: security
 keywords: 加密报文破解,Charles
-description: 有时候需要分析一些通讯协议，这些工具特别有用。
+description: 有时候需要分析一些通讯协议，这些工具特别有用。用charles和Fiddler抓取、破解、改写（请求拦截）PC端、手机移动端通信数据
+
 
 ---
 
@@ -93,11 +94,6 @@ ios系统在“设置->Wi-Fi”中，手动设置代理。代理地址设置为c
 在ios中手动设置的代理是http代理，可以用shadowsocks实现全局代理: [iOS通过Shadowsocks设备实现全局代理][4]
 
 使用charles解密微信的通信内容时，注意一定要在ios上设置证书信任。
-
-
-https://mp.weixin.qq.com/s?__biz=MjM5MzI5NjQxMA==&amp;amp;mid=2650776383&amp;amp;idx=1&amp;amp;sn=5e2dff72b8d86bbb26d6535b6f768264&amp;amp;chksm=be923a4a89e5b35ce71487b8b67a8264fd8d5c2da8b27dcc089a81cd6cb9a3818635e3d55c75&amp;amp;scene=27#wechat_redirect
-
-https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MjM5MzI5NjQxMA==&scene=126&bizpsid=0&sessionid=1545561318&subscene=0&devicetype=iOS12.0&version=17000027&lang=zh_CN&nettype=WIFI&a8scene=0&fontScale=100&pass_ticket=AcQ14aHj%2Fkg3tFT52SoBwsGDIUk4ZS6YHGlqN6iYe62ZbJcW4rXJpOVInRlLdGgU&wx_header=1
 
 ## Fiddler
 
