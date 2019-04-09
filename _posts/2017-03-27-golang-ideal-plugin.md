@@ -100,6 +100,10 @@ Go插件使idea具有goland的所有功能。
 
 语法高亮到Perferences -> Editor -> Colors & Fonts -> Go中设置。
 
+## 代码自动格式化
+
+Idea -> Perferences -> Tool -> File Wathcers，在右侧窗口中添加`go fmt`和`goimports`。
+
 ## 使用Idea查看HyperLedger Fabric的代码
 
 先下载代码：

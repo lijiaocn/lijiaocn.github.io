@@ -3,7 +3,7 @@ layout: default
 title: "API网关Kong学习笔记（二十五）：重温 kong ingress controller"
 author: 李佶澳
 createdate: "2019-03-21 11:02:23 +0800"
-changedate: "2019-03-21 18:42:47 +0800"
+changedate: "2019-03-25 11:34:57 +0800"
 categories: 项目
 tags: kong 视频教程
 keywords: kong,kong 1.0.3,代码学习
@@ -191,6 +191,34 @@ func (s *statusSync) runningAddresses() ([]string, error) {
     }
 }
 ```
+
+## 状态更新效果
+
+`--publish-status-address=10.10.64.58`指定状态地址为10.10.64.58后，ingress的地址被设置为10.10.64.58：
+
+```sh
+$ ./kubectl.sh -n demo-echo get ing
+NAME           HOSTS      ADDRESS       PORTS   AGE
+ingress-echo   echo.com   10.10.64.58   80      8d
+
+```
+
+```yaml
+status:
+  loadBalancer:
+    ingress:
+    - ip: 10.10.64.58
+```
+
+否则获取的是`--publish-service=kong/kong-proxy`的pod所在node的IP：
+
+```sh
+$ ./kubectl.sh -n demo-echo get ing  -o wide
+NAME           HOSTS      ADDRESS         PORTS   AGE
+ingress-echo   echo.com   10.10.173.203   80      8d
+```
+
+`--update-status=false`，不更新ingress的status。（现在kong ingress controller的实现有bug，如果设置为false，kong-ingress-controller启动失败 2019-03-22 10:50:33）
 
 ## 可以识别的annotations
 
