@@ -2,7 +2,7 @@
 layout: default
 title: "权力的游戏/冰与火之歌第八季未删减完整版下载，百度云网盘、迅雷BT种子"
 createdate: "2019-02-21 22:52:17 +0800"
-changedate: "2019-04-15 21:29:08 +0800"
+changedate: "2019-04-15 21:39:51 +0800"
 categories: hidden
 tags: 好货
 keywords: 权利的游戏,权力的游戏,冰与火之歌,未删减版,百度云网盘,迅雷、BT种子、磁力链Magnet、e2dk
@@ -19,8 +19,6 @@ description: 权力的游戏/权利的游戏第八季Game of Thrones Season 8将
 
 `如果迅雷提示“应版权方要求不能提供下载”，要用替代工具，到公众号【团购好货】中回复“下载工具”，亲测可行`
 
-<!--span style="display:block;text-align:center">![团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png){: width="300px"}</span-->
-
 ## 权力（权利）的游戏/冰与火之歌（Game of Thrones）——第八季
 
 [权力的游戏第八季](https://baike.baidu.com/item/%E6%9D%83%E5%8A%9B%E7%9A%84%E6%B8%B8%E6%88%8F%E7%AC%AC%E5%85%AB%E5%AD%A3/17518467?fr=aladdin)于美国时间`2019年4月14日`回归，这一季只有6集，但是每集长达80分钟，国内的腾讯视频上可以观看。但是因为国内的影视节目审查标准严格，腾讯视频上的权力的游戏是删减版，去掉很多少儿不宜的清洁工作，第八季第一集被删去了接近10分钟。
@@ -28,6 +26,10 @@ description: 权力的游戏/权利的游戏第八季Game of Thrones Season 8将
 ### 权力的游戏第8季第一集1080P，1.24G，56分钟
 
 **`关注公众号`** 【[团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png)】 **`，回复“权力的游戏”`，每周一更新一集**
+
+<!--span style="display:block;text-align:center">![团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png){: width="300px"}</span-->
+
+![权力的游戏冰与火之歌，第8季第一集1080P，1.24G，56分钟]({{ site.imglocal }}/movie/bingyuhuos0801.jpeg)
 
 ## 权力（权利）的游戏/冰与火之歌（Game of Thrones）——第七季
 
