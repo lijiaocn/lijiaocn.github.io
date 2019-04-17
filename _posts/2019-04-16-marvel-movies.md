@@ -2,7 +2,7 @@
 layout: default
 title: "《复仇者联盟4：终局之战》（全4部下载）漫威系列电影BT、磁力链、迅雷、百度云"
 createdate: "2019-04-16 22:15:42 +0800"
-changedate: "2019-04-17 00:41:33 +0800"
+changedate: "2019-04-17 12:52:14 +0800"
 categories: hidden
 keywords: 复仇者联盟4,妇联4,复仇者联盟3,妇联3,复仇者联盟2,妇联2,复仇者联盟1,妇联1,漫威电影
 description: "复仇者联盟4：终局之战》、《复仇联盟3：无限战争》、《复仇者联盟2：奥创纪元》、《复仇者联盟1》的BT种子、Magnet磁力链、迅雷百度云下载地址，钢铁侠、美国队长、雷神、绿巨人、黑寡妇和鹰眼侠一起领盒饭：Avengers.Infinity.War.2018.BD1080P.X264.AAC.English&Mandarin.CHS-ENG.52movieba.torren"
@@ -11,7 +11,7 @@ description: "复仇者联盟4：终局之战》、《复仇联盟3：无限战�
 * auto-gen TOC:
 {:toc}
 
-**声明：本站不存储任何视频文件，不提供下载服务和下载工具，只摘录互联网上的文本信息，只用于个人收藏**
+{% include movies.md %}
 
 ## 《复仇者联盟4：终局之战》（妇联4）
 

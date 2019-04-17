@@ -2,7 +2,7 @@
 layout: default
 title: "权利的游戏第八季/冰与火之歌56分钟未删减完整版，百度云网盘、迅雷BT种子、磁力链Magnet"
 createdate: "2019-02-21 22:52:17 +0800"
-changedate: "2019-04-17 00:32:19 +0800"
+changedate: "2019-04-17 12:52:03 +0800"
 categories: hidden
 tags: 好货
 keywords: 权利的游戏,权力的游戏,冰与火之歌,未删减版,百度云网盘,迅雷、BT种子、磁力链Magnet、e2dk
@@ -13,7 +13,7 @@ description: 权力的游戏/权利的游戏第八季(冰与火之歌）未删�
 * auto-gen TOC:
 {:toc}
 
-**声明：本站不存储任何视频文件，不提供下载服务和下载工具，只摘录互联网上的文本信息，只用于个人收藏**
+{% include movies.md %}
 
 ## 权力（权利）的游戏/冰与火之歌（Game of Thrones）——第八季
 
