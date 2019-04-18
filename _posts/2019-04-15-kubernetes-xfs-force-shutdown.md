@@ -3,7 +3,7 @@ layout: default
 title: "xfs文件系统损坏，kubelet主动退出且重启失败，恢复后该node上无法创建pod"
 author: 李佶澳
 createdate: "2019-04-15 15:49:34 +0800"
-changedate: "2019-04-18 14:20:11 +0800"
+changedate: "2019-04-18 14:29:42 +0800"
 categories: 问题
 tags: kubernetes
 keywords: xfs,kubernetes,metadata I/O error,blk_update_request,xfs_log_force
