@@ -2,6 +2,8 @@
 
 ## 资源列表
 
+`特供淘宝/天猫优惠券，正确领取方法` ： **[淘宝天猫优惠券，点击领取](https://www.lijiaocn.com/%E5%A5%BD%E8%B4%A7/2025/12/31/taobao-discount-method.html)**
+
 `漫威复仇者联盟（全四部）`： **[《复仇者联盟4：终局之战》（复联4）](https://www.lijiaocn.com/hidden/2019/04/16/marvel-movies.html)**
 
 `权力的游戏第八季，未删减版`: **[第八季无删减完整版](https://www.lijiaocn.com/hidden/2019/02/21/game-of-thrones.html)**
