@@ -2,9 +2,9 @@
 
 ## 资源列表
 
-`权利的游戏第八季，56分钟未删减版`: **[第八季第一集56分钟完整版](https://www.lijiaocn.com/hidden/2019/02/21/game-of-thrones.html)**
+`漫威复仇者联盟（全四部）`： **[《复仇者联盟4：终局之战》（复联4）](https://www.lijiaocn.com/hidden/2019/04/16/marvel-movies.html)**
 
-`漫威复仇者联盟（全四部）`： **[《复仇者联盟4：终局之战》（妇联4）](https://www.lijiaocn.com/hidden/2019/04/16/marvel-movies.html)**
+`权力的游戏第八季，未删减版`: **[第八季无删减完整版](https://www.lijiaocn.com/hidden/2019/02/21/game-of-thrones.html)**
 
 `漫威英雄系列，惊奇队长：` **[《惊奇队长》1080P高清](https://www.lijiaocn.com/hidden/2019/03/10/captain-marvel.html)**
 

@@ -1,12 +1,12 @@
 ---
 layout: default
-title: "权利的游戏第八季/冰与火之歌56分钟未删减完整版，百度云网盘、迅雷BT种子、磁力链Magnet"
+title: "【附截图】权力的游戏第八季6集高清未删减版BT种子下载，迅雷、磁力链Magnet、百度云"
 createdate: "2019-02-21 22:52:17 +0800"
-changedate: "2019-04-17 12:52:03 +0800"
+changedate: "2019-04-22 00:35:08 +0800"
 categories: hidden
 tags: 好货
-keywords: 权利的游戏,权力的游戏,冰与火之歌,未删减版,百度云网盘,迅雷、BT种子、磁力链Magnet、e2dk
-description: 权力的游戏/权利的游戏第八季(冰与火之歌）未删减熟肉版下载，第8季第一集1080P视频大小1.24G，时长56分钟，内置中文字幕。 同时提供第八季、第七季、第六季、第五季、第四季、第三季、第二季、第一季的全系列全套1080P高清视频文件下载，都是未删减版，可用百度云网盘、迅雷、BT种子、磁力链Magnet地址下载。
+keywords: 权利的游戏,权力的游戏,冰与火之歌,迅雷,BT种子,磁力链Magnet,e2dk,未删减版,百度云网盘,
+description: 权力的游戏/权利的游戏(又名冰与火之歌）第八季BT下载，1080P高清内置中文字幕。全套1080P高清视频文件下载，第八季、第七季、第六季、第五季、第四季、第三季、第二季、第一季都是未删减版，都是BT种子或者磁力链Magne地址，可用迅雷下载。该文档每周一晚上更新。
 
 ---
 
@@ -15,21 +15,63 @@ description: 权力的游戏/权利的游戏第八季(冰与火之歌）未删�
 
 {% include movies.md %}
 
-## 权力（权利）的游戏/冰与火之歌（Game of Thrones）——第八季
+## 权力的游戏第八季播出时间与下载地址/冰与火之歌/Game of Thrones
 
-[权力的游戏第八季](https://baike.baidu.com/item/%E6%9D%83%E5%8A%9B%E7%9A%84%E6%B8%B8%E6%88%8F%E7%AC%AC%E5%85%AB%E5%AD%A3/17518467?fr=aladdin)于美国时间`2019年4月14日`回归，这一季只有6集，早期宣传每集长达80分钟，实际第8季第1集只有56分钟，有点宣传过度，腾讯视频丧心病狂到只有48分钟...。国内的影视节目审查标准严格，腾讯视频上的删减版，去掉很多少儿不宜的镜头，第八季第一集被删去了接近10分钟。这里收集的都是完整版，未删减的，前7季也全部收录在此。
+**`关注公众号`** 【[团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png)】， **`回复“权力的游戏”`，每周一更新一集（下节有各集播放时间）**
 
-### 权力的游戏第8季第一集1080P，56分钟，1.24G
+`如果迅雷提示“应版权方要求不能提供下载”， **到公众号【团购好货】中回复“下载工具”，亲测可行**`
 
-**`关注公众号`** 【[团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png)】， **`回复“权力的游戏”`，每周一更新一集**
+![权力的游戏冰与火之歌，第八季第一集1080P，1.24G，54分钟]({{ site.imglocal }}/movie/bingyuhuos0801.jpeg)
+
+[权力的游戏第八季](https://baike.baidu.com/item/%E6%9D%83%E5%8A%9B%E7%9A%84%E6%B8%B8%E6%88%8F%E7%AC%AC%E5%85%AB%E5%AD%A3/17518467?fr=aladdin)于美国时间2019年4月14日回归，这一季只有6集，早期宣传每集长达80分钟，但第八季第一集只有54分钟，腾讯视频丧心病狂到只有48分钟...腾讯视频上的删减版，去掉很多少儿不宜的镜头，这里收集的都是完整版、未删减的，另外前7季也全部收录在此。
+
+### 权力的游戏第八季第六集（S08E06）1080P，80分钟
+
+第八季第6集  首播时间：5月20日星期一上午9:00（北京时间） 单集时长：80分钟
+
+等更新
+
+### 权力的游戏第八季第五集（S08E05）1080P，80分钟
+
+第八季第5集  首播时间：5月13日星期一上午9:00（北京时间） 单集时长：80分钟
+
+等更新
+
+### 权力的游戏第八季第四集（S08E04）1080P，78分钟
+
+第八季第4集  首播时间：5月6日星期一上午9:00（北京时间）  单集时长：78分钟
+
+等更新
+
+### 权力的游戏第八季第三集（S08E03）1080P，60分钟
+
+第八季第3集  首播时间：4月29日星期一上午9:00（北京时间） 单集时长：60分钟
+
+等更新
+
+### 权力的游戏第八季第二集（S08E02）1080P，58分钟
+
+第八季第2集  首播时间：4月22日星期一上午9:00（北京时间） 单集时长：58分钟
+
+等更新
+
+### 权力的游戏第八季第一集（S08E01）1080P，54分钟，1.24G
+
+第八季第1集  首播时间：4月15日星期一上午9:00（北京时间） 单集时长：54分钟
+
+第1集未删减版Game.of.Thrones.Season.8.E01.2019.UNCUT.HD1080P.X264.AAC.English.CHS.mp4。
+
+地址1:
+
+	magnet:?xt=urn:btih:5091745EE106D8FED683941DD0E9FD865D97638A
+
+地址2:
+
+	magnet:?xt=urn:btih:84C283A6CDE86C096879CB391D68E793BAC791AD
 
 如果迅雷提示“`应版权方要求不能提供下载`”， **到公众号【团购好货】中回复“下载工具”，亲测可行**
 
-<!--span style="display:block;text-align:center">![团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png){: width="300px"}</span-->
-
-![权力的游戏冰与火之歌，第8季第一集1080P，1.24G，56分钟]({{ site.imglocal }}/movie/bingyuhuos0801.jpeg)
-
-## 权力（权利）的游戏/冰与火之歌（Game of Thrones）——第七季
+## 权力的游戏/冰与火之歌（Game of Thrones）——第七季
 
 第7季第1集（复制下面的ed2k链接，然后到迅雷等下载工具中添加下载链接）：
 
@@ -59,7 +101,7 @@ description: 权力的游戏/权利的游戏第八季(冰与火之歌）未删�
 
 	ed2k://|file|%E6%9D%83%E5%8A%9B%E7%9A%84%E6%B8%B8%E6%88%8F.Game.of.Thrones.S07E07.End.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.BDrip.720p-%E4%BA%BA%E4%BA%BA%E5%BD%B1%E8%A7%86.V2.mp4|1026482143|2bfcec2e96d367d76d2afece125074be|h=fvpewfvvosjwxyzfivrtb572pijqlzqc|/
 
-## 权力（权利）的游戏/冰与火之歌（Game of Thrones）——第六季
+## 权力的游戏/冰与火之歌（Game of Thrones）——第六季
 
 第6季第1集：
 
@@ -101,7 +143,7 @@ description: 权力的游戏/权利的游戏第八季(冰与火之歌）未删�
 
 	ed2k://|file|Game.of.Thrones.S06E10.720p.BluRay.x264-WiKi.mkv|3939661587|21BAD9654A1AA3B91E6B158661A1283A|h=RKVTFMN2AAN2YJ2YSCSWO4B3VJK6STGE|/
 
-## 权力（权利）的游戏/冰与火之歌（Game of Thrones）——第五季
+## 权力的游戏/冰与火之歌（Game of Thrones）——第五季
 
 第5季第1集：
 
@@ -143,7 +185,7 @@ description: 权力的游戏/权利的游戏第八季(冰与火之歌）未删�
 
 	ed2k://|file|Game.of.Thrones.S05E10.720p.BluRay.x264-WiKi.mkv|3043624306|433DB89670DFE5F5F7EA59778D6C3C6D|h=PFAE6EYY4ZVRNPNPP46V6BESMRUBWV4N|/
 
-## 权力（权利）的游戏/冰与火之歌（Game of Thrones）——第四季
+## 权力的游戏/冰与火之歌（Game of Thrones）——第四季
 
 第4季第1集：
 
@@ -185,7 +227,7 @@ description: 权力的游戏/权利的游戏第八季(冰与火之歌）未删�
 
 	ed2k://|file|%E6%9D%83%E5%8A%9B%E7%9A%84%E6%B8%B8%E6%88%8F.Game.of.Thrones.S04E10.End.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.HR-HDTV.AC3.1024x576.x264.mkv|777802944|fe2e72abb59d2484a3bc4fc3525f656c|h=vuqmaknlmjfmr7vk6ksx4wm4ht75g6zg|/
 
-## 权力（权利）的游戏/冰与火之歌（Game of Thrones）——第三季
+## 权力的游戏/冰与火之歌（Game of Thrones）——第三季
 
 第3季第1集：
 
@@ -227,7 +269,7 @@ description: 权力的游戏/权利的游戏第八季(冰与火之歌）未删�
 
 	ed2k://|file|%E6%9D%83%E5%8A%9B%E7%9A%84%E6%B8%B8%E6%88%8F.Game.of.Thrones.S03E10.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.BD-HR.AC3.1024X576.x264.mkv|748854844|13e2945e331a0097b0db770389f2a386|h=vsdajkntfmtwslrefpgxkyepp2fcauu5|/
 
-## 权力（权利）的游戏/冰与火之歌（Game of Thrones）——第二季
+## 权力的游戏/冰与火之歌（Game of Thrones）——第二季
 
 第2季第1集：
 
@@ -269,7 +311,7 @@ description: 权力的游戏/权利的游戏第八季(冰与火之歌）未删�
 
 	ed2k://|file|%E6%9D%83%E5%8A%9B%E7%9A%84%E6%B8%B8%E6%88%8F.Game.of.Thrones.S02E10.Chi_Eng.BDrip.1024X576.x264-YYeTs%E4%BA%BA%E4%BA%BA%E5%BD%B1%E8%A7%86.mkv|711344805|7BA9DA7ED2990333E07D6F61031CB8C0|h=6BFFEDFA4PZC4XC2GKSD7X4I74H6WAM5|/
 
-## 权力（权利）的游戏/冰与火之歌（Game of Thrones）——第一季
+## 权力的游戏/冰与火之歌（Game of Thrones）——第一季
 
 第1季第1集：
 
