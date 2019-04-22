@@ -2,7 +2,7 @@
 layout: default
 title: "【附截图】权力的游戏第八季6集高清未删减版BT种子下载，迅雷、磁力链Magnet、百度云"
 createdate: "2019-02-21 22:52:17 +0800"
-changedate: "2019-04-22 00:49:59 +0800"
+changedate: "2019-04-22 22:14:21 +0800"
 categories: hidden
 tags: 好货
 keywords: 权利的游戏,权力的游戏,冰与火之歌,迅雷,BT种子,磁力链Magnet,e2dk,未删减版,百度云网盘,
@@ -66,7 +66,7 @@ description: 权力的游戏/权利的游戏(又名冰与火之歌）第八季BT
 
 第八季第2集  首播时间：4月22日星期一上午9:00（北京时间） 单集时长：58分钟
 
-等更新
+已经更新到公众号【[团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png)】。
 
 ### 权力的游戏第八季第一集（S08E01）1080P，54分钟，1.24G
 
