@@ -2,7 +2,7 @@
 layout: default
 title: "【附截图】权力的游戏第八季6集高清未删减版BT种子下载，迅雷、磁力链Magnet、百度云"
 createdate: "2019-02-21 22:52:17 +0800"
-changedate: "2019-04-22 22:32:11 +0800"
+changedate: "2019-04-22 22:35:58 +0800"
 categories: hidden
 tags: 好货
 keywords: 权利的游戏,权力的游戏,冰与火之歌,迅雷,BT种子,磁力链Magnet,e2dk,未删减版,百度云网盘,版权方无法下载
@@ -62,7 +62,7 @@ description: 权力的游戏/权利的游戏(又名冰与火之歌）第八季BT
 
 等更新，【[团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png)】有料。
 
-### 权力的游戏第八季第二集（S08E02）1080P，58分钟
+### 权力的游戏第八季第二集（S08E02）1080P，58分钟，1.09G
 
 用迅雷下载，如果迅雷提示“`应版权方要求无法下载`”， **公众号【[团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png)】中回复“下载工具”，亲测可行**
 
@@ -72,13 +72,15 @@ S8E02未删减1080p，中文字幕:
 
 	magnet:?xt=urn:btih:197B73F16DDD51381686D70CA30BA2C2E6AEE42F
 
+Game.of.Thrones.Season.8.E02.2019.UNCUT.HD1080P.X264.AAC.English.CHS.mp4。
+
 第八季第2集  首播时间：4月22日星期一上午9:00（北京时间） 单集时长：58分钟
 
 ### 权力的游戏第八季第一集（S08E01）1080P，54分钟，1.24G
 
 用迅雷下载，如果迅雷提示“`应版权方要求无法下载`”， **公众号【[团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png)】中回复“下载工具”，亲测可行**
 
-第1集未删减版Game.of.Thrones.Season.8.E01.2019.UNCUT.HD1080P.X264.AAC.English.CHS.mp4。
+S8E01未删减版1080P，中文字幕：
 
 地址1:
 
@@ -87,6 +89,8 @@ S8E02未删减1080p，中文字幕:
 地址2:
 
 	magnet:?xt=urn:btih:84C283A6CDE86C096879CB391D68E793BAC791AD
+
+Game.of.Thrones.Season.8.E01.2019.UNCUT.HD1080P.X264.AAC.English.CHS.mp4。
 
 第八季第1集  首播时间：4月15日星期一上午9:00（北京时间） 单集时长：54分钟
 
