@@ -2,7 +2,7 @@
 layout: default
 title: "【附截图】复仇者联盟4：终局之战百度云盘下载，1080P高清、迅雷BT种子、磁力链magnet"
 createdate: "2019-04-12 22:15:42 +0800"
-changedate: "2019-04-24 13:12:41 +0800"
+changedate: "2019-04-24 22:10:50 +0800"
 categories: hidden
 keywords: 复仇者联盟4,复联4,复仇者联盟3,复联3,复仇者联盟2,复联2,复仇者联盟1,复联1,漫威电影
 description: "复仇者联盟4：终局之战》、《复仇联盟3：无限战争》、《复仇者联盟2：奥创纪元》、《复仇者联盟1》的BT种子、Magnet磁力链、迅雷百度云下载地址，钢铁侠、美国队长、雷神、绿巨人、黑寡妇和鹰眼侠一起领盒饭：Avengers.Infinity.War.2018.BD1080P.X264.AAC.English&Mandarin.CHS-ENG.52movieba.torren"
@@ -16,6 +16,14 @@ description: "复仇者联盟4：终局之战》、《复仇联盟3：无限战�
 `第四部已经上映，火力全开，全网搜集中！微信扫描二维码，不多说了！前三部的资源收集在本页后面，向上滑动查看`
 
 **[淘宝天猫优惠券，正确领取方法揭秘，点击查看](https://www.lijiaocn.com/%E5%A5%BD%E8%B4%A7/2025/12/31/taobao-discount-method.html)**
+
+网上的有一个枪版，是在电影院用摄像机对着屏幕拍摄的，电影是3D的，摄像机拍摄的画面令人不忍直视，重点是水印又是澳门新葡京，这帮人到底啥来头？？
+
+![复仇者联盟4剧透1]({{ site.imglocal/movie/fu-lian-4-1.jpg)
+
+![复仇者联盟4剧透2]({{ site.imglocal/movie/fu-lian-4-2.jpg)
+
+![复仇者联盟4剧透3]({{ site.imglocal/movie/fu-lian-4-3.jpg)
 
 ![团购好货微信公众号](https://www.lijiaocn.com/img/taobaoke/tuanhaohuo-discount.jpg)
 
