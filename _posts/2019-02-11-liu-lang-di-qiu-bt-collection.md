@@ -2,7 +2,7 @@
 layout: default
 title: "流浪地球BT种子、百度云盘与磁力链magnet可用下载地址汇总"
 createdate: "2019-02-11 11:18:09 +0800"
-changedate: "2019-04-17 12:50:21 +0800"
+changedate: "2019-04-26 08:45:10 +0800"
 categories: hidden
 tags: 好货
 keywords: 流浪地球,bt种子,magnet,磁力链,在线播放,1080p,中国大陆
@@ -19,6 +19,8 @@ description: "互联网上搜集的资源，验证了一部分，内置电影流
 
 ![权力的游戏冰与火之歌，第8季第一集1080P，1.24G，56分钟]({{ site.imglocal }}/movie/bingyuhuos0801.jpeg)
 
+![团购好货微信公众号](https://www.lijiaocn.com/img/taobaoke/tuanhaohuo-discount.jpg)
+
 ## 流浪地球百度云网盘私人收藏
 
 	已经删除
@@ -31,7 +33,7 @@ description: "互联网上搜集的资源，验证了一部分，内置电影流
 
 `迅雷“应版权方要求不能提供下载”，BT种子需要用其它工具下载，到公众号【团购好货】中回复“下载工具”，亲测可行`
 
-1 流浪地球.HC版.HD.1080P.MP4.2018.中国大陆.科幻.灾难.中文字幕.torrent： 2.89G
+1 流浪地球.HC版.HD. 1080P.MP4.2018. 中国大陆.科幻.灾难.中文字幕.torrent： 2.89G
 
 	已删除
 
@@ -41,11 +43,11 @@ description: "互联网上搜集的资源，验证了一部分，内置电影流
 
 下面是流浪地球的其它磁力链magnet可用地址（没有全部验证）：
 
-2 [91xinpian.com]流浪地球HC1080P清晰国语中字.mp4.torrent： 2.64G
+2 [91xinpian.com]流浪地球HC1080P清晰国语中字 .mp4.torrent： 2.64G
 
 	已删除
 
-3 [ViPHD.co]流浪地球（纯净首发独占） The.Wandering .Earth.2019.HCRip.1080P.H264.AAC-JBY.rar.torrent：5.23G
+3 [ViPHD.co]流浪地球（纯净首发独占） The.Wandering .Earth.2019.HCRip. 1080P.H264.AAC- JBY.rar.torrent：5.23G
 
 	已删除
 
@@ -53,26 +55,26 @@ description: "互联网上搜集的资源，验证了一部分，内置电影流
 
 	已删除
 
-5 流浪地球.The.Wandering.Earth.2019.HD.1080P.X264.AAC.CHS.mp4.torrent：2.09G
+5 流浪地球. The.Wandering.Earth.2019 HD.1080P.X264.AAC. CHS.mp4.torrent：2.09G
 
 	已删除
 
-6 流浪地球.The.Wandering.Earth.2019.HC720P.X264.AAC.Mandarin.CHS.mp4.torrent：1.71G
+6 流浪地球. The.Wandering.Earth.2019. HC720P.X264.AAC. Mandarin.CHS.mp4.torrent：1.71G
 
 	已删除
 
-7 流浪地球.The.Wandering.Earth.2019.HD.1080P.mp4.torrent： 2.09G
+7 流浪地球. The.Wandering.Earth.2019. HD.1080P.mp4.torrent： 2.09G
 
 	已删除
 
-8 [91xinpian.com]流浪地球HDTC1080P清晰国语中字.mp4.torrent：1.77G 
+8 流浪地球HDTC1080P清晰国语中字.mp4.torrent：1.77G 
 
 	已删除
 
-9 流浪地球.The.Wandering.Earth.2019.HC.1080P.X264.AAC.CHS.mp4.torrent：2.32G
+9 流浪地球 .The.Wandering.Earth. 2019.HC.1080P. X264.AAC.CHS.mp4.torrent：2.32G
 
 	已删除
 
-10 流浪地球.The.Wandering.Earth.2019.1080p.HDTC.X264.AAC-国语中字-MP4BA.torrent：2.22G
+10 流浪地球 .The.Wandering.Earth. 2019.1080p.HDTC.X264.AAC 国语中字-MP4BA.torrent：2.22G
 
 	已删除

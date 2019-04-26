@@ -16,7 +16,7 @@ description: "《惊奇队长》高清1080P下载地址大全：百度云网盘�
 
 别找了，我已经翻遍了，一共就两个片源，一个是偷拍的，偷拍的那种，你懂的，镜头都在晃，旁边还有人说话。
 
-另一个是下面这个，高清就是这个样子....这个是已知质量最好的片子，想看的还是去电影院吧...
+另一个是下面这个，高清就是这个样子....这个是已知质量最好的片子，想看的还是去电影院吧...（视频开头2分钟的位置插入了一段广告）。
 
 ![惊奇队长,captain marvel]({{ site.imglocal}}/movie/captain1.jpg)
 
@@ -24,21 +24,17 @@ description: "《惊奇队长》高清1080P下载地址大全：百度云网盘�
 
 ![惊奇队长,captain marvel]({{ site.imglocal}}/movie/captain3.jpg)
 
-在视频开头2分钟的位置插入了一段广告，另外没有字幕。
+**百度云盘遭遇不可抗力被封，公众号【团购好货】中回复“惊奇队长”：**
 
-`百度云盘遭遇不可抗力，到公众号【团购好货】中回复“惊奇队长”，复制回复的链接用迅雷下载。`
-
-`如果迅雷不能下载，到公众号【团购好货】中回复“下载工具”。`
-
-**公众号【[团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png)】中回复“惊奇队长”。**
+![团购好货微信公众号](https://www.lijiaocn.com/img/taobaoke/tuanhaohuo-discount.jpg)
 
 ## 【1.7G】枪版没法看，惊奇队长 Captain.Marvel. 2019.TC720P. X264.AAC.国语.mp4
+
+`如果迅雷不能下载，到公众号【团购好货】中回复“下载工具”。`
 
 留下来做研究用，这个版本没法看，不信就去下载试试，复制下面链接然后打开迅雷新建下载：
 
 	magnet:?xt=urn:btih:80a15f40402cc9eea75fe93ec99dd07c428d1757&dn=%E6%83%8A%E5%A5%87%E9%98%9F%E9%95%BF.Captain.Marvel.2019.TC720P.X264.AAC.%E5%9B%BD%E8%AF%AD.mp4
-
-**公众号【[团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png)】中回复“惊奇队长”，返回的那个版本还凑合一点。**
 
 ## 影片介绍
 
