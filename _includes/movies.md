@@ -1,6 +1,6 @@
 ## 资源列表
 
-**[淘宝天猫优惠券，正确领取方法揭秘，点击查看](https://www.lijiaocn.com/%E5%A5%BD%E8%B4%A7/2025/12/31/taobao-discount-method.html)**
+**[《淘宝天猫优惠券，正确领取方法，点击查看》](https://www.lijiaocn.com/%E5%A5%BD%E8%B4%A7/2025/12/31/taobao-discount-method.html)**
 
 **[《复仇者联盟4：终局之战》（复联4）](https://www.lijiaocn.com/hidden/2019/04/24/marvel-the-avengers.html)**
 
