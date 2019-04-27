@@ -2,7 +2,7 @@
 layout: default
 title: "2019春节档热门电影可用BT种子、百度云盘与磁力链magnet地址收藏"
 createdate: "2019-02-15 01:02:46 +0800"
-changedate: "2019-04-27 14:49:31 +0800"
+changedate: "2019-04-27 20:19:16 +0800"
 categories: hidden
 tags: 好货
 keywords: 疯狂的外星人,bt种子,magnet,磁力链,在线播放,1080p,中国大陆
@@ -21,9 +21,7 @@ description: "都是从互联网上搜集的，已经验证。包括流浪地球
 
 ![比特彗星替代迅雷下载BT文件]({{ site.imglocal}}/liu-lang-di-qiu/btcomet.png)
 
-**百度云网盘遭遇不可抗力，连接失效，关注微信公众号【团购好货】：**
-
-![团购好货微信公众号](https://www.lijiaocn.com/img/taobaoke/tuanhaohuo-discount.jpg)
+**百度云网盘遭遇不可抗力，连接失效，关注微信公众号** [团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png)】 **。**
 
 **流浪地球**：流浪地球，2.89G，关注公众号【团购好货】，回复“密码”。
 
