@@ -2,7 +2,7 @@
 layout: default
 title: "流浪地球BT种子、百度云盘与磁力链magnet可用下载地址汇总"
 createdate: "2019-02-11 11:18:09 +0800"
-changedate: "2019-04-26 08:45:10 +0800"
+changedate: "2019-04-27 13:42:19 +0800"
 categories: hidden
 tags: 好货
 keywords: 流浪地球,bt种子,magnet,磁力链,在线播放,1080p,中国大陆
@@ -12,14 +12,14 @@ description: "互联网上搜集的资源，验证了一部分，内置电影流
 
 ## 资源说明
 
-**声明：本站不存储任何视频文件，不提供下载服务和下载工具，只摘录互联网上的文本信息，只用于个人收藏**
+**本站不存储任何视频文件，不提供下载服务和下载工具，只摘录网上的文本，只用于个人收藏**
+
+**百度云盘遭遇不可抗力被封，关注公众号**【[团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png)】 **，领个红包安慰下：**
+
+![团购好货微信公众号](https://www.lijiaocn.com/img/taobaoke/tuanhaohuo-discount.jpg)
 
 接到通知，说是这个网页侵犯了流浪地球的著作权，一脸蒙逼。想来想去，想不出啥原因，莫非贴出种子地址也算侵权？
 为了避免给自己惹麻烦，种子地址已经全部删除，以后也不会提供，亲们到别处找吧。
-
-![权力的游戏冰与火之歌，第8季第一集1080P，1.24G，56分钟]({{ site.imglocal }}/movie/bingyuhuos0801.jpeg)
-
-![团购好货微信公众号](https://www.lijiaocn.com/img/taobaoke/tuanhaohuo-discount.jpg)
 
 ## 流浪地球百度云网盘私人收藏
 
