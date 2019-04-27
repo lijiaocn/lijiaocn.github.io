@@ -4,7 +4,7 @@
 
 **[《复仇者联盟4：终局之战》（复联4）](https://www.lijiaocn.com/hidden/2019/04/24/marvel-the-avengers.html)**
 
-**[《权力的游戏》第八季无删减完整版](https://www.lijiaocn.com/hidden/2019/02/21/game-of-thrones.html)**
+**[《权力的游戏/冰与火》（全8季，无删减完整版）](https://www.lijiaocn.com/hidden/2019/02/21/game-of-thrones.html)**
 
 **[《惊奇队长》1080P高清](https://www.lijiaocn.com/hidden/2019/03/10/captain-marvel.html)**
 
