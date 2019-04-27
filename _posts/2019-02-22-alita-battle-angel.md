@@ -2,7 +2,7 @@
 layout: default
 title: "【附截图】阿丽塔:战斗天使高清1080P下载！百度云网盘、迅雷BT种子、磁力链magnet"
 createdate: "2019-02-22 23:29:10 +0800"
-changedate: "2019-04-27 13:39:51 +0800"
+changedate: "2019-04-27 14:48:49 +0800"
 categories: hidden
 tags: 好货
 keywords: 阿丽塔战斗天使,阿丽塔,战斗天使,下载,在线电影,百度云网盘,迅雷BT种子,磁力链magnet
@@ -12,9 +12,9 @@ description: "《阿丽塔:战斗天使》高清1080P下载地址大全：百度
 
 ## 【2.42G】高清！！1080P 阿丽塔：战斗天使 
 
-**本站不存储任何视频文件，不提供下载服务和下载工具，只摘录网上的文本，只用于个人收藏**
-
 **百度云盘遭遇不可抗力被封，到公众号**【[团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png)】 **中回复“战斗天使”，有惊喜，顺便领个红包：**
+
+**本站不存储任何视频文件，不提供下载服务和下载工具，只摘录网上的文本，只用于个人收藏**
 
 ![阿丽塔：战斗天使.Alita.Battle.Angel.2019.HD1080P.X264.AAC.CHS-1]({{ site.imglocal}}/movie/alita1.jpeg)
 
