@@ -605,24 +605,6 @@ order、peer都部署到位，但是对我这里示意的场景，需要的文�
 
 回到存放了所有文件的fabric-deploy目录中，创建一个名为`configtx.yaml`的文件：
 
-	Profiles:
-	    TwoOrgsOrdererGenesis:
-	        Orderer:
-	            <<: *OrdererDefaults
-	            Organizations:
-	                - *OrdererOrg
-	        Consortiums:
-	            SampleConsortium:
-	                Organizations:
-	                    - *Org1
-	                    - *Org2
-	    TwoOrgsChannel:
-	        Consortium: SampleConsortium
-	        Application:
-	            <<: *ApplicationDefaults
-	            Organizations:
-	                - *Org1
-	                - *Org2
 	Organizations:
 	    - &OrdererOrg
 	        Name: OrdererOrg
@@ -657,6 +639,24 @@ order、peer都部署到位，但是对我这里示意的场景，需要的文�
 	    Organizations:
 	Application: &ApplicationDefaults
 	    Organizations:
+	Profiles:
+	    TwoOrgsOrdererGenesis:
+	        Orderer:
+	            <<: *OrdererDefaults
+	            Organizations:
+	                - *OrdererOrg
+	        Consortiums:
+	            SampleConsortium:
+	                Organizations:
+	                    - *Org1
+	                    - *Org2
+	    TwoOrgsChannel:
+	        Consortium: SampleConsortium
+	        Application:
+	            <<: *ApplicationDefaults
+	            Organizations:
+	                - *Org1
+	                - *Org2
 
 这个配置文件的内容比较多，这里就不做解释了，可以到视频解说中听讲解。
 
