@@ -12,7 +12,7 @@ description: "《惊奇队长》高清1080P下载地址大全：百度云网盘�
 
 ## 【2.45G】高清！！1080P 惊奇队长HDTC1080P清晰英语无字.mp4
 
-**百度云盘遭遇不可抗力被封，到公众号**【[团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png)】 **中回复“惊奇队长”，有惊喜，顺便领个红包：**
+**关注微信公众号**【[团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png)】 **，回复“惊奇队长”获取，还有红包可领，亲测可行：**
 
 **本站不存储任何视频文件，不提供下载服务和下载工具，只摘录网上的文本，只用于个人收藏**
 
