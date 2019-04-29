@@ -1,8 +1,8 @@
 ---
 layout: default
-title: "【附截图】权力的游戏第八季在线未删减版，下载BT种子、百度云、迅雷、磁力链Magnet"
+title: "【附截图】权力的游戏第八季第三集在线未删减，BT种子、百度云、迅雷、磁力链Magnet"
 createdate: "2019-02-21 22:52:17 +0800"
-changedate: "2019-04-29 20:42:56 +0800"
+changedate: "2019-04-29 20:48:29 +0800"
 categories: hidden
 tags: 好货
 keywords: 权利的游戏,权力的游戏,冰与火之歌,迅雷,BT种子,磁力链Magnet,e2dk,未删减版,百度云网盘,版权方无法下载,在线观看
@@ -60,7 +60,9 @@ description: 权力的游戏/权利的游戏(又名冰与火之歌）第八季BT
 
 第八季第3集  首播时间：4月29日星期一上午9:00（北京时间） 单集时长：60分钟
 
-等更新，【[团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png)】有料。
+已经更新，1.62G，高清原版无删减！磁力链地址，关注回复“权力的游戏”
+
+![团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png)
 
 ### 权力的游戏第八季第二集（S08E02）1080P，58分钟，1.09G
 
