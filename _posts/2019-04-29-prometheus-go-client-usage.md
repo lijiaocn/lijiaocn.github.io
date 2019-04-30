@@ -3,8 +3,8 @@ layout: default
 title: "Prometheus的HTTP API的Go语言封装client_golang的使用"
 author: 李佶澳
 createdate: "2019-04-29 18:51:49 +0800"
-changedate: "2019-04-30 16:27:21 +0800"
-categories: 项目
+changedate: "2019-04-30 16:30:37 +0800"
+categories: 编程
 tags: prometheus
 keywords: prometheus,client_golang
 description: client_golang是Prometheus的一个子项目，是Prometheus的Go client library，HTTP API的实现位于
