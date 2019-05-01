@@ -3,7 +3,7 @@ layout: default
 title: "怎样设计网页？《形色:网页设计法则及实例指导》学习笔记"
 author: 李佶澳
 createdate: "2019-03-09 15:38:09 +0800"
-changedate: "2019-04-28 00:10:28 +0800"
+changedate: "2019-05-01 21:32:30 +0800"
 categories: 方法
 tags: 前端 SEO
 keywords: 网页设计法则,网页设计方法,专业设计网站推荐,免费商用字体,免费商用图片
@@ -108,13 +108,23 @@ App支持双击返回顶部。
 
 **类似色**：色相环中相距30度的为类似色，冷暖性一致、情感特征接近。
 
+![色相环类似色]({{ site.imglocal }}/all/leisise.png)
+
 **邻近色**：色相环中相距60度的为邻近色。
+
+![色相环临近色]({{ site.imglocal }}/all/linjinse.png)
 
 **中差色**：色相环中相距90度的为中差色。
 
+![色相环中差色]({{ site.imglocal }}/all/zhongchase.png)
+
 **对比色**：色相环中相距120度的为中差色。
 
+![色相环对比色]({{ site.imglocal }}/all/duibise.png)
+
 **互补色**：色相环中相距180度的为中差色。
+
+![色相环互补色]({{ site.imglocal }}/all/hubuse.png)
 
 #### 搭配方法
 
@@ -132,7 +142,7 @@ App支持双击返回顶部。
 
 #### 色彩对比
 
-网页设计时，应注意文字与背景的对比，确保文字清晰，不被背景色削弱。浅黑色（#333333）是网页设计中最常用的文字色值。
+网页设计时，应注意文字与背景的对比，确保文字清晰，不被背景色削弱。
 
 文字与背景过强的对比会使观者产生视觉疲劳感，有经验的网页设计师往往会降低字体与背景的对比度，确保用户在长时间阅读时依然有舒适的视觉体验。
 
@@ -140,33 +150,35 @@ App支持双击返回顶部。
 
 #### 常用色彩搭配
 
+浅黑色（#333333）是网页设计中最常用的文字色值。
+
 **商务促销**：多数使用暖色调，红、橙、黄等。
 
-红色系常用搭配：#e00200  #2e2e2e  #ffffff  #f6f6f6
+红色系常用搭配：<span style="color:#e00200">#e00200</span> <span style="color:#2e2e2e">#2e2e2e</span>  <span style="color:#ffffff">#ffffff</span>  <span style="color:#f6f6f6">#f6f6f6</span>
 
-橙色系常用搭配：#ff6537  #f94a14  #ffffff  #f1f1f1
+橙色系常用搭配：<span style="color:#ff6537">#ff6537</span>  <span style="color:#f94a14">#f94a14</span>  <span style="color:#ffffff">#ffffff</span>  <span style="color:#f1f1f1">#f1f1f1</span>
 
-黄色系常用搭配：#ffc001  #383838  #ffffff  #f5f5f5，#f1c659  #2e2e2e  #ffffff  #f6f6f6
+黄色系常用搭配：<span style="color:#ffc001">#ffc001</span>  <span style="color:#383838">#383838</span>  <span style="color:#ffffff">#ffffff</span>  <span style="color:#f5f5f5">#f5f5f5</span>，<span style="color:#f1c659">#f1c659</span>  <span style="color:#2e2e2e">#2e2e2e</span>  <span style="color:#ffffff">#ffffff</span>  <span style="color:#f6f6f6">#f6f6f6</span>
 
 **门户类**：为了不对页面中大量对图片和信息造成视觉上干扰，门户用色在饱和度和明度方面都相对较低，目前都偏向使用蓝色调。
 
-蓝色系常用搭配：#3d95d5  #f77728  #ffffff  #f6f6f6，#1aabee  #555555  #ffffff  #f6f6f6
+蓝色系常用搭配：<span style="color:#3d95d5">#3d95d5</span>  <span style="color:#f77728">#f77728</span>  <span style="color:#ffffff">#ffffff</span>  <span style="color:#f6f6f6">#f6f6f6</span>，<span style="color:#1aabee">#1aabee</span>  <span style="color:#555555">#555555</span>  <span style="color:#ffffff">#ffffff</span>  <span style="color:#f6f6f6">#f6f6f6</span>
 
-无色彩常用搭配：#333333  #e50000  #ffffff  #f6f6f6，#000000  #444444  #ffffff  #eb1600
+无色彩常用搭配：<span style="color:#333333">#333333</span>  <span style="color:#e50000">#e50000</span>  <span style="color:#ffffff">#ffffff</span>  <span style="color:#f6f6f6">#f6f6f6</span>，<span style="color:#000000">#000000</span>  <span style="color:#444444">#444444</span>  <span style="color:#ffffff">#ffffff</span>  <span style="color:#eb1600">#eb1600</span>
 
 **儿童类**：主要面向年轻妈妈、儿童，避免沉重的深色调，选择较为明亮、清新的色调，多用红、橙、黄、绿、蓝，给人积极向上、充满生机的感觉。
 
-绿色系常用搭配：#ffc600  #8fd154  #ffffff  #fff8ee，#38b6ff  #8fd154  #ffffff  #eaf8fb
+绿色系常用搭配：<span style="color:#ffc600">#ffc600</span>  <span style="color:#8fd154">#8fd154</span>  <span style="color:#ffffff">#ffffff</span>  <span style="color:#fff8ee">#fff8ee</span>，<span style="color:#38b6ff">#38b6ff</span>  <span style="color:#8fd154">#8fd154</span>  <span style="color:#ffffff">#ffffff</span>  <span style="color:#eaf8fb">#eaf8fb</span>
 
-粉色系常用搭配：#ff7a96  #ffd8de  #ffffff  #ffd249
+粉色系常用搭配：<span style="color:#ff7a96">#ff7a96</span>  <span style="color:#ffd8de">#ffd8de</span>  <span style="color:#ffffff">#ffffff</span>  <span style="color:#ffd249">#ffd249</span>
 
 **母婴类**：带着娇嫩和柔软，需要呵护和疼惜，都采低饱和度、低明度组合，避免太艳丽的颜色造成视觉上的刺激感，可选粉色、天蓝色、淡蓝色、草绿色。
 
-粉色系搭配：#ddf3ff  #ffedef  #ffffff  #fff1d0
+粉色系搭配：<span style="color:#ddf3ff">#ddf3ff</span>  <span style="color:#ffedef">#ffedef</span>  <span style="color:#ffffff">#ffffff</span>  <span style="color:#fff1d0">#fff1d0</span>
 
-绿色系搭配：#f2eee5  #c9e49b  #99bb5f  #ffffff
+绿色系搭配：<span style="color:#f2eee5">#f2eee5</span>  <span style="color:#c9e49b">#c9e49b</span>  <span style="color:#99bb5f">#99bb5f</span>  <span style="color:#ffffff">#ffffff</span>
 
-紫色系搭配：#f3ecf6  #e2d5ea  #ffffff  #fff7ee
+紫色系搭配：<span style="color:#f3ecf6">#f3ecf6</span>  <span style="color:#e2d5ea">#e2d5ea</span>  <span style="color:#ffffff">#ffffff</span>  <span style="color:#fff7ee">#fff7ee</span>
 
 ## 网页设计前期准备工作
 
