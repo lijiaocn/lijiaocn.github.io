@@ -4,11 +4,20 @@
 }
 
 .body {
-	background-color: #ffffff;
 	padding-left:0px;
 	padding-top:0px;
 	font-family:"宋体";
 	-ms-overflow-style: scrollbar;
+	background-color: #f0f3ef;
+	color: #333333;
+}
+
+body.custom-background {
+	background-image: url(/img/bg.png);
+	background-position: left top;
+	background-size: auto;
+	background-repeat: repeat;
+	background-attachment: scroll;
 }
 
 .topnav {
@@ -36,7 +45,7 @@
 .lsidebar {
 	text-align:left;
 	margin: 0px;
-	padding: 15px 0px 0px 0px;
+	padding: 15px 0px 0px 10px;
 }
 
 .rsidebar {
@@ -159,45 +168,39 @@ div.center h1 {
 	font-size:26px;
 	font-family: 宋体;
 	font-weight:bold;
-	color:black;
 	text-align:center;
 }
 
 div.center h2 {
 	font-size:22px;
 	font-family: 宋体;
-	color:black;
 	padding:10px;
 	background: lightblue;
 }
 div.center h2 a {
-	color: #000000;
+	color: #333333;
 }
 div.center h3 {
 	font-size:20px;
 	font-family: 宋体;
-	color:black;
 	padding:10px;
 	background: lightblue;
 }
 div.center h4 {
 	font-size:18px;
 	font-family: 宋体;
-	color:black;
 	padding:10px;
 	background: lightblue;
 }
 div.center h5 {
 	font-size:16px;
 	font-family: 宋体;
-	color:black;
 	padding:10px;
 	background: lightblue;
 }
 div.center h6 {
 	font-size:15px;
 	font-family: 宋体;
-	color:black;
 	padding:10px;
 	background: lightblue;
 }
@@ -227,7 +230,6 @@ div.postlist p {
 div.postlist h2 {
 	font-size:20px;
 	font-family: 宋体;
-	color:black;
 	padding: 0px;
 	background-color: white;
 }
