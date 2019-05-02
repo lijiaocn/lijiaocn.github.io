@@ -145,9 +145,9 @@ div.lsidebar span {
 }
 
 div.center .author {
-	font-size:15px;
-	font-family: 楷体;
+	font-size:13px;
 	text-align:center;
+	color: gray;
 }
 
 div.center p {
@@ -164,44 +164,50 @@ div.center img {
 }
 
 div.center h1 {
-	font-size:26px;
-	font-family: 宋体;
+	font-size:30px;
+	font-family: "思源黑体";
 	font-weight:bold;
 	text-align:center;
 }
 
 div.center h2 {
-	font-size:22px;
-	font-family: 宋体;
+	border-left: 8px solid #00a67c;
+	border-bottom: 1px solid #00a67c;
+	font-size:24px;
+	font-family: "思源黑体";
 	padding:10px;
-	background: lightblue;
 }
-div.center h2 a {
-	color: #333333;
-}
+
 div.center h3 {
-	font-size:20px;
-	font-family: 宋体;
+	border-left: 8px solid #00a67c;
+	border-bottom: 1px solid #00a67c;
+	font-size:22px;
+	font-family: "思源黑体";
 	padding:10px;
-	background: lightblue;
 }
+
 div.center h4 {
+	border-left: 8px solid #00a67c;
+	border-bottom: 1px solid #00a67c;
 	font-size:18px;
-	font-family: 宋体;
+	font-family: "思源黑体";
 	padding:10px;
-	background: lightblue;
 }
+
 div.center h5 {
+	border-left: 8px solid #00a67c;
+	border-bottom: 1px solid #00a67c;
 	font-size:16px;
-	font-family: 宋体;
+	font-family: "思源黑体";
 	padding:10px;
-	background: lightblue;
 }
+
 div.center h6 {
+	border-left: 8px solid #00a67c;
+	border-bottom: 1px solid #00a67c;
 	font-size:15px;
-	font-family: 宋体;
+	font-family: "思源黑体";
 	padding:10px;
-	background: lightblue;
 }
 
 div.center pre {
