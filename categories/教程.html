@@ -10,13 +10,7 @@ description:  这里是我制作的IT技术系列视频教程，内容包括kube
 	{% if cate[0] == page.title %}
 		<div class="postlist">
 		{% for post in cate[1] %}
-			<h2><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>
-			<div class="postinfo" >
-				<p><span>{{ post.tags }} / {{ post.author }} / {{ post.createdate }}</span></p>
-			</div>
-			<div class="postdesc">
-				<p>{{ post.description }}... <a href="{{ site.baseurl }}{{ post.url }}">more</a><p>
-			</div>
+		{% include postitem.html post=post %}<hr>
 		{% endfor %}
 		</div>
 	{% endif %}

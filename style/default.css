@@ -106,7 +106,7 @@ div.rsidebar-element img{
 
 .pageheader {
 	padding:2px;
-	margin:0px;
+	margin:2px 0 2px 0;
 	text-align: center;
 }
 
@@ -148,6 +148,10 @@ div.center .author {
 	font-size:13px;
 	text-align:center;
 	color: gray;
+}
+
+div.center ul{
+	list-style: none;
 }
 
 div.center p {

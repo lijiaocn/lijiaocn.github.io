@@ -11,16 +11,7 @@ notinclude: hidden
 	<!-- 遍历分页后的文章 -->
 	{% for post in paginator.posts %}
 		{% if  post.categories[0] != page.notinclude %}
-			<h2><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>
-			<div class="postinfo" >
-				<p><span><a href="{{ site.baseurl }}/categories/{{ post.categories }}.html">{{ post.categories }}</a> / <a href="{{ site.baseurl }}/2010/10/10/about.html">{{ post.author }}</a> / {{ post.createdate }} 
-				<a href="{{ site.baseurl }}/tags/all.html">标签</a>
-				<span></p>
-			</div>
-			<div class="postdesc">
-				<p><span>{{ post.description }}...</span><a href="{{ site.baseurl }}{{ post.url }}">more</a></p>
-			</div>
-			<hr>
+		{% include postitem.html post=post %}<hr>
 		{% endif %}
 	{% endfor %}
 </div>
