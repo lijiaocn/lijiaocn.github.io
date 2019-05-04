@@ -300,6 +300,9 @@ div.rsidebar-title p {
 	.rsidebar {
 		width:220px;
 	}
+	div.center img {
+		max-width: 90%;
+	}
 }
 @media (max-width: 970px) {
 	.main {
@@ -310,6 +313,9 @@ div.rsidebar-title p {
 		padding: 0px 15px 0px 15px;
 	}
 	.rsidebar {
+	}
+	div.center img {
+		max-width: 100%;
 	}
 }
 /*百度搜索框*/
