@@ -161,7 +161,7 @@ div.center p {
 }
 
 div.center img {
-	max-width: 80%;
+	max-width: 90%;
 	-webkit-box-shadow: 0 0 10px #555;
 	display:block;
 	margin:0 auto;
@@ -299,9 +299,6 @@ div.rsidebar-title p {
 	}
 	.rsidebar {
 		width:220px;
-	}
-	div.center img {
-		max-width: 90%;
 	}
 }
 @media (max-width: 970px) {
