@@ -2,8 +2,9 @@
 layout: default
 title: "淘宝天猫优惠券的正确领取方法：为要买的商品找到隐藏的优惠券！"
 createdate: "2019-04-15 22:26:03 +0800"
-changedate: "2019-04-27 14:40:26 +0800"
+changedate: "2019-05-05 23:27:15 +0800"
 categories: 好货
+permalink: /discount/
 tags: 好货
 keywords: 淘宝内部优惠券,天猫超市优惠券,淘宝优惠,天猫优惠,京东优惠券,优惠券
 description: 淘宝天猫优惠的正确领取方法，为要买的商品找到隐藏的优惠券，京东亚马逊拼多多唯品会准备中
