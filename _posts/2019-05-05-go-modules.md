@@ -3,7 +3,7 @@ layout: default
 title: "Go 1.11和1.12引入的新的依赖代码管理方法：Go Modules"
 author: 李佶澳
 createdate: "2019-05-05 15:42:04 +0800"
-changedate: "2019-05-06 14:31:38 +0800"
+changedate: "2019-05-06 14:38:53 +0800"
 categories: 编程
 tags: golang
 keywords: Go Modules,go.mod,go.sum,golang,go modules,Go代码依赖管理
@@ -267,11 +267,17 @@ rsc.io/quote/v3 v3.1.0
 
 ## 与IDE的结合
 
-在IntelliJ IDEA或者Goland中（需要是最新的2019.1版本）导入使用Go Module的项目的时候，要选择`Go Module（vgo）`，否则IDE找不到import导入的代码：
+### IntelliJ IDEA/Goland
 
-![IntelliJ IDEA或者Goland中创建Go Module项目]({{ site.imglocal }}/article/goland_create_vgo_project.png)
+在IntelliJ IDEA或者Goland中（`需要是最新的2019.1版本`）导入使用Go Module的项目的时候，要选择`Go Module（vgo）`，否则IDE找不到import导入的代码，[create-a-project-with-vgo-integration][3]有更多介绍：
 
-[create-a-project-with-vgo-integration][3]有更多介绍。
+![IntelliJ IDEA/Goland中创建Go Module项目]({{ site.imglocal }}/article/goland_create_vgo_project.png)
+
+在IntelliJ IDEA/Goland显示的依赖代码，带有版本号或者commit id：
+
+![IntelliJ IDEA/Goland中的显示的依赖代码]({{ site.imglocal }}/article/goland_import_pkg.png)
+
+### vim
 
 vim插件[vim-go](https://github.com/fatih/vim-go/issues/1906)从v1.19开始支持go.mod，但是代码跳转等还不支持。
 
