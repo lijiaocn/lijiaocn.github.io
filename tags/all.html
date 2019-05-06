@@ -4,8 +4,25 @@ title:  全部标签
 keywords:  手册,索引手册,参考手册,速查手册
 description: 视频教程,全部标签,手册汇总,用于快速查询
 notinclude: hidden
+includes:  [视频教程,envoy,kong,openresty,nginx,lua,hyperledger,kubernetes,prometheus]
 
 ---
+
+<h5>标签:</h5>
+<p>这些笔记的目的是“备忘”，记录的比较随意，特别是早期的笔记。有时候因为工作内容变化快，记录不连续。</p>
+<p>
+{% for tag in site.tags %}
+<span><a href="/tags/all.html#{{ tag[0] }}">{{ tag[0] }}</a>&nbsp&nbsp&nbsp</span>
+{% endfor %}
+</p>
+
+<h5>相对比较成系列的笔记:</h5>
+<ul>
+
+{% for tag in page.includes %}
+	<li><a href="/tags/all.html#{{ tag }}">{{ tag }}</a></li>
+{% endfor %}
+</ul>
 
 {% for tag in site.tags %}
 <h5><a id="{{ tag[0]}}" href="#{{tag[0]}}">{{ tag[0] }}:</a></h5>
