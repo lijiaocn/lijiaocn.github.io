@@ -18,6 +18,8 @@ description: "《惊奇队长》高清1080P下载地址大全：百度云网盘�
 
 **本站不存储任何视频文件，不提供下载服务和下载工具，只摘录网上的文本，只用于个人收藏**
 
+`如果迅雷提示“应版权方要求无法下载”， **到公众号【团购好货】中回复“下载工具”，亲测可行**`
+
 ![惊奇队长,captain marvel]({{ site.imglocal}}/movie/captain1.jpg)
 
 ![惊奇队长,captain marvel]({{ site.imglocal}}/movie/captain2.jpg)
