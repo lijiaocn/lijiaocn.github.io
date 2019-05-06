@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2019-03-13 18:08:46 +0800"
 changedate: "2019-03-19 10:50:46 +0800"
 categories: 项目
-tags: kong 视频教程
+tags: lua
 keywords: kong,kong 1.0.3,代码学习
 description: "学习一下kong 1.0.3的plugin，看一下plugin是怎样加载的，加载时作了哪些检查以及插件应该如何实现"
 ---

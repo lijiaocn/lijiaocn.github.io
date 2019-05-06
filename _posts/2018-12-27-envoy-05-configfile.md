@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2018-12-27 10:55:12 +0800"
 changedate: "2019-02-12 16:13:40 +0800"
 categories: 项目
-tags: envoy 视频教程
+tags: envoy
 keywords: envoy配置文件,envoy完整配置,dynamic_resources,static_resource,runtime
 description: 将envoy的配置文件完全展开，形成全景式认识，适用envoy 1.8.0
 ---

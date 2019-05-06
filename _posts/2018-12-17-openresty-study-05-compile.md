@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2018-12-17 11:06:47 +0800"
 changedate: "2019-01-17 16:53:44 +0800"
 categories: 编程
-tags: openresty 视频教程
+tags: openresty
 keywords: openresty,nginx,lua,openresty开发
 description: 需要了解一下OpenResty的原理和编译构建方法，以后或许可能要根据需要定制OpenResty
 ---

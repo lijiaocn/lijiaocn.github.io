@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2019-01-07 11:27:27 +0800"
 changedate: "2019-02-12 16:14:11 +0800"
 categories: 项目
-tags: envoy 视频教程
+tags: envoy
 keywords: envoy ads,envoy动态配置,envoy management server,envoy服务发现,cds,lds,ads,xds协议
 description: ADS(Aggregated Discovery Service)可以将所有的动态配置聚合，有序地发送给envoy
 ---

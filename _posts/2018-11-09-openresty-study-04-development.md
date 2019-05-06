@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2018-11-09 17:57:24 +0800"
 changedate: "2018-11-09 17:57:24 +0800"
 categories: 编程
-tags: openresty 视频教程
+tags: openresty
 keywords: openresty,nginx,lua,openresty开发
 description: 基于OpenResty的项目开发中，经常用到的操作，譬如读取nginx内置变量、打印调试日志等
 ---

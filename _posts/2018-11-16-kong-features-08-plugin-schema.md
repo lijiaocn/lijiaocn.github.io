@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2018/11/16 14:33:00
 changedate: 2018/11/16 14:33:00
 categories: 项目
-tags: 视频教程 kong 
+tags: kong 
 keywords: kong,apigateway,API网关,plugin
 description: 模仿kong中已经有的插件，自己动手写一个，熟悉插件的开发流程
 

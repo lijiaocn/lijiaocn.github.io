@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2018/07/15 17:38:00
 changedate: 2018/07/29 13:05:29
 categories: 问题
-tags: HyperLedger
+tags: hyperledger
 keywords: 超级账本,nodejs sdk,fabric sdk,hyperledger
 description: 这里记录使用HyperLedger Fabric的nodejs sdk时遇到的一些问题
 

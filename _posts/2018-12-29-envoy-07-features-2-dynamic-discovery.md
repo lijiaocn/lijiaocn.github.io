@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2018-12-29 10:53:58 +0800"
 changedate: "2019-02-12 16:14:03 +0800"
 categories: 项目
-tags: envoy 视频教程
+tags: envoy
 keywords: envoy动态配置,envoy management server,envoy服务发现,cds,lds,ads,xds协议
 description: 可以通过Management Server动态配置listener、cluster、endpoint、route等envoy用到的资源
 ---

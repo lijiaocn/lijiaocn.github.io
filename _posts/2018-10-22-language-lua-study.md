@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2018/10/22 17:10:00
 changedate: 2018/10/22 17:10:00
 categories: 编程
-tags: lua 视频教程
+tags: lua
 keywords:  lua,编程语言,idea,luarocsk,lua代码调试
 description: 最近研究kong，它的数据平面使用的语言是Lua，学习一下Lua的基本语法、项目组织方式、在Idea中开发调试Lua项目的方法，和其它配套工具
 

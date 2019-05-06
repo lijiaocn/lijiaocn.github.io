@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2018-11-19 13:57:37 +0800"
 changedate: "2018-11-19 13:57:37 +0800"
 categories: 项目
-tags: 视频教程 nginx 
+tags: nginx  
 keywords: nginx,学习笔记
 description: 在学习kong的时候简单学习了nginx和openresty，大概搞清楚了kong和openresty的工作原理，还需要对nginx做深入了解
 ---

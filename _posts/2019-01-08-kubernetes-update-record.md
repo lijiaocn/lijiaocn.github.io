@@ -3,17 +3,16 @@ layout: default
 title: "Kubernetes版本特性：新特性支持版本和组件兼容版本"
 author: 李佶澳
 createdate: "2019-01-08 16:00:22 +0800"
-changedate: "2019-05-05 11:09:45 +0800"
+changedate: "2019-05-06 16:42:32 +0800"
 categories: 项目
 tags:  kubernetes
 keywords: kubernetes
-description: "Kubernetes每个版本特性，关注新特性的支持版本和主要组件兼容版本，主要收集文档连接“
+description: "Kubernetes每个版本特性，关注新特性的支持版本和主要组件兼容版本，主要收集文档连接"
 ---
 
 * auto-gen TOC:
 {:toc}
 
-z
 ## 说明
 
 Kubernetes每个版本特性，关注新特性的支持版本和主要组件兼容版本，主要收集文档连接，根据工作情况随时更新。

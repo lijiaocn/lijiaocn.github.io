@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2018/10/18 11:14:00
 changedate: 2018/10/18 11:14:00
 categories: 项目
-tags: 视频教程 kong 
+tags: kong 
 keywords: kong,apigateway,API网关
 description: Kong的plugins中列出了Kong的社区版支持的一些插件，这里尝试使用一下其中的认证插件
 

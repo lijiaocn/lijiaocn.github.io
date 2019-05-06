@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2018-11-23 19:07:38 +0800"
 changedate: "2018-11-23 19:07:38 +0800"
 categories: 项目
-tags: 视频教程 nginx 
+tags: nginx  
 keywords: nginx,学习笔记
 description: 发现一份非常好的nginx性能调优文档，讲的很细致
 ---

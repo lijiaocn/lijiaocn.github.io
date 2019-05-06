@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2018-12-03 10:20:54 +0800"
 changedate: "2019-03-05 15:00:34 +0800"
 categories: 项目
-tags: 视频教程 kong 
+tags: kong 
 keywords: kong,apigateway,API网关,压力测试,benchmark
 description: "Kong在生产环境中的部署与性能测试方法中简单测试过kong的性能，当时环境有限，只是用虚拟机大概估计了下"
 ---

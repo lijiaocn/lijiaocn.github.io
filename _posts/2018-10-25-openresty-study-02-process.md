@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2018/10/28 21:54:00
 changedate: 2018/10/28 21:54:00
 categories: 编程
-tags: openresty 视频教程
+tags: openresty
 keywords: openresty,nginx,lua,openresty开发
 description: 组成OpenResty的各个模块的用途和工作过程，Nginx、NginxLuaModule等模块以及引入的lua package的用途和用法
 

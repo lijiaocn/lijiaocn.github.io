@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2018-11-20 16:43:45 +0800"
 changedate: "2019-03-05 14:59:09 +0800"
 categories: 项目
-tags: 视频教程 kong 
+tags: kong 
 keywords: kong,apigateway,API网关,KongIngress
 description:  KongIngress中提供了Ingress之外的配置项，可以通过这些配置项，控制请求转发过程
 ---

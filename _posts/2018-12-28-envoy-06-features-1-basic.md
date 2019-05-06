@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2018-12-28 11:26:10 +0800"
 changedate: "2019-02-12 16:13:52 +0800"
 categories: 项目
-tags: envoy 视频教程
+tags: envoy
 keywords: envoy使用,envoy监控数据采集,runtime,watchdog,filter
 description: envoy的一些简单功能，例如管理接口、运行参数、看门狗、runtime等简单功能的使用方法
 ---

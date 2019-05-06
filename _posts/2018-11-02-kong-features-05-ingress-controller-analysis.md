@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2018-11-05 10:52:44 +0800"
 changedate: "2019-03-05 14:56:51 +0800"
 categories: 项目
-tags: 视频教程 kong 
+tags: kong 
 keywords: kong,apigateway,API网关,code,代码分析
 description: Ingress Controller可以将Kong与Kubernetes无缝集成，自动将kubernetes中的操作同步到kong中
 ---

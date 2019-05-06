@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2019-03-11 14:54:29 +0800"
 changedate: "2019-03-11 16:31:09 +0800"
 categories: 项目
-tags: kong 视频教程
+tags: lua
 keywords: kong,IntelliJ Idea,开发环境,代码阅读
 description: 使用IntelliJ Idea查看编写kong的代码，安装EmmyLua插件，支持lua代码跳转和debug，luarocs安装依赖
 ---

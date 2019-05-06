@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2018-10-15 11:50:58 +0800"
 changedate: "2019-03-13 15:24:58 +0800"
 categories: 问题
-tags: kong 视频教程
+tags: lua
 keywords: kong,apigatway,问题解决,kong的使用
 description: 这里记录使用Kong时遇到的问题，以及找到的解决方法
 ---

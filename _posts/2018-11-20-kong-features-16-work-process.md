@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2018-11-20 17:08:27 +0800"
 changedate: "2019-03-13 16:40:50 +0800"
 categories: 项目
-tags: 视频教程 kong 
+tags: kong 
 keywords: kong,apigateway,API网关
 description: 刚刚才发现kong的网页上有一篇文档非常详细的介绍了kong转发请求的过程
 ---

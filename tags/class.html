@@ -3,109 +3,13 @@ layout: category
 title:  系列教程
 keywords:  手册,索引手册,参考手册,速查手册
 description: 视频教程,全部标签,手册汇总,用于快速查询
-
+includes:  [视频教程,envoy,kong,openresty,nginx,lua,hyperledger,kubernetes,prometheus]
 ---
 
-<h5>系列教程:</h5>
+<h5>系列笔记:</h5>
 <ul>
 
-
-{% for tag in site.tags %}
-	{% if tag[0] == "8元小课" %}
-		{% for post in tag[1] %}
-		<li><a href="{{ site.baseurl }}{{ post.url }}">《{{ post.title }}》</a></li>
-		{% endfor %}
-	{% endif %}
-{% endfor %}
-</ul>
-
-
-<ul>
-{% for post in site.tags.envoy %}
-	{% for t in post.tags %}
-		{% if t == "视频教程" %}
-			<li><a href="{{ site.baseurl }}{{ post.url }}">《{{ post.title }}》</a></li>
-		{% endif %}
-	{% endfor %}
-{% endfor %}
-</ul>
-
-<ul>
-{% for post in site.tags.kong %}
-	{% for t in post.tags %}
-		{% if t == "视频教程" %}
-			<li><a href="{{ site.baseurl }}{{ post.url }}">《{{ post.title }}》</a></li>
-		{% endif %}
-	{% endfor %}
-{% endfor %}
-</ul>
-
-<ul>
-{% for post in site.tags.openresty %}
-	{% for t in post.tags %}
-		{% if t == "视频教程" %}
-			<li><a href="{{ site.baseurl }}{{ post.url }}">《{{ post.title }}》</a></li>
-		{% endif %}
-	{% endfor %}
-{% endfor %}
-</ul>
-
-<ul>
-{% for post in site.tags.nginx %}
-	{% for t in post.tags %}
-		{% if t == "视频教程" %}
-			<li><a href="{{ site.baseurl }}{{ post.url }}">《{{ post.title }}》</a></li>
-		{% endif %}
-	{% endfor %}
-{% endfor %}
-</ul>
-
-<ul>
-{% for post in site.tags.lua %}
-	{% for t in post.tags %}
-		{% if t == "视频教程" %}
-			<li><a href="{{ site.baseurl }}{{ post.url }}">《{{ post.title }}》</a></li>
-		{% endif %}
-	{% endfor %}
-{% endfor %}
-</ul>
-
-<ul>
-{% for post in site.tags.HyperLedgerCode %}
-	{% for t in post.tags %}
-		{% if t == "视频教程" %}
-			<li><a href="{{ site.baseurl }}{{ post.url }}">《{{ post.title }}》</a></li>
-		{% endif %}
-	{% endfor %}
-{% endfor %}
-</ul>
-
-<ul>
-{% for post in site.tags.HyperLedger %}
-	{% for t in post.tags %}
-		{% if t == "视频教程" %}
-			<li><a href="{{ site.baseurl }}{{ post.url }}">《{{ post.title }}》</a></li>
-		{% endif %}
-	{% endfor %}
-{% endfor %}
-</ul>
-
-<ul>
-{% for post in site.tags.kubernetes %}
-	{% for t in post.tags %}
-		{% if t == "视频教程" %}
-			<li><a href="{{ site.baseurl }}{{ post.url }}">《{{ post.title }}》</a></li>
-		{% endif %}
-	{% endfor %}
-{% endfor %}
-</ul>
-
-<ul>
-{% for post in site.tags.prometheus %}
-	{% for t in post.tags %}
-		{% if t == "视频教程" %}
-			<li><a href="{{ site.baseurl }}{{ post.url }}">《{{ post.title }}》</a></li>
-		{% endif %}
-	{% endfor %}
+{% for tag in page.includes %}
+	<li><a href="/tags/all.html#{{ tag }}">{{ tag }}</a></li>
 {% endfor %}
 </ul>

@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2018/11/30 10:33:00
 changedate: 2018/11/30 10:33:00
 categories: 项目
-tags: 视频教程 kong 
+tags: kong 
 keywords: kong,apigateway,API网关
 description: 这里详细介绍Kkong Ingress Controller定义的CRD的使用方法
 

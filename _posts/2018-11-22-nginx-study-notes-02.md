@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2018-11-22 18:17:36 +0800"
 changedate: "2018-11-22 18:17:36 +0800"
 categories: 项目
-tags: 视频教程 nginx 
+tags: nginx  
 keywords: nginx,学习笔记
 description: 研究一下nginx的配置项，这是一项持续性的工作，力求全面覆盖
 ---

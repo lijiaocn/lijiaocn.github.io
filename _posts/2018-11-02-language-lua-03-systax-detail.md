@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2018-11-02 18:40:59 +0800"
 changedate: "2019-03-12 20:39:19 +0800"
 categories: 编程
-tags: lua 视频教程
+tags: lua
 keywords:  lua,编程语言,idea,luarocsk,lua语法细节
 description: 这里记录Lua语言的一些语法细节，边学习边记录，随时补充
 ---

@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2018-10-25 10:12:32 +0800"
 changedate: "2018-10-25 10:12:32 +0800"
 categories: 编程
-tags: openresty 视频教程
+tags: openresty
 keywords: openresty,nginx,lua,openresty开发
 description: OpenResty是什么？被扩展的Nginx，扩展到可以直接执行Lua代码，处理业务逻辑，访问缓存和数据库等，已经成为一个Web应用开发平台
 ---

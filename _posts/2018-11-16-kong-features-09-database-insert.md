@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2018-11-16 18:00:46 +0800"
 changedate: "2019-03-05 14:58:28 +0800"
 categories: 项目
-tags: 视频教程 kong 
+tags: kong 
 keywords: kong,apigateway,API网关,plugin
 description: 向数据库中插入记录的时候，会进行插入校验，校验过程会用到schema中定义的类型以及校验函数
 ---

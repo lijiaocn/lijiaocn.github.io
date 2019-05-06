@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2018-11-06 17:17:02 +0800"
 changedate: "2019-03-05 14:57:13 +0800"
 categories: 项目
-tags: 视频教程 kong 
+tags: kong 
 keywords: kong,apigateway,websocket
 description: nginx原生支持websocket，基于nginx的kong对websocket也支持
 ---

@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2018/10/22 15:07:00
 changedate: 2018/10/22 15:07:00
 categories: 项目
-tags: 视频教程 kong 
+tags: kong 
 keywords: kong,apigateway,API网关
 description:  在试验Kong的安全插件时，发现不起作用，需要分析一下Kong的数据平面的实现
 

@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2019-01-07 14:52:23 +0800"
 changedate: "2019-02-12 16:14:29 +0800"
 categories: 项目
-tags: envoy 视频教程
+tags: envoy
 keywords: envoy,envoy proxy,envoy的使用约束,envoy的配置文件
 description: envoy有自己的一些使用规范，譬如配置文件envoy.yaml中有的名称或端口是可以重复的有些不可以重复的
 ---

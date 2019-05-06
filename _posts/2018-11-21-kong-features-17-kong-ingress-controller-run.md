@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2018-11-21 16:08:54 +0800"
 changedate: "2019-03-21 14:48:06 +0800"
 categories: 项目
-tags: 视频教程 kong 
+tags: kong 
 keywords: kong,apigateway,API网关
 description: 之前看过kong的ingresss controller的实现，这里记录一下它的用法，主要是命令行参数和运行
 ---

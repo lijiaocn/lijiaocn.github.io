@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2018-11-02 16:31:57 +0800"
 changedate: "2018-11-02 16:31:57 +0800"
 categories: 编程
-tags: openresty 视频教程
+tags: openresty
 keywords: openresty,nginx,lua,openresty开发
 description: 通过火焰图观察OpenResty函数调用情况，每个函数的调用耗时，找出性能瓶颈
 ---

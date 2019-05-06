@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2018-11-19 17:16:07 +0800"
 changedate: "2019-03-05 14:58:51 +0800"
 categories: 项目
-tags: 视频教程 kong 
+tags: kong 
 keywords: kong,apigateway,API网关
 description: 了解了kong的工作原理，对代码结构也熟悉了，接下来需要了解kong的api，掌握了api才能更熟练的应用kong，比如开发一套图形界面的管理系统，调用kong的api下发相关的配置。
 ---

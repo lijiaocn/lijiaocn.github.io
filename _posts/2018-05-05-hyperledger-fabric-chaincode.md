@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2018/04/03 10:07:00
 changedate: 2018/07/29 13:04:26
 categories: 项目
-tags: HyperLedger
+tags: hyperledger
 keywords: 超级账本,HyperLedger,Fabric,Chaincode,合约链码
 description: "学习写一下chaincode,Hyperledger fabric的chaincode可以使用Go、Node.js、Java等语言开发"
 

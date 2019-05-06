@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2018/10/28 13:42:00
 changedate: 2018/10/28 13:42:00
 categories: 编程
-tags: lua 视频教程
+tags: lua
 keywords:  lua,编程语言,idea,luarocsk,lua代码调试
 description: 这里简单记录Lua的语法，直接罗列语法，定位是一个速查手册，不进行长篇大论
 
