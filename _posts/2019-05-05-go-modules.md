@@ -3,7 +3,7 @@ layout: default
 title: "Go 1.11和1.12引入的新的依赖代码管理方法：Go Modules"
 author: 李佶澳
 createdate: "2019-05-05 15:42:04 +0800"
-changedate: "2019-05-05 19:41:38 +0800"
+changedate: "2019-05-06 14:31:38 +0800"
 categories: 编程
 tags: golang
 keywords: Go Modules,go.mod,go.sum,golang,go modules,Go代码依赖管理
@@ -265,11 +265,26 @@ rsc.io/quote/v3 v3.1.0
 
 将自己的package与rsc.io/quote对比了下，区别是rsc.io/quote和rsc.io/quote/v3本身是用Go Modules管理的，这个特性似乎只能在Go Modules引用Go Modules的情况下使用。时间关系，没有继续试验，有需求的时候再试验下。
 
-## 参考
+## 与IDE的结合
 
+在IntelliJ IDEA或者Goland中（需要是最新的2019.1版本）导入使用Go Module的项目的时候，要选择`Go Module（vgo）`，否则IDE找不到import导入的代码：
+
+![IntelliJ IDEA或者Goland中创建Go Module项目]({{ site.imglocal }}/article/goland_create_vgo_project.png)
+
+[create-a-project-with-vgo-integration][3]有更多介绍。
+
+vim插件[vim-go](https://github.com/fatih/vim-go/issues/1906)从v1.19开始支持go.mod，但是代码跳转等还不支持。
+
+所有使用GOPATH进行代码跳转的工具都需要被更新，[cmd/go: track tools/tooling updates to support modules][4]列出了它们对go module的支持情况。
+
+## 参考
 
 1. [Using Go Modules][1]
 2. [Where is the module cache in golang?][2]
+3. [create-a-project-with-vgo-integration][3]
+4. [cmd/go: track tools/tooling updates to support modules][4]
 
 [1]: https://blog.golang.org/using-go-modules "Using Go Modules"
 [2]: https://stackoverflow.com/questions/52126923/where-is-the-module-cache-in-golang "Where is the module cache in golang?"
+[3]: https://www.jetbrains.com/help/go/create-a-project-with-vgo-integration.html "create-a-project-with-vgo-integration"
+[4]: https://github.com/golang/go/issues/24661 "cmd/go: track tools/tooling updates to support modules"
