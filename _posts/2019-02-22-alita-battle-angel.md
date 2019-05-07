@@ -2,19 +2,22 @@
 layout: default
 title: "【附截图】阿丽塔:战斗天使高清1080P下载！百度云网盘、迅雷BT种子、磁力链magnet"
 createdate: "2019-02-22 23:29:10 +0800"
-changedate: "2019-04-28 10:39:05 +0800"
+changedate: "2019-05-06 20:22:10 +0800"
 categories: hidden
 tags: 好货
 keywords: 阿丽塔战斗天使,阿丽塔,战斗天使,下载,在线电影,百度云网盘,迅雷BT种子,磁力链magnet
 description: "《阿丽塔:战斗天使》高清1080P下载地址大全：百度云网盘下载、迅雷BT种子下载、磁力链magnet下载地址，推荐下载【2.42G】高清！！1080P 阿丽塔：战斗天使.Alita.Battle.Angel.2019.HD1080P.X264.AAC.CHS.torrent，高清经过验证"
 ---
 
+{% include movies.md %}
 
 ## 【2.42G】高清！！1080P 阿丽塔：战斗天使 
 
 **关注微信公众号**【[团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png)】 **，回复“战斗天使”获取，还有红包可领，亲测可行：**
 
 **本站不存储任何视频文件，不提供下载服务和下载工具，只摘录网上的文本，只用于个人收藏**
+
+`如果迅雷提示“应版权方要求无法下载”， **到公众号【团购好货】中回复“下载工具”，亲测可行**`
 
 ![阿丽塔：战斗天使.Alita.Battle.Angel.2019.HD1080P.X264.AAC.CHS-1]({{ site.imglocal}}/movie/alita1.jpeg)
 
@@ -23,8 +26,6 @@ description: "《阿丽塔:战斗天使》高清1080P下载地址大全：百度
 ![阿丽塔：战斗天使.Alita.Battle.Angel.2019.HD1080P.X264.AAC.CHS-3]({{ site.imglocal}}/movie/alita3.jpeg)
 
 终于找到高清的资源了！只有极少部分画面被在屏幕中央打上文字水印，和[《流浪地球》](https://www.lijiaocn.com/hidden/2019/02/11/liu-lang-di-qiu-bt-collection.html)的情况一样，显然是同一批人搞出来的，他们到底是谁、何方神圣。。。。（低调使用不传播！）
-
-{% include movies.md %}
 
 ## 《阿丽塔：战斗天使》迅雷种子、磁力链前期汇总（下面这些画质较差）
 

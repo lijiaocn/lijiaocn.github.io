@@ -10,19 +10,21 @@ description: "《惊奇队长》高清1080P下载地址大全：百度云网盘�
 
 ---
 
+{% include movies.md %}
+
 ## 【2.45G】高清！！1080P 惊奇队长HDTC1080P清晰英语无字.mp4
 
 **关注微信公众号**【[团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png)】 **，回复“惊奇队长”获取，还有红包可领，亲测可行：**
 
 **本站不存储任何视频文件，不提供下载服务和下载工具，只摘录网上的文本，只用于个人收藏**
 
+`如果迅雷提示“应版权方要求无法下载”， **到公众号【团购好货】中回复“下载工具”，亲测可行**`
+
 ![惊奇队长,captain marvel]({{ site.imglocal}}/movie/captain1.jpg)
 
 ![惊奇队长,captain marvel]({{ site.imglocal}}/movie/captain2.jpg)
 
 ![惊奇队长,captain marvel]({{ site.imglocal}}/movie/captain3.jpg)
-
-{% include movies.md %}
 
 ## 【1.7G】枪版没法看，惊奇队长 Captain.Marvel. 2019.TC720P. X264.AAC.国语.mp4
 
