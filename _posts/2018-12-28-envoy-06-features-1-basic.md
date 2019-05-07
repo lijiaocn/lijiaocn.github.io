@@ -3,7 +3,7 @@ layout: default
 title: "Envoy Proxy使用介绍教程（六）：envoy一些简单功能/基础配置的使用方法"
 author: 李佶澳
 createdate: "2018-12-28 11:26:10 +0800"
-changedate: "2019-02-12 16:13:52 +0800"
+changedate: "2019-05-07 18:50:28 +0800"
 categories: 项目
 tags: envoy
 keywords: envoy使用,envoy监控数据采集,runtime,watchdog,filter
@@ -14,6 +14,8 @@ description: envoy的一些简单功能，例如管理接口、运行参数、�
 {:toc}
 
 ## 说明
+
+这些笔记都是边学习边记录的，时间比较紧，记录的比较粗糙，[envoy相关笔记](https://www.lijiaocn.com/tags/all.html#envoy)。
 
 **TODO:**
 
@@ -37,28 +39,6 @@ description: envoy的一些简单功能，例如管理接口、运行参数、�
 - [ ] cluster manager 用途研究
 
 动态配置的使用，即xDS的用法，见[Envoy Proxy使用介绍教程（七）：envoy动态配置xDS的使用方法](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/29/envoy-07-features-2-dynamic-discovery.html)
-
-该系列所有笔记可以在[系列教程汇总](https://www.lijiaocn.com/tags/class.html)中找到。
-
-[《Envoy Proxy使用介绍教程（一）：新型L3~L7层访问代理软件Envoy的使用》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/12/envoy-01-usage.html)
-
-[《Envoy Proxy使用介绍教程（二）：envoy源代码阅读、集成开发环境(IDE)》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/17/envoy-02-ide.html)
-
-[《Envoy Proxy使用介绍教程（三）：envoy设计思路、配置文件和功能特性概览》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/20/envoy-03-arch.html)
-
-[《Envoy Proxy使用介绍教程（四）：envoy源代码走读&启动过程分析》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/24/envoy-04-codes.html)
-
-[《Envoy Proxy使用介绍教程（五）：envoy的配置文件完全展开介绍》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/27/envoy-05-configfile.html)
-
-[《Envoy Proxy使用介绍教程（六）：envoy一些简单功能/基础配置的使用方法》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/28/envoy-06-features-1-basic.html)
-
-[《Envoy Proxy使用介绍教程（七）：envoy动态配置xDS的使用方法》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/12/29/envoy-07-features-2-dynamic-discovery.html)
-
-[《Envoy Proxy使用介绍教程（八）：envoy动态配置-聚合发现ADS的使用方法》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2019/01/07/envoy-08-features-3-dynamic-discovery-ads.html)
-
-[《Envoy Proxy使用介绍教程（九）：envoy的应用方法与使用约束》](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2019/01/07/envoy-09-usage-rules.html)
-
-都是边学习边记录的，时间比较紧，难免有些地方记录的比较粗糙，[查看更多相关内容](https://www.lijiaocn.com/tags/class.html)。
 
 ## admin接口
 
