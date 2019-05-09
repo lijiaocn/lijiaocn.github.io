@@ -1,11 +1,11 @@
 ---
 layout: default
-title: "Nginx-ingress-controller的nginx配置因支持websocket，使upstream的keep-alive不生效"
+title: "Kubrenetes的Nginx Ingress的0.20之前的版本，upstream的keep-alive不生效"
 author: 李佶澳
 createdate: "2019-05-08 15:05:39 +0800"
-changedate: "2019-05-08 20:10:03 +0800"
+changedate: "2019-05-09 13:31:05 +0800"
 categories: 问题
-tags: nginx
+tags: nginx kubernetes
 cover:
 keywords: nginx,upstream,keep-alive
 description: "抓包发现nginx发起的到upstream连接中只有一个请求，http头中connection字段是close，连接是被upstream主动断开的"
@@ -258,7 +258,37 @@ Connection: keep-alive
 Server: echoserver
 ```
 
-把`keepalive_timeout 60s;`中的时间调大，会看到请求端停止请求之后，nginx与upstream还有连接。
+把`keepalive_timeout 60s;`调大，会看到请求端停止请求之后，nginx与upstream还有连接。
+
+## 最终结论
+
+刚开始怀疑是因历史原因修改了nginx.tmpl导致的，但是通过比对nginx-ingress-controller 0.24.0和问题环境中0.9.0，以及原始的0.9.0中的nginx.tmpl，发现这是0.9.0版本中的一个bug。
+
+0.24.0的配置模板中设置map的时候，会根据$cfg.UpstreamKeepaliveConnections的值做不同设置：
+
+```go
+# See https://www.nginx.com/blog/websocket-nginx
+map $http_upgrade $connection_upgrade {
+    default          upgrade;
+    {{ if (gt $cfg.UpstreamKeepaliveConnections 0) }}
+    # See http://nginx.org/en/docs/http/ngx_http_upstream_module.html#keepalive
+    ''               '';
+    {{ else }}
+    ''               close;
+    {{ end }}
+}
+```
+
+0.9.0中则没有考虑keepalive的因素：
+
+```go
+map $http_upgrade $connection_upgrade {
+    default          upgrade;
+    ''               close;
+}
+```
+
+翻阅[ChangeLog](https://github.com/kubernetes/ingress-nginx/blob/master/Changelog.md)，这个问题是在0.20.0版本修复的[make upstream keepalive work for http #3098](https://github.com/kubernetes/ingress-nginx/pull/3098)
 
 ## 参考
 
