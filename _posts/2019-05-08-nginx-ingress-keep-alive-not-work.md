@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "Kubrenetes的Nginx Ingress的0.20之前的版本，upstream的keep-alive不生效"
+title: "Kubrenetes的Nginx Ingress 0.20之前的版本，upstream的keep-alive不生效"
 author: 李佶澳
 createdate: "2019-05-08 15:05:39 +0800"
-changedate: "2019-05-09 13:31:05 +0800"
+changedate: "2019-05-09 13:45:31 +0800"
 categories: 问题
 tags: nginx kubernetes
 cover:
@@ -194,7 +194,7 @@ map $http_upgrade $connection_upgrade {
 proxy_http_version          1.1;
 ```
 
-## 修改验证
+## 修改并验证
 
 在测试环境更新nginx配置，将默认行为设置为“Connection: ""”，看一下能否解决问题。更新后的配置如下：
 
@@ -262,11 +262,11 @@ Server: echoserver
 
 ## 最终结论
 
-刚开始怀疑是因历史原因修改了nginx.tmpl导致的，但是通过比对nginx-ingress-controller 0.24.0和问题环境中0.9.0，以及原始的0.9.0中的nginx.tmpl，发现这是0.9.0版本中的一个bug。
+刚开始怀疑是因历史原因修改了nginx.tmpl导致的，但是通过比对nginx-ingress-controller 0.24.0、问题环境中0.9.0以及原始的0.9.0中的nginx.tmpl，发现这是0.9.0版本中的一个bug。
 
 0.24.0的配置模板中设置map的时候，会根据$cfg.UpstreamKeepaliveConnections的值做不同设置：
 
-```go
+```conf
 # See https://www.nginx.com/blog/websocket-nginx
 map $http_upgrade $connection_upgrade {
     default          upgrade;
@@ -281,18 +281,18 @@ map $http_upgrade $connection_upgrade {
 
 0.9.0中则没有考虑keepalive的因素：
 
-```go
+```conf
 map $http_upgrade $connection_upgrade {
     default          upgrade;
     ''               close;
 }
 ```
 
-翻阅[ChangeLog](https://github.com/kubernetes/ingress-nginx/blob/master/Changelog.md)，这个问题是在0.20.0版本修复的[make upstream keepalive work for http #3098](https://github.com/kubernetes/ingress-nginx/pull/3098)
+翻阅[ChangeLog](https://github.com/kubernetes/ingress-nginx/blob/master/Changelog.md)找到了这个问题的修复记录，是在0.20.0版本修复的：[make upstream keepalive work for http #3098](https://github.com/kubernetes/ingress-nginx/pull/3098)。
 
 ## 参考
 
-1. [nginx keep-alive][1]
+1. [Nginx keep-alive][1]
 2. [NGINX Ingress Controller][2]
 3. [WebSocket proxying][3]
 
