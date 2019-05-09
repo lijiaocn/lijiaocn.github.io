@@ -3,7 +3,7 @@ layout: default
 title: "Kubernetes的Pod无法删除，glusterfs导致docker无响应，集群雪崩"
 author: 李佶澳
 createdate: "2019-04-08 10:10:10 +0800"
-changedate: "2019-04-23 18:05:11 +0800"
+changedate: "2019-05-09 17:46:09 +0800"
 categories: 问题
 tags: kubernetes
 keywords: kubernetes,terminating,pod,docker hang,glusterfs,NotReady
@@ -15,17 +15,15 @@ description: 故障容器都挂载了glusterfs，不可用的node上也有，这
 
 ## 结论
 
-该问题的调查过程相当曲折，后面的过程只记录了调查Pod无法删除的过程。
+该问题的调查过程相当曲折，这里只记录了Pod无法删除的调查过程。最终调查发现，下面这三个问题都是因为容器挂载了glusterfs导致的：
 
-最终调查发现，下面这三个问题都是同一个原因导致的：
-
-1. Pod无法删除
+1. pod无法删除
 2. docker ps无响应
 3. kubelet异常node突然不可用，并且发生雪崩式扩散，十几分钟内几十台故障
 
-因为历史遗留问题，这些故障容器都挂载了glusterfs，突然不可用的node上也有这样的容器。这些容器突然故障，随后被重新调度到哪里，哪个node就随之崩溃。 
+因为历史遗留问题，一些容器都挂载了glusterfs，这些容器中的一部分突然故障，随后被重新调度，漂移到哪个node，哪个node就随之崩溃，同时发现这些容器中的一部分一直在Terminating状态，无法删除。
 
-将glusterfs卸载之后，删不掉的容器被成功删除，node突然不可用的现象也未出现。通过分析故障node的上日志，发现这些node没有成功创建挂载了glusterfs的容器，随即docker ps无响应，最终node变成NotReady状态。
+通过分析故障node的上日志，发现不可用的node在创建pod时，首先没有成功创建要挂载glusterfs的容器，随即docker ps无响应，最后导致node变成NotReady状态。将glusterfs卸载（进程杀死）之后，删不掉的容器被成功删除，docker ps也有响应了。
 
 ## 现象
 
@@ -46,7 +44,7 @@ Events:
 
 ## 调查
 
-Kubelet中显示删除失败，是调用preStop的命令失败，和describe中的一致：
+Kubelet中显示删除失败，调用preStop的命令失败，和describe中的一致：
 
 ```sh
 Apr 08 13:33:44 kube-cluster-node-xxx kubelet[27666]: E0408 13:33:44.466398   27666 remote_runtime.go:229] StopContainer "17619dcf545c0936b5a5bad416c1fe50064547f49ba3f34721baf4201f242c1b" from runtime service failed: rpc error: code = Unknown desc = operation timeout: context deadline exceeded
@@ -139,4 +137,4 @@ lrwxrwxrwx 1 root root 0 Mar 28 18:42 uts
 
 这时候发现该容器对应的pause容器早已经被删除。
 
-最后如本文开头所讲，卸载glusterfs之后，这些容器随即被成功删除。将glusterfs进程杀死之后，docker ps也能够响应了。
+最后如本文开头所讲，卸载glusterfs之后，这些容器随即被成功删除，将glusterfs进程杀死之后，docker ps也能够响应了。

@@ -3,9 +3,9 @@ layout: default
 title: "Kubrenetes的Nginx Ingress 0.20之前的版本，upstream的keep-alive不生效"
 author: 李佶澳
 createdate: "2019-05-08 15:05:39 +0800"
-changedate: "2019-05-09 14:30:25 +0800"
+changedate: "2019-05-09 17:50:54 +0800"
 categories: 问题
-tags: nginx kubernetes
+tags: kubernetes
 cover:
 keywords: nginx,upstream,keep-alive
 description: "nginx-ingress 0.20之前版本配置模板nginx.tmpl有Bug，使UpstreamKeepaliveConnections无效"
@@ -174,6 +174,7 @@ proxy_set_header                        Connection        $connection_upgrade;
 
 在配置模板文件/etc/nginx/template/nginx.tmpl中找到了这段配置的说明，这是nginx 1.3开始提供的[WebSocket proxying][3]代理功能：
 
+{% raw %}
 ```
 {{/* Whenever nginx proxies a request without a "Connection" header, the "Connection" header is set to "close" */}}
 {{/* when making the target request.  This means that you cannot simply use */}}
@@ -187,6 +188,7 @@ map $http_upgrade $connection_upgrade {
     ''               close;
 }
 ```
+{% endraw %}
 
 上面配置的影响是：当http请求头中没有Upgrade字段时，转发给upstream的请求被设置为“Connection: close”（nginx的默认行为）。keepalive因此而无效，之所以是HTTP/1.1，是因为配置文件有这样一样配置：
 
@@ -266,6 +268,7 @@ Server: echoserver
 
 0.24.0的配置模板中设置map的时候，会根据$cfg.UpstreamKeepaliveConnections的值做不同设置：
 
+{% raw %}
 ```conf
 # See https://www.nginx.com/blog/websocket-nginx
 map $http_upgrade $connection_upgrade {
@@ -278,15 +281,18 @@ map $http_upgrade $connection_upgrade {
     {{ end }}
 }
 ```
+{% endraw %}
 
 0.9.0中则没有考虑keepalive的因素：
 
+{% raw %}
 ```conf
 map $http_upgrade $connection_upgrade {
     default          upgrade;
     ''               close;
 }
 ```
+{% endraw %}
 
 翻阅[ChangeLog](https://github.com/kubernetes/ingress-nginx/blob/master/Changelog.md)找到了这个问题的修复记录，是在0.20.0版本修复的：[make upstream keepalive work for http #3098](https://github.com/kubernetes/ingress-nginx/pull/3098)。
 

@@ -3,9 +3,9 @@ layout: default
 title: "nginx、kong、enovy代理转发功能的性能测试结果对比"
 author: 李佶澳
 createdate: "2018-12-18 18:02:50 +0800"
-changedate: "2019-03-04 14:37:33 +0800"
+changedate: "2019-05-09 17:13:10 +0800"
 categories: 项目
-tags: envoy nginx kong
+tags: apigateway
 keywords: nginx,kong,envoy
 description: nginx、kong、envoy的代理转发能力对比，kong0.14.3，envoy 1.8.0，上次测试的延续
 ---
@@ -13,9 +13,10 @@ description: nginx、kong、envoy的代理转发能力对比，kong0.14.3，envo
 * auto-gen TOC:
 {:toc}
 
+
 ## 说明
 
-这篇是[API网关Kong学习笔记（十）：Kong在生产环境中的部署与性能测试方法][1]的延续，测试环境中的虚拟机换成了物理机，前半部分沿用之前的测试方法，后面高并发使用效率更高的wrk。
+这篇是[API网关Kong学习笔记（十）：Kong在生产环境中的部署与性能测试方法][1]的延续，测试环境中的虚拟机换成了物理机，前半部分沿用之前的测试方法，后面的高并发压测使用效率更高的wrk。
 
 kong0.14.3，envoy 1.8.0
 
