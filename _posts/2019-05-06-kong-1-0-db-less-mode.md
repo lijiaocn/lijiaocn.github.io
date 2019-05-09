@@ -3,7 +3,7 @@ layout: default
 title: "API网关Kong学习笔记（二十六）：Kong 1.1引入db-less模式，无数据库部署"
 author: 李佶澳
 createdate: "2019-05-06 16:23:26 +0800"
-changedate: "2019-05-07 18:43:04 +0800"
+changedate: "2019-05-09 14:25:20 +0800"
 categories: 项目
 tags: kong
 keywords: kong,apigateway,db-less,api网关
@@ -106,9 +106,7 @@ db-less的模式更实用、更简单，是以后的趋势。
 ## 延伸
 
 之前粗略了解过[envoy](https://www.lijiaocn.com/tags/all.html#envoy)，个人感觉envoy带后发优势，有全面清晰的接口，是一个更好的转发代理组件。
-那么是不是可以参照db-less的做法，为envoy写一个controller，组合成一个网关呢？
-
-翻出一直没细看的kubernetes文档——[Additional controllers][2]，早就有人这样做了：
+那么是不是可以参照db-less的做法，为envoy写一个controller，组合成一个网关呢？翻出一直没细看的kubernetes文档——[Additional controllers][2]，早就有人这样做了：
 
 |项目    |      数据平面   |   免费社区版    |   商业服务     |   主要贡献者   | Release次数/贡献人数 |
 |------------------------------------------------------------------------------|
@@ -116,13 +114,20 @@ db-less的模式更实用、更简单，是以后的趋势。
 |[Contour](https://github.com/heptio/contour) | envoy |  yes | no |  Heptio |23/57|
 |[Gloo](https://github.com/solo-io/gloo) | envoy |  yes | no | solo.io, Inc. |92/18|
 |[istio](https://github.com/istio/istio) |  envoy |  yes | no | Istio Community  |56/367|
-|[NGINX Ingress Controller for Kubernetes](https://www.nginx.com/products/nginx/kubernetes-ingress-controller) | nginx | yes | yes | NGINX, Inc |23/41|
+|[NGINX Ingress Controller from Nginx](https://www.nginx.com/products/nginx/kubernetes-ingress-controller) | nginx | yes | yes | NGINX, Inc |23/41|
+|[NGINX Ingress Controller from Kubernetes](https://github.com/kubernetes/ingress-nginx/)  | nginx | yes| no | Kubernetes Community | 50/377 |
 |[kong-ingress-controller](https://github.com/Kong/kubernetes-ingress-controller) | Kong(nginx/openresty)|  yes | yes | Kong Inc. | 13/27|
 |[traefik](https://github.com/containous/traefik) |  go binary| yes | yes | Containous Inc. |246/367|
 |[Voyager](https://github.com/appscode/voyager/) | haproxy  |   yes | no | AppsCode Inc. |78/48|
 |[jcmoraisjr/haproxy-ingress](https://github.com/jcmoraisjr/haproxy-ingress) |haproxy| yes| no |  jcmoraisj |54/23|
 |[citrix-k8s-ingress-controller](https://github.com/citrix/citrix-k8s-ingress-controller) | Citrix's MPX/VPX/CPX |  no |yes |  Citrix Systems, Inc.|0/11|
 |[F5 BIG-IP Controller for Kubernetes](https://clouddocs.f5.com/products/connectors/k8s-bigip-ctlr/v1.9/) | F5  hardware | no |yes | F5 .Inc |unknow|
+
+<br>
+上表有两个基于nginx的ingress-controller：
+
+1. [NGINX Ingress Controller from Nginx](https://github.com/nginxinc/kubernetes-ingress/)是Nginx官方维护的，[文档](https://www.nginx.com/products/nginx/kubernetes-ingress-controller)；
+2. [NGINX Ingress Controller from Kubernetes](https://github.com/kubernetes/ingress-nginx/)是Kubernetes社区维护的，[文档](https://kubernetes.github.io/ingress-nginx/how-it-works/)。
 
 ## 参考
 
