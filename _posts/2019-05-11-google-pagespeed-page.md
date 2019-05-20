@@ -23,7 +23,7 @@ description: PageSpeed Insigths用于展示网页的加载速度，诊断网页�
 
 ## 使用下一代图片格式
 
-JPEG 2000, JPEG XR, and WebP 的压缩效果比PNG、JPEG更好，可以减少图片体积，提高加载速度。
+JPEG 2000, JPEG XR, and WebP 的压缩效果比PNG、JPEG更好，可以减少图片体积，提高加载速度。图片色彩多的时候jpeg文件格式小，纯色图片png文件格式小。
 
 然而，这上来就是一个大坑，[Serve Images in Next-Gen Formats][2]中给出的数据显示，很多浏览器还不支持WebP、JEPE 2000、JPEG XR...
 
@@ -35,10 +35,10 @@ sips -s format 目标文件格式 -s formatOptions 图片效果  被转换文件
 例如：
 
 ```sh
-sips  -s format jpeg  -s formatOptions default  xiaomiquan-money.jpeg --out  xiaomiquan-money.jpeg
+sips  -s format jpeg  -s formatOptions default img.png--out  img.jpeg
 ```
 
-图片色彩多的时候jpeg文件格式小，纯色图片png文件格式小。
+sips的更多用法见[在命令行用sips进行图片格式转换、图片大小修改、图片属性设置等操作](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/05/12/sips-modify-img-cmd.html)。
 
 ## 去掉没有用到的css和js
 
