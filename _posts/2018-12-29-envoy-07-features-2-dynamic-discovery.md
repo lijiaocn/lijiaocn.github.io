@@ -3,7 +3,7 @@ layout: default
 title: "Envoy Proxy使用介绍教程（七）：envoy动态配置xDS的使用方法"
 author: 李佶澳
 createdate: "2018-12-29 10:53:58 +0800"
-changedate: "2019-05-07 18:50:49 +0800"
+changedate: "2019-05-20 11:18:53 +0800"
 categories: 项目
 tags: envoy
 keywords: envoy动态配置,envoy management server,envoy服务发现,cds,lds,ads,xds协议
@@ -1243,7 +1243,7 @@ static_resources:
     http2_protocol_options: {}
 ```
 
-ADS的使用单独列一篇：[Envoy Proxy使用介绍教程（八）：envoy动态配置ADS的使用方法][6]
+ADS的使用单独列一篇：[Envoy Proxy使用介绍教程（八）：envoy动态配置ADS的使用方法](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2019/01/07/envoy-08-features-3-dynamic-discovery-ads.html)
 
 ## 参考
 
@@ -1252,11 +1252,9 @@ ADS的使用单独列一篇：[Envoy Proxy使用介绍教程（八）：envoy动
 3. [Envoy: XDS_PROTOCOL][3]
 4. [data-plane-api][4]
 5. [Go实现grpc server和grpc client(protobuf格式消息通信)介绍教程][5]
-6. [Envoy Proxy使用介绍教程（八）：envoy动态配置ADS的使用方法][6]
 
 [1]: https://github.com/envoyproxy/go-control-plane "go-control-plane"
 [2]: https://www.envoyproxy.io/docs/envoy/latest/configuration/overview/v2_overview#example "Mostly static with dynamic EDS"
 [3]: https://github.com/envoyproxy/data-plane-api/blob/master/XDS_PROTOCOL.md "Envoy: XDS_PROTOCOL"
 [4]: https://github.com/envoyproxy/data-plane-api/ "data-plane-api"
 [5]: https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/01/02/go-grpc-usage.html "Golang实现grpc server和grpc client(protobuf格式消息通信)介绍教程"
-[6]: https://www.lijiaocn.com/2019/01/07/envoy-08-features-3-dynamic-discovery-ads.html "Envoy Proxy使用介绍教程（八）：envoy动态配置ADS的使用方法"
