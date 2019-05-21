@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "【附截图】权力的游戏第八季第五集在线未删减，BT种子、百度云、迅雷、磁力链Magnet"
+title: "【附截图】权力的游戏第八季第六集【大结局】在线未删减，BT种子、百度云、迅雷、磁力链Magnet"
 createdate: "2019-02-21 22:52:17 +0800"
 changedate: "2019-05-06 20:22:47 +0800"
 categories: hidden
@@ -12,7 +12,7 @@ description: 权力的游戏/权利的游戏(又名冰与火之歌）第八季BT
 
 {% include movies.md %}
 
-## 【第八季更新到第五集】权力的游戏/冰与火之歌/第八季下载地址
+## 【第八季更新到大结局】权力的游戏/冰与火之歌/第八季下载地址
 
 **关注微信公众号**【[团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png)】 **，回复“权力的游戏”获取，还有红包可领，亲测可行：**
 
@@ -40,11 +40,11 @@ description: 权力的游戏/权利的游戏(又名冰与火之歌）第八季BT
 	IMDb链接: tt5924366
 
 
-### 权力的游戏第八季第六集（S08E06）1080P，80分钟
+### 【已更新】权力的游戏第八季第六集（S08E06）1080P，80分钟
 
 第八季第6集  首播时间：5月20日星期一上午9:00（北京时间） 单集时长：80分钟
 
-等更新，【[团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png)】有料。
+已更新，【[团购好货](https://www.lijiaocn.com/img/ercode/tuan-gou-hao-huo.png)】有料。
 
 ### 【已更新】权力的游戏第八季第五集（S08E05）1080P，80分钟
 
