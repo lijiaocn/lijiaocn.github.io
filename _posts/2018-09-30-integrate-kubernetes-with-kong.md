@@ -3,9 +3,9 @@ layout: default
 title: "API网关Kong学习笔记（二）：Kong与Kubernetes集成的方法"
 author: 李佶澳
 createdate: "2018-09-30 16:07:13 +0800"
-changedate: "2019-03-05 14:54:32 +0800"
+changedate: "2019-05-20 14:48:47 +0800"
 categories: 项目
-tags: lua
+tags: kong
 keywords: kubernetes,kong,api gateway,API网关集成
 description: Kong是一个Api网关，也是一个特性更丰富的反向代理。既然它有代理流量的功能，那么能不能直接成为Kubernetes的流量入口？使Kubernetes上托管的服务都通过Kong发布。
 ---

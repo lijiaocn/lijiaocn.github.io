@@ -3,9 +3,9 @@ layout: default
 title: "API网关Kong学习笔记（二十一）：Kong的开发环境设置（IntelliJ Idea）"
 author: 李佶澳
 createdate: "2019-03-11 14:54:29 +0800"
-changedate: "2019-03-11 16:31:09 +0800"
+changedate: "2019-05-20 14:49:36 +0800"
 categories: 项目
-tags: lua
+tags: kong
 keywords: kong,IntelliJ Idea,开发环境,代码阅读
 description: 使用IntelliJ Idea查看编写kong的代码，安装EmmyLua插件，支持lua代码跳转和debug，luarocs安装依赖
 ---

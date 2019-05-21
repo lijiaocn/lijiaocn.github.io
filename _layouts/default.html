@@ -23,6 +23,12 @@
 					{{ site.pageheader }}
 				</div>
 
+				{% if page.author %}
+				<div class="row">
+					<p class="author">作者:&nbsp;<a href="{{ site.baseurl }}/2010/10/10/about.html">{{ page.author }}</a>&nbsp;&nbsp;&nbsp;转载保留：<a href="{{ post.url }}">原文地址</a>&nbsp;&nbsp;&nbsp;更新时间：{{ page.changedate }}</p>
+				</div>
+				{% endif %}
+
 				<div class="row" style="text-align:center">
 					<p class="author">
 					<span class="glyphicon glyphicon-folder-open"></span>
@@ -33,12 +39,6 @@
 					{% endfor %}
 					</p>
 				</div>
-
-				{% if page.author %}
-				<div class="row">
-					<p class="author">作者:&nbsp;<a href="{{ site.baseurl }}/2010/10/10/about.html">{{ page.author }}</a>&nbsp;&nbsp;&nbsp;转载保留：<a href="{{ post.url }}">原文地址</a>&nbsp;&nbsp;&nbsp;更新时间：{{ page.changedate }}</p>
-				</div>
-				{% endif %}
 
 				<div class="row">
 					{% include top_banner_ad.html %}
@@ -51,9 +51,6 @@
 				<div class="row">
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 content">
 						{{content}}
-						<div style="text-align:center">
-							<p>本文<strong><a href="https://www.lijiaocn.com">原创首发</a></strong>于网站：<a href="https://www.lijiaocn.com">www.lijiaocn.com</a></p>
-						</div>
 					</div>
 				</div>
 
@@ -66,6 +63,7 @@
 					<span><a href="{{ site.baseurl }}/tags/all.html#{{ tag }}">{{ tag }}</a>&nbsp</span>
 					{% endfor %}
 					</p>
+					<p><strong><a href="https://www.lijiaocn.com">原创首发</a></strong>：<a href="https://www.lijiaocn.com">www.lijiaocn.com</a></p>
 				</div>
 
 				<div class="row" style="text-align:center">
