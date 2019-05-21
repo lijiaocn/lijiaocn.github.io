@@ -10,6 +10,7 @@ keywords: kubernetes,kubernets api,operator,开发者战争,分布式系统,etc,
 description: 介绍了将Operator的诞生过程、容器化面临的困境、Operator提出的解决之道和受欢迎的原因
 ---
 
+## 目录
 * auto-gen TOC:
 {:toc}
 

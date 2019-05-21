@@ -10,6 +10,7 @@ keywords: grpc,protobuf,golang,go
 description: 用Go语言实现grpc通信，即用protobuf消息格式实现client和server之间的高效通信
 ---
 
+## 目录
 * auto-gen TOC:
 {:toc}
 

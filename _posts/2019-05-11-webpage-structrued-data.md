@@ -11,6 +11,7 @@ keywords: SEO,结构化数据,Structured Data
 description: 结构化数据让搜索引擎更好的理解页面内容、以富媒体方式呈现页面，这里演示Google结构化数据用法
 ---
 
+## 目录
 * auto-gen TOC:
 {:toc}
 

@@ -10,6 +10,7 @@ keywords: kubernetes,code-generator,kubernetes-style,api
 description: "使用kubernetes的code-generator生成Kubernetes-style的API和client代码，查询、监听CRD"
 ---
 
+## 目录
 * auto-gen TOC:
 {:toc}
 

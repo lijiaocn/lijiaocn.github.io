@@ -10,6 +10,7 @@ keywords: kubernetes,terminating,pod,docker hang,glusterfs,NotReady
 description: 故障容器都挂载了glusterfs，不可用的node上也有，这些容器被重新调度到哪里，哪个node就随之崩溃。 
 ---
 
+## 目录
 * auto-gen TOC:
 {:toc}
 

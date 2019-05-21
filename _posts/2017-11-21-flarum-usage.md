@@ -11,6 +11,7 @@ description: flarum是一个比较新兴的开源论坛，简洁友好，在国�
 
 ---
 
+## 目录
 * auto-gen TOC:
 {:toc}
 

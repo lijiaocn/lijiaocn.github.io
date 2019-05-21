@@ -11,6 +11,7 @@ keywords: sips,修改图片大小,图片格式转换,图片旋转,图片翻转
 description: 用sips在命令行修改图片等方法，转换图片格式、扩大填充、缩小采样、修改图片质量等，mac可用
 ---
 
+## 目录
 * auto-gen TOC:
 {:toc}
 

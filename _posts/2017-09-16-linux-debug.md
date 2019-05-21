@@ -11,6 +11,7 @@ description: 持续更新，linux上遇到奇葩的问题的调查方法
 
 ---
 
+## 目录
 * auto-gen TOC:
 {:toc}
 

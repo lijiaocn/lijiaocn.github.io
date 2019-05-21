@@ -10,6 +10,7 @@ keywords: kubernetes,initializer
 description: "Kubernetes Initializers可以在pod/的pending阶段对pod进行修改，譬如注入新的容器、挂载volume等"
 ---
 
+## 目录
 * auto-gen TOC:
 {:toc}
 

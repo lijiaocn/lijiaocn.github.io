@@ -10,6 +10,7 @@ keywords: 升级内核,内核更新,yum升级内核,centos内核更新,centos内
 description: 内核代码编译安装繁琐耗时，在CentOS7和CentOS6中，可以安装ELRepo，用yum命令直接更新内核
 ---
 
+## 目录
 * auto-gen TOC:
 {:toc}
 

@@ -10,6 +10,7 @@ keywords: kubernetes,从零部署,deploy,kubernetes视频教程,kubernetes系列
 description: "直接从github上下载相关代码，然后用统一容器进行编译，最后用ansible自动部署kubernetes集群"
 ---
 
+## 目录
 * auto-gen TOC:
 {:toc}
 

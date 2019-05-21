@@ -10,6 +10,7 @@ keywords: kong,apigateway,API网关,压力测试,benchmark
 description: 生产环境中，将kong单独部署比较好，也方便进行压力测试，以及用火焰图进行性能分析
 ---
 
+## 目录
 * auto-gen TOC:
 {:toc}
 

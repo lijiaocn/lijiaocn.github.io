@@ -10,6 +10,7 @@ keywords: kubernetes,kubectl,自动补全
 description: kubernetes的操作命令kubectl的子命令比较多，设置了自动补全后，可以加快操作速度，
 ---
 
+## 目录
 * auto-gen TOC:
 {:toc}
 

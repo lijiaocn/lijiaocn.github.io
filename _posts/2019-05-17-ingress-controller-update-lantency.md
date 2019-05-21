@@ -11,6 +11,7 @@ keywords: kubernetes,ingress-controller,ingress,nginx规则慢
 description: Kubernetes集群上的应用在重新部署的之后，频繁出现504错误，nginx-ingress-controller刷新配置滞后
 ---
 
+## 目录
 * auto-gen TOC:
 {:toc}
 

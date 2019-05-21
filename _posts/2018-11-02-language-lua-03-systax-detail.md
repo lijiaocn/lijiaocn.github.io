@@ -10,6 +10,7 @@ keywords:  lua,编程语言,idea,luarocsk,lua语法细节
 description: 这里记录Lua语言的一些语法细节，边学习边记录，随时补充
 ---
 
+## 目录
 * auto-gen TOC:
 {:toc}
 

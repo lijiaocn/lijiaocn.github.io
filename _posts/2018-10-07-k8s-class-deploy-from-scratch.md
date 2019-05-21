@@ -10,6 +10,7 @@ keywords: kubernetes,从零部署,deploy,kubernetes视频教程,kubernetes系列
 description: "经过前面的尝试（一次minikube部署，一次kubeadm部署）以及基本概念的梳理，终于走到了自己动手从零开始部署kubernetes这一步"
 ---
 
+## 目录
 * auto-gen TOC:
 {:toc}
 

@@ -10,6 +10,7 @@ keywords: lua,lua编程,lua性能,性能优化,lua优化
 description: Lua Performance Tips给出了很重要的性能优化建议，这些建议都是用Lua编程时需要时刻注意的事项。
 ---
 
+## 目录
 * auto-gen TOC:
 {:toc}
 

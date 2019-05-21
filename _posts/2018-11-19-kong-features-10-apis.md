@@ -10,6 +10,7 @@ keywords: kong,apigateway,API网关
 description: 了解了kong的工作原理，对代码结构也熟悉了，接下来需要了解kong的api，掌握了api才能更熟练的应用kong，比如开发一套图形界面的管理系统，调用kong的api下发相关的配置。
 ---
 
+## 目录
 * auto-gen TOC:
 {:toc}
 

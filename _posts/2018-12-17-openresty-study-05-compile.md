@@ -10,6 +10,7 @@ keywords: openresty,nginx,lua,openresty开发
 description: 需要了解一下OpenResty的原理和编译构建方法，以后或许可能要根据需要定制OpenResty
 ---
 
+## 目录
 * auto-gen TOC:
 {:toc}
 

@@ -11,6 +11,7 @@ keywords: SEO,HTML优化,标签优化,搜索引擎兼容
 description: HTML的一些标签属性必须要设置，否则浏览器多次渲染网页呈现慢，搜索引擎爬虫的工作量增加
 ---
 
+## 目录
 * auto-gen TOC:
 {:toc}
 

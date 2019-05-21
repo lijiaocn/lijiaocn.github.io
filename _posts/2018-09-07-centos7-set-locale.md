@@ -10,6 +10,7 @@ keywords: locale,centos
 description: 经常遇到Setting locale failed.问题，虽然不影响命令运行，但是总是出现warning，比较烦：
 ---
 
+## 目录
 * auto-gen TOC:
 {:toc}
 

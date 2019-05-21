@@ -10,6 +10,7 @@ keywords: gitbook,theme-default,gitbook模板,gitbook插件
 description: Gitbook默认模板是theme-default，把自定义模板做成插件引用，实现一处更改处处更新的效果
 ---
 
+## 目录
 * auto-gen TOC:
 {:toc}
 

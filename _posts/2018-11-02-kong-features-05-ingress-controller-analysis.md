@@ -10,6 +10,7 @@ keywords: kong,apigateway,API网关,code,代码分析
 description: Ingress Controller可以将Kong与Kubernetes无缝集成，自动将kubernetes中的操作同步到kong中
 ---
 
+## 目录
 * auto-gen TOC:
 {:toc}
 

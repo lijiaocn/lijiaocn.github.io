@@ -10,6 +10,7 @@ keywords: google adsense,收款方式,国内电汇收款,Pin验证,身份证验�
 description: "中国大陆（国内）可以申请Google AdSense账号，可用身份证验证国内地址，支持国内银行电汇收款"
 ---
 
+## 目录
 * auto-gen TOC:
 {:toc}
 

@@ -10,6 +10,7 @@ keywords: kong,apigateway,API网关,plugin
 description: 向数据库中插入记录的时候，会进行插入校验，校验过程会用到schema中定义的类型以及校验函数
 ---
 
+## 目录
 * auto-gen TOC:
 {:toc}
 

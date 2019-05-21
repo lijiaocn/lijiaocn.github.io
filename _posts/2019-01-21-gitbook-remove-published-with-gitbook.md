@@ -10,6 +10,7 @@ keywords: gitbook,删除网页连接,Published with GitBook
 description: "用GitBook生成的网页左侧目录下方默认的`Published with GitBook`连接可以去掉或者替换成其它连接"
 ---
 
+## 目录
 * auto-gen TOC:
 {:toc}
 

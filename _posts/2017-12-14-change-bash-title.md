@@ -11,6 +11,7 @@ description: xterm默认使用的窗口标题提供的有用信息太少，需�
 
 ---
 
+## 目录
 * auto-gen TOC:
 {:toc}
 

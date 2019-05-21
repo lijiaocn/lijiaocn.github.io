@@ -10,6 +10,7 @@ keywords: kong,IntelliJ Idea,开发环境,代码阅读
 description: 使用IntelliJ Idea查看编写kong的代码，安装EmmyLua插件，支持lua代码跳转和debug，luarocs安装依赖
 ---
 
+## 目录
 * auto-gen TOC:
 {:toc}
 

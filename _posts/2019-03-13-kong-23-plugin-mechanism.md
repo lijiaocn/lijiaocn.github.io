@@ -10,6 +10,7 @@ keywords: kong,kong 1.0.3,代码学习
 description: "学习一下kong 1.0.3的plugin，看一下plugin是怎样加载的，加载时作了哪些检查以及插件应该如何实现"
 ---
 
+## 目录
 * auto-gen TOC:
 {:toc}
 

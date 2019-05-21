@@ -10,6 +10,7 @@ keywords: openresty,nginx,lua,openresty开发
 description: 通过火焰图观察OpenResty函数调用情况，每个函数的调用耗时，找出性能瓶颈
 ---
 
+## 目录
 * auto-gen TOC:
 {:toc}
 

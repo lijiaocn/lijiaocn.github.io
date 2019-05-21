@@ -10,6 +10,7 @@ keywords: swapoff,linux
 description: "执行swapoff -a关闭swap的时候，报不能分配内存的错误：swapoff failed: Cannot allocate memory"
 ---
 
+## 目录
 * auto-gen TOC:
 {:toc}
 
