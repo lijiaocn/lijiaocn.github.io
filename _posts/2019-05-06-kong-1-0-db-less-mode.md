@@ -3,7 +3,7 @@ layout: default
 title: "API网关Kong学习笔记（二十六）：Kong 1.1引入db-less模式，无数据库部署"
 author: 李佶澳
 createdate: "2019-05-06 16:23:26 +0800"
-changedate: "2019-05-21 10:22:28 +0800"
+changedate: "2019-05-21 17:00:31 +0800"
 categories: 项目
 tags: kong
 keywords: kong,apigateway,db-less,api网关
@@ -125,12 +125,13 @@ db-less的模式更实用、更简单，是以后的趋势。
 |[F5 BIG-IP Controller for Kubernetes](https://clouddocs.f5.com/products/connectors/k8s-bigip-ctlr/v1.9/) | F5  hardware | no |yes | F5 .Inc |unknow|
 
 <br>
-上表中两个基于nginx的ingress-controller，是两个项目：
+
+详情见：[基于Envoy的ApiGateway/Ingress Controller项目梳理（总结）](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2019/05/21/apigateway-base-envoy-compare.html)
+
+另外上表中有两个基于nginx的ingress-controller，它们是两个项目：
 
 1. [NGINX Ingress Controller from Nginx](https://github.com/nginxinc/kubernetes-ingress/)是Nginx官方维护的，[文档](https://www.nginx.com/products/nginx/kubernetes-ingress-controller)；
 2. [NGINX Ingress Controller from Kubernetes](https://github.com/kubernetes/ingress-nginx/)是Kubernetes社区维护的，[文档](https://kubernetes.github.io/ingress-nginx/how-it-works/)。
-
-
 
 ## 参考
 
