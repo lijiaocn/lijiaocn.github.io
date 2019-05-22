@@ -1,6 +1,6 @@
 ---
 layout: default
-title: kubernetes的安全性考虑
+title: kubernetes的Pod内挂载的Service Account的使用方法
 author: 李佶澳
 createdate: 2017/04/26 17:32:58
 changedate: 2017/04/27 13:23:49
@@ -19,13 +19,13 @@ description: kubernetes的安全方面的考虑，例如访问控制，从容器
 
 kubernetes内置了一个名为kuberntes的service，这个service就是kubernetes的api服务。
 
-从容器中可以访问这个地址，需要合适容器对kuberntes的具有的操作权限。
+从容器中可以访问这个地址，容器要对kuberntes的具有的操作权限：
 
 	$kubectl get service
 	NAME         CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
 	kubernetes   10.0.0.1     <none>        443/TCP   29d
 
-容器可以看到这个地址:
+在容器里可以看到这个地址:
 
 	$curl https://10.0.0.1:443 --cacert /run/secrets/kubernetes.io/serviceaccount/ca.crt
 	Unauthorized
