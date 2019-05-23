@@ -3,7 +3,7 @@ layout: default
 title: "Web开发平台OpenResty（一）：学习资料、基本组成与使用方法"
 author: 李佶澳
 createdate: "2018-10-25 10:12:32 +0800"
-changedate: "2018-10-25 10:12:32 +0800"
+changedate: "2019-05-23 17:10:23 +0800"
 categories: 编程
 tags: openresty
 keywords: openresty,nginx,lua,openresty开发
@@ -30,11 +30,9 @@ Nginx是OpenResty的执行引擎，Lua是OpenResty平台上使用的开发语言
 
 [OpenResty的网站](https://openresty.org)给出了几本[关于Lua、Nginx、OpenResty的电子书](https://openresty.org/en/ebooks.html)：
 
-1  OpenResty的主要作者章宜春写的[Programming OpenResty](https://openresty.gitbooks.io/programming-openresty/content/)，好像是刚开始写...
-
-2  章宜春写的[Nginx Tutorials (version 2016.07.21)](https://openresty.org/download/agentzh-nginx-tutorials-en.html)，这本书有[中文版](https://openresty.org/download/agentzh-nginx-tutorials-zhcn.html)
-
-3  360公司的[moonbingbing](https://github.com/moonbingbing)（真名不知道）组织编写的[OpenResty 最佳实践][4]，其中对Lua和Nginx也做了不错的介绍。
+1.  OpenResty作者章亦春写的[Programming OpenResty](https://openresty.gitbooks.io/programming-openresty/content/)，好像是刚开始写...；
+2.  章亦春之前写的[Nginx Tutorials (version 2016.07.21)](https://openresty.org/download/agentzh-nginx-tutorials-en.html)（[中文版](https://openresty.org/download/agentzh-nginx-tutorials-zhcn.html)）；
+3.  360公司的[moonbingbing](https://github.com/moonbingbing)（真名不知道）组织编写的[OpenResty 最佳实践][4]，其中对Lua和Nginx也做了不错的介绍。
 
 [编程语言Lua（一）：入门学习资料、基本语法与项目管理工具][3]中收集了更多关于Lua的内容。
 
@@ -133,13 +131,9 @@ OpenResty的退出、重启、重新加载等操作，用`-s`指定对应的信�
 
 ## OpenResty与Lua的关系
 
-OpenResty和Lua不是一回事。
+Lua是一个小巧精炼编程语言，Lua语言的解释器很多，可以到[编程语言Lua（一）：介绍、入门学习资料、基本语法与项目管理][3]中了解。
 
-Lua是一个小巧精炼编程语言，Lua的解释器有很多种，可以到[编程语言Lua（一）：介绍、入门学习资料、基本语法与项目管理][3]中了解。
-
-OpenResty是一个高度定制的Nginx，集成了NginxLua模块，支持Lua语言。
-
-同样一段Lua代码，用OpenResty可以执行，直接用Lua命令可能不能执行：
+OpenResty是一个高度定制的Nginx，集成了NginxLua模块，支持Lua语言。一段lua代码用OpenResty可以执行，直接用Lua命令可能不能执行：
 
 例如下面的代码：
 
@@ -167,9 +161,7 @@ OpenResty是一个高度定制的Nginx，集成了NginxLua模块，支持Lua语�
 		./hello.lua:9: in main chunk
 		[C]: ?
 
-用Lua命令执行的时候，提示找不到ngx。
-
-这是因为OpenResty包含的一些Lua Package不在Lua的安装目录中，而是在OpenResty自己的安装目录中。
+用Lua命令执行的时候，提示找不到ngx，这是因为OpenResty包含的一些Lua Package不在Lua的安装目录中，而是在OpenResty自己的安装目录中。
 
 以Mac为例，用`brew install openresty/brew/openresty`安装的openresty，它的Package目录是：
 
@@ -181,14 +173,12 @@ OpenResty是一个高度定制的Nginx，集成了NginxLua模块，支持Lua语�
 	$ ls /usr/local/Cellar/openresty/1.13.6.2/lualib
 	cjson.so ngx      redis    resty
 
-因此你会发现，使用openresty的项目代码中引用`require "resty.core"`，在lua的package目录中却怎么也找不到。
-
-因为它是openresty中的模块，位于openresty的安装目录中：
+会发现openresty的项目代码中引用的`require "resty.core"`，在lua的package目录中找不到，它是openresty的模块，位于openresty的安装目录中：
 
 	$ ls /usr/local/Cellar/openresty/1.13.6.2/lualib/resty/core
 	base.lua     base64.lua   ctx.lua      exit.lua  ....
 
-在使用IDE开发代码时，为了能够跳转到OpenResty的模块中，需要将OpenResty的模块目录加入到SDK的ClassPath/SourcePath中。
+在使用IDE开发代码时，为了能够跳转到OpenResty的lua模块中，需要将OpenResty的模块目录加入到SDK的ClassPath/SourcePath中。
 
 ## OpenResty项目示例：Kong
 
@@ -199,7 +189,7 @@ OpenResty是一个高度定制的Nginx，集成了NginxLua模块，支持Lua语�
 	git clone https://github.com/Kong/kong
 	cd kong
 
-kong使用luarocks管理依赖，依赖的package记录在`kong-0.14.1-0.rockspec`文件中：
+Kong使用luarocks管理依赖，依赖的package记录在`kong-0.14.1-0.rockspec`文件中：
 
 	$ cat kong-0.14.1-0.rockspec
 	...
@@ -213,7 +203,7 @@ kong使用luarocks管理依赖，依赖的package记录在`kong-0.14.1-0.rockspe
 	  "multipart == 0.5.5",
 	...
 
-kong项目的发布方式也记录在`kong-0.14.1-0.rockspec`文件中，记录了模块与代码文件的对应关系：
+Kong的发布方式也记录在`kong-0.14.1-0.rockspec`文件中，记录了模块与代码文件的对应关系：
 
 	kong-0.14.1-0.rockspec
 
@@ -232,7 +222,7 @@ kong项目的发布方式也记录在`kong-0.14.1-0.rockspec`文件中，记录�
 	install:
 	   @luarocks make OPENSSL_DIR=$(OPENSSL_DIR) CRYPTO_DIR=$(OPENSSL_DIR)
 
-安装之后，在通过OpenResty执行的lua脚本中就可以引用kong了，例如文件`bin/kong`中引用kong的模块`kong.cmd.init`：
+安装之后，在使用OpenResty运行的lua脚本中能够引用kong，例如文件`bin/kong`中引用kong的模块`kong.cmd.init`：
 
 	$ cat bin/kong
 	#!/usr/bin/env resty
