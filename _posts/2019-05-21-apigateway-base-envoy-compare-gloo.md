@@ -332,8 +332,9 @@ $ glooctl get upstream default-petstore-8080
 ```
 
 
-在 upstream 中找到 findPetById 的定义，这个函数用 GET 方法， uri 是 /api/pets/{{id}}，id 为输入参数：
+在 upstream 中找到 findPetById 的定义，这个函数用 GET 方法， uri 是 /api/pets/\{\{id}}，id 为输入参数：
 
+{% raw %}
 ```sh
 $ glooctl get  upstream  default-petstore-8080  -o yaml
           ...
@@ -350,6 +351,7 @@ $ glooctl get  upstream  default-petstore-8080  -o yaml
               transfer-encoding: {}
            ...
 ```
+{% endraw %}
 
 1、配置一条路由，将请求转发给函数 findPetById，传入参数默认是 body 中的 json 字符串：
 
