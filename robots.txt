@@ -8,3 +8,4 @@ Sitemap: https://www.lijiaocn.com/linux/feed.xml
 Sitemap: https://www.lijiaocn.com/nginx/feed.xml
 Sitemap: https://www.lijiaocn.com/programming/feed.xml
 Sitemap: https://www.lijiaocn.com/douyin/feed.xml
+Sitemap: https://www.lijiaocn.com/wechat/sitemap.xml
