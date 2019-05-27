@@ -3,7 +3,7 @@ layout: default
 title: "Kubernetes集群的Node间歇性变更为NodeNotReady状态"
 author: 李佶澳
 createdate: "2019-05-27 15:03:29 +0800"
-changedate: "2019-05-27 16:47:33 +0800"
+changedate: "2019-05-27 17:04:21 +0800"
 categories: 问题
 tags: kubernetes
 cover: 
