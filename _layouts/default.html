@@ -25,18 +25,19 @@
 
 				{% if page.author %}
 				<div class="row">
-					<p class="author">作者:&nbsp;<a href="{{ site.baseurl }}/2010/10/10/about.html">{{ page.author }}</a>&nbsp;&nbsp;&nbsp;转载保留：<a href="{{ post.url }}">原文地址</a>&nbsp;&nbsp;&nbsp;更新时间：{{ page.changedate }}</p>
+					<p class="author">作者：<a href="{{ site.baseurl }}/2010/10/10/about.html">{{ page.author }}</a>&nbsp;&nbsp;更新时间：{{ page.changedate }}</p>
 				</div>
 				{% endif %}
 
 				<div class="row" style="text-align:center">
 					<p class="author">
-					<span class="glyphicon glyphicon-folder-open"></span>
-					<span>&nbsp<a href="{{ site.baseurl }}/categories/{{ page.categories }}.html">{{ page.categories }}</a>&nbsp</span>
+					<span class="glyphicon glyphicon-home"></span>&nbsp;
+					<span><a href="{{ site.baseurl }}/categories/{{ page.categories }}.html">{{ page.categories }}</a></span>&nbsp;
+					<span class="glyphicon glyphicon-tag"></span>&nbsp;
 					{% for tag in page.tags %}
-					<span class="glyphicon glyphicon-tag"></span>
-					<span><a href="{{ site.baseurl }}/tags/all.html#{{ tag }}">{{ tag }}</a>&nbsp</span>
+					<span><a href="{{ site.baseurl }}/tags/all.html#{{ tag }}">{{ tag }}</a></span>&nbsp;
 					{% endfor %}
+					<span><a href="{{ site.baseurl }}{{ post.url}}">本页</a></span>
 					</p>
 				</div>
 
@@ -56,14 +57,14 @@
 
 				<div class="row" style="text-align:center">
 					<p class="author">
-					<span class="glyphicon glyphicon-folder-open"></span>
-					<span>&nbsp<a href="{{ site.baseurl }}/categories/{{ page.categories }}.html">{{ page.categories }}</a>&nbsp</span>
+					<span class="glyphicon glyphicon-home"></span>&nbsp;
+					<span><a href="{{ site.baseurl }}/categories/{{ page.categories }}.html">{{ page.categories }}</a></span>&nbsp;
+					<span class="glyphicon glyphicon-tag"></span>&nbsp;
 					{% for tag in page.tags %}
-					<span class="glyphicon glyphicon-tag"></span>
-					<span><a href="{{ site.baseurl }}/tags/all.html#{{ tag }}">{{ tag }}</a>&nbsp</span>
+					<span><a href="{{ site.baseurl }}/tags/all.html#{{ tag }}">{{ tag }}</a></span>&nbsp;
 					{% endfor %}
+					<span><a href="{{ site.baseurl }}{{ post.url}}">本页</a></span>
 					</p>
-					<p><strong><a href="https://www.lijiaocn.com">原创首发</a></strong>：<a href="https://www.lijiaocn.com">www.lijiaocn.com</a></p>
 				</div>
 
 				<div class="row" style="text-align:center">
