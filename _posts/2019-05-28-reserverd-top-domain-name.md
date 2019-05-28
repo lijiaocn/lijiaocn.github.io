@@ -41,25 +41,25 @@ description: RFC规定中预留了不会被其它主体注册使用的域名，.
 20.172.in-addr.arpa.  25.172.in-addr.arpa.  168.192.in-addr.arpa.
 ```
 
-## .test、.example、.invalid、.localhost
+## test.、example.、invalid.、 localhost.
 
 [RFC 1918](https://tools.ietf.org/html/rfc1918)预留的四个顶级域名和三个二级域名，在[RFC 6761][2]中依旧被保留。
 
 四个预留的顶级域名：
 
 ```sh
-.test           建议在用于被测试的系统
-.example        建议在文档中使用，用于演示
-.invalid        建议用于无效域名
-.localhost      已经被习惯性用于本地静态配置的host
+test.           建议在用于被测试的系统
+example.        建议在文档中使用，用于演示
+invalid.        建议用于无效域名
+localhost.      已经被习惯性用于本地静态配置的host
 ```
 
 三个预留的二级域名：
 
 ```sh
-.example.com
-.example.net
-.example.org
+example.com.
+example.net.
+example.org.
 ```
 
 ## 参考
