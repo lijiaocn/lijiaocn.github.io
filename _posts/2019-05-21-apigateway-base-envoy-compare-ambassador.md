@@ -3,12 +3,12 @@ layout: default
 title: "基于Envoy的ApiGateway/Ingress Controller项目梳理（一）：Ambassador"
 author: 李佶澳
 createdate: "2019-05-21 11:01:45 +0800"
-changedate: "2019-05-21 11:07:17 +0800"
+changedate: "2019-06-01 17:15:31 +0800"
 categories: 项目
 tags: apigateway envoy
 cover:
 keywords: apigateway,envoy,kong,nginx,servicemesh,ingress controller
-description: "对比Kubernetes文档列出的Ingress Controller：ambassador,contour,gloo,istio,traefik,voyager"
+description: "对比Kubernetes文档列出的Ingress Controller：ambassador,contour,gloo,istio, traefik, voyager"
 ---
 
 ## 目录
