@@ -11,6 +11,8 @@ keywords: golang,代码阅读,Go项目
 description: 先对整个项目的代码结构有基本认知，摸清项目代码的实现套路，然后按需逐行阅读
 ---
 
+## 目录
+
 * auto-gen TOC:
 {:toc}
 
