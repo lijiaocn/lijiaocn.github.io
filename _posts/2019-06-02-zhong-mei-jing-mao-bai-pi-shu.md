@@ -3,7 +3,7 @@ layout: default
 title: "白皮书全文：《关于中美经贸磋商的中方立场》"
 author: 国务院新闻办公室
 createdate: "2019-06-02T17:01:38+0800"
-changedate: "2019-06-02T17:05:54+0800"
+changedate: "2019-06-02T17:38:55+0800"
 categories: 投资
 tags: 投资
 cover:
@@ -122,31 +122,31 @@ description: "《关于中美经贸磋商的中方立场》（2019年6月）中�
 
 合作是中美两国唯一正确选择，共赢才能通向更好的未来。在中美经贸磋商总的方向上，中国不是向后看，而是向前看。双方在经贸领域的分歧和摩擦，最终需要通过对话和磋商来解决。中美达成一个互利双赢的协议，符合中美两国利益，顺应世界各国期待。希望美国同中国相向而行，本着相互尊重、平等互利的精神，管控经贸分歧，加强经贸合作，共同推进以协调、合作、稳定为基调的中美关系，增进两国和世界人民福祉。
 
-（注1）2018年2月，美国商会全球创新政策中心发布的《2018年国际知识产权指数报告》称，2018年，中国以19.08分位居50个经济体的第25位，较2017年上升2位，http://www.theglobalipcenter.com/wp-content/uploads/2018/02/GIPC_IP_Index_2018.pdf。
+（注1）2018年2月，美国商会全球创新政策中心发布的《2018年国际知识产权指数报告》称，2018年，中国以19.08分位居50个经济体的第25位，较2017年上升2位，
 
-（注2）2018年1月18日，中国国家知识产权局2017年主要工作统计数据及有关情况新闻发布会，http://www.sipo.gov.cn/twzb/gjzscqj2017nzygztjsjjygqkxwfbk/。
+（注2）2018年1月18日，中国国家知识产权局2017年主要工作统计数据及有关情况新闻发布会，
 
-（注3）美中贸易全国委员会（USCBC）网站：2019 State Export Report，https://www.uschina.org/reports/2019-state-export-report，2019年5月1日。
+（注3）美中贸易全国委员会（USCBC）网站：2019 State Export Report，
 
-（注4）中国海关总署网站：http://www.customs.gov.cn/customs/302249/302274/302275/2418393/index.html，2019年5月8日。
+（注4）中国海关总署网站：
 
-（注5）中国海关总署网站：http://www.customs.gov.cn/customs/302249/302274/302275/2418393/index.html，2019年5月8日。
+（注5）中国海关总署网站：
 
 （注6）中国商务部数据。
 
-（注7）中国商务部网站：2018年1－12月全国吸收外商直接投资快讯，http://www.mofcom.gov.cn/article/tongjiziliao/v/201901/20190102832209.shtml，2019年1月15日。
+（注7）中国商务部网站：2018年1－12月全国吸收外商直接投资快讯，
 
-（注8）世界贸易组织（WTO）网站：WTO Trade forecasts：Press conference，https://www.wto.org/english/news_e/spra_e/spra255_e.htm，2019年4月2日。
+（注8）世界贸易组织（WTO）网站：WTO Trade forecasts：Press conference，
 
-（注9）美国全国零售商联合会网站：NRF Warns USTR Tariffs Would Cost Americans Billions，Releases New Study on Consumer Impact，https://nrf.com/media-center/press-releases/nrf-warns-ustr-tariffs-would-cost-americans-billions-releases-new-study，2018年8月22日。
+（注9）美国全国零售商联合会网站：NRF Warns USTR Tariffs Would Cost Americans Billions，Releases New Study on Consumer Impact，
 
-（注10）荣鼎集团网站:Assessing the Costs of Tariffs on the US ICT Industry：Modeling US China Tariffs，https://rhg.com/research/assessing-the-costs-of-tariffs-on-the-us-ict-industry，2019年3月15日。
+（注10）荣鼎集团网站:Assessing the Costs of Tariffs on the US ICT Industry：Modeling US China Tariffs，
 
-（注11）贸易伙伴网站：Estimated Impacts of Tariffs on the U.S. Economy and Workers（2019），https://tradepartnership.com/reports/estimated-impacts-of-tariffs-on-the-u-s-economy-and-workers-2019，2019年2月5日。
+（注11）贸易伙伴网站：Estimated Impacts of Tariffs on the U.S. Economy and Workers（2019），
 
-（注12）世界银行网站：Global Economic Prospects，https://www.worldbank.org/en/publication/global-economic-prospects，2019年1月8日。
+（注12）世界银行网站：Global Economic Prospects，
 
-（注13）国际货币基金组织网站：World Economic Outlook，https://www.imf.org/en/Publications/WEO/Issues/2019/03/28/world-economic-outlook-april-2019，2019年4月2日。
+（注13）国际货币基金组织网站：World Economic Outlook，
 
 ## 参考
 
