@@ -3,12 +3,12 @@ layout: default
 title: "基于Envoy的ApiGateway/Ingress Controller项目梳理（四）：Istio"
 author: 李佶澳
 createdate: "2019-05-21 11:03:40 +0800"
-changedate: "2019-05-21 11:08:00 +0800"
+changedate: "2019-06-01 17:16:10 +0800"
 categories: 项目
 tags: apigateway envoy
 cover:
 keywords: apigateway,envoy,kong,nginx,servicemesh,ingress controller
-description: "对比Kubernetes文档列出的Ingress Controller：ambassador,contour,gloo,istio,traefik,voyager"
+description: "对比Kubernetes文档列出的Ingress Controller：ambassador,contour,gloo,istio, traefik, voyager"
 ---
 
 ## 目录
@@ -21,7 +21,17 @@ description: "对比Kubernetes文档列出的Ingress Controller：ambassador,con
 
 如果说 gloo 是一个比较新颖轻量级的 apigateway 解决方案，那么 istio 就是一个超前设计的重型方案。
 
-### 在集群中部署Istio
+![istio的架构]({{ site.imglocal }}/article/istio-arch.svg)
+
+galley：istio 配置的验证、处理、下发，是 istio 的对外接口。
+
+mixer: 进行访问控制管理、验证请求信息、收集 envoy 状态数据。
+
+pilot: 将控制规则转换成 envoy 配置，是 envoy 对接的 xds。
+
+citadel：管理服务与服务之间、终端用户与服务之间的认证。
+
+## 在集群中部署Istio
 
 Istio的部署文件位于项目源码中，用 [helm部署到kubernetes](https://istio.io/docs/setup/kubernetes/install/helm/) 比较方便：
 
@@ -81,7 +91,7 @@ $ brew install istioctl
 
 注意，如果要使用 istio 的自动注入功能（[Automatic sidecar injection](https://istio.io/docs/setup/kubernetes/additional-setup/sidecar-injection/#automatic-sidecar-injection)），kube-apiserver 的 --admission-control 参数中需要包含：MutatingAdmissionWebhook,ValidatingAdmissionWebhook。
 
-### 部署Istio应用
+## 部署Istio应用
 
 Istio官网上给出了一个特别好的例子，[Bookinfo Application](https://istio.io/docs/examples/bookinfo/)：
 
@@ -129,7 +139,7 @@ reviews-v2-f7cddcd8b-4l2nv        2/2     Running   0          16m   172.16.129.
 reviews-v3-7c647f4ddb-l5gz4       2/2     Running   0          16m   172.16.128.162   10.10.173.203   <none>
 ```
 
-### 创建应用寻址规则：DestinationRule
+## 创建应用寻址规则：DestinationRule
 
 DestinationRule 是 Pod 的筛选规则， Istio 路由中会用到，创建 bookinfo 的寻址规则：
 
@@ -217,7 +227,7 @@ ratings           ratings                                          6m
 reviews           reviews                                          6m
 ```
 
-### 创建Istio应用网关
+## 创建Istio应用网关
 
 为 istio 应用创建网关，之后通过 istio 的网关访问应用：
 
@@ -287,7 +297,7 @@ istio-ingressgateway   NodePort   172.16.44.61   <none>        15020:30624/TCP,8
 
 这是因为 productpage 依赖的 reviews 服务指向了三个不同版本的 deployment，productpage 对 reviews 服务的调用会分别被不同版本的 Pod 处理。下一节为每个服务创建各自的 virutalservice，在 virtualservice 中指定 destination 能解决这个问题。
 
-### 创建VirtualService
+## 创建VirtualService
 
 上面部署的 istio 应用的 service 的筛选标签中没有版本信息：
 
@@ -389,17 +399,17 @@ reviews                  [reviews]       4s
 
 创建了 virtualservice 后，再次访问应用就不会出现页面不同的情况，reviews 的 destination 是“subset: v1”，指向的是没有评分信息的版本，修改成 v2 切换到有评分的版本（蓝绿部署）。
 
-### 初步印象
+## 初步印象
 
 istio 相对前面的几个网关要复杂得多，从 Pod 的数量上就可以感受到。
 
-#### 好的方面
+### 好的方面
 
 1. 完全开源，活跃度高，有标杆项目的势头； 
 2. 管控粒度细，发生作用的位置紧邻Pod，可以在第一时间截获请求；
 3. 功能设计完善。
 
-#### 不好的方面
+### 不好的方面
 
 1. 有些复杂，上手难度稍高，完全掌握需要耗费较多时间；
 2. 为每个pod注入一个envoy，占用了计算节点上的资源。

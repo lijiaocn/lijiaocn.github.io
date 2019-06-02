@@ -3,12 +3,12 @@ layout: default
 title: "基于Envoy的ApiGateway/Ingress Controller项目梳理（三）：Gloo"
 author: 李佶澳
 createdate: "2019-05-21 11:02:53 +0800"
-changedate: "2019-05-21 11:07:49 +0800"
+changedate: "2019-06-01 17:16:00 +0800"
 categories: 项目
 tags: apigateway envoy
 cover:
 keywords: apigateway,envoy,kong,nginx,servicemesh,ingress controller
-description: "对比Kubernetes文档列出的Ingress Controller：ambassador,contour,gloo,istio,traefik,voyager"
+description: "对比Kubernetes文档列出的Ingress Controller：ambassador,contour,gloo,istio, traefik, voyager"
 ---
 
 ## 目录
@@ -18,6 +18,8 @@ description: "对比Kubernetes文档列出的Ingress Controller：ambassador,con
 ## Gloo
 
 [Gloo](https://gloo.solo.io/) 是一个设计很新颖的 api gateway，[功能](https://gloo.solo.io/introduction/#routing-features)和支持的[平台](https://gloo.solo.io/introduction/#)很丰富，文档也非常好，[架构设计](https://gloo.solo.io/introduction/architecture/)、[基本概念](https://gloo.solo.io/introduction/concepts/)等介绍的很清楚。设计架构如下：
+
+![gloo网关]({{ site.imglocal }}/article/gloo_diagram.png)
 
 ![gloo的设计架构]({{ site.imglocal }}/article/gloo-arch.png)
 

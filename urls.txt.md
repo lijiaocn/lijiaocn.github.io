@@ -1,1 +1,1 @@
-https://www.lijiaocn.com/%E7%BC%96%E7%A8%8B/2019/05/05/go-modules.html
+https://www.lijiaocn.com/%E6%96%B9%E6%B3%95/2019/05/28/reserverd-top-domain-name.html
