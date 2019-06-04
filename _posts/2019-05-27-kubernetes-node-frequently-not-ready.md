@@ -3,7 +3,7 @@ layout: default
 title: "Kubernetes集群的Node间歇性变更为NodeNotReady状态"
 author: 李佶澳
 createdate: "2019-05-27 15:03:29 +0800"
-changedate: "2019-05-27 17:04:21 +0800"
+changedate: "2019-06-04 10:41:27 +0800"
 categories: 问题
 tags: kubernetes
 cover: 
@@ -150,3 +150,43 @@ kubelet 相关参数：
 ```sh
 node %v hasn't been updated for %+v. Last ready condition is: %+v
 ```
+
+## 继续跟踪
+
+调整日志级别，再次出现该问题时，检查日志发现，node 的状态更新延迟最高达 2 分钟，需要继续调查。
+
+```sh
+node_controller.go:1022] node xxxxxxxxx hasn't been updated for 2m5.699574064s. Last ready condition is: {Type:Ready Status:Unknown LastHeartbeatTime:2019-06-01 12:10:44 +0800 CST LastTransitionTime:2019-06-01 12:11:27 +0800 CST Reason:NodeStatusUnknown Message:Kubelet stopped posting node status.}
+node_controller.go:1056] node xxxxxxxxx hasn't been updated for 2m5.699594105s. Last MemoryPressure is: &NodeCondition{Type:MemoryPressure,Status:Unknown,LastHeartbeatTime:2019-06-01 12:10:44 +0800 CST,LastTransitionTime:2019-06-01 12:11:27 +0800 CST,Reason:NodeStatusUnknown,Message:Kubelet stopped posting node status.,}
+node_controller.go:1056] node xxxxxxxxx hasn't been updated for 2m5.699610878s. Last DiskPressure is: &NodeCondition{Type:DiskPressure,Status:Unknown,LastHeartbeatTime:2019-06-01 12:10:44 +0800 CST,LastTransitionTime:2019-06-01 12:11:27 +0800 CST,Reason:NodeStatusUnknown,Message:Kubelet stopped posting node status.,}
+```
+
+怀疑是 kubelet 的原因，找到更新 node 状态的代码：
+
+```sh
+// pkg/kubelet/kubelet.go: 1410
+// start syncing lease
+if utilfeature.DefaultFeatureGate.Enabled(features.NodeLease) {
+    go kl.nodeLeaseController.Run(wait.NeverStop)
+}
+```
+
+把前后代码都看了一边，如果 kubelet 调用 kube-apiserver 的接口失败，应当打印错误日志。kubelet 调用 kube-apiserver 更新状态的连接超时时间就是上报的时间间隔，如果耗时超过 10 秒，是一定会打印错误日志的。但是没有发现有相关日志，判定 kubelet 正常上报了状态，除非程序的定时机制有问题。
+
+检查集群的 etcd 日志，发现有过载的提示，并且 entry 更新时间过长（预期100ms秒，实际超过500ms）。
+
+```sh
+Jun 04 09:33:39 xxxxx etcd[10200]: server is likely overloaded
+Jun 04 09:33:39 xxxxx etcd[10200]: failed to send out heartbeat on time (exceeded the 100ms timeout for 295.879202ms)
+Jun 04 09:33:39 xxxxx etcd[10200]: server is likely overloaded
+Jun 04 09:33:39 xxxxx etcd[10200]: failed to send out heartbeat on time (exceeded the 100ms timeout for 295.856766ms)
+Jun 04 09:33:38 xxxxx etcd[10200]: server is likely overloaded
+Jun 04 09:33:38 xxxxx etcd[10200]: failed to send out heartbeat on time (exceeded the 100ms timeout for 218.239421ms)
+Jun 04 09:33:38 xxxxx etcd[10200]: server is likely overloaded
+Jun 04 09:33:38 xxxxx etcd[10200]: failed to send out heartbeat on time (exceeded the 100ms timeout for 218.166193ms)
+
+Jun 04 08:20:54 xxxxx etcd[10094]: avoid queries with large range/delete range!
+Jun 04 08:20:54 xxxxx etcd[10094]: apply entries took too long [527.734482ms for 1 entries]
+```
+
+日志看不明白，先去补一下 etcd 相关的知识。
