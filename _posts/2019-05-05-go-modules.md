@@ -3,7 +3,7 @@ layout: default
 title: "Go Modules：Go 1.11和1.12引入的新的依赖代码管理方法"
 author: 李佶澳
 createdate: "2019-05-05 15:42:04 +0800"
-changedate: "2019-06-05 14:25:40 +0800"
+changedate: "2019-06-05 14:39:06 +0800"
 categories: 编程
 tags: golang
 keywords: Go Modules,go.mod,go.sum,golang,go modules,Go代码依赖管理
@@ -296,7 +296,7 @@ rsc.io/quote/v3 v3.1.0
 
 实现一个用 go modules 管理的 package: [github.com/introclass/go_mod_example_pkg](https://github.com/introclass/go_mod_example_pkg)
 
-在另一个使用 go modules 的项目中引用它：
+在另一个使用 go modules 的项目中引用它：[github.com/introclass/go-mod-example](https://github.com/introclass/go-mod-example)
 
 ```sh
 $ go get github.com/introclass/go_mod_example_pkg@v1.0.1
@@ -305,7 +305,6 @@ go: finding github.com/introclass/go_mod_example_pkg v1.0.1
 go: downloading github.com/introclass/go_mod_example_pkg v1.0.1
 go: extracting github.com/introclass/go_mod_example_pkg v1.0.1
 ```
-
 
 查看依赖的代码：
 
