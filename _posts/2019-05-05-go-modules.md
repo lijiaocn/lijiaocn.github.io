@@ -3,7 +3,7 @@ layout: default
 title: "Go Modules：Go 1.11和1.12引入的新的依赖代码管理方法"
 author: 李佶澳
 createdate: "2019-05-05 15:42:04 +0800"
-changedate: "2019-06-05 14:39:06 +0800"
+changedate: "2019-06-05 14:52:49 +0800"
 categories: 编程
 tags: golang
 keywords: Go Modules,go.mod,go.sum,golang,go modules,Go代码依赖管理
@@ -402,8 +402,18 @@ v3.0.1 in v3
 
 ## 需要注意的坑
 
-1. 如果要引用不同版本的父子目录，被引用的父子目录必须是用 go mod 管理的；
-2. go mod 会在本地缓存代码，如果被引用的代码的版本号不变，但是代码变了，需要清除本地缓存（ $GOPATH/pkg/mod/cache 和 $GOPATH/pkg/mod/ 依赖代码 ）才能获取更新后代码。
+1、如果要引用不同版本的父子目录，被引用的父子目录必须是用 go mod 管理的；
+
+2、go mod 会在本地缓存代码，如果被引用的代码的版本号不变，但是代码变了，需要清除本地缓存（ $GOPATH/pkg/mod/cache 和 $GOPATH/pkg/mod/ 依赖代码 ）才能获取更新后代码；
+
+3、go.mod 中设置的 package 路径与代码的获取地址相同，才能被其它项目引用（当前项目不受限制），[github.com/introclass/go-mod-example](https://github.com/introclass/go-mod-example) 的 go.mod 中标注的是 example.com/hello，代码实际存放在 github 上，在另一个项目中加载它的 github 地址会失败：
+
+```sh
+$ go get github.com/introclass/go-mod-example
+go: finding github.com/introclass/go-mod-example latest
+go: github.com/introclass/go-mod-example@v0.0.0-20190605063729-4a841a8278e3: parsing go.mod: unexpected module path "example.com/hello"
+go: error loading module requirements
+```
 
 ## 与IDE的结合
 
