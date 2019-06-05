@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "Go 1.11和1.12引入的新的依赖代码管理方法：Go Modules"
+title: "Go Modules：Go 1.11和1.12引入的新的依赖代码管理方法"
 author: 李佶澳
 createdate: "2019-05-05 15:42:04 +0800"
-changedate: "2019-05-06 14:38:53 +0800"
+changedate: "2019-06-05 14:25:40 +0800"
 categories: 编程
 tags: golang
 keywords: Go Modules,go.mod,go.sum,golang,go modules,Go代码依赖管理
@@ -16,37 +16,28 @@ description: "Go Modules是Go1.11和Go1.12引入的依赖代码管理方法，�
 
 ## 说明
 
-Go语言的依赖代码管理一直都不简洁，先后出现了godep、vendor、glide、dep等一系列依赖代码管理工具，每个项目都根据各自的喜好选择，没有一个统一的标准。
+Go 的依赖代码管理一直是个问题，先后出现了 godep、vendor、glide、dep 等一系列依赖代码管理工具，不同的项目根据各自的喜好选择了不同的方法，没有统一的标准。
+除此之外，Go 的项目代码必须位于 $GOPATH 指定的路径中（或者建立符号链接）， 否则import 找不到当前项目中的 package。
 
-项目必须位于GOPATH指定的路径中也是一个小困扰，如果项目所在的路径和代码中import指定的路径不同，编译时会找不到对应的文件。
-因此只将项目代码保存到git等源码管理工具中是不行的，还要提供项目的路径信息。
+>为了让项目代码可以位于任意目录：一种做法是准备一个用于编译的 docker 镜像，将当前目录代码挂载到 docker 容器的固定路径中，在容器中编译；另一种做法比较浪费，为每个项目准备一套 GOPATH 环境。
 
-我见过的最极端的做法是一个项目就是一个完全自治的GOPATH目录，src/bin/pkg一应俱全，每次构建项目时重新设置GOPATH，这种做法会导致本地存放有大量冗余的代码。
+Go1.11 和 Go1.12 引入的 Go Modules 机制，同时解决了依赖代码管理和路径依赖的问题，在 Go 1.11 和 Go 1.12 中， Go Modules 不是默认设置，只能在 $GOPATH 外部使用。
+Go 1.13 中 Go Modules 将成为默认的依赖管理方法，[Using Go Modules][1] 中有详细介绍。
 
-Go Modules是Go1.11和Go1.12引入的依赖代码管理方法，在Go 1.13中将成为默认的依赖管理方法，似乎能够让Go的依赖代码管理更加简洁、统一，[Using Go Modules][1]中详细介绍。
-
-主要功能就四个： 添加依赖、更新依赖、删除依赖，以及多版本依赖。
+Go Modules 的主要功能就四个： 添加依赖、更新依赖、删除依赖，以及多版本依赖。
 
 ## 初始化
 
-在$GOPATH目录之外创建一个目录，Go1.11和Go1.12只能在$GOPATH以外的目录中使用Go Modules方法，$GOPATH中的目录依旧使用原先的依赖管理以及代码引入方式，要等到Go1.13才会全部统一为Go Modules方式。 
-
-Go Modules的初始化命令为`go mod init <ROOTPATH>`，如果在$GOPATH中执行会遇到下面的错误：
+Go Modules 的初始化命令为 `go mod init <ROOTPATH>`，在 $GOPATH 外部创建一个目录，然后初始化，项目的路径设置为 `exampe.com/hello`，引用该项目中的代码时使用这个前缀：
 
 ```sh
-$ go mod init example.com/hello
-go: modules disabled inside GOPATH/src by GO111MODULE=auto; see 'go help modules'
-```
-
-在$GOPATH外创建一个目录，然后初始化，项目的路径设置为`exampe.com/hello`，引用该项目中的pkg时要使用这个前缀：
-
-```sh
-$ mkdir go-modules-example && cd go-modules-example
-$ go mod init example.com/hello
+$ mkdir go-modules-example 
+$ cd go-modules-example
+$ go mod init example.com/hello        # 该项目代码的引用路径是 example.com/hello
 go: creating new go.mod: module example.com/hello
 ```
 
-项目下生成一个go.mod文件，里面记录了module路径和go的版本，现在还没有依赖信息：
+项目下将生成一个 go.mod 文件，里面记录了 module 路径和 go 的版本，刚创建时没有依赖信息：
 
 ```sh
 $ cat go.mod
@@ -55,9 +46,16 @@ module example.com/hello
 go 1.12
 ```
 
-## 添加依赖
+对于 Go 1.11 和 Go 1.12，如果在 $GOPATH 中执行会遇到下面的错误：
 
-在项目目录go-modules-example中创建一个main.go，简单写几行代码，依赖"github.com/lijiaocn/golib/version"：
+```sh
+$ go mod init example.com/hello
+go: modules disabled inside GOPATH/src by GO111MODULE=auto; see 'go help modules'
+```
+
+## 自动加载依赖
+
+在 go-modules-example 中创建一个 main.go，简单写几行代码，引入 "github.com/lijiaocn/golib/version"：
 
 ```go
 // Create: 2019/05/05 16:53:00 Change: 2019/05/05 16:56:53
@@ -77,7 +75,7 @@ func main() {
 }
 ```
 
-为了方便创建一个Makefile：
+为了方便操作，创建一个Makefile：
 
 ```make
 # Makefile
@@ -92,9 +90,7 @@ build:
 	go build -ldflags "-X github.com/lijiaocn/golib/version.VERSION=${VERSION} -X github.com/lijiaocn/golib/version.COMPILE=${COMPILE}"
 ```
 
-### 编译时自动设置依赖
-
-编译或者go test运行测试代码时（如果有测试代码），会自动拉取依赖代码的最新版本：
+编译或者 go test 运行测试代码时，默认拉取依赖代码的`最新版本`：
 
 ```sh
 $ make
@@ -104,7 +100,7 @@ go: downloading github.com/lijiaocn/golib v0.0.1
 go: extracting github.com/lijiaocn/golib v0.0.1
 ```
 
-从上面的输出可以看出，本地没有依赖的代码的时候会自动下载`最新的代码`，依赖代码获取结束后，在go.mod中写入依赖关系，同时生成一个go.sum文件：
+依赖代码获取结束后，在 go.mod 中写入依赖关系，同时生成一个 go.sum 文件：
 
 ```sh
 $ cat go.mod
@@ -115,7 +111,7 @@ go 1.12
 require github.com/lijiaocn/golib v0.0.1
 ```
 
-go.sum文件中记录依赖代码的校验码，用来确保其他人自动依赖代码时，取得的代码的内容是正确的（主要是为了防止引入被污染的依赖代码）：
+go.sum 中记录依赖代码的校验码，防止引入被污染的代码：
 
 ```sh
 $ cat go.sum
@@ -123,11 +119,9 @@ github.com/lijiaocn/golib v0.0.1 h1:bC8xWHei7xTa8x65ShiPBNjVYXoxt6EDmnSUaGgRUW8=
 github.com/lijiaocn/golib v0.0.1/go.mod h1:BUO0RF2eDlol519GuXLQtlku8pdUim0h+f6wvX/AsNk=
 ```
 
-### 导入未使用的依赖
+## 主动导入依赖
 
-必须要先写代码引用依赖，才能添加依赖代码吗？
-
-不是的，直接用go get下载的代码也会被自动添加到依赖中，例如获取一套项目代码中没有用到的代码：
+在使用 go modules 的项目目录中，用 go get 下载代码时，下载的代码自动添加到依赖中，例如：
 
 ```sh
 $ go get github.com/lijiaocn/codes-go/01-02-hello
@@ -137,7 +131,7 @@ go: downloading github.com/lijiaocn/codes-go v0.0.0-20180220071929-9290fe35de7e
 go: extracting github.com/lijiaocn/codes-go v0.0.0-20180220071929-9290fe35de7e
 ```
 
-go.mod中同样会添加一个依赖，这个新增的依赖被标注为`indirect`，意思是没有被直接引用：
+go.mod 中增加了一行记录，新增的依赖被标注为 `indirect`，意思是在项目中还没有用到：
 
 ```sh
 $ cat go.mod
@@ -151,9 +145,9 @@ require (
 )
 ```
 
-### 查看项目依赖
+## 查看已添加依赖
 
-`go list`命令列出依赖的代码以及代码版本：
+`go list` 命令列出当前项目依赖的代码以及代码版本：
 
 ```sh
 $ go list -m all
@@ -162,21 +156,19 @@ github.com/lijiaocn/codes-go v0.0.0-20180220071929-9290fe35de7e
 github.com/lijiaocn/golib v0.0.1
 ```
 
-### 依赖代码的存放位置
+## 依赖代码的存放
 
-下载的依赖代码既不在GOPATH/src目录中，也不在vendor目录（Go Moduels不会创建vendor目录），而是在`$GOPATH/pkg/mod`目录里：
+依赖代码既不在 GOPATH/src 目录中，也不在 vendor 目录（Go Moduels 不会创建 vendor 目录），而是在 `$GOPATH/pkg/mod` 目录中：
 
 ```sh
 $ ls $GOPATH/pkg/mod/github.com/lijiaocn/
 codes-go@v0.0.0-20180220071929-9290fe35de7e golib@v0.0.1
 
 $ ls $GOPATH/pkg/mod/github.com/lijiaocn/golib@v0.0.1
-config    container generator terminal  version   virtio
+config container generator terminal version virtio
 ```
 
-注意依赖代码所在的目录名中包含版本信息，这是能够同时依赖一套代码的多个版本的基础。
-
-`$GOPATH/pkg/mod/cache/download/`缓存有下载的原始代码，用来避免重复下载：
+如上所示，目录名中包含版本信息，例如 golib@v0.0.1。原始代码缓存在 `$GOPATH/pkg/mod/cache/download/` 目录中，用于避免重复下载：
 
 ```sh
 $ ls $GOPATH/pkg/mod/cache/download/github.com/lijiaocn
@@ -186,9 +178,9 @@ $ ls $GOPATH/pkg/mod/cache/download/github.com/lijiaocn/golib/@v
 list           list.lock      v0.0.1.info    v0.0.1.lock    v0.0.1.mod     v0.0.1.zip     v0.0.1.ziphash
 ```
 
-## 更新依赖
+## 更换依赖的版本
 
-依赖的更新很简单，直接用go get获取指定版本的依赖代码即可，例如依赖代码lijiaocn/glib更新到了最新版本v0.0.2：
+依赖代码的版本更新很简单，直接用 go get 获取指定版本的依赖代码即可，例如将 lijiaocn/glib 更新到 v0.0.2：
 
 ```sh
 $ go get github.com/lijiaocn/glib@v0.0.2
@@ -197,6 +189,8 @@ go: downloading github.com/lijiaocn/golib v0.0.2
 go: extracting github.com/lijiaocn/golib v0.0.2
 ```
 
+可以看到依赖的代码版本发生了变化：
+
 ```sh
 $ go list -m all
 example.com/hello
@@ -204,15 +198,13 @@ github.com/lijiaocn/codes-go v0.0.0-20180220071929-9290fe35de7e
 github.com/lijiaocn/golib v0.0.2
 ```
 
-## 删除依赖
+## 删除未使用依赖
 
-在编译的时候可以自动添加依赖，但不能自动删除不需要的依赖，不需要的依赖必须用单独的命令清除，执行`go mod tidy`： 
+不再需要的依赖必须手动清除，执行 `go mod tidy`，清除所有未使用的依赖：
 
 ```sh
 $ go mod tidy
 ```
-
-前面引入的未使用的依赖被删除了：
 
 ```sh
 $ go list -m all
@@ -220,9 +212,9 @@ example.com/hello
 github.com/lijiaocn/golib v0.0.2
 ```
 
-## 引用项目中的package
+## 引用项目中的代码
 
-在项目中定义一个子package：
+在项目中创建一个 package：
 
 ```sh
 $ tree display
@@ -230,22 +222,60 @@ display
 └── display.go
 ```
 
-引用的时候使用初始化时定义的前缀example.com/hello： 
+使用初始化时定义的前缀，example.com/hello/display： 
 
 ```sh
 import (
-	"example.com/hello/display"
-	"github.com/lijiaocn/golib/version"
-	)
+    "example.com/hello/display"
+    "github.com/lijiaocn/golib/version"
+    )
 ```
 
-无论项目在哪里，对display的引用都是成功，和项目所处的路径彻底解耦。
+使用 Go Modules 后，无论项目位于哪个路径，都能找到 example.com/hello/display，import 使用的路径和项目所在的路径彻底解耦。
 
-## 引入一个项目的多个主版本
+## 父子目录使用不同版本
 
-[Using Go Modules][1]中有一节是`Adding a dependency on a new major version`，可以同时引入v1.5.2版本的rsc.io/quote，和v3.1.0版本的rsc.io/quote/v3。
+[Using Go Modules][1] 中有一节是 `Adding a dependency on a new major version`，示例中引入了 v1.5.2 版本的 rsc.io/quote，和 v3.1.0 版本的 rsc.io/quote/v3：
 
-试验了以下，引用rsc.io/quote是可以的：
+```go
+package hello
+
+import (
+    "rsc.io/quote"
+    quoteV3 "rsc.io/quote/v3"
+)
+
+func Hello() string {
+    return quote.Hello()
+}
+
+func Proverb() string {
+    return quoteV3.Concurrency()
+}
+```
+
+```sh
+➜  rsc.io tree quote
+quote
+├── LICENSE
+├── README.md
+├── buggy
+│   └── buggy_test.go
+├── go.mod
+├── go.sum
+├── quote.go
+├── quote_test.go
+└── v3
+    ├── go.mod
+    ├── go.sum
+    └── quote.go
+
+2 directories, 10 files
+```
+
+特别注意，v3 是一个真实存在的子目录，且`必须是用 go modules 管理的`。
+
+引用 1.5.2 版本的 rsc.io/quote 和 v3.1.0 版本的 rsc.io/quote/v3 ：
 
 ```sh
 $ go get rsc.io/quote@v1.5.2
@@ -254,7 +284,7 @@ $ go get rsc.io/quote/v3@v3.1.0
   ...
 ```
 
-两个版本同时存在：
+可以看到两个版本同时存在：
 
 ```sh
 $ go list -m rsc.io/q...
@@ -262,27 +292,137 @@ rsc.io/quote v1.5.2
 rsc.io/quote/v3 v3.1.0
 ```
 
-但是引用自己定义的package的时候，譬如github.com/lijiaocn/golib/version/v1和github.com/lijiaocn/golib/version/v1，会被合并成一个依赖github.com/lijiaocn/golib。
+### 实例演示
 
-将自己的package与rsc.io/quote对比了下，区别是rsc.io/quote和rsc.io/quote/v3本身是用Go Modules管理的，这个特性似乎只能在Go Modules引用Go Modules的情况下使用。时间关系，没有继续试验，有需求的时候再试验下。
+实现一个用 go modules 管理的 package: [github.com/introclass/go_mod_example_pkg](https://github.com/introclass/go_mod_example_pkg)
+
+在另一个使用 go modules 的项目中引用它：
+
+```sh
+$ go get github.com/introclass/go_mod_example_pkg@v1.0.1
+go: finding golang.org/x/text v0.0.0-20170915032832-14c0d48ead0c
+go: finding github.com/introclass/go_mod_example_pkg v1.0.1
+go: downloading github.com/introclass/go_mod_example_pkg v1.0.1
+go: extracting github.com/introclass/go_mod_example_pkg v1.0.1
+```
+
+
+查看依赖的代码：
+
+```sh
+$ go list  -m all
+example.com/hello
+github.com/introclass/go_mod_example_pkg v1.0.1
+github.com/lijiaocn/golib v2.0.1+incompatible
+golang.org/x/text v0.0.0-20170915032832-14c0d48ead0c
+rsc.io/quote v1.5.2
+rsc.io/sampler v1.3.0
+```
+
+main 函数实现：
+
+```sh
+package main
+
+import (
+    "example.com/hello/display"
+    pkg "github.com/introclass/go_mod_example_pkg"
+    "github.com/lijiaocn/golib/version"
+)
+
+func main() {
+    version.Show()
+    display.Display("display print\n")
+    pkg.Vesrion()
+}
+```
+
+编译执行，输出的v1.0.1：
+
+```sh
+$ ./hello
+version:    compile at:   golib v2
+display print
+v1.0.1
+```
+
+切换到版本2.0.1：
+
+```sh
+$ go get github.com/introclass/go_mod_example_pkg@v2.0.1
+go: finding github.com/introclass/go_mod_example_pkg v2.0.1
+```
+
+重新编译执行，输出的版本是 v2.0.1：
+
+```sh
+$ ./hello
+version:    compile at:   golib v2
+display print
+v2.0.1
+```
+
+引用 v3.0.1 版本的 v3子目录：
+
+```sh
+$ go get github.com/introclass/go_mod_example_pkg/v3@v3.0.1
+go: finding github.com/introclass/go_mod_example_pkg/v3 v3.0.1
+go: downloading github.com/introclass/go_mod_example_pkg/v3 v3.0.1
+go: extracting github.com/introclass/go_mod_example_pkg/v3 v3.0.1
+```
+
+修改 main 函数，引用 v3：
+
+```sh
+package main
+
+import (
+    "example.com/hello/display"
+    pkg "github.com/introclass/go_mod_example_pkg"
+    pkgv3 "github.com/introclass/go_mod_example_pkg/v3"
+    "github.com/lijiaocn/golib/version"
+)
+
+func main() {
+    version.Show()
+    display.Display("display print\n")
+    pkg.Vesrion()
+    pkgv3.Vesrion()
+}
+```
+
+重新编译执行，分别输出 v2.0.1 和 v3.0.1 ：
+
+```sh
+$ ./hello
+version:    compile at:   golib v2
+display print
+v2.0.1
+v3.0.1 in v3
+```
+
+## 需要注意的坑
+
+1. 如果要引用不同版本的父子目录，被引用的父子目录必须是用 go mod 管理的；
+2. go mod 会在本地缓存代码，如果被引用的代码的版本号不变，但是代码变了，需要清除本地缓存（ $GOPATH/pkg/mod/cache 和 $GOPATH/pkg/mod/ 依赖代码 ）才能获取更新后代码。
 
 ## 与IDE的结合
 
 ### IntelliJ IDEA/Goland
 
-在IntelliJ IDEA或者Goland中（`需要是最新的2019.1版本`）导入使用Go Module的项目的时候，要选择`Go Module（vgo）`，否则IDE找不到import导入的代码，[create-a-project-with-vgo-integration][3]有更多介绍：
+在 IntelliJ IDEA 或者 Goland 中（`需要是最新的2019.1版本`）导入使用 Go Module 的项目的时候，要选择 `Go Module（vgo）`，否则 IDE 找不到 import 导入的代码，[create-a-project-with-vgo-integration][3] 有更多介绍：
 
-![IntelliJ IDEA/Goland中创建Go Module项目]({{ site.imglocal }}/article/goland_create_vgo_project.png)
+![IntelliJ IDEA/Goland 中创建 Go Module 项目]({{ site.imglocal }}/article/goland_create_vgo_project.png)
 
-在IntelliJ IDEA/Goland显示的依赖代码，带有版本号或者commit id：
+在 IntelliJ IDEA/Goland 显示的依赖代码，带有版本号或者 commit id：
 
 ![IntelliJ IDEA/Goland中的显示的依赖代码]({{ site.imglocal }}/article/goland_import_pkg.png)
 
 ### vim
 
-vim插件[vim-go](https://github.com/fatih/vim-go/issues/1906)从v1.19开始支持go.mod，但是代码跳转等还不支持。
+vim插件 [vim-go](https://github.com/fatih/vim-go/issues/1906) 从 v1.19 开始支持 go.mod，但是代码跳转等还不支持。
 
-所有使用GOPATH进行代码跳转的工具都需要被更新，[cmd/go: track tools/tooling updates to support modules][4]列出了它们对go module的支持情况。
+所有使用 GOPATH 进行代码跳转的工具都需要被更新，[cmd/go: track tools/tooling updates to support modules][4] 列出了它们对 go module 的支持情况。
 
 ## 参考
 
