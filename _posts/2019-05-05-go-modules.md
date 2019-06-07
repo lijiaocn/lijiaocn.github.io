@@ -213,7 +213,7 @@ github.com/lijiaocn/codes-go v0.0.0-20180220071929-9290fe35de7e
 github.com/lijiaocn/golib v0.0.2
 ```
 
-## 删除未使用依赖
+## 删除未使用依赖包
 
 不需要的依赖必须手动清除，执行 `go mod tidy`，清除所有未使用的依赖：
 
@@ -428,7 +428,7 @@ go: github.com/introclass/go-mod-example@v0.0.0-20190605063729-4a841a8278e3: par
 go: error loading module requirements
 ```
 
-## IDE 与 Go Modules 项目
+## IDE 与 Go Modules
 
 ### IntelliJ IDEA/Goland
 
