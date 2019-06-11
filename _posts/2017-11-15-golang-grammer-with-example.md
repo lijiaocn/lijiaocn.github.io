@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2017/11/15 10:49:40
 changedate: 2017/12/01 18:07:59
 categories: 编程
-tags: go
+tags: golang
 keywords: go语法,语法实例
 description: 这里简单记录go的一些常用语法
 
