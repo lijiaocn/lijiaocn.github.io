@@ -35,12 +35,12 @@ description: 只有在更新 map 的时候，map 是并发不安全的，全部�
 
 这份资料可以理解为 Go 语言的设计文档之一，用表达式的方式对 Go 语言语法做出了最精确的定义，对 Go 语言特性的介绍也是最全面的。掌握了这一份资料，基本就掌握了 100% 的 Go 语言语法和大部分使用时应注意的细节。如果要了解 Go 语言的实现和一些更复杂的内容，需要去查阅其它文档。
 
-Go Spec 不容易看懂，里面的每一个英文单词都认识，但是联在一起就看不明白了。因为这份文档是在从更高的维度描述 Go 语言，使用的是「编程入门」类书籍中没有的术语，譬如`Lexical elements`、`Assignability`，就好像把「桌子」被称为「一种用木材制作而成的家具」一样。习惯了这种表达方式，并知道常见「称呼」的含义后，会发现从这份文档中找答案的效率非常高！
+Go Spec 不容易看懂，里面的每一个英文单词都认识，但是联在一起就看不明白了。因为这份文档是在从更高的维度描述 Go 语言，使用的是「编程入门」类书籍中没有的术语，譬如`Lexical elements`、`Assignability`，就好像把「桌子」称为「一种用木材制作而成的家具」一样。习惯了这种表达方式，并知道常见「称呼」的含义后，会发现从这份文档中找答案的效率非常高！
 
 
 ## Go 语言的 map 是否是并发安全的？
 
-到 Go Spec 的 map 章节中阅读 map 的细节：
+先到 Go Spec 的 map 章节中阅读 map 的细节：
 
 [![The Go Programming Language Specification - map types]({{ site.imglocal }}/article/go-spec-2.png)](https://golang.org/ref/spec#Map_types)
 
@@ -56,7 +56,7 @@ KeyType     = Type .
 
 从这一章里得知:
 
-1. map 的 key 必须是可比（!=、==），不能是 function、map、slice，如果是接口类型，实际用到的值要可比；
+1. map 的 key 必须是可比（!=、==）的，不能是 function、map、slice，如果是接口类型，实际用到的值要可比；
 2. 没有初始化的 map 变量的值是 nil，空 map 要用内置的 `make` 函数创建，`未初始化的 map` 不等于 `空的map`；
 3. map 的 `size 是无限制的`，用 make 函数创建 map 时，设置的 capacity 不会限制 map 的 size，map 的容量是随着 element 的插入动态增长的；
 
@@ -69,7 +69,7 @@ KeyType     = Type .
 1. [Go maps in action][5]
 2. [Go 1.6 Release Notes: Runtime][6]
 
-第一个连接是 Go 官方的博客的一篇文章，第二个连接是 Go 1.6 的 Releaste Notes，然后又从第一个连接中找到了一个 Go 问答：
+第一个连接是 Go 官方博客的一篇文章，第二个连接是 Go 1.6 的 Release Notes，然后又从第一个连接中找到了一个 Go 问答：
 
 1. [Why are map operations not defined to be atomic?][7]
 
@@ -85,11 +85,11 @@ KeyType     = Type .
 
 上一节找到了`Go 语言的 map 是否是并发安全的？`这个问题的答案，但是事情没有结束。
 
-在上一节找答案的过程，纯粹是运气好，遇到三篇预期外的文档，一篇是 Go 的[博客文章][5]，一篇是 Go 的 [Release Notes][6]， 一篇是 Go 的 [FAQ](8)，这三篇权威的官方文档给出了准确的答案。
+在上一节找答案的过程中，纯粹是运气好，遇到三篇预期外的文档，一篇是 Go 的[博客文章][5]，一篇是 Go 的 [Release Notes][6]， 一篇是 Go 的 [FAQ](8)，这三篇权威的官方文档给出了准确的答案。
 
-可以使用的权威资料得到了扩充，同时第一个问题来了：这次是运气好，用 Google 找到了这三篇官方的权威的资料，如果下次查找其它问题的答案时，运气没这么好该怎么办？
+权威资料得到扩充的同时第一个问题来了：这次是运气好，用 Google 找到了这三篇官方的权威资料，如果下次查找其它问题的答案时，运气没这么好该怎么办？
 
-在 Go 的官网上溜达溜达，最后发现这三篇文档都可以通过 [Documentation](https://golang.org/doc/) 页面中的连接找到：
+在 Go 的官网上溜达，最后发现这三篇文档都可以通过 [Documentation](https://golang.org/doc/) 页面中的连接找到：
 
 ![The Go Programming Language Specification]({{ site.imglocal }}/article/go-spec-4.png)
 
@@ -97,7 +97,7 @@ KeyType     = Type .
 
 ![The Go Programming Language Specification]({{ site.imglocal }}/article/go-spec-6.png)
 
-同时也记住了 golang.org 站内搜索的结果是不全面的，用 Google 进行站内搜索能找到更多内容：
+前面的操作也让我们知道了， golang.org 站内搜索的结果是不全面的，用 Google 进行站内搜索能找到更多内容：
 
 ![golang.org 站内搜索]({{ site.imglocal }}/article/go-spec-7.png)
 
@@ -107,13 +107,13 @@ KeyType     = Type .
 
 ![Go Pacakge sync 中并发读写安全的 Map]({{ site.imglocal }}/article/go-spec-9.png)
 
-如果技术热情高涨，可以继续研究下标准库中的实现有什么特点，毕竟提出需求的 [issues/18177](https://github.com/golang/go/issues/18177) 中说了一句：“RWMutex has some scaling issues，巴拉巴拉巴......”。伪技术迷就先告辞做任务去了 😭.....
+如果技术热情高涨，可以继续研究下标准库中的实现有什么特点，毕竟提出需求的 [issues/18177](https://github.com/golang/go/issues/18177) 中说了一句：“RWMutex has some scaling issues，巴拉巴拉巴......”。伪技术迷就先告辞做任务去了 😭......
 
 ## 为什么要执着于一手资料？
 
 因为一手资料是最全的、并且会及时更新的资料。一本《Go 语言编程入门》出版之后，几年内都不会变化，而几年的时间对于一门编程语言来说很久了，如果只会从书本里找答案，那么永远不会知道最新的情况。
 
-一手资料以外的资料，很难做到及时更新，所以我们才会经常用 Google 、baidu 搜索到过时的解答和方案。有些非一手资料还是不靠谱的，漫天搜索、东试西试的不仅耗费大量时间，即使碰巧找到正确方法把问题解决了，依旧云里雾里不知其所以然，下次遇到同一个领域的问题，还要漫天搜索。
+一手资料以外的资料，很难做到及时更新，所以我们才会经常用 Google 、baidu 搜索到过时的解答和方案。有些非一手资料还是不靠谱的，漫天搜索、左右尝试的不仅耗费大量时间，而且即使碰巧找到正确方法把问题解决了，依旧云里雾里不知其所以然，下次遇到同一个领域的问题，还要漫天搜索。
 
 ## 参考
 
