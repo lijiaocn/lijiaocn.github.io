@@ -1,13 +1,13 @@
 ---
 layout: default
-title: "unable to create nf_conn slab cache导致容器启动失败"
+title: "容器启动失败：unable to create nf_conn slab cache"
 author: 李佶澳
 createdate: 2017/11/13 09:42:36
 changedate: 2018/05/12 11:48:54
 categories: 问题
 tags: kubernetes
 keywords: kubernets,容器,启动失败,内核错误
-description: kubernetes集群的一台node上容器启动失败，日志显示
+description: kubernetes集群的一台node上容器启动失败，日志显示unable to create nf_conn slab cache
 
 ---
 
@@ -320,33 +320,39 @@ kubernetes集群的一台node上容器启动失败，日志显示：
 
 ### 第四阶段
 
-在[Documentation/sysctl/vm.txt][5]搜索`fragment`，发现了一个参数:
+在 [Documentation/sysctl/vm.txt][5] 搜索`fragment`，发现了一个参数:
 
 	extfrag_threshold:
 	This parameter affects whether the kernel will compact memory or direct
 	reclaim to satisfy a high-order allocation.
 
-当/sys/kernel/debug/extfrag/extfrag_index中的index数值小于extfrag_threshold的时候，内核不会整理内存。
+`/sys/kernel/debug/extfrag/extfrag_index` 记录了每个 zone 的不同大小的内存的 index 数值，数值在 0~1000 之间变化：
 
-	$ cat /sys/kernel/debug/extfrag/extfrag_index
-	Node 0, zone      DMA -1.000 -1.000 -1.000 -1.000 -1.000 -1.000 -1.000 -1.000 -1.000 -1.000 -1.000
-	Node 0, zone    DMA32 -1.000 -1.000 -1.000 -1.000 -1.000 -1.000 0.970 0.985 0.993 0.997 0.999
-	Node 0, zone   Normal -1.000 -1.000 -1.000 -1.000 -1.000 -1.000 -1.000 0.990 0.995 0.998 0.999
+1. 趋于 0 ，内存分配可能由于内存不足而分配失败；
+2. 接近 1000，内存分配可能由于碎片太多而失败；
+3. -1，只要没有遇到 watermarks 就一定分配成功。
 
-	$ cat /proc/sys/vm/extfrag_threshold
-	500
+`/proc/sys/vm/extfrag_threshold` 约定了进行内存整理的时机，index 数值超过 extfrag_threshold 的时候，进行内存整理。
 
-修改extfrag_threshold，发现不能设置为－1，设置为0以后，没有效果：
+```sh
+$ cat /sys/kernel/debug/extfrag/extfrag_index
+Node 0, zone      DMA -1.000 -1.000 -1.000 -1.000 -1.000 -1.000 -1.000 -1.000 -1.000 -1.000 -1.000
+Node 0, zone    DMA32 -1.000 -1.000 -1.000 -1.000 -1.000 -1.000 0.970 0.985 0.993 0.997 0.999
+Node 0, zone   Normal -1.000 -1.000 -1.000 -1.000 -1.000 -1.000 -1.000 0.990 0.995 0.998 0.999
 
-	$ echo 0 > /proc/sys/vm/extfrag_threshold
+$ cat /proc/sys/vm/extfrag_threshold
+500
+```
 
 在[Documentation/sysctl/vm.txt][5]搜索`compatc`，发现了`compat_memory`:
 
-	compact_memory
-	Available only when CONFIG_COMPACTION is set. When 1 is written to the file,
-	all zones are compacted such that free memory is available in contiguous
-	blocks where possible. This can be important for example in the allocation of
-	huge pages although processes will also directly compact memory as required.
+```sh
+compact_memory
+Available only when CONFIG_COMPACTION is set. When 1 is written to the file,
+all zones are compacted such that free memory is available in contiguous
+blocks where possible. This can be important for example in the allocation of
+huge pages although processes will also directly compact memory as required.
+```
 
 查看内核配置文件，已经设置了CONFIG_COMPACTION。
 
@@ -367,6 +373,8 @@ kubernetes集群的一台node上容器启动失败，日志显示：
 	Node 0, zone   Normal  31163  14197   1102     88     27     22      1      0      0      0      0
 
 但是依然不能保证容器每次都可以运行成功，要彻底解决，只能调查一下是哪些进程因为什么导致了大量的碎片。
+
+> 对这个问题还是一知半解，上面的记录只供参考
 
 ## 参考
 
