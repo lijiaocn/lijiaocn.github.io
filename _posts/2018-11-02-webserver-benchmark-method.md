@@ -3,7 +3,7 @@ layout: default
 title: "怎样压测Web应用的性能？压测工具与测量、分析方法"
 author: 李佶澳
 createdate: "2018-11-02 10:53:46 +0800"
-changedate: "2019-06-10 16:26:40 +0800"
+changedate: "2019-06-17 14:53:07 +0800"
 categories: 方法
 tags: 方法
 keywords: benchmark,web server,性能测试
@@ -63,6 +63,21 @@ Web 应用通常面对分布在天南海北的客户端，会瞬间涌入大量�
 2. [Modern HTTP Benchmarking Tools ready for 2018 – h2load, hey & wrk][8]
 
 对 Web 应用压测之前，先测试一下压测端与目标机器之间的带宽：[iperf、netperf 等网络性能测试工具的使用][7]。
+
+### jmeter
+
+[jmeter](https://jmeter.apache.org/usermanual/get-started.html) 是一个应用比较广泛的压测工具。 
+
+```sh
+brew install jmeter
+```
+
+jmeter 有 CLI 模式和 GUI 模式，GUI 模式有图形界面，用来设置测试计划，在 mac 上用下面的方式启动：
+
+```
+cd /usr/local/Cellar/jmeter/5.1.1/libexec/bin
+./jmeter.sh
+```
 
 ### wrk
 
@@ -132,6 +147,30 @@ Usage: httperf [-hdvV] [--add-header S] [--burst-length N] [--client N/N]
 
 ```sh
 httperf: warning: open file limit > FD_SETSIZE; limiting max. # of open files to FD_SETSIZE
+```
+
+#### 源码编译安装
+
+easyengine 的[这篇博客](https://easyengine.io/tutorials/benchmark/httperf/)介绍的比较详细：
+
+```sh
+wget https://github.com/rtCamp/httperf/archive/master.zip
+unzip master.zip
+cd httperf-master
+yum install autoconf automake m4 libtool gcc make
+autoreconf -i
+mkdir build
+cd build
+../configure
+make 
+make install
+```
+
+如果没有安装 automake 和 libtool 会出现下面的情况：
+
+```
+aclocal  not found
+error: possibly undefined macro: AC_PROG_LIBTOOL
 ```
 
 #### 以固定速率发送请求
