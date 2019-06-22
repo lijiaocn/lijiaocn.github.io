@@ -74,19 +74,6 @@
 				</div>
 
 				<div class="row" style="text-align:center">
-					<br>
-					<p class="author">
-					<span class="glyphicon glyphicon-home"></span>&nbsp;
-					<span><a href="{{ site.baseurl }}/categories/{{ page.categories }}.html">{{ page.categories }}</a></span>&nbsp;
-					<span class="glyphicon glyphicon-tag"></span>&nbsp;
-					{% for tag in page.tags %}
-					<span><a href="{{ site.baseurl }}/tags/all.html#{{ tag }}">{{ tag }}</a></span>&nbsp;
-					{% endfor %}
-					<span><a href="{{ site.baseurl }}{{ post.url}}">本页</a></span>
-					</p>
-				</div>
-
-				<div class="row" style="text-align:center">
 					{% include main-bottom.html %}
 				</div>
 			</div>
