@@ -3,7 +3,7 @@ layout: default
 title: "Kubernetes 集群 Node 间歇性变为 NotReady 状态，调查过程实录"
 author: 李佶澳
 createdate: "2019-05-27 15:03:29 +0800"
-changedate: "2019-06-25 11:10:48 +0800"
+changedate: "2019-06-25 11:22:15 +0800"
 categories: 问题
 tags: kubernetes
 cover: 
@@ -20,7 +20,7 @@ Kubernetes 的 node 间歇性变成NodeNotReady，但是处于该状态的时间
 
 ![kubernetes node NOTREADY]({{ site.imglocal }}/article/node-not-ready.png)
 
-kubernetes 版本是 1.9.11。
+kubernetest  版本是 1.9.11。
 
 ## 分析日志
 
@@ -282,23 +282,23 @@ func (kl *Kubelet) tryUpdateNodeStatus(tryNumber int) error {
 很快就遇到了，kube-controller-manager 日志显示, 08:42:40 之后的更新延迟触发了 NotReady 认定：
 
 ```sh
-node prod-k8s-node-35-129 hasn't been updated for 1m0.059730854s. Last ready condition is: {Type:Ready Status:True LastHeartbeatTime:2019-06-25 08:42:40 +0800 CST LastTransitionTime:2019-06-25 08:41:11 +0800 CST Reason:KubeletReady Message:kubelet is posting ready status}
+node XXXXX hasn't been updated for 1m0.059730854s. Last ready condition is: {Type:Ready Status:True LastHeartbeatTime:2019-06-25 08:42:40 +0800 CST LastTransitionTime:2019-06-25 08:41:11 +0800 CST Reason:KubeletReady Message:kubelet is posting ready status}
 ```
 
 从 kube-apiserver 的日志可以看到 08:42:40 有一次更新请求，下一次更新请求是 08:44:21，延迟了 1 分 30 秒：
 
 ```sh
 # 正常
-I0625 08:42:40.888966   19867 wrap.go:42] GET /api/v1/nodes/prod-k8s-node-35-129?resourceVersion=0: (962.828<C2><B5>s) 200 [[kubelet/v1.9.11 (linux/amd64) kubernetes/9aafe17] 10.19.35.129:40554]
-I0625 08:42:40.902182   19867 wrap.go:42] PATCH /api/v1/nodes/prod-k8s-node-35-129/status: (5.647934ms) 200 [[kubelet/v1.9.11 (linux/amd64) kubernetes/9aafe17] 10.19.35.129:40554]
+I0625 08:42:40.888966   19867 wrap.go:42] GET /api/v1/nodes/XXXXX?resourceVersion=0: (962.828<C2><B5>s) 200 [[kubelet/v1.9.11 (linux/amd64) kubernetes/9aafe17] 10.19.35.129:40554]
+I0625 08:42:40.902182   19867 wrap.go:42] PATCH /api/v1/nodes/XXXXX/status: (5.647934ms) 200 [[kubelet/v1.9.11 (linux/amd64) kubernetes/9aafe17] 10.19.35.129:40554]
 
 # 提交新的状态的时机延迟了 1 分 30 秒，且 GET 和 PATCH 间隔了 65 秒：
-I0625 08:43:16.880865   19867 wrap.go:42] GET /api/v1/nodes/prod-k8s-node-35-129?resourceVersion=0: (1.42937ms) 200 [[kubelet/v1.9.11 (linux/amd64) kubernetes/9aafe17] 10.19.35.129:40554]
-I0625 08:44:21.722785   19867 wrap.go:42] PATCH /api/v1/nodes/prod-k8s-node-35-129/status: (5.696645ms) 200 [[kubelet/v1.9.11 (linux/amd64) kubernetes/9aafe17] 10.19.35.129:40554]
+I0625 08:43:16.880865   19867 wrap.go:42] GET /api/v1/nodes/XXXXX?resourceVersion=0: (1.42937ms) 200 [[kubelet/v1.9.11 (linux/amd64) kubernetes/9aafe17] 10.19.35.129:40554]
+I0625 08:44:21.722785   19867 wrap.go:42] PATCH /api/v1/nodes/XXXXX/status: (5.696645ms) 200 [[kubelet/v1.9.11 (linux/amd64) kubernetes/9aafe17] 10.19.35.129:40554]
 
 # 提交延迟了 30 秒以上
-I0625 08:45:06.949299   19867 wrap.go:42] GET /api/v1/nodes/prod-k8s-node-35-129?resourceVersion=0: (1.612862ms) 200 [[kubelet/v1.9.11 (linux/amd64) kubernetes/9aafe17] 10.19.35.129:40554]
-I0625 08:45:06.972904   19867 wrap.go:42] PATCH /api/v1/namespaces/default/events/prod-k8s-node-35-129.15ab2937eddfdbd4: (12.42918ms) 200 [[kubelet/v1.9.11 (linux/amd64) kubernetes/9aafe17] 10.19.35.129:4
+I0625 08:45:06.949299   19867 wrap.go:42] GET /api/v1/nodes/XXXXX?resourceVersion=0: (1.612862ms) 200 [[kubelet/v1.9.11 (linux/amd64) kubernetes/9aafe17] 10.19.35.129:40554]
+I0625 08:45:06.972904   19867 wrap.go:42] PATCH /api/v1/namespaces/default/events/XXXXX.15ab2937eddfdbd4: (12.42918ms) 200 [[kubelet/v1.9.11 (linux/amd64) kubernetes/9aafe17] 10.19.35.129:4
 ```
 
 kubelet 的日志比较奇怪，08:42:40 分的更新非常迅速，接下来的两次更新则非常耗时，然后又恢复了正常：
@@ -306,27 +306,27 @@ kubelet 的日志比较奇怪，08:42:40 分的更新非常迅速，接下来的
 ```sh
 # 正常更新无延迟
 I0625 08:42:40.915180   28911 kubelet_node_status.go:403] NOTREADY SURVEY: try update node status, tryNumber is 0
-I0625 08:42:40.915201   28911 kubelet_node_status.go:408] NOTREADY SURVEY: heartbeatClient, node is prod-k8s-node-35-129
+I0625 08:42:40.915201   28911 kubelet_node_status.go:408] NOTREADY SURVEY: heartbeatClient, node is XXXXX
 I0625 08:42:40.917055   28911 kubelet_node_status.go:419] NOTREADY SURVEY: updatePodCIDR, node is
-I0625 08:42:40.922501   28911 kubelet_node_status.go:424] NOTREADY SURVEY: patch node status, node is prod-k8s-node-35-129
+I0625 08:42:40.922501   28911 kubelet_node_status.go:424] NOTREADY SURVEY: patch node status, node is XXXXX
 
 # 定时更新正常启动，但是最终提交更新的时间延迟 1 分 30 秒
 I0625 08:42:50.930319   28911 kubelet_node_status.go:403] NOTREADY SURVEY: try update node status, tryNumber is 0
-I0625 08:43:16.913674   28911 kubelet_node_status.go:408] NOTREADY SURVEY: heartbeatClient, node is prod-k8s-node-35-129
+I0625 08:43:16.913674   28911 kubelet_node_status.go:408] NOTREADY SURVEY: heartbeatClient, node is XXXXX
 I0625 08:43:16.916334   28911 kubelet_node_status.go:419] NOTREADY SURVEY: updatePodCIDR, node is
-I0625 08:44:21.723264   28911 kubelet_node_status.go:424] NOTREADY SURVEY: patch node status, node is prod-k8s-node-35-129
+I0625 08:44:21.723264   28911 kubelet_node_status.go:424] NOTREADY SURVEY: patch node status, node is XXXXX
 
 # 定时开始时间正常，最终提交时间延迟 30 秒
 I0625 08:44:31.760191   28911 kubelet_node_status.go:403] NOTREADY SURVEY: try update node status, tryNumber is 0
-I0625 08:45:06.986980   28911 kubelet_node_status.go:408] NOTREADY SURVEY: heartbeatClient, node is prod-k8s-node-35-129
+I0625 08:45:06.986980   28911 kubelet_node_status.go:408] NOTREADY SURVEY: heartbeatClient, node is XXXXX
 I0625 08:45:06.991113   28911 kubelet_node_status.go:419] NOTREADY SURVEY: updatePodCIDR, node is
-I0625 08:45:06.999802   28911 kubelet_node_status.go:424] NOTREADY SURVEY: patch node status, node is prod-k8s-node-35-129
+I0625 08:45:06.999802   28911 kubelet_node_status.go:424] NOTREADY SURVEY: patch node status, node is XXXXX
 
 # 恢复正常
 I0625 08:45:17.018406   28911 kubelet_node_status.go:403] NOTREADY SURVEY: try update node status, tryNumber is 0
-I0625 08:45:17.018421   28911 kubelet_node_status.go:408] NOTREADY SURVEY: heartbeatClient, node is prod-k8s-node-35-129
+I0625 08:45:17.018421   28911 kubelet_node_status.go:408] NOTREADY SURVEY: heartbeatClient, node is XXXXX
 I0625 08:45:17.020870   28911 kubelet_node_status.go:419] NOTREADY SURVEY: updatePodCIDR, node is
-I0625 08:45:17.026053   28911 kubelet_node_status.go:424] NOTREADY SURVEY: patch node status, node is prod-k8s-node-35-129
+I0625 08:45:17.026053   28911 kubelet_node_status.go:424] NOTREADY SURVEY: patch node status, node is XXXXX
 ```
 
 根据日志整理一下代码各阶段耗时：
