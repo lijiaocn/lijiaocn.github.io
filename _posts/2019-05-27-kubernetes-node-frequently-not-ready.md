@@ -3,7 +3,7 @@ layout: default
 title: "Kubernetes 集群 Node 间歇性变为 NotReady 状态，调查过程实录"
 author: 李佶澳
 createdate: "2019-05-27 15:03:29 +0800"
-changedate: "2019-06-25 11:22:15 +0800"
+changedate: "2019-06-25 11:27:12 +0800"
 categories: 问题
 tags: kubernetes
 cover: 
@@ -16,7 +16,7 @@ description: Kubernetes的node间歇性变成NodeNotReady，非常短暂，监�
 
 ## 说明
 
-Kubernetes 的 node 间歇性变成NodeNotReady，但是处于该状态的时间非常短暂，用 kubectl 观察一般看不到，通过监听 kubernetes 集群的事件可以发现，在日志中也能看到：
+Kubernetes 的 node 间歇性变成 NotReady，但是处于该状态的时间非常短暂，用 kubectl 观察一般看不到，通过监听 kubernetes 集群的事件可以发现，在日志中也能看到：
 
 ![kubernetes node NOTREADY]({{ site.imglocal }}/article/node-not-ready.png)
 
@@ -332,14 +332,14 @@ I0625 08:45:17.026053   28911 kubelet_node_status.go:424] NOTREADY SURVEY: patch
 根据日志整理一下代码各阶段耗时：
 
 ```go
-# 08:42:50 开始，耗时 26 秒
+// 08:42:50 开始，耗时 26 秒
 glog.V(5).Infof("NOTREADY SURVEY: try update node status, tryNumber is %d", tryNumber)
 opts := metav1.GetOptions{}
 if tryNumber == 0 {
     util.FromApiserverCache(&opts)
 }
 
-# 08:43:16 开始，耗时 0.xx 秒，到达 apiserver 耗时不到 1 秒
+// 08:43:16 开始，耗时 0.xx 秒，到达 apiserver 耗时不到 1 秒
 glog.V(5).Infof("NOTREADY SURVEY: heartbeatClient, node is %s", kl.nodeName)
 node, err := kl.heartbeatClient.Nodes().Get(string(kl.nodeName), opts)
 if err != nil {
@@ -351,13 +351,13 @@ if originalNode == nil {
     return fmt.Errorf("nil %q node object", kl.nodeName)
 }
 
-# 08:43:16 开始，耗时 65 秒
+// 08:43:16 开始，耗时 65 秒
 glog.V(5).Infof("NOTREADY SURVEY: updatePodCIDR, node is %s", node.Spec.PodCIDR)
 kl.updatePodCIDR(node.Spec.PodCIDR)
 
 kl.setNodeStatus(node)
 
-# 08:44:21 开始，到达 apiserver 耗时不到 1 秒。
+// 08:44:21 开始，到达 apiserver 耗时不到 1 秒。
 glog.V(5).Infof("NOTREADY SURVEY: patch node status, node is %s", kl.nodeName)
 updatedNode, err := nodeutil.PatchNodeStatus(kl.heartbeatClient, types.NodeName(kl.nodeName), originalNode, node)
 if err != nil {
@@ -365,12 +365,11 @@ if err != nil {
 }
 ```
 
-kubelet 到 apiserver 的请求的耗时几乎可以忽略不计，大部分延迟发生在 kubelet 自身几行简单代码上！第一段代码极其简单，竟然消耗了 26 秒，非常不正常，耗时最长的一段操作是获取 Pod 的状态和填充 Node的状态信息。由此断定这里遇到的问题与 [track/close kubelet->API connections on heartbeat failure ](https://github.com/kubernetes/kubernetes/pull/63492) 不是同一个问题。
-
+kubelet 到 apiserver 的耗时几乎可以忽略不计，大部分延迟发生在 kubelet 自身的几行简单代码上！第一段代码极其简单，竟然消耗了 26 秒，非常不正常，耗时最长的一段操作是获取 Pod 的状态和填充 Node 的状态。
 而紧跟的下一次更新延迟了 30 秒，延迟全部发生在第一段非常非常简单的代码：
 
 ```go
-# 08:44:31 开始，耗时 30 秒：
+// 08:44:31 开始，耗时 30 秒：
 glog.V(5).Infof("NOTREADY SURVEY: try update node status, tryNumber is %d", tryNumber)
 opts := metav1.GetOptions{}
 if tryNumber == 0 {
@@ -378,4 +377,9 @@ if tryNumber == 0 {
 }
 ```
 
-由此确信，问题根源在 kubelet 上，kubelet 进程在执行过程中突然`暂停`了一段时间，这可能是 Go 语言自身机制导致的，也可能是系统状态导致的。
+由此断定这里遇到的问题与 [track/close kubelet->API connections on heartbeat failure ](https://github.com/kubernetes/kubernetes/pull/63492) 不是同一个问题。
+问题根源在 kubelet 上，kubelet 进程在执行过程中突然`暂停`了一段时间，可能是 Go 语言自身机制导致的，也可能是系统状态导致的。
+
+## 继续排查
+
+继续调查中...
