@@ -3,7 +3,7 @@ layout: default
 title: "Kubernetes 集群 Node 间歇性变为 NotReady 状态，调查过程实录"
 author: 李佶澳
 createdate: "2019-05-27 15:03:29 +0800"
-changedate: "2019-06-25 11:27:12 +0800"
+changedate: "2019-06-25 11:43:53 +0800"
 categories: 问题
 tags: kubernetes
 cover: 
@@ -147,9 +147,7 @@ kubelet 相关参数：
 
 ## 继续跟踪
 
-将日志级别调整为 4 ，观查滞后时间，然后根据情况调整参数。
-
-记录滞后时间的日志格式： 
+将日志级别调整为 4 ，观查滞后时间，记录滞后时间的日志格式如下： 
 
 ```sh
 node %v hasn't been updated for %+v. Last ready condition is: %+v
@@ -190,7 +188,7 @@ func (kl *Kubelet) updateNodeStatus() error {
 }
 ```
 
-检查 kubelet 日志，发现了几个错误日志，这些错误日志和触发的 NotReady 不是一一对应的， 但是提供了很重要的线索 `etcdserver: request timed out`：
+检查 kubelet 日志，发现了几个错误日志，这些错误日志和触发的 NotReady `不是一一对应的`， 但是提供了很重要的线索 `etcdserver: request timed out`：
 
 ```sh
 E0610 10:11:43.885472   25700 kubelet_node_status.go:386] Error updating node status, will retry: failed to patch status "{\"status\":{\"$setElementOrder/conditions\":[{\"type\":\"OutOfDisk\"},{\"type\":\"MemoryPressure\"},{\"type\":\"DiskPressure\"},{\"type\":\"Ready\"}],\"conditions\":[{\"lastHeartbeatTime\":\"2019-06-10T02:11:36Z\",\"type\":\"OutOfDisk\"},{\"lastHeartbeatTime\":\"2019-06-10T02:11:36Z\",\"type\":\"MemoryPressure\"},{\"lastHeartbeatTime\":\"2019-06-10T02:11:36Z\",\"type\":\"DiskPressure\"},{\"lastHeartbeatTime\":\"2019-06-10T02:11:36Z\",\"type\":\"Ready\"}]}}" for node "XXXX-40-237": etcdserver: request timed out, possibly due to previous leader failure
@@ -211,7 +209,9 @@ func PatchNodeStatus(c v1core.CoreV1Interface, nodeName types.NodeName, oldNode 
 ...
 ```
 
-会是 apiserver -> etcd 的过程有问题吗？将 kube-apiserver 的日志级别调整为 2，继续观察。
+**会是 apiserver -> etcd 的过程有问题吗？** 
+
+将 kube-apiserver 的日志级别调整为 2，继续观察。
 
 ## 更新请求达到 kube-apiserver 时已经延迟
 
@@ -241,9 +241,9 @@ I0621 16:39:58.613101   20184 wrap.go:42] PATCH /api/v1/nodes/node-xxx-36-174/st
 
 为什么会等了这么久才发起更新？回到 kubelet 中找答案。
 
-## 添加日志代码调试
+## 为 kubelet 添加日志代码
 
-因为 1.9.11 的 kubelet 提交 node 状态的代码没有日志，添加日志代码后，再次观察：
+因为 1.9.11 版本的 kubelet 提交 node 状态时没有日志，添加日志代码后，再次观察：
 
 ```go
 // pkg/kubelet/kubelet_node_status.go: 396
@@ -279,7 +279,7 @@ func (kl *Kubelet) tryUpdateNodeStatus(tryNumber int) error {
 }
 ```
 
-很快就遇到了，kube-controller-manager 日志显示, 08:42:40 之后的更新延迟触发了 NotReady 认定：
+很快又遇到了，kube-controller-manager 日志显示, 08:42:40 之后的更新发生了延迟，触发了 NotReady 认定：
 
 ```sh
 node XXXXX hasn't been updated for 1m0.059730854s. Last ready condition is: {Type:Ready Status:True LastHeartbeatTime:2019-06-25 08:42:40 +0800 CST LastTransitionTime:2019-06-25 08:41:11 +0800 CST Reason:KubeletReady Message:kubelet is posting ready status}
@@ -301,7 +301,7 @@ I0625 08:45:06.949299   19867 wrap.go:42] GET /api/v1/nodes/XXXXX?resourceVersio
 I0625 08:45:06.972904   19867 wrap.go:42] PATCH /api/v1/namespaces/default/events/XXXXX.15ab2937eddfdbd4: (12.42918ms) 200 [[kubelet/v1.9.11 (linux/amd64) kubernetes/9aafe17] 10.19.35.129:4
 ```
 
-kubelet 的日志比较奇怪，08:42:40 分的更新非常迅速，接下来的两次更新则非常耗时，然后又恢复了正常：
+从 kubelet 日志可以看到，08:42:40 分的更新非常迅速，接下来的两次更新则非常耗时，然后又恢复了正常：
 
 ```sh
 # 正常更新无延迟
@@ -316,7 +316,7 @@ I0625 08:43:16.913674   28911 kubelet_node_status.go:408] NOTREADY SURVEY: heart
 I0625 08:43:16.916334   28911 kubelet_node_status.go:419] NOTREADY SURVEY: updatePodCIDR, node is
 I0625 08:44:21.723264   28911 kubelet_node_status.go:424] NOTREADY SURVEY: patch node status, node is XXXXX
 
-# 定时开始时间正常，最终提交时间延迟 30 秒
+# 定时更新正常启动，最终提交时间延迟 30 秒
 I0625 08:44:31.760191   28911 kubelet_node_status.go:403] NOTREADY SURVEY: try update node status, tryNumber is 0
 I0625 08:45:06.986980   28911 kubelet_node_status.go:408] NOTREADY SURVEY: heartbeatClient, node is XXXXX
 I0625 08:45:06.991113   28911 kubelet_node_status.go:419] NOTREADY SURVEY: updatePodCIDR, node is
