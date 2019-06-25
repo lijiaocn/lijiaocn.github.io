@@ -3,7 +3,7 @@ layout: default
 title: "Kubernetes 集群 Node 间歇性变为 NotReady 状态，调查过程实录"
 author: 李佶澳
 createdate: "2019-05-27 15:03:29 +0800"
-changedate: "2019-06-25 11:43:53 +0800"
+changedate: "2019-06-25 12:03:58 +0800"
 categories: 问题
 tags: kubernetes
 cover: 
@@ -377,8 +377,9 @@ if tryNumber == 0 {
 }
 ```
 
-由此断定这里遇到的问题与 [track/close kubelet->API connections on heartbeat failure ](https://github.com/kubernetes/kubernetes/pull/63492) 不是同一个问题。
-问题根源在 kubelet 上，kubelet 进程在执行过程中突然`暂停`了一段时间，可能是 Go 语言自身机制导致的，也可能是系统状态导致的。
+由此断定这里遇到的问题与 [kubelet fails to heartbeat with API server with stuck TCP connections #48638](https://github.com/kubernetes/kubernetes/issues/48638)（对应的 pullrequest： [track/close kubelet->API connections on heartbeat failure ](https://github.com/kubernetes/kubernetes/pull/63492)）、[kubelet stopped posting node status, seems to be hung #75846](https://github.com/kubernetes/kubernetes/issues/75846) 不是同一个问题。
+
+问题根源在 kubelet 上，kubelet 进程在执行过程中突然`暂停`了一段时间，可能是 Go 语言自身机制导致的，也可能是系统异常导致的。
 
 ## 继续排查
 
