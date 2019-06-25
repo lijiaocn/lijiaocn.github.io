@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "Kubernetes 集群 Node 间歇性变为 NotReady 状态，调查过程实录"
+title: "Kubernetes 集群 Node 间歇性变为 NotReady 状态：IO 负载高，延迟严重"
 author: 李佶澳
 createdate: "2019-05-27 15:03:29 +0800"
-changedate: "2019-06-25 12:03:58 +0800"
+changedate: "2019-06-25 18:40:02 +0800"
 categories: 问题
 tags: kubernetes
 cover: 
@@ -381,6 +381,130 @@ if tryNumber == 0 {
 
 问题根源在 kubelet 上，kubelet 进程在执行过程中突然`暂停`了一段时间，可能是 Go 语言自身机制导致的，也可能是系统异常导致的。
 
-## 继续排查
+## 观察 kubelet 进程状态
 
-继续调查中...
+用 top 观察 kubelet 进程状态，发现 wa（wa, IO-wait : time waiting for I/O completion）占比偏好，经常超过 15% 。
+
+```sh
+$ top -p 24342
+top - 17:40:56 up 547 days,  6:10,  3 users,  load average: 7.02, 6.83, 6.59
+Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  1.2 us,  0.2 sy,  0.0 ni, 80.6 id, 18.1 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 32813276 total,  7235080 free, 10777444 used, 14800752 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 19434460 avail Mem
+```
+
+键入 `H` 切换到线程模式会发现时不时有一个 kubelet 线程的状态是 D，并会持续几秒到十几秒的时间。
+
+用 iostat 查看，发现两个磁盘的 w_await 很高，有时候能达到 20 秒！同时 %util 长时间是 100%，磁盘处于过饱和状态。
+
+```sh
+$ iostat -d -x 2
+Device:         rrqm/s   wrqm/s     r/s     w/s    rkB/s    wkB/s avgrq-sz avgqu-sz   await r_await w_await  svctm  %util
+vda               0.00     0.00   10.00   11.00    60.00 11296.00  1081.52   126.62 5874.76   54.70 11165.73  47.62 100.00
+vdb               0.00     0.00    0.00    0.00     0.00     0.00     0.00   128.00    0.00    0.00    0.00   0.00 100.00
+
+Device:         rrqm/s   wrqm/s     r/s     w/s    rkB/s    wkB/s avgrq-sz avgqu-sz   await r_await w_await  svctm  %util
+vda               0.00     0.00   17.00    0.00   100.00     0.00    11.76   128.00   70.24   70.24    0.00  58.82 100.00
+vdb               0.00    10.00    0.00   12.00     0.00  6684.00  1114.00   127.97 11913.42    0.00 11913.42  83.33 100.00
+
+Device:         rrqm/s   wrqm/s     r/s     w/s    rkB/s    wkB/s avgrq-sz avgqu-sz   await r_await w_await  svctm  %util
+vda               0.00     1.00   29.00   12.00   252.00  7340.50   370.37   127.69 3453.02  106.55 11540.33  24.39 100.00
+vdb               0.00     2.00    0.00   31.00     0.00 16400.00  1058.06   123.11 8431.26    0.00 8431.26  32.26 100.00
+
+Device:         rrqm/s   wrqm/s     r/s     w/s    rkB/s    wkB/s avgrq-sz avgqu-sz   await r_await w_await  svctm  %util
+vda               0.00     0.00    2.00   16.00    12.00 16364.50  1819.61   121.15 8499.33  178.00 9539.50  55.56 100.00
+vdb               0.00     0.00    0.00    0.00     0.00     0.00     0.00   121.00    0.00    0.00    0.00   0.00 100.00
+
+Device:         rrqm/s   wrqm/s     r/s     w/s    rkB/s    wkB/s avgrq-sz avgqu-sz   await r_await w_await  svctm  %util
+vda               0.00     4.00    6.00   10.00    56.00 10284.00  1292.50   125.88 12701.31    8.33 20317.10  62.50 100.00
+vdb               0.00     0.00    0.00   15.00     0.00  8200.00  1093.33   126.94 5351.00    0.00 5351.00  66.67 100.00
+```
+
+用 `pidstat -d 3` 找到 IO 操作频繁的进程，发现有一个 java 进程和 dockerd 在执行的大量的写操作：
+
+```sh
+$ pidstat -d 3
+05:49:45 PM   UID       PID   kB_rd/s   kB_wr/s kB_ccwr/s  Command
+05:49:46 PM     0     11709      0.00   5032.00      0.00  dockerd
+05:49:46 PM     0     18686      0.00  14500.00      0.00  java
+
+05:53:40 PM   UID       PID   kB_rd/s   kB_wr/s kB_ccwr/s  Command
+05:53:43 PM     0     11709      0.00  29128.00      0.00  dockerd
+05:53:43 PM     0     17665   5976.00      0.00      0.00  filebeat
+05:53:43 PM     0     18686      0.00  59776.00      0.00  java
+05:53:43 PM     0     23429      0.00      9.33      0.00  kworker/u48:3
+```
+
+通过 java 进程号找到了容器，该容器正在大量写日志，容器目录中文件已经 12G：
+
+```sh
+$ ls -lh
+total 13G
+drwx------ 2 root root    6 Jun 21 14:50 checkpoints
+-rw-r--r-- 1 root root  11K Jun 21 14:50 config.v2.json
+-rw-r----- 1 root root  12G Jun 25 17:57 dbef3588aa6d495ae36796b46a285f5397776b11ade70c67097b2a915851fc0d-json.log
+-rw-r--r-- 1 root root 1.9K Jun 21 14:50 hostconfig.json
+```
+
+把运行有该容器的 node 全部找出来，发现间歇性 NotReady 的 node 上都运行有这个容器，不会这么巧吧？
+
+查了一下没有该容器、也没有间歇 NotReady 的 node，IO 负载非常低：
+
+```sh
+$ iostat -d -x 2
+Linux 4.1.0-17.el7.ucloud.x86_64 (p-k8s-node58-11-12) 	06/25/2019 	_x86_64_	(16 CPU)
+
+Device:         rrqm/s   wrqm/s     r/s     w/s    rkB/s    wkB/s avgrq-sz avgqu-sz   await r_await w_await  svctm  %util
+vda               0.00     0.42    1.65    2.93     7.85   112.58    52.61     0.02    3.40    0.17    5.23   0.26   0.12
+vdb               0.00     0.02    0.04    0.53     4.02    94.80   343.88     0.02   29.27    3.90   31.26   1.39   0.08
+
+Device:         rrqm/s   wrqm/s     r/s     w/s    rkB/s    wkB/s avgrq-sz avgqu-sz   await r_await w_await  svctm  %util
+vda               0.00     0.00    0.50    1.00     4.00     5.25    12.33     0.03   18.00   52.00    1.00  18.00   2.70
+vdb               0.00     0.00    0.00    1.00     0.00    10.75    21.50     0.00    1.00    0.00    1.00   1.00   0.10
+
+$ pidstat -d 2
+Linux 4.1.0-17.el7.ucloud.x86_64 (p-k8s-node58-11-12) 	06/25/2019 	_x86_64_	(16 CPU)
+
+06:04:13 PM   UID       PID   kB_rd/s   kB_wr/s kB_ccwr/s  Command
+06:04:15 PM     0      4846      0.00    601.98      0.00  dockerd
+06:04:15 PM     0      7535      0.00      5.94      0.00  filebeat
+06:04:15 PM     0      7671      0.00     41.58      0.00  java
+06:04:15 PM     0     21839      0.00      1.98      0.00  kube-proxy
+06:04:15 PM     0     24253      0.00     13.86      0.00  kubelet
+06:04:15 PM     0     27068      0.00      1.98      0.00  java
+
+06:04:15 PM   UID       PID   kB_rd/s   kB_wr/s kB_ccwr/s  Command
+06:04:17 PM     0      4846      0.00    288.00      0.00  dockerd
+06:04:17 PM     0      7671      0.00   1092.00      0.00  java
+06:04:17 PM     0     24253      0.00      2.00      0.00  kubelet
+```
+
+另外还发现一个特别有趣的现象，经常 NotReady 的 node 的 cadvisor 数据获取有时候会非常慢，需要 10 秒乃至 20 秒以上：
+
+```sh
+$ curl -k https://XX.XX.XX.4:10250/metrics/cadvisor >1.log
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  877k  100  877k    0     0  78414      0  0:00:11  0:00:11 --:--:--  203k
+
+$ curl -k https://XX.XX.XX.4:10250/metrics/cadvisor >1.log
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  877k  100  877k    0     0  39923      0  0:00:22  0:00:22 --:--:--  199k
+```
+
+其它 node 是秒回：
+
+```sh
+$ curl  -k https://XX.XX.XX.12:10250/metrics/cadvisor >1.log
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  637k  100  637k    0     0  5796k      0 --:--:-- --:--:-- --:--:-- 5849k
+```
+
+而 Prometheus 每 15秒就会调一次该接口。
+
+## 解决方法
+
+先联系业务方减少日志量，然后研究下有没有限制的方法。
