@@ -52,22 +52,25 @@
 				<div class="row">
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 content">
 						{{content}}
-						<p style="text-align:center">关注加微信，一般不闲聊（直接说事） </p>
-						<img src="{{ site.imglocal }}/class.jpg"></img>
-						<br>
 					</div>
-				</div>
-
-				<div class="row" style="text-align:center">
-					<p class="author">
-					<span class="glyphicon glyphicon-home"></span>&nbsp;
-					<span><a href="{{ site.baseurl }}/categories/{{ page.categories }}.html">{{ page.categories }}</a></span>&nbsp;
-					<span class="glyphicon glyphicon-tag"></span>&nbsp;
-					{% for tag in page.tags %}
-					<span><a href="{{ site.baseurl }}/tags/all.html#{{ tag }}">{{ tag }}</a></span>&nbsp;
-					{% endfor %}
-					<span><a href="{{ site.baseurl }}{{ post.url}}">本页</a></span>
-					</p>
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 content">
+						<p style="text-align:center">关注加微信，一般不闲聊（直接说事）</p>
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 content">
+							<!-- 底部二维码并列 -->
+							<ins class="adsbygoogle"
+								 style="display:block"
+								 data-ad-client="ca-pub-8176866190626448"
+								 data-ad-slot="1398175214"
+								 data-ad-format="auto"
+								 data-full-width-responsive="true"></ins>
+							<script>
+								 (adsbygoogle = window.adsbygoogle || []).push({});
+							</script>
+						</div>
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 content">
+							<img src="{{ site.imglocal }}/class.jpg"></img>
+						</div>
+					</div>
 				</div>
 
 				<div class="row" style="text-align:center">
