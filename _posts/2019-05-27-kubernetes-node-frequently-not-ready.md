@@ -3,7 +3,7 @@ layout: default
 title: "Kubernetes 集群 Node 间歇性变为 NotReady 状态：IO 负载高，延迟严重"
 author: 李佶澳
 createdate: "2019-05-27 15:03:29 +0800"
-changedate: "2019-06-25 18:40:02 +0800"
+changedate: "2019-06-26 15:21:34 +0800"
 categories: 问题
 tags: kubernetes
 cover: 
@@ -20,7 +20,7 @@ Kubernetes 的 node 间歇性变成 NotReady，但是处于该状态的时间非
 
 ![kubernetes node NOTREADY]({{ site.imglocal }}/article/node-not-ready.png)
 
-kubernetest  版本是 1.9.11。
+kubernetest 版本是 1.9.11。
 
 ## 分析日志
 
@@ -383,7 +383,7 @@ if tryNumber == 0 {
 
 ## 观察 kubelet 进程状态
 
-用 top 观察 kubelet 进程状态，发现 wa（wa, IO-wait : time waiting for I/O completion）占比偏好，经常超过 15% 。
+用 top 观察 kubelet 进程状态，发现 wa（wa, IO-wait : time waiting for I/O completion）占比偏高，经常超过 15% 。
 
 ```sh
 $ top -p 24342
@@ -480,7 +480,7 @@ Linux 4.1.0-17.el7.ucloud.x86_64 (p-k8s-node58-11-12) 	06/25/2019 	_x86_64_	(16 
 06:04:17 PM     0     24253      0.00      2.00      0.00  kubelet
 ```
 
-另外还发现一个特别有趣的现象，经常 NotReady 的 node 的 cadvisor 数据获取有时候会非常慢，需要 10 秒乃至 20 秒以上：
+另外还发现一个特别有趣的现象，经常 NotReady 的 node 的 cadvisor 数据获取有时候非常慢，需要 10 秒乃至 20 秒以上：
 
 ```sh
 $ curl -k https://XX.XX.XX.4:10250/metrics/cadvisor >1.log
@@ -508,3 +508,17 @@ $ curl  -k https://XX.XX.XX.12:10250/metrics/cadvisor >1.log
 ## 解决方法
 
 先联系业务方减少日志量，然后研究下有没有限制的方法。
+
+业务方关闭标准输出日志后，恢复正常。Docker 的容器日志相关配置见 [Docker Document][3] 中的 `log-driver` 和 `log-opts`。
+
+公众号【我的网课】回顾文章：[Kubernetes集群Node间歇性NotReady，查到最后竟然是这个原因][2]。
+
+## 参考
+
+1. [李佶澳的博客笔记][1]
+2. [Kubernetes集群Node间歇性NotReady，查到最后竟然是这个原因][2]
+3. [Docker Document][3]
+
+[1]: https://www.lijiaocn.com "李佶澳的博客笔记"
+[2]: https://mp.weixin.qq.com/s/aNt1uI1RWf73Y3Dd6gmnLg "Kubernetes集群Node间歇性NotReady，查到最后竟然是这个原因"
+[3]: https://docs.docker.com/engine/reference/commandline/dockerd/ "Docker Document"
