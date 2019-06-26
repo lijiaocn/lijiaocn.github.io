@@ -3,7 +3,7 @@ layout: default
 title: "Kubernetes 集群 Node 间歇性变为 NotReady 状态：IO 负载高，延迟严重"
 author: 李佶澳
 createdate: "2019-05-27 15:03:29 +0800"
-changedate: "2019-06-26 15:21:34 +0800"
+changedate: "2019-06-26 15:24:46 +0800"
 categories: 问题
 tags: kubernetes
 cover: 
@@ -509,7 +509,9 @@ $ curl  -k https://XX.XX.XX.12:10250/metrics/cadvisor >1.log
 
 先联系业务方减少日志量，然后研究下有没有限制的方法。
 
-业务方关闭标准输出日志后，恢复正常。Docker 的容器日志相关配置见 [Docker Document][3] 中的 `log-driver` 和 `log-opts`。
+业务方关闭标准输出日志后，恢复正常。
+
+Docker 的容器日志相关配置见 [Docker Document][3] 中的 `log-driver` 和 `log-opts`。
 
 公众号【我的网课】回顾文章：[Kubernetes集群Node间歇性NotReady，查到最后竟然是这个原因][2]。
 
