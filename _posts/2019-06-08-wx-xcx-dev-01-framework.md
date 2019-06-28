@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "微信小程序开发（一）：概览"
+title: "微信小程序开发学习笔记（一）：概览"
 author: 李佶澳
 createdate: "2019-06-08T13:17:23+0800"
-changedate: "2019-06-12T23:48:22+0800"
+changedate: "2019-06-28T23:41:00+0800"
 categories: 项目
 tags: 小程序
 cover:
@@ -15,6 +15,10 @@ description:  微信小程序的概念、技术本质、开发方法、微信提
 
 * auto-gen TOC:
 {:toc}
+
+## 说明
+
+小程序学习笔记计划都更新到： [这里](https://www.lijiaocn.com/tutorial/c/javascript/) 。
 
 ## 技术本质
 
