@@ -20,11 +20,9 @@ description: docker项目的编译构建过程
 
 最早的时候docker是一个开源项目，主要由docker公司维护。
 
-在2017年的时候，docker公司将原先的docker项目改名为[moby][1]。[moby][1]是面向整个社区开源的，任何人都可以贡献。
+在2017年的时候，docker公司将原先的docker项目改名为[moby][1]。[moby][1]是面向整个社区开源的，任何人都可以贡献。docker公司使用moby项目以及其它的项目构建了的自己的产品[docker-ce][2]。
 
-docker公司使用moby项目以及其它的项目构建了的自己的产品[docker-ce][2]。
-
-docker-ce是开源的，是只有docker公司才能维护的产品，docker-ee是docker公司的闭源的企业产品。
+docker-ce是 docker 公司维护的免费产品，docker-ee 是 docker 公司的企业产品。
 
 ## docker-ce的编译
 
