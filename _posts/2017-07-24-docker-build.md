@@ -18,15 +18,15 @@ description: docker项目的编译构建过程
 
 ## 说明
 
-最早的时候docker是一个开源项目，主要由docker公司维护。
+最早的时候 docker 是 docker 公司维护的开源项目的名称。
 
-在2017年的时候，docker公司将原先的docker项目改名为[moby][1]。[moby][1]是面向整个社区开源的，任何人都可以贡献。docker公司使用moby项目以及其它的项目构建了的自己的产品[docker-ce][2]。
+在 2017 年的时候，docker 公司将原先的 docker 项目改名为 [moby][1]。[moby][1] 是面向整个社区开源项目，任何人都可以贡献。docker 公司使用 moby 项目以及其它的项目构建了的自己的产品 [docker-ce][2]。
 
-docker-ce是 docker 公司维护的免费产品，docker-ee 是 docker 公司的企业产品。
+docker-ce 是 docker 公司维护的免费产品，docker-ee 是 docker 公司的企业产品。
 
 ## docker-ce的编译
 
-[docker-ce][2]是一个新建的项目，第一个版本是`17.06`，docker以往版本的代码在[moby][1]项目中。
+[docker-ce][2] 是一个项目，第一个版本是`17.06`，docker 以往版本的代码在 [moby][1] 项目中。
 
 	git clone https://github.com/docker/docker-ce.git
 
