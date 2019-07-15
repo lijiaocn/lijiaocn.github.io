@@ -3,12 +3,12 @@ layout: default
 title: "kubernetes ingress-nginx 的金丝雀（canary）功能的使用方法"
 author: 李佶澳
 createdate: "2019-07-12 18:00:45 +0800"
-changedate: "2019-07-15 16:27:28 +0800"
+changedate: "2019-07-15 16:29:52 +0800"
 categories: 项目
 tags: kubernetes
 cover:
 keywords: kubernetes,ingress-nginx
-description: "ingress-nginx 从 0.21.0 开始支持金丝雀（canary）模式，对应的 merge 是 3341，创建一个Canary Ingress"
+description: "ingress-nginx 从 0.21.0 开始支持金丝雀（canary）模式，只需要额外创建一个Canary Ingress"
 ---
 
 ## 本篇目录
