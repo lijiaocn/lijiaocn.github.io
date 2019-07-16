@@ -3,7 +3,7 @@ layout: default
 title: "kubernetes ingress-nginx 0.25 源代码走读笔记"
 author: 李佶澳
 createdate: "2019-07-16 14:27:19 +0800"
-changedate: "2019-07-16 16:50:45 +0800"
+changedate: "2019-07-16 16:51:55 +0800"
 categories: 项目
 tags: kubernetes
 cover:
@@ -123,9 +123,9 @@ bin
 make container
 ```
 
-制作镜像需要的文件位于 rootfs 中，制作镜像是准备一个临时目录，将 bin 目录中的文件和 rootfs 中的文件复制到临时目录中，并且替换 Dockerfile中的 BASEIMAGE 等字符串，生成最终的 Dockerfile。
+制作镜像需要的文件位于 rootfs 中，制作镜像是准备一个临时目录，将 bin 目录中的文件和 rootfs 中的文件复制到临时目录中，并且替换 Dockerfile 中的 BASEIMAGE 等字符串，生成最终的 Dockerfile。
 
-rootfs 目录中的所有文件都会被打包到容器中，所有如果要增减镜像中的文件，直接在  rootfs 目录中操作即可。
+rootfs 目录中的所有文件都会被打包到容器中，所有如果要增减镜像中的文件，直接在 rootfs 目录中操作即可。
 
 ## 参考
 
