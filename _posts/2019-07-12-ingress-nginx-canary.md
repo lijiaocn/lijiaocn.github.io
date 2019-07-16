@@ -3,11 +3,11 @@ layout: default
 title: "kubernetes ingress-nginx 的金丝雀（canary）/灰度发布功能的使用方法"
 author: 李佶澳
 createdate: "2019-07-12 18:00:45 +0800"
-changedate: "2019-07-15 16:41:10 +0800"
+changedate: "2019-07-16 14:28:26 +0800"
 categories: 项目
 tags: kubernetes
 cover:
-keywords: kubernetes,ingress-nginx
+keywords: kubernetes,ingress-nginx,canary,金丝雀
 description: "ingress-nginx 从 0.21.0 开始支持金丝雀（canary）模式，只需要额外创建一个Canary Ingress"
 ---
 
@@ -92,6 +92,7 @@ metadata:
     nginx.ingress.kubernetes.io/canary: "true"
     nginx.ingress.kubernetes.io/canary-by-header: "version"
     nginx.ingress.kubernetes.io/canary-by-header-value: "canary"
+    nginx.ingress.kubernetes.io/canary-by-cookie: "canary-cookie"
     nginx.ingress.kubernetes.io/canary-weight: "50"
     nginx.ingress.kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/upstream-fail-timeout: "10"
@@ -122,7 +123,7 @@ nginx.ingress.kubernetes.io/canary-by-header: "version"
 nginx.ingress.kubernetes.io/canary-by-header-value: "canary"
 ```
 
-不带有"version: canary" 头的请求一半被转发给 canary 版本，相关参数为：
+不带有 "version: canary" 头的请求一半被转发给 canary 版本，相关参数为：
 
 ```sh
 nginx.ingress.kubernetes.io/canary-weight: "50"
@@ -131,7 +132,12 @@ nginx.ingress.kubernetes.io/canary-weight: "50"
 还支持按照 cookie 选择，cookie 的值为 `always` 或者 `never`，前者转发给 canary，后者不转发，指定 cookie 名称的参数为 ：
 
 ```sh
-nginx.ingress.kubernetes.io/canary-by-cookie:  COOKIE NAME
+nginx.ingress.kubernetes.io/canary-by-cookie: "canary-cookie"
+```
+
+```sh
+curl -v  -b canary-cookie=always demo.echo.test   # 访问金丝雀版本
+curl -v  -b canary-cookie=never demo.echo.test    # 访问非金丝雀版本
 ```
 
 header、cookie、weight 的作用顺序是：canary-by-header -> canary-by-cookie -> canary-weight。

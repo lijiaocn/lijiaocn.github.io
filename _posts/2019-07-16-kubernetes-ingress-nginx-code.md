@@ -3,7 +3,7 @@ layout: default
 title: "kubernetes ingress-nginx 0.25 源代码走读笔记"
 author: 李佶澳
 createdate: "2019-07-16 14:27:19 +0800"
-changedate: "2019-07-16 15:36:03 +0800"
+changedate: "2019-07-16 16:50:45 +0800"
 categories: 项目
 tags: kubernetes
 cover:
@@ -99,6 +99,34 @@ Lua 代码位于 rootfs/etc/ngxin/lua 目录中，在制作镜像的时候被一
 
 Lua 部分就是标准的 openresty 应用，openresty 的应用开发见 [Web开发平台OpenResty](https://www.lijiaocn.com/tags/all.html#openresty)。
 
+## 编译与镜像制作
+
+编译： 
+
+```sh
+make build
+```
+
+编译后得到的文件位于：
+
+```sh
+$ tree bin
+bin
+└── amd64
+    ├── dbg
+    └── nginx-ingress-controller
+```
+
+制作镜像：
+
+```sh
+make container
+```
+
+制作镜像需要的文件位于 rootfs 中，制作镜像是准备一个临时目录，将 bin 目录中的文件和 rootfs 中的文件复制到临时目录中，并且替换 Dockerfile中的 BASEIMAGE 等字符串，生成最终的 Dockerfile。
+
+rootfs 目录中的所有文件都会被打包到容器中，所有如果要增减镜像中的文件，直接在  rootfs 目录中操作即可。
+
 ## 参考
 
 1. [李佶澳的博客笔记][1]
@@ -106,5 +134,3 @@ Lua 部分就是标准的 openresty 应用，openresty 的应用开发见 [Web�
 
 [1]: https://www.lijiaocn.com "李佶澳的博客笔记"
 [2]: https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2019/07/12/ingress-nginx-canary.html "kubernetes ingress-nginx 的金丝雀（canary）/灰度发布功能的使用方法"
-
-
