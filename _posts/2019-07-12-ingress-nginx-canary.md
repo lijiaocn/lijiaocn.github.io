@@ -3,7 +3,7 @@ layout: default
 title: "kubernetes ingress-nginx 的金丝雀（canary）/灰度发布功能的使用方法"
 author: 李佶澳
 createdate: "2019-07-12 18:00:45 +0800"
-changedate: "2019-07-16 14:28:26 +0800"
+changedate: "2019-07-16 17:38:46 +0800"
 categories: 项目
 tags: kubernetes
 cover:
@@ -150,6 +150,6 @@ header、cookie、weight 的作用顺序是：canary-by-header -> canary-by-cook
 4. [Canary deploys with ingress-nginx][4]
 
 [1]: https://www.lijiaocn.com "李佶澳的博客笔记"
-[2]: https://github.com/kubernetes/ingress-nginx "kubernetes/ingress-nginx"
+[2]: https://kubernetes.github.io/ingress-nginx/ "kubernetes/ingress-nginx"
 [3]: https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#canary "ingress-nginx canary"
 [4]: https://docs.google.com/document/d/1qKTyLBLuKIYE6d6BsFXRM7zYB-2MUk6qJjtBL1KCz78/edit#heading=h.x7809bn5opjd "Canary deploys with ingress-nginx"
