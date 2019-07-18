@@ -41,7 +41,8 @@
 					{% for tag in page.tags %}
 					<span><a href="{{ site.baseurl }}/tags/all.html#{{ tag }}">{{ tag }}</a></span>&nbsp;
 					{% endfor %}
-					<span><a href="{{ site.baseurl }}{{ post.url}}">本页</a></span>
+					<span class="glyphicon glyphicon-refresh"></span>&nbsp;
+					<span><a href="{{ site.baseurl }}{{ post.url}}">刷新</a></span>
 					</p>
 				</div>
 
