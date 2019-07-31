@@ -3,7 +3,7 @@ layout: default
 title: "阿里巴巴的应用限流和服务降级是怎样实现的?|如何打造平台稳定能力"
 author: 阿里巴巴
 createdate: "2018-10-12 17:26:04 +0800"
-changedate: "2018-10-12 17:26:04 +0800"
+last_modified_at: "2018-10-12 17:26:04 +0800"
 categories: 方法
 tags: 阿里巴巴
 keywords: 应用限流,服务降级,阿里巴巴

@@ -3,7 +3,7 @@ layout: default
 title: "读书笔记：《现代前端技术解析》 2017.4出版 "
 author: 李佶澳
 createdate: "2019-06-03T22:28:44+0800"
-changedate: "2019-06-13T00:03:02+0800"
+last_modified_at: "2019-06-13T00:03:02+0800"
 categories: 方法
 tags: 前端
 cover:

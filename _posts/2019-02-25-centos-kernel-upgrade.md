@@ -3,7 +3,7 @@ layout: default
 title: "CentOS7/6内核升级的简单方法：借助ELRepo，用yum命令更新内核"
 author: 李佶澳
 createdate: "2019-02-25 15:52:10 +0800"
-changedate: "2019-02-28 19:05:49 +0800"
+last_modified_at: "2019-02-28 19:05:49 +0800"
 categories: 技巧
 tags: linux
 keywords: 升级内核,内核更新,yum升级内核,centos内核更新,centos内核版本

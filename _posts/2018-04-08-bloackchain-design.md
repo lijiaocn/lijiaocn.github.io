@@ -3,7 +3,7 @@ layout: default
 title: 应用区块链技术的系统的设计思考
 author: 李佶澳
 createdate: 2018/04/08 10:02:00
-changedate: 2018/04/11 19:02:35
+last_modified_at: 2018/04/11 19:02:35
 categories: 项目
 tags: blockchain
 keywords: 区块链,blockchain,供应链

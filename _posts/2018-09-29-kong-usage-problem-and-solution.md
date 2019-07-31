@@ -3,7 +3,7 @@ layout: default
 title: "API网关Kong学习笔记（零）：使用过程中遇到的问题以及解决方法"
 author: 李佶澳
 createdate: "2018-10-15 11:50:58 +0800"
-changedate: "2019-05-20 14:47:45 +0800"
+last_modified_at: "2019-05-20 14:47:45 +0800"
 categories: 问题
 tags: kong
 keywords: kong,apigatway,问题解决,kong的使用

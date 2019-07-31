@@ -3,7 +3,7 @@ layout: default
 title:  用charles和Fiddler抓取、破解、改写（请求拦截）PC端、手机移动端通信数据
 author: 李佶澳
 createdate: 2018/02/05 22:07:28
-changedate: 2018/02/06 01:01:48
+last_modified_at: 2018/02/06 01:01:48
 categories: 技巧
 tags: security
 keywords: 加密报文破解,Charles

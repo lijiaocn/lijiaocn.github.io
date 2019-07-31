@@ -3,7 +3,7 @@ layout: default
 title: kubernetes中部署有状态的复杂分布式系统
 author: 李佶澳
 crjiaob patch pod mongo-petset-0 -p '{"metadata":{"annotations":{"pod.alpha.kubernetes.io/initialized":"true"}}}'eatedate: 2017/06/13 17:02:14
-changedate: 2017/06/21 13:14:53
+last_modified_at: 2017/06/21 13:14:53
 categories: 项目
 tags: kubernetes
 keywords: kubernetes,petset,statefulset

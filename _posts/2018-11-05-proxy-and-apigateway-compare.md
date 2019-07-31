@@ -3,7 +3,7 @@ layout: default
 title: "代理服务软件haproxy、nginx、envoy对比，以及开源的API网关项目对比"
 author: 李佶澳
 createdate: "2018-11-05 15:12:07 +0800"
-changedate: "2019-05-09 17:24:54 +0800"
+last_modified_at: "2019-05-09 17:24:54 +0800"
 categories: 项目
 tags: gateway
 keywords:  gateway,haproxy,nginx,envoy

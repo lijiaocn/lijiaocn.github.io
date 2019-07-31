@@ -3,7 +3,7 @@ layout: default
 title:  typescript语言入门
 author: 李佶澳
 createdate: 2018/04/18 16:25:00
-changedate: 2018/09/04 17:55:52
+last_modified_at: 2018/09/04 17:55:52
 categories: 编程
 tags:  前端
 keywords: typescript,javascript,angularjs

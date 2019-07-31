@@ -3,7 +3,7 @@ layout: default
 title: "udev：udev的使用说明"
 author: 李佶澳
 createdate: 2017/07/07 09:22:42
-changedate: 2018/07/22 14:27:06
+last_modified_at: 2018/07/22 14:27:06
 categories: 技巧
 tags: linuxtool
 keywords: udev,device manager

@@ -3,7 +3,7 @@ layout: default
 title: "Linux的cgroup功能（三）：cgroup controller汇总和控制器的参数（文件接口）"
 author: 李佶澳
 createdate: "2019-02-18 13:49:30 +0800"
-changedate: "2019-02-28 19:06:51 +0800"
+last_modified_at: "2019-02-28 19:06:51 +0800"
 categories: 技巧
 tags: linux  cgroup
 keywords: cgroup参数,cgroup v1,cgroup v2,cgroup controller,linux资源隔离,linux资源控制器

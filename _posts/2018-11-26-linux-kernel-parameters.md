@@ -3,7 +3,7 @@ layout: default
 title: Linux内核参数用途记录
 author: 李佶澳
 createdate: 2018/11/26 16:14:00
-changedate: 2018/11/26 16:14:00
+last_modified_at: 2018/11/26 16:14:00
 categories: 技巧
 tags: linux toolsbox
 keywords: kernel,linux,获取知识,documention

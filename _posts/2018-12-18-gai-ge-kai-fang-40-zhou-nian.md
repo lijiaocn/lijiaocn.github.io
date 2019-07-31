@@ -3,7 +3,7 @@ layout: default
 title: "庆祝改革开放40周年大会上的讲话（全文）"
 author: 李佶澳
 createdate: "2018-12-18 12:43:41 +0800"
-changedate: "2018-12-18 12:43:41 +0800"
+last_modified_at: "2018-12-18 12:43:41 +0800"
 categories: 投资
 tags: 投资
 keywords: 改革开发,40周年,纪念改革开发讲话,讲话

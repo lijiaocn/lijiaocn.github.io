@@ -3,7 +3,7 @@ layout: default
 title: kubernetes在CentOS上的All In One部署
 author: 李佶澳
 createdate: 2017/03/27 18:50:37
-changedate: 2017/04/10 09:34:47
+last_modified_at: 2017/04/10 09:34:47
 categories: 项目
 tags: kubernetes
 keywords: kubernets部署,centos,allinone

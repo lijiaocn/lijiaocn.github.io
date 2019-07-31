@@ -3,7 +3,7 @@ layout: default
 title: go的template模版语法
 author: lijiaocn
 createdate: 2017/11/01 17:23:42
-changedate: 2017/11/15 10:45:31
+last_modified_at: 2017/11/15 10:45:31
 categories: 编程
 tags: go
 keywords:

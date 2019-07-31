@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes-rbac
 author: lijiaocn
 createdate: 2017/10/18 17:05:14
-changedate: 2017/10/19 18:35:41
+last_modified_at: 2017/10/19 18:35:41
 categories:
 tags:
 keywords:

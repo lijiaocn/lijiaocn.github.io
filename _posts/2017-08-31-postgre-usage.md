@@ -3,7 +3,7 @@ layout: default
 title: PostgresSQL数据库的基本使用——新手入门
 author: lijiaocn
 createdate: 2017/08/31 09:43:20
-changedate: 2017/09/08 14:26:42
+last_modified_at: 2017/09/08 14:26:42
 categories: 技巧
 tags: PostgreSQL
 keywords: posgres,postgresql,database

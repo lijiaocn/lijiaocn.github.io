@@ -3,7 +3,7 @@ layout: default
 title: "confd：本地配置文件的管理工具confd"
 author: 李佶澳
 createdate: 2017/09/21 16:00:08
-changedate: 2018/07/22 14:28:29
+last_modified_at: 2018/07/22 14:28:29
 categories: 技巧
 tags: linuxtool confd
 keywords: confd,配置管理

@@ -3,7 +3,7 @@ layout: default
 title: "YouTube合作伙伴计划相关事项：频道开通方法、分成比例与创作学习资料"
 author: 李佶澳
 createdate: "2019-03-03 20:00:50 +0800"
-changedate: "2019-03-03 20:00:50 +0800"
+last_modified_at: "2019-03-03 20:00:50 +0800"
 categories: 方法
 tags: 海外网赚
 keywords: youtube,合作伙伴,youtube合作伙伴,youtube分成,youtube学习资料

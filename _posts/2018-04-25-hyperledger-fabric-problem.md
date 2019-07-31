@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger：Fabric部署过程时遇到的问题汇总
 author: 李佶澳
 createdate: 2018/05/04 21:14:00
-changedate: 2018/10/18 21:49:59
+last_modified_at: 2018/10/18 21:49:59
 categories: 问题
 tags: 视频教程 HyperLedger
 keywords: 超级账本,视频教程演示,区块链实践,hyperledger,fabric,区块链问题

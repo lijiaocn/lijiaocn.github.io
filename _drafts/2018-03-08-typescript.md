@@ -3,7 +3,7 @@ layout: default
 title:  typescript语法手册
 author: lijiaocn
 createdate: 2018/03/02 13:52:00
-changedate: 2018/03/10 14:15:24
+last_modified_at: 2018/03/10 14:15:24
 categories: 编程
 tags: 编程语言
 keywords:

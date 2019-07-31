@@ -3,7 +3,7 @@ layout: default
 title: go中使用websocket
 author: 李佶澳
 createdate: 2017/11/03 10:24:16
-changedate: 2018/03/07 19:30:01
+last_modified_at: 2018/03/07 19:30:01
 categories: 编程
 tags: golang
 keywords: websocket,golang,编程,example

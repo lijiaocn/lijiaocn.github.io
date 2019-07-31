@@ -3,7 +3,7 @@ layout: default
 title: "API网关Kong学习笔记（十二）：插件的目录中schema分析"
 author: 李佶澳
 createdate: 2018/11/16 14:33:00
-changedate: 2018/11/16 14:33:00
+last_modified_at: 2018/11/16 14:33:00
 categories: 项目
 tags: kong 
 keywords: kong,apigateway,API网关,plugin

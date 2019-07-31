@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes的DNS服务
 author: lijiaocn
 createdate: 2017/08/01 09:40:12
-changedate: 2017/08/01 15:43:26
+last_modified_at: 2017/08/01 15:43:26
 categories: 项目
 tags: kubernetes,dns
 keywords: kubernetes,dns

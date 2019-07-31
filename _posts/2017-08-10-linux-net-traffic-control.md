@@ -3,7 +3,7 @@ layout: default
 title: "linux的traffic control"
 author: 李佶澳
 createdate: 2017/08/10 15:44:17
-changedate: 2017/09/21 19:25:08
+last_modified_at: 2017/09/21 19:25:08
 categories: 技巧
 tags: linux
 keywords: tc,trickle,dummynet,流量控制,限速,traffic control

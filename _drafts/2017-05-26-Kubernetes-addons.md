@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes插件
 author: lijiaocn
 createdate: 2017/05/26 14:35:58
-changedate: 2017/05/26 14:54:14
+last_modified_at: 2017/05/26 14:54:14
 categories: 项目
 tags: kubernetes
 keywords: kubernetes,addon

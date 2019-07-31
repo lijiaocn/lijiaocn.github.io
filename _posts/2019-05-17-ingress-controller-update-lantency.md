@@ -3,7 +3,7 @@ layout: default
 title: "Kubernetes的nginx-ingress-controller刷新nginx的配置滞后十分钟导致504"
 author: 李佶澳
 createdate: "2019-05-17 19:37:07 +0800"
-changedate: "2019-05-20 10:58:41 +0800"
+last_modified_at: "2019-05-20 10:58:41 +0800"
 categories: 问题
 tags: kubernetes
 cover: 

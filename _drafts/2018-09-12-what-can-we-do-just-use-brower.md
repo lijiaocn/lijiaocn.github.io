@@ -3,7 +3,7 @@ layout: default
 title: "用js实现一些不需要服务端的纯网页版工具"
 author: 李佶澳
 createdate: "2018-09-12 15:13:01 +0800"
-changedate: "2018-09-12 15:13:01 +0800"
+last_modified_at: "2018-09-12 15:13:01 +0800"
 categories: 技巧
 tags: 前端
 keywords: javascript,前端

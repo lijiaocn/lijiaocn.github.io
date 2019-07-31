@@ -3,7 +3,7 @@ layout: default
 title: "vim：使用教程手册，命令、配置与插件"
 author: 李佶澳
 createdate: 2017/04/01 11:00:33
-changedate: 2018/07/22 14:26:14
+last_modified_at: 2018/07/22 14:26:14
 categories: 技巧
 tags: linuxtool
 keywords: vim,vim手册,vim插件,vimp配置,ide

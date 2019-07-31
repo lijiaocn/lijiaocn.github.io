@@ -3,7 +3,7 @@ layout: default
 title: kubernetes的调试方法
 author: 李佶澳
 createdate: 2017/09/11 16:24:30
-changedate: 2017/11/20 14:50:41
+last_modified_at: 2017/11/20 14:50:41
 categories: 项目
 tags:  kubernetes
 keywords: kubernetes,debug

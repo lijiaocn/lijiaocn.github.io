@@ -3,7 +3,7 @@ layout: default
 title:  DNS，DNS-Domain Name System
 author: lijiaocn
 createdate: 2018/06/28 18:57:00
-changedate: 2018/06/28 18:59:16
+last_modified_at: 2018/06/28 18:59:16
 categories: 编程
 tags:  dns
 keywords:

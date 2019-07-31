@@ -3,7 +3,7 @@ layout: default
 title: "基于Envoy的ApiGateway/Ingress Controller项目梳理（总结）"
 author: 李佶澳
 createdate: "2019-05-09 17:01:01 +0800"
-changedate: "2019-06-01 17:16:27 +0800"
+last_modified_at: "2019-06-01 17:16:27 +0800"
 categories: 项目
 tags: apigateway envoy
 cover:

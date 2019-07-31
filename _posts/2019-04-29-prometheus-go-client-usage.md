@@ -3,7 +3,7 @@ layout: default
 title: "Prometheus的HTTP API的Go语言封装client_golang的使用"
 author: 李佶澳
 createdate: "2019-04-29 18:51:49 +0800"
-changedate: "2019-04-30 16:30:37 +0800"
+last_modified_at: "2019-04-30 16:30:37 +0800"
 categories: 编程
 tags: prometheus
 keywords: prometheus,client_golang

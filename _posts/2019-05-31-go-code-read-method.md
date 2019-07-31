@@ -3,7 +3,7 @@ layout: default
 title: "源代码阅读方法（附Go语言项目的代码阅读技巧）"
 author: 李佶澳
 createdate: "2019-05-31 10:49:41 +0800"
-changedate: "2019-06-03 18:07:15 +0800"
+last_modified_at: "2019-06-03 18:07:15 +0800"
 categories: 方法
 tags: golang
 cover:

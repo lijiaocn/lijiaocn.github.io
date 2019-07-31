@@ -3,7 +3,7 @@ layout: default
 title: "Linux的cgroup功能（一）：初级入门使用方法"
 author: 李佶澳
 createdate: 2017/07/26 10:29:51
-changedate: "2019-02-28 19:06:10 +0800"
+last_modified_at: "2019-02-28 19:06:10 +0800"
 categories: 技巧
 tags:  linux cgroup
 keywords: cgroup使用,cgroup.procs,cgroup v1,cgroup v2,cgroup controller,linux资源控制器,资源隔离

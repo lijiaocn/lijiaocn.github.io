@@ -3,7 +3,7 @@ layout: default
 title: 理解go的反射机制reflection
 author: 李佶澳
 createdate: 2017/11/06 15:34:13
-changedate: 2017/11/08 21:19:49
+last_modified_at: 2017/11/08 21:19:49
 categories: 编程
 tags: golang
 keywords: reflection,反射,go语言,go编程

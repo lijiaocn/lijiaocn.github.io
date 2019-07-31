@@ -3,7 +3,7 @@ layout: default
 title: "keepalived的vrrp多播报文被禁，导致VIP同时位于多个机器上"
 author: 李佶澳
 createdate: "2018-11-12 17:37:51 +0800"
-changedate: "2018-11-12 17:37:51 +0800"
+last_modified_at: "2018-11-12 17:37:51 +0800"
 categories: 问题
 tags:  keepalived
 keywords: keepalived,vip,多播,单播

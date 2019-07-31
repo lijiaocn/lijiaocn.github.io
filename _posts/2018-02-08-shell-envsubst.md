@@ -3,7 +3,7 @@ layout: default
 title:  用envsubst命令将输出内容中的Shell变量替换成变量值
 author: 李佶澳
 createdate: 2018/10/18 14:31:00
-changedate: 2018/10/18 14:31:00
+last_modified_at: 2018/10/18 14:31:00
 categories: 技巧
 tags: shell
 keywords: envsubst,变量替换,变量替换,shell

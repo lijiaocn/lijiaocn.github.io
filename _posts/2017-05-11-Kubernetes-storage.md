@@ -3,7 +3,7 @@ layout: default
 title: kubernetes的Storage的实现
 author: 李佶澳
 createdate: 2017/05/11 17:23:22
-changedate: 2017/05/12 10:12:01
+last_modified_at: 2017/05/12 10:12:01
 categories: 项目
 tags: kubernetes
 keywords: kubernetes,storage,kubernetes的storage的实现。

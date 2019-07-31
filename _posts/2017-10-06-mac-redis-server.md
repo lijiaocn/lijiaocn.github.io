@@ -3,7 +3,7 @@ layout: default
 title: 在mac上部署redis服务
 author: 李佶澳
 createdate: 2017/11/06 10:14:25
-changedate: 2017/11/06 11:27:11
+last_modified_at: 2017/11/06 11:27:11
 categories: 技巧
 tags: mac
 keywords: mac,redis-server,brew,

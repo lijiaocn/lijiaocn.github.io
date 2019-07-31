@@ -3,7 +3,7 @@ layout: default
 title: "在命令行用sips进行图片格式转换、图片大小修改、图片属性设置等操作"
 author: 李佶澳
 createdate: "2019-05-12T10:01:01+0800"
-changedate: "2019-05-12T13:22:20+0800"
+last_modified_at: "2019-05-12T13:22:20+0800"
 categories:  技巧
 tags: imgtool
 cover:

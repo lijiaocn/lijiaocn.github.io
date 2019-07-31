@@ -3,7 +3,7 @@ layout: default
 title: "为网页添加结构化数据：Google支持的JSON-LD格式的结构化数据"
 author: 李佶澳
 createdate: "2019-05-11 18:33:54 +0800"
-changedate: "2019-05-12T00:30:58+0800"
+last_modified_at: "2019-05-12T00:30:58+0800"
 categories: 方法
 tags: SEO
 cover:

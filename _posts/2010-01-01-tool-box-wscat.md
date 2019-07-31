@@ -3,7 +3,7 @@ layout: default
 title:  "wscat: 使用wscat连接websocket"
 author: 李佶澳
 createdate: 2018/07/22 14:13:00
-changedate: 2018/07/22 14:20:17
+last_modified_at: 2018/07/22 14:20:17
 categories: 技巧
 tags: toolsbox
 keywords: wscat,websocket,websocket连接

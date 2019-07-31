@@ -3,7 +3,7 @@ layout: default
 title: "API网关Kong学习笔记（四）：功能梳理和插件使用-认证插件使用"
 author: 李佶澳
 createdate: 2018/10/18 11:14:00
-changedate: 2018/10/18 11:14:00
+last_modified_at: 2018/10/18 11:14:00
 categories: 项目
 tags: kong 
 keywords: kong,apigateway,API网关

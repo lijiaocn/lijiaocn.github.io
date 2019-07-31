@@ -3,7 +3,7 @@ layout: default
 title: 未在calico中创建hostendpoint，导致开启隔离后，在kubernetes的node上无法访问pod
 author: 李佶澳
 createdate: 2017/10/27 14:45:26
-changedate: 2018/05/18 18:28:52
+last_modified_at: 2018/05/18 18:28:52
 categories: 问题
 tags: calico kubernetes
 keywords: calico,hostendpoint,workloadendpoint,网络隔离

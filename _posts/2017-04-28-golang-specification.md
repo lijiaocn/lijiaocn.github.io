@@ -3,7 +3,7 @@ layout: default
 title: The Go Programming Language Specification
 author: 李佶澳
 createdate: 2017/04/28 18:01:57
-changedate: 2017/11/08 15:55:18
+last_modified_at: 2017/11/08 15:55:18
 categories: 编程
 tags: golang
 keywords:  Specification,Go,golang

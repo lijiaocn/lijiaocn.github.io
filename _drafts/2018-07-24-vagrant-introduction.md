@@ -3,7 +3,7 @@ layout: default
 title:  "虚拟机管理神器vagrant的使用"
 author: 李佶澳
 createdate: 2018/07/24 13:03:00
-changedate: 2018/07/25 17:12:54
+last_modified_at: 2018/07/25 17:12:54
 categories:
 tags:
 keywords:

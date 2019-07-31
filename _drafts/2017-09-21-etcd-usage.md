@@ -3,7 +3,7 @@ layout: default
 title: 分布式kv存储etcd的使用
 author: lijiaocn
 createdate: 2017/09/21 18:44:21
-changedate: 2018/08/12 17:12:13
+last_modified_at: 2018/08/12 17:12:13
 categories: 项目
 tags: etcd
 keywords: etcd,分布式kv存储,服务发现,leader

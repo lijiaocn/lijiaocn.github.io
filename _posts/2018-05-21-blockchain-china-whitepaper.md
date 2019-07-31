@@ -3,7 +3,7 @@ layout: default
 title: 浮华散去，本质初显，深入解读工信部《2018年中国区块链产业白皮书》
 author: 李佶澳
 createdate: 2018/05/21 16:35:00
-changedate: 2018/09/01 15:31:27
+last_modified_at: 2018/09/01 15:31:27
 categories: 方法
 tags: blockchain
 keywords: 白皮书,区块链,工信部,中国区块链产业白皮书

@@ -3,7 +3,7 @@ layout: default
 title:  "【视频】超级账本HyperLedger：Fabric Go SDK的使用"
 author: 李佶澳
 createdate: 2018/07/28 13:34:00
-changedate: 2018/07/29 13:09:57
+last_modified_at: 2018/07/29 13:09:57
 categories: 编程
 tags: 视频教程 HyperLedger
 keywords: 超级账本,视频教程演示,区块链实践,hyperledger,fabric接口,golang

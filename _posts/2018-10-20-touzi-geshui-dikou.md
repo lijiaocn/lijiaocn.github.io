@@ -3,7 +3,7 @@ layout: default
 title: 个人所得税专项附加扣除暂行办法（征求意见稿）
 author: 财政部、税务总局
 createdate: 2018/10/20 11:56:00
-changedate: 2018/10/20 15:28:23
+last_modified_at: 2018/10/20 15:28:23
 categories: 投资
 tags: 投资
 keywords: 个人所得税专项,专项扣除,个人所得税,个税扣除细则

@@ -3,7 +3,7 @@ layout: default
 title: docker的storage类型
 author: 李佶澳
 createdate: 2017/07/17 13:34:40
-changedate: 2017/07/24 14:28:30
+last_modified_at: 2017/07/24 14:28:30
 categories: 项目
 tags: docker
 keywords: docker,storage,btrfs,zfs,overlayfs,devicepmapper

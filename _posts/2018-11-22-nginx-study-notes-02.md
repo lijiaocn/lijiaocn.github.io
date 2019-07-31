@@ -3,7 +3,7 @@ layout: default
 title: "Nginx学习笔记（二）：Nginx配置文件细节"
 author: 李佶澳
 createdate: "2018-11-22 18:17:36 +0800"
-changedate: "2018-11-22 18:17:36 +0800"
+last_modified_at: "2018-11-22 18:17:36 +0800"
 categories: 项目
 tags: nginx  
 keywords: nginx,学习笔记

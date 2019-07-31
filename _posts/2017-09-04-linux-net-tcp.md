@@ -3,7 +3,7 @@ layout: default
 title: linux的tcp连接
 author: 李佶澳
 createdate: 2017/09/04 19:24:20
-changedate: 2017/09/16 15:58:23
+last_modified_at: 2017/09/16 15:58:23
 categories: 技巧
 tags: linux
 keywords: tcp,linux,timeout,tcp连接状态

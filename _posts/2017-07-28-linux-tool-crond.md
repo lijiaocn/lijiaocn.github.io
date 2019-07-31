@@ -3,7 +3,7 @@ layout: default
 title: "crond：crond定时任务的使用"
 author: 李佶澳
 createdate: 2017/07/28 13:32:55
-changedate: 2018/07/22 14:27:34
+last_modified_at: 2018/07/22 14:27:34
 categories: 技巧
 tags: linuxtool
 keywords: crond定时任务的使用

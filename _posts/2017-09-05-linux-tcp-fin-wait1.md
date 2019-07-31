@@ -3,7 +3,7 @@ layout: default
 title: 服务器存在较多的FIN_WAIT1和TIME_WAIT状态的连接
 author: 李佶澳
 createdate: 2017/09/05 17:08:50
-changedate: 2017/09/05 18:34:02
+last_modified_at: 2017/09/05 18:34:02
 categories: 问题
 tags: linux
 keywords: FIN_WAIT1,tcp,linux

@@ -3,7 +3,7 @@ layout: default
 title: "VRRP协议，IPVS以及用KeepAlived实现高可用和负载均衡"
 author: 李佶澳
 createdate: "2018-10-11 12:44:06 +0800"
-changedate: "2018-10-11 12:44:06 +0800"
+last_modified_at: "2018-10-11 12:44:06 +0800"
 categories: 技巧
 tags: keepalived
 keywords: vrrp,keepalived,高可用,vip

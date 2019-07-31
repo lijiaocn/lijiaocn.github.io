@@ -3,7 +3,7 @@ layout: default
 title: kubernetes启动pod的时候，长时间无法挂载volume的问题调查
 author: lijiaocn
 createdate: 2017/11/02 15:22:14
-changedate: 2017/11/02 16:24:28
+last_modified_at: 2017/11/02 16:24:28
 categories:
 tags:
 keywords:

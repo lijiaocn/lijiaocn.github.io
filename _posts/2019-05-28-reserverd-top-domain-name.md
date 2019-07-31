@@ -3,7 +3,7 @@ layout: default
 title: "RFC保留的顶级域名，不会被其它主体注册使用的域名"
 author: 李佶澳
 createdate: "2019-05-28 17:08:49 +0800"
-changedate: "2019-06-01 16:48:37 +0800"
+last_modified_at: "2019-06-01 16:48:37 +0800"
 categories:  方法
 tags: RFC
 cover:

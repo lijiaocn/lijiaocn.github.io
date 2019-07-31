@@ -3,7 +3,7 @@ layout: default
 title:  Kubernetes使用过程中遇到的一些问题与解决方法
 author: 李佶澳
 createdate: 2018/10/22 14:25:00
-changedate: 2018/10/22 14:25:00
+last_modified_at: 2018/10/22 14:25:00
 categories: 问题
 tags: kubernetes
 keywords: kubernetes,问题记录

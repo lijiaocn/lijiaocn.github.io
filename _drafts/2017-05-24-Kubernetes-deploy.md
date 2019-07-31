@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes的几种部署方法
 author: lijiaocn
 createdate: 2017/05/24 09:11:37
-changedate: 2017/06/23 17:03:04
+last_modified_at: 2017/06/23 17:03:04
 categories: 项目
 tags: kubernetes
 keywords: kubernetes,k8s,kubeadm,deploy

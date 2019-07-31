@@ -3,7 +3,7 @@ layout: default
 title: "编译构建工具CMake的安装使用教程 & 配置文件CMakeLists.txt内容格式详解"
 author: 李佶澳
 createdate: "2019-01-22 15:30:27 +0800"
-changedate: "2019-02-12 16:04:29 +0800"
+last_modified_at: "2019-02-12 16:04:29 +0800"
 categories: 技巧
 tags: make
 keywords: cmake,CMake,cmake使用,cmake配置,CMakeLists.txt,cmake教程

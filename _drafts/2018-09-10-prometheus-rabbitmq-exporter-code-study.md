@@ -3,7 +3,7 @@ layout: default
 title: Prometheus的RabbitMQ Exporter源代码学习
 author: 李佶澳
 createdate: 2018/09/10 11:34:00
-changedate: 2018/09/10 14:01:28
+last_modified_at: 2018/09/10 14:01:28
 categories: 项目
 tags: prometheus
 keywords: prometheus,exporter,rabbitmq

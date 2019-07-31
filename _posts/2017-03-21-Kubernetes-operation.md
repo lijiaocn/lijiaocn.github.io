@@ -3,7 +3,7 @@ layout: default
 title: kubernetes的基本操作
 author: 李佶澳
 createdate: 2017/03/21 15:32:31
-changedate: 2017/11/24 16:12:59
+last_modified_at: 2017/11/24 16:12:59
 categories: 项目
 tags: kubernetes
 keywords: kubernetes,k8s

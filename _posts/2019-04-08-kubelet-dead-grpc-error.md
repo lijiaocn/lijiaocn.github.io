@@ -3,7 +3,7 @@ layout: default
 title: "Kubernetes的Pod无法删除，glusterfs导致docker无响应，集群雪崩"
 author: 李佶澳
 createdate: "2019-04-08 10:10:10 +0800"
-changedate: "2019-05-09 17:46:09 +0800"
+last_modified_at: "2019-05-09 17:46:09 +0800"
 categories: 问题
 tags: kubernetes
 keywords: kubernetes,terminating,pod,docker hang,glusterfs,NotReady

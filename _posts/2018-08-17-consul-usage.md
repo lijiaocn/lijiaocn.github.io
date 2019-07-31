@@ -3,7 +3,7 @@ layout: default
 title:  服务治理工具consul的功能介绍与使用入门
 author: 李佶澳
 createdate: 2018/08/17 11:54:00
-changedate: 2018/09/06 13:56:00
+last_modified_at: 2018/09/06 13:56:00
 categories: 项目
 tags: consul
 keywords: consul,服务发现,service mesh

@@ -3,7 +3,7 @@ layout: default
 title: "分级基金的运作原理，定折、下折、上折操作，以及分级A、分级B的套利原理"
 author: 李佶澳
 createdate: "2018-12-16 16:35:58 +0800"
-changedate: "2018-12-16 16:35:58 +0800"
+last_modified_at: "2018-12-16 16:35:58 +0800"
 categories: 投资
 tags:  投资
 keywords: 分级基金,分级A,分级B,分级基金套利,基金套利

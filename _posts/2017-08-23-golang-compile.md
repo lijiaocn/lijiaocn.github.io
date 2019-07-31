@@ -3,7 +3,7 @@ layout: default
 title: go的编译过程、选项、以及二进制包
 author: 李佶澳
 createdate: 2017/08/23 15:17:53
-changedate: 2018/08/13 10:56:16
+last_modified_at: 2018/08/13 10:56:16
 categories: 编程
 tags: golang
 keywords: golang,binary-only,package

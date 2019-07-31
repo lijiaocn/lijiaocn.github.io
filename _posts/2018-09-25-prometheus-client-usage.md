@@ -3,7 +3,7 @@ layout: default
 title: "使用Prometheus SDK输出Prometheus格式的Metrics"
 author: 李佶澳
 createdate: "2018-09-25 16:02:37 +0800"
-changedate: "2018-09-25 16:02:37 +0800"
+last_modified_at: "2018-09-25 16:02:37 +0800"
 categories: 编程
 tags: prometheus
 keywords: prometheus,go,client,api

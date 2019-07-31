@@ -3,7 +3,7 @@ layout: default
 title: Openwrt系统编译构建
 author: 李佶澳
 createdate: 2017/06/03 17:32:28
-changedate: 2017/09/23 22:43:47
+last_modified_at: 2017/09/23 22:43:47
 categories: 项目
 tags: openwrt
 keywords: openwrt,code,build,构建

@@ -3,7 +3,7 @@ layout: default
 title: Github Load Balancer的设计思路与实现
 author: lijiaocn
 createdate: 2017/09/20 11:03:25
-changedate: 2017/09/20 16:08:12
+last_modified_at: 2017/09/20 16:08:12
 categories: 项目
 tags:  lb
 keywords: glb,github,load,balancer

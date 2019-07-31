@@ -3,7 +3,7 @@ layout: default
 title: "微信大改版，会是今日头条和抖音的大危机吗？ "
 author: 李佶澳
 createdate: "2018-12-22 21:58:56 +0800"
-changedate: "2018-12-22 21:58:56 +0800"
+last_modified_at: "2018-12-22 21:58:56 +0800"
 categories: 投资
 tags:  投资
 keywords: 微信改版,今日头条,抖音,短视频,拼多多,京东,电商,社交,互联网

@@ -3,7 +3,7 @@ layout: default
 title: Kuberntes的Cmdline实现
 author: 李佶澳
 createdate: 2017/04/27 14:39:12
-changedate: 2017/09/21 19:19:51
+last_modified_at: 2017/09/21 19:19:51
 categories: 项目
 tags:  kubernetes
 keywords: kubernetes命令行的实现

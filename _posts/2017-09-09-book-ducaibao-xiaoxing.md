@@ -3,7 +3,7 @@ layout: default
 title: 怎样读懂财报报表?
 author: 李佶澳
 createdate: 2017/09/09 18:47:08
-changedate: 2017/10/28 12:20:02
+last_modified_at: 2017/10/28 12:20:02
 categories: 投资
 tags: financial-report
 keywords: 财务报表,读懂财报,一本书读懂

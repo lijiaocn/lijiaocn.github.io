@@ -3,7 +3,7 @@ layout: default
 title: 《深入剖析Kubernetes》专栏的阅读笔记(持续更新)
 author: 李佶澳
 createdate: 2018/09/20 22:37:00
-changedate: 2018/09/28 00:23:19
+last_modified_at: 2018/09/28 00:23:19
 categories: 好货
 tags: 阅读笔记
 keywords: 极客时间,Kubernetes,docker,张磊,深入剖析,原理

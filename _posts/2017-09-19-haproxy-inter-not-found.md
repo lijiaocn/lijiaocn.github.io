@@ -3,7 +3,7 @@ layout: default
 title: 使用端口复用(SO_REUSEPORT)、反复对haproxy进行reload操作，导致访问haproxy间歇性返回"503"
 author: 李佶澳
 createdate: 2017/09/19 16:09:12
-changedate: 2017/12/13 17:36:01
+last_modified_at: 2017/12/13 17:36:01
 categories: 问题
 tags: haproxy
 keywords: haproxy,间歇性失败,重启haproxy

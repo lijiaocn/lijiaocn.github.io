@@ -3,7 +3,7 @@ layout: default
 title:  "API网关Kong学习笔记（九）：Kong对WebSocket的支持"
 author: 李佶澳
 createdate: "2018-11-06 17:17:02 +0800"
-changedate: "2019-03-05 14:57:13 +0800"
+last_modified_at: "2019-03-05 14:57:13 +0800"
 categories: 项目
 tags: kong 
 keywords: kong,apigateway,websocket

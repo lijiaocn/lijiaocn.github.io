@@ -3,7 +3,7 @@ layout: default
 title: 通过Prometheus查询计算Kubernetes集群中的容器CPU、内存使用率等指标
 author: 李佶澳
 createdate: "2018-09-14 13:36:26 +0800"
-changedate: "2018-09-14 13:36:26 +0800"
+last_modified_at: "2018-09-14 13:36:26 +0800"
 categories: 技巧
 tags: prometheus kubernetes
 keywords: prometheus,kubernetes,cpu usage,mem usage

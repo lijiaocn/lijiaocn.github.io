@@ -3,7 +3,7 @@ layout: default
 title: "《关于规范金融机构资产管理业务的指导意见》全文摘录与影响分析"
 author: 李佶澳
 createdate: 2017/11/19 19:52:55
-changedate: 2017/11/23 10:01:36
+last_modified_at: 2017/11/23 10:01:36
 categories: 投资
 tags: 投资
 keywords: 金融机构,资产管理业务

@@ -3,7 +3,7 @@ layout: default
 title:  拼多多创始人黄峥，三篇创业期间的深入思考笔记 
 author: 李佶澳
 createdate: 2018/07/30 00:12:00
-changedate: 2018/07/30 00:20:48
+last_modified_at: 2018/07/30 00:20:48
 categories: 投资
 tags: 投资
 keywords: 拼多多,黄峥,段永平,商业

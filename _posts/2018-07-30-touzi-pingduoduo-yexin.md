@@ -3,7 +3,7 @@ layout: default
 title:  拼多多的野心，都在黄峥的个人公众号里
 author: 李佶澳
 createdate: 2018/07/30 00:13:00
-changedate: 2018/07/30 00:40:14
+last_modified_at: 2018/07/30 00:40:14
 categories: 投资
 tags: 投资
 keywords: 拼多多,黄峥,段永平,投资,上市

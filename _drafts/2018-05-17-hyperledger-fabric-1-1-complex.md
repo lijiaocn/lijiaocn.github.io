@@ -3,7 +3,7 @@ layout: default
 title:  "超级账本HyperLedger Fabric1.1的使用进阶"
 author: lijiaocn
 createdate: 2018/05/17 14:54:00
-changedate: 2018/06/18 17:14:43
+last_modified_at: 2018/06/18 17:14:43
 categories: 项目
 tags: hyperledger
 keywords: hyperledger,fabric,使用进阶,生产实践

@@ -3,7 +3,7 @@ layout: default
 title: "make：编译管理工具make与makefile"
 author: 李佶澳
 createdate: 2012/10/29 10:24:34
-changedate: 2018/07/22 14:57:40
+last_modified_at: 2018/07/22 14:57:40
 categories: 技巧
 tags: linuxtool
 keywords: makefile,linux,make

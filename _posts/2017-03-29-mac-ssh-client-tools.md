@@ -3,7 +3,7 @@ layout: default
 title: MAC上的SSH客户端工具
 author: 李佶澳
 createdate: 2017/03/29 18:50:52
-changedate: "2019-01-17 15:15:47 +0800"
+last_modified_at: "2019-01-17 15:15:47 +0800"
 categories: 技巧
 tags: mac shell
 keywords: MAC,SSH客户端,ZOC

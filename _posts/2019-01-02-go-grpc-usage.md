@@ -3,7 +3,7 @@ layout: default
 title: "Go语言实现grpc server和grpc client，用protobuf格式的消息通信（GRPC）"
 author: 李佶澳
 createdate: "2019-01-02 13:19:40 +0800"
-changedate: "2019-02-22 14:01:23 +0800"
+last_modified_at: "2019-07-18 10:11:10 +0800"
 categories: 技巧
 tags: grpc
 keywords: grpc,protobuf,golang,go

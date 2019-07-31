@@ -3,7 +3,7 @@ layout: default
 title: "将Mac上的iterm改造成类似于SecureCRT/Xshell的ssh登录管理器"
 author: 李佶澳
 createdate: "2019-01-17 14:06:54 +0800"
-changedate: "2019-01-25 15:34:30 +0800"
+last_modified_at: "2019-01-25 15:34:30 +0800"
 categories: 技巧
 tags: mac
 keywords: mac,iterm,SecureCRT,ssh

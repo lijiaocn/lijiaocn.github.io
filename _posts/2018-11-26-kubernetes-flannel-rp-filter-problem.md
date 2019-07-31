@@ -3,7 +3,7 @@ layout: default
 title: "Kubernetes: 内核参数rp_filter设置为Strict RPF，导致Service不通"
 author: 李佶澳
 createdate: "2018-11-26 17:40:06 +0800"
-changedate: "2018-11-26 17:40:06 +0800"
+last_modified_at: "2018-11-26 17:40:06 +0800"
 categories: 问题
 tags: kubernetes
 keywords: kubernetes,flannel,rp_filter,strict Reverse Path Forwarding,strict RPF

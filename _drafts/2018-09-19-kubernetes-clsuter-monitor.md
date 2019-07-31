@@ -3,7 +3,7 @@ layout: default
 title: "使用Prometheus建设Kubernetes的监控告警系统"
 author: 李佶澳
 createdate: "2018-09-19 14:16:41 +0800"
-changedate: "2018-09-19 14:16:41 +0800"
+last_modified_at: "2018-09-19 14:16:41 +0800"
 categories:  项目
 tags: kubernetes prometheus
 keywords: kubernetes,prometheus,告警监控

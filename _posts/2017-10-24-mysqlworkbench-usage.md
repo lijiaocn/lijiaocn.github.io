@@ -3,7 +3,7 @@ layout: default
 title: 怎样用MySQL Workbench设计数据库？
 author: 李佶澳
 createdate: 2017/10/24 18:59:04
-changedate: 2017/10/30 10:41:30
+last_modified_at: 2017/10/30 10:41:30
 categories: 方法
 tags: database
 keywords: mysqlworkbench,数据库设计,database

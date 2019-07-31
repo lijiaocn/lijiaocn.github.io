@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes自动部署工具kubeadm的使用
 author: lijiaocn
 createdate: 2017/07/29 18:04:34
-changedate: 2017/10/14 14:55:43
+last_modified_at: 2017/10/14 14:55:43
 categories: 项目
 tags: kubernetes 
 keywords: kubeadm,k8s

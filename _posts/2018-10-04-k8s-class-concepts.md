@@ -3,7 +3,7 @@ layout: default
 title:  "Kubernetes1.12从零开始（四）：必须先讲一下基本概念"
 author: 李佶澳
 createdate: 2018/10/05 22:07:51
-changedate: 2018/11/11 18:41:53
+last_modified_at: 2018/11/11 18:41:53
 categories: 项目
 tags: 视频教程 kubernetes
 Keywords: Kubernetes,基本概念,pod,docker

@@ -3,7 +3,7 @@ layout: default
 title: "API网关Kong学习笔记（二十六）：Kong 1.1引入db-less模式，无数据库部署"
 author: 李佶澳
 createdate: "2019-05-06 16:23:26 +0800"
-changedate: "2019-05-21 17:00:31 +0800"
+last_modified_at: "2019-05-21 17:00:31 +0800"
 categories: 项目
 tags: kong
 keywords: kong,apigateway,db-less,api网关

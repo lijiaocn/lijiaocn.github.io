@@ -3,7 +3,7 @@ layout: default
 title: linux中疑难问题的调查方法
 author: 李佶澳
 createdate: 2017/09/16 16:05:43
-changedate: 2017/11/27 10:55:59
+last_modified_at: 2017/11/27 10:55:59
 categories: 技巧
 tags: linux
 keywords: linux,疑难杂症,奇葩问题

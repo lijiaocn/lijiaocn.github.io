@@ -3,7 +3,7 @@ layout: default
 title: "ipvsadm：Linux的负载均衡功能ipvs的使用，ipvsadm的常用操作命令"
 author: 李佶澳
 createdate: 2018/02/01 15:12:31
-changedate: 2018/02/02 21:03:35
+last_modified_at: 2018/02/02 21:03:35
 categories: 技巧
 tags: linuxtool
 keywords: ipvs,lvs,负载均衡,dr

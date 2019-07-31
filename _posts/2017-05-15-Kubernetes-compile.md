@@ -3,7 +3,7 @@ layout: default
 title: kubernetes的编译、打包、发布
 author: 李佶澳
 createdate: 2017/05/15 15:25:04
-changedate: 2017/09/29 14:22:07
+last_modified_at: 2017/09/29 14:22:07
 categories: 项目
 tags: kubernetes
 keywords: k8s,kubernetes,compile,编译

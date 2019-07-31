@@ -3,7 +3,7 @@ layout: default
 title: docker-ee、tectonic、dc/os、rancher与hyper
 author: lijiaocn
 createdate: 2017/08/08 10:16:21
-changedate: 2017/08/11 15:07:20
+last_modified_at: 2017/08/11 15:07:20
 categories: 项目
 tags: kubernetes
 keywords: kubernetes,产品化

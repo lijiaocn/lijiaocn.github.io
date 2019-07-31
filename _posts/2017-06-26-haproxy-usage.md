@@ -3,7 +3,7 @@ layout: default
 title: haproxy的基本使用与常见实践
 author: 李佶澳
 createdate: 2017/06/26 10:40:02
-changedate: 2018/08/25 11:08:03
+last_modified_at: 2018/08/25 11:08:03
 categories: 技巧
 tags: haproxy
 keywords:  haproxy,lb 

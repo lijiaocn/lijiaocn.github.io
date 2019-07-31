@@ -3,7 +3,7 @@ layout: default
 title: "API网关Kong（十）：功能梳理和插件使用-内容改写插件"
 author: 李佶澳
 createdate: 2018/11/09 15:17:00
-changedate: 2018/11/09 15:17:00
+last_modified_at: 2018/11/09 15:17:00
 categories: 项目
 tags: 视频教程 kong 
 keywords: kong,apigateway,API网关

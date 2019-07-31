@@ -3,7 +3,7 @@ layout: default
 title:  "超级账本HyperLedger：Fabric 1.3部署使用"
 author: 李佶澳
 createdate: 2018/11/20 22:23:00
-changedate: 2018/11/20 22:23:00
+last_modified_at: 2018/11/20 22:23:00
 categories: 编程
 tags: 视频教程 HyperLedger
 keywords: HyperLedger,Fabric,1.3,部署安装

@@ -3,7 +3,7 @@ layout: default
 title: 目录被其它的容器挂载使用，导致已经退出的容器无法被删除
 author: 李佶澳
 createdate: 2017/07/14 15:19:14
-changedate: 2017/12/13 13:14:17
+last_modified_at: 2017/12/13 13:14:17
 categories: 问题
 tags: docker
 keywords: docker,recyle,remove

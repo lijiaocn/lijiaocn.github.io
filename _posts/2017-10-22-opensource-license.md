@@ -3,7 +3,7 @@ layout: default
 title: 怎样选择开源项目的license?
 author: 李佶澳
 createdate: 2017/10/22 20:09:47
-changedate: 2017/10/28 12:12:20
+last_modified_at: 2017/10/28 12:12:20
 categories: 方法
 tags: opensource
 keywords: license,opensource

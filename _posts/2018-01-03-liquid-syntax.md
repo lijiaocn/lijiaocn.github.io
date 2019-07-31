@@ -3,7 +3,7 @@ layout: default
 title: Liquid语法
 author: lijiaocn
 createdate: "2017-04-26 13:13:03 +0800"
-changedate: "2019-01-09 17:35:25 +0800"
+last_modified_at: "2019-01-09 17:35:25 +0800"
 categories: 编程
 tags: jekyll
 keywords: liquid语法,liquid,模版语言 

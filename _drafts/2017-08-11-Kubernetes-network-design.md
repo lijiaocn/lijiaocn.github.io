@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes的一种网络部署方式
 author: lijiaocn
 createdate: 2017/08/11 15:07:39
-changedate: 2017/08/11 16:16:32
+last_modified_at: 2017/08/11 16:16:32
 categories: 见解
 tags: kubernetes network
 keywords: kubernetes,network

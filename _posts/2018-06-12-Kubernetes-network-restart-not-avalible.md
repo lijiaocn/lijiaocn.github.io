@@ -3,7 +3,7 @@ layout: default
 title:  kubernetes的node上的重启linux网络服务后，pod无法联通
 author: 李佶澳
 createdate: 2018/06/12 11:25:00
-changedate: 2018/06/16 18:16:45
+last_modified_at: 2018/06/16 18:16:45
 categories: 问题
 tags: kubernetes calico
 keywords: kubernetes calico

@@ -3,7 +3,7 @@ layout: default
 title: "微信小程序开发学习笔记（二）：JavaScript"
 author: 李佶澳
 createdate: "2019-06-12T23:49:44+0800"
-changedate: "2019-06-28T23:40:29+0800"
+last_modified_at: "2019-06-28T23:40:29+0800"
 categories: 项目
 tags:  小程序
 cover:

@@ -3,7 +3,7 @@ layout: default
 title: Spinnaker初次了解
 author: lijiaocn
 createdate: 2017/06/19 09:27:42
-changedate: 2017/06/19 10:53:06
+last_modified_at: 2017/06/19 10:53:06
 categories: 项目
 tags: spinnaker
 keywords: spinnaker,入门,初次使用

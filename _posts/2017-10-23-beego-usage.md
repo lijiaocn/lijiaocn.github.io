@@ -3,7 +3,7 @@ layout: default
 title: 怎样用beego开发服务端应用？
 author: 李佶澳
 createdate: 2017/10/23 14:01:13
-changedate: 2018/08/08 15:32:55
+last_modified_at: 2018/08/08 15:32:55
 categories: 方法
 tags: beego
 keywords: beego
@@ -693,18 +693,52 @@ study-beego中的表将会被创建或者更新，并在名为`migrations`的表
 
 注意，在1.9.0中，需要在配置中设置`copyrequestbody=true`以后，c.Ctx.Input.RequestBody中才有数据。
 
-	func (c *UserController) Post() {
-		var v models.User
-		json.Unmarshal(c.Ctx.Input.RequestBody, &v)
-		fmt.Println(v)
-		if _, err := models.AddUser(&v); err == nil {
-			c.Ctx.Output.SetStatus(201)
-			c.Data["json"] = v
-		} else {
-			c.Data["json"] = err.Error()
-		}
-		c.ServeJSON()
-	}
+```go
+func (c *UserController) Post() {
+    var v models.User
+    json.Unmarshal(c.Ctx.Input.RequestBody, &v)
+    fmt.Println(v)
+    if _, err := models.AddUser(&v); err == nil {
+        c.Ctx.Output.SetStatus(201)
+        c.Data["json"] = v
+    } else {
+        c.Data["json"] = err.Error()
+    }
+    c.ServeJSON()
+}
+```
+
+### 解析请求参数
+
+路径参数是在 controller 的注释中标注：
+
+```go
+// Put ...
+// @Title Put
+// @Description update the Gateway
+// @Param	id		path 	string	true		"The id you want to update"
+// @Param	body		body 	types.Gateway	true		"body for Gateway content"
+// @Success 200 {object} types.Gateway
+// @Failure 403 :id is not int
+// @router /:id [put]
+func (c *GatewayController) Put() {
+
+}
+```
+
+Beego 提供了下面这些[获取参数的方法](https://beego.me/docs/mvc/controller/params.md)：
+
+```go
+GetString(key string) string
+GetStrings(key string) []string
+GetInt(key string) (int64, error)
+GetBool(key string) (bool, error)
+GetFloat(key string) (float64, error)
+```
+
+## 测试用例
+
+
 
 ## 参考
 

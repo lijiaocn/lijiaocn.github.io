@@ -3,7 +3,7 @@ layout: default
 title: "API网关Kong学习笔记（十一）：自己动手写一个插件"
 author: 李佶澳
 createdate: "2018-11-09 16:22:33 +0800"
-changedate: "2019-03-05 14:57:50 +0800"
+last_modified_at: "2019-03-05 14:57:50 +0800"
 categories: 项目
 tags: kong 
 keywords: kong,apigateway,API网关,plugin

@@ -3,7 +3,7 @@ layout: default
 title: 怎样排查calico的网络故障？
 author: 李佶澳
 createdate: 2017/08/18 09:40:11
-changedate: 2018/03/06 21:15:34
+last_modified_at: 2018/03/06 21:15:34
 categories: 方法
 tags:  calico
 keywords: calico,排查,调查

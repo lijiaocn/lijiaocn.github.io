@@ -3,7 +3,7 @@ layout: default
 title: "Kubernetes网络方案Flannel的学习笔记"
 author: 李佶澳
 createdate: "2018-10-09 14:15:58 +0800"
-changedate: "2019-01-16 16:08:24 +0800"
+last_modified_at: "2019-01-16 16:08:24 +0800"
 categories: 项目
 tags: flannel kubernetes
 keywords: kubernetes,flannel,docker network,overlay,network

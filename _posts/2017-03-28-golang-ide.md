@@ -3,7 +3,7 @@ layout: default
 title: Golang的开发环境-使用vim
 author: 李佶澳
 createdate: 2017/03/28 10:01:38
-changedate: 2018/07/16 19:12:55
+last_modified_at: 2018/07/16 19:12:55
 categories: 编程
 tags: golang
 keywords: Go编程

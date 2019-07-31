@@ -3,7 +3,7 @@ layout: default
 title:  区块链在互联网借贷领域的应用探索
 author: 付银海、徐秋园
 createdate: 2018/05/11 16:49:00
-changedate: 2018/05/11 18:54:13
+last_modified_at: 2018/05/11 18:54:13
 categories: 方法
 tags: blockchain
 keywords: 区块链,互联网借贷,互联网金融,联合放贷,资产共享

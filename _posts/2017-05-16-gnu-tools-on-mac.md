@@ -3,7 +3,7 @@ layout: default
 title: MAC上使用GNU命令行程序
 author: 李佶澳
 createdate: 2017/05/15 16:18:40
-changedate: 2017/05/15 16:22:14
+last_modified_at: 2017/05/15 16:22:14
 categories: 技巧
 tags: mac gnu
 keywords: MAC,GNU,命令行

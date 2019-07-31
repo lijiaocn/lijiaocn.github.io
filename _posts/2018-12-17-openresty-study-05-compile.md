@@ -3,7 +3,7 @@ layout: default
 title: "Web开发平台OpenResty（五）：OpenResty项目自身的编译"
 author: 李佶澳
 createdate: "2018-12-17 11:06:47 +0800"
-changedate: "2019-01-17 16:53:44 +0800"
+last_modified_at: "2019-01-17 16:53:44 +0800"
 categories: 编程
 tags: openresty
 keywords: openresty,nginx,lua,openresty开发

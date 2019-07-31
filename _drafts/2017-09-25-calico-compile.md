@@ -3,7 +3,7 @@ layout: default
 title:  calico的在kubernetes中安装方式以及编译构建过程
 author: lijiaocn
 createdate: 2017/09/25 13:42:38
-changedate: 2017/09/28 09:59:39
+last_modified_at: 2017/09/28 09:59:39
 categories: 项目
 tags: calico
 keywords: calico,deploy,kubernetes,compile

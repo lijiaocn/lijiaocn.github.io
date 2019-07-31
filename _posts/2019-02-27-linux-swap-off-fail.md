@@ -3,7 +3,7 @@ layout: default
 title: "Linux关闭swap失败，swapoff failed: cannot allocate memory"
 author: 李佶澳
 createdate: "2019-02-27 10:26:42 +0800"
-changedate: "2019-02-27 11:52:41 +0800"
+last_modified_at: "2019-02-27 11:52:41 +0800"
 categories: 问题
 tags: linux
 keywords: swapoff,linux

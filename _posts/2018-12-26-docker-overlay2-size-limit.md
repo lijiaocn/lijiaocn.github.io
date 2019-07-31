@@ -3,7 +3,7 @@ layout: default
 title: "docker的storage-driver是overlay2时，限制单个容器可占用的磁盘空间"
 author: 李佶澳
 createdate: "2018-12-26 10:56:40 +0800"
-changedate: "2018-12-26 10:56:40 +0800"
+last_modified_at: "2018-12-26 10:56:40 +0800"
 categories: 问题
 tags:  docker
 keywords: docker,storage-driver,overlay2,size limit

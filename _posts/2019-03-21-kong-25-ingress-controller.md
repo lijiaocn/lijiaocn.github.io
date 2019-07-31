@@ -3,7 +3,7 @@ layout: default
 title: "API网关Kong学习笔记（二十五）：重温 kong ingress controller"
 author: 李佶澳
 createdate: "2019-03-21 11:02:23 +0800"
-changedate: "2019-05-20 14:51:09 +0800"
+last_modified_at: "2019-05-20 14:51:09 +0800"
 categories: 项目
 tags: kong
 keywords: kong,kong 1.0.3,代码学习

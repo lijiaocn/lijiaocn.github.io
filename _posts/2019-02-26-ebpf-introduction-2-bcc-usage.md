@@ -3,7 +3,7 @@ layout: default
 title: "Linux内核功能eBPF入门学习（二）：BCC中的eBPF应用与bpftrace等"
 author: 李佶澳
 createdate: "2019-02-26 11:42:41 +0800"
-changedate: "2019-03-01 18:27:13 +0800"
+last_modified_at: "2019-03-01 18:27:13 +0800"
 categories: 技巧
 tags: linux
 keywords: ebpf,bpf,bcc,linux kernerl

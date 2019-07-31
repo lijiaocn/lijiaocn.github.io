@@ -3,7 +3,7 @@ layout: default
 title: "Kubernetes版本特性：新特性支持版本和组件兼容版本"
 author: 李佶澳
 createdate: "2019-01-08 16:00:22 +0800"
-changedate: "2019-05-06 16:42:32 +0800"
+last_modified_at: "2019-05-06 16:42:32 +0800"
 categories: 项目
 tags:  kubernetes
 keywords: kubernetes

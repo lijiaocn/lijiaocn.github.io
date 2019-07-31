@@ -3,7 +3,7 @@ layout: default
 title: "Envoy Proxy使用介绍教程（七）：envoy动态配置xDS的使用方法"
 author: 李佶澳
 createdate: "2018-12-29 10:53:58 +0800"
-changedate: "2019-05-20 11:18:53 +0800"
+last_modified_at: "2019-05-20 11:18:53 +0800"
 categories: 项目
 tags: envoy
 keywords: envoy动态配置,envoy management server,envoy服务发现,cds,lds,ads,xds协议

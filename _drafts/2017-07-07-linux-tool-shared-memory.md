@@ -3,7 +3,7 @@ layout: default
 title: linux的共享内存机制与使用
 author: lijiaocn
 createdate: 2017/07/07 17:32:45
-changedate: 2017/07/07 18:13:30
+last_modified_at: 2017/07/07 18:13:30
 categories: 技巧
 tags: linuxtool
 keywords: shared-memory,linux,共享内存

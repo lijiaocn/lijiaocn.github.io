@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes使用常见问题记录
 author: lijiaocn
 createdate: 2017/10/19 13:32:29
-changedate: 2017/10/19 14:25:13
+last_modified_at: 2017/10/19 14:25:13
 categories: 问题
 tags: kubernetes
 keywords: kuberntes,常见问题,问题记录

@@ -3,7 +3,7 @@ layout: default
 title: "Kubernetes问题调查：failed to get cgroup stats for /systemd/system.slice"
 author: 李佶澳
 createdate: "2019-01-25 11:28:17 +0800"
-changedate: "2019-01-29 14:38:16 +0800"
+last_modified_at: "2019-01-29 14:38:16 +0800"
 categories: 问题
 tags: kubernetes
 keywords: kubernetes,cgroup,system.slice,unkown container

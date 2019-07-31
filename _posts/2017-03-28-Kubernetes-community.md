@@ -3,7 +3,7 @@ layout: default
 title: kubernetes的社区资源与项目参与方式
 author: 李佶澳
 createdate: 2017/03/28 10:01:38
-changedate: 2017/05/17 09:21:39
+last_modified_at: 2017/05/17 09:21:39
 categories: 项目
 tags: kubernetes
 keywords: kubernetes,源代码,编译

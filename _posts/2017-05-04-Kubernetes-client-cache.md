@@ -3,7 +3,7 @@ layout: default
 title: kubernetes的Client端Cache
 author: 李佶澳
 createdate: 2017/05/04 10:06:47
-changedate: 2017/05/17 13:21:57
+last_modified_at: 2017/05/17 13:21:57
 categories: 项目
 tags: kubernetes
 keywords: client-go,kubernetes,cache

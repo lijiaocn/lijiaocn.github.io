@@ -3,7 +3,7 @@ layout: default
 title: "iptables：Linux的iptables使用"
 author: 李佶澳
 createdate: 2014/04/16 10:16:55
-changedate: 2018/06/17 21:48:31
+last_modified_at: 2018/06/17 21:48:31
 categories: 技巧
 tags: linuxtool
 keywords: iptables规则,iptables使用方法,iptables原理,iptables报文处理,linux,iptables

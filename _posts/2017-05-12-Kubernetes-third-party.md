@@ -3,7 +3,7 @@ layout: default
 title: kubernetes的第三方包的使用
 author: 李佶澳
 createdate: 2017/05/12 10:25:44
-changedate: 2017/05/18 10:38:21
+last_modified_at: 2017/05/18 10:38:21
 categories: 项目
 tags: kubernetes
 keywords: k8s,kubernetes,third party,第三方包

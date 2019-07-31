@@ -3,7 +3,7 @@ layout: default
 title: Kubernets中的cloudprovider
 author: lijiaocn
 createdate: 2017/06/22 14:05:20
-changedate: 2017/06/23 10:11:29
+last_modified_at: 2017/06/23 10:11:29
 categories: 项目
 tags: kubernetes
 keywords:cloudprivider,kubernetes

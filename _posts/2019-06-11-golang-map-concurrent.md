@@ -3,7 +3,7 @@ layout: default
 title: "以Go的map是否并发安全为例，介绍最权威的Go语言资料的使用方法"
 author: 李佶澳
 createdate: "2019-06-11 14:56:05 +0800"
-changedate: "2019-06-11 20:54:19 +0800"
+last_modified_at: "2019-06-11 20:54:19 +0800"
 categories: 编程 
 tags: golang
 cover:

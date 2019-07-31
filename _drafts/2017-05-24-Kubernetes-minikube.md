@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes的minikube的使用
 author: lijiaocn
 createdate: 2017/05/24 09:39:25
-changedate: 2017/05/24 09:47:21
+last_modified_at: 2017/05/24 09:47:21
 categories: 项目
 tags: kubernetes
 keywords: minikube,kubernetes,k8s

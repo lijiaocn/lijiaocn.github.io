@@ -3,7 +3,7 @@ layout: default
 title: "API网关Kong学习笔记（十七）：Kong Ingress Controller的使用"
 author: 李佶澳
 createdate: "2018-11-21 16:08:54 +0800"
-changedate: "2019-03-21 14:48:06 +0800"
+last_modified_at: "2019-03-21 14:48:06 +0800"
 categories: 项目
 tags: kong 
 keywords: kong,apigateway,API网关

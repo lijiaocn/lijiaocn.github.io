@@ -3,7 +3,7 @@ layout: default
 title:  "用CloudFlare的PKI工具CFSSL生成Certificate Bundle"
 author: 李佶澳
 createdate: 2018/10/13 17:05:00
-changedate: 2018/10/13 17:05:00
+last_modified_at: 2018/10/13 17:05:00
 categories: 技巧
 tags: cryptography
 keywords: cfssl,https证书,cert bundle,Certificate Bundle

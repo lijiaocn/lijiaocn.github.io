@@ -3,7 +3,7 @@ layout: default
 title: 怎样在gitbook上写一本书?
 author: 李佶澳
 createdate: 2017/10/22 16:50:56
-changedate: 2017/12/03 23:10:13
+last_modified_at: 2017/12/03 23:10:13
 categories: 方法
 tags: gitbook
 keywords: gitbook,写书

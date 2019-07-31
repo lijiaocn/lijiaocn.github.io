@@ -3,7 +3,7 @@ layout: default
 title: "移除Gitbook生成的网页中的`Published with GitBook`连接"
 author: 李佶澳
 createdate: "2019-01-21 17:51:14 +0800"
-changedate: "2019-01-21 18:04:11 +0800"
+last_modified_at: "2019-01-21 18:04:11 +0800"
 categories: 技巧
 tags: gitbook 
 keywords: gitbook,删除网页连接,Published with GitBook

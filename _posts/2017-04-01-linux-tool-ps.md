@@ -3,7 +3,7 @@ layout: default
 title: "ps：Linux的ps等进程查看命令"
 author: 李佶澳
 createdate: 2017/04/26 17:18:17
-changedate: 2018/07/22 14:57:01
+last_modified_at: 2018/07/22 14:57:01
 categories: 技巧
 tags: linuxtool
 keywords: ps使用手册,http

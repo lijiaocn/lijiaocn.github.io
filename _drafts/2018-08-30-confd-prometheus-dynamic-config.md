@@ -3,7 +3,7 @@ layout: default
 title: 通过consul、confd，动态为prometheus添加监控目标和告警规则
 author: 李佶澳
 createdate: 2018/08/30 10:40:00
-changedate: 2018/09/10 08:34:07
+last_modified_at: 2018/09/10 08:34:07
 categories: 技巧
 tags: prometheus
 keywords: prometheus,consul,confd,服务发现

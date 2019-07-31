@@ -3,7 +3,7 @@ layout: default
 title: "怎样通过定投基金，用人民币足不出户配置全球资产？（一）"
 author: 李佶澳
 createdate: "2018-12-15 16:34:55 +0800"
-changedate: "2018-12-15 16:34:55 +0800"
+last_modified_at: "2018-12-15 16:34:55 +0800"
 categories: 投资
 tags:  投资
 keywords: 基金定投,资产配置,长期投资,价值投资,人民币投资

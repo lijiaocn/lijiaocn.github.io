@@ -3,7 +3,7 @@ layout: default
 title:  "[知识星球精华帖]: 两个互联网大牛的伊朗见闻"
 author: "冯大辉&曹政"
 createdate: 2018/05/01 01:53:00
-changedate: 2018/05/08 10:41:06
+last_modified_at: 2018/05/08 10:41:06
 categories: 好货
 tags: 知识星球精华
 keywords: 知识星球精华，伊朗,投资机会,互联网,新兴国家

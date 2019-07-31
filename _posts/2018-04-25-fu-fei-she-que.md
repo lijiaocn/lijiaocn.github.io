@@ -3,7 +3,7 @@ layout: default
 title: 推荐几个值得加入的知识星球，价格不贵、内容好、成员素质高
 author: 李佶澳
 createdate: "2018/04/25 05:21:45"
-changedate: "2019-04-16 11:00:09 +0800"
+last_modified_at: "2019-04-16 11:00:09 +0800"
 categories: 好货
 tags:  好货 知识星球精华
 keywords: 知识星球推荐,知识星球精选,超值星球,知识星球APP,付费社区,不贵

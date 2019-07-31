@@ -3,7 +3,7 @@ layout: default
 title: "Envoy Proxy使用介绍教程（八）：envoy动态配置-聚合发现ADS的使用方法"
 author: 李佶澳
 createdate: "2019-01-07 11:27:27 +0800"
-changedate: "2019-05-07 18:51:21 +0800"
+last_modified_at: "2019-05-07 18:51:21 +0800"
 categories: 项目
 tags: envoy
 keywords: envoy ads,envoy动态配置,envoy management server,envoy服务发现,cds,lds,ads,xds协议

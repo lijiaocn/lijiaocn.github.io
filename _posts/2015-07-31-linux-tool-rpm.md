@@ -3,7 +3,7 @@ layout: default
 title: "rpm：rpm与rpm软件包的构建使用"
 author: 李佶澳
 createdate: 2015/07/31 10:31:03
-changedate: 2018/07/22 14:26:00
+last_modified_at: 2018/07/22 14:26:00
 categories: 技巧
 tags: linuxtool centos
 keywords: rpm,centos,linux

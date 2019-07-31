@@ -3,7 +3,7 @@ layout: default
 title:  "Kubernetes1.12从零开始（六）：从代码编译到自动部署"
 author: 李佶澳
 createdate: 2018/11/10 16:14:00
-changedate: 2018/11/11 18:42:11
+last_modified_at: 2018/11/11 18:42:11
 categories: 项目
 tags: 视频教程 kubernetes
 keywords: kubernetes,从零部署,deploy,kubernetes视频教程,kubernetes系列教程

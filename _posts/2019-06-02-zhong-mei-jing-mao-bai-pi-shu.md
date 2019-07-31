@@ -3,7 +3,7 @@ layout: default
 title: "白皮书全文：《关于中美经贸磋商的中方立场》"
 author: 国务院新闻办公室
 createdate: "2019-06-02T17:01:38+0800"
-changedate: "2019-06-02T17:38:55+0800"
+last_modified_at: "2019-06-02T17:38:55+0800"
 categories: 投资
 tags: 投资
 cover:

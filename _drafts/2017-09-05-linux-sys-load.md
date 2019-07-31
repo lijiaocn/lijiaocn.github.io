@@ -3,7 +3,7 @@ layout: default
 title: linux系统的负载查看
 author: lijiaocn
 createdate: 2017/09/05 18:45:46
-changedate: 2017/09/11 16:44:41
+last_modified_at: 2017/09/11 16:44:41
 categories: 技巧
 tags: linux
 keywords: linux,load,top

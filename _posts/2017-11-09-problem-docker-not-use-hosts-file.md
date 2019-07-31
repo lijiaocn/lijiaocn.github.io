@@ -3,7 +3,7 @@ layout: default
 title: 容器内部的go程序没有使用/etc/hosts中记录的地址
 author: 李佶澳
 createdate: 2017/11/09 20:31:14
-changedate: 2017/12/22 16:06:50
+last_modified_at: 2017/12/22 16:06:50
 categories: 问题
 tags: golang
 keywords: hosts,nsswitch.conf,go,docker,alpine

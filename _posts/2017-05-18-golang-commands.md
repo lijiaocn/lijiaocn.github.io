@@ -3,7 +3,7 @@ layout: default
 title: go的子命令与工具
 author: 李佶澳
 createdate: 2017/05/18 16:00:04
-changedate: 2017/05/18 19:47:04
+last_modified_at: 2017/05/18 19:47:04
 categories: 编程
 tags: golang
 keywords: golang,编译

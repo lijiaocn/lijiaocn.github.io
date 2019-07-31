@@ -3,7 +3,7 @@ layout: default
 title:  "curl：发起http(s)请求，查看http(s)通信过程"
 author: 李佶澳
 createdate: 2018/07/22 15:25:00
-changedate: 2018/08/10 13:46:58
+last_modified_at: 2018/08/10 13:46:58
 categories: 技巧
 tags: linuxtool
 keywords: curl,http,交互

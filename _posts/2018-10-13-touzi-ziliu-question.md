@@ -3,7 +3,7 @@ layout: default
 title:  "[知识星球精华帖]: 原淘宝大学校长投资人子柳（赵超）的投资创业问答录"
 author: 子柳
 createdate: 2018/10/13 23:26:00
-changedate: 2018/10/14 23:05:37
+last_modified_at: 2018/10/14 23:05:37
 categories: 好货
 tags: 知识星球精华
 keywords: 知识星球精华,投资人子柳,赵超,商业模式,创业,投资,阿里巴巴,腾讯,小米

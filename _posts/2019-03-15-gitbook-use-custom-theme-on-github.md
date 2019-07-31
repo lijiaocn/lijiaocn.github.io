@@ -3,7 +3,7 @@ layout: default
 title: "GitBook项目中用插件的方式安装github上的第三方模板"
 author: 李佶澳
 createdate: "2019-03-15 14:32:16 +0800"
-changedate: "2019-03-24 14:43:22 +0800"
+last_modified_at: "2019-03-24 14:43:22 +0800"
 categories: 技巧
 tags: gitbook
 keywords: gitbook,theme-default,gitbook模板,gitbook插件

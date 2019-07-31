@@ -3,7 +3,7 @@ layout: default
 title: kubernetes的Kube-proxy的转发规则分析
 author: 李佶澳
 createdate: 2017/03/27 10:16:55
-changedate: 2017/05/10 11:22:22
+last_modified_at: 2017/05/10 11:22:22
 categories: 项目
 tags: kubernetes
 keywords: kube-proxy转发规则分析

@@ -3,7 +3,7 @@ layout: default
 title:  "蓝绿部署、金丝雀发布（灰度发布）、A/B测试的准确定义"
 author: 李佶澳
 createdate: 2018/10/23 14:02:00
-changedate: 2018/10/23 14:02:00
+last_modified_at: 2018/10/23 14:02:00
 categories: 方法
 tags: DevOps
 keywords: 蓝绿部署,AB测试,金丝雀发布

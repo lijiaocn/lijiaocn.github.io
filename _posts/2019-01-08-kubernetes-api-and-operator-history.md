@@ -3,7 +3,7 @@ layout: default
 title: "Kubernetes API 与 Operator：不为人知的开发者战争（完整篇） "
 author: "张磊、邓洪超"
 createdate: "2019-01-08 14:00:15 +0800"
-changedate: "2019-01-09 11:29:32 +0800"
+last_modified_at: "2019-01-09 11:29:32 +0800"
 categories:  项目
 tags: kubernetes
 keywords: kubernetes,kubernets api,operator,开发者战争,分布式系统,etc,控制器模式,声明式

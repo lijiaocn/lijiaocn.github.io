@@ -3,7 +3,7 @@ layout: default
 title: calico node重启时路由同步信息延迟高达4分钟
 author: 李佶澳
 createdate: 2017/12/08 10:37:35
-changedate: 2017/12/08 20:06:05
+last_modified_at: 2017/12/08 20:06:05
 categories: 问题
 tags: calico
 keywords: calico,kubernetes,delay

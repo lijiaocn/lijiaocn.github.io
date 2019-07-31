@@ -3,7 +3,7 @@ layout: default
 title: "中国大陆（国内）申请谷歌Google AdSense的条件技巧、地址验证方法和收款设置"
 author: 李佶澳
 createdate: "2019-03-09 20:08:09 +0800"
-changedate: "2019-03-09 20:08:09 +0800"
+last_modified_at: "2019-03-09 20:08:09 +0800"
 categories: 方法
 tags: 海外网赚
 keywords: google adsense,收款方式,国内电汇收款,Pin验证,身份证验证,申请条件,申请技巧

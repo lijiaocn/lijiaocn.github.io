@@ -3,7 +3,7 @@ layout: default
 title:  区块链技术实践过程中的一些思考
 author: 李佶澳
 createdate: 2018/04/17 12:43:00
-changedate: 2018/05/14 12:25:15
+last_modified_at: 2018/05/14 12:25:15
 categories: 项目
 tags:  blockchain
 keywords: 区块链,hyperledger,fabric

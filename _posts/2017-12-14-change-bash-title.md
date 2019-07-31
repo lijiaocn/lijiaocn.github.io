@@ -3,7 +3,7 @@ layout: default
 title: 修改iterm窗口顶层显示的title
 author: 李佶澳
 createdate: 2017/12/14 16:55:57
-changedate: 2017/12/14 18:21:16
+last_modified_at: 2017/12/14 18:21:16
 categories: 技巧
 tags: shell
 keywords: bash,xterm,terminal

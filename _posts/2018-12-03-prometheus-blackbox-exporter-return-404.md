@@ -3,7 +3,7 @@ layout: default
 title: "curl能访问的url，通过blackbox-expoeter进行探测时，返回404"
 author: 李佶澳
 createdate: "2018-12-03 16:08:22 +0800"
-changedate: "2018-12-03 16:08:22 +0800"
+last_modified_at: "2018-12-03 16:08:22 +0800"
 categories: 问题
 tags: prometheus
 keywords: prometheus,监控

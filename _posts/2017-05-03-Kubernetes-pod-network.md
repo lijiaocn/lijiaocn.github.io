@@ -3,7 +3,7 @@ layout: default
 title: kubernetes的CNI插件初始化与Pod网络设置
 author: 李佶澳
 createdate: 2017/05/03 09:30:33
-changedate: 2017/09/12 14:46:40
+last_modified_at: 2017/09/12 14:46:40
 categories: 项目
 tags: kubernetes
 keywords: kuberntes,pod,network

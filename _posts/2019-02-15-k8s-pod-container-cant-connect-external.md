@@ -3,7 +3,7 @@ layout: default
 title: "Kubernetes集群node上的容器无法ping通外网：iptables snat规则缺失导致"
 author: 李佶澳
 createdate: "2019-02-15 12:04:04 +0800"
-changedate: "2019-02-28 10:20:02 +0800"
+last_modified_at: "2019-02-28 10:20:02 +0800"
 categories: 问题
 tags: kubernetes
 keywords: kubernetes,iptables,ipvs,node,网络不通

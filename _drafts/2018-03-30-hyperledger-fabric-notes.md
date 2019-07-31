@@ -3,7 +3,7 @@ layout: default
 title:  Hyperledger Fabric学习笔记
 author: 李佶澳
 createdate: 2018/03/30 15:40:00
-changedate: 2018/03/30 17:12:16
+last_modified_at: 2018/03/30 17:12:16
 categories: 项目
 tags: blockchain
 keywords: Hyperledger,fabric,学习笔记,notes

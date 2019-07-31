@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger：Fabric Chaincode（智能合约、链码）开发方法
 author: 李佶澳
 createdate: 2018/04/03 10:07:00
-changedate: 2018/07/29 13:04:26
+last_modified_at: 2018/07/29 13:04:26
 categories: 项目
 tags: hyperledger
 keywords: 超级账本,HyperLedger,Fabric,Chaincode,合约链码

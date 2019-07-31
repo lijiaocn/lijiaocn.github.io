@@ -3,7 +3,7 @@ layout: default
 title: Golang开发环境-使用idea
 author: 李佶澳
 createdate: 2017/03/27 17:38:05
-changedate: 2018/07/16 17:20:35
+last_modified_at: 2018/07/16 17:20:35
 categories: 技巧
 tags: golang
 keywords: golang,idea,IDE

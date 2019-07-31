@@ -3,7 +3,7 @@ layout: default
 title: kubernetes的dnsmasq缓存查询结果，导致pod偶尔无法访问域名
 author: 李佶澳
 createdate: 2017/08/03 14:22:43
-changedate: 2017/11/30 09:49:02
+last_modified_at: 2017/11/30 09:49:02
 categories: 问题
 tags: kubernetes
 keywords: dnsmasq,kube-dns,k8s

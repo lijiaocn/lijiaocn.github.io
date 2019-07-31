@@ -3,7 +3,7 @@ layout: default
 title: kubernetes的Pod内挂载的Service Account的使用方法
 author: 李佶澳
 createdate: 2017/04/26 17:32:58
-changedate: 2017/04/27 13:23:49
+last_modified_at: 2017/04/27 13:23:49
 categories: 项目
 tags: kubernetes
 keywords: kubernetes,安全性

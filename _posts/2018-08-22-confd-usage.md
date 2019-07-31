@@ -3,7 +3,7 @@ layout: default
 title:  配置文件动态生成工具confd的使用
 author: 李佶澳
 createdate: 2018/08/22 11:28:00
-changedate: 2018/08/28 11:51:49
+last_modified_at: 2018/08/28 11:51:49
 categories: 项目
 tags: confd
 keywords: config,配置管理

@@ -3,7 +3,7 @@ layout: default
 title: "API网关Kong学习笔记（七）：Kong数据平面Plugin的调用与实现"
 author: 李佶澳
 createdate: 2018/11/01 14:18:00
-changedate: 2018/11/01 14:18:00
+last_modified_at: 2018/11/01 14:18:00
 categories: 项目
 tags: kong 
 keywords: kong,apigateway,API网关,plugins,kong插件

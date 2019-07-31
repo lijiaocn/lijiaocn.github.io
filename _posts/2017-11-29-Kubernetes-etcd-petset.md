@@ -3,7 +3,7 @@ layout: default
 title: 使用petset创建的etcd集群在kubernetes中运行失败
 author: 李佶澳
 createdate: 2017/11/29 16:16:09
-changedate: 2017/11/29 23:21:50
+last_modified_at: 2017/11/29 23:21:50
 categories: 问题
 tags: kubernetes etcd
 keywords: kubernetes,etcd,etcdmain,validating,peerURLs,petset

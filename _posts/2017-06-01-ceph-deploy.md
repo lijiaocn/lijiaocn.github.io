@@ -3,7 +3,7 @@ layout: default
 title: ceph集群的部署
 author: 李佶澳
 createdate: 2017/06/01 13:13:26
-changedate: 2017/11/06 15:28:18
+last_modified_at: 2017/11/06 15:28:18
 categories: 技巧
 tags: ceph
 keywords: ceph,ceph-deploy

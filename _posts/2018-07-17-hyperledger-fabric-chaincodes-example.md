@@ -3,7 +3,7 @@ layout: default
 title:  "【视频】超级账本HyperLedger：Fabric的Chaincode（智能合约、链码）开发、使用演示"
 author: 李佶澳
 createdate: 2018/07/17 10:20:00
-changedate: 2018/07/29 13:06:09
+last_modified_at: 2018/07/29 13:06:09
 categories: 项目
 tags: hyperledger
 keywords: 超级账本,Fabric,HyperLedger,Chaincode,智能合约,链码学习资料

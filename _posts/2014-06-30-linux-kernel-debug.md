@@ -3,7 +3,7 @@ layout: default
 title: Linux内核调试、修改
 author: 李佶澳
 createdate: 2014/06/30 14:26:15
-changedate: 2017/11/14 15:24:33
+last_modified_at: 2017/11/14 15:24:33
 categories: 技巧
 tags: linux
 keywords: linux内核知识

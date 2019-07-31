@@ -3,7 +3,7 @@ layout: default
 title:  "Kubernetes1.12从零开始（八）：源代码中包含的插件（addons）"
 author: 李佶澳
 createdate: "2018-11-21 19:45:06 +0800"
-changedate: "2019-04-23 14:39:04 +0800"
+last_modified_at: "2019-04-23 14:39:04 +0800"
 categories: 项目
 tags: 视频教程 kubernetes
 Keywords: Kubernetes,基本概念,pod,docker

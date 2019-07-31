@@ -3,7 +3,7 @@ layout: default
 title: kubelet下载pod镜像时，docker口令文件的查找顺序
 author: 李佶澳
 createdate: 2017/12/19 11:34:51
-changedate: 2017/12/19 14:23:35
+last_modified_at: 2017/12/19 14:23:35
 categories: 项目
 tags: kubernetes
 keywords: kubernetes,kubelet,image,secret

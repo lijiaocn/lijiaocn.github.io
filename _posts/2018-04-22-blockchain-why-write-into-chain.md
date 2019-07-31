@@ -3,7 +3,7 @@ layout: default
 title: 我的数据，凭什么让我入链？
 author: 李佶澳
 createdate: 2018/04/22 06:59:00
-changedate: 2018/04/25 05:10:59
+last_modified_at: 2018/04/25 05:10:59
 categories: 方法
 tags: blockchain
 keywords: 区块链,思考框架,方法论

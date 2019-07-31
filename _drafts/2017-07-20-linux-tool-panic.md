@@ -3,7 +3,7 @@ layout: default
 title: 引发kernal panic的方法
 author: lijiaocn
 createdate: 2017/07/20 15:01:23
-changedate: 2017/07/20 16:36:15
+last_modified_at: 2017/07/20 16:36:15
 categories: 技巧
 tags: linuxtool
 keywords: kernal,panic,sysrq

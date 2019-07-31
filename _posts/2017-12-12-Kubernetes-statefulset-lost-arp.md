@@ -3,7 +3,7 @@ layout: default
 title: calico-cni使pod的删除反复重试，statefulset创建的pod被调度到以往的node上后，静态arp丢失，无法联通
 author: 李佶澳
 createdate: 2017/12/12 16:11:59
-changedate: 2017/12/16 20:03:21
+last_modified_at: 2017/12/16 20:03:21
 categories: 问题
 tags: calico
 keywords:

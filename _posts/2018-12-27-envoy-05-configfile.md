@@ -3,7 +3,7 @@ layout: default
 title: "Envoy Proxy使用介绍教程（五）：envoy的配置文件完全展开介绍"
 author: 李佶澳
 createdate: "2018-12-27 10:55:12 +0800"
-changedate: "2019-05-07 18:49:59 +0800"
+last_modified_at: "2019-05-07 18:49:59 +0800"
 categories: 项目
 tags: envoy
 keywords: envoy配置文件,envoy完整配置,dynamic_resources,static_resource,runtime

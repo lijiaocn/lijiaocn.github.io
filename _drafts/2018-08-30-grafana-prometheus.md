@@ -3,7 +3,7 @@ layout: default
 title:  使用grafana和prometheus监控kubernetes集群状态
 author: 李佶澳
 createdate: 2018/08/30 15:59:00
-changedate: 2018/08/31 18:23:21
+last_modified_at: 2018/08/31 18:23:21
 categories: 工具
 tags: prometheus kubernetes
 keywords: promethues,grafana,kubernetes

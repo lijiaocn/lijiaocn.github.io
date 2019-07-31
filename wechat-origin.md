@@ -4,7 +4,7 @@ title: 不贵、回报超高的，付费社区都有哪些?（知识星球）
 permalink: /wechat/origin/
 author: 李佶澳
 createdate: "2018/04/25 05:21:45"
-changedate: "2019-01-21 10:36:05 +0800"
+last_modified_at: "2019-01-21 10:36:05 +0800"
 categories: 好货
 tags:  好货 知识星球精华
 keywords: 付费社区,不贵,知识星球,干货猛料,便宜,知识星球推荐

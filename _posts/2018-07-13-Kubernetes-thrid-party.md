@@ -3,7 +3,7 @@ layout: default
 title: 一些比较有意思的Kubernetes周边产品
 author: 李佶澳
 createdate: 2018/07/13 17:39:00
-changedate: 2018/07/14 21:55:20
+last_modified_at: 2018/07/14 21:55:20
 categories: 技巧
 tags: kubernetes
 keywords: kubernetes,kubernetic

@@ -3,7 +3,7 @@ layout: default
 title:  超级账本HyperLedger：Cello部署和使用
 author: 李佶澳
 createdate: 2018/04/25 10:32:00
-changedate: 2018/09/01 15:27:46
+last_modified_at: 2018/09/01 15:27:46
 categories: 项目
 tags: hyperledger
 keywords: 区块链,视频教程演示,hyperledger,超级账本,cello,blockchain

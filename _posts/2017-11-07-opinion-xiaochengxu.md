@@ -3,7 +3,7 @@ layout: default
 title:  微信时代降临？小程序的意图与掘金思路
 author: 李佶澳
 createdate: 2017/11/07 20:22:18
-changedate: 2017/11/14 16:02:22
+last_modified_at: 2017/11/14 16:02:22
 categories: 投资
 tags: 投资
 keywords: 小程序,微信时代，掘金思路

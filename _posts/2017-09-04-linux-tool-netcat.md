@@ -3,7 +3,7 @@ layout: default
 title: "nc：netcat的使用"
 author: 李佶澳
 createdate: 2017/09/04 16:32:45
-changedate: 2018/07/22 14:28:13
+last_modified_at: 2018/07/22 14:28:13
 categories: 技巧
 tags: linuxtool
 keywords: netcat,usage,linux
