@@ -25,6 +25,7 @@ for path in $*;do
 		git push
 		
 		git checkout gh-pages
+		git pull
 		cp -rf _site/* .
 		git add .
 		git commit -m "m"
