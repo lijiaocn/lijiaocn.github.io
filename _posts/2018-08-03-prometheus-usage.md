@@ -261,18 +261,18 @@ prometheus运行时会自动探测kubernetes中的node变化，自动将kubernet
 
 当前@2018-08-10 17:14:05，prometheus中与服务发现有关的配置有以下几项（前缀就是支持的系统，sd表示service discovery）：
 
-        azure_sd_config
-        consul_sd_config
-        dns_sd_config
-        ec2_sd_config
-        openstack_sd_config
-        file_sd_config
-        gce_sd_config
-        kubernetes_sd_config
-        marathon_sd_config
-        nerve_sd_config
-        serverset_sd_config
-        triton_sd_config
+	azure_sd_config
+	consul_sd_config
+	dns_sd_config
+	ec2_sd_config
+	openstack_sd_config
+	file_sd_config
+	gce_sd_config
+	kubernetes_sd_config
+	marathon_sd_config
+	nerve_sd_config
+	serverset_sd_config
+	triton_sd_config
 
 `服务发现`是prometheus最强大的功能之一，这个功能配合[relabel_config][5]、[*_exporter][6]可以做成很多事情。
 
