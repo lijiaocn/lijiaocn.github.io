@@ -106,7 +106,7 @@ db-less的模式更实用、更简单，是以后的趋势。
 
 ## 延伸
 
-之前粗略了解过[envoy](https://www.lijiaocn.com/tags/all.html#envoy)，个人感觉envoy带后发优势，有全面清晰的接口，是一个更好的转发代理组件。
+之前粗略了解过[envoy](https://www.lijiaocn.com/soft/envoy/)，个人感觉envoy带后发优势，有全面清晰的接口，是一个更好的转发代理组件。
 那么是不是可以参照db-less的做法，为envoy写一个controller，组合成一个网关呢？翻出一直没细看的kubernetes文档——[Additional controllers][2]，早就有人这样做了：
 
 |项目    |      数据平面   |   免费社区版    |   商业服务     |   主要贡献者   | Release次数/贡献人数 |

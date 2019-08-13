@@ -16,7 +16,7 @@ description: 可以通过Management Server动态配置listener、cluster、endpo
 
 ## 说明
 
-这些笔记都是边学习边记录的，时间比较紧，记录的比较粗糙，[envoy相关笔记](https://www.lijiaocn.com/tags/all.html#envoy)。
+这些笔记都是边学习边记录的，时间比较紧，记录的比较粗糙，[envoy相关笔记](https://www.lijiaocn.com/soft/envoy/)。
 
 **TODO:**
 

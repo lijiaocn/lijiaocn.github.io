@@ -16,7 +16,7 @@ description: ADS(Aggregated Discovery Service)可以将所有的动态配置聚�
 
 ## 说明
 
-这些笔记都是边学习边记录的，时间比较紧，记录的比较粗糙，[envoy相关笔记](https://www.lijiaocn.com/tags/all.html#envoy)。
+这些笔记都是边学习边记录的，时间比较紧，记录的比较粗糙，[envoy相关笔记](https://www.lijiaocn.com/soft/envoy/)。
 
 ## 概要
 
