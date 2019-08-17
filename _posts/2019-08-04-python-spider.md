@@ -123,7 +123,7 @@ python manage.py migrate
 
 创建文件 bin/movie-spider.py，导入 django 环境。
 
-后续内容见手册： **[Python3 爬虫开发](https://www.lijiaocn.com/prog/py3spider/)**
+**后续内容见**： **[编程手册——Python3 爬虫开发](https://www.lijiaocn.com/prog/py3spider/)**
 
 ## 参考
 

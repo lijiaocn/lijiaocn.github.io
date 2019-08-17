@@ -16,7 +16,7 @@ description: envoy的一些简单功能，例如管理接口、运行参数、�
 
 ## 说明
 
-这些笔记都是边学习边记录的，时间比较紧，记录的比较粗糙，[envoy相关笔记](https://www.lijiaocn.com/tags/all.html#envoy)。
+这篇笔记比较老，不再更新维护，请移步最新的手册：[envoy相关笔记](https://www.lijiaocn.com/soft/envoy/)。
 
 **TODO:**
 

@@ -19,6 +19,7 @@ for path in $*;do
 		echo "pid is $pid"
 		kill -9 $pid
 		git checkout master
+		git pull
 		bundle exec jekyll build
 		git add .
 		git commit -m "m"

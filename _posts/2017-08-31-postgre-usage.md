@@ -19,8 +19,6 @@ description: postgresql的基本使用，最常用的操作，postgresql是一�
 
 postgresql是一个老牌的数据库，它的文档[postgresql manuals][1]中包含更多的内容。
 
-**相关笔记**，这些笔记都是边学习边记录的，时间比较紧，难免有些地方记录的比较粗糙，[查看更多技术笔记](https://www.lijiaocn.com/tags/all.html)：
-
 [PostgresSQL数据库的基本使用——新手入门](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2017/08/31/postgre-usage.html)
 
 [PostgreSQL的用户到底是这么回事？新建用户怎样才能用密码登陆？](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2018/09/28/postgres-user-manage.html)
