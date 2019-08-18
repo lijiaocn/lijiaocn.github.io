@@ -3,6 +3,7 @@ Sitemap: https://www.lijiaocn.com/sitemap.xml
 Sitemap: https://www.lijiaocn.com/soft/feed.xml
 Sitemap: https://www.lijiaocn.com/prog/feed.xml
 Sitemap: https://www.lijiaocn.com/oper/feed.xml
+Sitemap: https://www.lijiaocn.com/skill/sitemap.xml
 Sitemap: https://www.lijiaocn.com/class/sitemap.xml
 Sitemap: https://www.lijiaocn.com/coder/sitemap.xml
 Sitemap: https://www.lijiaocn.com/wechat/sitemap.xml
