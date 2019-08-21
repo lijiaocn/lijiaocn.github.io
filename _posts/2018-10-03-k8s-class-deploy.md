@@ -17,48 +17,41 @@ description: 这一节部署Kubernetes，用于本地开发测试的minikube、�
 
 ## 说明
 
-本系列`所有文章`可以在**[系列教程汇总](https://www.lijiaocn.com/tags/class.html)**中找到，`演示和讲解视频`位于**[网易云课堂·IT技术快速入门学院 ](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)**，`课程说明`、`资料`和`QQ交流群`见 **[Kubernetes1.12从零开始（初）：课程介绍与官方文档汇总](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/01/k8s-class-kubernetes-intro.html#说明)**，探索过程遇到的问题记录在：[Kubernetes1.12从零开始（一）：遇到的问题与解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/10/01/k8s-class-problem-and-soluation.html)。
+本系列`所有文章`可以在**[系列教程汇总](https://www.lijiaocn.com/tags/class.html)**中找到，`演示和讲解视频`位于**[网易云课堂·IT技术快速入门学院 ](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)**，`课程说明`、`资料`和`QQ交流群`见 **[课程介绍与官方文档汇总](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/01/k8s-class-kubernetes-intro.html#说明)**，探索过程遇到的问题记录在：[遇到的问题与解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/10/01/k8s-class-problem-and-soluation.html)。
 
-这一节在[Kubernetes1.12从零开始（二）：部署环境准备](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/02/k8s-class-enviromnent.html)中设置的虚拟机上部署Kubernetes，[minikube][1]用来部署一个本地运行的开发测试环境，
+这一节在 [部署环境准备](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/02/k8s-class-enviromnent.html) 中设置的虚拟机上部署 Kubernetes，用 [minikube][1] 在本地部署一个开发测试环境，
 
 本系列所有文章可以在[系列教程汇总](https://www.lijiaocn.com/tags/class.html)中找到，[Kubernetes1.12从零开始（一）：遇到的问题与解决方法](https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2018/10/01/k8s-class-problem-and-soluation.html)记录了探索过程遇到的问题。
 
 ## 最快捷的本地部署方式
 
-[Running Kubernetes Locally via Minikube][1]中详细介绍了Minikube的使用方法。Minikube用来在本地启动一个单节点的Kubernetes。虽然用Minikube启动的Kubernetes集群极其简单，但是功能完善，创建简洁方便，特别适合用来做本地的开发调试环境。
+[Running Kubernetes Locally via Minikube][1] 中详细介绍了 Minikube 的使用方法。Minikube 用来在本地启动一个单节点的 Kubernetes。虽然用 Minikube 启动的 Kubernetes 集群极其简单，但是功能完善，创建简洁方便，特别适合用来做本地的开发调试环境。这里在《[Kubernetes1.12从零开始（二）：部署环境准备][4]》中准备的 node1 上部署 minikube。
 
-这里在《[Kubernetes1.12从零开始（二）：部署环境准备][4]》中准备的node1上部署minikube。
+Minikube 可以直接安装在`宿主机`上，它会自动调用指定的 `--vm-driver`调用 virtualbox 等虚拟化软件，创建作为Node节点的虚拟机。如果将 `--vm-driver` 指定为 `none`，会在当前机器上创建 kubernetes，当前机器上需要安装有 docker。
 
-Minikube可以直接安装在`宿主机`上，它会自动调用指定的`--vm-driver`调用virtualbox等虚拟化软件，创建作为Node节点的虚拟机。
+鉴于 Minikube 本来就是用于搭建本地部署环境的，这里就不踩 `--vm-dirver` 为 none 时的坑了，直接用 minikube 自己创建虚拟机。这里的宿主机系统是MacOS，虚拟化软件是 virtualbox。如果你用的是 Linux 或者 Windows，除了安装命令和下载的文件格式不同，其它过程基本都是相同的。
 
-如果将`--vm-driver`指定为`none`，直接在minikube所在的机器上创建kubernetes，需要提前安装docker。
+## 安装设置kubectl
 
-鉴于Minikube本来就是用于搭建本地部署环境的，我们这里就不踩`--vm-dirver`为none时的坑了，直接用minikube自己创建虚拟机。
+参考 [Install and Set Up kubectl][6]，现在各种操作系统以及它们不同的发行版对 Kubernetes 的支持越来越多，Kubernetes 的一些组件，已经可以用这些系统支持的包管理工具安装。
+例如 kubectl命令：
 
-我这里的宿主机系统是MacOS，虚拟化软件是virtualbox。如果你用的是Linux或者Windows，除了安装命令和下载的文件格式不同，其它过程基本都是相同的。
-
-## 先要安装设置kubectl
-
-参考[Install and Set Up kubectl][6]。
-
-现在各种操作系统以及它们不同的发行版对Kubernetes的支持越来越多，Kubernetes的一些组件，已经可以用这些系统支持的包管理工具安装。
-
-例如kubectl命令，在Redhat/CentOS/Fedora上，可以[通过yum源安装](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-binary-using-native-package-management)，
-在Ubuntu/Debain/HypriotOS上，可以[通过apt-get安装](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-binary-using-native-package-management),
-Ubuntu上还可以[用snap工具安装](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-with-snap-on-ubuntu)，
-在Mac上可以用[macports工具安装](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-with-homebrew-on-macos)或者brew，
-在Windows上可以[用Powershell Gallery安装](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-with-powershell-from-psgallery)或者
+* 在Redhat/CentOS/Fedora上，可以[通过yum源安装](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-binary-using-native-package-management)，
+* 在Ubuntu/Debain/HypriotOS上，可以[通过apt-get安装](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-binary-using-native-package-management)，
+* Ubuntu上还可以[用snap工具安装](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-with-snap-on-ubuntu)，
+* 在Mac上可以用[macports工具安装](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-with-homebrew-on-macos)或者brew，
+* 在Windows上可以[用Powershell Gallery安装](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-with-powershell-from-psgallery)或者
 [用Chocolate工具安装](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-with-chocolatey-on-windows)，
-还可以直接安装下载Google Cloud SDK，然后用[gcloud工具安装](https://kubernetes.io/docs/tasks/tools/install-kubectl/#download-as-part-of-the-google-cloud-sdk)。
+* 直接安装下载Google Cloud SDK，然后用[gcloud工具安装](https://kubernetes.io/docs/tasks/tools/install-kubectl/#download-as-part-of-the-google-cloud-sdk)。
 
-上面的各种安装工具能够为以后的维护提供方便，可以根据自己的需要选用。
+上面的各种安装工具能够为以后的维护提供方便，可以根据自己的需要选用，这里使用最直接的方式：[用curl下载kubectl二进制文件](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-binary-using-curl)
 
-这里使用最直接的方式安装，[用curl下载kubectl二进制文件](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-binary-using-curl)
-
-	mkdir -p  k8s-1.12/bin
-	cd k8s-1.12/bin
-	curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.12.0/bin/darwin/amd64/kubectl
-	chmod +x ./kubectl
+```sh
+mkdir -p  k8s-1.12/bin
+cd k8s-1.12/bin
+curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.12.0/bin/darwin/amd64/kubectl
+chmod +x ./kubectl
+```
 
 注意，如果是linux系统，下载地址是：
 
@@ -84,86 +77,90 @@ windows上也可以更改环境变量，参考java在windows上的安装设置�
 
 ### 设置kubectl命令自动补全
 
-这一步不是必须的。
-
-kubectl是操作管理Kubernetes集群的命令，它包含的子命令以及参数比较多，为了操作便利，可以设置[命令自动补全](https://kubernetes.io/docs/tasks/tools/install-kubectl/#enabling-shell-autocompletion)。
-
-我用的是`Oh-My-Zsh`，只需要在~/.zshrc的plugins中加一行kubectl：
+这一步不是必须的，kubectl是操作管理Kubernetes集群的命令，它包含的子命令以及参数比较多，为了操作便利，可以设置[命令自动补全](https://kubernetes.io/docs/tasks/tools/install-kubectl/#enabling-shell-autocompletion)。 这里用的是`Oh-My-Zsh`，只需要在~/.zshrc的plugins中加一行kubectl：
 
 	plugins=(
 	  git
 	  kubectl
 	)
 
-更改后，要重新`source ~/.zshrc`。
+更改后，重新加载配置:
 
-如果使用的是`Bash`，需要安装bash-completion：
+```sh
+source ~/.zshrc
+```
 
-	yum install bash-completion -y   
-	echo "source <(kubectl completion bash)" >> ~/.bashrc
-	source ~/.bashrc
+如果用 `Bash`，需要安装bash-completion：
 
-在Mac上的安装bash-completion方法是：
+```sh
+yum install bash-completion -y   
+echo "source <(kubectl completion bash)" >> ~/.bashrc
+source ~/.bashrc
+```
 
-	## If running Bash 3.2 included with macOS
-	brew install bash-completion
-	## or, if running Bash 4.1+
-	brew install bash-completion@2
+Mac上的安装bash-completion方法：
+
+```sh
+## If running Bash 3.2 included with macOS
+brew install bash-completion
+## or, if running Bash 4.1+
+brew install bash-completion@2
+```
 
 如果在Mac上用的是bash，并且用brew安装的kubectl，会自行设置命令补全，如果不是用brew安装的kubectl，还需要需要手动设置一下：
 
-	kubectl completion bash > $(brew --prefix)/etc/bash_completion.d/kubectl
+```sh
+kubectl completion bash > $(brew --prefix)/etc/bash_completion.d/kubectl
+```
 
 ## 安装minikube
 
-Minikube是一个单独项目，可以直接到它的[release][7]页面中下载最新版本：
+Minikube是一个单独项目，可以直接到它的[release][7]页面中下载最新版本，也可以用brew、choco等工具安装，在minikube项目的[Readme](https://github.com/kubernetes/minikube)中有介绍。这里采用直接下载二进制文件的方式，下载 Mac 版本：
 
-也可以用brew、choco等工具安装，在minikube项目的[Readme](https://github.com/kubernetes/minikube)中有介绍。
-
-这里采用直接下载二进制文件的方式，下载的也是Mac版本：
-
-	cd k8s-1.12/bin/
-	curl -Lo minikube https://github.com/kubernetes/minikube/releases/download/v0.29.0/minikube-darwin-amd64
-	chmod +x minikube 
-	cd ../../
+```sh
+cd k8s-1.12/bin/
+curl -Lo minikube https://github.com/kubernetes/minikube/releases/download/v0.29.0/minikube-darwin-amd64
+chmod +x minikube 
+cd ../../
+```
 
 Linux的下载地址是：
 
-	 curl -Lo minikube https://github.com/kubernetes/minikube/releases/download/v0.29.0/minikube-linux-amd64
+```sh
+curl -Lo minikube https://github.com/kubernetes/minikube/releases/download/v0.29.0/minikube-linux-amd64
+```
 
-## 使用minikube启动kubernetes集群
+## 用minikube启动kubernetes集群
 
-minikube是[支持多种虚拟化软件](https://kubernetes.io/docs/setup/minikube/#quickstart)的：
+minikube [支持多种虚拟化软件](https://kubernetes.io/docs/setup/minikube/#quickstart)，用 `--vm-driver=` 指定，如果不需要虚拟化使用 `--vm-driver=none`。关闭虚拟化后，在当前机器上直接部署 kubernetes，b本机需要安装有 docker。
 
-	virtualbox
-	vmwarefusion
-	kvm2 (driver installation)
-	kvm (driver installation)
-	hyperkit (driver installation)
-	xhyve (driver installation) (deprecated)
+```sh
+virtualbox
+vmwarefusion
+kvm2 (driver installation)
+kvm (driver installation)
+hyperkit (driver installation)
+xhyve (driver installation) (deprecated)
+```
 
-前面章节提过，可以在运行的时候用`--vm-driver=`指定，如果不需要就使用none，`--vm-driver=none`，这时候就在宿主机中部署kubernetes，需要自己准备好Docker。
-
-我们这里使用的virtualbox，`--vm-driver`的默认值就是virtualbox，所以不需要指定，直接启动：
+`--vm-driver` 默认是 virtualbox，下面的命令在 virtualbox 管理的虚拟机中创建 v1.12.0 版本的 kubernetes：
 
 	minikube start --kubernetes-version v1.12.0
 
-特别注意，我用的是当前（2018-10-05 23:04:41）最新的版本的minikube（0.29.0），默认下载的kubernetes版本还是v1.10.0。
-强行执行指定使用v1.12.0之后，启动报错，或许是和v1.12.0版本的kubernetes没有磨合好。
+这里用的是当前（2018-10-05 23:04:41）最新的版本的minikube（0.29.0），默认下载的kubernetes版本是v1.10.0，如果强行执行指定使用v1.12.0，启动会报错，或许是和v1.12.0版本的kubernetes还没有磨合好。
+因此，退回使用minikube默认的1.10.0版本：
 
-因此，退回使用minikube默认的1.10.0版本了：
+```sh
+minikube stop
+minikube delete
+minikube start
+```
 
-	minikube stop
-	minikube delete
-	minikube start
-
-启动过程中，minikube下载minikube的虚拟机镜像会比较慢，镜像的地址如下，可能需要翻_qiang才能下载：
+启动过程中，minikube需要下载minikube的虚拟机镜像会比较慢，镜像的地址如下，可能需要翻_qiang才能下载，镜像总共171.87M：
 
 	https://storage.googleapis.com/minikube/iso/minikube-v0.29.0.iso
 
-镜像总共171.87M，我挂载VPN从香港下载速度还可以。
-
-整个启动过程如下：
+最终启动过程如下：
 
 	$ minikube start
 	Starting local Kubernetes v1.10.0 cluster...
@@ -183,7 +180,7 @@ minikube是[支持多种虚拟化软件](https://kubernetes.io/docs/setup/miniku
 	Kubectl is now configured to use the cluster.
 	Loading cached images from config file.
 
-然后就可以直接用kubectl操作整个单节点的kubernetes了：
+启动后用kubectl操作：
 
 	$ kubectl get cs
 	NAME                 STATUS    MESSAGE              ERROR
@@ -195,9 +192,9 @@ minikube是[支持多种虚拟化软件](https://kubernetes.io/docs/setup/miniku
 	NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
 	kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   1m
 
-另外要注意，minikube部署的kubernetes中部分组件例如coredns等也是部署在kubernetes中，它们使用的镜像都位于`gcr.io`中，这个地址需要翻_qiang才能访问。
+minikube部署的kubernetes中部分组件例如coredns等也是部署在kubernetes中，它们使用的镜像都位于`gcr.io`中，这个地址需要翻_qiang才能访问。
 
-用下面的命令看到所有的Pod都是Running状态时，Kubernetes才进入正常状态：
+所有的Pod都是Running状态时，Kubernetes才进入正常状态：
 
 	$ kubectl get pod --all-namespaces
 	NAMESPACE     NAME                                    READY   STATUS    RESTARTS   AGE
@@ -212,7 +209,7 @@ minikube是[支持多种虚拟化软件](https://kubernetes.io/docs/setup/miniku
 	kube-system   kubernetes-dashboard-6f4cfc5d87-mrl2l   1/1     Running   0          2m
 	kube-system   storage-provisioner                     1/1     Running   0          2m
 
-如果不使用虚拟化软件，直接在宿主机部署，可以考虑用下面的脚本，这是minikube项目的Readme中给出的：
+如果不使用虚拟化软件，直接在宿主机部署，可以用下面的脚本，这是minikube项目的Readme中给出的：
 
 	export MINIKUBE_WANTUPDATENOTIFICATION=false
 	export MINIKUBE_WANTREPORTERRORPROMPT=false
@@ -248,7 +245,7 @@ minikube是[支持多种虚拟化软件](https://kubernetes.io/docs/setup/miniku
 
 删除：
 
-	minikube stop
+	minikube delete
 
 ## minikube的其它命令
 
@@ -287,14 +284,10 @@ minikube是[支持多种虚拟化软件](https://kubernetes.io/docs/setup/miniku
 
 ## 操作kubernetes
 
-操作kubernetes当然使用kubectl，无论使用哪种方式部署的kubernetes，都使用kubectl命令直接管理。
+kubectl的详细使用方法在以后的章节中，这里只说一下和minikube有关的部分。
 
-kubectl的详细使用，我们放在以后的章节中，这里只说一下minikube自己的一些小命令。
-
-首先，minikube创建kubernetes的时候，会创建一个名为`minikube`的上下文(context)。这个所谓的context，其实就是Apiserver地址和用户证书的组合，
-指示kubectl用相应用户的证书访问相应的地址。
-
-这个上下文放在哪里呢？~/.kube/config中：
+minikube创建kubernetes的时候，会创建一个名为`minikube`的上下文(context)，就是Apiserver地址和用户证书的组合，指示kubectl用相应用户的证书访问相应的地址。
+这个上下文在 ~/.kube/config 中：
 
 	$ cat ~/.kube/config
 	apiVersion: v1
@@ -317,15 +310,13 @@ kubectl的详细使用，我们放在以后的章节中，这里只说一下mini
 	    client-certificate: /Users/lijiao/.minikube/client.crt
 	    client-key: /Users/lijiao/.minikube/client.key
 
-这个是需要了解的，知道我们正在用哪些证书访问哪个地址，如果你自己增加了上下文，可以在执行kubectl命令的时候指定：
+如果你自己增加了上下文，可以在执行kubectl命令的时候指定：
 
 	kubectl get pods --context=minikube
 
-然后，minikube有一个强大的子命令叫做`addons`，它可以在kubernetes中安装插件（addon）。这里所说的插件，就是部署在Kubernetes中的Deploymen或者Daemonset。
+minikube有一个强大的子命令叫做`addons`，它可以在kubernetes中安装插件（addon），就是部署在Kubernetes中的Deploymen或者Daemonset。
 
-Kubernetes在设计上有一个特别有意思的地方，就是它的很多扩展功能，甚至于基础功能也可以部署在Kubernetes中，比如网络插件、DNS插件等。安装这些插件的时候，
-就是用kubectl命令，直接在kubernetes中部署。
-
+Kubernetes在设计上有一个特别有意思的地方，就是它的很多扩展功能，甚至于基础功能也可以部署在Kubernetes中，比如网络插件、DNS插件等。
 minikube集成了常用的插件，但默认没有全部开启，用下面的命令可以看到所有插件的状态：
 
 	$ minikube addons list
@@ -345,7 +336,7 @@ minikube集成了常用的插件，但默认没有全部开启，用下面的命
 	- registry-creds: disabled
 	- storage-provisioner: enabled
 
-你可以根据自己的需要启用或者关停：
+根据自己的需要启用或者关停：
 
 	 minikube addons disable XXX
 	 minikube addons enable  XXX
@@ -361,8 +352,7 @@ minikube默认部署了dashborad插件，用下面的命令自动打开dashboard
 	$ minikube service -n kube-system --url kubernetes-dashboard
 	http://192.168.99.100:30000
 
-用minikube部署kubernetes的介绍就到这里，主要内容基本都覆盖了，kubernetes的操作我们不展开，因为那是另一个内容相当多的部分。
-接下来，你可以继续了解下用kubeadm部署多节点集群的方法，以及手动部署的Kubernetes集群的方法，也可以跳过安装，直接了解后面的“Kubernetes的操作使用”。
+用minikube部署kubernetes的介绍就到这里，主要内容基本都覆盖了，接下来，可以用kubeadm部署多节点集群的方法，或手动部署的Kubernetes集群，也可以跳过安装，直接学习“Kubernetes的操作使用”。
 
 ## 参考
 
@@ -381,7 +371,7 @@ minikube默认部署了dashborad插件，用下面的命令自动打开dashboard
 [1]: https://kubernetes.io/docs/setup/minikube/ "Running Kubernetes Locally via Minikube"
 [2]: https://kubernetes.io/docs/setup/independent/ "Bootstrapping Clusters with kubeadm"
 [3]: https://kubernetes.io/docs/setup/scratch/ "Creating a Custom Cluster from Scratch"
-[4]: http://127.0.0.1:4000/%E9%A1%B9%E7%9B%AE/2018/10/02/k8s-class-enviromnent.html "Kubernetes1.12从零开始（二）：部署环境准备"
+[4]: https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/02/k8s-class-enviromnent.html "Kubernetes1.12从零开始（二）：部署环境准备"
 [5]: https://kubernetes.io/docs/tasks/tools/install-minikube/ "Install Minikube"
 [6]: https://kubernetes.io/docs/tasks/tools/install-kubectl/ "Install and Set Up kubectl"
 [7]: https://github.com/kubernetes/minikube/releases "kubernetes minikube project"

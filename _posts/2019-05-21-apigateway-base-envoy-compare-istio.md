@@ -3,9 +3,9 @@ layout: default
 title: "基于Envoy的ApiGateway/Ingress Controller项目梳理（四）：Istio"
 author: 李佶澳
 createdate: "2019-05-21 11:03:40 +0800"
-last_modified_at: "2019-06-01 17:16:10 +0800"
+last_modified_at: "2019-08-20 10:23:52 +0800"
 categories: 项目
-tags: apigateway envoy
+tags: apigateway envoy istio
 cover:
 keywords: apigateway,envoy,kong,nginx,servicemesh,ingress controller
 description: "对比Kubernetes文档列出的Ingress Controller：ambassador,contour,gloo,istio, traefik, voyager"
@@ -16,6 +16,8 @@ description: "对比Kubernetes文档列出的Ingress Controller：ambassador,con
 {:toc}
 
 ## Istio
+
+>注意：本页内容有待整理、校准。2019-08-20 10:23:51
 
 [Istio](https://istio.io/docs/concepts/what-is-istio/) 是 ServiceMesh 方向的明星项目，它已经超出了 apigateway 的范畴，是一个微服务管理平台。Istio 绑定到 kubernetes（现在已经支持独立部署），通过为每个 Pod 注入一个 envoy 旁路容器，接管所有进出流量，实现了全局流量可视、全局调度、全局控制管理。
 
@@ -139,15 +141,15 @@ reviews-v2-f7cddcd8b-4l2nv        2/2     Running   0          16m   172.16.129.
 reviews-v3-7c647f4ddb-l5gz4       2/2     Running   0          16m   172.16.128.162   10.10.173.203   <none>
 ```
 
-## 创建应用寻址规则：DestinationRule
+## 创建寻址规则：DestinationRule
 
-DestinationRule 是 Pod 的筛选规则， Istio 路由中会用到，创建 bookinfo 的寻址规则：
+[DestinationRule][1] 相当于 nginx 中的 upstream，它是对 Service 的封装，在 istio 的 VirtualService 中用到。用下面的命令创建 bookinfo 的寻址规则：
 
 ```sh
 $ kubectl -n istio-app apply -f samples/bookinfo/networking/destination-rule-all.yaml
 ```
 
-定义如下，通过 labels 筛选不同的 pod：
+定义如下，host 字段是目标 service（可以写完整域名？文档中是 ratings.prod.svc.cluster.local），subsets 是通过 labels 将 service 对应的 pod 分组：
 
 ```sh
 apiVersion: networking.istio.io/v1alpha3
@@ -229,13 +231,13 @@ reviews           reviews                                          6m
 
 ## 创建Istio应用网关
 
-为 istio 应用创建网关，之后通过 istio 的网关访问应用：
+为 istio 应用创建 gateway 和  VirtualService，在 VirtualService 中将 gateway 与 DestinationRule 关联绑定：
 
 ```sh
 $ kubectl -n istio-app apply -f samples/bookinfo/networking/bookinfo-gateway.yaml
 ```
 
-网关配置如下：
+注意下面的 VirtualService 直接转发到名为 productpage 的 DestinationRule，实际上可以指定为 DestinationRule 中的一个 subset，后面有演示：
 
 ```sh
 apiVersion: networking.istio.io/v1alpha3
@@ -295,11 +297,13 @@ istio-ingressgateway   NodePort   172.16.44.61   <none>        15020:30624/TCP,8
 
 ![istio示范应用带有评分的页面]({{ site.imglocal }}/article/istio-app-1.png)
 
-这是因为 productpage 依赖的 reviews 服务指向了三个不同版本的 deployment，productpage 对 reviews 服务的调用会分别被不同版本的 Pod 处理。下一节为每个服务创建各自的 virutalservice，在 virtualservice 中指定 destination 能解决这个问题。
+这是因为 DestinationRule  指向的  productpage 用到了 reviews 服务，reviews 服务包含三个不同版本的 deployment，productpage 对 reviews 的调用会分别被不同版本的 Pod 处理。
+
+可以通过为每个服务创建各自的 virutalservice，在 virtualservice 中指定 destination 解决这个问题。
 
 ## 创建VirtualService
 
-上面部署的 istio 应用的 service 的筛选标签中没有版本信息：
+不同版本的 deployment（reviews-v1、reviews-v2、reviews-v3）现在位于同一个 service（reviews）中，所以会出现上一节刷新页面显示不同内容的情况：
 
 ```sh
 $ kubectl -n istio-app get svc --show-labels
@@ -310,7 +314,7 @@ ratings       ClusterIP   172.16.34.54    <none>        9080/TCP         2d18h  
 reviews       ClusterIP   172.16.7.67     <none>        9080/TCP         2d18h   app=reviews,service=reviews
 ```
 
-实际部署了多个版本的 deployment：reviews-v1、reviews-v2、reviews-v3，它们被同一个 service（reviews）代理，所以会出现上一节刷新页面显示不同内容的情况：
+reviews 服务对应的 deployment 是有多个版本的：
 
 ```sh
 $ kubectl -n istio-app get deployment --show-labels
@@ -323,13 +327,13 @@ reviews-v2       1         1         1            1           2d18h   app=review
 reviews-v3       1         1         1            1           2d18h   app=reviews,version=v3
 ```
 
-为每个 service 创建对应的 virtualservice：
+创建多个 virtualservice，指定 DestinationRule 和 subset：
 
 ```sh
 $ kubectl -n istio-app apply -f samples/bookinfo/networking/virtual-service-all-v1.yaml
 ```
 
-virtualservice 的定义如下，route 中的 destination 就是前面创建的寻址规则：
+route 中的 destination 是前面创建的 DestinationRule，同时指定了 subset：
 
 ```sh
 apiVersion: networking.istio.io/v1alpha3
@@ -386,7 +390,7 @@ spec:
 ---
 ```
 
-查看创建的 vs，如果有重名的 crd，在 vs 后面加上 api group，istio 的 vs 是 vs.networking.istio.io 或 virtualservice.networking.istio.io：
+VirtualService 的简称是 vs，用下面的命令查看创建的 vs。如果有重名的 crd，在 vs 后面加上 api group，istio 的 vs 是 vs.networking.istio.io 或 virtualservice.networking.istio.io：
 
 ```sh
 $ kubectl -n istio-app get vs.networking.istio.io
@@ -414,3 +418,7 @@ istio 相对前面的几个网关要复杂得多，从 Pod 的数量上就可以
 1. 有些复杂，上手难度稍高，完全掌握需要耗费较多时间；
 2. 为每个pod注入一个envoy，占用了计算节点上的资源。
 
+
+## 参考
+
+[1]: https://istio.io/docs/reference/config/networking/v1alpha3/destination-rule/ "Destination Rule"
