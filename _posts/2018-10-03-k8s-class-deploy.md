@@ -352,6 +352,10 @@ minikube默认部署了dashborad插件，用下面的命令自动打开dashboard
 	$ minikube service -n kube-system --url kubernetes-dashboard
 	http://192.168.99.100:30000
 
+或者：
+
+	minikube service list
+
 用minikube部署kubernetes的介绍就到这里，主要内容基本都覆盖了，接下来，可以用kubeadm部署多节点集群的方法，或手动部署的Kubernetes集群，也可以跳过安装，直接学习“Kubernetes的操作使用”。
 
 ## 参考
