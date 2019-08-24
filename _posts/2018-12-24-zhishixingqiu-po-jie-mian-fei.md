@@ -3,7 +3,7 @@ layout: default
 title: "知识星球破解版与破解方法的注意事项，免费加入星球学知识和用星球赚钱的方法"
 author: 李佶澳
 createdate: "2019-01-14 22:24:12 +0800"
-last_modified_at: "2019-01-21 10:49:41 +0800"
+last_modified_at: "2019-08-24 10:43:43 +0800"
 categories: 技巧
 tags: 知识星球精华
 keywords: 知识星球,破解版,星球破解,免费版,免费加入方法
@@ -13,6 +13,10 @@ description: 知识星球值不值得加入？能不能破解？怎样将知识�
 ## 目录
 * auto-gen TOC:
 {:toc}
+
+## 福利
+
+**干货福利**：生财有术、caoz的小密圈、投资人子柳等优质星球的学习笔记：[小鸟笔记之运营手册](https://www.lijiaocn.com/oper/)。
 
 ## 知识星球是怎么回事？有必要、值得加入吗？
 
