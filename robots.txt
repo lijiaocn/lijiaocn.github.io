@@ -1,6 +1,7 @@
 # robots.txt generated at http://tool.chinaz.com/robots/ 
 Sitemap: https://www.lijiaocn.com/sitemap.xml
 Sitemap: https://www.lijiaocn.com/skill/sitemap.xml
+Sitemap: https://www.lijiaocn.com/tutorial/sitemap.xml
 Sitemap: https://www.lijiaocn.com/class/sitemap.xml
 Sitemap: https://www.lijiaocn.com/coder/sitemap.xml
 Sitemap: https://www.lijiaocn.com/wechat/sitemap.xml
