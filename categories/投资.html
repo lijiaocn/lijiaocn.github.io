@@ -10,7 +10,7 @@ description: 记录遇到的各种投资,来自于知识星球的精彩讨论，
 	{% if cate[0] == page.title %}
 		<div class="postlist">
 		{% for post in cate[1] %}
-		{% include postitem.html post=post %}<hr>
+		{% include postitem.html post=post %}
 		{% endfor %}
 		</div>
 	{% endif %}

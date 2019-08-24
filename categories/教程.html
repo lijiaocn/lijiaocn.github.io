@@ -10,7 +10,7 @@ description:  这里是我制作的IT技术系列视频教程，内容包括kube
 	{% if cate[0] == page.title %}
 		<div class="postlist">
 		{% for post in cate[1] %}
-		{% include postitem.html post=post %}<hr>
+		{% include postitem.html post=post %}
 		{% endfor %}
 		</div>
 	{% endif %}
