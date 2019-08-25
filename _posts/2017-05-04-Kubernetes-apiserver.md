@@ -620,8 +620,9 @@ REST处理链:
 
 #### REST请求处理链原理
 
-例如添加审计过程,k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/endpoints/filters/audit.go:
+例如添加审计过程:
 
+	//k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/endpoints/filters/audit.go:
 	func WithAudit(handler http.Handler, requestContextMapper request.RequestContextMapper, out io.Writer) http.Handler {
 		if out == nil {
 			return handler
