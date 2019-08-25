@@ -21,8 +21,7 @@ description: kubernetes的Apiserver没有直接使用etcd,而是通过storage访
 
 apiserver的NodeStorage的创建最后在`StorageWithCacher()`中落实。
 
-k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/registry/generic/registry/storage_factory.go:
-
+	//k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/registry/generic/registry/storage_factory.go:
 	func StorageWithCacher(
 		copier runtime.ObjectCopier,
 		storageConfig *storagebackend.Config,
@@ -59,8 +58,7 @@ k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/registry/generic/registry/sto
 
 ## storagebackend.Config
 
-k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/storage/storagebackend/config.go:
-
+	//k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/storage/storagebackend/config.go:
 	type Config struct {
 		Type string
 		Prefix string
@@ -77,8 +75,7 @@ k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/storage/storagebackend/config
 
 ## generic.NewRawStorage()
 
-k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/registry/generic/storage_decorator.go:
-
+	//k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/registry/generic/storage_decorator.go:
 	// NewRawStorage creates the low level kv storage. This is a work-around for current
 	// two layer of same storage interface.
 	// TODO: Once cacher is enabled on all registries (event registry is special), we will remove this method.
@@ -90,8 +87,7 @@ k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/registry/generic/storage_deco
 		return s, d
 	}
 
-k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/storage/storagebackend/factory/factory.go:
-
+	//k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/storage/storagebackend/factory/factory.go:
 	func Create(c storagebackend.Config) (storage.Interface, DestroyFunc, error) {
 		switch c.Type {
 		case storagebackend.StorageTypeETCD2:
@@ -111,8 +107,7 @@ k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/storage/storagebackend/factor
 
 ### ETCD2Storage
 
-k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/storage/storagebackend/factory/etcd2.go:
-
+	//k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/storage/storagebackend/factory/etcd2.go:
 	func newETCD2Storage(c storagebackend.Config) (storage.Interface, DestroyFunc, error) {
 		tr, err := newTransportForETCD2(c.CertFile, c.KeyFile, c.CAFile)
 		if err != nil {
@@ -134,8 +129,7 @@ k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/storage/storagebackend/factor
 
 ### CacherConfig
 
-k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/storage/cacher.go
-
+	//k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/storage/cacher.go
 	type CacherConfig struct {
 		// Maximum size of the history cached in memory.
 		CacheCapacity int
@@ -165,8 +159,7 @@ k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/storage/cacher.go
 
 ### Cacher
 
-k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/storage/cacher.go:
-
+	//k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/storage/cacher.go:
 	// Cacher is responsible for serving WATCH and LIST requests for a given
 	// resource from its internal cache and updating its cache in the background
 	// based on the underlying storage contents.

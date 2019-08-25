@@ -128,7 +128,9 @@ dockerd的mount ns:
 
 ## 解决过程1
 
-这里以目录/var/lib/docker/devicemapper/mnt/d2b5b784495ece1c9365bdea78b95076f035426356e6654c65ee1db87d8c03e7为例:
+这里以下面的目录为例：
+
+	/var/lib/docker/devicemapper/mnt/d2b5b784495ece1c9365bdea78b95076f035426356e6654c65ee1db87d8c03e7
 
 查看内容，发现内容是空的，也就是文件已经被删除：
 

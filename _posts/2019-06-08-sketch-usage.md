@@ -59,7 +59,7 @@ Symbol 可以嵌套。
 
 下面的 youtube 视频介绍很详细，观看需要翻Q：
 
-<iframe width="736" height="414" src="https://www.youtube.com/embed/3fcIp5OXtVE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="100%" height="414" src="https://www.youtube.com/embed/3fcIp5OXtVE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ### 复用 Style
 

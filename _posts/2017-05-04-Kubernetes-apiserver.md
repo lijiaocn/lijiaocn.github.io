@@ -29,8 +29,9 @@ description: kubernetes的apiserver的实现挺复杂，理解了kubernetes-styl
 
 kubernetes-style apiserver的核心是`GenericAPIServer`，GenericAPIServer的`InstallAPIGroup()`方法，根据输入参数`APIGroupInfo`中的storage，自动生成url路由，和REST请求的Handler。
 
-`GenericAPIServer`，k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/genericapiserver.go:
+`GenericAPIServer`，
 
+	//k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/genericapiserver.go:
 	-+GenericAPIServer : struct
 	    [fields]
 	   +ExternalAddress : string
@@ -55,8 +56,9 @@ kubernetes-style apiserver的核心是`GenericAPIServer`，GenericAPIServer的`I
 	   +RequestContextMapper() : apirequest.RequestContextMapper
 	   +UnprotectedHandler() : http.Handler
 
-`APIGroupInfo`，k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/genericapiserver.go: 
+`APIGroupInfo`：
 
+	//k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/genericapiserver.go: 
 	-+APIGroupInfo : struct
 	    [fields]
 	   +GroupMeta : apimachinery.GroupMeta
@@ -169,8 +171,7 @@ k8s.io/kubernetes/pkg/master/master.go，`kubeApiServerConfig.Complete().New()`:
 
 ## GenericAPIServer创建
 
-k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/config.go:
-
+	//k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/config.go:
 	func (c completedConfig) New() (*GenericAPIServer, error) {
 		s, err := c.constructServer()
 		...
@@ -179,8 +180,9 @@ k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/config.go:
 
 在constructServer中创建了container。
 
-k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/config.go，`c.constructServer()`:
+`c.constructServer()`：
 
+	//k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/config.go:
 	func (c completedConfig) constructServer() (*GenericAPIServer, error) {
 		...
 		handlerContainer := mux.NewAPIContainer(http.NewServeMux(), c.Serializer, c.FallThroughHandler)
@@ -217,8 +219,9 @@ k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/config.go，`c.constru
 
 ## handlerContainer的创建
 
-k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/mux/container.go,`mux.NewAPIContainer()`:
+`mux.NewAPIContainer()`:
 
+	//k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/mux/container.go,
 	func NewAPIContainer(mux *http.ServeMux, s runtime.NegotiatedSerializer, defaultMux http.Handler) *APIContainer {
 		c := APIContainer{
 			Container: restful.NewContainer(),
@@ -239,8 +242,9 @@ k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/mux/container.go,`mux.
 
 注意，这里hack了go-restful，将c.Container.ServeMux做了替换，在go-restful的实现中，所有的url路由最终都存放在这里ServeMux中。
 
-这也是unsecure模式下，直接使用ServerMux的原因，k8s.io/kubernetes/cmd/kube-apiserver/app/server.go:
+这也是unsecure模式下，直接使用ServerMux的原因：
 
+	//k8s.io/kubernetes/cmd/kube-apiserver/app/server.go:
 	if insecureServingOptions != nil {
 		insecureHandlerChain := kubeserver.BuildInsecureHandlerChain(kubeAPIServer.GenericAPIServer.HandlerContainer.ServeMux, kubeAPIServerConfig.GenericConfig)
 		if err := kubeserver.NonBlockingRun(insecureServingOptions, insecureHandlerChain, stopCh); err != nil {
@@ -254,8 +258,7 @@ API的install就是将url路由添加到前面创建的container中。
 
 首先回顾一下container的创建过程:
 
-k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/mux/container.go:
-
+	//k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/mux/container.go:
 	// NewAPIContainer constructs a new container for APIs
 	func NewAPIContainer(mux *http.ServeMux, s runtime.NegotiatedSerializer, defaultMux http.Handler) *APIContainer {
 		c := APIContainer{
@@ -294,8 +297,9 @@ k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/mux/container.go:
 		return c.buildHandlers(s, nil)
 	}
 
-k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/config.go，`c.buildHandlers()`:
+c.buildHandlers()：
 
+	//k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/config.go:
 	func (c completedConfig) buildHandlers(s *GenericAPIServer, delegate http.Handler) (*GenericAPIServer, error) {
 		if s.openAPIConfig != nil {
 			if s.openAPIConfig.Info == nil {
@@ -317,8 +321,9 @@ k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/config.go，`c.buildHa
 		return s, nil
 	}
 
-k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/config.go，`installAPI()`:
+`installAPI()`：
 
+	//k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/config.go
 	func installAPI(s *GenericAPIServer, c *Config, delegate http.Handler) {
 		...
 		switch {
@@ -357,8 +362,7 @@ k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/config.go，`installAP
 
 前面只装载了"/"、"/swagger-ui"等基本、辅助性的路径路由，真正的功能性的路径路由还没有添加，回溯代码，可以找到第二次装载:
 
-k8s.io/kubernetes/pkg/master/master.go:
-
+	//k8s.io/kubernetes/pkg/master/master.go:
 	func (c completedConfig) New() (*Master, error) {
 		
 		...
@@ -386,8 +390,7 @@ k8s.io/kubernetes/pkg/master/master.go:
 
 可以看到在FallThroughHandler中又装载了"/ui/"、"/logs"，但功能性的、主要的api是在`m.InstallAPIs()`中装载的。
 
-k8s.io/kubernetes/pkg/master/master.go:
-
+	//k8s.io/kubernetes/pkg/master/master.go:
 	func (m *Master) InstallAPIs(apiResourceConfigSource serverstorage.APIResourceConfigSource, restOptionsGetter generic.RESTOptionsGetter, restStorageProviders ...RESTStorageProvider) {
 		apiGroupsInfo := []genericapiserver.APIGroupInfo{}
 		...
@@ -404,8 +407,7 @@ k8s.io/kubernetes/pkg/master/master.go:
 
 InstallAPIGroup()是GenericAPIServer的方法，目的是将APIGroupInfo中的storage转换成handler，并装载到GenericAPIServer。
 
-k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/genericapiserver.go:
-
+	//k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/genericapiserver.go:
 	func (s *GenericAPIServer) InstallAPIGroup(apiGroupInfo *APIGroupInfo) error {
 		
 		...
@@ -421,8 +423,9 @@ k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/genericapiserver.go:
 		return nil
 	}
 
-k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/genericapiserver.go,`installAPIResources()`:
+`installAPIResources()`：
 
+	//k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/genericapiserver.go:
 	func (s *GenericAPIServer) installAPIResources(apiPrefix string, apiGroupInfo *APIGroupInfo) error {
 		for _, groupVersion := range apiGroupInfo.GroupMeta.GroupVersions {
 			if len(apiGroupInfo.VersionedResourcesStorageMap[groupVersion.Version]) == 0 {
@@ -443,8 +446,9 @@ k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/genericapiserver.go,`i
 		return nil
 	}
 
-k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/endpoints/groupversion.go，`InstallREST()`:
+InstallREST():
 
+	//k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/endpoints/groupversion.go:
 	func (g *APIGroupVersion) InstallREST(container *restful.Container) error {
 		installer := g.newInstaller()
 		ws := installer.NewWebService()
@@ -458,8 +462,9 @@ k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/endpoints/groupversion.go，`
 		return utilerrors.NewAggregate(registrationErrors)
 	}
 
-注意这里创建了ws，k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/endpoints/installer.go，`NewWebService()`:
+注意这里创建了ws，`NewWebService()`:
 
+	//k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/endpoints/installer.go
 	func (a *APIInstaller) NewWebService() *restful.WebService {
 		ws := new(restful.WebService)
 		ws.Path(a.prefix)
@@ -476,8 +481,9 @@ k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/endpoints/groupversion.go，`
 		return ws
 	}
 
-在ws中装载REST，k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/endpoints/installer.go,`installer.Install()`:
+在ws中装载REST，`installer.Install()`:
 
+	//k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/endpoints/installer.go
 	func (a *APIInstaller) Install(ws *restful.WebService) (apiResources []metav1.APIResource, errors []error) {
 		errors = make([]error, 0)
 		
@@ -509,8 +515,7 @@ k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/endpoints/groupversion.go，`
 
 可以按到，在for循环中，将每个path对应的storage传入了registerResourceHandlers()。
 
-k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/endpoints/installer.go，`registerResourceHandlers()`:
-
+	//k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/endpoints/installer.go
 	func (a *APIInstaller) registerResourceHandlers(path string, storage rest.Storage, ws *restful.WebService, proxyHandler http.Handler) (*metav1.APIResource, error) {
 		admit := a.group.Admit
 		
@@ -553,8 +558,6 @@ k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/endpoints/installer.go，`reg
 
 `registerResourceHandlers`的实现非常长！但是关键过程都在这里了，需要仔细读。特别注意，storage实现了哪些接口，就相应的生成哪些路由。
 
-`handlers.GetResource()`
-
 	func GetResource(r rest.Getter, e rest.Exporter, scope RequestScope) restful.RouteFunction {
 		return getResourceHandler(scope,
 			func(ctx request.Context, name string, req *restful.Request) (runtime.Object, error) {
@@ -590,8 +593,7 @@ unsecure模式比较简单，创建了REST的请求处理链之后，直接启�
 
 unsecure模式下，直接使用最终的ServeMux:
 
-k8s.io/kubernetes/cmd/kube-apiserver/app/server.go:
-
+	//k8s.io/kubernetes/cmd/kube-apiserver/app/server.go:
 	...
 	if insecureServingOptions != nil {
 		insecureHandlerChain := kubeserver.BuildInsecureHandlerChain(kubeAPIServer.GenericAPIServer.HandlerContainer.ServeMux, kubeAPIServerConfig.GenericConfig)
@@ -603,8 +605,7 @@ k8s.io/kubernetes/cmd/kube-apiserver/app/server.go:
 
 REST处理链:
 
-k8s.io/kubernetes/pkg/kubeapiserver/server/insecure_handler.go:
-
+	//k8s.io/kubernetes/pkg/kubeapiserver/server/insecure_handler.go:
 	func BuildInsecureHandlerChain(apiHandler http.Handler, c *server.Config) http.Handler {
 		handler := genericapifilters.WithAudit(apiHandler, c.RequestContextMapper, c.AuditWriter)
 		handler = genericfilters.WithCORS(handler, c.CorsAllowedOriginList, nil, nil, nil, "true")
@@ -642,8 +643,7 @@ k8s.io/kubernetes/pkg/kubeapiserver/server/insecure_handler.go:
 
 启动过程很简单，就是启动http server，insecureHandler传递给了NonBlockingRun。
 
-k8s.io/kubernetes/pkg/kubeapiserver/server/insecure_handler.go:
-
+	//k8s.io/kubernetes/pkg/kubeapiserver/server/insecure_handler.go:
 	func NonBlockingRun(insecureServingInfo *InsecureServingInfo, insecureHandler http.Handler, stopCh <-chan struct{}) error {
 		....
 		if insecureServingInfo != nil && insecureHandler != nil {
@@ -655,8 +655,7 @@ k8s.io/kubernetes/pkg/kubeapiserver/server/insecure_handler.go:
 		...
 	}
 
-k8s.io/kubernetes/pkg/kubeapiserver/server/insecure_handler.go:
-
+	//k8s.io/kubernetes/pkg/kubeapiserver/server/insecure_handler.go:
 	func serveInsecurely(insecureServingInfo *InsecureServingInfo, insecureHandler http.Handler, stopCh <-chan struct{}) error {
 		insecureServer := &http.Server{
 			Addr:           insecureServingInfo.BindAddress,
@@ -671,8 +670,7 @@ k8s.io/kubernetes/pkg/kubeapiserver/server/insecure_handler.go:
 
 insecureHandler传递给了insecureServer。
 
-k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/serve.go:
-
+	//k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/serve.go:
 	func RunServer(server *http.Server, network string, stopCh <-chan struct{}) (int, error) {
 		if len(server.Addr) == 0 {
 			return 0, errors.New("address cannot be empty")
@@ -702,8 +700,7 @@ secure模式是在GenericAPIServer的基础上创建了一个aggregatorServer，
 
 ### aggregator Server的创建
 
-k8s.io/kubernetes/cmd/kube-apiserver/app/server.go:
-
+	//k8s.io/kubernetes/cmd/kube-apiserver/app/server.go:
 	aggregatorConfig, err := createAggregatorConfig(*kubeAPIServerConfig.GenericConfig, runOptions)
 	if err != nil {
 		return err
@@ -715,12 +712,10 @@ k8s.io/kubernetes/cmd/kube-apiserver/app/server.go:
 	}
 	return aggregatorServer.GenericAPIServer.PrepareRun().Run(stopCh)
 
-k8s.io/kubernetes/cmd/kube-apiserver/app/aggregator.go,createAggregatorServer():
-
+	//k8s.io/kubernetes/cmd/kube-apiserver/app/aggregator.go,createAggregatorServer():
 	aggregatorServer, err := aggregatorConfig.Complete().NewWithDelegate(delegateAPIServer, stopCh)
 
-k8s.io/kubernetes/staging/src/k8s.io/kube-aggregator/pkg/apiserver/apiserver.go:
-
+	//k8s.io/kubernetes/staging/src/k8s.io/kube-aggregator/pkg/apiserver/apiserver.go:
 	// New returns a new instance of APIAggregator from the given config.
 	func (c completedConfig) NewWithDelegate(delegationTarget genericapiserver.DelegationTarget, stopCh <-chan struct{}) (*APIAggregator, error) {
 		genericServer, err := c.Config.GenericConfig.SkipComplete().NewWithDelegate(delegationTarget) // completion is done in Complete, no need for a second time
@@ -729,8 +724,7 @@ k8s.io/kubernetes/staging/src/k8s.io/kube-aggregator/pkg/apiserver/apiserver.go:
 		}
 	......
 
-k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/config.go:
-
+	//k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/config.go:
 	func (c completedConfig) NewWithDelegate(delegationTarget DelegationTarget) (*GenericAPIServer, error) {
 		// some pieces of the delegationTarget take precendence.  Callers should already have ensured that these
 		// were wired correctly.  Documenting them here.
@@ -769,8 +763,7 @@ k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/config.go:
 
 注意，这里使用的是NewWithDelegate，创建了一个新的GenericAPIServer，并装载了Handler。
 
-k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/config.go:
-
+	//k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/config.go:
 	// buildHandlers builds our handling chain
 	func (c completedConfig) buildHandlers(s *GenericAPIServer, delegate http.Handler) (*GenericAPIServer, error) {
 		if s.openAPIConfig != nil {
@@ -797,22 +790,19 @@ k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/config.go:
 
 ### BuildHandlerChainFunc
 
-k8s.io/kubernetes/cmd/kube-apiserver/app/server.go:
-
+	//k8s.io/kubernetes/cmd/kube-apiserver/app/server.go:
 	func CreateKubeAPIServerConfig(s *options.ServerRunOptions) (*master.Config, informers.SharedInformerFactory, *kubeserver.InsecureServingInfo, error) {
 		...
 		genericConfig, sharedInformers, insecureServingOptions, err := BuildGenericConfig(s)
 		...
 
-k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/config.go:
-
+	//k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/config.go:
 	// BuildGenericConfig takes the master server options and produces the genericapiserver.Config associated with it
 	func BuildGenericConfig(s *options.ServerRunOptions) (*genericapiserver.Config, informers.SharedInformerFactory, *kubeserver.InsecureServingInfo, error) {
 		genericConfig := genericapiserver.NewConfig(api.Codecs)
 		...
 
-k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/config.go:
-
+	//k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/config.go:
 	func NewConfig(codecs serializer.CodecFactory) *Config {
 		return &Config{
 			Serializer:                  codecs,
@@ -821,8 +811,7 @@ k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/config.go:
 			BuildHandlerChainFunc:       DefaultBuildHandlerChain,
 		...
 
-k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/config.go:
-
+	//k8s.io/kubernetes/staging/src/k8s.io/apiserver/pkg/server/config.go:
 	func DefaultBuildHandlerChain(apiHandler http.Handler, c *Config) http.Handler {
 		handler := genericapifilters.WithAuthorization(apiHandler, c.RequestContextMapper, c.Authorizer)
 		handler = genericapifilters.WithImpersonation(handler, c.RequestContextMapper, c.Authorizer)
