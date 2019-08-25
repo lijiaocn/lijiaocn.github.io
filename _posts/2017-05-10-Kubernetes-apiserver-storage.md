@@ -468,7 +468,7 @@ c.Config.GenericConfig.RESTOptionsGetter就是optsGetter，而c.Config就是一�
 		kubeAPIServerConfig, sharedInformers, insecureServingOptions, err := CreateKubeAPIServerConfig(runOptions)
 		...
 
-要找到`kubeAPIServerConfig.GenericConfig.RESTOptionsGetter`。
+要找到 kubeAPIServerConfig.GenericConfig. RESTOptionsGetter
 
 	//src/k8s.io/kubernetes/cmd/kube-apiserver/app/server.go:
 	func CreateKubeAPIServerConfig(s *options.ServerRunOptions) (*master.Config, informers.SharedInformerFactory, *kubeserver.InsecureServingInfo, error) {
