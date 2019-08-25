@@ -149,8 +149,7 @@ k8s.io/kubernetes/pkg/master/master.go:
 
 ## m.InstallLegacyAPI()
 
-k8s.io/kubernetes/pkg/master/master.go:
-
+	//k8s.io/kubernetes/pkg/master/master.go:
 	func (m *Master) InstallLegacyAPI(c *Config, restOptionsGetter generic.RESTOptionsGetter, legacyRESTStorageProvider corerest.LegacyRESTStorageProvider) {
 		legacyRESTStorage, apiGroupInfo, err := legacyRESTStorageProvider.NewLegacyRESTStorage(restOptionsGetter)
 		...
@@ -649,7 +648,7 @@ StorageWithCache又是一个很复杂的过程，它会与etcd通信。
 
 m.InstallAPIS()装载了其它个api组
 
-### authenticationrest.RESTStorageProvider
+### authenticationrest. RESTStorageProvider
 
 	//k8s.io/kubernetes/pkg/master/master.go:
 	restStorageProviders := []RESTStorageProvider{
