@@ -110,7 +110,7 @@ kubernetes apiserver中最终使用`go-restful`处理HTTP请求，有必要先�
 		io.WriteString(resp, "second world")
 	}
 
-`kubeAPIServer.GenericAPIServer.HandlerContainer`就是一个restful container。在初始化过程多个WebService会被注册到这个container中。
+kubeAPIServer.GenericAPIServer. HandlerContainer 就是一个restful container。在初始化过程多个WebService会被注册到这个container中。
 
 ## 启动
 
@@ -142,15 +142,16 @@ k8s.io/kubernetes/cmd/kube-apiserver/app/server.go:
 
 ## kubeApiServer的创建
 
-k8s.io/kubernetes/cmd/kube-apiserver/app/server.go:
-
+	//k8s.io/kubernetes/cmd/kube-apiserver/app/server.go:
 	func CreateKubeAPIServer(kubeAPIServerConfig *master.Config, sharedInformers informers.SharedInformerFactory, stopCh <-chan struct{}) (*master.Master, error) {
 		...
 		kubeAPIServer, err := kubeAPIServerConfig.Complete().New()
 		...
 
-k8s.io/kubernetes/pkg/master/master.go，`kubeApiServerConfig.Complete().New()`:
 
+kubeApiServerConfig. Complete().New(): 
+
+	//k8s.io/kubernetes/pkg/master/master.go:
 	func (c completedConfig) New() (*Master, error) {
 		...
 		s, err := c.Config.GenericConfig.SkipComplete().New() // completion is done in Complete, no need for a second time
@@ -278,7 +279,7 @@ API的install就是将url路由添加到前面创建的container中。
 		return &c
 	}
 
-`c.Container.Router()`restful.CurlyRouter，url格式为：
+c.Container.Router() restful.CurlyRouter，url格式为：
 
 	proxy/{kind}/{name}/{*}
 
