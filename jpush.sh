@@ -18,9 +18,11 @@ for path in $*;do
 		pid=`ps aux|grep $port |grep -v "grep"|grep -v "$path"|awk '{print $2}'`
 		echo "pid is $pid"
 		kill -9 $pid
-		git checkout master
+
+#		git checkout master
 		git add .
 		git commit -m "m"
+		git pull
 		git push
 		
 		bundle exec jekyll build

@@ -19,9 +19,9 @@ for path in $*;do
 		echo "pid is $pid"
 		kill -9 $pid
 
-		git pull
 		git add .
 		git commit -m "m"
+		git pull
 		gitbook build
 		git push
 		
