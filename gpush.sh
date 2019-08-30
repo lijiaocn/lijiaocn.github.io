@@ -19,11 +19,10 @@ for path in $*;do
 		echo "pid is $pid"
 		kill -9 $pid
 
-		git checkout master
 		git pull
-		gitbook build
 		git add .
 		git commit -m "m"
+		gitbook build
 		git push
 		
 		git checkout gh-pages
