@@ -19,17 +19,17 @@ for path in $*;do
 		echo "pid is $pid"
 		kill -9 $pid
 		git checkout master
-		git pull
-		bundle exec jekyll build
 		git add .
 		git commit -m "m"
 		git push
 		
+		bundle exec jekyll build
 		git checkout gh-pages
 		git pull
 		cp -rf _site/* .
 		git add .
 		git commit -m "m"
+		git pull
 		git push 
 		
 		git checkout master
