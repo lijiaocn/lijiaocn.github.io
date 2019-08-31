@@ -19,7 +19,7 @@ description: device mapper是linux的内核用来将块设备映射到虚拟快�
 
 Device mapper是linux的内核用来将块设备映射到虚拟块设备的framework。
 
-![Linux Storage Stack][https://upload.wikimedia.org/wikipedia/commons/3/30/IO_stack_of_the_Linux_kernel.svg]
+![Linux Storage Stack](https://upload.wikimedia.org/wikipedia/commons/3/30/IO_stack_of_the_Linux_kernel.svg)
 
 在使用`lvm`命令管理逻辑卷的时候，最终是通过device mapper完成的。
 
