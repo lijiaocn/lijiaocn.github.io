@@ -23,6 +23,7 @@ for path in $*;do
 		git commit -m "m"
 		git pull
 		gitbook build
+		git pull
 		git push
 		
 		git checkout gh-pages
