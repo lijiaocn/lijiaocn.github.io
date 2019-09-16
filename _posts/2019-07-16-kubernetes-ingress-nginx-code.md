@@ -3,7 +3,7 @@ layout: default
 title: "Kubernetes ingress-nginx 0.25 源代码走读笔记"
 author: 李佶澳
 createdate: "2019-07-16 14:27:19 +0800"
-last_modified_at: "2019-09-16 14:11:37 +0800"
+last_modified_at: "2019-09-16 15:21:16 +0800"
 categories: 项目
 tags: kubernetes
 cover:
@@ -21,6 +21,8 @@ description: "OpenResty替换了原生的nginx，nginx.conf中不直接包含Pod
 猛然发现还没有看过 ingress-nginx 的代码，调查问题的时候都是直接阅读最终生成的 nginx.conf 文件。
 
 使用较新版本的[金丝雀发布][2]功能时，发现 openresty 替换了原生的 nginx， nginx.conf 文件也发生了变化，文件中不直接包含 Pod 的 IP 地址，用一段 lua 脚本处理转发，需要阅读代码理清配置生成、Pod IP 的下发过程。
+
+拓展：[Kubernetes 基于 openresty 的 ingress-nginx 的实现分析和使用][3]。
 
 ## Go 部分
 
@@ -131,6 +133,8 @@ rootfs 目录中的所有文件都会被打包到容器中，所有如果要增�
 
 1. [李佶澳的博客笔记][1]
 2. [kubernetes ingress-nginx 的金丝雀（canary）/灰度发布功能的使用方法][2]
+3. [Kubernetes 基于 openresty 的 ingress-nginx 的实现分析和使用][3]
 
 [1]: https://www.lijiaocn.com "李佶澳的博客笔记"
 [2]: https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2019/07/12/ingress-nginx-canary.html "kubernetes ingress-nginx 的金丝雀（canary）/灰度发布功能的使用方法"
+[3]: https://www.lijiaocn.com/2019/09/16/ingress-nginx-with-openresty.html "Kubernetes 基于 openresty 的 ingress-nginx 的实现分析和使用"
