@@ -3,7 +3,7 @@ layout: default
 title: "curl: 用 Curl 命令访问 Unix Socket 接口的方法"
 author: 李佶澳
 date: "2019-09-16 14:55:27 +0800"
-last_modified_at: "2019-09-16 15:18:05 +0800"
+last_modified_at: "2019-09-16 17:28:26 +0800"
 categories: 技巧
 cover:
 tags: linuxtool curl 
@@ -55,7 +55,7 @@ Reading: 0 Writing: 12 Waiting: 65
 
 `--unix-socket` 指定 unix socket 文件的地址， `http://localhost/nginx_status` 是要请求的路径。
 
-注意 localhost 可以根据实际情况更改成其它数值但不可省略，如果省略，譬如 http://nginx_status，nginx_status 会被认作是 Host，而 Path 是 /：
+注意 localhost 可以根据实际情况更改成其它数值但不可省略，如果省略后变成 http://nginx_status，那么 nginx_status 会被认作是 Host，Path 被认为是 /：
 
 ```sh
 $ curl -v  --unix-socket /tmp/nginx-status-server.sock http://nginx_status

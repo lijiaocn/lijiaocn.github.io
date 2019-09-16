@@ -3,7 +3,7 @@ layout: default
 title: "Kubernetes 基于 openresty 的 ingress-nginx 的状态和配置查询"
 author: 李佶澳
 date: "2019-09-16 11:54:29 +0800"
-last_modified_at: "2019-09-16 17:22:31 +0800"
+last_modified_at: "2019-09-16 17:27:38 +0800"
 categories: 项目
 cover:
 tags: kubernetes
@@ -163,7 +163,7 @@ server {
 
 ## 管理接口实现
 
-管理接口使用 openresty 中的 lua 脚本实现，用 go 语言实现的 ingress-nginx-controller 监听 kubernetes 中的变化，通过管理接口下发配置。
+管理接口使用 openresty 中的 lua 脚本实现，用 go 语言实现的 ingress-nginx-controller 监听 kubernetes 中的变化，通过调用 openresty 中实现的管理接口下发配置。
 
 实现 configuration 接口的 lua 文件：[rootfs/etc/nginx/lua/configuration.lua][3]。
 
