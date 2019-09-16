@@ -3,7 +3,7 @@ layout: default
 title: "基于Envoy的ApiGateway/Ingress Controller项目梳理（四）：Istio"
 author: 李佶澳
 createdate: "2019-05-21 11:03:40 +0800"
-last_modified_at: "2019-08-20 10:23:52 +0800"
+last_modified_at: "2019-09-03 16:47:24 +0800"
 categories: 项目
 tags: apigateway envoy istio
 cover:
@@ -40,7 +40,7 @@ Istio的部署文件位于项目源码中，用 [helm部署到kubernetes](https:
 ```sh
 git clone https://github.com/istio/istio.git
 cd istio
-git chckout 1.1.7
+git checkout 1.1.7
 ```
 
 部署前的初始化设置，主要操作是创建 CRD：

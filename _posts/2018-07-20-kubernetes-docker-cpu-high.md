@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2018/07/20 19:38:00
 last_modified_at: 2018/07/22 15:11:22
 categories: 问题
-tags: kubernetes
+tags: kubernetes_problem
 keywords: kubernetes,挖矿,入侵,kubelet漏洞个
 description: kubelet漏洞导致不需要任何认证就可以到容器中执行命令，通过这种方式可以在任意一个容器中安装恶意程序。
 

@@ -3,9 +3,9 @@ layout: default
 title: "Kubelet从1.7.16升级到1.9.11，Sandbox以外的容器都被重建的问题调查"
 author: 李佶澳
 createdate: "2019-01-14 16:38:38 +0800"
-last_modified_at: "2019-01-25 11:27:32 +0800"
+last_modified_at: "2019-09-16 14:15:38 +0800"
 categories:  问题
-tags: kubernetes
+tags: kubernetes_problem
 keywords: kubernetes,kubelet升级,1.7.16,1.9.11,容器重启
 description: kubelet从1.7.16升级到1.9.11，重启时，sandbox以外的容器会被重建，Container定义变化导致的
 ---

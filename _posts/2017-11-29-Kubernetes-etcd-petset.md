@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2017/11/29 16:16:09
 last_modified_at: 2017/11/29 23:21:50
 categories: 问题
-tags: kubernetes etcd
+tags: kubernetes_problem etcd
 keywords: kubernetes,etcd,etcdmain,validating,peerURLs,petset
 description: 使用petset在kubernetes中创建的etcd集群，运行一段时间后一个成员异常
 

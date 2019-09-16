@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2018/06/12 11:25:00
 last_modified_at: 2018/06/16 18:16:45
 categories: 问题
-tags: kubernetes calico
+tags: kubernetes_problem
 keywords: kubernetes calico
 description: 在node上重启网络(执行`systemctl restart network`)后，pod无法联通
 

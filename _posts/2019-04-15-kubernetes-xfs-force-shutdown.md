@@ -1,11 +1,11 @@
 ---
 layout: default
-title: "xfs文件系统损坏，kubelet主动退出且重启失败，恢复后该node上无法创建pod"
+title: "Kubernetes node 的 xfs文件系统损坏，kubelet主动退出且重启失败，恢复后无法创建pod"
 author: 李佶澳
 createdate: "2019-04-15 15:49:34 +0800"
-last_modified_at: "2019-04-18 14:29:42 +0800"
+last_modified_at: "2019-09-16 14:13:32 +0800"
 categories: 问题
-tags: kubernetes
+tags: kubernetes_problem
 keywords: xfs,kubernetes,metadata I/O error,blk_update_request,xfs_log_force
 description: "xfs文件系统元数据损坏metadata I/O error: block,xfs_log_force: error -5,input/output error"
 

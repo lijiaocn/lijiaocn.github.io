@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "kubernetes ingress-nginx 0.25 源代码走读笔记"
+title: "Kubernetes ingress-nginx 0.25 源代码走读笔记"
 author: 李佶澳
 createdate: "2019-07-16 14:27:19 +0800"
-last_modified_at: "2019-07-16 16:51:55 +0800"
+last_modified_at: "2019-09-16 14:11:37 +0800"
 categories: 项目
 tags: kubernetes
 cover:

@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2017/03/31 16:26:56
 last_modified_at: 2017/09/27 13:46:56
 categories: 问题
-tags: kubernetes
+tags: kubernetes_problem
 keywords:  
 description: 在kubernetes的一台物理机上访问service的clusterIP，没有响应，经过调查发现通过物理机的网卡无法访问服务。
 

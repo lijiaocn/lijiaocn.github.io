@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2017/12/04 10:52:09
 last_modified_at: 2017/12/08 20:21:17
 categories: 问题
-tags:  calico kubernetes
+tags:  kubernetes_problem
 keywords: calico,kubernetes,workloadendpoint,veth
 description: 有一个pod容器，无法对外访问，发现容器内的arp记录缺失
 

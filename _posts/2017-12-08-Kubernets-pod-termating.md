@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2017/12/08 16:58:13
 last_modified_at: 2017/12/13 17:39:17
 categories: 问题
-tags: kubernetes
+tags: kubernetes_problem
 keywords: 删除pod,kubernetes,无法删除pod,docker,sandbox
 description: kubernetes版本为1.7.6，用kubectl删除pod后，pod一直处于Terminating的状态
 

@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2017/07/13 15:03:27
 last_modified_at: 2017/09/18 16:37:29
 categories: 问题
-tags: kubernetes
+tags: kubernetes_problem
 keywords: k8s,rbd,ceph,locked
 description: k8s中rbd image is locked by other nodes的问题排查
 

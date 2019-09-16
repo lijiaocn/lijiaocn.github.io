@@ -1,11 +1,11 @@
 ---
 layout: default
-title: "容器启动失败：unable to create nf_conn slab cache"
+title: "Kubernetes 容器启动失败：unable to create nf_conn slab cache"
 author: 李佶澳
 createdate: 2017/11/13 09:42:36
 last_modified_at: 2018/05/12 11:48:54
 categories: 问题
-tags: kubernetes
+tags: kubernetes_problem
 keywords: kubernets,容器,启动失败,内核错误
 description: kubernetes集群的一台node上容器启动失败，日志显示unable to create nf_conn slab cache
 

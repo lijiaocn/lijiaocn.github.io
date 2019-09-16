@@ -3,9 +3,9 @@ layout: default
 title: "Kubernetes集群node上的容器无法ping通外网：iptables snat规则缺失导致"
 author: 李佶澳
 createdate: "2019-02-15 12:04:04 +0800"
-last_modified_at: "2019-02-28 10:20:02 +0800"
+last_modified_at: "2019-09-16 14:14:36 +0800"
 categories: 问题
-tags: kubernetes
+tags: kubernetes_problem
 keywords: kubernetes,iptables,ipvs,node,网络不通
 description: "kubernets集群问题node上缺失了一条iptables snat规则，导致node上所有容器不能访问外网iptables -t nat -A POSTROUTING -s 10.12.9.138/26 ! -o docker0 -j MASQUERADE"
 ---

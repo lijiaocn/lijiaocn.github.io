@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2017/08/03 14:22:43
 last_modified_at: 2017/11/30 09:49:02
 categories: 问题
-tags: kubernetes
+tags: kubernetes_problem
 keywords: dnsmasq,kube-dns,k8s
 description: 在kubernete的pod中，访问域名`repo1.maven.org`的时候，发现无法访问。
 

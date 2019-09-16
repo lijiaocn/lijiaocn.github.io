@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2017/08/04 10:22:14
 last_modified_at: 2017/12/04 09:56:37
 categories: 问题
-tags: calico kubernetes
+tags: calico kubernetes_problem
 keywords: calico,k8s,workloadEndpoint
 description: 使用calico的kubernetes集群中，pod断网的问题调查
 

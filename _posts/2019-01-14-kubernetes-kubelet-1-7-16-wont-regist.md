@@ -3,9 +3,9 @@ layout: default
 title: "Kubelet1.7.16使用kubeconfig时，没有设置--require-kubeconfig，导致node不能注册"
 author: 李佶澳
 createdate: "2019-01-14 11:08:17 +0800"
-last_modified_at: "2019-01-23 16:00:00 +0800"
+last_modified_at: "2019-09-16 14:15:06 +0800"
 categories: 问题
-tags: kubernetes
+tags: kubernetes_problem
 keywords: kubernetes,kubelet,node
 description:  “因为没有指定apiservers，所以node状态不会上报”，用kubeconfig文件就不能上报node状态了？？
 ---

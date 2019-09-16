@@ -3,9 +3,9 @@ layout: default
 title: "Kubernetes集群node无法访问service：kube-proxy没有正确设置cluster-cidr"
 author: 李佶澳
 createdate: "2019-02-27 18:21:19 +0800"
-last_modified_at: "2019-02-28 18:32:23 +0800"
+last_modified_at: "2019-09-16 14:14:16 +0800"
 categories: 问题
-tags: kubernetes
+tags: kubernetes_problem
 keywords: kubernetes
 description: "异常机器上的kube-proxy缺失参数--cluster-cidr，pod的网段和service的cluster ip不是一个网段"
 

@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2018/10/22 14:25:00
 last_modified_at: 2018/10/22 14:25:00
 categories: 问题
-tags: kubernetes
+tags: kubernetes_problem
 keywords: kubernetes,问题记录
 description: 这里记录Kubernetes使用过程中遇到的一些比较的问题与解决方法
 

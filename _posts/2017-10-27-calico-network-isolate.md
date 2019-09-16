@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2017/10/27 14:45:26
 last_modified_at: 2018/05/18 18:28:52
 categories: 问题
-tags: calico kubernetes
+tags: calico kubernetes_problem
 keywords: calico,hostendpoint,workloadendpoint,网络隔离
 description: 在calico上开启policy后，node无法访问pod
 

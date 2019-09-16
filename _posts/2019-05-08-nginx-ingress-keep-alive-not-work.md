@@ -1,11 +1,11 @@
 ---
 layout: default
-title: "Kubrenetes的Nginx Ingress 0.20之前的版本，upstream的keep-alive不生效"
+title: "Kubernetes的Nginx Ingress 0.20之前的版本，upstream的keep-alive不生效"
 author: 李佶澳
 createdate: "2019-05-08 15:05:39 +0800"
-last_modified_at: "2019-05-09 17:50:54 +0800"
+last_modified_at: "2019-09-16 14:12:49 +0800"
 categories: 问题
-tags: kubernetes
+tags: kubernetes_problem
 cover:
 keywords: nginx,upstream,keep-alive
 description: "nginx-ingress 0.20之前版本配置模板nginx.tmpl有Bug，使UpstreamKeepaliveConnections无效"
