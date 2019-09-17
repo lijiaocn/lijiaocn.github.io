@@ -1,14 +1,14 @@
 ---
 layout: default
-title: "Kubernetes ingress-nginx 的 4 层 tcp 代理，无限重试访问不存在的 upstream 地址，高达百万次"
+title: "Kubernetes ingress-nginx 4 层 tcp 代理，无限重试不存在的地址，高达百万次"
 author: 李佶澳
 date: "2019-09-17 14:08:20 +0800"
-last_modified_at: "2019-09-17 21:28:29 +0800"
+last_modified_at: "2019-09-17 21:35:29 +0800"
 categories: 问题
 cover:
 tags: kubernetes_problem
 keywords: openresty,kubernetes,nginx,ingress-nginx
-description: 确定是 openresty-1.15.8.1 的 bug，使用 lua 脚本设置 tcp 转发规则时，如果 peer 地址不存在，会无限重试
+description: 使用 lua 脚本设置 tcp 转发规则，如果 peer 地址不存在会无限重试, 需配置 proxy_next_upstream_tries
 ---
 
 ## 本篇目录
@@ -159,8 +159,9 @@ $ curl 127.0.0.1:12346
 
 [openresty/lua-nginx-module #1545][6] 和 [openresty/lua-nginx-module #1546][7] 中提到这个问题，讨论的结果是不认为这是 bug，可以用 [proxy_next_upstream_tries][8] 参数解决这个问题：
 
+{% raw %}
 ```sh
-stream{
+stream {
         upstream upstream_balancer{
                 server 0.0.0.1:1234; # placeholder
                 balancer_by_lua_block {
@@ -180,9 +181,11 @@ stream{
         }
 }
 ```
+{% endraw %}
 
 查看 [ingress-nginx 0.25][2] 模板文件发现这应该是 ingress-nginx 的 bug，tcp services 和 udp services 中需要配置 proxy_next_upstream_tries：
 
+{% raw %}
 ```conf
     # TCP services
     {{ range $tcpServer := .TCPBackends }}
@@ -198,6 +201,7 @@ stream{
     }
     {{ end }}
 ```
+{% endraw %}
 
 镜像制作方法: [编译与镜像制作](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2019/07/16/kubernetes-ingress-nginx-code.html#%E7%BC%96%E8%AF%91%E4%B8%8E%E9%95%9C%E5%83%8F%E5%88%B6%E4%BD%9C)。
 
