@@ -17,11 +17,11 @@ description: prometheus是很流行的监控告警工具，特别是kubernetes�
 
 ## 说明
 
-视频讲解通过链接[网易云课堂·IT技术快速入门学院](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)进入，更多[关于Prometheus的文章](https://www.lijiaocn.com/tags/monitor.html)。
+>Prometheus 的查询语句、指标运算等更多内容见 [小鸟笔记之Prometheus 使用手册](https://www.lijiaocn.com/soft/prometheus/ )。 
 
-[Prometheus][1]是最近几年开始流行的一个新兴监控告警工具，特别是kubernetes的流行带动了prometheus的应用。
+视频讲解入口：[网易云课堂·IT技术快速入门学院](https://study.163.com/provider/400000000376006/course.htm?share=2&shareId=400000000376006)进入，更多关于Prometheus的文章：[Prometheus](https://www.lijiaocn.com/tags/monitor.html)。
 
-Prometheus是一套完整的监控告警系统：
+[Prometheus][1]是最近几年开始流行的一个新兴监控告警工具，特别是 kubernetes 的流行带动了 prometheus 的应用。Prometheus 是一套完整的监控告警系统：
 
 ![Prometheus系统组成](https://prometheus.io/assets/architecture.png)
 
