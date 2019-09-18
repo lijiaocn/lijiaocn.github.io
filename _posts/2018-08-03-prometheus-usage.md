@@ -27,13 +27,15 @@ description: prometheus是很流行的监控告警工具，特别是kubernetes�
 
 Prometheus的主要特点有：
 
-	1. a multi-dimensional data model with time series data identified by metric name and key/value pairs
-	2. a flexible query language to leverage this dimensionality
-	3. no reliance on distributed storage; single server nodes are autonomous
-	4. time series collection happens via a pull model over HTTP
-	5. pushing time series is supported via an intermediary gateway
-	6. targets are discovered via service discovery or static configuration
-	7. multiple modes of graphing and dashboarding support
+```sh
+1. a multi-dimensional data model with time series data identified by metric name and key/value pairs
+2. a flexible query language to leverage this dimensionality
+3. no reliance on distributed storage; single server nodes are autonomous
+4. time series collection happens via a pull model over HTTP
+5. pushing time series is supported via an intermediary gateway
+6. targets are discovered via service discovery or static configuration
+7. multiple modes of graphing and dashboarding support
+```
 
 >influxdb、openTSDB等，是专门时间序列数据库，不是一套完整的监控告警系统，缺少告警功能。
 
@@ -62,12 +64,10 @@ label的命名规则为`[a-zA-Z_][a-zA-Z0-9_]*`，以`__`开头的label名称被
 通过metric名称和label查询samples，语法如下：
 
 	<metric name>{<label name>=<label value>, ...}
-	
 
 例如：
 
 	api_http_requests_total{method="POST", handler="/messages"}
-	
 
 ### metric类型
 
@@ -83,7 +83,6 @@ Gauge是瞬时值。
 Histogram（直方图）对采集的指标进行分组计数，会生成多个指标，分别带有后缀`_bucket`(仅histogram)、`_sum`、`_count`，其中`_bucket`是区间内计数：
 
 	<basename>_bucket{le="<upper inclusive bound>"}
-	
 
 名为`rpc_durations_seconds`histogram生成的metrics：
 
@@ -111,12 +110,10 @@ Histogram（直方图）对采集的指标进行分组计数，会生成多个�
 	rpc_durations_histogram_seconds_bucket{le="+Inf"} 357
 	rpc_durations_histogram_seconds_sum -0.000331219501489902
 	rpc_durations_histogram_seconds_count 357
-	
 
 Summary同样产生多个指标，分别带有后缀`_bucket`(仅histogram)、`_sum`、`_count`，可以直接查询分位数：
 
 	<basename>{quantile="<φ>"}
-	
 
 名为`rpc_durations_seconds`summary生成到metrics：
 
@@ -126,7 +123,6 @@ Summary同样产生多个指标，分别带有后缀`_bucket`(仅histogram)、`_
 	rpc_durations_seconds{service="exponential",quantile="0.99"} 4.539723552933882e-06
 	rpc_durations_seconds_sum{service="exponential"} 0.0005097984764772547
 	rpc_durations_seconds_count{service="exponential"} 532
-	
 
 Histogram和Summary都可以获取分位数。
 
@@ -188,41 +184,44 @@ Summary则是在应用程序中直接计算出了分位数。
 
 配置文件是yaml格式，结构如下：
 
-	$  cat prometheus.yml
-	# my global config
-	global:
-	  scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
-	  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
-	  # scrape_timeout is set to the global default (10s).
-	
-	# Alertmanager configuration
-	alerting:
-	  alertmanagers:
-	  - static_configs:
-	    - targets:
-	      # - alertmanager:9093
-	
-	# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
-	rule_files:
-	  # - "first_rules.yml"
-	  # - "second_rules.yml"
-	
-	# A scrape configuration containing exactly one endpoint to scrape:
-	# Here it's Prometheus itself.
-	scrape_configs:
-	  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
-	  - job_name: 'prometheus'
-	
-	    # metrics_path defaults to '/metrics'
-	    # scheme defaults to 'http'.
-	
-	    static_configs:
-	    - targets: ['localhost:9090']
+```yaml
+# my global config
+global:
+  scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  # scrape_timeout is set to the global default (10s).
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      # - alertmanager:9093
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: 'prometheus'
+
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
+
+    static_configs:
+    - targets: ['localhost:9090']
+```
 
 其中`global`是一些常规的全局配置，这里只列出了两个参数：
 
-	  scrape_interval:     15s      #每15s采集一次数据
-	  evaluation_interval: 15s      #每15s做一次告警检测
+```yaml
+scrape_interval:     15s      #每15s采集一次数据
+evaluation_interval: 15s      #每15s做一次告警检测
+```
 
 `rule_files`指定加载的告警规则文件，告警规则放到下一节讲。
 
@@ -230,26 +229,30 @@ Summary则是在应用程序中直接计算出了分位数。
 
 在scrape_config中每个监控目标是一个`job`，但job的类型有很多种。可以是最简单的`static_config`，即静态地指定每一个目标，例如上面的：
 
-	  - job_name: prometheus
-	    static_configs:
-	      - targets: ['localhost:9090']
+```yaml
+- job_name: prometheus
+  static_configs:
+    - targets: ['localhost:9090']
+```
 
 也可以使用服务发现的方式，动态发现目标，例如将kubernetes中的node作为监控目标：
 
-	  - job_name: 'kubernetes-nodes'
-	    kubernetes_sd_configs:
-	    - role: node
-	      api_server: https://192.168.88.10
-	      tls_config:
-	        ca_file:   /opt/app/k8s/admin/cert/ca/ca.pem
-	        cert_file: /opt/app/k8s/admin/cert/apiserver-client/cert.pem
-	        key_file:  /opt/app/k8s/admin/cert/apiserver-client/key.pem
-	    bearer_token_file: /opt/app/k8s/apiserver/cert/token.csv
-	    scheme: https
-	    tls_config:
-	      ca_file:   /opt/app/k8s/admin/cert/ca/ca.pem
-	      cert_file: /opt/app/k8s/admin/cert/apiserver-client/cert.pem
-	      key_file:  /opt/app/k8s/admin/cert/apiserver-client/key.pem
+```yaml
+- job_name: 'kubernetes-nodes'
+  kubernetes_sd_configs:
+  - role: node
+    api_server: https://192.168.88.10
+    tls_config:
+      ca_file:   /opt/app/k8s/admin/cert/ca/ca.pem
+      cert_file: /opt/app/k8s/admin/cert/apiserver-client/cert.pem
+      key_file:  /opt/app/k8s/admin/cert/apiserver-client/key.pem
+  bearer_token_file: /opt/app/k8s/apiserver/cert/token.csv
+  scheme: https
+  tls_config:
+    ca_file:   /opt/app/k8s/admin/cert/ca/ca.pem
+    cert_file: /opt/app/k8s/admin/cert/apiserver-client/cert.pem
+    key_file:  /opt/app/k8s/admin/cert/apiserver-client/key.pem
+```
 
 使用这个新的配置文件，启动prometheus：
 
@@ -301,29 +304,31 @@ prometheus运行时会自动探测kubernetes中的node变化，自动将kubernet
 
 在上一节中，是直接从默认的地址`http://< NODE IP>/metrics`中采集到每个node数据的，这里用relabel修改一下，改成从apiserver中获取：
 
-	  - job_name: 'kubernetes-nodes'
-	    kubernetes_sd_configs:
-	    - role: node
-	      api_server: https://192.168.88.10
-	      tls_config:
-	        ca_file:   /opt/app/k8s/admin/cert/ca/ca.pem
-	        cert_file: /opt/app/k8s/admin/cert/apiserver-client/cert.pem
-	        key_file:  /opt/app/k8s/admin/cert/apiserver-client/key.pem
-	    bearer_token_file: /opt/app/k8s/apiserver/cert/token.csv
-	    scheme: https
-	    tls_config:
-	      ca_file:   /opt/app/k8s/admin/cert/ca/ca.pem
-	      cert_file: /opt/app/k8s/admin/cert/apiserver-client/cert.pem
-	      key_file:  /opt/app/k8s/admin/cert/apiserver-client/key.pem
-	    relabel_configs:
-	    - action: labelmap
-	      regex: __meta_kubernetes_node_label_(.+)
-	    - target_label: __address__
-	      replacement: 192.168.88.10
-	    - source_labels: [__meta_kubernetes_node_name]
-	      regex: (.+)
-	      target_label: __metrics_path__
-	      replacement: /api/v1/nodes/${1}/proxy/metrics
+```yaml
+- job_name: 'kubernetes-nodes'
+  kubernetes_sd_configs:
+  - role: node
+    api_server: https://192.168.88.10
+    tls_config:
+      ca_file:   /opt/app/k8s/admin/cert/ca/ca.pem
+      cert_file: /opt/app/k8s/admin/cert/apiserver-client/cert.pem
+      key_file:  /opt/app/k8s/admin/cert/apiserver-client/key.pem
+  bearer_token_file: /opt/app/k8s/apiserver/cert/token.csv
+  scheme: https
+  tls_config:
+    ca_file:   /opt/app/k8s/admin/cert/ca/ca.pem
+    cert_file: /opt/app/k8s/admin/cert/apiserver-client/cert.pem
+    key_file:  /opt/app/k8s/admin/cert/apiserver-client/key.pem
+  relabel_configs:
+  - action: labelmap
+    regex: __meta_kubernetes_node_label_(.+)
+  - target_label: __address__
+    replacement: 192.168.88.10
+  - source_labels: [__meta_kubernetes_node_name]
+    regex: (.+)
+    target_label: __metrics_path__
+    replacement: /api/v1/nodes/${1}/proxy/metrics
+```
 
 其实就是在原先的配置后面增加了一节`relabel_configs`的配置。
 
@@ -331,10 +336,12 @@ prometheus运行时会自动探测kubernetes中的node变化，自动将kubernet
 
 relabel_config是一个很强大的功能，除了修改标签，还可以为采集的指标添加上新标签：
 
-	    - source_labels: [__meta_kubernetes_node_name]
-	      regex: (.+)
-	      replacement: hello_${1}
-	      target_label: label_add_by_me
+```yaml
+- source_labels: [__meta_kubernetes_node_name]
+  regex: (.+)
+  replacement: hello_${1}
+  target_label: label_add_by_me
+```
 
 在配置文件中加上上面的内容后，为每个指标都将被添加了一个名为`label_add_by_me`的标签。
 
@@ -344,33 +351,35 @@ relabel_config是一个很强大的功能，除了修改标签，还可以为采
 
 还可以通过relabel_config将不需要的target过滤：
 
-	  - job_name: "user_server_icmp_detect"
-	    consul_sd_configs:
-	    - server: "127.0.0.1:8500"
-	    scheme: http
-	    metrics_path: /probe
-	    params:
-	      module: [icmp]
-	    relabel_configs:
-	    - action: keep
-	      source_labels: [__meta_consul_tags]        #如果__meta_consul_tags匹配正则，则保留该目标
-	      regex: '.*,icmp,.*'
-	    - source_labels: [__meta_consul_service]
-	      regex: '(.+)@(.+)@(.+)'
-	      replacement: ${2}
-	      target_label: type
-	    - source_labels: [__meta_consul_service]
-	      regex: '(.+)@(.+)@(.+)'
-	      replacement: ${1}
-	      target_label: user
-	    - source_labels: [__address__]
-	      regex: (.+):(.+)
-	      replacement: ${1}
-	      target_label: __param_target
-	    - target_label: __address__
-	      replacement:  10.10.199.154:9115
-	    - source_labels: [__param_target]
-	      target_label: instance
+```yaml
+- job_name: "user_server_icmp_detect"
+  consul_sd_configs:
+  - server: "127.0.0.1:8500"
+  scheme: http
+  metrics_path: /probe
+  params:
+    module: [icmp]
+  relabel_configs:
+  - action: keep
+    source_labels: [__meta_consul_tags]        #如果__meta_consul_tags匹配正则，则保留该目标
+    regex: '.*,icmp,.*'
+  - source_labels: [__meta_consul_service]
+    regex: '(.+)@(.+)@(.+)'
+    replacement: ${2}
+    target_label: type
+  - source_labels: [__meta_consul_service]
+    regex: '(.+)@(.+)@(.+)'
+    replacement: ${1}
+    target_label: user
+  - source_labels: [__address__]
+    regex: (.+):(.+)
+    replacement: ${1}
+    target_label: __param_target
+  - target_label: __address__
+    replacement:  10.10.199.154:9115
+  - source_labels: [__param_target]
+    target_label: instance
+```
 
 ### prometheus的查询语句
 
@@ -468,25 +477,27 @@ alertmanager是用来接收prometheus发出的告警，然后按照配置文件�
 
 alertmanager的配置文件格式如下：
 
-	global:
-	  resolve_timeout: 5m
-	
-	route:
-	  group_by: ['alertname']
-	  group_wait: 10s
-	  group_interval: 10s
-	  repeat_interval: 1h
-	  receiver: 'web.hook'
-	receivers:
-	- name: 'web.hook'
-	  webhook_configs:
-	  - url: 'http://127.0.0.1:5001/'
-	inhibit_rules:
-	  - source_match:
-	      severity: 'critical'
-	    target_match:
-	      severity: 'warning'
-	    equal: ['alertname', 'dev', 'instance']
+```yaml
+global:
+  resolve_timeout: 5m
+
+route:
+  group_by: ['alertname']
+  group_wait: 10s
+  group_interval: 10s
+  repeat_interval: 1h
+  receiver: 'web.hook'
+receivers:
+- name: 'web.hook'
+  webhook_configs:
+  - url: 'http://127.0.0.1:5001/'
+inhibit_rules:
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname', 'dev', 'instance']
+```
 
 其中最主要的是receivers，它定义了告警的处理方式，这里是webhook_config，意思是alertmananger将告警转发到这个url。
 
@@ -506,42 +517,46 @@ alertmanager的配置文件格式如下：
 
 这里给出一个用邮件通知告警的例子，发件邮箱用的是网易邮箱：
 
-	global:
-	  resolve_timeout: 5m
-	route:
-	  group_by: ['alertname']
-	  group_wait: 10s
-	  group_interval: 10s
-	  repeat_interval: 1h
-	  receiver: 'mail'
-	receivers:
-	- name: 'web.hook'
-	  webhook_configs:
-	  - url: 'http://127.0.0.1:5001/'
-	- name: 'mail'
-	  email_configs:
-	  - to: 接收告警用的邮箱 
-	    from: 你的发件用的网易邮箱
-	    smarthost:  smtp.163.com:25
-	    auth_username: 网易邮箱账号
-	    auth_password: 网易邮箱密码
-	    # auth_secret:
-	    # auth_identity:
-	inhibit_rules:
-	  - source_match:
-	      severity: 'critical'
-	    target_match:
-	      severity: 'warning'
-	    equal: ['alertname', 'dev', 'instance']
+```yaml
+global:
+  resolve_timeout: 5m
+route:
+  group_by: ['alertname']
+  group_wait: 10s
+  group_interval: 10s
+  repeat_interval: 1h
+  receiver: 'mail'
+receivers:
+- name: 'web.hook'
+  webhook_configs:
+  - url: 'http://127.0.0.1:5001/'
+- name: 'mail'
+  email_configs:
+  - to: 接收告警用的邮箱 
+    from: 你的发件用的网易邮箱
+    smarthost:  smtp.163.com:25
+    auth_username: 网易邮箱账号
+    auth_password: 网易邮箱密码
+    # auth_secret:
+    # auth_identity:
+inhibit_rules:
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname', 'dev', 'instance']
+```
 
 注意这里有`web.hook`和`mail`两个reciver，使用哪个receive是在上面的router中配置的：
 
-	route:
-	  group_by: ['alertname']
-	  group_wait: 10s
-	  group_interval: 10s
-	  repeat_interval: 1h
-	  receiver: 'mail'
+```yaml
+route:
+  group_by: ['alertname']
+  group_wait: 10s
+  group_interval: 10s
+  repeat_interval: 1h
+  receiver: 'mail'
+```
 
 重新加载配置后，就可以收到告警邮件了。
 
@@ -638,81 +653,86 @@ blackbox_exporter是一个用来探测url、domain等联通、响应情况的exp
 
 在blockbox_exporter中配置的一个个工作模块，[prometheus/blackbox_exporter config][8]。
 
-配置文件如下：
+配置文件如下，blackbox.yml：
 
-	$ cat blackbox.yml
-	modules:
-	  http_2xx:
-	    prober: http
-	    http:
-	  http_post_2xx:
-	    prober: http
-	    http:
-	      method: POST
-	  tcp_connect:
-	    prober: tcp
-	  pop3s_banner:
-	    prober: tcp
-	    tcp:
-	      query_response:
-	      - expect: "^+OK"
-	      tls: true
-	      tls_config:
-	        insecure_skip_verify: false
-	  ssh_banner:
-	    prober: tcp
-	    tcp:
-	      query_response:
-	      - expect: "^SSH-2.0-"
-	  irc_banner:
-	    prober: tcp
-	    tcp:
-	      query_response:
-	      - send: "NICK prober"
-	      - send: "USER prober prober prober :prober"
-	      - expect: "PING :([^ ]+)"
-	        send: "PONG ${1}"
-	      - expect: "^:[^ ]+ 001"
-	  icmp:
-	    prober: icmp
+```yaml
+modules:
+  http_2xx:
+    prober: http
+    http:
+  http_post_2xx:
+    prober: http
+    http:
+      method: POST
+  tcp_connect:
+    prober: tcp
+  pop3s_banner:
+    prober: tcp
+    tcp:
+      query_response:
+      - expect: "^+OK"
+      tls: true
+      tls_config:
+        insecure_skip_verify: false
+  ssh_banner:
+    prober: tcp
+    tcp:
+      query_response:
+      - expect: "^SSH-2.0-"
+  irc_banner:
+    prober: tcp
+    tcp:
+      query_response:
+      - send: "NICK prober"
+      - send: "USER prober prober prober :prober"
+      - expect: "PING :([^ ]+)"
+        send: "PONG ${1}"
+      - expect: "^:[^ ]+ 001"
+  icmp:
+    prober: icmp
+```
 
 例如下面的配置中，有两个工作模块`http_2xx`和`http_post_2xx`。
 
-	modules:
-	  http_2xx:
-	    prober: http
-	    http:
-	  http_post_2xx:
-	    prober: http
-	    timeout: 5s
-	    http:
-	      method: POST
-	      headers:
-	        Content-Type: application/json
-	    body: '{}'
+```yaml
+modules:
+  http_2xx:
+    prober: http
+    http:
+  http_post_2xx:
+    prober: http
+    timeout: 5s
+    http:
+      method: POST
+      headers:
+        Content-Type: application/json
+    body: '{}'
+```
 
 模块可以根据需要设置更多的参数和判断条件：
 
-	http_2xx_example:
-	  prober: http
-	  timeout: 5s
-	  http:
-	    valid_http_versions: ["HTTP/1.1", "HTTP/2"]
-	    valid_status_codes: []  # Defaults to 2xx
-	    method: GET
-	    headers:
-	      Host: vhost.example.com
-	      Accept-Language: en-US
-	    no_follow_redirects: false
-	    fail_if_ssl: false
-	    fail_if_not_ssl: false
-	    fail_if_matches_regexp:
-	      - "Could not connect to database"
-	    fail_if_not_matches_regexp:
-	      - "Download the latest version here"
-	    tls_config:
-	      insecure_skip_verify: false
-	    preferred_ip_protocol: "ip4" # defaults to "ip6"
+```yaml
+http_2xx_example:
+  prober: http
+  timeout: 5s
+  http:
+    valid_http_versions: ["HTTP/1.1", "HTTP/2"]
+    valid_status_codes: []  # Defaults to 2xx
+    method: GET
+    headers:
+      Host: vhost.example.com
+      Accept-Language: en-US
+    no_follow_redirects: false
+    fail_if_ssl: false
+    fail_if_not_ssl: false
+    fail_if_matches_regexp:
+      - "Could not connect to database"
+    fail_if_not_matches_regexp:
+      - "Download the latest version here"
+    tls_config:
+      insecure_skip_verify: false
+    preferred_ip_protocol: "ip4" # defaults to "ip6"
+```
 
 通过blackbox_exporter的服务地址调用这些模块，并传入参数。
 
@@ -740,33 +760,37 @@ blackbox_exporter将按照http_2xx中的配置探测目标网址http://www.baidu
 
 在blackbox的配置文件中配置icmp模块：
 
-	  icmp:
-	    prober: icmp
+```yaml
+icmp:
+  prober: icmp
+```
 
 在prometheus.yml中配置服务发现，将`__address__`改写为blackbox_exporter的地址，并带上相关参数：
 
-	  - job_name: 'kubernetes-nodes-ping'
-	    kubernetes_sd_configs:
-	    - role: node
-	      api_server: https://192.168.88.10
-	      tls_config:
-	        ca_file:   /opt/app/k8s/admin/cert/ca/ca.pem
-	        cert_file: /opt/app/k8s/admin/cert/apiserver-client/cert.pem
-	        key_file:  /opt/app/k8s/admin/cert/apiserver-client/key.pem
-	    bearer_token_file: /opt/app/k8s/apiserver/cert/token.csv
-	    scheme: http
-	    metrics_path: /probe
-	    params:
-	      module: [icmp]
-	    relabel_configs:
-	    - source_labels: [__address__]
-	      regex: (.+):(.+)
-	      replacement: ${1}
-	      target_label: __param_target
-	    - target_label: __address__
-	      replacement: 192.168.88.10:9115
-	    - action: labelmap
-	      regex: __meta_kubernetes_node_label_(.+)
+```yaml
+- job_name: 'kubernetes-nodes-ping'
+  kubernetes_sd_configs:
+  - role: node
+    api_server: https://192.168.88.10
+    tls_config:
+      ca_file:   /opt/app/k8s/admin/cert/ca/ca.pem
+      cert_file: /opt/app/k8s/admin/cert/apiserver-client/cert.pem
+      key_file:  /opt/app/k8s/admin/cert/apiserver-client/key.pem
+  bearer_token_file: /opt/app/k8s/apiserver/cert/token.csv
+  scheme: http
+  metrics_path: /probe
+  params:
+    module: [icmp]
+  relabel_configs:
+  - source_labels: [__address__]
+    regex: (.+):(.+)
+    replacement: ${1}
+    target_label: __param_target
+  - target_label: __address__
+    replacement: 192.168.88.10:9115
+  - action: labelmap
+    regex: __meta_kubernetes_node_label_(.+)
+```
 
 重新加载配置后，就可以在prometheus的页面中可以看到新增的target，而它们的地址是blackbox的地址。
 
@@ -801,17 +825,19 @@ prometheus支持修改标签。metric的标签可以在采集端采集的时候�
 两个的配置方式是相同的：
 
 
-	relabel_configs:
-	- source_labels: [__meta_kubernetes_pod_label_app]
-	  regex: 'rabbitmq01-exporter'
-	  replacement: 'public-rabbitmq01.paas.production:5672'
-	  target_label: instance
-	
-	metric_relabel_configs:
-	- source_labels: [node]
-	  regex: 'rabbit01@rabbit01'
-	  replacement: 'public-rabbitmq01.paas.production:5672'
-	  target_label: node_addr
+```yaml
+relabel_configs:
+- source_labels: [__meta_kubernetes_pod_label_app]
+  regex: 'rabbitmq01-exporter'
+  replacement: 'public-rabbitmq01.paas.production:5672'
+  target_label: instance
+
+metric_relabel_configs:
+- source_labels: [node]
+  regex: 'rabbit01@rabbit01'
+  replacement: 'public-rabbitmq01.paas.production:5672'
+  target_label: node_addr
+```
 
 第一个是采集之前通过已有的标签，采集之前的标签通常是服务发现时设置的，生成新的标签instance。
 
