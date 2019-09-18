@@ -3,7 +3,7 @@ layout: default
 title: "Kubernetes ingress-nginx 4 层 tcp 代理，无限重试不存在的地址，高达百万次"
 author: 李佶澳
 date: "2019-09-17 14:08:20 +0800"
-last_modified_at: "2019-09-17 21:35:29 +0800"
+last_modified_at: "2019-09-18 11:45:42 +0800"
 categories: 问题
 cover:
 tags: kubernetes_problem
@@ -62,7 +62,7 @@ server {
 
 因为代理过程是用 lua 脚本控制的，需要界定`无限重试`的行为是 openresty/nginx 自身的行为，还是 lua 脚本导致的行为。
 
-## 在 nginx 1.12.2 中使用
+## 在 nginx 1.12.2 中试验
 
 先用 nginx version: nginx/1.12.2 试验一下。
 
@@ -147,7 +147,7 @@ $ curl 127.0.0.1:12346
 
 同时 error 日志中有大量日志，多达百万条：
 
-![openresty-1.15.8.1无限重试]({{ site.imglocal }}/openresty-1.15.8.1.png)
+![openresty-1.15.8.1无限重试]({{ site.imglocal }}/page/openresty-1.15.8.1.png)
 
 将 ngx_balancer.set_more_tries(1) 修改为 ngx_balancer.set_more_tries(0) 则没有问题，但是 [set_more_tries][5] 接口的参数是 count 的意思，指定的重试次数而不是设置无限重试。
 
