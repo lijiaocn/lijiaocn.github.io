@@ -825,6 +825,8 @@ prometheus支持修改标签。metric的标签可以在采集端采集的时候�
 
 ## 杂项
 
+>Prometheus 的查询语句、指标运算等更多内容见 [小鸟笔记之Prometheus 使用手册](https://www.lijiaocn.com/soft/prometheus/ )。 
+
 下面是学习过程中，查询的一些资料，直接罗列，没有做整理。
 
 规则检查：
