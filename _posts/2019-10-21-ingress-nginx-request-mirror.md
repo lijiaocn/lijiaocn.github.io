@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "Kubernetes ingress-nginx 的http 请求复制功能使用方法和不足"
+title: "Kubernetes ingress-nginx 的http 请求复制功能用法和行为差异"
 author: 李佶澳
 date: "2019-10-21 16:41:31 +0800"
-last_modified_at: "2019-10-22 17:55:48 +0800"
+last_modified_at: "2019-10-22 19:19:57 +0800"
 categories: 问题
 cover:
 tags: kubernetes apigateway
