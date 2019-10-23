@@ -3,7 +3,7 @@ layout: default
 title: "kubernetes ingress-nginx http 请求复制功能与 nginx mirror 的行为差异"
 author: 李佶澳
 date: "2019-10-21 16:41:31 +0800"
-last_modified_at: "2019-10-23 11:35:17 +0800"
+last_modified_at: "2019-10-23 18:00:14 +0800"
 categories: 问题
 cover:
 tags: kubernetes apigateway
@@ -84,6 +84,107 @@ $ curl -X POST -d "111111" -H "Host: mirror.echo.example" "192.168.99.100:30933/
 ```
 
 ingress-nginx 的请求复制行为不是我们预期的行为，也不方便应用，需要想办法让它的行为与 nginx 相同。
+
+## 差异原因分析
+
+以 [ingress-nginx 的请求复制功能][4] 中的环境为例，mirror 的 uri 是 /echo
+
+```conf
+  annotations:
+    nginx.ingress.kubernetes.io/mirror-uri: "/echo"
+```
+
+检查 ingress-nginx 生成的配置文件，发现在 location 中设置了变量 $location_path：
+
+```conf
+## start server mirror.echo.example
+server {
+    server_name mirror.echo.example ;
+    ...
+    location /echo {
+        set $namespace      "demo-echo";
+        set $ingress_name   "ingress-echo-with-mirror-backend";
+        set $service_name   "http-record";
+        set $service_port   "{0 80 }";
+        set $location_path  "/echo";
+        ... 省略 ...
+    }
+
+    location / {
+        set $namespace      "demo-echo";
+        set $ingress_name   "ingress-echo-with-mirror";
+        set $service_name   "echo";
+        set $service_port   "{0 80 }";
+        set $location_path  "/";
+
+        mirror /echo;
+        mirror_request_body on;
+        ... 省略 ...
+}
+```
+
+$location_path 的值是 /echo，正好是 mirror 的 uri，不过这个变量不是 nginx 的内置变量，会不会是 ingress-nginx 中的 lua 变量用该变量改写了 request_uri？
+
+...走弯路了...
+
+## 修改 ingress-nginx 的模板文件
+
+比对 ingress-nginx 的配置文件和 [nginx 请求复制功能][3] 中的配置文件，注意到两者的 proxy_pass 不同。
+
+nginx 中：
+
+```sh
+proxy_pass http://http-record_upstream$request_uri;
+```
+
+ingress-nginx 生成的配置文件中配置如下:
+
+```sh
+proxy_pass http://upstream_balancer;
+```
+
+特别注意：上面的 ingress-nginx 的 proxy_pass 是在 go 代码中写死的，不在 nginx.tmpl 模板中。
+
+```go
+// internal/ingress/controller/tempalte/template.go: 522
+func buildProxyPass(host string, b interface{}, loc interface{}) string {
+    ...
+    defProxyPass := fmt.Sprintf("%v %s%s;", proxyPass, proto, upstreamName)
+    ...
+}
+```
+
+简单修改一下：
+
+```go
+// internal/ingress/controller/tempalte/template.go: 522
+func buildProxyPass(host string, b interface{}, loc interface{}) string {
+    ...
+    defProxyPass := fmt.Sprintf("%v %s%s;", proxyPass, proto, upstreamName)
+    if proto == "http://" || proto == "https://" {
+        defProxyPass = fmt.Sprintf("%v %s%s$request_uri;", proxyPass, proto, upstreamName)
+    }
+    ...
+```
+
+重新编译，打包镜像：
+
+```sh
+make build
+make container
+```
+
+## 效果
+
+测试一下，搞定！
+
+```sh
+/go/src/Server/echo.go:46: {
+    "RemoteAddr": "172.17.0.27:36124",
+    "Method": "GET",
+    "Host": "mirror.echo.example",
+    "RequestURI": "/adba?abcdd",     # 接收端收到的 uri
+```
 
 ## 参考
 
