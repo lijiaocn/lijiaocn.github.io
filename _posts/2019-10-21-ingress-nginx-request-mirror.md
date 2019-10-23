@@ -3,12 +3,12 @@ layout: default
 title: "kubernetes ingress-nginx http 请求复制功能与 nginx mirror 的行为差异"
 author: 李佶澳
 date: "2019-10-21 16:41:31 +0800"
-last_modified_at: "2019-10-22 19:28:15 +0800"
+last_modified_at: "2019-10-23 11:35:17 +0800"
 categories: 问题
 cover:
 tags: kubernetes apigateway
 keywords: ingress-nginx,请求复制,流量复制
-description: ingress-nginx 的请求复制行为不是我们预期的行为，不方便应用，想办法让它的行为与 nginx mirror 相同
+description: ingress-nginx 的请求复制行为不是预期的行为，不方便应用，想办法让它与 nginx mirror 相同
 ---
 
 ## 本篇目录
