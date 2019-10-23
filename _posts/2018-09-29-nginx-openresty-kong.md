@@ -3,9 +3,9 @@ layout: default
 title: "API网关Kong学习笔记（一）：Nginx、OpenResty和Kong入门，基础概念和安装部署"
 author: 李佶澳
 createdate: "2018-09-29 15:41:50 +0800"
-last_modified_at: "2019-03-13 16:38:35 +0800"
+last_modified_at: "2019-10-23 16:10:47 +0800"
 categories: 项目
-tags: kong
+tags: kong nginx openresty
 keywords: kong,openresty,nginx,apigateway,API网关
 description: Nginx、OpenRestry、Kong这三个项目紧密相连，OpenResty是围绕Nginx做的Web平台，Kong是一个OpenResty应用。
 ---
