@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "Kubernetes ingress-nginx 的金丝雀（canary）/灰度发布功能的使用方法"
+title: "kubernetes ingress-nginx 的金丝雀（canary）/灰度发布功能的使用方法"
 author: 李佶澳
 createdate: "2019-07-12 18:00:45 +0800"
-last_modified_at: "2019-09-16 14:11:20 +0800"
+last_modified_at: "2019-10-28 17:21:48 +0800"
 categories: 项目
 tags: kubernetes
 cover:
