@@ -3,7 +3,7 @@ layout: default
 title: "kubernetes ingress-nginx 的测试代码（单元测试+e2e测试）"
 author: 李佶澳
 date: "2019-10-28 15:58:24 +0800"
-last_modified_at: "2019-10-28 16:13:14 +0800"
+last_modified_at: "2019-10-29 17:05:17 +0800"
 categories: 项目
 cover:
 tags: kubernetes
@@ -77,6 +77,18 @@ balancer/               fixtures/               run.lua
 balancer_test.lua       helpers.lua             util/
 certificate_test.lua    lua_ingress_test.lua    util_test.lua
 configuration_test.lua  monitor_test.lua
+```
+
+Lua 测试代码的执行：
+
+```sh
+resty \
+  -I ./rootfs/etc/nginx/lua \
+  --shdict "configuration_data 5M" \
+  --shdict "certificate_data 16M" \
+  --shdict "balancer_ewma 1M" \
+  --shdict "balancer_ewma_last_touched_at 1M" \
+  ./rootfs/etc/nginx/lua/test/run.lua ${BUSTED_ARGS} ./rootfs/etc/nginx/lua/test/
 ```
 
 ## e2e 测试代码
