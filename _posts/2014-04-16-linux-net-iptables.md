@@ -486,20 +486,6 @@ iptables的日志信息是kernel日志，可以通过dmesg查看，为了方便�
 	eth1接收的目的地址为172.19.1.10的包，目的地址被改写为192.168.1.10
 		iptables -t nat -A PREROUTING -i eth1 -d 172.19.1.10 -j DNAT --to 192.168.1.10
 
-## 参考
-
-1. man iptables
-2. [sturcture of iptables][2]
-3. [利用raw表实现iptables调试][3]
-4. [iptables-debugging][4]
-5. [iptables-contents][5]
-6. man iptables-extensions
-7. [target REDIRECT][7]
-8. [Iptables Tutorial 1.2.2][8]
-9. [netfilter][9]
-10. [使用TRACE模块对报文进行全程跟踪][10]
-
-
 ## iptables-extensions
 
 iptables-extensions由多个mach module和多个target module组成，每个module都有自己的参数。
@@ -749,20 +735,6 @@ iptables的日志信息是kernel日志，可以通过dmesg查看，为了方便�
 	eth1接收的目的地址为172.19.1.10的包，目的地址被改写为192.168.1.10
 		iptables -t nat -A PREROUTING -i eth1 -d 172.19.1.10 -j DNAT --to 192.168.1.10
 
-## 参考
-
-1. man iptables
-2. [sturcture of iptables][2]
-3. [利用raw表实现iptables调试][3]
-4. [iptables-debugging][4]
-5. [iptables-contents][5]
-6. man iptables-extensions
-7. [target REDIRECT][7]
-8. [Iptables Tutorial 1.2.2][8]
-9. [netfilter][9]
-10. [使用TRACE模块对报文进行全程跟踪][10]
-
-
 ## iptables-extensions
 
 iptables-extensions由多个mach module和多个target module组成，每个module都有自己的参数。
@@ -844,8 +816,6 @@ set模块监测是否命中ipset。ipset是用命令`ipset`管理的，可以查
 	man ipset
 
 ##### mark
-
-
 
 #### target modules
 
