@@ -232,6 +232,7 @@ div.center pre {
 
 div.center pre code {
 	white-space: pre;
+	color: #DDDDDD;
 }
 
 div.postlist p {
