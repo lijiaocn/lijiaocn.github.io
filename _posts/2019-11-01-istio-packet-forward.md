@@ -3,7 +3,7 @@ layout: default
 title: "服务网格/ServiceMesh 项目 istio 的流量重定向、代理请求过程分析"
 author: 李佶澳
 date: "2019-11-01 11:01:07 +0800"
-last_modified_at: "2019-11-05 14:33:15 +0800"
+last_modified_at: "2019-11-07 23:51:57 +0800"
 categories: 项目
 cover:
 tags: istio
@@ -19,6 +19,7 @@ description: istio 使用手册的配套笔记，以 Bookinfo Application 为例
 ## 说明
 
 这是 [istio 使用手册][2] 的配套笔记，以 [Bookinfo Application ][3] 为例分析 istio 的流量转发过程，使用的是 [istio 使用手册][2] 中的环境。
+如果你不想看这个略微繁杂的过程，或者完全搞不懂这是在做什么，就看公众号上的文章：[istio是怎样强行代理Pod的进出请求的？][5]
 
 ## 环境简单说明
 
@@ -505,8 +506,10 @@ initContainers 设置的 iptables 规则强行将报文重定向到 envoy，envo
 2. [istio 使用手册][2]
 3. [istio 的 Bookinfo Application 示例拆解][3]
 4. [创建 Gateway，边界 envoy 开始监听][4]
+5. [istio是怎样强行代理Pod的进出请求的？][5]
 
 [1]: https://www.lijiaocn.com "李佶澳的博客"
 [2]: https://www.lijiaocn.com/soft/istio/ "Istio 使用手册"
 [3]: https://www.lijiaocn.com/soft/istio/bookinfo.html "Istio 的 Bookinfo Application 示例拆解"
 [4]: https://www.lijiaocn.com/soft/istio/bookinfo.html#%E5%88%9B%E5%BB%BA-gateway%EF%BC%8C%E8%BE%B9%E7%95%8C-envoy-%E5%BC%80%E5%A7%8B%E7%9B%91%E5%90%AC "创建 Gateway，边界 envoy 开始监听"
+[5]: https://mp.weixin.qq.com/s/NXH7N6QipCtxb7wcsl4AEg "istio是怎样强行代理Pod的进出请求的？"
