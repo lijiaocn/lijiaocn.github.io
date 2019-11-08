@@ -3,7 +3,7 @@ layout: default
 title: "kubernetes ingress-nginx http 请求复制功能与 nginx mirror 的行为差异"
 author: 李佶澳
 date: "2019-10-21 16:41:31 +0800"
-last_modified_at: "2019-10-28 18:07:22 +0800"
+last_modified_at: "2019-11-08 22:00:25 +0800"
 categories: 问题
 cover:
 tags: kubernetes apigateway
@@ -21,6 +21,31 @@ description: ingress-nginx 的请求复制行为不是预期的行为，不方�
 Kubernetes 以及 ingress-nginx 的用法已经整理到 [小鸟笔记][2] 中，大量的操作方法和操作细节，以及用到的素材都在笔记中。对某一具体问题或功能的分析用这里的单篇文章记录。
 
 Nginx 从 1.13.4 开始提供了 [ http 请求复制功能][3]，Ingress-nginx 也及时跟进提供了同样的功能，[Nginx 请求复制功能][3]。但是实际测试发现两者的行为不一致。
+
+## （更正）更好的解决方法 2019-11-08 21:56:47
+
+下面的方法走弯路了，只需要对接收复制流量的 ingress 做一次 rewrite 就可以了，如下：
+
+```yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    # 使用原始的 uri
+    nginx.ingress.kubernetes.io/rewrite-target: $request_uri
+  name: ingress-echo-with-mirror-backend
+spec:
+  rules:
+  - host: mirror.echo.example
+    http:
+      paths:
+      - path: /echo
+        backend:
+          serviceName: http-record
+          servicePort: 80
+```
+
+具体效果见：[ingress-nginx 复制原始的 uri][5]
 
 ## nginx 与 ingress-ningx 请求复制的差异
 
@@ -197,3 +222,4 @@ make container
 [2]: https://www.lijiaocn.com/soft/k8s/ingress-nginx/ "ingress-nginx 的使用方法"
 [3]: https://www.lijiaocn.com/soft/nginx/mirror.html "Nginx 请求复制功能"
 [4]: https://www.lijiaocn.com/soft/k8s/ingress-nginx/mirror.html "Ingress-nginx 的请求复制功能"
+[5]: https://www.lijiaocn.com/k8s/ingress-nginx/mirror.html#%E5%A4%8D%E5%88%B6%E5%8E%9F%E5%A7%8B%E7%9A%84-uri  "复制原始的 uri"
