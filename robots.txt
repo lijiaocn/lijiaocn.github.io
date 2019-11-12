@@ -10,3 +10,4 @@ Sitemap: https://www.lijiaocn.com/soft/feed.xml
 Sitemap: https://www.lijiaocn.com/prog/feed.xml
 Sitemap: https://www.lijiaocn.com/oper/feed.xml
 Sitemap: https://www.lijiaocn.com/shuiku/feed.xml
+Sitemap: https://www.lijiaocn.com/book/feed.xml
