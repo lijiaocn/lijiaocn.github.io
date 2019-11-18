@@ -3,7 +3,7 @@ layout: default
 title: "为 Kubernetes 中的容器设置透明代理，自动在 HTTP 请求头中注入 Pod 信息"
 author: 李佶澳
 date: "2019-11-14 20:00:30 +0800"
-last_modified_at: "2019-11-18 11:29:29 +0800"
+last_modified_at: "2019-11-18 11:44:11 +0800"
 categories: 技巧
 cover:
 tags: kubernetes nginx apigateway
@@ -40,7 +40,7 @@ description: 集群外部的服务获取不到 Pod 的信息，会给故障排�
 
 ## 使用方法
 
-相关配置已经打包成镜像 lijiaocn/nginx-tranproxy:0.1（[docker-nginx-tranproxy][6]），可以用 sidecar 的方式部署或者以 lijiaocn/nginx-tranproxy:0.1 为 base 镜像制作制作业务容器的镜像。
+相关配置已经打包成镜像 lijiaocn/nginx-tranproxy:0.1（[docker-nginx-tranproxy][6]），可以用 sidecar 的方式部署或者以 lijiaocn/nginx-tranproxy:0.1 为 base 镜像制作业务容器的镜像。
 
 lijiaocn/nginx-tranproxy 的使用方法：
 
@@ -110,7 +110,7 @@ containers:
       - NET_ADMIN
 ```
 
-完整的 yaml 文件是 [usage-sidecar-mode.yaml](https://github.com/lijiaocn/containers/blob/master/docker-nginx-tranproxy/usage-sidecar-mode.yaml)。tail 容器是一个什么也不做的业务容器。
+完整的 yaml 文件是 [usage-sidecar-mode.yaml](https://github.com/lijiaocn/containers/blob/master/docker-nginx-tranproxy/usage-sidecar-mode.yaml)，tail 容器是一个什么也不做的业务容器。
 
 在 nginx-tranproxy 容器中可查看设置的 iptables 规则：
 
@@ -148,10 +148,10 @@ Request Headers:
 	accept=*/*
 	connection=close
 	host=172.17.0.21:8080
-	
-	...透明代理添加的请求头....
-	tranproxy=true
 	user-agent=curl/7.61.1
+	
+	...透明代理添加的请求头，和 nginx-tranproxy 的运行参数对应....
+	tranproxy=true
 	x-client-hostname=tail-with-nginx-tranproxy-59d8b5f4f9-ptpq2
 	x-forwarded-for=172.17.0.28
 
