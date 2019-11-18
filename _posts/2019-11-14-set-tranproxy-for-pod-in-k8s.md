@@ -3,7 +3,7 @@ layout: default
 title: "为 Kubernetes 中的容器设置透明代理，自动在 HTTP 请求头中注入 Pod 信息"
 author: 李佶澳
 date: "2019-11-14 20:00:30 +0800"
-last_modified_at: "2019-11-18 11:24:45 +0800"
+last_modified_at: "2019-11-18 11:29:29 +0800"
 categories: 技巧
 cover:
 tags: kubernetes nginx apigateway
@@ -193,7 +193,7 @@ containers:
         fieldPath: status.podIP
 ```
 
-`--`之后是业务系统的启动命令，这种方式可以少用一个 sidecar 容器。
+`--`之后是业务系统的启动命令，这种方式可以少用一个 sidecar 容器，完整的 yaml 文件：[usage-together-mode.yaml][8]。
 
 ## 参考
 
@@ -204,6 +204,7 @@ containers:
 5. [服务网格/ServiceMesh 项目 istio 的流量重定向、代理请求过程分析][5]
 6. [docker-nginx-tranproxy][6]
 7. [用 echoserver 观察代理/转发效果][7]
+8. [usage-together-mode.yaml][8]
 
 [1]: https://www.lijiaocn.com "李佶澳的博客"
 [2]: https://blog.csdn.net/z69183787/article/details/41802505 "图解正向代理、反向代理、透明代理"
@@ -212,3 +213,4 @@ containers:
 [5]: https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2019/11/01/istio-packet-forward.html "服务网格/ServiceMesh 项目 istio 的流量重定向、代理请求过程分析"
 [6]: https://github.com/lijiaocn/containers/tree/master/docker-nginx-tranproxy "docker-nginx-tranproxy"
 [7]: https://www.lijiaocn.com/soft/envoy/echoserver.html "用 echoserver 观察代理/转发效果"
+[8]: https://github.com/lijiaocn/containers/blob/master/docker-nginx-tranproxy/usage-together-mode.yaml "usage-together-mode.yaml"
