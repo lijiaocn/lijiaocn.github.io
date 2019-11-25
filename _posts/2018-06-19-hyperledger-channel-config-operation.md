@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2018/06/19 19:38:00
 last_modified_at: 2018/07/29 13:03:09
 categories: 项目
-tags: hyperledger
+tags: HyperLedger
 keywords: HyperLedger,超级账本,configtxlator,配置文件
 description: HyperLedger Fabric的Channel的配置文件，以及配置的读取、更新是比较让人迷惑的
 

@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2018/07/17 13:24:00
 last_modified_at: 2018/07/29 13:04:53
 categories: 问题
-tags: hyperledger  
+tags: HyperLedger  
 keywords: 超级账本,golang sdk,fabric sdk,hyperledger,fabric,区块链问题
 description: 这里记录使用HyperLedger Fabric的golang sdk时遇到的一些问题
 

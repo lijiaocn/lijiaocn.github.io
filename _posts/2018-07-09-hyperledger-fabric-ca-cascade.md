@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2018/06/06 13:41:00
 last_modified_at: 2018/07/20 13:57:53
 categories: 项目
-tags: hyperledger
+tags: HyperLedger
 keywords: hyperledger,fabricCA,超级账本,fabric
 description: 在HyperLedger Fabric实际使用中，每个接入的机构都有自己用户管理系统，FabricCA必然要采用“级联”的方式部署
 

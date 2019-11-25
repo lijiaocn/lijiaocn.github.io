@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2018/07/26 11:07:00
 last_modified_at: 2018/09/01 15:15:53
 categories: 问题
-tags: hyperledger
+tags: HyperLedger
 keywords: HyperLedger,1.2.0,problems
 description: HyperLedger Fabric 1.2.0使用过程中遇到的一些问题。
 
