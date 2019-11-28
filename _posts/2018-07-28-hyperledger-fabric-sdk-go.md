@@ -25,16 +25,18 @@ HyperLedger Fabric的Golang SDK终于调通了，眼泪哗哗地。。 @2018-07-
 
 ## 获取示例代码
 
-源代码托管在github: [源代码地址](https://github.com/introclass/hyperledger-fabric-sdks-usage)，[fabric-sdk-go](https://github.com/hyperledger/fabric-sdk-go)
+示例源代码托管在 github: [hyperledger-fabric-sdks-usage](https://github.com/introclass/hyperledger-fabric-sdks-usage)。
 
 	go get github.com/introclass/hyperledger-fabric-sdks-usage
 	cd $GOPATH/src/github.com/introclass/hyperledger-fabric-sdks-usage/go
 
-## 准备msp和tls证书
+fabric sdk 代码位于：[fabric-sdk-go](https://github.com/hyperledger/fabric-sdk-go)。
 
-将你自己环境的`crypto-config`复制到`hyperledger-fabric-sdks-usage/go`中。
+## 准备 msp 和 tls 证书
 
-crypto-config中只需要包含`需要的`msp和tls证书，需要哪些证书在调用go-sdk的程序使用的config.yaml中指定了。
+将你自己环境的 `crypto-config` 复制到 `hyperledger-fabric-sdks-usage/go` 中。
+
+crypto-config 中只需要包含`需要的` msp 和 tls 证书，需要哪些证书在调用go-sdk的程序使用的 config.yaml 中指定了。
 
 ## 查询合约
 
