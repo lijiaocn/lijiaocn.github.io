@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "蚂蚁金服大规模 ServiceMesh 落地思路和实践经验的学习总结"
+title: "蚂蚁金服大规模 ServiceMesh 落地思路和实践经验的 5 篇分享学习总结"
 author: 李佶澳
 date: "2019-11-29 17:01:14 +0800"
-last_modified_at: "2019-12-01 12:09:12 +0800"
+last_modified_at: "2019-12-01 14:18:50 +0800"
 categories: 方法
 cover: 
 tags: istio
