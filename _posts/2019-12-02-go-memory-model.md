@@ -3,7 +3,7 @@ layout: default
 title: "Go 语言的内存模型：并发编程时可能犯的最隐晦错误！跨协程赋值乱序"
 author: 李佶澳
 date: "2019-12-02 10:47:30 +0800"
-last_modified_at: "2019-12-02 17:49:38 +0800"
+last_modified_at: "2019-12-02 17:56:46 +0800"
 categories: 编程
 cover:
 tags: golang
@@ -35,7 +35,7 @@ Go 的网站上有一篇 2014 年的文章 [The Go Memory Model][2]，题目是 
 
 ## 错误用法1
 
-例如下面这段代码就有很严重的问题：
+例如下面这段代码就有很严重的问题，如果感觉这个例子难以理解，可以先看后面两个简单一些的例子：
 
 ```go
 // Create: 2019/12/02 11:14:00 Change: 2019/12/02 11:47:44
@@ -86,11 +86,11 @@ setup() 函数在哪个协程中执行是不确定的，为方便讨论，这里
 
 协程一执行 doprint() 时，done 为 false，这时候它会调用 setup()，先为 a 赋值，然后为 done 赋值，因此第一个协程执行 println(a) 时，变量的 a 的值一定是 "hello, world"。
 
-协程二执行 doprint() 时就未必了。假设只执行一次的 setup() 函数是在协程一中执行的，协程一按照语句顺序先为变量 a 赋值，后为变量 done 赋值。 **但是，重点来了！协程二看到的赋值顺序是不一定的！** 
+协程二执行 doprint() 时就未必了，假设只会执行一次的 setup() 函数是在协程一中执行的，协程一按照语句顺序先为变量 a 赋值，后为变量 done 赋值。 **但是，重点来了！协程二看到的赋值顺序是不一定的！** 
 
 >Within a single goroutine, reads and writes must behave as if they executed in the order specified by the program. That is, compilers and processors may reorder the reads and writes executed within a single goroutine only when the reordering does not change the behavior within that goroutine as defined by the language specification. Because of this reordering, the execution order observed by one goroutine may differ from the order perceived by another. For example, if one goroutine executes a = 1; b = 2;, another might observe the updated value of b before the updated value of a.
 
-Go 的编译器会在打乱内存的读取和写入顺序，当然了，是在不改变代码语义的情况下。协程内的内存操作顺序和代码语义是严格匹配的，但是对另外一个协程来说就不一定了。
+Go 的编译器会打乱变量的赋值顺序，当然了，是在不改变代码语义的情况下，但是这个保证仅限于协程内，对另外一个协程来说就不一定了。
 
 协程二看到的赋值顺序可能是： 
 
