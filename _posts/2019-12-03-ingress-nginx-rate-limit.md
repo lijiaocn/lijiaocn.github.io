@@ -3,7 +3,7 @@ layout: default
 title: "ingress-nginx 的限速功能在 nginx.conf 中的对应配置"
 author: 李佶澳
 date: "2019-12-03 18:03:38 +0800"
-last_modified_at: "2019-12-03 19:37:24 +0800"
+last_modified_at: "2019-12-03 19:48:59 +0800"
 categories: 项目
 cover:
 tags: kubernetes
@@ -38,9 +38,8 @@ zone 指向的是统计请求次数的共享内存，设置如下：
 limit_req_zone $limit_dGVzdC1qaW5nYW5naHVpZ3VpeWlfZmFzdGpzb24 zone=test-fastjson_rpm:5m rate=5r/m;
 ```
 
-内存大小是 5 兆，限速频率为每分钟 5 次。重点作为 key 的变量 $limit_dGVzdC1qaW5nYW5naHVpZ3VpeWlfZmFzdGpzb24。
-
-$limitXXX 变量共享内存中的次数统计的 key，它的值是白名单之外的 IP 地址，定义如下：
+内存大小是 5 兆，限速频率为每分钟 5 次。重点是作为 key 的变量 $limit_XXX 的值。
+$limit_XXX 变量是共享内存中的次数统计的 key，用 map 指令定义，它的值取决于 $whitelist_XXX，如果 $whitelist_XXX 为 0，$limitXXX 的值是 $binary_remote_addr，即源 IP，否则为空。
 
 ```conf
 map $whitelist_dGVzdC1qaW5nYW5naHVpZ3VpeWlfZmFzdGpzb24 $limit_dGVzdC1qaW5nYW5naHVpZ3VpeWlfZmFzdGpzb24 {
@@ -49,9 +48,7 @@ map $whitelist_dGVzdC1qaW5nYW5naHVpZ3VpeWlfZmFzdGpzb24 $limit_dGVzdC1qaW5nYW5naH
 }
 ```
 
-$limitXXX 是用 map 指令定义的，它的值取决于 $whitelist_XXX，如果 $whitelist_XXX 为 0，$limiteXXX 的值是 $binary_remote_addr，即源 IP，否则为空。
-
-用 geo 变通实现了白名单，$the_real_ip 与 1.1.0.0/16 匹配时，$whitelist 是 1：
+用白名单用 geo 变通实现，$the_real_ip 与名单中的 1.1.0.0/16 匹配时，$whitelist_XXX 是 1：
 
 ```conf
 geo $the_real_ip $whitelist_dGVzdC1qaW5nYW5naHVpZ3VpeWlfZmFzdGpzb24 {
@@ -72,7 +69,7 @@ map '' $the_real_ip {
 
 ## 不足 
 
-ingress-nginx 的限速功能只支持白名单，可以对部分 IP 不限速，不支持黑名单，有时候希望限定特定的 IP 的访问速度。
+ingress-nginx 的限速功能只支持白名单，可以对部分 IP 不限速，但不支持黑名单，有时候希望只对特定的 IP 限速。
 
 另外默认都是 nodelay 方式，好像不支持自定义：
 
