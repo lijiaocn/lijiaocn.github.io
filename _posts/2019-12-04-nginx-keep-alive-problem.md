@@ -3,10 +3,10 @@ layout: default
 title: "kubernetes ingress-nginx 启用 upstream 长连接，需要注意，否则容易 502"
 author: 李佶澳
 date: "2019-12-04 16:01:58 +0800"
-last_modified_at: "2019-12-04 19:03:56 +0800"
+last_modified_at: "2019-12-04 19:16:06 +0800"
 categories: 问题
 cover:
-tags: nginx
+tags: nginx kubernetes kubernetes_problem
 keywords: nginx,502,104,keepalive,keepalive_timeout,keepalive_requests
 description: nginx 中配置的连接断开条件比后端服务宽松，容易出现后端服务先断开连接的情况
 ---
