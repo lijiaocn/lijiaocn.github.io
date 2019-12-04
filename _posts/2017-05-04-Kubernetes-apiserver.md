@@ -1,6 +1,6 @@
 ---
 layout: default
-title: kubernetes的Apiserver的工作过程
+title: kubernetes 的 Apiserver 的工作过程
 author: 李佶澳
 createdate: 2017/05/04 16:28:23
 last_modified_at: 2017/06/09 15:56:39

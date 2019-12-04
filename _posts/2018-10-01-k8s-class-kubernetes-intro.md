@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  "Kubernetes1.12从零开始（初）：课程介绍与官方文档汇总"
+title:  "kubernetes 1.12 从零开始（初）：课程介绍与官方文档汇总"
 author: 李佶澳
 createdate: 2018/09/03 20:43:00
 last_modified_at: 2018/11/11 18:14:32

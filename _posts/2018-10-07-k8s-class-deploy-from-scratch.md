@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Kubernetes1.12从零开始（五）：自己动手部署kubernetes"
+title: "kubernetes 1.12 从零开始（五）：自己动手部署 kubernetes"
 author: 李佶澳
 createdate: 2018/10/07 20:43:00
 last_modified_at: 2018/11/11 18:42:02

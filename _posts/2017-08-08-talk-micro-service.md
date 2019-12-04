@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 怎样理解kubernetes以及微服务?
+title: 怎样理解 kubernetes 以及微服务?
 author: 李佶澳
 createdate: 2017/08/08 20:23:39
 last_modified_at: 2017/10/28 11:39:59

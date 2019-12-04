@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  "Kubernetes1.12从零开始（三）：用kubeadm部署多节点集群"
+title:  "kubernetes 1.12 从零开始（三）：用 kubeadm 部署多节点集群"
 author: 李佶澳
 createdate: 2018/09/03 20:43:00
 last_modified_at: 2018/11/11 18:41:48
@@ -318,7 +318,7 @@ master初始化成功以后，会显示下面的信息：
 [1]: https://kubernetes.io/docs/setup/minikube/ "Running Kubernetes Locally via Minikube"
 [2]: https://kubernetes.io/docs/setup/independent/ "Bootstrapping Clusters with kubeadm"
 [3]: https://kubernetes.io/docs/setup/scratch/ "Creating a Custom Cluster from Scratch"
-[4]: http://127.0.0.1:4000/%E9%A1%B9%E7%9B%AE/2018/10/02/k8s-class-enviromnent.html "Kubernetes1.12从零开始（二）：部署环境准备"
+[4]: https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/02/k8s-class-enviromnent.html "Kubernetes1.12从零开始（二）：部署环境准备"
 [5]: https://kubernetes.io/docs/tasks/tools/install-minikube/ "Install Minikube"
 [6]: https://kubernetes.io/docs/tasks/tools/install-kubectl/ "Install and Set Up kubectl"
 [7]: https://github.com/kubernetes/minikube/releases "kubernetes minikube project"

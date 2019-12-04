@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "Kubernetes的操作命令kubectl在shell中的自动补全"
+title: "kubernetes 操作命令 kubectl 在 shell 中的自动补全配置"
 author: 李佶澳
 createdate: "2019-03-21 18:49:16 +0800"
-last_modified_at: "2019-03-21 19:04:31 +0800"
+last_modified_at: "2019-12-04 10:45:36 +0800"
 categories: 技巧
 tags: kubernetes
 keywords: kubernetes,kubectl,自动补全

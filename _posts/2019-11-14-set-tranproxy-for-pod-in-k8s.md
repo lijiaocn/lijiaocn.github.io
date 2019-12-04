@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "为 Kubernetes 中的容器设置透明代理，自动在 HTTP 请求头中注入 Pod 信息"
+title: "kubernetes 中的容器设置透明代理，自动在 HTTP 请求头中注入 Pod 信息"
 author: 李佶澳
 date: "2019-11-14 20:00:30 +0800"
-last_modified_at: "2019-11-18 11:44:11 +0800"
+last_modified_at: "2019-12-04 10:53:32 +0800"
 categories: 技巧
 cover:
 tags: kubernetes nginx apigateway

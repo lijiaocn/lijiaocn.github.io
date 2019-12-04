@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "Kubernetes Initializer功能的使用方法：在Pod等Resource落地前进行修改"
+title: "kubernetes initializer 功能的使用方法：在 Pod 等 Resource 落地前进行修改"
 author: 李佶澳
 createdate: "2019-01-09 17:01:30 +0800"
-last_modified_at: "2019-01-12 14:38:18 +0800"
+last_modified_at: "2019-12-04 10:47:18 +0800"
 categories: 技巧
 tags: kubernetes
 keywords: kubernetes,initializer

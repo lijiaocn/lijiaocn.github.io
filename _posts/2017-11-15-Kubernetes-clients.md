@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Kubernetes 的 Client Libraries 的使用
+title: kubernetes 的 Client Libraries 的使用
 author: 李佶澳
 createdate: 2017/11/15 15:37:33
 last_modified_at: 2017/11/17 16:18:46

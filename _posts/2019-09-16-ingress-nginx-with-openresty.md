@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "Kubernetes 基于 openresty 的 ingress-nginx 的状态和配置查询"
+title: "kubernetes 基于 openresty 的 ingress-nginx 的状态和配置查询"
 author: 李佶澳
 date: "2019-09-16 11:54:29 +0800"
-last_modified_at: "2019-09-16 17:27:38 +0800"
+last_modified_at: "2019-12-04 10:52:43 +0800"
 categories: 项目
 cover:
 tags: kubernetes

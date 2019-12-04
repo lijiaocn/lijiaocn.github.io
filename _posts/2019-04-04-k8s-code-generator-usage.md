@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "Kubernetes的code-generator用法：生成kubernetes-style的api和client代码"
+title: "kubernetes code-generator 用法：生成 kubernetes-style 的 api 和 client 代码"
 author: 李佶澳
 createdate: "2019-04-04 15:36:14 +0800"
-last_modified_at: "2019-04-12 15:22:07 +0800"
+last_modified_at: "2019-12-04 10:45:03 +0800"
 categories: 项目
 tags: kubernetes
 keywords: kubernetes,code-generator,kubernetes-style,api

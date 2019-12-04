@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  "Kubernetes1.12从零开始（四）：必须先讲一下基本概念"
+title:  "kubernetes 1.12 从零开始（四）：必须先讲一下基本概念"
 author: 李佶澳
 createdate: 2018/10/05 22:07:51
 last_modified_at: 2018/11/11 18:41:53
@@ -118,7 +118,7 @@ Pod是比容器更高一层的概念。增加了这一层，自然是为了增�
 
 对于Pod，需要特别关注的是[Pod的生命周期](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/)，
 甚至可以在不同阶段挂载钩子[Attach Handlers to Container Lifecycle Events](https://kubernetes.io/docs/tasks/configure-pod-container/attach-handler-lifecycle-event/),
-我把和Pod相关的文档，都收集在了[Pod和Container操作](http://127.0.0.1:4000/%E9%A1%B9%E7%9B%AE/2018/10/01/k8s-class-kubernetes-intro.html#pod%E5%92%8Ccontainer%E6%93%8D%E4%BD%9C)中。
+我把和Pod相关的文档，都收集在了[Pod和Container操作](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/01/k8s-class-kubernetes-intro.html#pod%E5%92%8Ccontainer%E6%93%8D%E4%BD%9C)中。
 
 Controller是比Pod更高一层的概念。Controller是由一组Pod组成的，这一组Pod是可以分布在不同的Node上。Pod虽然支持多个容器，但是它的定位还是单一任务，不支持无法跨Node分布容器。跨Node分布任务的重任，分派给了Controller，Pod安心关注内部的容器就可以了。
 
@@ -153,7 +153,7 @@ Controller是比Pod更高一层的概念。Controller是由一组Pod组成的，
 
 配置怎样获得呢？kubernetes支持这样几种方式：
 
-在提交任务的时候，指定命令行参数、或者环境变量，见[数据注入应用的方法](http://127.0.0.1:4000/%E9%A1%B9%E7%9B%AE/2018/10/01/k8s-class-kubernetes-intro.html#%E6%95%B0%E6%8D%AE%E6%B3%A8%E5%85%A5%E5%BA%94%E7%94%A8%E7%9A%84%E6%96%B9%E6%B3%95);
+在提交任务的时候，指定命令行参数、或者环境变量，见[数据注入应用的方法](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2018/10/01/k8s-class-kubernetes-intro.html#%E6%95%B0%E6%8D%AE%E6%B3%A8%E5%85%A5%E5%BA%94%E7%94%A8%E7%9A%84%E6%96%B9%E6%B3%95);
 
 将配置保存在ConfigMap中，提交任务的时候挂载ConfigMap，见[Configure a Pod to Use a ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/);
 

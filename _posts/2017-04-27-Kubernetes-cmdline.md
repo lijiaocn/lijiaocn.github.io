@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Kuberntes的Cmdline实现
+title: kuberntes 的 Cmdline 实现
 author: 李佶澳
 createdate: 2017/04/27 14:39:12
 last_modified_at: 2017/09/21 19:19:51

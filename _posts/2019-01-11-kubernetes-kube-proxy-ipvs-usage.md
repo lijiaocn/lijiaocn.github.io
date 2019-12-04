@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "Kubernetes组件kube-proxy的IPVS功能的使用"
+title: "kubernetes 组件 kube-proxy 的 IPVS 功能的使用"
 author: 李佶澳
 createdate: "2019-01-11 11:13:52 +0800"
-last_modified_at: "2019-01-15 16:27:02 +0800"
+last_modified_at: "2019-12-04 10:54:10 +0800"
 categories: 项目
 tags: kubernetes
 keywords: ipvs,kube-proxy,kubernetes

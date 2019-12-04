@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Kubernetes与calico的衔接过程
+title: kubernetes 与 calico 的衔接过程
 author: 李佶澳
 createdate: 2017/09/11 16:45:48
 last_modified_at: 2017/11/29 14:14:34
