@@ -3,7 +3,7 @@ layout: default
 title: "kubernetes 调度组件 kube-scheduler 1.16.3 源代码阅读指引"
 author: 李佶澳
 date: "2019-12-08 22:23:33 +0800"
-last_modified_at: "2019-12-08 23:56:06 +0800"
+last_modified_at: "2019-12-09 23:47:25 +0800"
 categories: 编程
 cover:
 tags: kubernetes
@@ -18,12 +18,12 @@ description: 找不到命令行参数的初始化过程，是阻止你阅读 kub
 
 ## 说明
 
-找不到命令行参数的初始化过程，是刚开始阅读 kube-scheduler 源代码时会遇到的最大障碍。这一步走不通，后面的代码即使能看明白，也会感到心里没底，如同空中楼阁。
+找不到命令行参数的初始化过程，是刚开始阅读 kube-scheduler 源代码时遇到的最大障碍。这一步走不通，后面的代码即使能看明白，也会感觉心里没底，如同空中楼阁。
 第二个障碍是不知道分散在哪里的 init()。
 
-**代码阅读技巧**： 从 main 函数开始，每进入一个新目录，把新目录下的文件粗略扫视一下，如果目录中有 readme 文件一定要看，每个文件开头的注释要看。
+**代码阅读技巧**：从 main 函数开始，每进入一个新目录，把新目录下的文件粗略扫视一下，如果目录中有 readme 文件一定要看，每个文件开头的注释要看。
 
-**怎样才算熟悉代码？**:  想要查看某一环节的代码实现时，能够通过目录翻找到对应的代码文件，不需要从 main 函数开始按照执行顺序查找。
+**怎样才算熟悉代码？**：想要查看某一环节的代码实现时，能够通过目录翻找到对应的代码文件，不需要从 main 函数开始按照执行顺序查找。
 
 ## 代码入口与代码组成
 
@@ -113,7 +113,6 @@ kubeschedulerscheme "k8s.io/kubernetes/pkg/scheduler/apis/config/scheme"
 kubeschedulerscheme.Scheme 是一个全局变量用于 struct 转换，跳转到 kubeschedulerscheme.Scheme.Default(&cfgv1alpha1) 的实现，会发现这里会使用 Scheme 存放的 default 函数对传入参数，也就是前面的 cfgv1alpha1 进行设置：
 
 ```go
-
 // Default sets defaults on the provided Object.
 func (s *Scheme) Default(src Object) {
     if fn, ok := s.defaulterFuncs[reflect.TypeOf(src)]; ok {
@@ -149,13 +148,167 @@ func SetDefaults_KubeSchedulerConfiguration(obj *kubescedulerconfigv1alpha1.Kube
 
 上面就是设置默认值的代码，可以看到 AlgorithmSource.Provider 的默认值为 SchedulerDefaultProviderName（字符串 "DefaultProvider"）。
 
-## 默认插件的算法函数
+## 执行主线
 
-按照执行顺序阅读代码时，会遇到一个关键的地方：筛选符合条件的 node。到时候会好奇筛选过程中用到的函数是什么时候设置的。
+### 调度启动的主线
 
-![kube-scheduler源代码4]({{ site.imglocal }}/article/kube-scheduler-src-5.png)
+调度的主线位于 pkg/scheduler/scheduler.go ，包含调度算法的 config 和 informer 的设置都是在生成/设置的，sched 的 Run() 就是调度任务的开始：
 
-## 未完待续...
+```go
+// New returns a Scheduler
+func New(client clientset.Interface,
+    ...
+    config = sc
+    ...
+    sched := NewFromConfig(config)
+    ...
+    AddAllEventHandlers(sched, options.schedulerName, nodeInformer, podInformer, pvInformer, pvcInformer, serviceInformer, storageClassInformer)
+    ...
+}
+
+// Run begins watching and scheduling. It waits for cache to be synced, then starts a goroutine and returns immediately.
+func (sched *Scheduler) Run() {
+    if !sched.config.WaitForCacheSync() {
+        return
+    }
+
+    go wait.Until(sched.scheduleOne, 0, sched.config.StopEverything)
+}
+````
+
+### 调度算法的主线
+
+调度算法执行的主线位于 pkg/scheduler/core/generic_scheduler.go：
+
+```go
+// pkg/scheduler/core/generic_scheduler.go
+// NewGenericScheduler creates a genericScheduler object.
+func NewGenericScheduler(
+    ...
+) ScheduleAlgorithm {
+    ...
+}
+```
+
+genericScheduler 的 Schedule() 方法就是调度算法执行的主线，被 scheduleOne() 调用：
+
+```go
+// pkg/scheduler/scheduler.go
+func (sched *Scheduler) scheduleOne() {
+    ...
+    scheduleResult, err := sched.schedule(pod, pluginContext)
+    ...
+}
+
+func (sched *Scheduler) schedule(pod *v1.Pod, pluginContext *framework.PluginContext) (core.ScheduleResult, error) {
+    result, err := sched.config.Algorithm.Schedule(pod, sched.config.NodeLister, pluginContext)
+    if err != nil {
+        pod = pod.DeepCopy()
+        sched.recordSchedulingFailure(pod, err, v1.PodReasonUnschedulable, err.Error())
+        return core.ScheduleResult{}, err
+    }
+    return result, err
+}
+
+// pkg/scheduler/core/generic_scheduler.go
+func (g *genericScheduler) Schedule(pod *v1.Pod, nodeLister algorithm.NodeLister, pluginContext *framework.PluginContext) (result ScheduleResult, err error) {
+    ...
+}
+```
+
+## 调度任务获取
+
+调度就是为 Pod 选择 Node，kube-scheduler 通过各种 informer 获取调度任务。
+
+事件处理函数都在 pkg/scheduler/eventhandlers.go 中：
+
+![kube-scheduler源代码6]({{ site.imglocal }}/article/kube-scheduler-src-6.png)
+
+## 调度执行过程
+
+kube-scheduler 一次只调度一个 Pod （2019-12-09 16:39:35），调度过程在文件 pkg/scheduler/scheduler.go 中：
+
+```go
+// pkg/scheduler/scheduler.go
+func (sched *Scheduler) Run() {
+    ...
+    //每次只调度一个 pod 的 sched.scheduleOne，无限重复执行
+    go wait.Until(sched.scheduleOne, 0, sched.config.StopEverything)
+}
+```
+
+### 调度算法
+
+调度算法通过 --algorithm-provider 或者 --policy-config-file/--policy-configmap 设置，默认配置是 --algorithm-provider="DefaultProvider"。
+
+调度算法在 pkg/scheduler/scheduler.go 中设置：
+
+![kube-scheduler源代码7]({{ site.imglocal }}/article/kube-scheduler-src-7.png)
+
+DefaultProvider 在 pkg/scheduler/algorithmprovider/defaults/ 中定义：
+
+![kube-scheduler源代码5]({{ site.imglocal }}/article/kube-scheduler-src-5.png)
+
+### 调度插件
+
+调度插件是调度过程中一系列钩子，在 pkg/scheduler/scheduler.go 中调用：
+
+```go
+// pkg/scheduler/scheduler.go
+func (sched *Scheduler) scheduleOne() {
+    fwk := sched.config.Framework
+    ...
+    // Run "reserve" plugins.
+    if sts := fwk.RunReservePlugins(pluginContext, assumedPod, scheduleResult.SuggestedHost); !sts.IsSuccess() {
+        sched.recordSchedulingFailure(assumedPod, sts.AsError(), SchedulerError, sts.Message())
+        metrics.PodScheduleErrors.Inc()
+        return
+    }
+    ...
+        // Run "permit" plugins.
+        permitStatus := fwk.RunPermitPlugins(pluginContext, assumedPod, scheduleResult.SuggestedHost)
+        ...
+        // Run "prebind" plugins.
+        prebindStatus := fwk.RunPrebindPlugins(pluginContext, assumedPod, scheduleResult.SuggestedHost)
+
+            // Run "postbind" plugins.
+            fwk.RunPostbindPlugins(pluginContext, assumedPod, scheduleResult.SuggestedHost)
+    ...
+}
+```
+
+支持的钩子列表：
+
+```go
+type Framework interface {
+    FrameworkHandle
+    QueueSortFunc() LessFunc
+    RunPrefilterPlugins(pc *PluginContext, pod *v1.Pod) *Status
+    RunPrebindPlugins(pc *PluginContext, pod *v1.Pod, nodeName string) *Status
+    RunPostbindPlugins(pc *PluginContext, pod *v1.Pod, nodeName string)
+    RunReservePlugins(pc *PluginContext, pod *v1.Pod, nodeName string) *Status
+    RunUnreservePlugins(pc *PluginContext, pod *v1.Pod, nodeName string)
+    RunPermitPlugins(pc *PluginContext, pod *v1.Pod, nodeName string) *Status
+}
+```
+
+kube-scheduler 只是预留了插件接口，方便开发者自行开发插件干预调度过程，现在 kube-scheduler 中的插件是空的：
+
+```go
+func NewRegistry() Registry {
+    return Registry{
+        // FactoryMap:
+        // New plugins are registered here.
+        // example:
+        // {
+        //  stateful_plugin.Name: stateful.NewStatefulMultipointExample,
+        //  fooplugin.Name: fooplugin.New,
+        // }
+    }
+}
+```
+
+pkg/scheduler/framework/plugins/examples 中有几个示范插件，可以参照实现。
 
 ## 参考
 
