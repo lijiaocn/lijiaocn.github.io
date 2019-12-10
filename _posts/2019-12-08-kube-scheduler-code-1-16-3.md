@@ -3,7 +3,7 @@ layout: default
 title: "kubernetes 调度组件 kube-scheduler 1.16.3 源代码阅读指引"
 author: 李佶澳
 date: "2019-12-08 22:23:33 +0800"
-last_modified_at: "2019-12-09 23:47:25 +0800"
+last_modified_at: "2019-12-10 10:27:33 +0800"
 categories: 编程
 cover:
 tags: kubernetes
@@ -34,6 +34,8 @@ cmd/kube-scheduler 是源代码阅读入口，main 函数就在这个目录中�
 上面只是 kube-scheduler 所有代码的的很小一部分，大部分代码位于 pkg/scheduler：
 
 ![kube-scheduler源代码2]({{ site.imglocal }}/article/kube-scheduler-src-2.png)
+
+![kube-scheduler源代码8]({{ site.imglocal }}/article/kube-scheduler-src-8.png)
 
 ## 命令行参数设置
 
