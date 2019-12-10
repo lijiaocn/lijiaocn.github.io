@@ -3,7 +3,7 @@ layout: default
 title: "kubernetes 调度组件 kube-scheduler 1.16.3 源代码阅读指引"
 author: 李佶澳
 date: "2019-12-08 22:23:33 +0800"
-last_modified_at: "2019-12-10 10:27:33 +0800"
+last_modified_at: "2019-12-10 11:29:40 +0800"
 categories: 编程
 cover:
 tags: kubernetes
@@ -250,6 +250,10 @@ func (sched *Scheduler) Run() {
 DefaultProvider 在 pkg/scheduler/algorithmprovider/defaults/ 中定义：
 
 ![kube-scheduler源代码5]({{ site.imglocal }}/article/kube-scheduler-src-5.png)
+
+在 pkg/scheduler/algorithmprovider/defaults/register_predicates.go 中，在 init() 中把算法函数注册到 pkg/scheduler/factory/factory.go：
+
+![kube-scheduler源代码9]({{ site.imglocal }}/article/kube-scheduler-src-9.png)
 
 ### 调度插件
 
