@@ -43,7 +43,7 @@ Dtrace 可以在 Solaris、Mac OS X、FreeBSD 等系统上运行，不包含 lin
 
 ### 补充资料
 
-kernel 4.9 引入的 ebpf 功能已经是或者将要是各种观测工具的基础，kernel>=4.9 时，bcc/bpftrace 的功能能够完整发挥。ebpf 可以通过早期的笔记了解：
+kernel 3.15 引入的 ebpf 功能已经是或者将要是各种观测工具的基础，kernel>=4.1 时，bcc/bpftrace 的功能能够完整发挥。ebpf 可以通过早期的笔记了解：
 
 * [Linux内核功能eBPF入门学习（一）：BPF、eBPF、BCC等基本概念][1]
 * [Linux内核功能eBPF入门学习（二）：BCC中的eBPF应用与bpftrace等][2]
@@ -67,7 +67,7 @@ Brendan D. Gregg 在《性能之巅》中提到说 SystemTap 在一些点上已�
 
 [bpftrace][14] 借鉴 awk/C/Dtrace/SystemTap 的语法，实现了一套脚本语言。bpftrace 在 [其它平台][15] 安装比较方便，在 CentOS 上安装比较折腾。这里使用的系统是 CentOS 7.6。
 
-建议将内核升级到 4.9 以上（有些命令在 3.10 上也可用，有一些不可以）：
+建议将内核升级到 4.1 以上（有些命令在 3.10 上也可用，有一些不可以）：
 
 * [CentOS7/6内核升级的简单方法：借助ELRepo，用yum命令更新内核][13]
 
