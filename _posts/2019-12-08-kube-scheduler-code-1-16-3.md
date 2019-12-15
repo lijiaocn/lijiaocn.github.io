@@ -3,7 +3,7 @@ layout: default
 title: "kubernetes 调度组件 kube-scheduler 1.16.3 源代码阅读指引"
 author: 李佶澳
 date: "2019-12-08 22:23:33 +0800"
-last_modified_at: "2019-12-10 11:29:40 +0800"
+last_modified_at: "2019-12-15 22:17:29 +0800"
 categories: 编程
 cover:
 tags: kubernetes
@@ -24,6 +24,123 @@ description: 找不到命令行参数的初始化过程，是阻止你阅读 kub
 **代码阅读技巧**：从 main 函数开始，每进入一个新目录，把新目录下的文件粗略扫视一下，如果目录中有 readme 文件一定要看，每个文件开头的注释要看。
 
 **怎样才算熟悉代码？**：想要查看某一环节的代码实现时，能够通过目录翻找到对应的代码文件，不需要从 main 函数开始按照执行顺序查找。
+
+kube-scheduler 的开发文档：
+
+* [The Kubernetes Scheduler](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-scheduling/scheduler.md)
+* [Scheduler Algorithm in Kubernetes](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-scheduling/scheduler_algorithm.md)
+* [Scheduler Benchmarking](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-scheduling/scheduler_benchmarking.md)
+
+## 补充
+
+调度策略的 [调整方法](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-scheduling/scheduler.md#modifying-policies)：
+
+用 `--policy-config-file` 指向一个设置了调度策略的 json 文件：
+
+```sh
+{
+  "kind": "Policy",
+  "apiVersion": "v1",
+  "predicates": [
+    {
+      "name": "CheckNodeUnschedulable"
+    },
+    {
+      "name": "CheckVolumeBinding"
+    },
+    {
+      "name": "GeneralPredicates"
+    },
+    {
+      "name": "MatchInterPodAffinity"
+    },
+    {
+      "name": "MaxEBSVolumeCount"
+    },
+    {
+      "name": "MaxGCEPDVolumeCount"
+    },
+    {
+      "name": "MaxAzureDiskVolumeCount"
+    },
+    {
+      "name": "MaxCSIVolumeCountPred"
+    },
+    {
+      "name": "NoDiskConflict"
+    },
+    {
+      "name": "NoVolumeZoneConflict"
+    },
+    {
+      "name": "PodToleratesNodeTaints"
+    }
+  ],
+  "priorities": [
+    {
+      "name": "ServiceSpreadingPriority",
+      "weight": 1
+    },
+    {
+      "name": "EqualPriority",
+      "weight": 1
+    },
+    {
+      "name": "ImageLocalityPriority",
+      "weight": 1
+    },
+    {
+      "name": "MostRequestedPriority",
+      "weight": 1
+    },
+    {
+      "name": "SelectorSpreadPriority",
+      "weight": 1
+    },
+    {
+      "name": "InterPodAffinityPriority",
+      "weight": 1
+    },
+    {
+      "name": "LeastRequestedPriority",
+      "weight": 1
+    },
+    {
+      "name": "BalancedResourceAllocation",
+      "weight": 1
+    },
+    {
+      "name": "NodePreferAvoidPodsPriority",
+      "weight": 10000
+    },
+    {
+      "name": "NodeAffinityPriority",
+      "weight": 1
+    },
+    {
+      "name": "TaintTolerationPriority",
+      "weight": 1
+    },
+    {
+      "name": "GPUAllocationPriority",
+      "weight": 10
+    }
+  ],
+  "extenders" : [
+    {
+      "urlPrefix": "http://127.0.0.1:12346/scheduler",
+      "filterVerb": "filter",
+      "bindVerb": "bind",
+      "prioritizeVerb": "prioritize",
+      "weight": 5,
+      "enableHttps": false,
+      "nodeCacheCapable": false
+    }
+  ],
+  "hardPodAffinitySymmetricWeight" : 10,
+  "alwaysCheckAllPredicates" : false
+}
+```
 
 ## 代码入口与代码组成
 
