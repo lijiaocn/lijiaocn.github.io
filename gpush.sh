@@ -34,7 +34,7 @@ for path in $*;do
 		git push 
 		
 		git checkout master
-		./run.sh
+		#./run.sh
 	popd
 done
 

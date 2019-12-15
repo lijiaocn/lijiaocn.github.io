@@ -143,6 +143,10 @@ Attaching 331 probes...
 @[tracepoint:syscalls:sys_enter_close]: 968
 ```
 
+另外还有一个在容器中使用 bpftrace 的方法，有兴趣的可以自己试一下：
+
+* [How to: run BpfTrace from a small alpine image, with least privileges.][22]
+
 ### bpftrace 的采集点
 
 Brendan D. Gregg 设计了 [12 个用例][20]，学习这 12 用例之前，先整体介绍一下 bpftrace。
@@ -603,6 +607,7 @@ open path: retrans_time_ms
 3. [Enable snaps on CentOS and install bpftrace][16]
 4. [Brendan D. Gregg][4]
 5. [The bpftrace One-Liner Tutorial][20]
+6. [How to: run BpfTrace from a small alpine image, with least privileges.][22]
 
 [1]: https://www.lijiaocn.com "李佶澳的博客"
 [2]: https://docs.oracle.com/cd/E24847_01/html/E22192/gbwaz.html#scrolltoc "DTrace 用户指南"
@@ -625,3 +630,4 @@ open path: retrans_time_ms
 [19]: https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2019/12/14/bpftrace-no-permitted.html "bpftrace 执行失败 Operation not permitted，不是因为 kernel lockdown!"
 [20]: https://github.com/iovisor/bpftrace/blob/v0.9.3/docs/tutorial_one_liners.md "The bpftrace One-Liner Tutorial"
 [21]: https://github.com/iovisor/bpftrace/blob/master/docs/reference_guide.md "bpftrace Reference Guide"
+[22]: https://itnext.io/how-to-run-bpftrace-from-a-small-alpine-image-and-with-least-privileges-379146fcfcf1 "How to: run BpfTrace from a small alpine image, with least privileges"
