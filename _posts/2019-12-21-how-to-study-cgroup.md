@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "怎样掌握 Linux 的 cgroup？资源限制机制 cgroup 的学习指引与概念辨析"
+title: "怎样掌握 Linux 的 cgroup？资源限制机制 cgroup 学习指引与概念辨析"
 author: 李佶澳
 date: "2019-12-21T19:28:29+0800"
 last_modified_at: "2019-12-21T19:28:29+0800"
