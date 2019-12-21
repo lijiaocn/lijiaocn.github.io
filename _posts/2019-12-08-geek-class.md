@@ -7,7 +7,7 @@ last_modified_at: "2019-12-15T22:47:59+0800"
 permalink: /geekclass/
 categories: 好货
 cover:
-tags:
+tags: 好货
 keywords: 极客时间
 description: 就当作是买了几本书！这些专栏的内容比市面上绝大多数图书优质！时效性和进阶梯度好
 ---
