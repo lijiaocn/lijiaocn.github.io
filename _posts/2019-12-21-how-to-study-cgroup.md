@@ -224,7 +224,7 @@ pids
 rdma
 ```
 
-每个 cgroup controller 都有很多参数，掌握起来比较费劲，我的性格是：等用到的时候或者实在没事做的时候再说吧，毫无头绪、无法通过堆时间解决的事情，更让我着迷......
+每个 cgroup controller 都有很多参数，掌握起来比较费劲，等用到的时候再说吧，毫无头绪、无法通过堆时间解决的事情，更让人着迷......
 
 * [Kernel Documents: Control Group v1][7]
 * [Kernel Documents: Control Group v2][8]
