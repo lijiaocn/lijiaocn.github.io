@@ -32,9 +32,9 @@ description: 答案一点都不重要！因为事物是在发展变化的，记�
 
 想了想，暂时先做个梳理，把认知边界再拓展一下，做到以后可以随时随地捡起来用。有时候需要平衡一下，不可能也没必要读完图书馆里的每一本书，不可能也没必要看完所有的影视作品。只要具备了随时随地深入的能力，纲要的价值远远大于细节。
 
-## cgroup 的基本概念
+## cgroup 基本概念
 
-[cgroup（二）][6] 中梳理过 cgroup 的基本概念，其实核心概念只有一个 `cgroup controller`。
+[cgroup（二）][6] 梳理过 cgroup 的基本概念，其实核心概念只有一个 `cgroup controller`。
 
 cgroup 可以限制很多类型的资源，譬如 cpu、内存、io、进程数等，每一类资源对应一个 controller。当我们问 cgroup 都可以限制哪些资源的时候，等同于问 cgroup 一共有几种 controller。
 
@@ -46,7 +46,7 @@ cgroup 可以限制很多类型的资源，譬如 cpu、内存、io、进程数�
 * [Kernel Documents: Control Group v2][8]
 * [Linux Programmer's Manual: Cgroups][9]
 
-## cgroup 的启用方法
+## cgroup 启用方法
 
 另外一个关键问题是 cgroup 怎么用？很简单，用 mount 挂载，然后创建目录、修改文件内容就可以了。
 
@@ -103,7 +103,7 @@ linux16 /boot/vmlinuz-5.4.3-1.el7.elrepo.x86_64 root=UUID=8ac075e3-1124-4bb6-bef
     elevator=noop crashkernel=auto cgroup_no_v1=cpuset,cpu,io,memory,pids,rdma  # 禁用的controller
 ```
 
-## cgroup controller 的启用方法
+## cgroup controller 启用方法
 
 cgroup v1 和 cgroup v2 启用 controller 的方法大不相同。
 
@@ -195,7 +195,7 @@ cgroup v2 采用这种方式控制 controller 的启用，继而进行资源的�
 
 另外 cgroup.procs 绑定进程，cgroup.threads 绑定线程，旧笔记 [cgroup（二）][2]中有更多细节。
 
-## cgroup controller 名单和用途
+## cgroup controller 列表用途
 
 cgroup v2 支持的 controller（2019-12-21 22:16:03）:
 
