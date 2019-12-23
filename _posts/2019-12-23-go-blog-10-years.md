@@ -8,7 +8,7 @@ categories: 编程
 cover:
 tags: golang
 keywords: golang,Go,go语言
-description: "10 年里，Go 发布了几十篇博文，介绍了 Go 的方方面面，是获得 Go 语言最新进展"
+description: "10 年里，Go 发布了几十篇博文，介绍了 Go 的方方面面，是获得 Go 语言最新进展的不二之选"
 ---
 
 ## 本篇目录
