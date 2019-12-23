@@ -18,7 +18,7 @@ description: "10 年里，Go 发布了几十篇博文，介绍了 Go 的方方�
 
 ## 说明
 
-一个多月前，Go 的网站发了一篇博文《[Go Turns 10][3]》，心里一惊，一直把 go 当作一门比较新的语言看待，不经意间，它已经诞生 10 年了！
+一个多月前，Go 的网站发了一篇博文[《Go Turns 10》][3]，心里一惊，一直把 go 当作一门比较新的语言看待，不经意间，它已经诞生 10 年了！
 好多年前尝试找一门 C 之外第二语言的场景还记忆犹新。
 
 岁月，是一把杀猪刀，现在 10 年 go 语言使用经历的招聘要求，不再是笑话。
@@ -67,9 +67,7 @@ case <-timeout:
 
 **[Debugging Go code (a status report)][7] 介绍了 go 语言程序的最开始调试方法**
 
-Go 开发的程序，最开始的调试方法只有日志和 gdb，并且是支持 DWARF 的 gdb 7+，并且不支持 channel、interface 等等。现在好很多了，可以用 [delve][9]，《[Debugging what you deploy in Go 1.12][8]》对此有详细介绍。
-
-未完待续 2019-12-23 16:43:05
+Go 开发的程序，最开始的调试方法只有日志和 gdb，并且是支持 DWARF 的 gdb 7+，并且不支持 channel、interface 等等。现在好很多了，可以用 [delve][9]，[《Debugging what you deploy in Go 1.12》][8]对此有详细介绍。
 
 ## 参考
 
