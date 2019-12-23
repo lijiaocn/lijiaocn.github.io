@@ -29,7 +29,7 @@ description: "10 年里，Go 发布了几十篇博文，介绍了 Go 的方方�
 
 ## 重要内容摘录
 
-**[Share Memory By Communicating][4] 介绍了 Go 语言一个重要设计思想：通过传递指针的方式使用共享内存。**
+**[Share Memory By Communicating][4] 介绍了 Go 语言一个设计思想：通过传递指针的方式使用共享内存。**
 
 多线程编程时，经常通过共享内存实现线程间的通信，需要非常小心的处理加锁和解锁的时机。Go 语言提供了互斥锁、读写锁，但是更鼓励用 channel 传递指针的方式实现。 用 channel 保证同一时刻，只有一个协程在处理目标变量。
 
@@ -52,7 +52,9 @@ recover 规则：
 
 1. recover 在 defer 中使用，终止 panic 的向上传递，当前函数正常退出。
 
-**[Go Concurrency Patterns: Timing out, moving on][6] 提供了一种设置等待超时的方法，在 select 中放一个定时 channel。**
+**[Go Concurrency Patterns: Timing out, moving on][6] 提供了一种设置等待超时的方法**
+
+在 select 中放一个定时 channel：
 
 ```go
 select {
@@ -82,3 +84,4 @@ Go 开发的程序，最开始的调试方法只有日志和 gdb，并且是支�
 [7]: https://blog.golang.org/debugging-go-code-status-report "Debugging Go code (a status report)"
 [8]: https://blog.golang.org/debugging-what-you-deploy  "Debugging what you deploy in Go 1.12"
 [9]: https://github.com/go-delve/delve "delve"
+
