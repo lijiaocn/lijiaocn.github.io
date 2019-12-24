@@ -69,7 +69,11 @@ case <-timeout:
 
 **[Debugging Go code (a status report)][7] 介绍了 go 语言程序的最开始调试方法**
 
-Go 开发的程序，最开始的调试方法只有日志和 gdb，并且是支持 DWARF 的 gdb 7+，并且不支持 channel、interface 等等。现在好很多了，可以用 [delve][9]，[《Debugging what you deploy in Go 1.12》][8]对此有详细介绍。
+Go 开发的程序，最开始的调试方法只有日志和 gdb，并且是支持 DWARF 的 gdb 7+，并且不支持 channel、interface 等等。现在好很多了，可以用 [delve][9]，相关博客：
+
+* [Debugging Go programs with the GNU Debugger][24]
+* [Debugging what you deploy in Go 1.12][8]
+* [Debugging Go Code with GDB][25]
 
 **[Go Slices: usage and internals][10] 介绍了 go 的 slice，slice 不是数组。** 
 
@@ -94,7 +98,51 @@ Slice 是一种依赖于数组的类型，它包含指定数组内成员指针�
 
 **[C? Go? Cgo!][12] 介绍了在 Go 代码中引用 C 代码的方法**
 
+**[Gobs of data][13] 介绍 Go 新开发的字描述的编码和使用方式**
 
+>Gobs 的优势没怎么看懂，编码方面的知识需要恶补。
+
+**[Go at Heroku][14] 介绍了使用 Go 实现 Paxos 协议的经历**
+
+**[Spotlight on external Go libraries][15] 介绍了几个比较实用的外部库**
+
+**[Profiling Go Programs][16] 非常重要，介绍了 go 的性能诊断工具 pprof**
+
+* 堆栈采样，发现占用 CPU 最多的函数；
+* 360 曾经分享他们的 [经验][19]，做了一个在线运行的 go 程序的状态采集和展示，挺有意义；
+* [Qihoo 360 and Go][19] 中对垃圾回收的规避经验特别重要，简单说就是避免短时协程；
+ 
+**[Error handling and Go][17] 介绍了 go 的 error 处理**
+
+* go 1.13 提供了语法糖: [Working with Errors in Go 1.13][18]
+
+**[The Laws of Reflection] 介绍了反射的设计思想**
+
+Go 提供了几个图片处理的库，挺有意思，找时间仔细学习：
+
+* [A GIF decoder: an exercise in Go interfaces][21]
+* [The Go image package][22]
+* [The Go image/draw package][23]
+
+** [Building StatHat with Go][26] 介绍使用 go 开发的 stathat**
+
+* [stathat][27] 是一个收集时间序列的在线服务，有 1.6 万个用户！
+
+**[Organizing Go code][28] 算是 package 组织方式的官方建议**
+
+**[Concurrency is not parallelism][29]，并发不等于并行，一段 30 分钟的视频**
+
+**[Advanced Go Concurrency Patterns][31] 更深入了介绍了并发的问题，又一段 30 分钟视频**
+
+>这两段视频，抽时间看一下。。。
+
+**[Go maps in action][30] 介绍了 map（哈希表）的方方面面，譬如非并发安全**
+
+**[Introducing the Go Race Detector][32] 介绍了用 -race 检测竞争的方法**
+
+**[Arrays, slices (and strings): The mechanics of append][33]**
+
+未完待续......
 
 ## 参考
 
@@ -112,4 +160,24 @@ Slice 是一种依赖于数组的类型，它包含指定数组内成员指针�
 [10]: https://blog.golang.org/go-slices-usage-and-internals "Go Slices: usage and internals"
 [11]: https://blog.golang.org/json-and-go "JSON and Go"
 [12]: https://blog.golang.org/c-go-cgo "C? Go? Cgo!"
-
+[13]: https://blog.golang.org/gobs-of-data "Gobs of data"
+[14]: https://blog.golang.org/go-at-heroku "Go at Heroku"
+[15]: https://blog.golang.org/spotlight-on-external-go-libraries "Spotlight on external Go libraries"
+[16]: https://blog.golang.org/profiling-go-programs "Profiling Go Programs"
+[17]: https://blog.golang.org/error-handling-and-go "Error handling and Go"
+[18]: https://blog.golang.org/go1.13-errors "Working with Errors in Go 1.13"
+[19]: https://blog.golang.org/qihoo "Qihoo 360 and Go"
+[20]: https://blog.golang.org/laws-of-reflection "The Laws of Reflection"
+[21]: https://blog.golang.org/gif-decoder-exercise-in-go-interfaces "A GIF decoder: an exercise in Go interfaces"
+[22]: https://blog.golang.org/go-image-package "The Go image package"
+[23]: https://blog.golang.org/go-imagedraw-package "The Go image/draw package"
+[24]: https://blog.golang.org/debugging-go-programs-with-gnu-debugger "Debugging Go programs with the GNU Debugger"
+[25]: https://golang.org/doc/gdb "Debugging Go Code with GDB"
+[26]: https://blog.golang.org/building-stathat-with-go "Building StatHat with Go"
+[27]: http://www.stathat.com/ "stathat"
+[28]: https://blog.golang.org/organizing-go-code "Organizing Go code"
+[29]: https://blog.golang.org/concurrency-is-not-parallelism  "Concurrency is not parallelism"
+[30]: https://blog.golang.org/go-maps-in-action  "Go maps in action"
+[31]: https://blog.golang.org/advanced-go-concurrency-patterns "Advanced Go Concurrency Patterns"
+[32]: https://blog.golang.org/race-detector "Introducing the Go Race Detector"
+[33]: https://blog.golang.org/slices "Arrays, slices (and strings): The mechanics of append"
