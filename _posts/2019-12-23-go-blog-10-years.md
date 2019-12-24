@@ -16,6 +16,7 @@ description: "10 年里，Go 发布了几十篇博文，介绍了 Go 的方方�
 * auto-gen TOC:
 {:toc}
 
+
 ## 说明
 
 一个多月前，Go 的网站发了一篇博文[《Go Turns 10》][3]，心里一惊，一直把 go 当作一门比较新的语言看待，不经意间，它已经诞生 10 年了！
@@ -25,7 +26,8 @@ description: "10 年里，Go 发布了几十篇博文，介绍了 Go 的方方�
 
 10 年里，Go 发布了几十篇博文，介绍了 Go 的方方面面，这些博文是获得 Go 语言最新进展和最新能力的不二之选。这里重新把这些文章走读一遍，对重点内容做了摘录。
 
-比较尴尬的是，还是有很多内容看不懂，程序语言设计的「高地」真高......but，还有很多以前看不懂的内容现在能看懂了，我还是有进步的~ 😊。
+比较尴尬的是，还是有很多内容看不懂，程序语言设计的「高地」真高......but，还有很多以前看不懂的内容现在能看懂了，还是有进步的。。。
+
 
 ## 重要内容摘录
 
@@ -110,3 +112,4 @@ Slice 是一种依赖于数组的类型，它包含指定数组内成员指针�
 [10]: https://blog.golang.org/go-slices-usage-and-internals "Go Slices: usage and internals"
 [11]: https://blog.golang.org/json-and-go "JSON and Go"
 [12]: https://blog.golang.org/c-go-cgo "C? Go? Cgo!"
+
