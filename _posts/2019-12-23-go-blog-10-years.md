@@ -116,7 +116,7 @@ Slice 是一种依赖于数组的类型，它包含指定数组内成员指针�
 
 * go 1.13 提供了语法糖: [Working with Errors in Go 1.13][18]
 
-**[The Laws of Reflection] 介绍了反射的设计思想**
+**[The Laws of Reflection][20] 介绍了反射的设计思想**
 
 Go 提供了几个图片处理的库，挺有意思，找时间仔细学习：
 
@@ -124,9 +124,9 @@ Go 提供了几个图片处理的库，挺有意思，找时间仔细学习：
 * [The Go image package][22]
 * [The Go image/draw package][23]
 
-** [Building StatHat with Go][26] 介绍使用 go 开发的 stathat**
+**[Building StatHat with Go][26] 介绍使用 go 开发的 stathat**
 
-* [stathat][27] 是一个收集时间序列的在线服务，有 1.6 万个用户！
+* [stathat][27] 是一个收集时间序列的在线服务，有 1.6 万个用户！商业上的启发更大！
 
 **[Organizing Go code][28] 算是 package 组织方式的官方建议**
 
