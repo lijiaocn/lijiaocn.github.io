@@ -144,6 +144,39 @@ Go 提供了几个图片处理的库，挺有意思，找时间仔细学习：
 * 数组最常用的功能是作为 slice 的底层数组
 * slice 的 index 操作是“左开右闭”
 * slice 作为参数按值传递时，复制的值是 slice header，底层数组不复制
+* 搞清楚要修改的是 slice header 还是 slice 指向的数组
+* 使用 make 创建 slice 时，cap 默认等于 len
+* append 的时候，如果超出了 cap，会引发扩容、复制
+* string 是只读的 slice，底层是 byte 数组
+
+```go
+// Insert inserts the value into the slice at the specified index,
+// which must be in range.
+// The slice must have room for the new element.
+func Insert(slice []int, index, value int) []int {
+    // Grow the slice by one element.
+    slice = slice[0 : len(slice)+1]
+    // Use copy to move the upper part of the slice out of the way and open a hole.
+    copy(slice[index+1:], slice[index:])
+    // Store the new value.
+    slice[index] = value
+    // Return the result.
+    return slice
+}
+```
+
+**[Strings, bytes, runes and characters in Go][34] 解释了 byte、character 和 rune**
+
+* unicode/utf8 处理 utf8 字符的库
+
+下面这段代码的 index 的值，很有意思：
+
+```go
+const nihongo = "日本語"
+for index, runeValue := range nihongo {
+    fmt.Printf("%#U starts at byte position %d\n", runeValue, index)
+}
+```
 
 未完待续......
 
@@ -184,3 +217,4 @@ Go 提供了几个图片处理的库，挺有意思，找时间仔细学习：
 [31]: https://blog.golang.org/advanced-go-concurrency-patterns "Advanced Go Concurrency Patterns"
 [32]: https://blog.golang.org/race-detector "Introducing the Go Race Detector"
 [33]: https://blog.golang.org/slices "Arrays, slices (and strings): The mechanics of append"
+[34]: https://blog.golang.org/strings  "Strings, bytes, runes and characters in Go"
