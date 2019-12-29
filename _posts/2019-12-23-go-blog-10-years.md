@@ -278,7 +278,7 @@ for index, runeValue := range nihongo {
 
 **[Introducing the Go Playground][66]：go 在线运行**
 
-**[Go for App Engine is now generally available]：gae 支持 go runtime**
+**[Go for App Engine is now generally available][69]：gae 支持 go runtime**
 
 **[Go and the Google Cloud Platform][71]**
 
@@ -288,11 +288,9 @@ for index, runeValue := range nihongo {
 
 **[The New Go Developer Network][54]：分布在全球各地的 go 小组**
 
-**[Go.dev: a new hub for Go developers]：Go 代码**
+**[Go.dev: a new hub for Go developers][64]：Go 代码仓库**
 
 **[Hello, 中国!][65]：中国镜像站 [https://golang.google.cn](https://golang.google.cn)**
-
-
 
 ## 参考
 
