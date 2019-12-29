@@ -52,6 +52,8 @@ description: "10 年里，Go 发布了几十篇博文，介绍了 Go 的方方�
 * 如果引用主版本，必须使用版本后缀，例如 /v2
 * 测试代码等不能使用依赖 GOPATH 的文件
 
+**[A Proposal for Package Versioning in Go][63]：详细介绍了 go module 的设计过程 **
+
 ## 测试用例
 
 **[The cover story][36]：go 的测试覆盖率工具 -cover**
@@ -331,3 +333,4 @@ Go 提供了几个图片处理的库，挺有意思，找时间仔细学习：
 [60]: https://blog.golang.org/publishing-go-modules "Publishing Go Modules"
 [61]: https://blog.golang.org/go1.13-errors "Working with Errors in Go 1.13"
 [62]: https://blog.golang.org/v2-go-modules "Go Modules: v2 and Beyond"
+[63]: https://blog.golang.org/versioning-proposal "A Proposal for Package Versioning in Go"
