@@ -178,7 +178,80 @@ for index, runeValue := range nihongo {
 }
 ```
 
-未完待续......
+**[Text normalization in Go][35] 介绍涉及 utf8 字符时，应该注意的问题**
+
+* 关键：一个字符可能由多个 rune 组成
+
+**[The cover story][36] 介绍了 go 的测试覆盖率工具**
+
+* go test -cover
+
+**[Inside the Go Playground][37] 介绍了 go Playground 的实现**
+
+**[Go Concurrency Patterns: Pipelines and cancellation][38] 演示了 go channel 的经典用法**
+
+* 怎样通过一个 channel 同时关闭所有 goroutine？
+
+**[Go Concurrency Patterns: Context][39] 用 context 控制关联的 goroutine**
+
+* At Google, we require that Go programmers pass a Context parameter as the first argument to every function on the call path between incoming and outgoing requests. 
+
+**[Constants][40] 介绍了 constant 与变量的区别，譬如不需要类型转换** 
+
+* 有类型常量和无类型常量是完全不同的
+* 这一篇相当烧脑
+
+**[Generating code][41] 介绍经常见到的 go:generate**
+
+**[Testable Examples in Go][42] 怎样写和文档融合在一起的使用示例**
+
+**[Go GC: Prioritizing low latency and simplicity][43] 介绍了 go1.5 引入的新的 gc 方法**
+
+* If you want to lower the total time spent in GC, increase GOGC. If you want to trade more GC time for less memory, lower GOGC.
+
+**[Language and Locale Matching in Go][44] 用户语言与应用支持的语言的最佳搭配策略**
+
+**[Smaller Go 1.7 binaries][45] 将可执行文件提及压缩了 30% 以上**
+
+* We could take more radical steps to reduce binary size: the upx tool for compressing executables shrinks binaries by another 50% at the cost of increased startup time and potentially increased memory use.
+
+**[Using Subtests and Sub-benchmarks][46] 测试用例和基准测试的增强**
+
+**[Introducing HTTP Tracing][47] 跟踪 http 请求调用过程的方法**
+
+**[HTTP/2 Server Push][48] http/2 的主要特点与使用方法、注意事项**
+
+**[Toward Go 2][49] Go 2 计划启动，5 年实际应用后，Go 语言从推广转向进化**
+
+**[Getting to Go: The Journey of Go's Garbage Collector][50] go 垃圾回收机制的演变 **
+
+**[Compile-time Dependency Injection With Go Cloud's Wire][51] 依赖注入工具 wire** 
+
+**[Go 2, here we come!][52] Go 2 的进展**
+
+**[Go Modules in 2019][53] go modules 全面替换 GOPATH**
+
+**[The New Go Developer Network][54] 分布在全球各地的 go 小组**
+
+**[Using Go Modules][55] go module 的使用方法**
+
+**[Migrating to Go Modules][58] 迁移到 go module**
+
+**[Publishing Go Modules][60] 介绍了 go module 发布与版本规范**
+
+**[Go Modules: v2 and Beyond][62] 主版本发生变换时的操作**
+
+**[Module Mirror and Checksum Database Launched][59] go module 的背后机制**
+
+* 切换为 go module 后，import 使用的是 go module 的别名（不再是路径）
+* 如果引用主版本，必须使用版本后缀，例如 /v2
+* 测试代码等不能使用依赖 GOPATH 的文件
+
+**[Next steps toward Go 2][56] Go 2 的进展**
+
+**[Why Generics?][57] 正在进行中的范型设计**
+
+**[Working with Errors in Go 1.13][61] go 1.13 引入的 error 语法糖**
 
 ## 参考
 
@@ -218,3 +291,31 @@ for index, runeValue := range nihongo {
 [32]: https://blog.golang.org/race-detector "Introducing the Go Race Detector"
 [33]: https://blog.golang.org/slices "Arrays, slices (and strings): The mechanics of append"
 [34]: https://blog.golang.org/strings  "Strings, bytes, runes and characters in Go"
+[35]: https://blog.golang.org/normalization "Text normalization in Go"
+[36]: https://blog.golang.org/cover "The cover story"
+[37]: https://blog.golang.org/playground  "Inside the Go Playground"
+[38]: https://blog.golang.org/pipelines "Go Concurrency Patterns: Pipelines and cancellation"
+[39]: https://blog.golang.org/context "Go Concurrency Patterns: Context"
+[40]: https://blog.golang.org/constants "Constants"
+[41]: https://blog.golang.org/generate "Generating code"
+[42]: https://blog.golang.org/examples "Testable Examples in Go"
+[43]: https://blog.golang.org/go15gc "Go GC: Prioritizing low latency and simplicity"
+[44]: https://blog.golang.org/matchlang "Language and Locale Matching in Go"
+[45]: https://blog.golang.org/go1.7-binary-size "Smaller Go 1.7 binaries"
+[46]: https://blog.golang.org/subtests "Using Subtests and Sub-benchmarks"
+[47]: https://blog.golang.org/http-tracing "Introducing HTTP Tracing"
+[48]: https://blog.golang.org/h2push "HTTP/2 Server Push"
+[49]: https://blog.golang.org/toward-go2 "Toward Go 2"
+[50]: https://blog.golang.org/ismmkeynote "Getting to Go: The Journey of Go's Garbage Collector"
+[51]: https://blog.golang.org/wire "Compile-time Dependency Injection With Go Cloud's Wire"
+[52]: https://blog.golang.org/go2-here-we-come "Go 2, here we come!"
+[53]: https://blog.golang.org/modules2019 "Go Modules in 2019"
+[54]: https://blog.golang.org/go-developer-network "The New Go Developer Network"
+[55]: https://blog.golang.org/using-go-modules "Using Go Modules"
+[56]: https://blog.golang.org/go2-next-steps "Next steps toward Go 2"
+[57]: https://blog.golang.org/why-generics "Why Generics?"
+[58]: https://blog.golang.org/migrating-to-go-modules "Migrating to Go Modules"
+[59]: https://blog.golang.org/module-mirror-launch "Module Mirror and Checksum Database Launched"
+[60]: https://blog.golang.org/publishing-go-modules "Publishing Go Modules"
+[61]: https://blog.golang.org/go1.13-errors "Working with Errors in Go 1.13"
+[62]: https://blog.golang.org/v2-go-modules "Go Modules: v2 and Beyond"
