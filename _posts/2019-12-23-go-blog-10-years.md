@@ -52,7 +52,7 @@ description: "10 年里，Go 发布了几十篇博文，介绍了 Go 的方方�
 * 如果引用主版本，必须使用版本后缀，例如 /v2
 * 测试代码等不能使用依赖 GOPATH 的文件
 
-**[A Proposal for Package Versioning in Go][63]：详细介绍了 go module 的设计过程 **
+**[A Proposal for Package Versioning in Go][63]：详细介绍了 go module 的设计过程**
 
 ## 测试用例
 
