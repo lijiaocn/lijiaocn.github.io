@@ -34,6 +34,8 @@ description: "10 年里，Go 发布了几十篇博文，介绍了 Go 的方方�
 
 ## 代码管理
 
+**[Godoc: documenting Go code][68]：注释文档**
+
 **[Organizing Go code][28]：package 组织方式的官方建议**
 
 **[Go Modules in 2019][53]：go modules 全面替换 GOPATH**
@@ -251,19 +253,46 @@ for index, runeValue := range nihongo {
 
 **[HTTP/2 Server Push][48]：http/2 的主要特点、使用方法和注意事项**
 
+**[Portable Cloud Programming with Go Cloud][75]：go 的`跨云`运行方案**
+
+**[What's new in the Go Cloud Development Kit][74]：**
+
 **[Compile-time Dependency Injection With Go Cloud's Wire][51]：依赖注入工具 wire** 
 
 ## 使用经验
 
+**[Real Go Projects: SmartTwitter and web.go][67]：Smart Twitter**
+
 **[Go at Heroku][14]：使用 Go 实现 Paxos 协议的经历**
+
+**[From zero to Go: launching on the Google homepage in 24 hours][70]：用 go 实现 google 主页**
 
 **[Building StatHat with Go][26]：使用 go 开发的 stathat**
 
 * [stathat][27] 是一个收集时间序列的在线服务，有 1.6 万个用户！商业上的启发更大！
 
-**[The New Go Developer Network][54]：分布在全球各地的 go 小组**
 
 **[Inside the Go Playground][37]：go Playground 的实现**
+
+## 社区资源
+
+**[Introducing the Go Playground][66]：go 在线运行**
+
+**[Go for App Engine is now generally available]：gae 支持 go runtime**
+
+**[Go and the Google Cloud Platform][71]**
+
+**[Go on App Engine: tools, tests, and concurrency][72]**
+
+**[Announcing App Engine’s New Go 1.11 Runtime][73]**
+
+**[The New Go Developer Network][54]：分布在全球各地的 go 小组**
+
+**[Go.dev: a new hub for Go developers]：Go 代码**
+
+**[Hello, 中国!][65]：中国镜像站 [https://golang.google.cn](https://golang.google.cn)**
+
+
 
 ## 参考
 
@@ -332,3 +361,15 @@ for index, runeValue := range nihongo {
 [61]: https://blog.golang.org/go1.13-errors "Working with Errors in Go 1.13"
 [62]: https://blog.golang.org/v2-go-modules "Go Modules: v2 and Beyond"
 [63]: https://blog.golang.org/versioning-proposal "A Proposal for Package Versioning in Go"
+[64]: https://blog.golang.org/go.dev "Go.dev: a new hub for Go developers"
+[65]: https://blog.golang.org/hello-china "Hello, 中国!"
+[66]: https://blog.golang.org/introducing-go-playground "Introducing the Go Playground"
+[67]: https://blog.golang.org/real-go-projects-smarttwitter-and-webgo "Real Go Projects: SmartTwitter and web.go"
+[68]: https://blog.golang.org/godoc-documenting-go-code  "Godoc: documenting Go code"
+[69]: https://blog.golang.org/go-for-app-engine-is-now-generally "Go for App Engine is now generally available"
+[70]: https://blog.golang.org/from-zero-to-go-launching-on-google "From zero to Go: launching on the Google homepage in 24 hours"
+[71]: https://blog.golang.org/go-and-google-cloud-platform "Go and the Google Cloud Platform"
+[72]: https://blog.golang.org/appengine-dec2013 "Go on App Engine: tools, tests, and concurrency"
+[73]: https://blog.golang.org/appengine-go111 "Announcing App Engine’s New Go 1.11 Runtime"
+[74]: https://blog.golang.org/gcdk-whats-new-in-march-2019  "What's new in the Go Cloud Development Kit"
+[75]: https://blog.golang.org/go-cloud "Portable Cloud Programming with Go Cloud"
