@@ -16,25 +16,75 @@ description: "10 年里，Go 发布了几十篇博文，介绍了 Go 的方方�
 * auto-gen TOC:
 {:toc}
 
-
 ## 说明
 
-一个多月前，Go 的网站发了一篇博文[《Go Turns 10》][3]，心里一惊，一直把 go 当作一门比较新的语言看待，不经意间，它已经诞生 10 年了！
-好多年前尝试找一门 C 之外第二语言的场景还记忆犹新。
+一个多月前，Go 的网站发了一篇博文[《Go Turns 10》][3]，心里一惊，它已经诞生 10 年了！
 
-岁月，真是一把杀猪刀，现在 10 年 go 语言使用经历的招聘要求，不再是笑话。
+10 年里，Go 发布的几十篇博文介绍了 Go 的方方面面，是获得 Go 语言最新进展和能力的不二之选。
 
-10 年里，Go 发布了几十篇博文，介绍了 Go 的方方面面，这些博文是获得 Go 语言最新进展和最新能力的不二之选。这里重新把这些文章走读一遍，对重点内容做了摘录。
+## Go 2 进展
 
-还是有很多内容看不懂，程序语言设计的「高地」真高......but，也有一些以前看不懂的内容现在能看懂了。
+**[Toward Go 2][49]：Go 2 启动，5 年实际应用后，Go 语言从推广转向进化**
 
-## 重要内容摘录
+**[Go 2, here we come!][52]：Go 2 的进展**
 
-**[Share Memory By Communicating][4] 介绍了 Go 语言一个设计思想：通过传递指针的方式使用共享内存。**
+**[Next steps toward Go 2][56]：Go 2 的进展**
 
-多线程编程时，经常通过共享内存实现线程间的通信，需要非常小心的处理加锁和解锁的时机。Go 语言提供了互斥锁、读写锁，但是更鼓励用 channel 传递指针的方式实现。 用 channel 保证同一时刻，只有一个协程在处理目标变量。
+**[Why Generics?][57]：正在进行中的范型设计**
 
-**[Defer, Panic, and Recover][5] 介绍了可以避免「遗忘」的 defer 的规则，以及 panic 和 recover。**
+## 代码管理
+
+**[Organizing Go code][28]：package 组织方式的官方建议**
+
+**[Go Modules in 2019][53]：go modules 全面替换 GOPATH**
+
+**[Using Go Modules][55]：go module 的使用方法**
+
+**[Migrating to Go Modules][58]：怎样迁移到 go module**
+
+**[Publishing Go Modules][60]：go module 发布与版本规范**
+
+**[Go Modules: v2 and Beyond][62]：主版本发生变换时的操作**
+
+**[Module Mirror and Checksum Database Launched][59]：go module 背后的机制**
+
+* 切换为 go module 后，import 使用的是 go module 的别名（不再是路径）
+* 如果引用主版本，必须使用版本后缀，例如 /v2
+* 测试代码等不能使用依赖 GOPATH 的文件
+
+## 测试用例
+
+**[The cover story][36]：go 的测试覆盖率工具 -cover**
+
+* go test -cover
+
+**[Testable Examples in Go][42]：怎样写和文档融合在一起的示例**
+
+**[Using Subtests and Sub-benchmarks][46]：测试用例和基准测试的增强功能**
+
+## 调试调优
+
+**[Debugging Go code (a status report)][7]：go 语言程序的最开始调试方法**
+
+Go 开发的程序，最开始的调试方法只有日志和 gdb，并且是支持 DWARF 的 gdb 7+，并且不支持 channel、interface 等等。现在好很多了，可以用 [delve][9]，相关博客：
+
+* [Debugging Go programs with the GNU Debugger][24]
+* [Debugging what you deploy in Go 1.12][8]
+* [Debugging Go Code with GDB][25]
+
+**[Profiling Go Programs][16]：非常重要，go 的性能诊断工具 pprof**
+
+* 堆栈采样，发现占用 CPU 最多的函数；
+* 360 曾经分享他们的 [经验][19]，做了一个在线运行的 go 程序的状态采集和展示，挺有意义；
+* [Qihoo 360 and Go][19] 中对垃圾回收的规避经验特别重要，简单说就是避免短时协程；
+
+**[Smaller Go 1.7 binaries][45]：可执行文件体积压缩了 30% 以上**
+
+* We could take more radical steps to reduce binary size: the upx tool for compressing executables shrinks binaries by another 50% at the cost of increased startup time and potentially increased memory use.
+
+## 错误处理
+
+**[Defer, Panic, and Recover][5] ：defer 的规则，以及 panic 和 recover**
 
 defer 规则：
 
@@ -53,28 +103,21 @@ recover 规则：
 
 1. recover 在 defer 中使用，终止 panic 的向上传递，当前函数正常退出。
 
-**[Go Concurrency Patterns: Timing out, moving on][6] 提供了一种设置等待超时的方法**
+**[Error handling and Go][17]：go 的 error 处理**
 
-在 select 中放一个定时 channel：
+**[Working with Errors in Go 1.13][61]： go 1.13 引入的 error 语法糖**
 
-```go
-select {
-case <-ch:
-    // a read from ch has occurred
-case <-timeout:
-    // the read from ch has timed out
-}
-```
+## 内存管理
 
-**[Debugging Go code (a status report)][7] 介绍了 go 语言程序的最开始调试方法**
+**[Go GC: Prioritizing low latency and simplicity][43]：go1.5 引入的新的 gc 方法**
 
-Go 开发的程序，最开始的调试方法只有日志和 gdb，并且是支持 DWARF 的 gdb 7+，并且不支持 channel、interface 等等。现在好很多了，可以用 [delve][9]，相关博客：
+* If you want to lower the total time spent in GC, increase GOGC. If you want to trade more GC time for less memory, lower GOGC.
 
-* [Debugging Go programs with the GNU Debugger][24]
-* [Debugging what you deploy in Go 1.12][8]
-* [Debugging Go Code with GDB][25]
+**[Getting to Go: The Journey of Go's Garbage Collector][50]： go 垃圾回收机制的演变**
 
-**[Go Slices: usage and internals][10] 介绍了 go 的 slice，slice 不是数组。** 
+## 常规细节
+
+**[Go Slices: usage and internals][10]：go 的 slice 不是数组。** 
 
 slice 不是数组， slice 不是数组，slice 不是数组，重要的事情说三遍。
 
@@ -89,57 +132,15 @@ Slice 是一种依赖于数组的类型，它包含指定数组内成员指针�
 * copy() 和 append () 是分别用来进行 slice 复制和追加的内置函数；
 * slice 的使用极其富有技巧性，使用不当会严重降低运行效率和浪费内存，上文要认真读；
 
-**[JSON and Go][11] 介绍了 json 序列化和反序列化，Reference Types 的处理值得关注。**
+**[JSON and Go][11]：json 序列化和反序列化，Reference Types 的处理值得关注**
 
 * 反序列化使用的字符串中没有 Reference Types 的对应值，那么 Reference Types 为 nil；
 * 如果有，反序列化时会分配相应的内存空间；
 * 上面两点意味着在 struct 中使用 Reference Types 可以减少开销。
 
-**[C? Go? Cgo!][12] 介绍了在 Go 代码中引用 C 代码的方法**
+**[Go maps in action][30]：map（哈希表）的方方面面，非并发安全**
 
-**[Gobs of data][13] 介绍 Go 新开发的字描述的编码和使用方式**
-
->Gobs 的优势没怎么看懂，编码方面的知识需要恶补。
-
-**[Go at Heroku][14] 介绍了使用 Go 实现 Paxos 协议的经历**
-
-**[Spotlight on external Go libraries][15] 介绍了几个比较实用的外部库**
-
-**[Profiling Go Programs][16] 非常重要，介绍了 go 的性能诊断工具 pprof**
-
-* 堆栈采样，发现占用 CPU 最多的函数；
-* 360 曾经分享他们的 [经验][19]，做了一个在线运行的 go 程序的状态采集和展示，挺有意义；
-* [Qihoo 360 and Go][19] 中对垃圾回收的规避经验特别重要，简单说就是避免短时协程；
- 
-**[Error handling and Go][17] 介绍了 go 的 error 处理**
-
-* go 1.13 提供了语法糖: [Working with Errors in Go 1.13][18]
-
-**[The Laws of Reflection][20] 介绍了反射的设计思想**
-
-Go 提供了几个图片处理的库，挺有意思，找时间仔细学习：
-
-* [A GIF decoder: an exercise in Go interfaces][21]
-* [The Go image package][22]
-* [The Go image/draw package][23]
-
-**[Building StatHat with Go][26] 介绍使用 go 开发的 stathat**
-
-* [stathat][27] 是一个收集时间序列的在线服务，有 1.6 万个用户！商业上的启发更大！
-
-**[Organizing Go code][28] 算是 package 组织方式的官方建议**
-
-**[Concurrency is not parallelism][29]，并发不等于并行，一段 30 分钟的视频**
-
-**[Advanced Go Concurrency Patterns][31] 更深入了介绍了并发的问题，又一段 30 分钟视频**
-
->这两段视频，抽时间看一下。。。
-
-**[Go maps in action][30] 介绍了 map（哈希表）的方方面面，譬如非并发安全**
-
-**[Introducing the Go Race Detector][32] 介绍了用 -race 检测竞争的方法**
-
-**[Arrays, slices (and strings): The mechanics of append][33]**
+**[Arrays, slices (and strings): The mechanics of append][33]：append 的实现方法，复制时机**
 
 * 数组最常用的功能是作为 slice 的底层数组
 * slice 的 index 操作是“左开右闭”
@@ -165,7 +166,49 @@ func Insert(slice []int, index, value int) []int {
 }
 ```
 
-**[Strings, bytes, runes and characters in Go][34] 解释了 byte、character 和 rune**
+**[Constants][40]：constant 与变量的区别，const 不需要类型转换** 
+
+* 有类型常量和无类型常量是完全不同的
+* 这一篇相当烧脑，特别是 constant 的默认类型
+
+## 并发编程
+
+**[Share Memory By Communicating][4]： Go 语言设计思想，通过传递指针的方式使用共享内存**
+
+多线程编程时，经常通过共享内存实现线程间的通信，需要非常小心的处理加锁和解锁的时机。Go 语言提供了互斥锁、读写锁，但是更鼓励用 channel 传递指针的方式实现。 用 channel 保证同一时刻，只有一个协程在处理目标变量。
+
+**[Go Concurrency Patterns: Timing out, moving on][6]：一种设置等待超时的方法**
+
+在 select 中放一个定时 channel：
+
+```go
+select {
+case <-ch:
+    // a read from ch has occurred
+case <-timeout:
+    // the read from ch has timed out
+}
+```
+
+**[Concurrency is not parallelism][29]：并发不等于并行，一段 30 分钟的视频**
+
+**[Advanced Go Concurrency Patterns][31]：更深入了介绍了并发的问题，又一段 30 分钟视频**
+
+>这两段视频，抽时间看一下。。。
+
+**[Introducing the Go Race Detector][32]：竞争检测工具 -race**
+
+* 怎样通过一个 channel 同时关闭所有 goroutine？
+
+**[Go Concurrency Patterns: Context][39]：用 context 串联相关的 goroutine**
+
+* At Google, we require that Go programmers pass a Context parameter as the first argument to every function on the call path between incoming and outgoing requests. 
+
+**[Go Concurrency Patterns: Pipelines and cancellation][38]：go channel 的经典用法**
+
+## 多语言处理
+
+**[Strings, bytes, runes and characters in Go][34]：byte、character 和 rune 的区别**
 
 * unicode/utf8 处理 utf8 字符的库
 
@@ -178,80 +221,49 @@ for index, runeValue := range nihongo {
 }
 ```
 
-**[Text normalization in Go][35] 介绍涉及 utf8 字符时，应该注意的问题**
+**[Text normalization in Go][35]： 处理 utf8 字符时应该注意的问题**
 
 * 关键：一个字符可能由多个 rune 组成
 
-**[The cover story][36] 介绍了 go 的测试覆盖率工具**
+**[Language and Locale Matching in Go][44]：用户语言与应用支持的语言的搭配策略**
 
-* go test -cover
+## 扩展能力
 
-**[Inside the Go Playground][37] 介绍了 go Playground 的实现**
+**[C? Go? Cgo!][12]：在 Go 代码中引用 C 代码的方法**
 
-**[Go Concurrency Patterns: Pipelines and cancellation][38] 演示了 go channel 的经典用法**
+**[Gobs of data][13]：Go 新开发的编码和使用方式**
 
-* 怎样通过一个 channel 同时关闭所有 goroutine？
+>Gobs 的优势没怎么看懂，编码方面的知识需要恶补。
 
-**[Go Concurrency Patterns: Context][39] 用 context 控制关联的 goroutine**
+**[Spotlight on external Go libraries][15]：几个比较实用的外部库**
 
-* At Google, we require that Go programmers pass a Context parameter as the first argument to every function on the call path between incoming and outgoing requests. 
+**[The Laws of Reflection][20]：反射的设计和用法**
 
-**[Constants][40] 介绍了 constant 与变量的区别，譬如不需要类型转换** 
+Go 提供了几个图片处理的库，挺有意思，找时间仔细学习：
 
-* 有类型常量和无类型常量是完全不同的
-* 这一篇相当烧脑
+* [A GIF decoder: an exercise in Go interfaces][21]
+* [The Go image package][22]
+* [The Go image/draw package][23]
 
-**[Generating code][41] 介绍经常见到的 go:generate**
+**[Generating code][41]：代码自动生成 go:generate**
 
-**[Testable Examples in Go][42] 怎样写和文档融合在一起的使用示例**
+**[Introducing HTTP Tracing][47]：跟踪 http 请求调用过程的方法**
 
-**[Go GC: Prioritizing low latency and simplicity][43] 介绍了 go1.5 引入的新的 gc 方法**
+**[HTTP/2 Server Push][48]：http/2 的主要特点、使用方法和注意事项**
 
-* If you want to lower the total time spent in GC, increase GOGC. If you want to trade more GC time for less memory, lower GOGC.
+**[Compile-time Dependency Injection With Go Cloud's Wire][51]：依赖注入工具 wire** 
 
-**[Language and Locale Matching in Go][44] 用户语言与应用支持的语言的最佳搭配策略**
+## 使用经验
 
-**[Smaller Go 1.7 binaries][45] 将可执行文件提及压缩了 30% 以上**
+**[Go at Heroku][14]：使用 Go 实现 Paxos 协议的经历**
 
-* We could take more radical steps to reduce binary size: the upx tool for compressing executables shrinks binaries by another 50% at the cost of increased startup time and potentially increased memory use.
+**[Building StatHat with Go][26]：使用 go 开发的 stathat**
 
-**[Using Subtests and Sub-benchmarks][46] 测试用例和基准测试的增强**
+* [stathat][27] 是一个收集时间序列的在线服务，有 1.6 万个用户！商业上的启发更大！
 
-**[Introducing HTTP Tracing][47] 跟踪 http 请求调用过程的方法**
+**[The New Go Developer Network][54]：分布在全球各地的 go 小组**
 
-**[HTTP/2 Server Push][48] http/2 的主要特点与使用方法、注意事项**
-
-**[Toward Go 2][49] Go 2 计划启动，5 年实际应用后，Go 语言从推广转向进化**
-
-**[Getting to Go: The Journey of Go's Garbage Collector][50] go 垃圾回收机制的演变 **
-
-**[Compile-time Dependency Injection With Go Cloud's Wire][51] 依赖注入工具 wire** 
-
-**[Go 2, here we come!][52] Go 2 的进展**
-
-**[Go Modules in 2019][53] go modules 全面替换 GOPATH**
-
-**[The New Go Developer Network][54] 分布在全球各地的 go 小组**
-
-**[Using Go Modules][55] go module 的使用方法**
-
-**[Migrating to Go Modules][58] 迁移到 go module**
-
-**[Publishing Go Modules][60] 介绍了 go module 发布与版本规范**
-
-**[Go Modules: v2 and Beyond][62] 主版本发生变换时的操作**
-
-**[Module Mirror and Checksum Database Launched][59] go module 的背后机制**
-
-* 切换为 go module 后，import 使用的是 go module 的别名（不再是路径）
-* 如果引用主版本，必须使用版本后缀，例如 /v2
-* 测试代码等不能使用依赖 GOPATH 的文件
-
-**[Next steps toward Go 2][56] Go 2 的进展**
-
-**[Why Generics?][57] 正在进行中的范型设计**
-
-**[Working with Errors in Go 1.13][61] go 1.13 引入的 error 语法糖**
+**[Inside the Go Playground][37]：go Playground 的实现**
 
 ## 参考
 
