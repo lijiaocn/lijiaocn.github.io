@@ -121,24 +121,20 @@ recover 规则：
 
 **[Go Slices: usage and internals][10]：go 的 slice 不是数组。** 
 
-slice 不是数组， slice 不是数组，slice 不是数组，重要的事情说三遍。
-
-Go 语言中数组是有长度的，并且长度写到类型属性中，[3] int 和 [4] int 是不同的类型，另外：
-
-* Go 的数组变量是「值」，不是指向数组的指针（不同于 C 语言）；
-* Go 的数组变量是「值」，所以传递的时候，都是 copy 了一份！；
-
-Slice 是一种依赖于数组的类型，它包含指定数组内成员指针：
-
-* slice 的 cap 是底层数组的长度，slice 的 index 运算超出 cap 时会 panic；
-* copy() 和 append () 是分别用来进行 slice 复制和追加的内置函数；
-* slice 的使用极其富有技巧性，使用不当会严重降低运行效率和浪费内存，上文要认真读；
+* slice 不是数组， slice 不是数组，slice 不是数组，重要的事情说三遍。
+* Go 语言中数组是有长度的，并且长度写到类型属性中，`[3] int` 和 `[4] int` 是不同的类型
+* Go 的数组变量是「值」，不是指向数组的指针（不同于 C 语言）
+* Go 的数组变量是「值」，所以传递的时候，都是 copy 了一份！
+* Slice 是一种依赖于数组的类型，它包含指定数组内成员指针
+* Slice 的 cap 是底层数组的长度，slice 的 index 运算超出 cap 时会 panic
+* copy() 和 append () 是分别用来进行 slice 复制和追加的内置函数
+* Slice 的使用极其富有技巧性，使用不当会严重降低运行效率和浪费内存，上文要认真读
 
 **[JSON and Go][11]：json 序列化和反序列化，Reference Types 的处理值得关注**
 
-* 反序列化使用的字符串中没有 Reference Types 的对应值，那么 Reference Types 为 nil；
-* 如果有，反序列化时会分配相应的内存空间；
-* 上面两点意味着在 struct 中使用 Reference Types 可以减少开销。
+* 反序列化使用的字符串中没有 Reference Types 的对应值，那么 Reference Types 为 nil
+* 如果有，反序列化时会分配相应的内存空间
+* 上面两点意味着在 struct 中使用 Reference Types 可以减少开销
 
 **[Go maps in action][30]：map（哈希表）的方方面面，非并发安全**
 
@@ -177,7 +173,8 @@ func Insert(slice []int, index, value int) []int {
 
 **[Share Memory By Communicating][4]： Go 语言设计思想，通过传递指针的方式使用共享内存**
 
-多线程编程时，经常通过共享内存实现线程间的通信，需要非常小心的处理加锁和解锁的时机。Go 语言提供了互斥锁、读写锁，但是更鼓励用 channel 传递指针的方式实现。 用 channel 保证同一时刻，只有一个协程在处理目标变量。
+多线程编程时，经常通过共享内存实现线程间的通信，需要非常小心的处理加锁和解锁的时机。
+Go 语言提供了互斥锁、读写锁，但是更鼓励用 channel 传递指针的方式实现。用 channel 保证同一时刻，只有一个协程在处理目标变量。
 
 **[Go Concurrency Patterns: Timing out, moving on][6]：一种设置等待超时的方法**
 
@@ -196,11 +193,11 @@ case <-timeout:
 
 **[Advanced Go Concurrency Patterns][31]：更深入了介绍了并发的问题，又一段 30 分钟视频**
 
->这两段视频，抽时间看一下。。。
+这两段视频，抽时间看一下。。。
 
 **[Introducing the Go Race Detector][32]：竞争检测工具 -race**
 
-* 怎样通过一个 channel 同时关闭所有 goroutine？
+* 怎样通过一个 channel 同时关闭所有 goroutine？（用 close 关闭 channel）
 
 **[Go Concurrency Patterns: Context][39]：用 context 串联相关的 goroutine**
 
@@ -226,6 +223,7 @@ for index, runeValue := range nihongo {
 **[Text normalization in Go][35]： 处理 utf8 字符时应该注意的问题**
 
 * 关键：一个字符可能由多个 rune 组成
+* utf8 编码有两种方式，看的头大...
 
 **[Language and Locale Matching in Go][44]：用户语言与应用支持的语言的搭配策略**
 
@@ -235,13 +233,13 @@ for index, runeValue := range nihongo {
 
 **[Gobs of data][13]：Go 新开发的编码和使用方式**
 
->Gobs 的优势没怎么看懂，编码方面的知识需要恶补。
+>Gobs 的优势没看懂，编码方面的知识需要恶补
 
 **[Spotlight on external Go libraries][15]：几个比较实用的外部库**
 
 **[The Laws of Reflection][20]：反射的设计和用法**
 
-Go 提供了几个图片处理的库，挺有意思，找时间仔细学习：
+**Go 提供了几个图片处理的库，挺有意思，找时间学习：**
 
 * [A GIF decoder: an exercise in Go interfaces][21]
 * [The Go image package][22]
