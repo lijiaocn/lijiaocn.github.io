@@ -32,58 +32,6 @@ description: "10 年里，Go 发布了几十篇博文，介绍了 Go 的方方�
 
 **[Why Generics?][57]：正在进行中的范型设计**
 
-## Release 记录
-
-**20120328 [Go version 1 is released][76]**
-
-**20131201 [Go 1.2 is released][77]**
-
-* scheduler 会被不定时唤起，解决了单线程时，go routine 霸占线程的问题。
-
-**20140618 [Go 1.3 is released][78]**
-
-**20141110 [Go 1.4 is released][79]**
-
-* 支持 android，可以用 go 开发 android app， golang.org/x/mobile 
-* go generate
-
-**20150819 [Go 1.5 is released][80]**
-
-* 编译器完全用 go 实现，完成自举
-* 垃圾回收机制重新设计，gc pause 时间大幅缩短
-
-**20160217 [Go 1.6 is released][81]**
-
-* 支持 http2
-* gc pause 时间进一步缩短
-
-**20160815 [Go 1.7 is released][82]**
-
-* 引入 context
-* gc pause 时间进一步缩短
-
-**20170216 [Go 1.8 is released][83]**
-
-* gc pause 时间缩短到10毫秒级
-
-**20170824 [Go 1.9 is released][84]**
-
-* 支持 type aliases 
-* sync 提供了并发安全的 map 
-
-**20180216 [Go 1.10 is released][85]**
-
-**20180824 [Go 1.11 is released][86]**
-
-* 支持 go module
-* 支持 WebAssembly（在浏览器中运行）
-
-**20190225 [Go 1.12 is released][87]**
-
-**20190903 [Go 1.13 is released][88]** 
- 
-* go module 成为默认设置
-
 ## 代码管理
 
 **[Godoc: documenting Go code][68]：注释文档**
@@ -343,6 +291,58 @@ for index, runeValue := range nihongo {
 **[Go.dev: a new hub for Go developers][64]：Go 代码仓库**
 
 **[Hello, 中国!][65]：中国镜像站 [https://golang.google.cn](https://golang.google.cn)**
+
+## Release 记录
+
+**20120328 [Go version 1 is released][76]**
+
+**20131201 [Go 1.2 is released][77]**
+
+* scheduler 会被不定时唤起，解决了单线程时，go routine 霸占线程的问题。
+
+**20140618 [Go 1.3 is released][78]**
+
+**20141110 [Go 1.4 is released][79]**
+
+* 支持 android，可以用 go 开发 android app， golang.org/x/mobile 
+* go generate
+
+**20150819 [Go 1.5 is released][80]**
+
+* 编译器完全用 go 实现，完成自举
+* 垃圾回收机制重新设计，gc pause 时间大幅缩短
+
+**20160217 [Go 1.6 is released][81]**
+
+* 支持 http2
+* gc pause 时间进一步缩短
+
+**20160815 [Go 1.7 is released][82]**
+
+* 引入 context
+* gc pause 时间进一步缩短
+
+**20170216 [Go 1.8 is released][83]**
+
+* gc pause 时间缩短到10毫秒级
+
+**20170824 [Go 1.9 is released][84]**
+
+* 支持 type aliases 
+* sync 提供了并发安全的 map 
+
+**20180216 [Go 1.10 is released][85]**
+
+**20180824 [Go 1.11 is released][86]**
+
+* 支持 go module
+* 支持 WebAssembly（在浏览器中运行）
+
+**20190225 [Go 1.12 is released][87]**
+
+**20190903 [Go 1.13 is released][88]** 
+ 
+* go module 成为默认设置
 
 ## 参考
 
