@@ -19,4 +19,4 @@ lsi:       false
 excerpt_separator: "----"
 ICP-number:
 Copyright: Copyright @2011-2019 All rights reserved.
-pageheader: <span><a href="https://www.lijiaocn.com/note/" target="_blank" style="color:red;font-weight:bold">小鸟笔记（本站作者精华）</a>&nbsp<a href="https://www.lijiaocn.com/prog" target="_blank">《编程手册》</a>&nbsp<a href="https://www.lijiaocn.com/soft" target="_blank">《软件手册》</a>&nbsp<a href="https://www.lijiaocn.com/oper" target="_blank">《运营手册》</a></span>
+pageheader: <span><a href="https://www.lijiaocn.com/note/" target="_blank">《小鸟笔记》</a>&nbsp<a href="https://www.lijiaocn.com/prog" target="_blank">《编程手册》</a>&nbsp<a href="https://www.lijiaocn.com/soft" target="_blank">《软件手册》</a>&nbsp<a href="https://www.lijiaocn.com/oper" target="_blank">《运营手册》</a></span>
