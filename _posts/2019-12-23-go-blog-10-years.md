@@ -70,10 +70,12 @@ description: "10 年里，Go 发布了几十篇博文，介绍了 Go 的方方�
 
 **[Debugging Go code (a status report)][7]：go 语言程序的最开始调试方法**
 
-Go 开发的程序，最开始的调试方法只有日志和 gdb，并且是支持 DWARF 的 gdb 7+，并且不支持 channel、interface 等等。现在好很多了，可以用 [delve][9]，相关博客：
+
+**[Debugging what you deploy in Go 1.12][8]：go 1.12 进一步优化了调试工具，使用 delve**
+
+Go 开发的程序，最开始的调试方法只有日志和 gdb，并且是支持 DWARF 的 gdb 7+，并且不支持 channel、interface 等等。现在好很多了，可以用 [delve][9]，另外对 gdb 继续支持（不好用）：
 
 * [Debugging Go programs with the GNU Debugger][24]
-* [Debugging what you deploy in Go 1.12][8]
 * [Debugging Go Code with GDB][25]
 
 **[Profiling Go Programs][16]：非常重要，go 的性能诊断工具 pprof**
