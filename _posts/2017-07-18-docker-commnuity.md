@@ -1,6 +1,6 @@
 ---
 layout: default
-title: moby、docker-ce与docker-ee
+title: docker、moby、docker-ce 与 docker-ee 的关系和获取方法
 author: 李佶澳
 createdate: 2017/07/18 13:06:43
 last_modified_at: 2017/12/14 18:49:27
@@ -17,53 +17,79 @@ description: docker的社区资源和社区计划
 
 ## moby、docker-ce与docker-ee
 
-最早的时候docker就是一个开源项目，主要由docker公司维护。
+最早的时候 docker 就是一个开源项目，主要由 docker 公司维护。
 
-2017年年初，docker公司将原先的docker项目改名为moby，并创建了docker-ce和docker-ee。
+在 2017 年的时候，docker 公司将原先的 docker 项目改名为 [moby][1]。[moby][1] 是面向整个社区开源项目，任何人都可以贡献。docker 公司使用 moby 项目以及其它的项目构建了的自己的产品 [docker-ce][4]。
 
-这三者的关系是：
+docker-ce 是 docker 公司维护的免费产品，docker-ee 是 docker 公司的企业产品。
 
-	moby是继承了原先的docker的项目，是社区维护的的开源项目，谁都可以在moby的基础打造自己的容器产品
-	docker-ce是docker公司维护的开源项目，是一个基于moby项目的免费的容器产品
-	docker-ee是docker公司维护的闭源产品，是docker公司的商业产品。
+```
+moby 是继承了原先的 docker 的项目，是社区维护的的开源项目，谁都可以在 moby 的基础打造自己的容器产品
+docker-ce 是 docker 公司维护的开源项目，是一个基于 moby 项目的免费的容器产品
+docker-ee 是 docker 公司维护的闭源产品，是 docker 公司的商业产品。
+```
 
-[moby project][3]由社区维护，[docker-ce project][6]是docker公司维护，docker-ee是闭源的。
+[moby][3] 由社区维护，[docker-ce][6] 是 docker 公司维护，docker-ee 是闭源的。
 
-要使用免费的docker，从网页[docker-ce][4]上获取。
+免费的 docker-ce 从网页 [docker-ce][4] 上获取。
 
-要使用收费的docker，从网页[docker-ee][5]上获取。
+收费的 docker-ee 从网页 [docker-ee][5] 上获取。
 
-## docker-ce的发布计划
+## docker-ce 的发布计划
 
-v1.13.1之后，发布计划更改为:
+v1.13.1 之后，发布计划更改为:
 
 	Edge:   月版本，每月发布一次，命名格式为YY.MM，维护到下个月的版本发布
 	Stable: 季度版本，每季度发布一次，命名格式为YY.MM，维护4个月
 
-[docker-ce的release计划][7]跟随[moby的release计划][1]，可以使用下面的命令直接安装最新的docker-ce:
+docker-ce 的 [release 计划][7]跟随 moby 的 [release计划][1]，可以使用下面的命令直接安装最新的 docker-ce:
 
 	curl -fsSL https://get.docker.com/ | sh
 
 ### CentOS
 
-如果是centos，上面的安装命令会在系统上添加yum源:
+如果是 CentOS，上面的安装命令会在系统上添加 yum 源:
 
 	/etc/yum.repos.d/docker-ce.repo
 
-然后用yum安装:
+然后用 yum 安装:
 
 	yum install -y docker-ce
 
-yum源文件和rpm包都在网页[download.docker.com][2]中，可以自己下载安装:
+yum 源文件和 rpm 包都在网页 [download.docker.com][2]中，可以自己下载安装:
 
 	wget https://download.docker.com/linux/centos/docker-ce.repo
 	mv docker-ce.repo /etc/yum.repos.d
 	yum install -y docker-ce
 
-或者直接下载rpm安装:
+或者直接下载 rpm 安装:
 
 	wget https://download.docker.com/linux/centos/7/x86_64/stable/Packages/docker-ce-17.09.0.ce-1.el7.centos.x86_64.rpm
 	yum localinstall docker-ce-17.09.0.ce-1.el7.centos.x86_64.rpm
+
+## docker-ce的编译
+
+[docker-ce][6] 是一个项目，第一个版本是`17.06`，docker 以往版本的代码在 [moby][1] 项目中。
+
+	git clone https://github.com/docker/docker-ce.git
+
+然后可以直接构建:
+
+```sh
+$ make help
+ help                  show make targets
+ test-integration-cli  test integration of cli and engine
+ deb                   build deb packages
+ rpm                   build rpm packages
+ static                build static packages
+ clean                 clean the build artifacts
+```
+
+## moby的编译
+
+```sh
+git clone https://github.com/moby/moby.git
+```
 
 ## 参考
 
