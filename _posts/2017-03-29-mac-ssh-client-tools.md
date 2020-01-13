@@ -3,7 +3,7 @@ layout: default
 title: MAC上的SSH客户端工具
 author: 李佶澳
 createdate: 2017/03/29 18:50:52
-last_modified_at: "2019-01-17 15:15:47 +0800"
+last_modified_at: "2020-01-13 21:44:49 +0800"
 categories: 技巧
 tags: mac shell
 keywords: MAC,SSH客户端,ZOC
@@ -50,26 +50,57 @@ iterm的使用方法已经单独整理出来了，见[将Mac上的iterm改造成
 
 ### 配置lrzsz
 
+方法一：[ aikuyun/iterm2-zmodem ](https://github.com/aikuyun/iterm2-zmodem)
+
+```sh
+brew install lrzsz
+brew cask install growlnotify
+curl https://raw.githubusercontent.com/aikuyun/iterm2-zmodem/master/iterm2-recv-zmodem.sh  >  iterm2-recv-zmodem.sh
+curl https://raw.githubusercontent.com/aikuyun/iterm2-zmodem/master/iterm2-send-zmodem.sh  >  iterm2-send-zmodem.sh
+chmod +x iterm2*.sh
+mv  iterm2*.sh /usr/local/bin/
+```
+
+然后到iterm的"Preferences->Profiles->Advanced->Triggers"中添加下面两个trigger（如果有多个 profile 会使用 lrzsz ，就全配置）:
+
+```sh
+Regular expression: rz waiting to receive.\*\*B0100
+Action: Run Silent Coprocess
+Parameters: /usr/local/bin/iterm2-send-zmodem.sh
+Instant: checked
+
+Regular expression: \*\*B00000000000000
+Action: Run Silent Coprocess
+Parameters: /usr/local/bin/iterm2-recv-zmodem.sh
+Instant: checked
+```
+
+方法二： `mmastrac/iterm2-zmodem 被删了，用方法一`
+
 [ZModem integration for iTerm 2](https://github.com/mmastrac/iterm2-zmodem)
 
-	brew install lrzsz
+```sh
+brew install lrzsz
 
-	wget https://raw.githubusercontent.com/mmastrac/iterm2-zmodem/master/iterm2-recv-zmodem.sh
-	wget https://raw.githubusercontent.com/mmastrac/iterm2-zmodem/master/iterm2-send-zmodem.sh
-	chmod +x *.sh
-	mv iterm2*.sh /usr/local/bin/
+wget https://raw.githubusercontent.com/mmastrac/iterm2-zmodem/master/iterm2-recv-zmodem.sh
+wget https://raw.githubusercontent.com/mmastrac/iterm2-zmodem/master/iterm2-send-zmodem.sh
+chmod +x *.sh
+mv iterm2*.sh /usr/local/bin/
+```
 
 然后到iterm的"Preferences->Profiles->Advanced->Triggers"中添加下面两个trigger:
 
-    Regular expression: rz waiting to receive.\*\*B0100
-    Action: Run Silent Coprocess
-    Parameters: /usr/local/bin/iterm2-send-zmodem.sh
-    Instant: checked
+```sh
+Regular expression: rz waiting to receive.\*\*B0100
+Action: Run Silent Coprocess
+Parameters: /usr/local/bin/iterm2-send-zmodem.sh
+Instant: checked
 
-    Regular expression: \*\*B00000000000000
-    Action: Run Silent Coprocess
-    Parameters: /usr/local/bin/iterm2-recv-zmodem.sh
-    Instant: checked
+Regular expression: \*\*B00000000000000
+Action: Run Silent Coprocess
+Parameters: /usr/local/bin/iterm2-recv-zmodem.sh
+Instant: checked
+```
 
 ## ssh 实现Session Clone
 
@@ -87,6 +118,7 @@ iterm的使用方法已经单独整理出来了，见[将Mac上的iterm改造成
 
 [ssh_config](https://linux.die.net/man/5/ssh_config)
 
+z
 ## ~/.ssh/config
 
 在~/.ssh/目录中创建config文件，在其中按照如下格式记录主机:
