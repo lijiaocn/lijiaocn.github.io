@@ -20,6 +20,8 @@ description: nginx 公司介绍了 nginx 的性能，他们使用的性能评估
 
 nginx 公司在 [Testing the Performance of NGINX and NGINX Plus Web Servers][2] 介绍了 nginx 的性能，他们使用的性能评估方法和压测方式，很值得学习。
 
+压测工具见：[怎样压测 Web 应用的性能？压测工具与测量、分析方法][4]
+
 ## 先说结论
 
 结论1: 1~16 核时，增加 cpu 会提高 RPS，16～32 核提升效果减弱，32 核以上基本没有提升（http 和 https 都适用）
@@ -123,7 +125,7 @@ done
 * cpu 数量（nginx worker 数量）
 * http vs https
 
-![nginx-throughput.png]{{ site.imglocal }}/article/nginx-throughput.png)
+![nginx-throughput.png]({{ site.imglocal }}/article/nginx-throughput.png)
 
 ## 多网卡测试
 
@@ -144,5 +146,5 @@ done
 [1]: https://www.lijiaocn.com "李佶澳的博客"
 [2]: https://www.nginx.com/blog/testing-the-performance-of-nginx-and-nginx-plus-web-servers/ "Testing the Performance of NGINX and NGINX Plus Web Servers"
 [3]: https://www.nginx.com/blog/nginx-plus-sizing-guide-how-we-tested "NGINX Plus Sizing Guide: How We Tested"
-[4]: https://www.lijiaocn.com/%E6%96%B9%E6%B3%95/2018/11/02/webserver-benchmark-method.html "怎样压测Web应用的性能？压测工具与测量、分析方法"
+[4]: https://www.lijiaocn.com/%E6%96%B9%E6%B3%95/2018/11/02/webserver-benchmark-method.html "怎样压测 Web 应用的性能？压测工具与测量、分析方法"
 [5]: https://www.nginx.com/resources/datasheets/nginx-plus-sizing-guide/ "Sizing Guide for Deploying NGINX Plus on Bare Metal Servers"
