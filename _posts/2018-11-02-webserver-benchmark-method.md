@@ -3,9 +3,9 @@ layout: default
 title: "怎样压测Web应用的性能？压测工具与测量、分析方法"
 author: 李佶澳
 createdate: "2018-11-02 10:53:46 +0800"
-last_modified_at: "2019-06-17 14:53:07 +0800"
+last_modified_at: "2020-01-17 11:24:14 +0800"
 categories: 方法
-tags: 方法
+tags:  benchmark
 keywords: benchmark,web server,性能测试
 description: 最近在研究学习openresty和kong，openresty将处理逻辑直接内置在nginx中，这样做带来怎样提升？需要有一套测量方法
 ---
