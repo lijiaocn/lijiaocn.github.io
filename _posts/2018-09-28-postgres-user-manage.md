@@ -3,9 +3,9 @@ layout: default
 title: "PostgreSQL的用户到底是这么回事？新建用户怎样才能用密码登陆？"
 author: 李佶澳
 createdate: "2018-09-28 15:54:43 +0800"
-last_modified_at: "2019-08-13 11:46:01 +0800"
+last_modified_at: "2020-02-01 14:22:04 +0800"
 categories: 技巧
-tags: PostgreSQL
+tags: postgre
 keywords: postgres,PostgreSQL,用户登陆,pg_hab.conf,数据库
 description: PostgreSQL数据库的用法和MySQL很不一样，新创建的用户的创建要和pg_hba.conf中的配置对应才能成功登陆
 
