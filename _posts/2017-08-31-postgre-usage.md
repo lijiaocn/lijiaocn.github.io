@@ -117,7 +117,7 @@ Postgre的默认用户是postgres，需要在运行postgres的机器上，`切�
 
 	create user tony with password '123';
 
-创建之后是不是就可以登陆了？ **不是！** 见[PostgreSQL的用户到底是这么回事？新用户怎样才能用密码登陆？][5]。
+创建之后是不是就可以登陆了？ **不是！** 见[新用户怎样才能用密码登陆？][5]。
 
 查看用户使用`du`命令，删除用户使用`drop user USERNAME`。
 
