@@ -21,7 +21,7 @@ description: 开源区块链项目HyperLedger的视频教程，以及区块链�
 		<h5>{{ tag[0] }}:</h5>
 		<ul>
 		{% for post in tag[1] %}
-		<li><a href="{{ site.baseurl }}{{ post.url }}">《{{ post.title }}》</a></li>
+		<li><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
 		{% endfor %}
 		</ul>
 		{% endif %}
