@@ -8,7 +8,7 @@ categories: 方法
 cover:
 tags: benchmark
 keywords: benchmark,web框架测试
-description: 第一个是 cpu 主频与时钟的换算关系，另一个是基准测试方法，TechEmpower 在 Web Framework Benchmarks 提出了 7 个场景
+description: TechEmpower 在 Web Framework Benchmarks 中提出了 7 个场景
 ---
 
 ## 本篇目录
