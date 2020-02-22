@@ -14,7 +14,8 @@ plugins:
 
 baseurl:    
 imgurl: 
-imglocal:   /img
+imglocal: /img
+article:   /img/article
 lsi:       false
 excerpt_separator: "----"
 ICP-number:
