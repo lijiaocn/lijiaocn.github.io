@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Prometheus 水平扩展方案：监控数据的转储、聚合、查询（一）"
+title: "Prometheus 水平扩展方案（一）：监控数据的转储、聚合、查询"
 author: 李佶澳
 date: "2020-02-12T08:55:50+0800"
 last_modified_at: "2020-02-12T08:55:50+0800"
