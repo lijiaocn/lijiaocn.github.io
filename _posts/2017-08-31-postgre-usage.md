@@ -5,7 +5,7 @@ author: lijiaocn
 createdate: 2017/08/31 09:43:20
 last_modified_at: 2017/09/08 14:26:42
 categories: 技巧
-tags: postgre
+tags: postgre database
 keywords: posgres,postgresql,database
 description: postgresql的基本使用，最常用的操作，postgresql是一个老牌的数据库，它的文档中包含更多的内容。
 
