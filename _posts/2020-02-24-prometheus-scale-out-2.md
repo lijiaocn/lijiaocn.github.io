@@ -214,7 +214,7 @@ api/v1/export                       :exports raw data. See this article for deta
 通过 Prometheus 的 API 查询：
 
 ```sh
-$ curl -g 'http://localhost:9090/api/v1/series' --data-urlencode 'match[]=up' --data-urlencode 'match[]=process_start_time_seconds{job="prometheus"}'
+$ curl -g 'http://localhost:9090/api/v1/series' --data-urlencode 'match[]=vm_rows{}' |jq
 
 {
   "status": "success",
