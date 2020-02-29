@@ -22,6 +22,8 @@ description: VictoriaMetrics 是支持水平扩展的时序数据库，可以作
 
 VictoriaMetrics 与其它方案的对比见：[Prometheus 水平扩展方案（一）][4]
 
+【配套视频讲解】：【Prometehus入门->[水平扩展之Victoria Metrics][10]】
+
 ## 业务量指标
 
 VictoriaMetrics 分为 [单机版本][9] 和 [集群版本][6]，`单机版本和集群版本用法不同`，这里使用的是集群版。
@@ -101,8 +103,10 @@ vmselect 无状态服务，指向所有的 vmstorage，监听端口 8481，主�
 
 用下面的 docker-compose.yaml 在本地启动一个最小集群：
 
-```yaml
-待整理，加微信 lijiaocn。
+Dockerfile: [VictoriaMetrics](
+
+```sh
+git clone https://github.com/introclass/docker-compose-files.git
 ```
 
 分别访问下面三个地址，查看组件的状态数据：
@@ -282,6 +286,8 @@ Victora 官方提供了一个 grafana 面板，[dashboards/11176][7]：
 6. [Victora Cluster版本][6]
 7. [dashboards/11176][7]
 8. [prometheus http api][8]
+9. [Victora 单机版本][9]
+10. [视频讲解：Prometheus 水平扩展之Victoria Metrics][10]
 
 
 [1]: https://www.lijiaocn.com "李佶澳的博客"
@@ -293,3 +299,4 @@ Victora 官方提供了一个 grafana 面板，[dashboards/11176][7]：
 [7]: https://grafana.com/grafana/dashboards/11176  "dashboards/11176"
 [8]: https://prometheus.io/docs/prometheus/latest/querying/api/ "prometheus http api"
 [9]: https://github.com/VictoriaMetrics/VictoriaMetrics/ "Victora 单机版本"
+[10]: https://study.163.com/course/courseMain.htm?share=2&shareId=400000000376006&courseId=1005950011&_trace_c_p_k2_=e37f2feb071e4ea3a584b0f4bda9132c  "视频讲解：Prometheus 水平扩展之Victoria Metrics"
