@@ -6,7 +6,7 @@ date: "2020-02-12T08:55:50+0800"
 last_modified_at: "2020-02-12T08:55:50+0800"
 categories: 项目
 cover:
-tags: tsdb
+tags: monitor
 keywords: tsdb,prometheus,prometheus扩展,监控数据存储
 description: Prometheus 自带的时序数据库不支持集群模式，不能承接海量的时序数据，社区提供了多个方案
 ---

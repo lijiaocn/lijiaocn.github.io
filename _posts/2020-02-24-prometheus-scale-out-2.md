@@ -6,7 +6,7 @@ date: "2020-02-24T10:59:11+0800"
 last_modified_at: "2020-02-24T10:59:11+0800"
 categories: 项目
 cover:
-tags: tsdb
+tags: monitor
 keywords: victoria metrics,tsdb,prometheus,prometheus扩展,监控数据存储
 description: VictoriaMetrics 是支持水平扩展的时序数据库，可以作为 Prometheus 的远端存储，实现了 PromSQL
 ---
