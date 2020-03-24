@@ -101,9 +101,7 @@ vmselect 无状态服务，指向所有的 vmstorage，监听端口 8481，主�
 
 ### 本地部署一个最小集群
 
-用下面的 docker-compose.yaml 在本地启动一个最小集群：
-
-Dockerfile: [VictoriaMetrics](
+用下面的 VictoriaMetrics/docker-compose.yaml 在本地启动一个最小集群：
 
 ```sh
 git clone https://github.com/introclass/docker-compose-files.git

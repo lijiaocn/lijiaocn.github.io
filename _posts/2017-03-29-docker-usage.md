@@ -15,12 +15,13 @@ description: docker的使用手册，配置docker deamon运行参数等。
 * auto-gen TOC:
 {:toc}
 
+## Docker 镜像操作
 
-## docker基础镜像的制作
+### docker基础镜像的制作
 
 [create baseimages](https://docs.docker.com/articles/baseimages/)
 
-docker基础镜像制作的过程实质就是在一个新的目录中，安装基本的系统。然后将这个目录打包，使用docker import导入到docker中。
+docker 基础镜像制作的过程实质就是在一个新的目录中，安装基本的系统。然后将这个目录打包，使用docker import 导入到 docker 中。
 
 	#!/usr/bin/env bash
 	#
