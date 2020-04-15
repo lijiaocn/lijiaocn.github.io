@@ -88,7 +88,7 @@ description: 超级账本HyperLedger Fabric的Chaincode的开发、使用
 
 	mkdir -p $GOPATH/github.com/introclass
 	cd $GOPATH/github.com/introclass
-	git https://github.com/introclass/hyperledger-fabric-chaincodes.git
+	git clone https://github.com/introclass/hyperledger-fabric-chaincodes.git
 
 或者：
 
@@ -228,7 +228,7 @@ description: 超级账本HyperLedger Fabric的Chaincode的开发、使用
 	Query Result: ["1","3","5","7","9"]
 	2018-07-18 13:28:36.001 CST [main] main -> INFO 003 Exiting.....
 
-查看历史价值，发现也有很多缺失的数据：
+查看历史数值，发现也有很多缺失的数据：
 
 	$ ./peer.sh chaincode query -C mychannel -n mycc -c '{"Args":["history","key-array"]}'
 	2018-07-18 13:28:44.773 CST [chaincodeCmd] checkChaincodeCmdParams -> INFO 001 Using default escc
