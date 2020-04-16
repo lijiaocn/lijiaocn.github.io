@@ -8,7 +8,7 @@ categories: 技巧
 cover:
 tags: SEO
 keywords: 
-description: 《实战密码》第三版的 kindle 电子书已出，便宜到只有几块钱，可以同时在 kinde、手机、平板和电脑上阅读
+description: 《SEO实战密码》第三版 kindle 电子书已出，便宜到只有几块钱，同时在手机、平板和电脑上阅读
 ---
 
 ## 本篇目录
