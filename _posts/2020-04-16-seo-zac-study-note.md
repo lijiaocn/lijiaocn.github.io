@@ -60,25 +60,25 @@ description: 《SEO实战密码》第三版 kindle 电子书已出，便宜到�
 
 ### 关键词发现工具
 
-1. 在 [Google Trends](https://trends.google.com/trends/) 中查看相关主题和相关搜索：
+1、在 [Google Trends](https://trends.google.com/trends/) 中查看相关主题和相关搜索：
 
 ![Google trends 相关主题和相关查询]({{ site.article }}/googletrends-1.png)
 
-2. 在 [百度指数](http://index.baidu.com/v2/index.html) 的搜索图谱中查看相关关键词。
+2、在 [百度指数](http://index.baidu.com/v2/index.html) 的搜索图谱中查看相关关键词。
 
-![百度指数搜索图谱关键词分析]({{ site.article }}/baiduindex-1.png)
+![百度指数搜索图谱关键词分析]({{ site.article }}/baidu-index-1.png)
 
-3. 在 [Google ads 广告投放平台](https://ads.google.com/intl/zh_cn/home/) 创建广告，输入目标网站，发现竞争对手网站上关键词。
+3、在 [Google ads 广告投放平台](https://ads.google.com/intl/zh_cn/home/) 创建广告，输入目标网站，发现竞争对手网站上关键词。
 
 ![Google ads 目标网站关键词分析]({{ site.article }}/ads-1.png)
 
-4. 搜索引擎的搜索提示和相关搜索。
+4、搜索引擎的搜索提示和相关搜索。
 
-5. 在 [Google Search Console](https://search.google.com/search-console/) 的效果中，查看到达已有网站的关键词。
+5、在 [Google Search Console](https://search.google.com/search-console/) 的效果中，查看到达已有网站的关键词。
 
 ![Google Search Console 来源关键词]({{ site.article}}/google-console-1.png)
 
-6. 在 [百度统计](ttps://tongji.baidu.com/) 中，查看达到已有网站的关键词。
+6、在 [百度统计](ttps://tongji.baidu.com/) 中，查看达到已有网站的关键词。
 
 ![百度统计中展示的来源关键词]({{ site.article}}/baidutongji-1.png)
 
@@ -223,7 +223,7 @@ description: 《SEO实战密码》第三版 kindle 电子书已出，便宜到�
 7. 产品页链接所有分类首页（网站导航）
 8. 产品页可以链接向同一个分类的其他产品页
 9. 产品页一般不链接向其他分类的产品页
-10. 某些情况下，产品页可以用`适当的关键字`🔗其他分类的产品页
+10. 某些情况下，产品页可以用`适当的关键字`连接其他分类的产品页
 
 导航设计：
 
@@ -233,7 +233,7 @@ description: 《SEO实战密码》第三版 kindle 电子书已出，便宜到�
 4. 面包屑导航是判断页面在网站整个结构中位置的最好方法，强烈建议使用
 5. 避免页脚堆积，搜索引擎反感页脚对接富含关键词的分类链接
 
-字域名：
+子域名：
 
 1. 搜索引擎通常把子域名当作一个独立站点看待，子域名权重高于主域名+后缀，因为搜索引擎会当作首页
 2. 但从 SEO 角度看尽可能使用目录，因为子域名相当于推广两个网站
