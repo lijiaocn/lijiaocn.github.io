@@ -8,7 +8,7 @@ categories: 技巧
 cover:
 tags: nginx
 keywords: nginx,secure url,加密链接,临时链接
-description: 用nginx的secure_link_secret、secure_link、secure_link_md5 指令生成加密链接，超过有效时间后失效
+description: nginx secure_link_secret、secure_link、secure_link_md5 指令生成加密链接，过期后连接失效
 ---
 
 ## 本篇目录
