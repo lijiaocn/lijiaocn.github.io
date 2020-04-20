@@ -16,8 +16,6 @@ description: Prometheus 与 VictoriaMetrics 的常用 API，查询所有的 metr
 * auto-gen TOC:
 {:toc}
 
-## 说明
-
 ## 元数据查询
 
 ### Metrics Name
@@ -154,7 +152,7 @@ VictoriaMetrics 支持。
 $ curl 'http://localhost:8481/select/0/prometheus/api/v1/query?query=vm_rows' |jq
 ```
 
-## 参考
+## 参考资料
 
 1. [李佶澳的博客][1]
 
