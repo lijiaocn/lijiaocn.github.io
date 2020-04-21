@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "MySQL下载安装面试必知：事务使用和隔离级别、索引优化、存储过程等"
+title: "《MySQL实战45讲》下载安装后学习面试必知事务和隔离级别、索引优化和锁等"
 author: 李佶澳
 date: "2020-04-17T14:55:26+0800"
-last_modified_at: "2020-04-20T17:38:55+0800"
+last_modified_at: "2020-04-21T10:18:44+0800"
 categories: 编程
 cover:
 tags: database
