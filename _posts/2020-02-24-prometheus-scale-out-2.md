@@ -3,7 +3,7 @@ layout: default
 title: "Prometheus 水平扩展方案（二）：Victoria Metrics 学习、试用"
 author: 李佶澳
 date: "2020-02-24T10:59:11+0800"
-last_modified_at: "2020-04-21T22:47:33+0800"
+last_modified_at: "2020-04-21T23:01:15+0800"
 categories: 项目
 cover:
 tags: monitor prometheus
@@ -25,6 +25,7 @@ VictoriaMetrics 与其它方案的对比见：[Prometheus 水平扩展方案（�
 源代码阅读：[VictoriaMetrics水平扩展的实现](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2020/04/21/virctoria-metrics-code.html)
 
 【配套视频讲解】：【Prometehus入门->[水平扩展之Victoria Metrics][10]】
+
 
 
 ## 业务量指标
@@ -300,4 +301,4 @@ Victora 官方提供了一个 grafana 面板，[dashboards/11176][7]：
 [7]: https://grafana.com/grafana/dashboards/11176  "dashboards/11176"
 [8]: https://prometheus.io/docs/prometheus/latest/querying/api/ "prometheus http api"
 [9]: https://github.com/VictoriaMetrics/VictoriaMetrics/ "Victora 单机版本"
-[10]: https://study.163.com/course/courseMain.htm?share=2&shareId=400000000376006&courseId=1005950011&_trace_c_p_k2_=e37f2feb071e4ea3a584b0f4bda9132c  "视频讲解：Prometheus 水平扩展之Victoria Metrics"
+[10]: https://study.163.com/course/introduction.htm?shareId=400000000376006&trace_c_p_k2_=4b9989a268b5410392276efde7315c5f&courseId=1005950011#/courseDetail?tab=1 "视频讲解：Prometheus 水平扩展之Victoria Metrics"

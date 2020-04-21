@@ -3,7 +3,7 @@ layout: default
 title: "Victoria Metrics源代码阅读：水平扩展的查询拆分与时序数据的打散写入"
 author: 李佶澳
 date: "2020-04-21T10:38:12+0800"
-last_modified_at: "2020-04-21T22:49:30+0800"
+last_modified_at: "2020-04-21T23:01:55+0800"
 categories: 项目
 cover:
 tags: prometheus
@@ -36,9 +36,11 @@ git branch cluster -t origin/cluster && git checkout cluster     # cluster 分�
 2. [Prometheus 水平扩展方案（二）：Victoria Metrics 学习、试用][4]
 3. [Prometheus 水平扩展方案（三）：Prometheus 与 Victoria Metrics 的 API][5]
 
+视频演示：[章节2-Prometheus水平扩展之Victoria Metrics][7]
+
 ## vmselect
 
-./app/vmselect 将查询任务拆分成多个任务分发给 vmstorage，然后将 vmstorage 的响应数据汇聚后返回。
+./app/vmselect 将查询任务拆分成多个任务分发给 vmstorage，然后将 vmstorage 响应数据汇聚返回。
 
 考虑的几个参数：
 
@@ -180,3 +182,4 @@ vmstorage 向 vmselect 提供查询接口，向 vminsert 提供写入接口，�
 [4]: https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2020/02/24/prometheus-scale-out-2.html "Prometheus 水平扩展方案（二）：Victoria Metrics 学习、试用"
 [5]: https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2020/03/02/prometheus-scale-out-3.html "Prometheus 水平扩展方案（三）：Prometheus 与 Victoria Metrics 的 API"
 [6]: https://github.com/VictoriaMetrics/VictoriaMetrics/tree/cluster#url-format "VictoriaMetrics url-format"
+[7]: https://study.163.com/course/introduction.htm?shareId=400000000376006&trace_c_p_k2_=4b9989a268b5410392276efde7315c5f&courseId=1005950011#/courseDetail?tab=1 "视频讲解：Prometheus 水平扩展之Victoria Metrics"
