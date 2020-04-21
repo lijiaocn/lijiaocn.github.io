@@ -3,7 +3,7 @@ layout: default
 title: "Prometheus 水平扩展方案（一）：监控数据的转储、聚合、查询"
 author: 李佶澳
 date: "2020-02-12T08:55:50+0800"
-last_modified_at: "2020-02-12T08:55:50+0800"
+last_modified_at: "2020-04-21T22:45:59+0800"
 categories: 项目
 cover:
 tags:  prometheus monitor
@@ -50,7 +50,7 @@ VictoriaMetrics 的系统架构如下:
 
 ![VictoriaMetrics的系统架构]({{ site.article }}/victoria_metrics_arch.png)
 
-VictoriaMetrics 的使用方法见后续文章。
+VictoriaMetrics 的使用方法见后续文章：[VictoriaMetrics源码阅读-水平扩展的实现方法](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2020/04/21/virctoria-metrics-code.html)。
 
 ## Cortex
 

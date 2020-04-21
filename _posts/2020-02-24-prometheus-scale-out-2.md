@@ -3,7 +3,7 @@ layout: default
 title: "Prometheus 水平扩展方案（二）：Victoria Metrics 学习、试用"
 author: 李佶澳
 date: "2020-02-24T10:59:11+0800"
-last_modified_at: "2020-02-24T10:59:11+0800"
+last_modified_at: "2020-04-21T22:47:33+0800"
 categories: 项目
 cover:
 tags: monitor prometheus
@@ -22,7 +22,10 @@ description: VictoriaMetrics 是支持水平扩展的时序数据库，可以作
 
 VictoriaMetrics 与其它方案的对比见：[Prometheus 水平扩展方案（一）][4]
 
+源代码阅读：[VictoriaMetrics水平扩展的实现](https://www.lijiaocn.com/%E9%A1%B9%E7%9B%AE/2020/04/21/virctoria-metrics-code.html)
+
 【配套视频讲解】：【Prometehus入门->[水平扩展之Victoria Metrics][10]】
+
 
 ## 业务量指标
 
