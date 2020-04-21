@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "《MySQL实战45讲》事务和隔离级别、索引优化和锁等面试必知下载安装后学习"
+title: "《MySQL实战45讲》事务与隔离级别、索引优化和锁等面试必知"
 author: 李佶澳
 date: "2020-04-17T14:55:26+0800"
-last_modified_at: "2020-04-21T13:14:41+0800"
+last_modified_at: "2020-04-21T23:08:17+0800"
 categories: 编程
 cover:
 tags: database

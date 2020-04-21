@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "kubernetes configmap 热加载， 用 inotifywatch 监测文件变化触发热更新"
+title: "kubernetes configmap 热加载，inotifywatch 监测文件触发热更新"
 author: 李佶澳
 date: "2020-04-13T19:26:22+0800"
-last_modified_at: "2020-04-13T19:26:22+0800"
+last_modified_at: "2020-04-21T23:14:49+0800"
 categories: 技巧
 cover:
 tags: kubernetes

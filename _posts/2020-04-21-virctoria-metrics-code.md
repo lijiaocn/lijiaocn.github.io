@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "Victoria Metrics源代码阅读：水平扩展的查询拆分与时序数据的打散写入"
+title: "Victoria Metrics源码：水平扩展实现，查询拆分与时序数据打散写入"
 author: 李佶澳
 date: "2020-04-21T10:38:12+0800"
-last_modified_at: "2020-04-21T23:01:55+0800"
+last_modified_at: "2020-04-21T23:10:11+0800"
 categories: 项目
 cover:
 tags: prometheus
