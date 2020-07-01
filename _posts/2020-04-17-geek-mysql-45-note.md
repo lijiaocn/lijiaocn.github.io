@@ -3,7 +3,7 @@ layout: default
 title: "《MySQL实战45讲》事务与隔离级别、索引优化和锁等面试必知"
 author: 李佶澳
 date: "2020-04-17T14:55:26+0800"
-last_modified_at: "2020-04-21T23:08:17+0800"
+last_modified_at: "2020-04-26T14:22:10+0800"
 categories: 编程
 cover:
 tags: database
@@ -186,6 +186,144 @@ innodb_deadlock_detect：  默认为 on，开启死锁检测，主动回滚一�
 3. 将单行记录拆分为多行
 
 未完待续，还在学习中...
+
+## 实践经验
+
+### 普通索引与唯一索引的选择
+
+**场景**：按照身份证号查询姓名，业务保证不会写入重复的身份证号。
+
+```sql
+select name from CUser where id_card = 'xxxxxxxyyyyyyzzzzz';
+```
+
+**查询时的区别**：
+
+id_card 比较大，不建议设置为主键
+
+```sh
+1. 唯一索引：因为索引唯一，找到第一个记录后就停止后续查找
+2. 普通索引：找到第一个满足条件的记录后继续查找，直到遇到不满足条件的记录
+```
+
+>业务代码保证 id_card 不重复，两种类型索引的查询开销相差不大（B+树的存储结构决定了）
+
+**更新时的区别**：
+
+```sh
+1. 唯一索引：不能使用 change buffer
+2. 普通索引：可以使用 change buffer，「写多读少」的情况下收益最大
+```
+
+>除非更新后立即查询，否则应当使用普通索引。
+
+change buffer 是数据库中持久化的缓存（会记入 redo log）：更新数据页时，如果数据页不在内存中（否则直接更新），`在不影响一致性的情况下`，将更新暂存到 change buffer，等数据页下次被读入的时候进行 merge。
+
+唯一索引在更新时要判断是否违反唯一性，一定要先读数据，不能使用 change buffer。如果 id_card 为唯一索引，插入时会频繁将数据页加载到内存，这是数据操作里成本最高的操作之一。
+
+change buffer 特别适合「写多读少」的场景，如果读很多立即触发 merge，则得不偿失。
+
+change buffer 与 redolog 的区别：
+
+![mysql change buffer 与 redolog的区别]({{ site.article }}/mysql-chagne-buffer-redolog.png)
+
+redolog 暂存操作记录，将随机写磁盘转换成顺序写磁盘，chang buffer 减少随机读磁盘操作。
+
+`注意：使用普通索引的前提是业务正确、可接受。`
+
+### MySQL选错索引
+
+优化器负责选择索引，选择执行代价最小的索引，扫描的行数是执行代价的重要因素，另外还有临时表、排序等因素。
+
+扫描行数的估算：1、索引的基数；2、如果使用普通索引还要考虑回表。
+
+```sh
+1. 索引上不同值的个数称为「基数」，基数越大区分度越好。用 `show index from TABLE` 查看索引基数
+2. 索引基数是采样估算的，用 N 个数据页上的值的个数 * 索引的页面数
+3. 变更的数据行数超过 1/M，触发重新统计
+4. innodb_stats_persistent on：  N=20，M=10
+5. innodb_stats_persistent off： N=8， M=16
+```
+
+修正统计：
+
+```sql
+analyze table t
+```
+
+用 explain 查看语句的执行情况：
+
+```sh
+explain select * from t where a between 10000 and 20000;
+```
+
+慢查询阈值设置 set long_query_time，force index 指定索引：
+
+```sh
+set long_query_time=0;
+select * from t where a between 10000 and 20000; /*Q1*/
+select * from t force index(a) where a between 10000 and 20000;/*Q2*/
+```
+
+### 字符串字段加索引
+
+字符串可以使用前缀索引，默认包含整个字符串：
+
+```sql
+alter table SUser add index index1(email);
+alter table SUser add index index2(email(6));  //前缀 6 个字节
+```
+
+前缀索引减少了空间占用，但可能增加额外的扫描次数，并且可能带来额外的回表（取索引字段的完整值）。
+
+如果字符串的前缀区分度不够，可以采用`倒叙存储`（字符串反转后存储）、`增加 hash 字段`。
+
+倒叙存储查询举例：
+
+```sql
+select field_list from t where id_card = reverse('input_id_card_string');
+```
+
+使用 crc32 作为 hash 字段：
+
+```sql
+alter table t add id_card_crc int unsigned, add index(id_card_crc);
+select field_list from t where id_card_crc=crc32('input_id_card_string') and id_card='input_id_card_string'
+```
+
+### SQL 语句执行抖动
+
+抖的瞬间可能在「刷脏页」：
+
+```sh
+1. redolog 写满
+2. 系统内存不足，置换脏页时要刷脏页到磁盘
+3. 空闲的时候刷脏页
+4. MySQL 关闭的时候刷所有脏页
+```
+
+将 innodb_io_capacity 设置为磁盘的 IOPS，让 InnoDB 知道刷脏页可以多快：
+
+```sh
+fio -filename=$filename -direct=1 -iodepth 1 -thread -rw=randrw -ioengine=psync -bs=16k -size=500M -numjobs=10 -runtime=10 -group_reporting -name=mytest 
+```
+
+innodb_max_dirty_pages_pct 脏页比例，默认 75%。
+
+### 数据库表空间的回收
+
+InnoDB 表由表结构定义和表数据组成，MySQL 8.0 前表结构以 .frm 为后缀单独存储，现在可以放在系统数据表中。
+
+```sh
+innodb_file_per_table on:   每个表数据存放在一个 .ibd 文件中，默认为 on
+innodb_file_per_table off:  表数据存放在系统共享表空间
+```
+
+删除记录时，只会将 B+ 树中对应位置标记为删除，以后可以复用，磁盘文件大小不会缩小。
+
+数据页面上的所有记录都删除后，整个页可以被复用到任意位置。删除整张表后，所有数据页标记为可复用，但是文件不会变小。
+
+
 
 ## 林晓斌极客时间专栏《MySQL实战45讲》
 
