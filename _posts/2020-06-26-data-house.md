@@ -3,12 +3,12 @@ layout: default
 title: "数据仓库解惑：零基础入门（一）"
 author: 李佶澳
 date: "2020-06-26T15:48:34+0800"
-last_modified_at: "2020-07-02T14:13:18+0800"
+last_modified_at: "2020-08-26T17:01:05+0800"
 categories: 项目
 cover:
 tags: 数据仓库
 keywords:
-description: 经过连续多天的资料翻阅、看书看视频以及公开案例研究，总算搞清楚了数据仓库是干嘛的，以及要怎么建设
+description: 经过连续多天的资料翻阅、看书看视频以及公开案例研究，总算搞清楚了数据仓库是干嘛的
 ---
 
 ## 本篇目录
