@@ -9,20 +9,11 @@ includes:  [视频教程,envoy,kong,openresty,nginx,lua,hyperledger,kubernetes,p
 ---
 
 <h5><a id="全站标签" href="#全站标签">全站标签:</a></h5>
-<p>学习工作中记录的笔记，比较随意，特别是早期的，因为工作内容变化，有些记录不连续。</p>
 <p>
 {% for tag in site.tags %}
 <span><a href="/tags/all.html#{{ tag[0] }}">{{ tag[0] }}</a>&nbsp;</span>
 {% endfor %}
 </p>
-
-<h5>相对比较成系列的笔记:</h5>
-<ul>
-
-{% for tag in page.includes %}
-	<li><a href="/tags/all.html#{{ tag }}">{{ tag }}</a></li>
-{% endfor %}
-</ul>
 
 {% for tag in site.tags %}
 <h5><a id="{{ tag[0]}}" href="#{{tag[0]}}">{{ tag[0] }}:</a></h5>
