@@ -31,11 +31,68 @@ description:
 	MySQL version 5.6 or greater OR MariaDB version 10.0 or greater
 	HTTPS support
 
+
 ## 准备CentOS系统
 
 首先升级一下系统：
 
 	yum upgrade
+
+## 通过 yum 安装php
+
+前面试图使用自行编译的php7，make test未通过。使用yum 安装 php5，CentOS7 默认用的还是 php5：
+
+	yum install -y php-fpm php-mysql  （这种方式安装的是 php5）
+
+建议安装 [ius](https://ius.io/setup)：
+
+```sh
+yum install \
+https://repo.ius.io/ius-release-el7.rpm \
+https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+```
+
+安装 ius 中的 php7.4：
+
+```sh
+yum install -y php74-cli php74-fpm php74-mysqlnd php74-json php74-gd
+```
+
+安装完成后，本地 php 命令：：
+
+```sh
+php --version
+PHP 7.4.9 (cli) (built: Aug  7 2020 13:39:18) ( NTS )
+Copyright (c) The PHP Group
+Zend Engine v3.4.0, Copyright (c) Zend Technologies
+```
+
+
+在/etc/php-fpm.d/www.conf中修改php-fpm的运行时使用身份:
+
+	; RPM: apache Choosed to be able to access some dir as httpd
+	user = nginx
+	; RPM: Keep a group allowed to write in log dir.
+	group = nginx
+
+nginx、php-fpm都使用nginx身份, wordpress目录的拥有者也设置为nginx, 这样在wordpress中安装插件的时候就不需要通过ftp了。
+
+启动 php-fpm:
+
+```sh
+systemctl start php-fpm
+```
+
+检查 php-fpm 进程：
+```sh
+$ ps aux|grep php-fpm
+root     20627  0.0  0.8 253268  8632 ?        Ss   16:45   0:00 php-fpm: master process (/etc/php-fpm.conf)
+nginx    20628  0.0  0.4 255352  4220 ?        S    16:45   0:00 php-fpm: pool www
+nginx    20629  0.0  0.4 255352  4220 ?        S    16:45   0:00 php-fpm: pool www
+nginx    20630  0.0  0.4 255352  4220 ?        S    16:45   0:00 php-fpm: pool www
+nginx    20631  0.0  0.4 255352  4220 ?        S    16:45   0:00 php-fpm: pool www
+nginx    20632  0.0  0.4 255352  4224 ?        S    16:45   0:00 php-fpm: pool www
+```
 
 ## 安装nginx
 
@@ -49,8 +106,8 @@ nginx直接使用yum源中的版本
 	    listen       80 default_server;
 	    listen       [::]:80 default_server;
 	    server_name  _;
-	    root         /www/wordpress;  #wordpress的文件目录       
 	    index        index.php;
+	    root         /www/wordpress;  #wordpress的文件目录       
 	
 	    # Load configuration files for the default server block.
 	    include /etc/nginx/default.d/*.conf;
@@ -82,6 +139,108 @@ nginx直接使用yum源中的版本
 查看nginx日志:
 
 	ls /var/log/nginx
+
+## 测试php
+
+在/www/wordpress(nginx中配置的根目录)中创建文件index.php，输入:
+
+	<?php phpinfo() ?>
+
+访问服务器地址后，应当看到php信息
+
+## 安装mariadb
+
+CentOS7的maraidb版本是5.5.52, 需要添加10版本的yum源: [mariadb 10 rpm](https://downloads.mariadb.org/mariadb/repositories/#mirror=tuna&distro=CentOS&distro_release=centos7-amd64--centos7)
+
+创建文件/etc/yum.repos.d/MariaDB.repo, 并输入下面的内容:
+
+	# MariaDB 10.1 CentOS repository list - created 2017-01-14 09:27 UTC
+	# http://downloads.mariadb.org/mariadb/repositories/
+	[mariadb]
+	name = MariaDB
+	baseurl = http://yum.mariadb.org/10.1/centos7-amd64
+	gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+	gpgcheck=1
+
+安装:
+
+	yum install MariaDB-server MariaDB-client
+
+启动:
+
+	systemctl start mariadb
+
+## 创建数据库
+
+[Installing_wordpress](https://codex.wordpress.org/Installing_WordPress)
+
+	$ mysql -u root
+	Enter password:
+	Welcome to the MySQL monitor.  Commands end with ; or \g.
+	Your MySQL connection id is 5340 to server version: 3.23.54
+	 
+	Type 'help;' or '\h' for help. Type '\c' to clear the buffer.
+	 
+	mysql> CREATE DATABASE databasename;
+	Query OK, 1 row affected (0.00 sec)
+	 
+	mysql> GRANT ALL PRIVILEGES ON databasename.* TO "wordpressusername"@"hostname"
+	    -> IDENTIFIED BY "password";
+	Query OK, 0 rows affected (0.00 sec)
+	  
+	mysql> FLUSH PRIVILEGES;
+	Query OK, 0 rows affected (0.01 sec)
+	
+	mysql> EXIT
+	Bye
+	$ 
+
+如果无法远程登陆，尝试：
+
+```sql
+update user set plugin='mysql_native_password' where User='USERNAME';
+flush privileges;
+```
+
+## 安装WordPress
+
+下载wordpress源码，解压到nginx.conf中配置的目录中, 并将所属用户修改nginx。
+
+[wordpress download](https://wordpress.org/download/)
+
+配置：
+
+	cp wp-config-sample.php  wp-config.php
+
+在wp-config.php中配置数据库用户名和密码：
+
+	// ** MySQL settings - You can get this info from your web host ** //
+	/** The name of the database for WordPress */
+	define('DB_NAME', 'database_name_here');
+	
+	/** MySQL database username */
+	define('DB_USER', 'username_here');
+	
+	/** MySQL database password */
+	define('DB_PASSWORD', 'password_here');
+
+访问网址 [https://api.wordpress.org/secret-key/1.1/salt/ ](https://api.wordpress.org/secret-key/1.1/salt/)，将得到的salt添加到wp-config.php中。
+
+打开网址"http://服务器地址或域名/wp-admin/install.php"，按照提示完成安装。
+
+## 安装WordPress插件
+
+多语言支持:
+
+	Polylang
+
+广告管理：
+
+	AdRotate
+
+## 设置开机自启动
+
+	systemctl enable php-fpm mariadb nginx
 
 ## 配置https
 
@@ -133,7 +292,7 @@ nginx直接使用yum源中的版本
 重启nginx后，通过https://访问
 
 
-## 安装PHP7(未通过)
+## 编译安装PHP7(未通过)
 
 >在 make test的时候，测试用例未通过！暂停使用这种方法
 
@@ -237,7 +396,7 @@ php-fpm监听本地的9000端口:
 
 	cat /usr/local/php/var/log/php-fpm.log
 
-## 安装php7扩展(未通过)
+## 编译安装php7扩展(未通过)
 
 >在 make test的时候，测试用例未通过！暂停使用这种方法
 
@@ -249,111 +408,7 @@ php-fpm监听本地的9000端口:
 	make 
 	make install
 
-## 通过yum安装php
 
-前面试图使用自行编译的php7，但是make test未通过，退而求其次，使用yum源中的php5。
-
-	yum install -y php-fpm php-mysql
-
-在/etc/php-fpm.d/www.conf中修改php-fpm的运行时使用身份:
-
-	; RPM: apache Choosed to be able to access some dir as httpd
-	user = nginx
-	; RPM: Keep a group allowed to write in log dir.
-	group = nginx
-
-nginx、php-fpm都使用nginx身份, wordpress目录的拥有者也设置为nginx, 这样在wordpress中安装插件的时候就不需要通过ftp了。
-
-## 测试php
-
-在/www/wordpress(nginx中配置的根目录)中创建文件index.php，输入:
-
-	<?php phpinfo() ?>
-
-访问服务器地址后，应当看到php信息
-
-## 安装mariadb
-
-CentOS7的maraidb版本是5.5.52, 需要添加10版本的yum源: [mariadb 10 rpm](https://downloads.mariadb.org/mariadb/repositories/#mirror=tuna&distro=CentOS&distro_release=centos7-amd64--centos7)
-
-创建文件/etc/yum.repos.d/MariaDB.repo, 并输入下面的内容:
-
-	# MariaDB 10.1 CentOS repository list - created 2017-01-14 09:27 UTC
-	# http://downloads.mariadb.org/mariadb/repositories/
-	[mariadb]
-	name = MariaDB
-	baseurl = http://yum.mariadb.org/10.1/centos7-amd64
-	gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
-	gpgcheck=1
-
-安装:
-
-	yum install MariaDB-server MariaDB-client
-
-启动:
-
-	systemctl start mariadb
-
-## 创建数据库
-
-[Installing_wordpress](https://codex.wordpress.org/Installing_WordPress)
-
-	$ mysql -u adminusername -p
-	Enter password:
-	Welcome to the MySQL monitor.  Commands end with ; or \g.
-	Your MySQL connection id is 5340 to server version: 3.23.54
-	 
-	Type 'help;' or '\h' for help. Type '\c' to clear the buffer.
-	 
-	mysql> CREATE DATABASE databasename;
-	Query OK, 1 row affected (0.00 sec)
-	 
-	mysql> GRANT ALL PRIVILEGES ON databasename.* TO "wordpressusername"@"hostname"
-	    -> IDENTIFIED BY "password";
-	Query OK, 0 rows affected (0.00 sec)
-	  
-	mysql> FLUSH PRIVILEGES;
-	Query OK, 0 rows affected (0.01 sec)
-	
-	mysql> EXIT
-	Bye
-	$ 
-
-## 安装WordPress
-
-下载wordpress源码，解压到nginx.conf中配置的目录中, 并将所属用户修改nginx。
-
-[wordpress download](https://wordpress.org/download/)
-
-配置：
-
-	cp wp-config-sample.php  wp-config.php
-
-在wp-config.php中配置数据库用户名和密码：
-
-	// ** MySQL settings - You can get this info from your web host ** //
-	/** The name of the database for WordPress */
-	define('DB_NAME', 'database_name_here');
-	
-	/** MySQL database username */
-	define('DB_USER', 'username_here');
-	
-	/** MySQL database password */
-	define('DB_PASSWORD', 'password_here');
-
-访问网址[https://api.wordpress.org/secret-key/1.1/salt/](https://api.wordpress.org/secret-key/1.1/salt/)，将得到的salt添加到wp-config.php中。
-
-打开网址"http://服务器地址或域名/wp-admin/install.php"，按照提示完成安装。
-
-## 安装WordPress插件
-
-多语言支持:
-
-	Polylang
-
-广告管理：
-
-	AdRotate
 
 ## 文献
 
