@@ -81,8 +81,6 @@ services:
             DEBUG: '1'
         command: /local/helpers/run.sh
         restart: always
-    redis:
-      image: redis:alpine
 ```
 
 执行 `docker-compose up -d` 启动，这时候会发现生成了 docker-for-mac.ovpn 文件和 config/目录中的文件，前者是 openvpn 客户端配置文件，后者是 openvpn 服务端配置文件。
