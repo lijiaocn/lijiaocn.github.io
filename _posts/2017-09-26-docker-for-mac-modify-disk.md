@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 调整docker for mac的磁盘大小
+title: 调整 docker for mac 的磁盘大小
 author: 李佶澳
 createdate: 2017/09/26 16:01:04
 last_modified_at: 2017/09/26 16:45:34

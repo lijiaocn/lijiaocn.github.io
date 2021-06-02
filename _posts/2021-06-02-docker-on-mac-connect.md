@@ -87,6 +87,12 @@ services:
 
 执行 `docker-compose up -d` 启动，这时候会发现生成了 docker-for-mac.ovpn 文件和 config/目录中的文件，前者是 openvpn 客户端配置文件，后者是 openvpn 服务端配置文件。
 
+检查 docker-for-mac.ovpn 中有没有指向容器地址的路由，如果没有手动添加：
+
+```sh
+route 172.17.0.0 255.255.0.0
+```
+
 安装 openvpn 客户端 tunnelblick：
 
 ```sh
