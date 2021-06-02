@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2017/09/26 16:01:04
 last_modified_at: 2017/09/26 16:45:34
 categories: 技巧
-tags: docker
+tags: docker mac
 keywords: docker,docker for mac
 description: mac上运行的docker提示No space left on device
 

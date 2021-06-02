@@ -1,6 +1,6 @@
 ---
 layout: default
-title: MAC上的SSH客户端工具
+title: MacOS 上的常用软件
 author: 李佶澳
 createdate: 2017/03/29 18:50:52
 last_modified_at: "2020-01-13 21:44:49 +0800"
@@ -14,6 +14,56 @@ description:  mac上虽然有iterm等shell终端，可以直接ssh登陆，但�
 ## 目录
 * auto-gen TOC:
 {:toc}
+
+
+## 必备软件
+
+安装 [brew](https://brew.sh/):
+　
+```sh
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+```
+
+安装 [iterm2](https://www.iterm2.com/):
+
+```sh
+下载解压，拖动到应用程序
+```
+
+安装[oh-my-zsh](https://ohmyz.sh/):
+
+```sh
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+```
+
+其它软件：
+
+```sh
+brew cask install gitbook
+sudo gem install bundler jekyll
+brew install npm
+npm install -g gitbook-cli
+```
+
+## 数据库图形工具
+
+mysql 图形界面管理工具：sequel-pro、mysqlworkbench：
+
+```sh
+brew cask install sequel-pro mysqlworkbench
+```
+
+通用的数据库图形界面工具：navicat-premium
+
+```sh
+brew cask install navicat-premium
+```
+
+[Getting Started with PostgreSQL on Mac OSX][4] 列出了几个 postgres 的图形界面管理工具:
+
+* Postico
+* pgAdmin
+
 
 ## iterm
 
@@ -161,8 +211,10 @@ Identityfile是登陆机的私钥，公钥追加写入到目标机器的~/.ssh/a
 2. [Mac 让 iTerm2 记住用户名密码 expect 脚本][2]
 3. [Create SSH Bookmarks in Terminal][3]
 4. [Mac的iterm保存ssh登陆信息方法，类似SecureCRT][4]
+5. [Getting Started with PostgreSQL on Mac OSX][5]
 
 [1]: http://www.emtec.com/download.html "ZOC download"
 [2]: http://blog.csdn.net/fenglailea/article/details/50895867 "Mac 让 iTerm2 记住用户名密码 expect 脚本"
 [3]: http://osxdaily.com/2012/06/03/create-ssh-bookmarks-in-terminal-for-mac-os-x/ "Create SSH Bookmarks in Terminal"
 [4]: https://jingyan.baidu.com/article/af9f5a2d72b16143140a459b.html  "Mac的iterm保存ssh登陆信息方法，类似SecureCRT"
+[5]: https://www.codementor.io/@engineerapart/getting-started-with-postgresql-on-mac-osx-are8jcopb "Getting Started with PostgreSQL on Mac OSX"
