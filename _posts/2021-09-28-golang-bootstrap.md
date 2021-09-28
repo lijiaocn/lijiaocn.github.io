@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Go语言程序的运行前引导过程"
+title: "Go语言程序的运行前引导过程分析"
 author: 李佶澳
 date: "2021-09-28 18:44:58 +0800"
 last_modified_at: "2021-09-28 18:44:58 +0800"
