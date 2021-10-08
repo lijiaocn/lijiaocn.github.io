@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "《MySQL实战45讲》数据库进阶学习最佳资料：索引/事务/锁等"
+title: "林晓斌《MySQL实战45讲》学习笔记：索引/事务/锁等"
 author: 李佶澳
 date: "2020-04-17T14:55:26+0800"
-last_modified_at: "2021-09-26T16:12:55+0800"
+last_modified_at: "2021-10-08T11:54:50+0800"
 categories: 编程
 cover:
 tags: database
@@ -19,7 +19,7 @@ description: MySQL下载安装后，还需掌握事务隔离、索引优化、�
 
 ## 《MySQL实战45讲》说明
 
-真正掌握 Mysql，除了需要掌握基本的增删改查语句，还需要知道 `存储引擎`、`索引`、`锁`、`事务`等概念的细节，并完成动手操作验证。前阿里资深专家（现在腾讯云数据库负责人）林晓斌的《MySQL实战45讲》，大概是最好最好的进阶材料，有很多出超出「想当然认识」的知识，可以避免在以后工作中踩坑。
+这个专栏不介绍基础的增删改查语句等，主要讲解 `存储引擎`、`索引`、`锁`、`事务`等概念的细节。专栏作者是前阿里资深专家（现在腾讯云数据库负责人）林晓斌的《MySQL实战45讲》。这个专栏大概是最好最好的 MySQL 进阶材料，受益良多。
 
 
 <span style="display:block;text-align:center">![林晓斌《MySQL实战45讲》MySQL深度学习]({{ site.article }}/lxbmysql.jpeg){: width="250px"}</span>

@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 《深入剖析Kubernetes》专栏的阅读笔记(持续更新)
+title: 张磊《深入剖析Kubernetes》专栏的阅读笔记
 author: 李佶澳
 createdate: 2018/09/20 22:37:00
 last_modified_at: 2018/09/28 00:23:19
@@ -17,19 +17,7 @@ description: 张磊是《Docker容器与容器云》的作者，Kubernetes多个
 
 ## 说明
 
-张磊是《Docker容器与容器云》的作者，Kubernetes多个核心特性的作者之一。他在极客时间开了一个收费专栏，我订阅了。我把阅读过程中了解到的一些新知识记录在这里。
-
-注意：因为我研究Docker和Kubernetes比较早，这个专栏里的大部分内容对我来说都已知的，这里主要记录我以前不知道的内容。
-
-## 极客时间介绍
-
-最早抱着试一试的态度，订阅了左耳朵耗子的[《左耳听风》](https://www.lijiaocn.com/%E5%A5%BD%E8%B4%A7/2018/10/09/geek-chenghao-zhuanlan.html)，读了几篇之后发现内容不错。和买一本书差不多，但是内容是最新的、持续更新，可以在地铁上用手机阅读，可以在评论中与作者和其它读者互动。
-
-订阅之后可以在移动端和PC端`永久阅读`。**新用户可以领取** ：[极客时间首次注册30元优惠券](https://time.geekbang.org/activity/getinvite?gk_ucode=E274D90C022D49)
-
-## 《深入剖析Kubernetes》专栏介绍
-
-专栏详情可以直接扫码查看，有很详细的内容目录，并且可以试读。
+张磊是《Docker容器与容器云》的作者，Kubernetes多个核心特性的作者之一。专栏详情可以直接扫码查看，有很详细的内容目录，可以试读。因为在阅读该专栏之前，已经对 Kubernetes 有较多的了解，这里只记录一些填补了盲区的新知识。
 
 <span style="display:block;text-align:center">![深入剖析Kubernetes极客时间专栏介绍]({{ site.imglocal }}/geek/kubernetes.jpeg){: width="250px"}</span>
 

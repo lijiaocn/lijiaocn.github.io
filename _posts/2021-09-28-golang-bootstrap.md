@@ -71,9 +71,9 @@ $ file main_fmt.out                              // 链接后得到可执行文�
 main_fmt.out: Mach-O 64-bit executable x86_64
 ```
 
-### go 编译链接是动的手脚
+### go 编译链接时动的手脚
 
-go 在编译和链接时，动了一些手脚。它编译出来的 obj 文件默认依赖 runtime.a，即使没有引用任何代码库（如同上面的空 main），编译得到的 obj 文件也会依赖一个 runtime.a 文件。
+go 在编译和链接时，动了一些手脚。它编译出来的 obj 文件默认依赖 runtime.a，即使没有引用任何代码库，如同上面的空 main，编译得到的 obj 文件也会依赖一个 runtime.a 文件。
 
 用 link 查看 obj 文件的依赖：
 
@@ -135,7 +135,6 @@ main_main 即 main.main，是 package main 中的 main 函数。
 ## 汇编引导代码详细分析
 
 这部分涉及到操作系统的程序加载过程，需要熟读汇编代码和 CPU 指令，以后有时间再研究...
-
 
 ## 参考
 
