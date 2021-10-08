@@ -1,10 +1,10 @@
 ---
 layout: default
-title:  使用grafana和prometheus监控kubernetes集群状态
+title:  使用 grafana 和 prometheus 监控 kubernetes 集群状态
 author: 李佶澳
 createdate: 2018/08/30 15:59:00
 last_modified_at: 2018/08/31 18:23:21
-categories: 工具
+categories: 技巧
 tags: prometheus kubernetes
 keywords: promethues,grafana,kubernetes
 description: grafana和prometheus是现在最常用的组合，grafana提供了监控kubernetes集群的插件

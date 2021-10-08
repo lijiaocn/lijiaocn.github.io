@@ -4,7 +4,7 @@ title: "虚拟机管理利器 vagrant 的基本概念和使用方法"
 author: 李佶澳
 date: "2020-09-25 15:54:07 +0800"
 last_modified_at: "2020-09-25 15:54:07 +0800"
-categories: 工具
+categories: 技巧
 cover:
 tags: vagrant
 keywords:  vagrant,虚拟机管理

@@ -3,7 +3,7 @@ layout: default
 title: "极客时间大咖优质专栏推荐（已鉴定）"
 author: 李佶澳
 date: "2019-12-15T22:47:59+0800"
-last_modified_at: "2021-10-08T18:29:37+0800"
+last_modified_at: "2021-10-08T18:48:39+0800"
 permalink: /geekclass/
 categories: 好货
 cover:
@@ -153,9 +153,9 @@ description: 这些专栏的内容比市面上绝大多数图书优质，讲解�
 
 ### 唐扬&nbsp;&nbsp;&nbsp;《高并发系统设计40问》
 
-**专栏说明**：待补充。
+**专栏说明**：这个专栏比较一般，涉及的内容比较多（数据库/缓存/消息队列/分布式服务），但是蜻蜓点水，有点浮于表面，不如分别阅读[每个方向的专栏](/geekclass/)。
 
-**学习笔记**：待补充。
+**学习笔记**：[《高并发系统设计40问》阅读笔记：数据库/缓存/消息队列/分布式服务](/2021/10/08/geek-gaobingfa.html)。
 
 
 <span style="display:block;text-align:center">![唐扬《高并发系统设计40问》]({{ site.article }}/geek/gaobingfa.jpeg){: width="350px"}</span>

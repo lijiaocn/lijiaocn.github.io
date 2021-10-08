@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "林晓斌《MySQL实战45讲》学习笔记：索引/事务/锁等"
+title: "《MySQL实战45讲》学习笔记：索引/事务/锁等"
 author: 李佶澳
 date: "2020-04-17T14:55:26+0800"
-last_modified_at: "2021-10-08T11:54:50+0800"
+last_modified_at: "2021-10-08T15:30:06+0800"
 categories: 编程
 cover:
 tags: database
