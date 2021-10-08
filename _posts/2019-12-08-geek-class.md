@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "极客时间大咖优质专栏推荐（已鉴定）"
+title: "极客时间精品技术专栏推荐（已鉴定）"
 author: 李佶澳
 date: "2019-12-15T22:47:59+0800"
-last_modified_at: "2021-10-08T18:48:39+0800"
+last_modified_at: "2021-10-08T18:51:31+0800"
 permalink: /geekclass/
 categories: 好货
 cover:

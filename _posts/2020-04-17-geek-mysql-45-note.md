@@ -1,12 +1,12 @@
 ---
 layout: default
-title: "《MySQL实战45讲》学习笔记：索引/事务/锁等"
+title: "极客时间《MySQL实战45讲》阅读笔记：索引/事务/锁/间隙锁等"
 author: 李佶澳
 date: "2020-04-17T14:55:26+0800"
-last_modified_at: "2021-10-08T15:30:06+0800"
+last_modified_at: "2021-10-08T18:52:34+0800"
 categories: 编程
 cover:
-tags: database
+tags: 阅读笔记 database
 keywords: mysql,事务隔离,索引优化,存储过程,全局锁,表级锁,行级锁
 description: MySQL下载安装后，还需掌握事务隔离、索引优化、存储过程、全局锁、表级锁以及行级锁等高级知识
 ---
