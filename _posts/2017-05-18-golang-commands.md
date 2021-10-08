@@ -1,6 +1,6 @@
 ---
 layout: default
-title: go的子命令与工具
+title: Golang 的子命令与工具命令用法举例
 author: 李佶澳
 createdate: 2017/05/18 16:00:04
 last_modified_at: 2017/05/18 19:47:04
@@ -15,9 +15,9 @@ description: golang有多个子命令，其中一些子命令有比较有趣的�
 * auto-gen TOC:
 {:toc}
 
-## go的全部子命令
+## Go 的全部子命令
 
-运行命令go，就可以看到go的子命令：
+运行 go，就可以看到 go 的所有子命令：
 
 	$go
 	Go is a tool for managing Go source code.
@@ -46,9 +46,8 @@ description: golang有多个子命令，其中一些子命令有比较有趣的�
 		
 	Use "go help [command]" for more information about a command.
 
-[Command go][1]中做了详细介绍。
 
-出了这些子命令，go还有一些特殊用途的工具,`go tool`可以看到这些工具：
+其中`go tool` 进一步包含了其它子命令：
 
 	$go tool
 	addr2line
@@ -69,7 +68,10 @@ description: golang有多个子命令，其中一些子命令有比较有趣的�
 	vet
 	yacc
 
-[Go's Tools][2]中介绍了这些工具。
+[Go's Tools][2]、[Command go][1] 中介绍了这些子命令的用法。
+
+## go tool compile：编译器
+
 
 ## generate
 
@@ -83,5 +85,5 @@ command是任意指定的，通常用来对代码预先处理。`go generate`必
 
 1. [Command go][1]
 
-[1]: https://golang.org/cmd/go/  "Command go" 
-[2]: https://golang.org/cmd/ "Go's Tools"
+[1]: https://pkg.go.dev/cmd/go  "Command go" 
+[2]: https://pkg.go.dev/cmd  "Go's Tools"
