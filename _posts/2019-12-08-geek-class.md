@@ -3,13 +3,13 @@ layout: default
 title: "极客时间大咖优质专栏推荐（已鉴定）"
 author: 李佶澳
 date: "2019-12-15T22:47:59+0800"
-last_modified_at: "2021-10-08T14:44:45+0800"
+last_modified_at: "2021-10-08T14:59:51+0800"
 permalink: /geekclass/
 categories: 好货
 cover:
 tags: 好货
 keywords: 极客时间
-description: 就当作是买了几本书！这些专栏的内容比市面上绝大多数图书优质！时效性和进阶梯度好
+description: 这些专栏的内容比市面上绝大多数图书优质，讲解的非常细致，逻辑清晰案例贴近实际
 ---
 
 
@@ -22,9 +22,19 @@ description: 就当作是买了几本书！这些专栏的内容比市面上绝�
 
 这些专栏的内容比市面上绝大多数图书优质，讲解的非常细致，逻辑清晰案例贴近实际，表达口语化容易懂。下面是已经阅读过的专栏，内容不错，重点推荐。
 
+>这些技术专栏本质上是一种新型图书：专业编辑进行选题，邀请较受公认的一线专家撰写，美术加工/编辑校对后发布。和传统图书不同的是：这些专栏是在线的，始终有人维护，内容时效性更好，可以和作者以及其它读者互动，内容质量显著高于一般的图书。
+
 ## 编程技术
 
 编程语言、算法、编程库、通信技术等。
+
+### 陈皓    《左耳听风》
+
+**专栏说明**：作者陈皓，网名左耳朵 耗子，人称耗子叔，是一位四十多岁的中年老男人。[CoolShell](https://coolshell.cn/)的博主。有 20 年软件开发及相关工作经验，先后在阿里巴巴、亚马逊、汤森路透等知名公司任职，对 IT 底层技术平台有深入的了解，尤其在大规模分布式系统的基础架构方面颇有研究。专栏中既有技术分享也有经验分享，像一个老技术人员对新人的肺腑之谈。
+
+**学习笔记**：[陈皓《左耳听风》专栏的阅读笔记](https://www.lijiaocn.com/%E5%A5%BD%E8%B4%A7/2018/10/09/geek-chenghao-zhuanlan.html)
+
+<span style="display:block;text-align:center">![左耳朵耗子耗子陈皓的极客时间专栏]({{ site.article}}/geek/chenhao.jpeg){: width="350px"}</span>
 
 ### 王争    《数据结构与算法之美》
 
@@ -86,7 +96,7 @@ description: 就当作是买了几本书！这些专栏的内容比市面上绝�
 
 **学习笔记**：[林晓斌《MySQL实战45讲》学习笔记：索引/事务/锁等](https://www.lijiaocn.com/%E7%BC%96%E7%A8%8B/2020/04/17/geek-mysql-45-note.html)
 
-<span style="display:block;text-align:center">![林晓斌《MySQL实战45讲》MySQL深度学习]({{ site.article }}/lxbmysql.jpeg){: width="350px"}</span>
+<span style="display:block;text-align:center">![林晓斌《MySQL实战45讲》MySQL深度学习]({{ site.article }}/geek/mysql.jpeg){: width="350px"}</span>
 
 ### 张磊      《深入剖析Kubernetes》
 
@@ -180,18 +190,7 @@ description: 就当作是买了几本书！这些专栏的内容比市面上绝�
 <span style="display:block;text-align:center">![袁武林《即时消息技术剖析与实战》]({{ site.article }}/geek/im.jpeg){: width="350px"}</span>
 
 
-## 经验分享
-
-经验分享以及其它杂项。
-
-### 陈皓    《左耳听风》
-
-**专栏说明**：作者陈皓，网名左耳朵 耗子，人称耗子叔，是一位四十多岁的中年老男人。[CoolShell](https://coolshell.cn/)的博主。有 20 年软件开发及相关工作经验，先后在阿里巴巴、亚马逊、汤森路透等知名公司任职，对 IT 底层技术平台有深入的了解，尤其在大规模分布式系统的基础架构方面颇有研究。专栏中既有技术分享也有经验分享，像一个老技术人员对新人的肺腑之谈。
-
-
-**学习笔记**：[陈皓《左耳听风》专栏的阅读笔记](https://www.lijiaocn.com/%E5%A5%BD%E8%B4%A7/2018/10/09/geek-chenghao-zhuanlan.html)
-
-<span style="display:block;text-align:center">![左耳朵耗子耗子陈皓的极客时间专栏]({{ site.article}}/geek/chenhao.jpeg){: width="350px"}</span>
+## 其它
 
 ### 周甲德《白话法律42讲》
 
