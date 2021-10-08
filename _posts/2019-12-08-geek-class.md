@@ -3,7 +3,7 @@ layout: default
 title: "极客时间大咖优质专栏推荐（已鉴定）"
 author: 李佶澳
 date: "2019-12-15T22:47:59+0800"
-last_modified_at: "2021-10-08T14:59:51+0800"
+last_modified_at: "2021-10-08T18:29:37+0800"
 permalink: /geekclass/
 categories: 好货
 cover:
@@ -28,7 +28,7 @@ description: 这些专栏的内容比市面上绝大多数图书优质，讲解�
 
 编程语言、算法、编程库、通信技术等。
 
-### 陈皓    《左耳听风》
+### 陈皓&nbsp;&nbsp;&nbsp;《左耳听风》
 
 **专栏说明**：作者陈皓，网名左耳朵 耗子，人称耗子叔，是一位四十多岁的中年老男人。[CoolShell](https://coolshell.cn/)的博主。有 20 年软件开发及相关工作经验，先后在阿里巴巴、亚马逊、汤森路透等知名公司任职，对 IT 底层技术平台有深入的了解，尤其在大规模分布式系统的基础架构方面颇有研究。专栏中既有技术分享也有经验分享，像一个老技术人员对新人的肺腑之谈。
 
@@ -36,7 +36,7 @@ description: 这些专栏的内容比市面上绝大多数图书优质，讲解�
 
 <span style="display:block;text-align:center">![左耳朵耗子耗子陈皓的极客时间专栏]({{ site.article}}/geek/chenhao.jpeg){: width="350px"}</span>
 
-### 王争    《数据结构与算法之美》
+### 王争&nbsp;&nbsp;&nbsp;《数据结构与算法之美》
 
 **专栏说明**：王争曾在 Google 工作，主要做机器翻译相关内容，现在在一个金融公司担任架构师。市面上讲解数据结构和算法的资料很多，这个专栏的的最大特点大概就是讲解更加中文化、口语化，更容易懂。
 
@@ -44,7 +44,7 @@ description: 这些专栏的内容比市面上绝大多数图书优质，讲解�
 
 <span style="display:block;text-align:center">![王争《数据结构与算法之美》]({{ site.article }}/geek/struct.jpeg){: width="350px"}</span>
 
-### 王争    《设计模式之美》
+### 王争&nbsp;&nbsp;&nbsp;《设计模式之美》
 
 **专栏说明**：王争的第二个专栏，讲设计模式，特点就是比英文硬翻中的资料好懂。
 
@@ -73,7 +73,7 @@ description: 这些专栏的内容比市面上绝大多数图书优质，讲解�
 
 操作系统、Web服务器、数据库、缓存、消息队列等。
 
-### 刘超    《趣谈Linux操作系统》
+### 刘超&nbsp;&nbsp;&nbsp;《趣谈Linux操作系统》
 
 **专栏说明**：待补充。
 
@@ -98,7 +98,7 @@ description: 这些专栏的内容比市面上绝大多数图书优质，讲解�
 
 <span style="display:block;text-align:center">![林晓斌《MySQL实战45讲》MySQL深度学习]({{ site.article }}/geek/mysql.jpeg){: width="350px"}</span>
 
-### 张磊      《深入剖析Kubernetes》
+### 张磊&nbsp;&nbsp;&nbsp;《深入剖析Kubernetes》
 
 **专栏说明**：张磊是《Docker容器与容器云》的作者，Kubernetes多个核心特性的作者之一。专栏详情可以直接扫码查看，有很详细的内容目录，可以试读。Kubernetes 更新很快，这份资料可能有点老了，建议作为参考。
 
@@ -107,7 +107,7 @@ description: 这些专栏的内容比市面上绝大多数图书优质，讲解�
 <span style="display:block;text-align:center">![深入剖析Kubernetes极客时间专栏介绍]({{ site.article }}/geek/kubernetes.jpeg){: width="350px"}</span>
 
 
-### 李玥    《消息队列高手课》
+### 李玥&nbsp;&nbsp;&nbsp;《消息队列高手课》
 
 **专栏说明**：待补充。
 
@@ -131,7 +131,7 @@ description: 这些专栏的内容比市面上绝大多数图书优质，讲解�
 
 <span style="display:block;text-align:center">![阮一鸣《Elasticsearch核心技术与实战》]({{ site.article }}/geek/es.jpeg){: width="350px"}</span>
 
-### 淘辉    《Nginx核心知识150讲》
+### 淘辉&nbsp;&nbsp;&nbsp;《Nginx核心知识150讲》
 
 **专栏说明**：待补充。
 
@@ -151,7 +151,7 @@ description: 这些专栏的内容比市面上绝大多数图书优质，讲解�
 
 主要是一些具体系统的设计实现。
 
-### 唐扬    《高并发系统设计40问》
+### 唐扬&nbsp;&nbsp;&nbsp;《高并发系统设计40问》
 
 **专栏说明**：待补充。
 
@@ -161,7 +161,7 @@ description: 这些专栏的内容比市面上绝大多数图书优质，讲解�
 <span style="display:block;text-align:center">![唐扬《高并发系统设计40问》]({{ site.article }}/geek/gaobingfa.jpeg){: width="350px"}</span>
 
 
-### 仁杰    《分布式金融架构》
+### 仁杰&nbsp;&nbsp;&nbsp;《分布式金融架构》
 
 **专栏说明**：待补充。
 
