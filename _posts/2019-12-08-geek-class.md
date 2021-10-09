@@ -3,7 +3,7 @@ layout: default
 title: "极客时间精品技术专栏推荐（已鉴定）"
 author: 李佶澳
 date: "2019-12-15T22:47:59+0800"
-last_modified_at: "2021-10-09T16:36:46+0800"
+last_modified_at: "2021-10-09T19:47:29+0800"
 permalink: /geekclass/
 categories: 好货
 cover:
@@ -12,8 +12,6 @@ keywords: 极客时间
 description: 这些专栏的内容比市面上绝大多数图书优质，讲解的非常细致，逻辑清晰案例贴近实际
 ---
 
-
-## 本篇目录
 
 * auto-gen TOC:
 {:toc}
@@ -117,9 +115,9 @@ description: 这些专栏的内容比市面上绝大多数图书优质，讲解�
 
 ### 蒋德钧《Redis核心技术与实践》
 
-**专栏说明**：待补充。
+**专栏说明**：Redis 的存储开销方面讲的具体生动，特别是通过压缩列表减少内存空间的分析过程很细致，设计的几个案例也比较典型如果对笔记中的内容感到陌生，推荐阅读。
 
-**学习笔记**：待补充。
+**学习笔记**： [《Redis核心技术与实践》阅读笔记：数据类型/存储开销/Rehash/具体案例等](/编程/2021/10/08/geek-redis.html)
 
 <span style="display:block;text-align:center">![蒋德钧《Redis核心技术与实践》]({{ site.article }}/geek/redis.jpeg){: width="350px"}</span>
 
