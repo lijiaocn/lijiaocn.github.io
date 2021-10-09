@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "极客时间《MySQL实战45讲》阅读笔记：索引/事务/锁/间隙锁等"
+title: "《MySQL实战45讲》阅读笔记：索引类型/数据可靠性/事务/锁/间隙锁/临时表等"
 author: 李佶澳
 date: "2020-04-17T14:55:26+0800"
-last_modified_at: "2021-10-08T18:52:34+0800"
+last_modified_at: "2021-10-09T19:52:30+0800"
 categories: 编程
 cover:
 tags: 阅读笔记 database
