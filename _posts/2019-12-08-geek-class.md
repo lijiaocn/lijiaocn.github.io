@@ -3,7 +3,7 @@ layout: default
 title: "极客时间精品技术专栏推荐（已鉴定）"
 author: 李佶澳
 date: "2019-12-15T22:47:59+0800"
-last_modified_at: "2021-10-14T20:06:50+0800"
+last_modified_at: "2021-10-19T15:55:22+0800"
 permalink: /geekclass/
 categories: 好货
 cover:
@@ -163,7 +163,10 @@ description: 这些专栏的内容比市面上绝大多数图书优质，讲解�
 
 **专栏说明**：这个专栏的内容质量特别高！特别是对单机并发、多机并发、多副本读写场景下的各种问题的阐述，让人脑塞顿开。这篇笔记的章节分类是在对专栏内容反复阅读后整理出来的，和专栏中的讲解顺序不完全相同。
 
-**学习笔记**：[《分布式金融架构课》阅读笔记：单机并发/多机并发/多副本读写的正确行和一致性](编程/2021/10/11/geek-fenbushi-jr.html)。
+**学习笔记**：
+
+* [《分布式金融架构课》阅读笔记1：单机并发/多机并发/多副本读写的正确行和一致性](/编程/2021/10/11/geek-fenbushi-jr.html)。
+* [《分布式金融架构课》阅读笔记2：线性一致的分布式数据系统的实现过程](/编程/2021/10/19/geek-fenbushi-jr-2.html)
 
 <span style="display:block;text-align:center">![仁杰《分布式金融架构》]({{ site.article }}/geek/jinrong.jpeg){: width="350px"}</span>
 

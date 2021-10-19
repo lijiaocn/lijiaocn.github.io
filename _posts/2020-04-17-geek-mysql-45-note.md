@@ -3,7 +3,7 @@ layout: default
 title: "《MySQL实战45讲》阅读笔记：索引类型/数据可靠性/事务/间隙锁/临时表等"
 author: 李佶澳
 date: "2020-04-17T14:55:26+0800"
-last_modified_at: "2021-10-13T18:32:16+0800"
+last_modified_at: "2021-10-18T16:31:47+0800"
 categories: 编程
 cover:
 tags: 阅读笔记 database
@@ -40,6 +40,29 @@ mysql> SHOW VARIABLES like '%sync_wait%';
 1 row in set (0.00 sec)
 ```
 
+### 查看事务隔离级别
+
+```sql
+mysql> select @@tx_isolation;
++-----------------+
+| @@tx_isolation  |
++-----------------+
+| REPEATABLE-READ |
++-----------------+
+1 row in set (0.01 sec)
+```
+
+
+```sql
+mysql> show variables like '%tx_isolation%';
++---------------+-----------------+
+| Variable_name | Value           |
++---------------+-----------------+
+| tx_isolation  | REPEATABLE-READ |
++---------------+-----------------+
+1 row in set (0.01 sec)
+
+```
 
 ### 数据库状态
 
