@@ -685,10 +685,37 @@ Raft 主节点通过广播带有任期（term）编号的心跳信息，压制�
 
 Jepsen 测试，用来证明分布式系统正确性的工具：[jepsen.io](https://jepsen.io/analyses)。
 
-
 ## 后续
 
 [《分布式金融架构课》阅读笔记2：线性一致的分布式数据系统的实现过程](/编程/2021/10/19/geek-fenbushi-jr-2.html)
+
+## 书单抄录 
+
+**领域驱动设计**：
+
+* 《Domain-Driven Design: Tackling Complexity in the Heart of Software》，Eric Evans，2000
+* 《Patterns, Principles, and Practices of Domain-Driven Design》，Scott Millett
+
+**数据系统**：
+* 《Designing Data-Intensive Applications: The Big Ideas Behind Reliable, Scalable, and Maintainable Systems》，Martin Kleppmann，中文版本《数据密集型应用系统设计》，建议阅读章节后的论文列表
+* 《Database Internals: A Deep Dive into How Distributed Data Systems Work》，Alex Petrov，单机部分介绍更好，分布式方面比较凌乱
+* 《Database Systems: The Complete Book》，Hector Garcia-Molina，介绍数据库系统架构
+
+**计算机**：
+* 《Computer Systems: A Programmers Perspective》，Randal Bryant
+* 《Modern Operating Systems》，Andrew Tanenbaum
+
+**性能调优**：
+* 《Systems Performance》，Brendan Gregg
+
+**经济学**：
+* 《经济学原理》，曼昆
+* 《经济学》，保罗·萨缪尔森
+* 《Intermediate Microeconomics: A Modern Approach》，Hal Varian
+* 《通往奴役之路》，哈耶克
+* 《Economics of Money, Banking and Financial Markets》，Mishkin
+* CFA、FRM 考试资料
+
 
 ## 参考
 
