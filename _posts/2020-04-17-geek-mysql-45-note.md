@@ -3,7 +3,7 @@ layout: default
 title: "《MySQL实战45讲》阅读笔记：索引类型/数据可靠性/事务/间隙锁/临时表等"
 author: 李佶澳
 date: "2020-04-17T14:55:26+0800"
-last_modified_at: "2021-10-18T16:31:47+0800"
+last_modified_at: "2021-10-27T14:41:48+0800"
 categories: 编程
 cover:
 tags: 阅读笔记 database
@@ -19,12 +19,19 @@ description: MySQL下载安装后，还需掌握事务隔离、索引优化、�
 
 ## 《MySQL实战45讲》说明
 
-这个专栏不介绍基础的增删改查语句等，主要讲解 `存储引擎`、`索引`、`锁`、`事务`等概念的细节。专栏作者是前阿里资深专家（现在腾讯云数据库负责人）林晓斌的《MySQL实战45讲》。这个专栏大概是最好最好的 MySQL 进阶材料，受益良多。
+这个专栏不介绍基础的增删改查语句等，主要讲解 `存储引擎`、`索引`、`锁`、`事务`等概念的细节。专栏作者是前阿里资深专家（现在腾讯云数据库负责人）林晓斌的《MySQL实战45讲》。大概是最好最好的 MySQL 进阶材料。
 
+**试读链接**：[任意四章试读入口](https://time.geekbang.org/column/intro/100020801?code=QEyDwhOMbtTinZKV56Lxk3DYkYKUf-YpoyHNlro%2FYpQ%3D)
+
+**新人优惠**：[极客时间新注册38元代金券](https://time.geekbang.org/hybrid/activity/invite/INV?giftType=1&uid=E274D90C022D49&source=app_share)
 
 <span style="display:block;text-align:center">![林晓斌《MySQL实战45讲》MySQL深度学习]({{ site.article }}/lxbmysql.jpeg){: width="250px"}</span>
 
-下面是我的学习笔记，[专栏地址](http://gk.link/a/10hL6)。
+## 关键概念 
+
+1. redo log：现将更新记录在 redolog 文件中，然后更新内存，择机更新硬盘，减少硬盘随机写。
+2. binlog： 数据库操作记录，用于数据同步或数据恢复，有 statement/row/mixed 三种格式。
+2. change buffer: 数据库记录在内存中缓存
 
 ## 常用操作
 
@@ -237,10 +244,10 @@ select * from scores where id in (1,2,3);
 
 ### 开启 binlog 日志
 
-log_bin 是 mysql 中的只读变量，只能通过配置文件修改：
+log_bin 是 mysql 的只读变量，只能通过配置文件修改：
 
 ```sh
-cat my.cnf|grep log_bin
+$ cat my.cnf|grep log_bin
 log_bin			= /var/log/mysql/mariadb-bin
 #log_bin_index		= /var/log/mysql/mariadb-bin.index
 ```
@@ -283,7 +290,7 @@ mysql> show binary logs;
 查看 binlog 事件，如果不指定 binlog 文件，默认使用第一个：
 
 ```sql
-mysql> mysql> show binlog events in 'mariadb-bin.000001';
+mysql> show binlog events in 'mariadb-bin.000001';
 +--------------------+-----+-------------------+-----------+-------------+---------------------------------------------------------------------+
 | Log_name           | Pos | Event_type        | Server_id | End_log_pos | Info                                                                |
 +--------------------+-----+-------------------+-----------+-------------+---------------------------------------------------------------------+
@@ -302,7 +309,7 @@ mysql> mysql> show binlog events in 'mariadb-bin.000001';
 11 rows in set (0.01 sec)
 ```
 
-用 mysqlbinlog 命令读取 binlog 文件，如果没有解析出 sql，尝试换用和数据库版本一致的 mysqlbinlog 程序：
+用 mysqlbinlog 命令读取 binlog 文件，如果没有解析出 sql，尝试换用和数据库版本一致的 mysqlbinlog 命令，安装数据库时通常会默认安装对应版本的工具命令：
 
 ```sql
 $ mysqlbinlog /var/log/mysql/mariadb-bin.000001
@@ -325,8 +332,11 @@ COMMIT/*!*/;
 /*...省略...*/
 ```
 
-[binlog_format](https://dev.mysql.com/doc/refman/8.0/en/binary-log-setting.html)
+binlog 文件有三种格式（[binlog_format](https://dev.mysql.com/doc/refman/8.0/en/binary-log-setting.html)），分别是：
 
+1. STATEMENT： 记录原始 sql 操作语句，可能会导致从库数据不一致
+2. ROW：记录行变化
+3. MIXED：混合了 STATEMENT 和 ROW
 
 ### 正在执行的事务
 
@@ -629,7 +639,7 @@ innodb_deadlock_detect：  默认为 on，开启死锁检测，主动回滚一�
 
 WAL：先记录数据变更日志，然后择机更新数据。
 
-Mysql InnoDB 引擎使用了 Wal 技术，收到更新指令式，更新操作保存在 redo log 中，然后更新内存中数据，最后在适当时候完成磁盘中的数据更新。redo log 的存在减少了对磁盘的「随机写」。redolog 采用环状设计进行循环写，写满后就刷新到磁盘。redo log 数据持久化保存，进程崩溃时已写入数据不丢失。
+Mysql InnoDB 引擎使用了 Wal 技术，收到更新指令时，更新操作保存在 redo log 中，然后更新内存中数据，最后在适当时候完成磁盘中的数据更新。redo log 的存在减少了对磁盘的「随机写」。redolog 采用环状设计进行循环写，写满后就刷新到磁盘。redo log 数据持久化保存，进程崩溃时已写入数据不丢失。
 
 InnoDB 采用 redo log 实现了 crash-safe（崩溃时不丢数据），最早的 MyISAM 引擎不具备 crash-safe  的能力。
 
@@ -1005,6 +1015,190 @@ innodb_file_per_table off:  表数据存放在系统共享表空间
 林晓斌《MySQL实战45讲》：[特别优惠地址](http://gk.link/a/10hL6)
 
 <span style="display:block;text-align:center">![林晓斌《MySQL实战45讲》MySQL深度学习]({{ site.article }}/lxbmysql.jpeg){: width="250px"}</span>
+
+分章节笔记
+
+### 09 普通索引和唯一索引？
+
+1. change buffer 会影响两类索引的写入和查询
+
+### 10 为什么会选错索引？
+
+1. 索引统计不准确会导致行数估算错误，使用 analyze table [表名] 重新统计
+2. 优化器会考虑普通索引的回表开销
+3. 优化器会考虑排序开销，如果排序字段是索引字段，选择排序字段做索引，可以避免排序
+
+### 11 怎样给字符串字段加索引？
+
+1. 使用高区分度前缀，减少索引的空间开销
+
+### 12 为什么 Mysql 会抖动？
+
+1. 刷脏页
+
+### 13 表数据删掉一般，表大小不变？
+
+1. delete 不会回收表空间，形成空洞
+
+### 14 count(*) 慢？
+
+1. innodb 的 count 操作需要扫数据
+
+### 16 order by 怎样工作
+
+1. 排序数量太大，会使用临时文件
+
+### 17 如何正确地显示随机消息？
+
+1. 如果对全表数据 order by rand()，会导致使用临时表排序
+
+### 18 为什么SQL性能差？
+
+1. 对条件字段使用函数操作，不使用索引
+2. 隐式类型转换会导致全表扫描
+
+### 19 只查一行的语句，也执行这么慢？
+
+1. 表被锁住，拿不到表元数据锁/MDL锁
+2. flush table 被阻塞
+3. 拿不到行锁
+4. 一个未提交的事务产长了大量的 undo log
+
+### 20 幻读有什么问题？
+
+1. 可重复读级别下的当前读，读到了新插入的行
+2. 幻读会导致语义被破坏 ，以及备份库的数据不一致
+3. 间隙锁可以解决幻读，实际就是扩大锁范围
+4. 部分公司的 DBA 默认使用「读已提交」+ row 格式 binlog。
+
+设置未读已提交可以避免产生间隙锁（牺牲了隔离级别），binlog 使用 row 格式避免了备份库的数据不一致
+
+读已提交级别中，锁的范围小，锁住时间短。
+
+### 21 只改一行的语句，锁这么多？
+
+1. 可重复读模式下，间隙锁作用范围大
+
+### 22 “饮鸩止渴”提高性能的方法？
+
+应对短连接风暴：
+
+1. 主动关闭连接，但是客户端可能不知道
+2. 跳过权限验证，减少连接建立开销（风险大）
+
+### 23 怎样保证数据不丢？
+
+1. binlog
+2. redolog
+
+### 24 怎么保证主备一致？
+
+1. binlog 同步
+2. 双 Mater 结构通过不同的 server id 避免产生 binlog 循环
+
+### 25 怎么保证高可用？
+
+主备存在延迟，切换时的策略：
+
+1. 可靠性优先
+2. 可用性优先
+
+### 26 备库为什么会延迟好几个小时？
+
+1. 使用并行复制，加快主备同步速度
+
+### 27 主库出问题了，从库怎么办？
+
+1. 使用 GTID 进行一主多从的切换
+
+GTID（Global Transaction Identifier)，全局事务 ID。
+
+指定主库的时候，如果使用 「同步位点」方式，需要指定开始位置，指定新的主库时需要重新找位点。
+
+使用 GTID，新的主库通过计算 GTID 差集，将数据补发到从库
+
+
+### 28 读写分离有哪些坑？
+
+主从延迟处理：
+
+1. 强制走主库
+2. sleep
+3. 在从库上等待主库位点或者GTID
+
+### 29 判断一个数据库是不是出问题了？
+
+1. 执行判断：select 1
+2. 查表判断：select * from mysql.health_check;
+3. 更新判断：update mysql.health_check set t_modified=now()
+4. 查看 performance_schema 的统计数据
+
+### 31 误删数据后怎么办？
+
+1. delete 语句：flashback 工具通过 binlog 找回。
+2. 误删库/表：通过备份恢复
+
+### 32 为什么还有kill不掉的语句？
+
+1. 目标线程还没有到判断状态到「埋点」
+2. 事务回滚耗时
+
+### 33 查这么多数据，会不会把数据库内存打爆？
+
+1. 全表扫描时，数据分段发送
+2. innodb 改进 LRU，避免全表扫描时，LRU 被全淘汰
+
+### 34 到底可不可以使用join？
+
+1. 使用小表做驱动表 
+2. 能使用到被驱动表的索引
+
+### 35 join语句怎么优化？
+
+todo
+
+### 36 为什么临时表可以重名？
+
+1. 临时表是  server_id + thread_id 粒度的，两个 session 的同名临时表不同
+
+### 37 什么时候会使用内部临时表？
+
+todo
+
+### 38 要不要使用Memory引擎？
+
+1. 临时表可以考虑使用内存表
+
+### 39 自增主键为什么不是连续的？
+
+1. 事务回滚不回收自增ID
+2. mysql 8.0 开始 innodb 的自增值才被持久化，之前版本重启后找最大数值+1
+
+### 40 insert语句的锁为什么这么多？
+
+todo 
+
+### 41 怎么最快地复制一张表？
+
+todo
+
+### 42 grant之后要跟着flush privileges吗？
+
+1. 正常情况下，grant 命令之后，没有必要跟着执行 flush privileges 命令
+2. flush privileges 语句本身会用数据表的数据重建一份内存权限数据，所以在权限数据可能存在不一致的情况下再使用
+
+### 43 要不要使用分区表？
+
+1. MySQL 在第一次打开分区表的时候，需要访问所有的分区
+2. 在 server 层，认为这是同一张表，因此所有分区共用同一个 MDL 锁
+3. 在引擎层，认为这是不同的表，因此 MDL 锁之后的执行过程，会根据分区表规则，只访问必要的分区
+
+### 44 自增id用完怎么办？
+
+1. 表的自增 id 达到上限后，再申请时它的值就不会改变，进而导致继续插入数据时报主键冲突的错误。
+
+todo
+
 
 ## 参考
 

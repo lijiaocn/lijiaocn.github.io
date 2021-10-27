@@ -20,6 +20,10 @@ description: 内容质量特别高！对单机并发、多机并发、多副本�
 
 这个专栏的内容质量特别高！特别是对单机并发、多机并发、多副本读写场景下的各种问题的阐述，让人脑塞顿开。这篇笔记的章节分类是在对专栏内容反复阅读后整理出来的，和专栏中的讲解顺序不完全相同。
 
+**试读链接**：[任意四章试读入口](https://time.geekbang.org/column/intro/100067701?code=OTPjrnchSOe5JvIQqfepw%2FkG0GZf770y9V-KiMAOQSQ%3D)
+
+**新人优惠**：[极客时间新注册38元代金券](https://time.geekbang.org/hybrid/activity/invite/INV?giftType=1&uid=E274D90C022D49&source=app_share)
+
 <span style="display:block;text-align:center">![仁杰《分布式金融架构》]({{ site.article }}/geek/jinrong.jpeg){: width="350px"}</span>
 
 ## 金融业务介绍

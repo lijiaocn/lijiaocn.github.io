@@ -19,6 +19,10 @@ description: Redis 的存储开销方面讲的具体生动，特别是通过压�
 
 Redis 的存储开销方面讲的具体生动，特别是通过压缩列表减少内存空间的分析过程很细致，设计的几个案例也比较典型如果对这篇笔记中的内容感到陌生，推荐阅读：：
 
+**试读链接**：[任意四章试读入口](https://time.geekbang.org/column/intro/100056701?code=dQqx1JcLTCjGZabRJS4Tn6Lr98ibK6HXCMOmQvnABlU%3D)
+
+**新人优惠**：[极客时间新注册38元代金券](https://time.geekbang.org/hybrid/activity/invite/INV?giftType=1&uid=E274D90C022D49&source=app_share)
+
 <span style="display:block;text-align:center">![蒋德钧《Redis核心技术与实践》]({{ site.article }}/geek/redis.jpeg){: width="350px"}</span>
 
 

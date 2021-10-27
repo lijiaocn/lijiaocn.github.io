@@ -20,6 +20,10 @@ description:  涉及的内容比较多（数据库/缓存/消息队列/分布式
 
 这个专栏比较一般，涉及的内容比较多（数据库/缓存/消息队列/分布式服务），但是蜻蜓点水，不如分别阅读[每个方向的专栏](/geekclass/)，实战篇的三个案例挺好，值得学习。
 
+**试读链接**：[任意四章试读入口](https://time.geekbang.org/column/intro/100035801?code=K3hOlChxnK8W33IxZipgSWsCwK3hD%2FLTOvIvk2zhEt0%3D)
+
+**新人优惠**：[极客时间新注册38元代金券](https://time.geekbang.org/hybrid/activity/invite/INV?giftType=1&uid=E274D90C022D49&source=app_share)
+
 <span style="display:block;text-align:center">![唐扬《高并发系统设计40问》]({{ site.article }}/geek/gaobingfa.jpeg){: width="350px"}</span>
 
 ## 基本方法
