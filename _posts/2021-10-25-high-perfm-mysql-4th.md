@@ -19,7 +19,7 @@ description: High Performance MySQL, 4th Edition 还没有正式出版，O’Rei
 
 ## 说明
 
-[High Performance MySQL, 4th Edition][2] 还没有正式出版（2021-10-27 15:48:25），在 [O’Reilly 的网站][2]上可读，新注册用户可以免费阅读全文 10 天。
+《High Performance MySQL, 4th Edition》还没有正式出版（2021-10-27 15:48:25），在 [O’Reilly 的网站][2]上可读，新注册用户可以免费阅读全文 10 天。
 
 ## Chapter 1. MySQL Architecture
 
@@ -107,7 +107,9 @@ SELECT ... FOR UPDATE
 
 ### MVCC
 
-MVCC 目的是减少行锁的使用，读已提交和可重复读中使用了 MVCC，读未提交和串行化不需要 MVCC。
+MVCC 目的是减少行锁的使用。
+
+读已提交和可重复读中使用了 MVCC，读未提交和串行化不需要使用 MVCC。
 
 MVCC 没有统一的实现标准，各个引擎按自己理解实现。
 
@@ -423,7 +425,62 @@ mysql> SELECT perms FROM acl WHERE perms & @CAN_READ;
 
 ## Chapter 6. Indexing For High Performance
 
+索引分类：
 
+1. B树索引
+2. 全文索引
+
+Mysql 实现的B树索引的限制：
+
+1. 不支持非最左匹配场景
+2. 不能跳过索引中的某一列，索引中的列整体构成 key，不能跳过中间某一个，以右侧的列为索引（还是最左匹配的问题）
+
+索引推荐读物：Relational Database Index Design and the Optimizers, by Tapio Lahdenmaki and Mike Leach (Wiley)
+
+B树索引优点：
+
+1. 数值临近的索引，在存储空间上临近，可以为 order by 、 group by 提供优化手段
+2. 索引中备份了构成给索引的字段值，如果查询请求只需要这些字段，可以避免回表查询整行数据
+
+索引评价三星指标：
+
+1. 是否将相关的行临近存放
+2. 存放顺序是否和查询顺序一致
+3. 是否包含查询需要的列
+
+索引适合中型表和大型表，如果特别小的表，直接扫表更高效。如果表的规模非常大，索引的额外开销会很高，可以使用分区的方式处理。
+
+### 提高索引性能的策略
+
+目标索引包含的列在 `where 条件中单独呈现，不要加函数处理，或者放在运算表达式中`：
+
+```sql
+mysql> SELECT actor_id FROM sakila.actor WHERE actor_id + 1 = 5;      // 不会命中 actor_id 索引
+```
+
+如果区分度足够，没必要使用整个列，可以使用这个列中数值的前缀，以减少索引占用的空间。对于 blog/text，以及过长的 varchar，mysql 不允许对完整值建索引。
+
+如果发现某个语句使用了 index_merge，需要考虑下索引能不能优化：
+
+```sql
+mysql> EXPLAIN SELECT film_id, actor_id FROM sakila.film_actor
+    -> WHERE actor_id = 1 OR film_id = 1\G
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: film_actor
+         type: index_merge
+possible_keys: PRIMARY,idx_fk_film_id
+          key: PRIMARY,idx_fk_film_id
+      key_len: 2,2
+          ref: NULL
+         rows: 29
+        Extra: Using union(PRIMARY,idx_fk_film_id); Using where
+```
+
+>TODO: Multicolumn Indexes 这节没有看明白，说是如果为每个列单独建索引，mysql 可能使用 index_merge 技术，并发过滤多个索引，然后将结果汇和，这个汇和可能非常耗费内存和CPU。
+
+未完待续
 
 ## 参考
 
