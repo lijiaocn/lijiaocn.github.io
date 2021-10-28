@@ -455,7 +455,7 @@ B树索引优点：
 目标索引包含的列在 `where 条件中单独呈现，不要加函数处理，或者放在运算表达式中`：
 
 ```sql
-mysql> SELECT actor_id FROM sakila.actor WHERE actor_id + 1 = 5;      // 不会命中 actor_id 索引
+mysql> SELECT actor_id FROM sakila.actor WHERE actor_id + 1 = 5;      --  不会命中 actor_id 索引
 ```
 
 如果区分度足够，没必要使用整个列，可以使用这个列中数值的前缀，以减少索引占用的空间。对于 blog/text，以及过长的 varchar，mysql 不允许对完整值建索引。
