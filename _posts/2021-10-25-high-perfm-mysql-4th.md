@@ -19,7 +19,7 @@ description: High Performance MySQL, 4th Edition 还没有正式出版，O’Rei
 
 ## 说明
 
-《High Performance MySQL, 4th Edition》还没有正式出版（2021-10-27 15:48:25），在 [O’Reilly 的网站][2]上可读，新注册用户可以免费阅读全文 10 天。
+《High Performance MySQL, 4th Edition，》还没有正式出版（2021-10-27 15:48:25），在 [O’Reilly 的网站][2]上可读，新注册用户可以免费阅读全文 10 天。
 
 ## Chapter 1. MySQL Architecture
 
@@ -480,7 +480,34 @@ possible_keys: PRIMARY,idx_fk_film_id
 
 >TODO: Multicolumn Indexes 这节没有看明白，说是如果为每个列单独建索引，mysql 可能使用 index_merge 技术，并发过滤多个索引，然后将结果汇和，这个汇和可能非常耗费内存和CPU。
 
-未完待续
+包含多列的索引：
+
+1. 如果不考虑排序和 group by，把区分度最高的列放在最左边
+
+普通索引的叶子节点中存放的是主键数值，不是行的地址，如果主键过大，其它索引开销相应增加。
+
+主键索引/聚簇索引的示意图，叶子节点存放的是完整行：
+
+![cluster index 索引]({{ site.article }}/cluster_index.png)
+
+
+普通索引的示意图，叶子节点存放的是主键数值：
+
+![普通索引]({{ site.article }}/normal_index.png)
+
+避免用 uuid 做主键，会导致写入性能大幅下降，uuid 数值随机导致插入时写入位置随机：
+
+![uuid做主键的开销]({{ site.article }}/uuid_index.png)
+
+用 ANALYZE TABLE 重建索引的统计数值。
+
+## Chapter 7. Query Performance Optimization
+
+略
+
+## Chapter 8. Scaling MySQL
+
+略
 
 ## 参考
 
