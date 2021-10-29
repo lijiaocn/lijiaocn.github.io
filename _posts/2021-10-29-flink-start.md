@@ -183,7 +183,7 @@ GROUP BY SESSION(clicktime, INTERVAL '30' MINUTE), userId
 
 ## 最后
 
-这里只简单了解下 flink 是干嘛的，至于怎么搭建、怎么使用，使用时应该注意些什么，以后有时间再研究。
+这里只简单了解下 flink 是干嘛的，至于怎么搭建、怎么使用，使用时注意些什么，以后有时间再研究。
 
 ## 参考
 
