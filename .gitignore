@@ -1,5 +1,6 @@
-_site/
-*.swp
+_site
+.sass-cache
+.jekyll-cache
 .jekyll-metadata
-Gemfile.lock
-urls.txt.md
+vendor
+.swp

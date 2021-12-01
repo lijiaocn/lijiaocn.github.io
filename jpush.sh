@@ -25,7 +25,7 @@ for path in $*;do
 		git pull
 		git push
 		
-		bundle exec jekyll build
+#		bundle exec jekyll build
 		git checkout gh-pages
 		git pull
 		cp -rf _site/* .
@@ -34,8 +34,8 @@ for path in $*;do
 		git pull
 		git push 
 		
-		git checkout master
-		./run.sh
+		git checkout main
+#		./run.sh
 	popd
 done
 

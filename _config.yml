@@ -16,7 +16,7 @@ baseurl:
 imgurl: 
 imglocal: /img
 article: /img/article
-lsi:       false
+lsi:      false
 excerpt_separator: "----"
 ICP-number:
 Copyright: Copyright @2011-2019 All rights reserved.
