@@ -3,7 +3,7 @@ layout: default
 title: "《大型网站技术架构：核心原理与案例分析》阅读摘录"
 author: 李佶澳
 date: "2021-12-02 14:19:21 +0800"
-last_modified_at: "2021-12-08 11:29:05 +0800"
+last_modified_at: "2021-12-09 14:36:15 +0800"
 categories: 方法
 cover:
 tags: 系统架构
@@ -44,7 +44,7 @@ session 的 cookie 方案，无法应对客户端关闭 token 的情况：
 
 session 服务器，：
 
-![session 服务器]({{ site.article }}/session-3.png)
+![session 服务器]({{ site.article }}/session-4.png)
 
 ## 数据备份
 
