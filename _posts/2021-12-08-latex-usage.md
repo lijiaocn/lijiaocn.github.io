@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "排版工具 LaTeX 的安装使用和简明排版语法"
+title: "排版工具 LaTeX 的指令系统、安装使用和简明排版语法"
 author: 李佶澳
 date: "2021-12-08 14:38:31 +0800"
-last_modified_at: "2022-01-13 20:19:03 +0800"
+last_modified_at: "2022-01-19 17:22:30 +0800"
 categories: 编程
 cover:
 tags:
@@ -16,50 +16,194 @@ description: TeX 是 Donald Knuth 开发的排版工具，将带有排版指令�
 * auto-gen TOC:
 {:toc}
 
-## 说明
+## LaTeX 与 TeX 的关系
 
-TeX 是 Donald Knuth 开发的排版工具，将带有排版指令的文本文件转换成带有格式的 pdf 等文件。
+TeX 是 Donald Knuth 开发的排版工具，用来生成设备无关的排版后的 dvi文件，DeVice Independent format。
+TeX 内置了大约 300 个命令，支持用定义 macro 的方式扩充指令。
+macro 定义文件被编译成 .fmt 文件后通过 tex 的 -fmt 参数引用，例如 `tex -fmt fmt文件`。
 
-LaTeX 与 TeX 的关系：LaTeX 是一个排版设计工具，它的指令被翻译成更底层的 TeX 指令。Tex 是一个命令行程序，LaTeX 提供的 TeXShop 是一个封装了 TeX 的 GUI 应用，
+Donald Knuth 编写了一个名为 Plain TeX 的 package，增加了大概 600 个指令 。
 
-## LaTex 资料
+Leslie Lamport 创建了名为 [LaTeX][15] 的 package，提供了更高阶的指令，并且为 LaTeX 定义了 package  标准，支持用 \usepackage 导入其它 package 。
+基于 LaTeX 的 pacakge 数量开始大量增加，LaTeX 成为主流，\begin{enviroment} 等常见指令都是在 LaTeX 中定义的。
 
-TeX 资料索引：
+在 Plain TeX 上扩展而成的 AMSTeX 被 AMS 在 1982~1985 使用，现在被做成了 LaTeX 系统中的一个 package `\usepackage{amsmath}`。
+1990 年 Hans Hagen 开发了另一套名为 [ConTeXt][18] 的 package 系统，独立于 LaTeX，
 
-* TeX 问题列表：[The TeX Frequently Asked Question List][13]
-* TeX 用户组：[TeX User Group][14]
+现在主流使用的 LaTeX 以及过去的 Plain TeX 等，都构建在原始的 TeX 指令之上，由 TeX 负责解析执行。
+作为执行引擎的 TeX 在 1989 年完成了特性开发进入 stable 维护阶段，之后的重大改进以新项目的方式独立于 TeX 进行。
+
+1990s，Hàn Thế Thành 在 TeX 基础上开发了 [pdfTeX][21]，可以直接输出 pdf 文件。Tex 输出的 dvi 文件需要先转换成 PostScript 文件再转换成 pdf。
+
+2004，Jonathon Kew 开发了 [XeTeX][22]，支持多语种和新字体。
+
+2007，[LuaTeX][23] 将 TeX 扩展为支持 Lua，解决 TeX 语法编写的 package 文件难以阅读的问题。
+
+[The TeX family tree: LaTeX, pdfTeX, XeTeX, LuaTeX and ConTeXt][24] 介绍了以上发展过程。
+
+## 学习资料
+
+**考古教程**：
+
+1986 年 Tex 作者 Donald E. Knuth  编写的 《The TeXbook》 大概是最早的介绍 TeX 的出版物：[Donald E. Knuth, The TeXbook, Addison-Wesley, 1986, ISBN 0-201-13447-0][25]
+
+1994 年 LaTeX 作者 Leslie Lamport 编写的 《LaTeX A Document Preparation System》发行了第二版：[LaTeX: A document preparation system, User’s guide and reference manual][16]
+
+**现代入门**：下面是比较现代的入门资料，OverLeaf 网站的上的文档有很高的学习价值
+
+* LaTeX 16节课：[Learn LaTeX][17]，建议通过这个教程入门
+* LaTeX 开源书：[Formatting Information：An introduction to typesetting with LATEX][8]
+* OverLeaf Doc：[OverLeaf Document][16] （overleaf是一个在线的 LaTex 编辑器）
+* 相关图书： [TeX and LaTeX Books][6]
+* 更多资料： [LaTex Useful Links][7]
+
+**TeX/LaTex 在线资料**：
+
 * Tex 原始指令：[TeX Primitive Control Sequences][11]
 * Tex 非官方手册：[LaTeX2e unofficial reference manual (July 2021)][10]，其它格式[下载][9]
-
-TeX 学习教程：
-
-* TeX 16节入门教程：[Learn LaTeX][17]，建议通过这个教程入门
-* TeX 出版物： [TeX and LaTeX Books][6]
-* TeX 开源图书：[Formatting Information：An introduction to typesetting with LATEX][8]
-* OverLeaf TeX 教程：[OverLeaf Document][16] （overleaf是一个在线的 LaTex 编辑器）
-* Tex 更多资料： [LaTex Useful Links][7]
-
-《LaTeX: A document preparation system, User’s guide and reference manual》 是最早的教程图书。
-
-TeX 项目 ：
-
-* TeX 项目网站： [The LaTeX Project][15]
-* TeX Package： [The Comprehensive TEX Archive Network][5]
-* TeX Package 文档：用命令 “texdoc 包名”查看，例如 `texdoc docstrip`
+* TeX 用户组：[TeX User Group][14]
+* TeX 问题列表：[The TeX Frequently Asked Question List][13]
+* LaTeX Package： [The Comprehensive TEX Archive Network][5]
+* LaTeX Package 文档本地查看 ：用命令 “texdoc 包名”查看，例如 `texdoc docstrip`
+* LaTeX 项目网站： [The LaTeX Project][15]
 
 
-## LaTex 指令体系
+## Tex、LaTex 套件安装
 
-LaTex 指令由三部分组成：
+在 mac 上安装 [mactex][2]后 ，会将 tex、pdftex、latex、luatex 等一系列命令按安装好：
+
+```sh
+$ brew install mactex
+```
+
+/usr/local/texlive/2021/bin/universal-darwin/ 目录下是大量可用命令。
+
+还包含名为 TeXShop 的图形编辑器：
+
+![TeXShop 编辑界面]({{ site.article }}/latex-1.png)
+
+输入文本：
+
+```tex
+%!TEX program = xelatex
+\documentclass{article}  
+\usepackage[UTF8]{ctex}  
+\begin{document}  
+Hello，中国！
+\end{document}
+```
+
+TeXShop 生成 pdf 快捷盘：Command+t
+
+## TeX 用法
+
+TeX 处理的文本样式如下：
+
+```tex
+\TeX{} is good at typesetting words like `fjord', `efficiency',
+and `fiasco'. It is also good at typesetting math like,
+$a^2 + b^2 = c^2$.
+\bye
+```
+
+用 tex 命令生成 dvi 文件：
+
+```sh
+ tex origin-tex.tex
+This is TeX, Version 3.141592653 (TeX Live 2021) (preloaded format=tex)
+(./origin-tex.tex [1] )
+Output written on origin-tex.dvi (1 page, 536 bytes).
+Transcript written on origin-tex.log.
+```
+
+## LaTeX 用法
+
+LaTex 处理的文本样式如下，第一行 %!TEX 指定处理引擎是 TeXShop 的能力，命令行执行时被忽略：
+
+```tex
+%!TEX program = xelatex
+\documentclass{article}  
+\usepackage[UTF8]{ctex}  
+\begin{document}  
+Hello，中国！
+\end{document}
+```
+
+用 xelatex 引擎处理，生成 pdf： 
+
+```sh
+$ xelatex  origin-latex.tex
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=latex)
+ restricted \write18 enabled.
+...省略...
+
+$ ls 
+origin-latex.aux origin-latex.log origin-latex.pdf origin-latex.tex
+```
+
+## LaTex 可用指令
+
+LaTex 可用指令由三部分组成：
 
 1. Tex 内置的原始指令（Primitive），原始指令列表：[TeX Primitive Control Sequences][11]
-2. 内置的用 tex 语法定义的 base 指令，代码目录： [latex2e/base/][18]，可能的安装目录：/usr/local/texlive/2021/texmf-dist/tex/latex/base/
-3. 通过 CTAN 发布的第三方 package/class 定义指令： [The Comprehensive TEX Archive Network][5]
+2. 内置的用 tex 语法定义的 base 指令，代码目录： [latex2e/base/][18]，mac 的安装目录：/usr/local/texlive/2021/texmf-dist/tex/latex/base/
+3. 通过 CTAN 下载的 package 中的指令： [The Comprehensive TEX Archive Network][5]
 
-原始指令中用来创建 macro 的 [def][19] 指令是 LaTeX 指令体系的基石，非原始的指令最终都是用 def 定义的。
+### 原始指令
 
-内置的 base 指令在安装目录 /usr/local/texlive/2021/texmf-dist/tex/latex/base/ 中能找到对应的定义。
-以 latex 支持的基本文档类型 article 为例，下面示例中的 \documentclass、\begin、\end 都不是原始指令：
+原始指令中用来创建 macro 的 [def][19] 指令是 LaTeX 指令体系的基石。
+
+在 LaTeX 中使用 TeX 原始指令（[TeX Primitive Control Sequences][11]）：
+
+{% raw %}
+
+```tex
+\documentclass[12pt]{article}
+\begin{document}
+
+\newpage
+\voffset=-1.5in    %上边距调整
+%\vsize=           %header,body,footer组合中body的高度
+\hoffset=-1.5in    %左边距调整
+\hsize=4in         %每行的长度
+\leftskip=0in      %每行左侧
+\rightskip=0in     %每行右侧
+\parindent=0in     %首行缩进
+
+e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e
+
+atop, put a line at the top of other: $ top \atop bottom $
+
+$$n \atop k = n! / k!(n-k)!$$
+$${n \atop k} = n! / k!(n-k)!$$
+$$n \atop k = n! / k!(n-k)!$$
+$${n \atop k} = {n! \over k!(n-k)!} = n! / k!(n-k)!$$
+
+\vspace{1cm}
+
+%atopwithdelims: $top \atopwithdelims{a,b} bottom$
+
+Example:
+
+\def\tabove#1%
+{%
+    {{2 \over 3}\above#1 {1 \over 6}} =
+    {{2 \over 3}\cdot{6 \over 1}} = {12 \over 3} = 4
+}
+$$\hbox{$\tabove{1pt}$,}\quad
+  \hbox{$\tabove{2pt}$,}\quad
+  \tabove{1pt},\quad
+  \tabove{2pt}$$
+
+\end{document}
+```
+
+{% endraw %}
+
+### base 指令
+
+内置的 base 指令在安装目录 /usr/local/texlive/2021/texmf-dist/tex/latex/base/ 中。
+以 LaTeX 支持的基本文档类型 article 为例，\documentclass 不是原始指令，是在 latex.ltx 中定义：
 
 ```tex
 %!TEX program = xelatex
@@ -70,28 +214,28 @@ Hello，中国！
 \end{document}
 ```
 
-documentclass 指令在 latex.ltx  文件的 10025 行定义：
-
 ```sh
 $ grep  -R -n "documentclass" . |grep def
 ./ltluatex.tex:65:  \ifx\documentclass\@undefined
-./latex.ltx:9778:\def\@documentclasshook{%               
-./latex.ltx:10025:\def\documentclass{%                  <-- documentclass 是在这个文件里
+./latex.ltx:9778:\def\@documentclasshook{ %               
+./latex.ltx:10025:\def\documentclass{ %                  <-- documentclass 是在这个文件里
 ./latex209.def:64: with the \string\documentclass\space command.^^J\space
 ./latex209.def:100:         should begin with \string\documentclass\space
-./latex209.def:124:\def\@documentclasshook{%
+./latex209.def:124:\def\@documentclasshook{ %
 ```
 
-package 的安装目录 /usr/local/texlive/2021/texmf-dist/tex/late/{package name} 中能找到 package 定义的指令：
+### CTAN Package
+
+从 CTAN 下载的 package 在 mac 上的安装目录，例如 package geometry：
 
 ```sh
-$ ls geometry
+$ ls /usr/local/texlive/2021/texmf-dist/tex/latex/geometry
 geometry.sty
 ```
 
-### docstip
+### 用于生成安装文件的 docstrip 机制
 
-查看安装目录里的文件会发现前面这样的内容：
+查看安装目录里的文件会发现前面有这样的内容：
 
 ```sh
 %% This is file `article.cls',
@@ -107,7 +251,7 @@ geometry.sty
 
 article.cls 是通过 classes.dtx 生成的，classes.dtx 位于 latex 项目代码 [latex2e/base/][18] 中。
 
-从 classes.dtx 生成 article.cls 使用的 tex 的 docstip 功能：
+从 classes.dtx 生成 article.cls 使用的 tex 的 docstrip 功能：
 
 ```sh
 $ texdoc docstrip
@@ -173,36 +317,6 @@ Please type another transcript file name:
 
 ```
 
-## LaTex 安装
-
-mac 上安装 Latex 编辑器 [mactex][2]：
-
-```sh
-brew install mactex
-```
-
-安装完成后，找名为 TeXShop 的应用，打开，即可编写 Latex 文件。
-
-![TeXShop 编辑界面]({{ site.article }}/latex-1.png)
-
-输入文本：
-
-```tex
-%!TEX program = xelatex
-\documentclass{article}  
-\usepackage[UTF8]{ctex}  
-\begin{document}  
-Hello，中国！
-\end{document}
-```
-
-使用快捷键盘：Command+t
-
-tex 命令位于：
-
-```sh
-ls  /usr/local/texlive/2021/bin/universal-darwin/
-```
 
 ## LaTex 指令
 
@@ -222,7 +336,7 @@ LaTex 支持通过 package 自定义指令，可以到 [CTAN][5] 中搜索对应
 
 ![article document]({{ site.article }}/tex-article-2.png)
 
-## 使用中文字符
+### 使用中文字符
 
 开头注释指定 xelatex，添加 package ctex：
 
@@ -236,7 +350,7 @@ Hello，中国！
 ```
 
 
-## 基本元素
+### 基本元素
 
 LaTeX 当前的主线版本是 LaTeX2（1985 年的 2.0.9 是第一个广泛使用的版本），[LaTeX 2ε for authors][3] 介绍了 LaTeX2 定义的新格式和提供的新指令，下一代 LaTeX3 的规划是一个还在进行中的长期工程。
 
@@ -542,15 +656,13 @@ wait, \emph{Here is} an exciting quote
 \end{quote}
 ```
 
-## 复杂排版
+### 复杂排版
 
-tex 一直处于三种模式中的一种：段落模式（paragraph mode）、数学模式（math mode）、LR模式（left-to-right mode）。
+LaTex 一直处于三种模式中的一种：段落模式（paragraph mode）、数学模式（math mode）、LR模式（left-to-right mode）。
 
-段落模式时，tex 将遇到的内容看作一系列单词和句子，被按行、段落或者页面划分。
-
-数学模式时，tex 将遇到的字符视作数学符号，并且忽略所有空格。
-
-LR模式时，tex 类似于在段落模式，但是方向始终从左到右，不产生换行。
+1. 段落模式：LaTeX 将遇到的内容看作一系列单词和句子，被按行、段落或者页面划分。
+2. 数学模式：LaTeX 将遇到的字符视作数学符号，并且忽略所有空格。
+3. LR模式：LaTeX 类似于在段落模式，但是方向始终从左到右，不产生换行。
 
 进入数学模式：
 
@@ -574,6 +686,211 @@ $
 ```
 
 
+## LaTex Package 使用
+
+
+### 页面布局：geometry
+
+```sh
+texdoc geometry
+```
+
+```tex
+\documentclass[onecolumn]{article}
+%a4:297mm*210mm a3:297mm*420mm
+\usepackage[margin=20mm,paperheight=297mm,paperwidth=210mm]{geometry}
+\parindent=0mm %首行缩进0
+\begin{document}
+abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc 
+\newpage
+def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def
+\end{document}
+```
+
+### 页眉页脚：fancyhdr
+
+```sh
+texdoc fancyhdr
+```
+
+```tex
+\documentclass[onecolumn,twoside]{article}
+
+%页眉设置
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{Overleaf}
+\fancyhead[RE,LO]{Guides and tutorials}
+\fancyfoot[CE,CO]{\leftmark}
+\fancyfoot[LE,RO]{\thepage}
+
+
+\begin{document}
+
+\section{example title}
+abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc abc 
+\newpage
+def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def def 
+
+\end{document}
+```
+
+### 考试排版 
+
+[用LaTeX怎样排版选择题？](https://www.zhihu.com/question/26414466)
+
+
+### 试卷排版案例
+
+![高考试卷]({{ site.article }}/paper.png)
+
+{% raw %}
+
+```tex
+%!TEX program = xelatex
+
+%A3横排双列双面
+\documentclass[landscape,twocolumn,twoside]{article} 
+\usepackage[a3paper,top=20mm,bottom=20mm,inner=20mm,outer=20mm]{geometry}
+
+%A4竖排双列双面
+%\documentclass[twocolumn,twoside]{article} 
+%\usepackage[a3paper,top=20mm,bottom=20mm,inner=20mm,outer=20mm]{geometry}
+
+%A4竖排单列双面
+%\documentclass[twoside]{article} 
+%\usepackage[a4paper,top=20mm,bottom=20mm,inner=20mm,outer=20mm]{geometry}
+
+%\ctexset{fontset=none} %禁止ctx自动检测操作系统、自动设定字库
+\usepackage[UTF8]{ctex} %中文显示、中文字体 
+\usepackage{enumerate}
+\usepackage{fontsize}      % 支持字号设置
+\usepackage{sectsty}    %z支持section标题字号设置
+\usepackage{amssymb}   %支持符号 /bigstar
+\usepackage{calc}             %支持变量运算
+\usepackage{graphics}   %支持导入图片
+\usepackage{adjustbox} %支持调整大小的box
+\usepackage{wrapfig}    %支持文字环绕图片，不能用于list enviroment，用 adjustbox 代替
+\usepackage{ifthen}       %支持if语句
+
+%页眉设置
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{页眉外侧}
+\fancyhead[RE,LO]{\songti\heiti 绝密$\bigstar$启用前\songti}
+\fancyfoot[CE,CO]{第 \thepage 页}
+
+%字体、字号、行间距、缩进等
+\renewcommand{\thesection}{\zhnum{section}}                  %章节标题使用中文
+%\renewcommand{\thesubsection}{\arabic{subsection}.}    %子章节标题
+\changefontsize[12pt]{12pt}                       %设置行间距、字体大小
+\sectionfont{\fontsize{12}{12}\selectfont}   %设置section标题大小行距
+\renewcommand{\baselinestretch}{2}   %设置2倍行距
+\renewcommand{\adjboxvtop}{8pt}           %调整adjustbox 垂直对齐时的内容上浮
+\parindent=0mm                                %首行缩进0
+
+%自定义指定
+\newlength\lastheight   %自定义全局变量，记录上一个minipage高度
+%左侧adjbox宽度
+\newcommand{\adjboxLwidth}{%
+\if@twocolumn \linewidth
+\else 0.7\linewidth
+}
+%右侧adjbox宽度
+\newcommand{\adjboxRwidth}{%
+\if@twocolumn \linewidth
+\else 0.3\columnwidth
+}
+
+
+%选择题选项自动换行
+\newlength{\lenA}
+\newlength{\lenB}
+\newlength{\lenC}
+\newlength{\lenD}
+\newlength{\lenMax}
+\newlength{\lenHalf}
+\newlength{\lenQuarter}
+\newcommand{\fourItems}[4] {%
+\settowidth{\lenA}{A.~#1~~~~~~~}
+\settowidth{\lenB}{B.~#2~~~~~~~}
+\settowidth{\lenC}{C.~#3~~~~~~~}
+\settowidth{\lenD}{D.~#4~~~~~~~}
+\ifthenelse{\lengthtest{\lenA > \lenB}} {\setlength{\lenMax}{\lenA}} {\setlength{\lenMax}{\lenB}}
+\ifthenelse{\lengthtest{\lenMax < \lenC}} {\setlength{\lenMax}{\lenC}} {}
+\ifthenelse{\lengthtest{\lenMax < \lenD}} {\setlength{\lenMax}{\lenD}} {}
+\setlength{\lenHalf}{0.5\linewidth}
+\setlength{\lenQuarter}{0.25\linewidth}
+\ifthenelse{ \lengthtest{ \lenMax < \lenQuarter} }
+{
+    \makebox[\lenQuarter][l]{A.~#1~~~}\makebox[\lenQuarter][l]{B.~#2~~~}\makebox[\lenQuarter][l]{C.~#3~~~}\makebox[\lenQuarter][l]{D.~#4~~~}
+}
+ {  \ifthenelse{ \lengthtest{\lenMax <\lenHalf} } 
+      {\makebox[\lenHalf][l]{A.~#1~~~}\makebox[\lenHalf][l]{B.~#2~~~}\par\makebox[\lenHalf][l]{C.~#3~~~}\makebox[\lenHalf][l]{D.~#4~~~}} 
+      {\makebox[\lenMax][l]{A.~#1~~~}\par\makebox[\lenMax][l]{B.~#2~~~}\par\makebox[\lenMax][l]{C.~#3~~~}\par\makebox[\lenMax][l]{D.~#4~~~}} 
+}
+}
+
+
+\begin{document}
+
+\begin{center}
+\LARGE 2019 年普通高等学校招生全国统一考试
+\end{center}
+\begin{center}
+\Huge 理科数学
+\end{center}
+
+\section{注意事项：}
+\begin{enumerate}
+	\item 答卷前，考生务必将自己的姓名、考生号等填写在答题卡和试卷指定位置上。
+	\item 回答选择题时，选出 每小题答案后，用铅笔把答题卡上对应题目的答案标号涂黑。如需改动，用橡皮擦干净后，再涂选其他答案标号。回答非选择题时，将答案写在答题卡上。写在本试卷上无效。
+	\item 考试结束后，将本试卷和答题卡一并交回。
+\end{enumerate}
+
+\section{选择题：本题共12小题，每小题5分 ，共60分。在每小题给出的四个选项中，只有一项是符合题目要求的。}
+\begin{enumerate}
+
+\item 已知集合$M=\{x \mid-4 <  x < 2 \}$，$N=\{ x \mid x^2-x-6<0\}$，则$M \cap N=$
+	\par\fourItems 
+	    {$\{ x \mid -4 < x < 3 \}$}
+	    {$\{ x \mid -4 < x < -2 \}$}
+	    {$\{ x \mid -2 < x < 2 \}$}
+	    {$\{ x \mid 2 < x < 3 \}$	}
+\item 设复数$z$满足$| z - i | = 1$，$z$在复平面内对应的点为$(x,y)$，则
+	\par\fourItems 
+	    {$(x+1)^2+y^2=1$}
+	    {$(x-1)^2+y^2=1$}
+	    {$x^2+(y-1)^2=1$}
+	    {$x^2+(y+1)^2=1$}
+\item 已知$a=\log_{2}0.2$，$b=2^{0.2}$，$c=0.2^{0.3}$，则
+	\par\fourItems
+	    {$a<b<c$}
+	    {$a<c<b$}
+	    {$c<a<b$}
+	    {$b<c<a$}
+\item \begin{adjustbox}{minipage=[t]{\adjboxLwidth},gstore totalheight=\lastheight}
+	古希腊时期，人们认为最美人体的头顶至肚脐的长度与肚脐至足底的长度之比是$\frac{\sqrt{5}-1}{2}$（$\frac{\sqrt{5}-1}{2}\approx0.618$，成为黄金分割比例），著名的“断臂维纳斯”便是如此。此外，最美人体的头顶至咽喉的长度与咽喉至肚脐的长度之比也是 $\frac{\sqrt{5}-1}{2}$。若某人满足上述两个黄金分割比例，且腿长为105cm，头顶至脖子下端的长度为26cm，则其身高可能是
+	\end{adjustbox}
+	\begin{adjustbox}{center=\adjboxRwidth,height=\lastheight,valign=t}
+         	\includegraphics[height=\lastheight]{img/维纳斯.jpeg}
+	\end{adjustbox}
+	\vspace{\lineskip}    
+	\par\fourItems
+	{165cm}
+	{175cm}
+	{182cm}
+	{190cm}
+\item 函数$f(x)=\frac{\sin x+x}{\cos x+x^2}$在$[-\pi,\pi]$的图像大致为
+\end{enumerate}
+
+\end{document}
+```
+
+{% endraw %}
+
 ## 问题记录
 
 ### CTeX fontset `mac' is unavailable in current mode
@@ -583,6 +900,7 @@ $
 ```
 %!TEX program = xelatex
 ```
+
 
 ## 参考
 
@@ -603,6 +921,8 @@ $
 15. [the LaTeX project][15]
 16. [OverLeaf Document][16]
 17. [Learn LaTeX][17]
+18. [ConTeX][18]
+19. [Donald E. Knuth, The TeXbook, Addison-Wesley, 1986, ISBN 0-201-13447-0.][25]
 
 
 [1]: https://www.lijiaocn.com "李佶澳的博客"
@@ -624,3 +944,9 @@ $
 [17]: https://www.learnlatex.org/en/ "Learn LaTeX"
 [18]: https://github.com/latex3/latex2e/tree/main/base "LaTeX base"
 [19]: https://www.tug.org/utilities/plain/cseq.html#def-rp "def"
+[20]: http://wiki.contextgarden.net/What_is_ConTeXt "ConTeX"
+[21]: https://tug.org/applications/pdftex/ "pdfTeX"
+[22]: https://tug.org/xetex/ "xetex"
+[23]: http://www.luatex.org/ "luaTex"
+[24]: https://www.overleaf.com/learn/latex/Articles/The_TeX_family_tree%3A_LaTeX%2C_pdfTeX%2C_XeTeX%2C_LuaTeX_and_ConTeXt "The TeX family tree: LaTeX, pdfTeX, XeTeX, LuaTeX and ConTeXt"
+[25]: http://visualmatheditor.equatheque.net/doc/texbook.pdf  "Donald E. Knuth, The TeXbook, Addison-Wesley, 1986, ISBN 0-201-13447-0."
