@@ -3,7 +3,7 @@ layout: default
 title: "排版工具 LaTeX 的指令系统、安装使用和简明排版语法"
 author: 李佶澳
 date: "2021-12-08 14:38:31 +0800"
-last_modified_at: "2022-01-19 17:22:30 +0800"
+last_modified_at: "2022-01-19 17:26:31 +0800"
 categories: 编程
 cover:
 tags:
@@ -923,7 +923,7 @@ def def def def def def def def def def def def def def def def def def def def 
 17. [Learn LaTeX][17]
 18. [ConTeX][18]
 19. [Donald E. Knuth, The TeXbook, Addison-Wesley, 1986, ISBN 0-201-13447-0.][25]
-
+20. [知乎专栏Latex排版和C++][26]
 
 [1]: https://www.lijiaocn.com "李佶澳的博客"
 [2]: https://tug.org/mactex/ "mactex"
@@ -950,3 +950,4 @@ def def def def def def def def def def def def def def def def def def def def 
 [23]: http://www.luatex.org/ "luaTex"
 [24]: https://www.overleaf.com/learn/latex/Articles/The_TeX_family_tree%3A_LaTeX%2C_pdfTeX%2C_XeTeX%2C_LuaTeX_and_ConTeXt "The TeX family tree: LaTeX, pdfTeX, XeTeX, LuaTeX and ConTeXt"
 [25]: http://visualmatheditor.equatheque.net/doc/texbook.pdf  "Donald E. Knuth, The TeXbook, Addison-Wesley, 1986, ISBN 0-201-13447-0."
+[26]: https://www.zhihu.com/column/c_149601753 "Latex排版和C++"
