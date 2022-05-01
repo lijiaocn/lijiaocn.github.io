@@ -3,7 +3,7 @@ layout: default
 title: "Android开发环境搭建，模拟器以及设备上运行"
 author: 李佶澳
 date: "2022-04-30 18:30:39 +0800"
-last_modified_at: "2022-04-30 19:35:24 +0800"
+last_modified_at: "2022-05-01 20:11:57 +0800"
 categories: 编程
 cover:
 tags: android 
@@ -33,7 +33,7 @@ description: AndroidStudio的File->NewProject创建BasicActivity，选择Java/Ko
 AndroidManifest.xml java                res
 ```
 
-![Android Studio目录结构]({{ site.article }})/android-studio-proj1.png)
+![Android Studio目录结构]({{ site.article }}/android-studio-proj1.png)
 
 manifests/AndroidManifest.xml 是对 app 内各组件的描述，android runtime 读取该文件。 
 
