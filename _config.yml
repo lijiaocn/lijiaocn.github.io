@@ -20,4 +20,4 @@ lsi:      false
 excerpt_separator: "----"
 ICP-number:
 Copyright: Copyright @2011-2019 All rights reserved.
-pageheader: <a href='/shop/' style='color:red'><strong>1.每日红包</strong></a>&nbsp;&nbsp;<a href='/geekclass/' style='color:red'><strong>2.极客专栏推荐</strong></a>
+pageheader: <a href='/shop' style='color:red'><strong>1.每日红包</strong></a>&nbsp;&nbsp;<a href='/geekclass' style='color:red'><strong>2.极客专栏推荐</strong></a>

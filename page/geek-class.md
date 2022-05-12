@@ -4,7 +4,7 @@ title: "极客时间精品技术专栏推荐（已鉴定）"
 author: 李佶澳
 date: "2019-12-15T22:47:59+0800"
 last_modified_at: "2021-10-27T14:42:13+0800"
-permalink: /geekclass/
+permalink: /geekclass
 categories: 好货
 cover:
 tags: 好货
