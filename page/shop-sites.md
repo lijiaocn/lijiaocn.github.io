@@ -4,6 +4,7 @@ title:  每日红包&精选购物
 author: 李佶澳
 createdate: 2018/05/12 12:21:00
 last_modified_at: 2018/08/19 13:19:22
+permalink: /shop
 categories: 好货
 tags: 好货
 keywords: 有特色的网站,小众网站
@@ -14,14 +15,14 @@ description: 这里收集了一些比较特色的网站，官方旗舰店、oppo
 <h2>每日红包</h2>
 
 <ul>
-<li><a target="_blank" style="font-weight:bold" href="https://c.duomai.com/track.php?k=WaqlGb9QWa1VmJ0ITMwETPklWYmEDM5kzM30DZp9VZ0l2cm02bj5ibhVHdpVWbukmRyUiRyUSQzUycwRHdo1Ddm42YvF&dm_fid=16055">美团外卖红包（用手机或复制连接到微信打开）</a></li>
-<li><a target="_blank" style="font-weight:bold" href="https://c.duomai.com/track.php?k=2Fmb9QWa1VmJ3ITMwETPklWYmADMyUzM30DZp9VZ0l2cmYiJt92Yu4WY1RXal1mLpZkMlYkMlE0MlMHc0RHa9QnJ&dm_fid=16052">美团闪购红包（用手机或复制连接到微信打开）</a></li>
-<li><a target="_blank" style="font-weight:bold" href="https://c.duomai.com/track.php?k=ukWepFXauAXa2ZkMlYkMlE0MlMHc0RHa9QnJ2Fmb9QWa1VmJ5UDN0ETPklWYmkDMyUzM30DZp9VZ0l2cmwWb0hmL4VGZulmRyUyclxWYzRnbp9maGJTJu9WauVnRyUSe0lmdpR3YhZkMlAVSWVDbtRHaGJTJt92Y&dm_fid=16055">爱奇艺联名会员（用手机或复制到连接到微信打开）</a></li>
+<li><a target="_blank" style="font-weight:bold" href="https://c.duomai.com/track.php?k=WaqlGb9QWa1VmJ0ITMwETPklWYmEDM5kzM30DZp9VZ0l2cm02bj5ibhVHdpVWbukmRyUiRyUSQzUycwRHdo1Ddm42YvF&dm_fid=16055">美团外卖红包（手机或复制到微信打开）</a></li>
+<li><a target="_blank" style="font-weight:bold" href="https://c.duomai.com/track.php?k=2Fmb9QWa1VmJ3ITMwETPklWYmADMyUzM30DZp9VZ0l2cmYiJt92Yu4WY1RXal1mLpZkMlYkMlE0MlMHc0RHa9QnJ&dm_fid=16052">美团闪购红包（手机或复制到微信打开）</a></li>
+<li><a target="_blank" style="font-weight:bold" href="https://c.duomai.com/track.php?k=ukWepFXauAXa2ZkMlYkMlE0MlMHc0RHa9QnJ2Fmb9QWa1VmJ5UDN0ETPklWYmkDMyUzM30DZp9VZ0l2cmwWb0hmL4VGZulmRyUyclxWYzRnbp9maGJTJu9WauVnRyUSe0lmdpR3YhZkMlAVSWVDbtRHaGJTJt92Y&dm_fid=16055">爱奇艺联名会员（手机或复制到微信打开）</a></li>
 </ul>
 
-<h2>官方旗舰店</h2>
+<h2>图书</h2>
 <ul>
-<li><a target="_blank" style="font-weight:bold" href="https://s.click.taobao.com/t?e=m%3D2%26s%3DDjrBveWbImYcQipKwQzePDAVflQIoZepK7Vc7tFgwiFRAdhuF14FMU8YCzk6XsBk8sviUM61dt3b6m8RPJaT9jpnKcWWAMs1Xga9diXO5NYGp2fMraklkP4vew88RODOcSpj5qSCmbA%3D">vivo手机官方旗舰店</a></li>
+<li><a target="_blank" style="font-weight:bold;" href="https://www.amazon.cn/Kindle%E7%94%B5%E5%AD%90%E4%B9%A6/b/?ie=UTF8&node=116169071&ref_=nav_topnav_giftcert&tag=znrio-23">亚马逊/Kindle特价电子书</a></li>
 </ul>
 
 <h2>精品小店</h2>
@@ -32,10 +33,6 @@ description: 这里收集了一些比较特色的网站，官方旗舰店、oppo
 <li><a target="_blank" style="font-weight:bold;" href="http://click.dji.com/AIxnZwK6V7mHitF4Mik?pm=custom">大疆</a></li>
 </ul>
 
-<h2>图书</h2>
-<ul>
-<li><a target="_blank" style="font-weight:bold;" href="https://www.amazon.cn/b/ref=as_li_ss_tl?_encoding=UTF8&camp=536&creative=3132&linkCode=ur2&node=1876031071&pf_rd_i=658390051&pf_rd_m=A1AJ19PSB66TGU&pf_rd_p=a431cac5-8539-4556-a045-beb1449d6a4e&pf_rd_p=a431cac5-8539-4556-a045-beb1449d6a4e&pf_rd_r=1KHS63SH79SRZV0S0BY2&pf_rd_r=1KHS63SH79SRZV0S0BY2&pf_rd_s=merchandised-search-leftnav&pf_rd_t=101&tag=znrio-23">亚马逊新书</a></li>
-</ul>
 
 <h2>医药</h2>
 <ul>
@@ -52,5 +49,10 @@ description: 这里收集了一些比较特色的网站，官方旗舰店、oppo
 <li><a target="_blank" style="font-weight:bold;" href="https://c.duomai.com/track.php?site_id=224482&lid=4193&aid=61&euid=lijiaocn&t=http%3A%2F%2Fwww.360buy.com%2F">京东</a></li>
 <li><a target="_blank" style="font-weight:bold;" href="https://www.tmall.com/" isconvert="1">天猫</a></li>
 <li><a target="_blank" style="font-weight:bold;" href="https://www.taobao.com/" isconvert="1">淘宝</a></li>
+</ul>
+
+<h2>官方旗舰店</h2>
+<ul>
+<li><a target="_blank" style="font-weight:bold" href="https://s.click.taobao.com/t?e=m%3D2%26s%3DDjrBveWbImYcQipKwQzePDAVflQIoZepK7Vc7tFgwiFRAdhuF14FMU8YCzk6XsBk8sviUM61dt3b6m8RPJaT9jpnKcWWAMs1Xga9diXO5NYGp2fMraklkP4vew88RODOcSpj5qSCmbA%3D">vivo手机官方旗舰店</a></li>
 </ul>
 
