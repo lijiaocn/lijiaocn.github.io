@@ -20,6 +20,13 @@ description: 这里收集了一些比较特色的网站，官方旗舰店、oppo
 <li><a target="_blank" style="font-weight:bold" href="https://c.duomai.com/track.php?k=ukWepFXauAXa2ZkMlYkMlE0MlMHc0RHa9QnJ2Fmb9QWa1VmJ5UDN0ETPklWYmkDMyUzM30DZp9VZ0l2cmwWb0hmL4VGZulmRyUyclxWYzRnbp9maGJTJu9WauVnRyUSe0lmdpR3YhZkMlAVSWVDbtRHaGJTJt92Y&dm_fid=16055">爱奇艺联名会员（手机或复制到微信打开）</a></li>
 </ul>
 
+<h2>手机购物</h2>
+
+<ul>
+<li><a target="_blank" style="font-weight:bold;" href="https://c.duomai.com/track.php?k=j9WYppWas1DZpVXZmYTM4MTPklWYmATM0EDN30DZp9VZ0l2cmYiRyUSbvNmLzYTMuU3b55SbGJTJGJTJBNTJzBHd0hWP0Zib&dm_fid=16055">网易严选手机版</a></li>
+<li><a target="_blank" style="font-weight:bold;" href="https://c.duomai.com/track.php?k=ppWas1DZpVXZmYDNxETPklWYmMTM0EDN30DZp9VZ0l2cmYkMl02bj5CZq5SbGJTJGJTJBNTJzBHd0hWP0Zibj9WY&dm_fid=16055">京东手机版</a></li>
+</ul>
+
 <h2>图书</h2>
 <ul>
 <li><a target="_blank" style="font-weight:bold;" href="https://www.amazon.cn/Kindle%E7%94%B5%E5%AD%90%E4%B9%A6/b/?ie=UTF8&node=116169071&ref_=nav_topnav_giftcert&tag=znrio-23">亚马逊/Kindle特价电子书</a></li>
