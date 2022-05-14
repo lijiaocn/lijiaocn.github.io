@@ -23,8 +23,13 @@ description: 这里收集了一些比较特色的网站，官方旗舰店、oppo
 <h2>手机购物</h2>
 
 <ul>
-<li><a target="_blank" style="font-weight:bold;" href="https://c.duomai.com/track.php?k=j9WYppWas1DZpVXZmYTM4MTPklWYmATM0EDN30DZp9VZ0l2cmYiRyUSbvNmLzYTMuU3b55SbGJTJGJTJBNTJzBHd0hWP0Zib&dm_fid=16055">网易严选手机版</a></li>
-<li><a target="_blank" style="font-weight:bold;" href="https://c.duomai.com/track.php?k=ppWas1DZpVXZmYDNxETPklWYmMTM0EDN30DZp9VZ0l2cmYkMl02bj5CZq5SbGJTJGJTJBNTJzBHd0hWP0Zibj9WY&dm_fid=16055">京东手机版</a></li>
+<li><a target="_blank" style="font-weight:bold;" href="https://c.duomai.com/track.php?k=j9WYppWas1DZpVXZmYTM4MTPklWYmATM0EDN30DZp9VZ0l2cmYiRyUSbvNmLzYTMuU3b55SbGJTJGJTJBNTJzBHd0hWP0Zib&dm_fid=16055">网易严选</a></li>
+<li><a target="_blank" style="font-weight:bold;" href="https://c.duomai.com/track.php?k=ppWas1DZpVXZmYDNxETPklWYmMTM0EDN30DZp9VZ0l2cmYkMl02bj5CZq5SbGJTJGJTJBNTJzBHd0hWP0Zibj9WY&dm_fid=16055">京东</a></li>
+<li><a target="_blank" style="font-weight:bold;" href="https://c.duomai.com/track.php?k=lMHc0RHa9QnJuN2bhlmapxWPklWdlZiMxYTPklWYmIjM0EDN30DZp9VZ0l2cmYiJulWLlRWYyRnRyUCcvh2cGJTJuNmLt92YuUGbwBXYuc3d3ZkMlYkMlE0M&dm_fid=16055">苹果商城</a></li>
+<li><a target="_blank" style="font-weight:bold;" href="https://c.duomai.com/track.php?k=ibj9WYppWas1DZpVXZmkDM3QTPklWYmUjM0EDN30DZp9VZ0l2cm02bj5ibpBXdvlXat9WYphnL3d3dGJTJGJTJBNTJzBHd0hWP0Z&dm_fid=16055">小米有品</a></li>
+<li><a target="_blank" style="font-weight:bold;" href="https://c.duomai.com/track.php?k=WP0Zibj9WYppWas1DZpVXZmkzNxkTPklWYmgjM0EDN30DZp9VZ0l2cmYiJtZkMl42YGJTJt92YuI3bu9GaphmL3d3dGJTJGJTJBNTJzBHd0h&dm_fid=16055">荣耀商城</a></li>
+<li><a target="_blank" style="font-weight:bold;" href="https://c.duomai.com/track.php?k=WP0Zibj9WYppWas1DZpVXZmEjNwITPklWYmQzM0EDN30DZp9VZ0l2cmYiJs1Gdo5CelRmbpZkMl02bj5CbsFWb25SbGJTJGJTJBNTJzBHd0h&dm_fid=16055">华为商城</a></li>
+<li><a target="_blank" style="font-weight:bold;" href="https://c.duomai.com/track.php?k=GJTJGJTJBNTJzBHd0hWP0Zibj9WYppWas1DZpVXZmIjN0MTPklWYmEzM0EDN30DZp9VZ0l2cmYiJ5AjM2ITNxkTMENTJklmZlJnRzUCelRmbpNmRyUCbpFGdlJnbpxWerZkMl02bj5Ses5Sb&dm_fid=16055">同程旅行</a></li>
 </ul>
 
 <h2>图书</h2>
