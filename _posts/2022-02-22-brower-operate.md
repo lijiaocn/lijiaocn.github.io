@@ -3,7 +3,7 @@ layout: default
 title: "用代码操作浏览器的方法：Puppeteer/Chromedp/Selenium"
 author: 李佶澳
 date: "2022-02-22 19:41:52 +0800"
-last_modified_at: "2022-04-08 12:07:19 +0800"
+last_modified_at: "2022-05-22 22:11:25 +0800"
 categories: 编程
 cover:
 tags:  spider 浏览器
@@ -32,6 +32,8 @@ client 是要发起浏览器操作的客户端，target 是可以被操作的浏
 CDP 将支持操作划分成 dom、debugger、network 等多个 domain，每个 domain 有命令、事件和定义组成，[Chrome DevTools Protocol][7] 左下脚边栏列出了 CDP 的所有 domain，譬如 [Target Domain][12]、[Page Domain][13]：
 
 ![CDP Domains]({{ site.article }}/cdp-domains.png)
+
+CDP 已经有多种语言的 library，java/python/go/ruby/js等等：[Protocol Driver Libraries][19]。
 
 ### 启动 Chrome DevTools Server
 
@@ -100,6 +102,12 @@ chrome 还提供了少量的 http 接口，指定非零端口，然后用另一�
 ## Puppeteer 操作 Chrome
 
 [Puppeteer][10] 是 Chrome DevTools team 团队维护的一个基于 CDP 的 api 库，如果没有需要特别考虑的因素，建议直接用 puppeteer。
+
+[Stable vs Experimental methods][17]：
+
+>The Chrome DevTools team maintains Puppeteer as a reliable high-level API to control a browser. Internally, Puppeteer does use experimental CDP methods, but the team makes sure to update the library as the underlying protocol changes.
+
+puppeteer 已经了 python、rust、net、ruby 等语言的实现：[other languages  port][18]
 
 ## Chomedp 操作 Chrome
 
@@ -298,3 +306,6 @@ if __name__ == '__main__':
 [14]: https://github.com/chromedp/ "chromedp"
 [15]: https://pkg.go.dev/github.com/chromedp/cdproto "cdproto doc"
 [16]: https://pkg.go.dev/github.com/chromedp/chromedp "chromedp doc"
+[17]: https://github.com/aslushnikov/getting-started-with-cdp/blob/master/README.md#stable-vs-experimental-methods "Stable vs Experimental methods"
+[18]: https://github.com/ChromeDevTools/awesome-chrome-devtools#automation "Puppeteer ports"
+[19]: https://github.com/ChromeDevTools/awesome-chrome-devtools#protocol-driver-libraries  "Protocol Driver Libraries"
