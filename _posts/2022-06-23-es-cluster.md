@@ -1,14 +1,14 @@
 ---
 layout: default
-title: "ElasticSearch 零基础入门（2）：集群原理和配置原则"
+title: "ElasticSearch 零基础入门（2）：集群设计和配置原则"
 author: 李佶澳
 date: "2022-06-23 14:35:24 +0800"
-last_modified_at: "2022-06-23 16:59:52 +0800"
-categories:
+last_modified_at: "2022-06-24 17:35:34 +0800"
+categories: 项目
 cover:
 tags: ElasticSearch
 keywords: ElasticSearch,es
-description: "ElasticSearch集群原理和配置原则"
+description: "ElasticSearch集群原理和配置原则,es 定义了多种节点角色，一个节点可以同时担任多种角色"
 ---
 
 ## 目录
