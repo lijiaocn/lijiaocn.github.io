@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "ElasticSearch 零基础入门（5）：倒排索引浅析，适用场景和缺陷"
+title: "ElasticSearch 零基础入门（5）：倒排索引适用场景、Mysql的全文索引使用"
 author: 李佶澳
 date: "2022-07-04 11:42:40 +0800"
-last_modified_at: "2022-07-04 14:39:23 +0800"
+last_modified_at: "2022-07-05 19:26:26 +0800"
 categories: 项目
 cover:
 tags: ElasticSearch
@@ -83,6 +83,85 @@ _______
 精确查询「山东省济南市」这种场景下，要用常规的 B+ 树索引。
 
 ES 通过为一个字段指定多种类型的方式，满足了精确查询和全文检索两种场景，猜测应该是建立了两套索引（未看ES的实现，这里纯猜测）。关系型数据库绝大多数场景都是精确值查询，最经常使用的索引类型是 B+ 树。
+
+## Mysql 全文索引使用
+
+参照 [InnoDB Full-Text Indexes][3] 试验一下。下面的操作在 mysql 8.0 上执行。
+
+```sql
+CREATE TABLE opening_lines (
+       id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
+       opening_line TEXT(500),
+       author VARCHAR(200),
+       title VARCHAR(200),
+       FULLTEXT idx (opening_line)
+       ) ENGINE=InnoDB;
+```
+
+查看 mysql 创建的索引表，testdb 是所在的数据库名，如果上面的表在 abc 中创建的，就用 abc/%：
+
+```sql
+mysql> SELECT table_id, name, space from INFORMATION_SCHEMA.INNODB_TABLES  WHERE name LIKE 'testdb/%';
++----------+------------------------------------------------------+-------+
+| table_id | name                                                 | space |
++----------+------------------------------------------------------+-------+
+|     1067 | testdb/test                                          |     2 |
+|     1068 | testdb/scores                                        |     3 |
+|     1069 | testdb/opening_lines                                 |     4 |
+|     1070 | testdb/fts_000000000000042d_being_deleted            |     5 |
+|     1071 | testdb/fts_000000000000042d_being_deleted_cache      |     6 |
+|     1072 | testdb/fts_000000000000042d_config                   |     7 |
+|     1073 | testdb/fts_000000000000042d_deleted                  |     8 |
+|     1074 | testdb/fts_000000000000042d_deleted_cache            |     9 |
+|     1075 | testdb/fts_000000000000042d_00000000000000a6_index_1 |    10 |
+|     1076 | testdb/fts_000000000000042d_00000000000000a6_index_2 |    11 |
+|     1077 | testdb/fts_000000000000042d_00000000000000a6_index_3 |    12 |
+|     1078 | testdb/fts_000000000000042d_00000000000000a6_index_4 |    13 |
+|     1079 | testdb/fts_000000000000042d_00000000000000a6_index_5 |    14 |
+|     1080 | testdb/fts_000000000000042d_00000000000000a6_index_6 |    15 |
++----------+------------------------------------------------------+-------+
+```
+
+操作：
+
+```sql
+INSERT INTO opening_lines (opening_line) values ("春天来了"),("夏天来了"),("秋天来了"),("冬天到了"),("春天 夏天");
+
+INSERT INTO opening_lines(opening_line,author,title) VALUES
+       ('Call me Ishmael.','Herman Melville','Moby-Dick'),
+       ('A screaming comes across the sky.','Thomas Pynchon','Gravity\'s Rainbow'),
+       ('I am an invisible man.','Ralph Ellison','Invisible Man'),
+       ('Where now? Who now? When now?','Samuel Beckett','The Unnamable'),
+       ('It was love at first sight.','Joseph Heller','Catch-22'),
+       ('All this happened, more or less.','Kurt Vonnegut','Slaughterhouse-Five'),
+       ('Mrs. Dalloway said she would buy the flowers herself.','Virginia Woolf','Mrs. Dalloway'),
+       ('It was a pleasure to burn.','Ray Bradbury','Fahrenheit 451');
+```
+
+查询：
+
+```sql
+mysql >SELECT *  FROM opening_lines WHERE MATCH(opening_line) AGAINST('happened');
++----+----------------------------------+---------------+---------------------+
+| id | opening_line                     | author        | title               |
++----+----------------------------------+---------------+---------------------+
+| 10 | All this happened, more or less. | Kurt Vonnegut | Slaughterhouse-Five |
++----+----------------------------------+---------------+---------------------+
+```
+
+但是查询中文时会发现要输入完整内容才会有结果，这涉及到中文分词的问题，mysql 的分词能力配置方式未知，大概率比 ES 差很多。
+
+```sql
+mysql> SELECT * FROM opening_lines WHERE MATCH(opening_line) AGAINST('春天');
+Empty set (0.00 sec)
+
+mysql>  SELECT *  FROM opening_lines WHERE MATCH(opening_line) AGAINST('春天来了');
++----+--------------+--------+-------+
+| id | opening_line | author | title |
++----+--------------+--------+-------+
+|  1 | 春天来了     | NULL   | NULL  |
++----+--------------+--------+-------+
+```
 
 
 ## 参考
