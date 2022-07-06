@@ -3,10 +3,10 @@ layout: default
 title: "Android开发环境搭建，模拟器以及设备上运行"
 author: 李佶澳
 date: "2022-04-30 18:30:39 +0800"
-last_modified_at: "2022-05-01 20:11:57 +0800"
+last_modified_at: "2022-07-06 18:38:30 +0800"
 categories: 编程
 cover:
-tags: android 
+tags: Android 
 keywords: android,移动应用开发
 description: AndroidStudio的File->NewProject创建BasicActivity，选择Java/Kotlin语言、最小的sdk版本
 ---
