@@ -12,7 +12,7 @@ function DetectAds(){
         innerHtml=innerHtml+ad.innerHTML
     })
     if(innerHtml ==''){
-        r=confirm('访客您好，您需要在广告屏蔽插件中排除此网站，然后点击确定')
+        r=confirm('访客您好，您需要在广告屏蔽插件中排除此网站，排除后点击确定')
         if (r==true){
             location.reload()
         }else{
