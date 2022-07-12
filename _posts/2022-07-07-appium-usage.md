@@ -3,7 +3,7 @@ layout: default
 title: "移动端自动化测试工具 Appium 安装配置和使用方法"
 author: 李佶澳
 date: "2022-07-07 15:24:12 +0800"
-last_modified_at: "2022-07-11 11:40:00 +0800"
+last_modified_at: "2022-07-11 18:42:33 +0800"
 categories: 编程
 cover:
 tags: Android Appium
@@ -180,6 +180,7 @@ pip install Appium-Python-Client
 7. [appium + python 基于windows 平台][7]
 8. [List of client libraries with Appium server support][8]
 9. [移动端爬虫工具与方法介绍][9]
+10. [Python + Appium 自动化操作微信入门看这一篇就够了][10]
 
 [1]: https://www.lijiaocn.com "李佶澳的博客"
 [2]: https://appium.io/docs/cn/about-appium/intro/ "Appium介绍" 
@@ -190,3 +191,4 @@ pip install Appium-Python-Client
 [7]: https://www.cnblogs.com/shenh/p/11758917.html "appium + python 基于windows 平台"
 [8]: https://appium.io/docs/en/about-appium/appium-clients/index.html "List of client libraries with Appium server support"
 [9]: https://www.cnblogs.com/163yun/p/9681061.html "移动端爬虫工具与方法介绍"
+[10]: https://blog.csdn.net/ityard/article/details/109498443 "Python + Appium 自动化操作微信入门看这一篇就够了"
