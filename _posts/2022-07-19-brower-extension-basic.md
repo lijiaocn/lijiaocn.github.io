@@ -3,7 +3,7 @@ layout: default
 title: "Chrome/Edge/Safari/Firefox/Opera浏览器扩展插件的开发过程概览"
 author: 李佶澳
 date: "2022-07-19 18:40:28 +0800"
-last_modified_at: "2022-07-20 16:43:37 +0800"
+last_modified_at: "2022-07-21 11:37:08 +0800"
 categories: 编码
 cover:
 tags: 浏览器
@@ -42,7 +42,7 @@ Tablet:  Chrome 52.44%,  Safari 33.77%,   Samsung 3.48%,  Opear   1.08%,  YaBrow
   "name": "Getting Started Example",
   "description": "Build an Extension!",
   "version": "1.0",
-  "manifest_version": 3,
+  "manifest_version": 3,                  // manifest 适用版本
   "background": {  
     "service_worker": "background.js"     // 插件加载后执行的后台脚本
   },
