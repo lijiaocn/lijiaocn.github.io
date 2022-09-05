@@ -3,7 +3,7 @@ layout: default
 title: "Facebook 的缓存系统实践经验《Scaling Memcache at Facebook》"
 author: 李佶澳
 date: "2022-08-31 15:37:05 +0800"
-last_modified_at: "2022-09-05 20:10:47 +0800"
+last_modified_at: "2022-09-05 20:14:09 +0800"
 categories: 方法
 cover:
 tags: 系统设计
@@ -35,6 +35,8 @@ Facebook 的网页访问量巨大，分别来自于不同的地区，每个网�
 5. 怎样降低成本？
 
 ## 系统拓扑与交互过程
+
+根据论文内容推导出的系统拓扑图：
 
 ![facebook memcache 架构]({{ site.article }}/facebook-memcache-1.jpeg)
 
