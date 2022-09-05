@@ -3,7 +3,7 @@ layout: default
 title: "Facebook 的缓存系统实践经验《Scaling Memcache at Facebook》"
 author: 李佶澳
 date: "2022-08-31 15:37:05 +0800"
-last_modified_at: "2022-09-05 20:36:01 +0800"
+last_modified_at: "2022-09-05 20:37:41 +0800"
 categories: 方法
 cover:
 tags: 系统设计
@@ -205,10 +205,16 @@ Cold Cluster 设置了 2 秒钟的 hold-off：一个 key 被删除后的 2 秒�
 3. 如果有条件且有需求，监听数据库 commit log，补偿 Delete 操作
 4. 如果有条件且有需求，更新数据库之前为 key 设置 Marker，更新数据后清除
 
+## 扩展 
+
+Memcached 和 Redis 的异同： [Comparing Redis and Memcached][3]
+
 ## 参考
 
 1. [李佶澳的博客][1]
 2. [《Scaling Memcache at Facebook》][2]
+3. [Comparing Redis and Memcached][3]
 
 [1]: https://www.lijiaocn.com "李佶澳的博客"
 [2]: https://research.facebook.com/publications/scaling-memcache-at-facebook/ "《Scaling Memcache at Facebook》"
+[3]: https://aws.amazon.com/cn/elasticache/redis-vs-memcached/ "Comparing Redis and Memcached"
