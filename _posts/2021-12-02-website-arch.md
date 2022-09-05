@@ -3,10 +3,10 @@ layout: default
 title: "《大型网站技术架构：核心原理与案例分析》阅读摘录"
 author: 李佶澳
 date: "2021-12-02 14:19:21 +0800"
-last_modified_at: "2021-12-09 14:36:15 +0800"
+last_modified_at: "2022-09-05 20:03:16 +0800"
 categories: 方法
 cover:
-tags: 系统架构
+tags: 系统设计
 keywords: 大规模网站,系统架构
 description: 《大型网站技术架构：核心原理与案例分析》讲述了网站架构如何一步步演进到现在的样子的
 ---
