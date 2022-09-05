@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "Facebook 的缓存使用实践经验《Scaling Memcache at Facebook》"
+title: "Facebook 的缓存系统实践经验《Scaling Memcache at Facebook》"
 author: 李佶澳
 date: "2022-08-31 15:37:05 +0800"
-last_modified_at: "2022-09-05 20:07:44 +0800"
+last_modified_at: "2022-09-05 20:10:47 +0800"
 categories: 方法
 cover:
 tags: 系统设计
