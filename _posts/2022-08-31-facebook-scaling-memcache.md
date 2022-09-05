@@ -3,7 +3,7 @@ layout: default
 title: "Facebook 的缓存系统实践经验《Scaling Memcache at Facebook》"
 author: 李佶澳
 date: "2022-08-31 15:37:05 +0800"
-last_modified_at: "2022-09-05 20:14:09 +0800"
+last_modified_at: "2022-09-05 20:36:01 +0800"
 categories: 方法
 cover:
 tags: 系统设计
@@ -153,7 +153,7 @@ Memcache 对于单个 key 每 10s 分发一个 lease，如果上一个 lease 还
 这种做法增加了 cache miss，并且旧数据存在暴露窗口，但是极大降低了一致性的实现成本。
 如果应用程序更新数据库后主动更新缓存，「缓存中更新顺序」和「数据库中更新顺序」可能不一致。
 
-###  Cache 一致性级别的选择
+### Cache 一致性级别的选择
 
 **Facebook 不保证从缓存中读取的数据和数据库中的记录始终一致，由应用程序在设计时考虑这种情况。**
 
@@ -167,6 +167,10 @@ Facebook 的实践里，memcache 中的缓存数据和数据库中的数据是�
 1. 应用程序在更新会影响缓存中数据的数据库记录之前，为对应的 key 在  regional pool 中设置一个 marker，意味着 key 的 value 正在更新中
 2. 另一个请求遇到 cache miss 后，如果对应 key 存在 marker，应用程序从数据库主库中加载数据，避开了主从同步期间的不一致窗口
 3. marker 在主库的 commit log 触发的旧数据清除过程中被清除，保证了 marker 被清除时主库中一定已经是更新后的数据
+
+**使用 memcache hold-off 功能，在 Cold Cluster 的 Warmup 阶段避免写入旧数据**
+
+Cold Cluster 设置了 2 秒钟的 hold-off：一个 key 被删除后的 2 秒内不能再次设置 value。避免将 Warm Cluster 中的旧数据添加到 Cold Cluster。
 
 ### 降低响应延迟的方法
 
