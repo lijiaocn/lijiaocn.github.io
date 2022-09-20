@@ -44,22 +44,6 @@ td,th{
     font-size: 16px;
 }
 
-.main ol {
-    background-color: lightyellow;
-    padding-top: 10px;
-    padding-bottom: 10px;
-   /*color: white;*/
-}
-
-.main  ol li{
-    font-size: 15px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-}
-
-.main  ol li p{
-    font-size: 15px;
-}
 
 .foot {
     margin-top: 20px;
@@ -147,7 +131,9 @@ div.rsidebar-element img{
 }
 
 .postdesc {
-
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .pageination {
@@ -177,7 +163,48 @@ div.center .author {
     color: gray;
 }
 
+
+div.center ol {
+    background-color: lightyellow;
+    padding-top: 10px;
+    padding-bottom: 10px;
+   /*color: white;*/
+}
+
+div.center ol li{
+    font-size: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 5px;
+}
+
+div.center ol li p{
+    font-size: 15px;
+}
+
 div.center ul{
+    /*list-style: none;*/
+}
+
+div.center ul {
+    background-color: lightyellow;
+    padding-top: 10px;
+    padding-bottom: 10px;
+   /*culor: white;*/
+}
+
+div.center ul li{
+    font-size: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 5px;
+}
+
+div.center ul li p{
+    font-size: 15px;
+}
+
+#markdown-toc ul{
     list-style: none;
 }
 
@@ -277,7 +304,7 @@ div.postinfo p {
     padding-left:3px
 }
 
-div.postdesc p {
+div.postdesc a {
     font-size:15px;
     padding-top:0px;
     padding-left:1px;

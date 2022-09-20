@@ -3,11 +3,11 @@ layout: default
 title: "Facebook 的缓存系统实践经验《Scaling Memcache at Facebook》"
 author: 李佶澳
 date: "2022-08-31 15:37:05 +0800"
-last_modified_at: "2022-09-20 16:33:13 +0800"
+last_modified_at: "2022-09-20 16:42:00 +0800"
 categories: 方法
 cover:
 tags: 系统设计
-keywords:
+keywords: memcache,缓存,facebook
 description: 高吞吐跨地域分布的巨型应用，缓存数据以读取操作为主，QPS十亿级别，key的数量万亿级别
 ---
 
