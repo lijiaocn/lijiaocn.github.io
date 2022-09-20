@@ -3,7 +3,7 @@ layout: default
 title: "Netflix 的异地多活设计：Active-Active for Multi-Regional Resiliency"
 author: 李佶澳
 date: "2022-09-20 16:34:19 +0800"
-last_modified_at: "2022-09-20 17:21:44 +0800"
+last_modified_at: "2022-09-20 17:28:44 +0800"
 categories: 方法
 cover:
 tags: 系统设计
@@ -58,6 +58,9 @@ A networking partitioning event should not affect quality of services in either 
 	* Wrote 1 million records in one region of a multi-region cluster, 500ms later, initiated a reading of the records that were just written in the initial region in the other region, while keeping a production level of load on the cluster.
 * EvCache：一个 memcache client，Netflix没有用缓存的多主部署而是用远程失效的方式处理，远程 region 中的缓存被清除后，在后续请求中触发重新加载
 	* Whenever there is a write in one region, EvCache client will send a message to another region(via SQS) to invalidate the corresponding entry
+* 后面在 split-brain 中提到即使数据同步过程阻塞了，也要正常服务：
+	* We were looking to demonstrate that services in each Region continued to function normally, even though some of the data replication was getting queued up. Over the course of the Active-Active project we ran Split-brain exercise many times, and found and fixed many issues
+
 
 此外，还实现了支持多区域的自动部署工具方便系统数据，设计了各种 Monkeys 检验系统的可靠性。
 
