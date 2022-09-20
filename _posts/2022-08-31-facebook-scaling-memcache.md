@@ -3,7 +3,7 @@ layout: default
 title: "Facebook 的缓存系统实践经验《Scaling Memcache at Facebook》"
 author: 李佶澳
 date: "2022-08-31 15:37:05 +0800"
-last_modified_at: "2022-09-05 20:37:41 +0800"
+last_modified_at: "2022-09-20 16:33:13 +0800"
 categories: 方法
 cover:
 tags: 系统设计
@@ -94,7 +94,7 @@ Client 收到 cache miss 的处理过程：
 3. 如果 Client 当前所在的 Region Cluster 是新上线的 Cold Cluster，从 Warm Cluster 查询数据并将其 Add 到 Cold Cluster。
 4. Client 向 Cold Cluster 发起的 `Add 可能因为 2 秒钟的 hold-off 限制而失败`，向应用程序返回 cache miss，进入应用程序的 cache miss 处置过程
 
-2 秒钟的 hold-off：一个 key 被删除后的 2 秒内不能再次设置 value。避免将 Warm Cluster 中的旧数据添加到 Cold Cluster。
+>2 秒钟的 hold-off：一个 key 被删除后的 2 秒内不能再次设置 value。避免将 Warm Cluster 中的旧数据添加到 Cold Cluster。
 
 应用程序收到 cache miss 的处理过程：
 
@@ -102,6 +102,8 @@ Client 收到 cache miss 的处理过程：
 2. 应用程序从主库（存在 marker）/从库（不存在 marker）读取数据，将数据连带 lease 组成 Set 指令执行发送到 Client 继而路由到目标 memcache
 3. 目标 memcache 判断 lease 是否有效，如果 lease 已经因为删除操作而失效，放弃本次更新
 4. memcache pool 中的 memcache 进行数据同步
+
+>Marker 机制用于避免应用程序把从库中尚未更新的旧数据写入缓存。
 
 ### memcache 节点故障处置过程
 
