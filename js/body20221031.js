@@ -12,7 +12,7 @@ function DetectAds(){
         innerHtml=innerHtml+ad.innerHTML
     })
     if(innerHtml ==''){
-        r=confirm('访客您好，请在广告屏蔽插件中排除本站域名。')
+        r=confirm('继续访问，需要解除对本站的广告屏蔽')
         if (r==true){
             setTimeout(DetectAds, 5000)
         }else{
@@ -20,5 +20,4 @@ function DetectAds(){
         }
     }
 }
-
 setTimeout(DetectAds,5000)
