@@ -14,10 +14,10 @@ function DetectAds(){
     if(innerHtml ==''){
         r=confirm('继续访问，需要解除对本站的广告屏蔽')
         if (r==true){
-            setTimeout(DetectAds, 5000)
+            setTimeout(DetectAds, 10000)
         }else{
-            setTimeout(DetectAds, 5000)
+            setTimeout(DetectAds, 10000)
         }
     }
 }
-setTimeout(DetectAds,5000)
+setTimeout(DetectAds,10000)
