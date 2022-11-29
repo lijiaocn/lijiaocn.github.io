@@ -3,7 +3,7 @@ layout: default
 title: "Google 是如何实践 RESTful API 设计的？"
 author: 李佶澳
 date: "2022-11-24 16:52:28 +0800"
-last_modified_at: "2022-11-28 22:13:57 +0800"
+last_modified_at: "2022-11-29 12:30:10 +0800"
 categories: 方法
 cover:
 tags: 系统设计
@@ -25,8 +25,25 @@ description:  经手了几个应用层的项目，API设计的都不怎么理想
 Google 的部分应用有的遵守了这份规范，比如 Google Cloud APIs、[Google Calendar API][4]，有的没有完全准守比如 [Blogger API v3][5]。
 其中 Google Cloud API 是 Google 整个云服务的接口，具有接口数量多、类别多的特点。
 
-可以认为这份规范在谷歌内得到了大多数支持，不是一个小众的规范。一些没有准守规范的接口可能是为了历史兼容。
-[Google APIs][6] 是 Google API 的 Protobuf 描述文件。
+可以认为这份规范在谷歌内得到了较多支持，一些没有准守规范的接口可能是为了历史兼容。
+
+## 是否有规范实践案例？
+
+Google 在 github 上开放了一份原始的 protobuf 格式的接口描述文件 [googleapis][6]。里面主要是 Google Cloud API 的接口描述，没有覆盖 google 所有产品的 API（Google 开放的所有 API 汇总在 [Google API Explorer][3]）。
+
+```sh
+git clone https://github.com/googleapis/googleapis.git 
+```
+
+googleapis 的文件组织上存在一些不是很理想的做法：
+
+* 存放公用定义的目录比如 google/api/、google/rpc/ 和业务接口定义所在的目录比如 google/cloud/、google/container/ 等平铺在一起，不方便区分以及查阅。
+* 文件名的命名方式不统一，比如包含 service 定义的 proto 文件，有几种方式的命名：
+```sh
+google/firestore/v1/firestore.proto、
+google/cloud/aiplatform/v1/{dataset_,endpoint_,feature_store,...}_service.proto
+google/actions/sdk/v2/actions_sdk.proto
+```
 
 ## API 设计的核心原则？
 
@@ -273,6 +290,41 @@ message ListWorkspacesRequest {
 
 * **接口共用的 message 定义可以单独放在 XX_resource.proto/resource.proto 文件中**
 
+## 公用的定义怎样放置？
+
+Design Guide 中没有明确说明，参考 [googleapis][6] 中的做法。
+
+* 全局公用的定义单独占用一个顶层目录，例如 googleapis 全局公用定义主要位于以下几个目录：
+```sh
+google/api  这里目录包含的文件不全是公用的，
+            可以公用的主要是用来描述 api 到 rpc 映射关系的 annotation.proto 和 http.proto
+google/rpc  response 中公用的 google.rpc.Status，任务状态的 XXInfo 和错误码
+google/type 公用的类型定义，Color、Date、DateTime、TimeZone 等
+google/geo  一个公用的用四点描述的地理平面空间 google.geo.type.Viewport
+```
+
+* 局部公用的定义在对应的业务目录下独占一个目录，例如： 
+```sh
+# 局部公用定义 type 目录
+google/actions
+├── sdk
+│   └── v2
+└── type  # actions 中公用的定义
+    ├── BUILD.bazel
+    ├── date_range.proto
+    ├── datetime_range.proto
+    └── type_aog.yaml
+# 局部公用定义 data 目录
+google/analytics
+├── admin
+│   ├── BUILD.bazel
+│   ├── v1alpha
+│   └── v1beta
+└── data
+    ├── BUILD.bazel
+    ├── v1alpha  # 公用的定义也可以按照版本分目录
+    └── v1beta
+```
 
 ## 其它约定和常用接口场景设计
 
@@ -539,9 +591,13 @@ Request body 和 Response body 不超过 32 MB。32MB is a commonly used limit i
 
 ## 怎么避免用两套文件分别描述 API 接口和 RPC 接口？
 
-Google 用一套 protobuf 的接口描述文件同时描述 API 接口和 RPC 接口，用 option 注解的方式实现 RPC 接口到 API 接口的映射。
+Google 通过自身平台的 [Transcoding HTTP/JSON to gRPC][14] 能力，实现了用一套 protobuf 文件同时描述 API 接口和 RPC 接口。
 
-http 映射相关的 option 在 [google/api/http.proto][7] 中定义，使用方式如下：
+Google 的 Extensible Service Proxy 能够识别 protobuf 文件中用 option 描述 API 接口和 RPC 接口的映射关系，能够将收到的 HTTP 请求转换为 RPC 请求，不需要再单独定义 API 接口。
+
+如果不使用 google cloud，需要自行寻找解决方法。
+
+[Transcoding HTTP/JSON to gRPC][14] 和 [google/api/http.proto][7] 介绍了 Google 采用的映射描述方法，样式如下：
 
 ```proto
 // Get information about a Workspace.
@@ -577,9 +633,9 @@ rpc DeleteWorkspace(DeleteWorkspaceRequest) returns (google.protobuf.Empty) {
 
 ## 怎样自动生成 API 接口的代码文件？
 
-考虑到不同的 http 框架的代码不同，没有统一的解决方案，可能需要所使用的框架提供相应能力，或者利用protoc 的 `--plugin=` 功能实现。
+不同的 http 框架的代码不同，没有统一的解决方案，目标框架应当提供相应的代码生成工具，或者利用 protoc 的 `--plugin=` 功能自我实现。
 
-Google API guides 对此没有给出相关说明。
+目标框架的代码生成工具如果能够识别 [Transcoding HTTP/JSON to gRPC][14] 使用的 option 注解，可以避免再写一份 API 接口描述文件。
 
 ## 怎样导入 API 网关服务？
 
@@ -614,6 +670,7 @@ gcloud endpoints services deploy service.descriptors endpointsapis.yaml
 11. [Why not use resource IDs to identify a resource?][11]
 12. [Standard fields][12]
 13. [Common design patterns][13]
+14. [Transcoding HTTP/JSON to gRPC][14]
 
 [1]: https://www.lijiaocn.com "李佶澳的博客"
 [2]: https://cloud.google.com/apis/design?hl=en "Google API Design Guide"
@@ -628,3 +685,4 @@ gcloud endpoints services deploy service.descriptors endpointsapis.yaml
 [11]: https://cloud.google.com/apis/design/resource_names?hl=en#q_why_not_use_resource_ids_to_identify_a_resource "Why not use resource IDs to identify a resource?"
 [12]: https://cloud.google.com/apis/design/standard_fields?hl=en "Standard fields"
 [13]: https://cloud.google.com/apis/design/design_patterns?hl=en "Common design patterns"
+[14]: https://cloud.google.com/endpoints/docs/grpc/transcoding?hl=en "Transcoding HTTP/JSON to gRPC"
