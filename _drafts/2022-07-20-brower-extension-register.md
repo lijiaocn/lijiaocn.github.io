@@ -3,12 +3,12 @@ layout: default
 title: "Chrome浏览器插件开发者账号注册"
 author: 李佶澳
 date: "2022-07-20 18:13:38 +0800"
-last_modified_at: "2022-07-20 18:44:28 +0800"
+last_modified_at: "2022-11-29 12:36:55 +0800"
 categories:
 cover:
 tags:
 keywords:
-description:
+description: Chrome Web Store 和 Google Play 是两套开发者系统，需要分别开通，不能通用。CWS 注册方式说明：[Register as a Chrome Web Store developer][2]。
 ---
 
 ## 目录
