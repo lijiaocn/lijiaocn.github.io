@@ -1,3 +1,11 @@
+ul#markdown-toc ul, ul#markdown-toc li{
+    font-size: 15px;
+    padding-top: 5px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    list-style-type:decimal;
+}
+
 /*google广告未填充时，不占用空间：https://support.google.com/adsense/answer/10762946?hl=en*/
 ins.adsbygoogle[data-ad-status="unfilled"] {
     display: none !important;
@@ -386,4 +394,5 @@ div.rsidebar-title p {
 .search {
     width: 60%;
 }
+
 
