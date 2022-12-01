@@ -3,7 +3,7 @@ layout: default
 title: "Protocol Buffers 使用建议、部分细节以及生态工具"
 author: 李佶澳
 date: "2022-11-30 18:29:32 +0800"
-last_modified_at: "2022-12-01 12:08:33 +0800"
+last_modified_at: "2022-12-01 12:12:15 +0800"
 categories: 编程
 cover:
 tags: 数据交换协议 protobuf 
@@ -19,7 +19,7 @@ description: Protocol Buffers 官方给出的一些使用建议、部分细节�
 
 Protocol Buffers 官方给出的一些使用建议、部分细节说明以及一些配套工具介绍记录在这里。
 
-协议语法要点见 [tag: protobuf](/tags/all.html#protobuf)。
+入门教程 [Protocol Buffers Tutorials][18]，协议语法要点见 [tag: protobuf](/tags/all.html#protobuf)。
 
 ## 风格建议 - Style Guide
 
@@ -159,6 +159,7 @@ protoc --go_out=paths=source_relative:. path/to/file.proto
 15. [protoc-gen-go][15]
 16. [github.com/golang/protobuf][16]
 17. [gRPC][17]
+18. [Protocol Buffers Tutorials][18]
 
 [1]: https://www.lijiaocn.com "李佶澳的博客"
 [2]: https://developers.google.com/protocol-buffers/docs/overview "protocol-buffers overview"
@@ -177,3 +178,4 @@ protoc --go_out=paths=source_relative:. path/to/file.proto
 [15]: https://pkg.go.dev/github.com/golang/protobuf/protoc-gen-go "protoc-gen-go"
 [16]: https://github.com/golang/protobuf "github.com/golang/protobuf"
 [17]: https://grpc.io/ "gRPC"
+[18]: https://developers.google.com/protocol-buffers/docs/tutorials "Protocol Buffers Tutorials"
