@@ -3,7 +3,7 @@ layout: default
 title: "Google 是如何实践 RESTful API 设计的？"
 author: 李佶澳
 date: "2022-11-24 16:52:28 +0800"
-last_modified_at: "2022-11-29 12:30:10 +0800"
+last_modified_at: "2022-12-11 21:00:01 +0800"
 categories: 方法
 cover:
 tags: 系统设计
@@ -22,10 +22,9 @@ description:  经手了几个应用层的项目，API设计的都不怎么理想
 
 ## 规范应用情况怎样？
 
-Google 的部分应用有的遵守了这份规范，比如 Google Cloud APIs、[Google Calendar API][4]，有的没有完全准守比如 [Blogger API v3][5]。
-其中 Google Cloud API 是 Google 整个云服务的接口，具有接口数量多、类别多的特点。
+Google 有的服务遵守了这份规范，比如 Google Cloud APIs、[Google Calendar API][4]，有的没有完全准守，比如 [Blogger API v3][5]。
 
-可以认为这份规范在谷歌内得到了较多支持，一些没有准守规范的接口可能是为了历史兼容。
+采用了该规范的 Google Cloud API 是 Google 整个云服务的接口，具有接口数量多、类别多的特点。可以认为这份规范在谷歌内得到了较多支持，一些服务没有遵循规范可能是历史原因。
 
 ## 是否有规范实践案例？
 
