@@ -17,14 +17,13 @@
 
 				{% if page.author %}
 				<div class="row">
-					<p class="author">
-					<a href="{{ site.baseurl }}/2010/10/10/about.html" class="author">{{ page.author }}  @ 创建 {{  page.date |date: "%Y-%m-%d" }} @ 更新 {{ page.last_modified_at | date: "%Y-%m-%d" }}</a>
-					</p>
+					<p></p>
 					<p class="author">
 						Tags：
 						{% for tag in page.tags %}
 						<span><a href="{{ site.baseurl }}/tags/all.html#{{ tag }}">{{ tag }}</a></span>&nbsp;
 						{% endfor %}
+						<!--span><a href="{{ site.baseurl }}/2010/10/10/about.html" class="author">{{ page.author }}  @ {{  page.date |date: "%Y-%m-%d" }} @ {{ page.last_modified_at | date: "%Y-%m-%d" }}</a></span-->
 					</p>
 				</div>
 				{% endif %}
