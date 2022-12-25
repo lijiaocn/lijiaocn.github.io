@@ -1,9 +1,9 @@
 ---
-layout: test
+layout: default
 title: "Protocol Buffers 使用建议、部分细节以及生态工具"
 author: 李佶澳
 date: "2022-11-30 18:29:32 +0800"
-last_modified_at: "2022-12-25 21:32:51 +0800"
+last_modified_at: "2022-12-25 22:13:26 +0800"
 categories: 编程
 cover:
 tags: 数据交换协议 protobuf 
