@@ -341,15 +341,6 @@ div.rsidebar-title p {
     .main {
         width:1200px
     }
-    .lsidebar {
-        width:150px;
-    }
-    .center {
-        width:750px;
-    }
-    .rsidebar {
-        width:300px;
-    }
 }
 
 @media (min-width: 970px) and (max-width: 1200px) {

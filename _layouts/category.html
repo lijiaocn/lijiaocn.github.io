@@ -10,37 +10,20 @@
 	</div>
 
 	<div class="container main">
-		<div class="row">
-			<div class="visible-md-block visible-lg-block col-md-2 col-lg-2 lsidebar">
-				{% include main-lsidebar.html %}
-			</div>
-			<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 center">
-				<div class="row">
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pageheader">
-						{{ site.pageheader }}<hr style="margin-top:0px;margin-bottom:0px">
-					</div>
-				</div>
-				<div class="row">
-					{% include top_banner_ad.html %}
-				</div>
-				<div class="row">
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 content">
-						{% if page.author %}
-							<p class="author">作者: {{ page.author }} 创建: {{ page.createdate }}</p>
-						{% endif %}
-						{{content}}
-					</div>
-				</div>
-				<div class="row">
-					{% include social.html.no %}
-				</div>
-				<div class="row" style="text-align:center">
-					{% include main-bottom.html %}
-				</div>
+		<div class="row center">
+			<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+				{% if page.author %}
+					<p class="author">作者: {{ page.author }} 创建: {{ page.createdate }}</p>
+				{% endif %}
+				{{content}}
 			</div>
 			<div class="visible-md-block visible-lg-block col-md-2 col-lg-2 rsidebar">
 				{% include main-rsidebar.html %}
 			</div>
+		</div>
+
+		<div class="row" style="text-align:center">
+			{% include main-bottom.html %}
 		</div>
 	</div>
 

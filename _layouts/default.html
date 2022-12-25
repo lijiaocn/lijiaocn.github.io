@@ -3,22 +3,13 @@
 	{% include head.html %}
 <body class="body custom-background" data-spy="scroll" data-target="sidebarMenu">
 	{% include topnav.html %}
-	<div class="container noticerow">
-		<div class="row">
-			{% include first-row.html %}
-		</div>
-	</div>
 
 	<div class="container main">
-		<div class="row">
-			<div class="visible-md-block visible-lg-block col-md-2 col-lg-2 lsidebar">
-				{% include main-lsidebar.html %}
-			</div>
-			<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 center">
+		<div class="row center">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 				<div class="row content">
 					<h1>{{ page.title }}</h1>
 				</div>
-
 				<div class="row pageheader">
 					{{ site.pageheader }}
 				</div>
@@ -35,35 +26,25 @@
 						{% endfor %}
 					</p>
 				</div>
-				{% endif %}
 
 				<div class="row">
 					{% include top_banner_ad.html %}
 				</div>
-
-				<!--div class="row" style="text-align:center">
-					<a href="{{ site.baseurl }}{{ post.url}}"><span class="glyphicon glyphicon-refresh"></span></a>
-				</div-->
-
-				<div class="row">
-					{% include social.html.no %}
-				</div>
-
-				<div class="row">
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 content">
-						{{content}}
-					</div>
-				</div>
-
-				<div class="row" style="text-align:center">
-					{% include main-bottom.html %}
-				</div>
+				{% endif %}
 			</div>
+		<div>
 
+		<div class="row center">
+			<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+				{{content}}
+			</div>
 			<div class="visible-md-block visible-lg-block col-md-2 col-lg-2 rsidebar">
 				{% include main-rsidebar.html %}
 			</div>
+		</div>
 
+		<div class="row" style="text-align:center">
+			{% include main-bottom.html %}
 		</div>
 	</div>
 

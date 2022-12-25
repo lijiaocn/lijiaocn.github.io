@@ -17,7 +17,9 @@
 		<div class="collapse navbar-collapse " id="categories">
 			<ul class="nav navbar-nav">
 				{% for cate in site.categories %} 
+					{% if cate[0] != 'hidden' %} 
 					<li><a href="{{ site.baseurl }}/categories/{{ cate[0]}}.html">{{ cate[0] }}</a></li>
+					{% endif %}
 				{% endfor %}
 				<li><a href="{{ site.baseurl }}/tags/all.html">标签</a></li>
 			</ul>
