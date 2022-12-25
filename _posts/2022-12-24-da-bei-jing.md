@@ -3,7 +3,7 @@ layout: default
 title: "大背景：探寻更高效的机制"
 author: 李佶澳
 date: "2022-12-24 16:51:32 +0800"
-last_modified_at: "2022-12-24 17:27:19 +0800"
+last_modified_at: "2022-12-25 21:38:23 +0800"
 categories: 投资
 cover:
 tags: 认知笔记
