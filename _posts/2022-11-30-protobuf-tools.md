@@ -3,10 +3,10 @@ layout: default
 title: "Protocol Buffers 使用建议、部分细节以及生态工具"
 author: 李佶澳
 date: "2022-11-30 18:29:32 +0800"
-last_modified_at: "2022-12-25 22:13:26 +0800"
+last_modified_at: "2023-01-08 22:36:46 +0800"
 categories: 编程
 cover:
-tags: 数据交换协议 protobuf 
+tags: protobuf 
 description: Protocol Buffers 官方给出的一些使用建议、部分细节说明以及一些配套工具介绍记录在这里，协议语法要点见上一篇。
 ---
 

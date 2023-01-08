@@ -3,7 +3,7 @@ layout: default
 title: "是谁在支持？"
 author: 李佶澳
 date: "2022-10-30 17:43:27 +0800"
-last_modified_at: "2022-10-31 18:34:08 +0800"
+last_modified_at: "2023-01-08 21:56:29 +0800"
 categories: 投资
 cover:
 tags: 认知笔记
@@ -11,6 +11,8 @@ keywords:
 description: 完全由人类主观意愿决定的事情能够发生，必然是支持的力量更大。
 ---
 
+
+## 正文
 
 往前推一个小周期的那天。
 
@@ -34,3 +36,8 @@ So，是谁在支持？为什么支持？
 
 但愿依然会有美好的生活。
 
+## 参考
+
+1. [李佶澳的博客][1]
+
+[1]: https://www.lijiaocn.com "李佶澳的博客"
