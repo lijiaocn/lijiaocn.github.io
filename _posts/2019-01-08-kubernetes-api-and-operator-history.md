@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "kubernetes API 与 Operator：不为人知的开发者战争（完整篇） "
+title: "kubernetes API 与 Operator: 不为人知的开发者战争（完整篇） "
 author: "张磊、邓洪超"
 createdate: "2019-01-08 14:00:15 +0800"
 last_modified_at: "2019-12-04 10:54:38 +0800"

@@ -1,11 +1,11 @@
 ---
 layout: default
-title: "vim：使用教程手册，命令、配置与插件"
+title: "vim: 使用教程手册，命令、配置与插件"
 author: 李佶澳
 createdate: 2017/04/01 11:00:33
 last_modified_at: 2018/07/22 14:26:14
 categories: 技巧
-tags: linuxtool
+tags: manual
 keywords: vim,vim手册,vim插件,vimp配置,ide
 description: vim的使用手册，包含常用的扩展方法，和一些非常有用的小技巧。
 

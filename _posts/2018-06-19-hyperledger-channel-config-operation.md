@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  超级账本HyperLedger：Fabric Channel配置的读取转换
+title:  超级账本HyperLedger: Fabric Channel配置的读取转换
 author: 李佶澳
 createdate: 2018/06/19 19:38:00
 last_modified_at: 2018/07/29 13:03:09

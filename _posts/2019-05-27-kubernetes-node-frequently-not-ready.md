@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Kubernetes 集群 Node 间歇性变为 NotReady 状态：IO 负载高，延迟严重"
+title: "Kubernetes 集群 Node 间歇性变为 NotReady 状态: IO 负载高，延迟严重"
 author: 李佶澳
 createdate: "2019-05-27 15:03:29 +0800"
 last_modified_at: "2019-09-16 14:11:52 +0800"

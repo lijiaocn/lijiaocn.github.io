@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  "超级账本HyperLedger：Fabric Node.js SDK使用时遇到的问题"
+title:  "超级账本HyperLedger: Fabric Node.js SDK使用时遇到的问题"
 author: 李佶澳
 createdate: 2018/07/15 17:38:00
 last_modified_at: 2018/07/29 13:05:29

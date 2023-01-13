@@ -1,11 +1,11 @@
 ---
 layout: default
-title: "nc：netcat的使用"
+title: "nc: netcat的使用"
 author: 李佶澳
 createdate: 2017/09/04 16:32:45
 last_modified_at: 2018/07/22 14:28:13
 categories: 技巧
-tags: linuxtool
+tags: manual
 keywords: netcat,usage,linux
 description: netcat在两台电脑之间建立连接并传递数据流，可以做一些很“巧妙”的事情
 

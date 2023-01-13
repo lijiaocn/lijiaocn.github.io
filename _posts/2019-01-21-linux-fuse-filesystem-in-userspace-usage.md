@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Linux FUSE（用户态文件系统）的使用：用libfuse创建FUSE文件系统"
+title: "Linux FUSE（用户态文件系统）的使用: 用libfuse创建FUSE文件系统"
 author: 李佶澳
 createdate: "2019-01-21 10:57:16 +0800"
 last_modified_at: "2019-02-12 17:21:31 +0800"

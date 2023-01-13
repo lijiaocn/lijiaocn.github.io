@@ -1,11 +1,11 @@
 ---
 layout: default
-title: "make：编译管理工具make与makefile"
+title: "make: 编译管理工具make与makefile"
 author: 李佶澳
 createdate: 2012/10/29 10:24:34
 last_modified_at: 2018/07/22 14:57:40
 categories: 技巧
-tags: linuxtool
+tags: manual
 keywords: makefile,linux,make
 description: 收集了在一些项目中遇到的Makefile的语法、变量、函数等。
 

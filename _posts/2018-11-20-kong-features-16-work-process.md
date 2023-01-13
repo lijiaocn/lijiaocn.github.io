@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "API网关Kong学习笔记（十六）：Kong转发请求的工作过程"
+title: "API网关Kong学习笔记（十六）: Kong转发请求的工作过程"
 author: 李佶澳
 createdate: "2018-11-20 17:08:27 +0800"
 last_modified_at: "2019-03-13 16:40:50 +0800"

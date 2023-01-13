@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "公众号文章同步：istio是怎样强行代理Pod的进出请求的？"
+title: "公众号文章同步: istio是怎样强行代理Pod的进出请求的？"
 author: 李佶澳
 date: "2019-11-07 23:52:13 +0800"
 last_modified_at: "2019-11-07 23:55:49 +0800"

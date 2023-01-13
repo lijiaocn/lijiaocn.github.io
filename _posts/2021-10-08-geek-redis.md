@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "《Redis核心技术与实践》阅读笔记：数据类型/存储开销/Rehash/案例等"
+title: "《Redis核心技术与实践》阅读笔记: 数据类型/存储开销/Rehash/案例等"
 author: 李佶澳
 date: "2021-10-08 16:44:38 +0800"
 last_modified_at: "2021-10-09 16:44:38 +0800"

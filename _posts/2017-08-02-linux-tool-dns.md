@@ -1,12 +1,12 @@
 ---
 layout: default
-title: "dns：linux中dns相关的工具"
+title: "dns: linux中 dns 相关的工具"
 author: 李佶澳
 createdate: 2017/08/02 18:57:12
 last_modified_at: 2018/07/22 14:27:41
 categories: 技巧
-tags: linuxtool
-keywords: linux,dns,linuxtool
+tags: manual
+keywords: linux,dns
 description: linux中dns相关的工具。
 
 ---

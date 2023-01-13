@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Grpc性能压测方法：用ghz进行压测"
+title: "Grpc性能压测方法: 用ghz进行压测"
 author: 李佶澳
 createdate: "2019-02-22 10:32:35 +0800"
 last_modified_at: "2019-02-22 16:28:30 +0800"

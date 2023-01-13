@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "基于Envoy的ApiGateway/Ingress Controller项目梳理（一）：Ambassador"
+title: "基于Envoy的ApiGateway/Ingress Controller项目梳理（一）: Ambassador"
 author: 李佶澳
 createdate: "2019-05-21 11:01:45 +0800"
 last_modified_at: "2019-06-01 17:15:31 +0800"

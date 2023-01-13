@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  "kubernetes 1.12 从零开始（四）：必须先讲一下基本概念"
+title:  "kubernetes 1.12 从零开始（四）: 必须先讲一下基本概念"
 author: 李佶澳
 createdate: 2018/10/05 22:07:51
 last_modified_at: 2018/11/11 18:41:53

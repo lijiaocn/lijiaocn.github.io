@@ -1,11 +1,11 @@
 ---
 layout: default
-title: "ntpd：ntpd同步系统时间"
+title: "ntpd: ntpd同步系统时间"
 author: 李佶澳
 createdate: 2017/06/05 15:27:55
 last_modified_at: 2018/07/22 14:26:36
 categories: 技巧
-tags: linuxtool
+tags: manual
 keywords: ntpd, ntpupdate
 description: 分布式系统对时间敏感，通常需要所有node上的时间保持同步，可以用ntp来保证。
 

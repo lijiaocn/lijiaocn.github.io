@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "etcd 的 go sdk 的使用方法：etcd/clientv3，选举 leader 的方法"
+title: "etcd 的 go sdk 的使用方法: etcd/clientv3，选举 leader 的方法"
 author: 李佶澳
 createdate: "2019-06-19 18:33:30 +0800"
 last_modified_at: "2019-07-10 17:14:10 +0800"

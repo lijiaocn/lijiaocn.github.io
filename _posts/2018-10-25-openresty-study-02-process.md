@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Web开发平台OpenResty（二）：组成、工作过程与原理"
+title: "Web开发平台OpenResty（二）: 组成、工作过程与原理"
 author: 李佶澳
 createdate: 2018/10/28 21:54:00
 last_modified_at: 2018/10/28 21:54:00

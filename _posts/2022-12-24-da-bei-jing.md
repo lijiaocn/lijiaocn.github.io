@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "大背景：探寻更高效的机制"
+title: "大背景: 探寻更高效的机制"
 author: 李佶澳
 date: "2022-12-24 16:51:32 +0800"
 last_modified_at: "2023-01-08 21:55:11 +0800"

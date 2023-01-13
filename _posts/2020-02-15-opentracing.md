@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "分布式链路追踪：OpenTracing SDK 与 Jaeger 的对接方法"
+title: "分布式链路追踪: OpenTracing SDK 与 Jaeger 的对接方法"
 author: 李佶澳
 date: "2020-02-15T18:42:46+0800"
 last_modified_at: "2020-02-15T18:42:46+0800"

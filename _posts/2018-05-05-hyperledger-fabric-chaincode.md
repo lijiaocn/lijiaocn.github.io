@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  超级账本HyperLedger：Fabric Chaincode（智能合约、链码）开发方法
+title:  超级账本HyperLedger: Fabric Chaincode（智能合约、链码）开发方法
 author: 李佶澳
 createdate: 2018/04/03 10:07:00
 last_modified_at: 2018/07/29 13:04:26

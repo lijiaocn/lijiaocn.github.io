@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "kubernetes code-generator 用法：生成 kubernetes-style 的 api 和 client 代码"
+title: "kubernetes code-generator 用法: 生成 kubernetes-style 的 api 和 client 代码"
 author: 李佶澳
 createdate: "2019-04-04 15:36:14 +0800"
 last_modified_at: "2019-12-04 10:45:03 +0800"

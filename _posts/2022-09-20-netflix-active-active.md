@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Netflix 的异地多活设计：Active-Active for Multi-Regional Resiliency"
+title: "Netflix 的异地多活设计: Active-Active for Multi-Regional Resiliency"
 author: 李佶澳
 date: "2022-09-20 16:34:19 +0800"
 last_modified_at: "2022-09-20 17:28:44 +0800"

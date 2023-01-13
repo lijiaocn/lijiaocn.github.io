@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "ElasticSearch 零基础入门（5）：倒排索引适用场景、Mysql的全文索引使用"
+title: "ElasticSearch 零基础入门（5）: 倒排索引适用场景、Mysql的全文索引使用"
 author: 李佶澳
 date: "2022-07-04 11:42:40 +0800"
 last_modified_at: "2022-07-05 19:26:26 +0800"

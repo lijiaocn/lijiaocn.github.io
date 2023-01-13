@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Victoria Metrics源码：水平扩展实现，查询拆分与时序数据打散写入"
+title: "Victoria Metrics源码: 水平扩展实现，查询拆分与时序数据打散写入"
 author: 李佶澳
 date: "2020-04-21T10:38:12+0800"
 last_modified_at: "2020-04-21T23:10:11+0800"

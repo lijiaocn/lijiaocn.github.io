@@ -1,11 +1,11 @@
 ---
 layout: default
-title: "runit：进程管理工具runit"
+title: "runit: 进程管理工具runit"
 author: 李佶澳
 createdate: 2017/08/24 10:58:48
 last_modified_at: 2018/07/22 14:27:50
 categories: 技巧
-tags: linuxtool
+tags: manual
 keywords: runit,runsvdir,进程管理
 description: runit是一个跨Unix平台的系统启动、服务监督工具，可以替代sysvinit。
 

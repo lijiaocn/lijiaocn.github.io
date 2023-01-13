@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Linux内核功能eBPF入门学习（一）：BPF、eBPF、BCC等基本概念"
+title: "Linux内核功能eBPF入门学习（一）: BPF、eBPF、BCC等基本概念"
 author: 李佶澳
 createdate: "2019-02-22 17:11:28 +0800"
 last_modified_at: "2019-03-01 14:51:52 +0800"

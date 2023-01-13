@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "kubernetes 1.12 从零开始（零）：遇到的问题与解决方法"
+title: "kubernetes 1.12 从零开始（零）: 遇到的问题与解决方法"
 author: 李佶澳
 createdate: 2018/10/21 12:06:00
 last_modified_at: 2018/11/11 18:41:21

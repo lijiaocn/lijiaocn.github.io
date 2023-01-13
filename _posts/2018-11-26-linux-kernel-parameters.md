@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2018/11/26 16:14:00
 last_modified_at: 2018/11/26 16:14:00
 categories: 技巧
-tags: linux toolsbox
+tags: linux
 keywords: kernel,linux,获取知识,documention
 description: 这里记录一下实际工作中遇到的一些内核参数，每了解一个参数，就过来记录一笔
 

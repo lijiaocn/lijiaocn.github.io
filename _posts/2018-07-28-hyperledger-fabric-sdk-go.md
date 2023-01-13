@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  "【视频】超级账本HyperLedger：Fabric Go SDK的使用"
+title:  "【视频】超级账本HyperLedger: Fabric Go SDK的使用"
 author: 李佶澳
 createdate: 2018/07/28 13:34:00
 last_modified_at: 2018/07/29 13:09:57

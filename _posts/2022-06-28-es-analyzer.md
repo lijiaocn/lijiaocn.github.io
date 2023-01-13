@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "ElasticSearch 零基础入门（4）：分词器 Analyzer 和 Normalizers 等功能"
+title: "ElasticSearch 零基础入门（4）: 分词器 Analyzer 和 Normalizers 等功能"
 author: 李佶澳
 date: "2022-06-28 16:07:49 +0800"
 last_modified_at: "2022-07-04 11:40:24 +0800"

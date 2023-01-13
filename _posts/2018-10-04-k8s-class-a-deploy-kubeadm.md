@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  "kubernetes 1.12 从零开始（三）：用 kubeadm 部署多节点集群"
+title:  "kubernetes 1.12 从零开始（三）: 用 kubeadm 部署多节点集群"
 author: 李佶澳
 createdate: 2018/09/03 20:43:00
 last_modified_at: 2018/11/11 18:41:48

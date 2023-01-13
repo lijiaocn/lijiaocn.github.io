@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "CentOS Local设置，消除告警：warning: Setting locale failed"
+title: "CentOS Local设置，消除告警: warning: Setting locale failed"
 author: 李佶澳
 createdate: "2018-11-07 11:39:36 +0800"
 last_modified_at: "2018-11-07 11:39:36 +0800"

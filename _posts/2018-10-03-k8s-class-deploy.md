@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  "kubernetes 1.12 从零开始（二）：用 minikube 部署开发测试环境"
+title:  "kubernetes 1.12 从零开始（二）: 用 minikube 部署开发测试环境"
 author: 李佶澳
 createdate: 2018/09/03 20:43:00
 last_modified_at: 2018/11/11 18:41:41

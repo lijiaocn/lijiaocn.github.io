@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "亚马逊Kindle Unlimited包月服务限时优惠中：98元/一年，160元/两年"
+title: "亚马逊Kindle Unlimited包月服务限时优惠中: 98元/一年，160元/两年"
 author: 李佶澳
 createdate: "2019-04-28 00:13:30 +0800"
 last_modified_at: "2019-04-28 00:41:11 +0800"

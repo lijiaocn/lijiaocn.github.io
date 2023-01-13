@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2017/05/27 10:20:13
 last_modified_at: 2017/10/28 12:08:21
 categories: 项目
-tags: glusterfs
+tags: 基础知识
 keywords: glusterfs，架构
 description: glusterfs是redhat支持、维护的分布式存储系统。
 

@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  超级账本HyperLedger：Fabric掰开揉碎，一文解惑 
+title:  超级账本HyperLedger: Fabric掰开揉碎，一文解惑 
 author: 李佶澳
 createdate: 2018/06/25 07:53:00
 last_modified_at: 2018/07/16 10:20:14

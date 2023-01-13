@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  "编程语言Lua（二）：基本语法学习"
+title:  "编程语言Lua（二）: 基本语法学习"
 author: 李佶澳
 createdate: 2018/10/28 13:42:00
 last_modified_at: 2018/10/28 13:42:00

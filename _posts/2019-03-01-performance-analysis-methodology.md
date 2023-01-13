@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "系统性能分析方法论：统计图谱工具"
+title: "系统性能分析方法论: 统计图谱工具"
 author: 李佶澳
 createdate: "2019-03-01 15:09:50 +0800"
 last_modified_at: "2019-03-01 18:27:00 +0800"

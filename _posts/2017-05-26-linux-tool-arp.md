@@ -1,11 +1,11 @@
 ---
 layout: default
-title: "arp：arp相关的命令"
+title: "arp: arp相关的命令"
 author: 李佶澳
 createdate: 2017/05/26 09:28:32
 last_modified_at: 2018/07/22 14:26:28
 categories: 技巧
-tags: linuxtool
+tags: manual
 keywords: arp arping
 description:  管理的本地的arp记录和发送arp请求。
 

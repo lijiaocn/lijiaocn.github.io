@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  "编程语言Lua（一）：入门介绍、学习资料、项目管理与调试方法"
+title:  "编程语言Lua（一）: 入门介绍、学习资料、项目管理与调试方法"
 author: 李佶澳
 createdate: 2018/10/22 17:10:00
 last_modified_at: 2018/10/22 17:10:00

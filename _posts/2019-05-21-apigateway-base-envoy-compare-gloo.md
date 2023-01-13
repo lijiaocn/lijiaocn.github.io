@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "基于Envoy的ApiGateway/Ingress Controller项目梳理（三）：Gloo"
+title: "基于Envoy的ApiGateway/Ingress Controller项目梳理（三）: Gloo"
 author: 李佶澳
 createdate: "2019-05-21 11:02:53 +0800"
 last_modified_at: "2019-06-01 17:16:00 +0800"

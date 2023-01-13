@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "kubernetes 版本特性：新特性支持版本和组件兼容版本"
+title: "kubernetes 版本特性: 新特性支持版本和组件兼容版本"
 author: 李佶澳
 createdate: "2019-01-08 16:00:22 +0800"
 last_modified_at: "2019-12-04 10:48:09 +0800"

@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "API网关Kong学习笔记（十八）：Kong Ingress Controller的CRD详细说明"
+title: "API网关Kong学习笔记（十八）: Kong Ingress Controller的CRD详细说明"
 author: 李佶澳
 createdate: 2018/11/30 10:33:00
 last_modified_at: 2018/11/30 10:33:00

@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2017/11/13 10:55:50
 last_modified_at: 2017/11/14 15:29:48
 categories: 方法
-tags: linux toolsbox
+tags: linux
 keywords: kernel,linux,获取知识,documention
 description: 使用linux是躲不开的kernel，但kernel的内容又实在是太多了
 

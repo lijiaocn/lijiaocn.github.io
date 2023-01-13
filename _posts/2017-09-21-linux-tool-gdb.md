@@ -1,11 +1,11 @@
 ---
 layout: default
-title:  "gdb：进程调试与查看工具，查阅内存等"
+title:  "gdb: 进程调试与查看工具，查阅内存等"
 author: 李佶澳
 createdate: 2018/07/22 15:05:00
 last_modified_at: 2018/07/22 15:12:36
 categories: 技巧
-tags: linuxtool
+tags: manual
 keywords: gdb,pmap,内存取证据,内存查看,调试工具
 description: 通过gdb可以查看系统中的进程的详细信息，包括内存数据等
 

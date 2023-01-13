@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  "kubernetes 1.12 从零开始（六）：从代码编译到自动部署"
+title:  "kubernetes 1.12 从零开始（六）: 从代码编译到自动部署"
 author: 李佶澳
 createdate: 2018/11/10 16:14:00
 last_modified_at: 2018/11/11 18:42:11

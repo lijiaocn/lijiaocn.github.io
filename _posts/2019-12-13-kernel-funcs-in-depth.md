@@ -6,7 +6,7 @@ date: "2019-12-13T22:11:00+0800"
 last_modified_at: "2019-12-13T22:11:00+0800"
 categories: 方法
 cover:
-tags: linuxtool linux
+tags: linux
 keywords: ebpf,bpftrace,linux,内核函数,性能分析
 description: 掌握该技能后，能够把黑暗的内核划开，看清里面的各种细节，为内核学习打开方便之门
 ---

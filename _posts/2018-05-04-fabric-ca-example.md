@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  【视频】超级账本HyperLedger：Fabric-CA的使用演示(两个组织一个Orderer三个Peer)
+title:  【视频】超级账本HyperLedger: Fabric-CA的使用演示(两个组织一个Orderer三个Peer)
 author: 李佶澳
 createdate: 2018/05/04 14:09:00
 last_modified_at: 2018/07/29 13:02:06

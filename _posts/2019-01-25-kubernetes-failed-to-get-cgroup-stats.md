@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Kubernetes问题调查：failed to get cgroup stats for /systemd/system.slice"
+title: "Kubernetes问题调查: failed to get cgroup stats for /systemd/system.slice"
 author: 李佶澳
 createdate: "2019-01-25 11:28:17 +0800"
 last_modified_at: "2019-09-16 14:14:53 +0800"

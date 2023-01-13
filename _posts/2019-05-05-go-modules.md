@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Go Modules：Go 1.11和1.12引入的依赖包管理方法"
+title: "Go Modules: Go 1.11和1.12引入的依赖包管理方法"
 author: 李佶澳
 createdate: "2019-05-05 15:42:04 +0800"
 last_modified_at: "2019-06-05 14:52:49 +0800"

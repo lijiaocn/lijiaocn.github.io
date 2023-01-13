@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  "超级账本HyperLedger：Fabric Golang SDK使用时遇到的问题"
+title:  "超级账本HyperLedger: Fabric Golang SDK使用时遇到的问题"
 author: 李佶澳
 createdate: 2018/07/17 13:24:00
 last_modified_at: 2018/07/29 13:04:53

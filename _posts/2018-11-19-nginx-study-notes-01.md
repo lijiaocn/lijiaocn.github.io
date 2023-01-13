@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Nginx学习笔记（一）：学习资料与配置文件格式"
+title: "Nginx学习笔记（一）: 学习资料与配置文件格式"
 author: 李佶澳
 createdate: "2018-11-19 13:57:37 +0800"
 last_modified_at: "2018-11-19 13:57:37 +0800"

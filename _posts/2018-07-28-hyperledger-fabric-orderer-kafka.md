@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  "【视频】超级账本HyperLedger：Fabric使用kafka进行区块排序（共识）"
+title:  "【视频】超级账本HyperLedger: Fabric使用kafka进行区块排序（共识）"
 author: 李佶澳
 createdate: 2018/07/28 23:17:00
 last_modified_at: 2018/07/29 13:09:49

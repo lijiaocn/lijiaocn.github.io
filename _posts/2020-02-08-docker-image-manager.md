@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Docker 镜像管理（一）：本地镜像、本地容器的文件存放目录"
+title: "Docker 镜像管理（一）: 本地镜像、本地容器的文件存放目录"
 author: 李佶澳
 date: "2020-02-08T10:18:12+0800"
 last_modified_at: "2020-02-08T10:18:12+0800"

@@ -1,11 +1,11 @@
 ---
 layout: default
-title:  "curl：发起http(s)请求，查看http(s)通信过程"
+title:  "curl: 发起http(s)请求，查看http(s)通信过程"
 author: 李佶澳
 createdate: 2018/07/22 15:25:00
 last_modified_at: 2018/08/10 13:46:58
 categories: 技巧
-tags: linuxtool
+tags: manual
 keywords: curl,http,交互
 description: curl是一个特别方便的用于http(s)客户端。
 

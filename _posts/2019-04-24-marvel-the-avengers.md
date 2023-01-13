@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "【附截图】复仇者联盟4：终局之战百度云盘下载，1080P高清、迅雷BT种子、磁力链magnet"
+title: "【附截图】复仇者联盟4: 终局之战百度云盘下载，1080P高清、迅雷BT种子、磁力链magnet"
 createdate: "2019-04-12 22:15:42 +0800"
 last_modified_at: "2019-05-06 20:23:22 +0800"
 categories: hidden

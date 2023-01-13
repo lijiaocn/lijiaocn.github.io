@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  "【视频】超级账本HyperLedger：Fabric源码走读(一)：项目构建与代码结构"
+title:  "【视频】超级账本HyperLedger: Fabric源码走读(一)：项目构建与代码结构"
 author: 李佶澳
 createdate: 2018/11/18 14:26:00
 last_modified_at: 2018/11/18 14:26:00

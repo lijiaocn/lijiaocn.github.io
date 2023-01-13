@@ -5,7 +5,7 @@ author: lijiaocn
 createdate: 2018/06/28 18:57:00
 last_modified_at: 2018/06/28 18:59:16
 categories: 编程
-tags:  dns
+tags: 基础知识
 keywords:
 description: DNS-Domain Name System是互联网服务的基石，是互联网服务的第一入口。
 

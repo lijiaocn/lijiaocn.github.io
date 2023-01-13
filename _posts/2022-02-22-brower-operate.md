@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "用代码操作浏览器的方法：Puppeteer/Chromedp/Selenium"
+title: "用代码操作浏览器的方法: Puppeteer/Chromedp/Selenium"
 author: 李佶澳
 date: "2022-02-22 19:41:52 +0800"
 last_modified_at: "2022-05-22 22:11:25 +0800"

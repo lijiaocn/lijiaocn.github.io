@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "API网关Kong学习笔记（一）：Nginx、OpenResty和Kong入门，基础概念和安装部署"
+title: "API网关Kong学习笔记（一）: Nginx、OpenResty和Kong入门，基础概念和安装部署"
 author: 李佶澳
 createdate: "2018-09-29 15:41:50 +0800"
 last_modified_at: "2019-10-23 16:10:47 +0800"

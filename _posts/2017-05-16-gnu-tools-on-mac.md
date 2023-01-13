@@ -1,11 +1,11 @@
 ---
 layout: default
-title: MAC上使用GNU命令行程序
+title: MAC 上使用 GNU 命令行程序
 author: 李佶澳
 createdate: 2017/05/15 16:18:40
 last_modified_at: 2017/05/15 16:22:14
 categories: 技巧
-tags: mac gnu
+tags: mac
 keywords: MAC,GNU,命令行
 description: MAC默认的命令行工具是BSD风格，没有GNU风格的强大, 有时候会带来诸多不便。
 

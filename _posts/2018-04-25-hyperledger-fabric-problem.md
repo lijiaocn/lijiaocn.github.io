@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  超级账本HyperLedger：Fabric部署过程时遇到的问题汇总
+title:  超级账本HyperLedger: Fabric部署过程时遇到的问题汇总
 author: 李佶澳
 createdate: 2018/05/04 21:14:00
 last_modified_at: 2018/10/18 21:49:59

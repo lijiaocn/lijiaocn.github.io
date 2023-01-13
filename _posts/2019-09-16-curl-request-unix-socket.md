@@ -3,10 +3,10 @@ layout: default
 title: "curl: 用 Curl 命令访问 Unix Socket 接口的方法"
 author: 李佶澳
 date: "2019-09-16 14:55:27 +0800"
-last_modified_at: "2019-09-16 17:28:26 +0800"
+last_modified_at: "2023-01-13 16:48:37 +0800"
 categories: 技巧
 cover:
-tags: linuxtool curl 
+tags: manual
 keywords: curl,unix socket,socket接口,访问方法
 description: 监听地址不是 IP:Port 而是 unix socket 的程序的 unix socket 接口也可以用 curl 访问
 ---

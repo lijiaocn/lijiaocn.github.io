@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2018/07/22 14:13:00
 last_modified_at: 2018/07/22 14:20:17
 categories: 技巧
-tags: toolsbox
+tags: manual
 keywords: wscat,websocket,websocket连接
 description: wscat是一个用来连接websocket的命令行工具，nodejs开发的
 

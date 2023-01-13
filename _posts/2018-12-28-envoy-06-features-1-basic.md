@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Envoy Proxy使用介绍教程（六）：envoy一些简单功能/基础配置的使用方法"
+title: "Envoy Proxy使用介绍教程（六）: envoy一些简单功能/基础配置的使用方法"
 author: 李佶澳
 createdate: "2018-12-28 11:26:10 +0800"
 last_modified_at: "2019-05-07 18:50:28 +0800"

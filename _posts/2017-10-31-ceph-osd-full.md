@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "ceph：1 full osd(s)，整个集群不可用的问题"
+title: "ceph: 1 full osd(s)，整个集群不可用的问题"
 author: 李佶澳
 createdate: 2017/10/31 19:53:40
 last_modified_at: 2017/11/06 15:28:59

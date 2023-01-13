@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "ElasticSearch 零基础入门（2）：集群设计和配置原则"
+title: "ElasticSearch 零基础入门（2）: 集群设计和配置原则"
 author: 李佶澳
 date: "2022-06-23 14:35:24 +0800"
 last_modified_at: "2022-06-24 17:35:34 +0800"

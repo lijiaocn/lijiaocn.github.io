@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "kubernetes 1.12 从零开始（七）：kubernetes开发资源"
+title: "kubernetes 1.12 从零开始（七）: kubernetes开发资源"
 author: 李佶澳
 createdate: 2018/11/05 20:43:00
 last_modified_at: 2018/11/11 18:42:19

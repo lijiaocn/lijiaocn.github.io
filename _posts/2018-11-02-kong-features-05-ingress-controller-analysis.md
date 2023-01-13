@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  "API网关Kong学习笔记（八）：Kong Ingress Controller的实现"
+title:  "API网关Kong学习笔记（八）: Kong Ingress Controller的实现"
 author: 李佶澳
 createdate: "2018-11-05 10:52:44 +0800"
 last_modified_at: "2019-03-05 14:56:51 +0800"

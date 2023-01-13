@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "公众号文章同步：istio 的目标是去掉中心化网关吗？"
+title: "公众号文章同步: istio 的目标是去掉中心化网关吗？"
 author: 李佶澳
 date: "2019-11-28 20:47:38 +0800"
 last_modified_at: "2019-11-29 13:03:10 +0800"

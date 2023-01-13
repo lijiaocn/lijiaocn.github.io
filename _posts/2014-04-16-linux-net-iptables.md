@@ -1,11 +1,11 @@
 ---
 layout: default
-title: "iptables：Linux的iptables使用"
+title: "iptables: Linux的iptables使用"
 author: 李佶澳
 createdate: 2014/04/16 10:16:55
 last_modified_at: 2018/06/17 21:48:31
 categories: 技巧
-tags: linuxtool
+tags: manual
 keywords: iptables规则,iptables使用方法,iptables原理,iptables报文处理,linux,iptables
 description: 介绍了iptables的原理、表之间的关系、报文处理时经过规则链的顺序。以及iptables的调试方法和比较有意思的应用。
 

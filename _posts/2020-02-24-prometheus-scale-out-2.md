@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Prometheus 水平扩展方案（二）：Victoria Metrics 学习、试用"
+title: "Prometheus 水平扩展方案（二）: Victoria Metrics 学习、试用"
 author: 李佶澳
 date: "2020-02-24T10:59:11+0800"
 last_modified_at: "2020-04-21T23:01:15+0800"

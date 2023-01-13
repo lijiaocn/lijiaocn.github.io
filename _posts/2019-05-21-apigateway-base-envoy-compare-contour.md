@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "基于Envoy的ApiGateway/Ingress Controller项目梳理（二）：Contour"
+title: "基于Envoy的ApiGateway/Ingress Controller项目梳理（二）: Contour"
 author: 李佶澳
 createdate: "2019-05-21 10:58:56 +0800"
 last_modified_at: "2019-06-01 17:15:48 +0800"

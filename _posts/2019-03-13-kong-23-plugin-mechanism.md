@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "API网关Kong学习笔记（二十三）：Kong 1.0.3的plugin/插件机制的实现"
+title: "API网关Kong学习笔记（二十三）: Kong 1.0.3的plugin/插件机制的实现"
 author: 李佶澳
 createdate: "2019-03-13 18:08:46 +0800"
 last_modified_at: "2019-05-20 14:50:00 +0800"

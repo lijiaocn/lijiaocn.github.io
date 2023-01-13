@@ -1,11 +1,11 @@
 ---
 layout: default
-title: "tcpdump：tcpdump使用手册"
+title: "tcpdump: tcpdump使用手册"
 author: 李佶澳
 createdate: 2017/04/01 10:39:05
 last_modified_at: 2018/07/22 14:26:21
 categories: 技巧
-tags: linuxtool
+tags: manual
 keywords: tcpdump使用，抓包规则
 description: 介绍了tcpdump的使用、过滤语法，和一些特别有用的应用方法。
 

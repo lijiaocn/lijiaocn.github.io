@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "API网关Kong学习笔记（二十四）：在kubernetes中启用kong的插件"
+title: "API网关Kong学习笔记（二十四）: 在kubernetes中启用kong的插件"
 author: 李佶澳
 createdate: "2019-03-18 17:23:38 +0800"
 last_modified_at: "2019-05-20 14:50:16 +0800"

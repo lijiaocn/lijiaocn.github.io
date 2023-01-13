@@ -1,11 +1,11 @@
 ---
 layout: default
-title: "supervisord：进程管理工具supervisord"
+title: "supervisord: 进程管理工具supervisord"
 author: 李佶澳
 createdate: 2017/08/23 13:48:02
 last_modified_at: 2018/07/22 14:28:06
 categories: 技巧
-tags: linuxtool
+tags: manual
 keywords: supervisord,进程管理
 description: supervisord是一个工作在"Unix-like OS"上的进程管理工具。
 

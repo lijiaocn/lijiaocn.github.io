@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  【视频】超级账本HyperLedger：Fabric的全手动、多服务器部署教程
+title:  【视频】超级账本HyperLedger: Fabric的全手动、多服务器部署教程
 author: 李佶澳
 createdate: 2018/04/28 18:45:00
 last_modified_at: 2018/10/18 21:50:06

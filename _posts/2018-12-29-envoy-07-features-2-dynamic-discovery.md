@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Envoy Proxy使用介绍教程（七）：envoy动态配置xDS的使用方法"
+title: "Envoy Proxy使用介绍教程（七）: envoy动态配置xDS的使用方法"
 author: 李佶澳
 createdate: "2018-12-29 10:53:58 +0800"
 last_modified_at: "2019-05-20 11:18:53 +0800"

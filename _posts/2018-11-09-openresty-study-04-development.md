@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Web开发平台OpenResty（四）：项目开发中常用的操作"
+title: "Web开发平台OpenResty（四）: 项目开发中常用的操作"
 author: 李佶澳
 createdate: "2018-11-09 17:57:24 +0800"
 last_modified_at: "2018-11-09 17:57:24 +0800"

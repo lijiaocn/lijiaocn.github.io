@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  超级账本HyperLedger：Cello部署和使用
+title:  超级账本HyperLedger: Cello部署和使用
 author: 李佶澳
 createdate: 2018/04/25 10:32:00
 last_modified_at: 2018/09/01 15:27:46

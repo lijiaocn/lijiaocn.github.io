@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Linux的cgroup功能（一）：初级入门使用方法"
+title: "Linux的cgroup功能（一）: 初级入门使用方法"
 author: 李佶澳
 createdate: 2017/07/26 10:29:51
 last_modified_at: "2019-02-28 19:06:10 +0800"

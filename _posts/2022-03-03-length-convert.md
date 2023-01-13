@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "CSS 长度单位转换：pixels、points、picas 与 inches 等"
+title: "CSS 长度单位转换: pixels、points、picas 与 inches 等"
 author: 李佶澳
 date: "2022-03-03 17:30:00 +0800"
 last_modified_at: "2022-04-08 14:27:16 +0800"

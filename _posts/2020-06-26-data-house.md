@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "数据仓库解惑：零基础入门（一）"
+title: "数据仓库解惑: 零基础入门（一）"
 author: 李佶澳
 date: "2020-06-26T15:48:34+0800"
 last_modified_at: "2020-08-26T17:01:05+0800"

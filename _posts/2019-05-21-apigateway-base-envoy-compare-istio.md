@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "基于Envoy的ApiGateway/Ingress Controller项目梳理（四）：Istio"
+title: "基于Envoy的ApiGateway/Ingress Controller项目梳理（四）: Istio"
 author: 李佶澳
 createdate: "2019-05-21 11:03:40 +0800"
 last_modified_at: "2019-09-03 16:47:24 +0800"

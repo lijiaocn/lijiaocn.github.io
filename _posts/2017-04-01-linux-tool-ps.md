@@ -1,11 +1,11 @@
 ---
 layout: default
-title: "ps：Linux的ps等进程查看命令"
+title: "ps: Linux的ps等进程查看命令"
 author: 李佶澳
 createdate: 2017/04/26 17:18:17
 last_modified_at: 2018/07/22 14:57:01
 categories: 技巧
-tags: linuxtool
+tags: manual
 keywords: ps使用手册,http
 description: 通过ps命令查看进程信息
 

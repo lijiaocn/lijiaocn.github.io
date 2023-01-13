@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "YouTube合作伙伴计划相关事项：频道开通方法、分成比例与创作学习资料"
+title: "YouTube合作伙伴计划相关事项: 频道开通方法、分成比例与创作学习资料"
 author: 李佶澳
 createdate: "2019-03-03 20:00:50 +0800"
 last_modified_at: "2019-03-03 20:00:50 +0800"

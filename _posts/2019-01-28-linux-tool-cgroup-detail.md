@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Linux的cgroup功能（二）：资源限制cgroup v1和cgroup v2的详细介绍"
+title: "Linux的cgroup功能（二）: 资源限制cgroup v1和cgroup v2的详细介绍"
 author: 李佶澳
 createdate: "2019-01-28 15:52:58 +0800"
 last_modified_at: "2019-03-08 11:07:22 +0800"

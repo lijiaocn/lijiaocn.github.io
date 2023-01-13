@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "超级账本HyperLedger：FabricCA的级联使用（InterMediateCA）"
+title: "超级账本HyperLedger: FabricCA的级联使用（InterMediateCA）"
 author: 李佶澳
 createdate: 2018/06/06 13:41:00
 last_modified_at: 2018/07/20 13:57:53

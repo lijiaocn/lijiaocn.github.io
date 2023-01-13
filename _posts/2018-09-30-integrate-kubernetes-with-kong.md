@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "API网关Kong学习笔记（二）：Kong与Kubernetes集成的方法"
+title: "API网关Kong学习笔记（二）: Kong与Kubernetes集成的方法"
 author: 李佶澳
 createdate: "2018-09-30 16:07:13 +0800"
 last_modified_at: "2019-05-20 14:48:47 +0800"

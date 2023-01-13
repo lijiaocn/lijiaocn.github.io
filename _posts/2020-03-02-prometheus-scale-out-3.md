@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Prometheus 水平扩展方案（三）：Prometheus 与 Victoria Metrics 的 API"
+title: "Prometheus 水平扩展方案（三）: Prometheus 与 Victoria Metrics 的 API"
 author: 李佶澳
 date: "2020-03-02T11:19:29+0800"
 last_modified_at: "2020-03-02T11:19:29+0800"

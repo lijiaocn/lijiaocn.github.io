@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Kubernetes 容器启动失败：unable to create nf_conn slab cache"
+title: "Kubernetes 容器启动失败: unable to create nf_conn slab cache"
 author: 李佶澳
 createdate: 2017/11/13 09:42:36
 last_modified_at: 2018/05/12 11:48:54

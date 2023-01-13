@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Nginx学习笔记（三）：Nginx性能调优"
+title: "Nginx学习笔记（三）: Nginx性能调优"
 author: 李佶澳
 createdate: "2018-11-23 19:07:38 +0800"
 last_modified_at: "2018-11-23 19:07:38 +0800"
