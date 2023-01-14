@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "怎样掌握 Linux 的 cgroup？资源限制机制 cgroup 学习指引与概念辨析"
+title: "cgroups: 学习指引与概念辨析"
 author: 李佶澳
 date: "2019-12-21T19:28:29+0800"
 last_modified_at: "2019-12-21T19:28:29+0800"
@@ -11,7 +11,11 @@ keywords: cgroup,cgroup控制器,linux资源限制
 description: 答案一点都不重要！因为事物是在发展变化的，记住一时的答案没有意义，重要的是答案在哪里
 ---
 
-## 本篇目录
+## 目录
+
+>该文档已作废。
+>
+>初学时懵懵懂懂，有理解错误的地方，请见重新修订后的《重学cgroup: xxx》系列。
 
 * auto-gen TOC:
 {:toc}

@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "Linux的cgroup功能（二）: 资源限制cgroup v1和cgroup v2的详细介绍"
+title: "cgroups: cgroup v1 和 cgroup v2 详细介绍"
 author: 李佶澳
 createdate: "2019-01-28 15:52:58 +0800"
-last_modified_at: "2019-03-08 11:07:22 +0800"
+last_modified_at: "2023-01-14 22:22:48 +0800"
 categories: 技巧
 tags: linux cgroup
 keywords: cgroup介绍文档,cgroup v1,cgroup v2,cgroup controller,linux资源隔离,linux资源控制器
@@ -11,81 +11,105 @@ description: "详细介绍cgroup v1和cgroup v2，cgroup v2从kernel 3.10开始�
 ---
 
 ## 目录
+
+>该文档已作废。
+>
+>初学时懵懵懂懂，有理解错误的地方，请见重新修订后的《重学cgroup: xxx》系列。
+
 * auto-gen TOC:
 {:toc}
 
 ## cgroups - Linux control groups
 
-之前简单学习过cgroup，当时了解地太浅了，遇到问题的时候，还是无法下手，于是深入学习下。
-这篇笔记中的内容主要来自Linux手册：man 7 cgroups（奇怪的是centos7上没有该页），[cgroups - Linux control groups][2]。
+主要来自Linux手册：man 7 cgroups（centos7 上没有该页）[cgroups - Linux control groups][2]。
 
-cgroup相关的学习笔记：
+### 名词解释
 
-1. [Linux的cgroup功能（一）：初级入门使用方法](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2017/07/26/linux-tool-cgroup.html)
-2. [Linux的cgroup功能（二）：资源限制cgroup v1和cgroup v2的详细介绍](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/01/28/linux-tool-cgroup-detail.html)
-3. [Linux的cgroup功能（三）：cgroup controller汇总和控制器的参数（文件接口）](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/02/18/linux-tool-cgroup-parameters.html)
+cgroup 的管理操作接口以文件目录的方式呈现，目录中可以创建子目录，目录中的文件是 cgroup 控制器的文件接口，通过修改文件内容来调整资源限制。使用 `mount -t cgroup /xxx` 命令创建 cgroup 操作目录。
 
+cgroup 支持的每类资源通过对应的 `subsystem` 或者 `resource controllers` 管理，例如管理 cpu 的是 cpu controller，管理内存的是 memory controller。
 
-### 术语
+从 linux kernel 4.14 开始，cgroup v2 引入了 thread mode（线程模式），controller 被分为 `domain controller` 和 `threaded controller`。cgroup 目录分成了两大类，用于管理进程/process 资源的目录是 `domain cgroup`，称为“**进程目录**”，用于管理线程/task 的目录是 `threaded cgroup`，称为“**线程目录**”。
 
-这篇笔记有可能是第一篇详细、全面介绍了cgroup v1和cgroup v2的中文资料，有必要约定术语、统一口径，可以减少交流障碍。
-
-`process`是“**进程**”，`task`是“**线程**”。
-
-`subsystem`或者`resource controllers`是cgroup中某一类资源的管理器，例如管理cpu的叫做cpu controller，管理内存的叫做memory controller，统一称呼为“**cgroup控制器**”。
-
-controller要使用`mount -t cgroup`样式的命令挂载到一个目录中，这个操作称呼为“**挂载cgroup controller**”。
-
-从linux kernel 4.14开始，cgroup v2 引入了`thread mode`（线程模式），controller被分为`domain controller`和`threaded controller`，前者称为“**cgroup进程控制器**”，后者称为“**cgroup线程控制器**”。
-
-从使用的角度看，cgroup就是一个目录树，目录中可以创建子目录，这些目录称为“**cgroup 目录**”，在一些场景中为了体现层级关系，还会称为“**cgroup 子目录**”。
-
-每个目录中有一些用来设置对应controller的文件，这些文件称呼为“**cgroup控制器的文件接口**”。
-
-cgroup v2引入了thread mode（线程模式）之后，cgroup目录有了类型之分：只管理进程的cgroup目录是`domain cgroup`，称为“**进程(子)目录**”；新增的管理线程的cgroup目录是`threaded cgroup`，称为“**线程子目录**”。
-
-**一句话介绍cgroup**：把一个cgroup目录中的资源划分给它的子目录，子目录可以把资源继续划分给它的子目录，为子目录分配的资源之和不能超过父目录，进程或者线程可以使用的资源受到它们委身的目录中的资源的限制。
+**一句话介绍 cgroup**：把一个 cgroup 目录中的资源划分给它的子目录，子目录可以把资源继续划分给它的子目录，为子目录分配的资源之和不能超过父目录，进程或者线程可以使用的资源受到它们委身的目录中的资源的限制。
 
 ### 版本
 
-cgroup有v1和v2两个版本，这是一个**非常重要**的信息。
+cgroup 有 v1 和 v2 两个版本，使用上差异比较大。
 
-v1版本是最早的实现，当时resource controllers的开发各自为政，导致controller间存在不一致，并且controller的嵌套挂载使cgroup的管理非常复杂。
+v1 版本是最早的实现，当时 resource controllers 的开发各自为政，导致 controller 间存在不一致，并且 controller 的嵌套挂载使 cgroup 的管理非常复杂。
 
-Linux kernel 3.10 开始提供v2版本cgroup（[Linux Control Group v2][3]）。开始是试验特性，隐藏在挂载参数`-o __DEVEL__sane_behavior`中，直到`Linuxe Kernel 4.5.0`的时候，cgroup v2才成为正式特性。
+Linux kernel 3.10 开始提供 cgroup v2（[Linux Control Group v2][3]），需要通过挂载时的参数 `-o __DEVEL__sane_behavior` 启用。`Linuxe Kernel 4.5.0` 开始，cgroup v2 成为正式特性。
 
-cgroup v2希望完全取代cgroup v1，但是为了兼容，cgroup v1没有被移除。
-
-cgroup v2实现的controller是cgroup v1的子集，可以同时使用cgroup v1和cgroup v2，但一个controller不能既在cgroup v1中使用，又在cgroup v2中使用。
+cgroup v1 和 cgroup v2 可以同时使用，但一个 controller 不能既在 cgroup v1 中使用又在 cgroup v2 中使用。
+cgroup v2 支持的 controller 是 cgroup v1 的子集，cgroup v2 本来希望完全取代 cgroup v1，但是为了兼容，cgroup v1 没有被移除。
 
 ## cgroups version 1
 
-cgroup v1中，controller可以独立挂载到一个cgroup目录中，也可以和其它controller联合挂载到同一个cgroup目录，cgroup v2也是采用挂载的方式，但是有一些不同（见后文）。
+cgroup v1 中，controller 可以独立挂载到一个目录中，也可以和其它 controller 联合挂载到同一个目录。
 
-在cgroup v1中，task也就是线程可以被划分到不同的cgroup组中，在一些场景中，这样做是有问题的。
+在 cgroup v1 中，task 也就是线程可以被划分到不同的 cgroup 组中。在一些场景中，这样做是有问题的。例如在 memory controller 中，所有 task 使用的都是同样的内存地址空间，为它们设置不同 memory cgroup 是没有意义的。
 
-例如在memory controller中，所有task使用的都是同样的内存地址空间，为它们设置不同memory cgroup是没有意义的。（cgroup v2最初将task功能去掉了，后来引入了`thread mode`来限制线程占用的资源）
+
+```text
+00-INDEX
+    - this file
+blkio-controller.txt
+    - Description for Block IO Controller, implementation and usage details.
+cgroups.txt
+    - Control Groups definition, implementation details, examples and API.
+cpuacct.txt
+    - CPU Accounting Controller; account CPU usage for groups of tasks.
+cpusets.txt
+    - documents the cpusets feature; assign CPUs and Mem to a set of tasks.
+admin-guide/devices.rst
+    - Device Whitelist Controller; description, interface and security.
+freezer-subsystem.txt
+    - checkpointing; rationale to not use signals, interface.
+hugetlb.txt
+    - HugeTLB Controller implementation and usage details.
+memcg_test.txt
+    - Memory Resource Controller; implementation details.
+memory.txt
+    - Memory Resource Controller; design, accounting, interface, testing.
+net_cls.txt
+    - Network classifier cgroups details and usages.
+net_prio.txt
+    - Network priority cgroups details and usages.
+pids.txt
+    - Process number cgroups details and usages.
+```
+
 
 ### cgroups v1：controller 挂载
 
-controller以`tmpfs`文件系统的样式挂载到任意目录，通常将其挂载到/sys/fs/cgroup目录。
+内核文档 [cgroup-v1/00-INDEX][6] 似乎是仅有的介绍 cgroup 挂载参数的资料，各个 controller 的用法也在该文档目录中。
 
-linux系统通常已经将多个controller挂载在/sys/fs/cgroup目录中了，下面的例子用另一个目录演示。
+controller 以 `tmpfs` 文件系统的方式挂载到任意目录，挂载命令中用 `-t cgroup` 指定要挂载的是 cgroup，`-o` 指定要挂载哪些 controller，多个 controller 用“,”间隔。
 
-将多个controller挂载到同一个目录，如下：
+linux 系统通常已经将 controller 挂载在 /sys/fs/cgroup，下面用一个新的目录演示 cgroup 挂载操作。
+
+`-o memory` 单独挂载 memory controller：
+
+	mkdir /tmp/cgroup/memory
+	mount -t cgroup -o memory none /tmp/cgroup/memory/
+
+`-o cpu,cpuacct` 同时挂载 cpu 和 cpuacct：
 
 	mkdir -p /tmp/cgroup/cpu,cpuacct
-	mount -t cgroup -o cpu,cpuacct none  /tmp/cgroup/cpu,cpuacct
+	mount -t cgroup -o cpu,cpuacct none /tmp/cgroup/cpu,cpuacct
 
-`-t cgroup`指定挂载类型，`-o`指定挂载的controller（可以有多个，用“,”间隔）。
+`-o all` 挂载所有的 controller：
 
-单独挂载cpu时，提示“已经挂载或者/tmp/cgroup/cpu is busy，暂时不清楚是怎么回事，可能是有一些controller不允许重复挂载。
+	mkdir -p /tmp/cgroup/all
+	mount -t cgroup -o all cgroup /tmp/cgroup/all
 
-	$ mkdir /tmp/cgroup/cpu
-	$ mount -t cgroup -o cpu none /tmp/cgroup/cpu
-	mount: none is already mounted or /tmp/cgroup/cpu busy
+`-o none` 不挂载任何 controller（没有挂载 controller 的 cgroup 可以用来跟踪进程，例如在进程消失导致 cgroup 为空时，cgroup 的通知回调会被触发）：
 
-挂载后，可以在挂载目录中看到controller的文件接口： 
+	mkdir -p /tmp/cgroup/none
+	mount -t cgroup -o none,name=somename none /tmp/cgroup/none
+
+在挂载目录中能看到 controller 的文件接口： 
 
 	$ ls -F /tmp/cgroup/cpu,cpuacct/
 	cgroup.clone_children  cpuacct.stat          cpu.cfs_quota_us   cpu.stat   kube-proxy/        tasks
@@ -93,32 +117,28 @@ linux系统通常已经将多个controller挂载在/sys/fs/cgroup目录中了，
 	cgroup.procs           cpuacct.usage_percpu  cpu.rt_runtime_us  kubelet/   release_agent
 	cgroup.sane_behavior   cpu.cfs_period_us     cpu.shares         kubepods/  system.slice/
 
-可以一次挂载所有的controller：
+单独挂载 cpu 时，提示 “已经挂载或者/tmp/cgroup/cpu is busy，暂时不清楚是怎么回事，
 
-	mount -t cgroup -o all cgroup /tmp/cgroup
-
-还可以不挂载任何controller：
-
-	mount -t cgroup -o none,name=somename none /some/mount/point
-
-没有挂载controller的cgroup可以用来跟踪进程，例如在进程消失导致cgroup为空时，cgroup的通知回调会被触发。
+	$ mkdir -p /tmp/cgroup/cpu
+	$ mount -t cgroup -o cpu none /tmp/cgroup/cpu
+	mount: none is already mounted or /tmp/cgroup/cpu busy
 
 ### cgroups v1：controller 卸载
 
-直接用umount卸载：
+
+直接用 umount 卸载：
 
 	umount /sys/fs/cgroup/pids
 
-卸载的时候要注意，需要先将所有子目录卸载，否则，umount只会让挂载点不可见，而不是真正将其卸载。
+卸载的时候要注意，需要先将所有子目录卸载，否则，umount 只会让挂载点不可见，而不是真正将其卸载。
 
 ### cgroups v1：支持的 controller
 
-这个是重点，使用cgroup主要就是和各种controller打交道：
 
 **cpu**，
+
 [CFS Scheduler](https://www.kernel.org/doc/Documentation/scheduler/sched-design-CFS.txt)、
 [CFS Bandwidth Control](https://www.kernel.org/doc/Documentation/scheduler/sched-bwc.txt)
-:
 
 	since 2.6.24，限制CPU份额，只会在cpu忙碌的时候限制cpu使用，如果cpu空闲不做限制。
 	since 3.2.0， 引入了`CON‐FIG_CFS_BANDWIDTH`编译选项，限制进程在每个调度周期占用的时间，无论CPU是否空闲。
@@ -592,10 +612,13 @@ nsdelegate
 2. [cgroups - Linux control groups][2]
 3. [Linux Control Group v2][3]
 4. [直接用cadvisor查询所有cgroup][4]
-5. [Linux Control Group v2][5]
+5. [Documentation/cgroup-v2.txt][5]
+6. [Documentation/cgroup-v1/00-INDEX][6]
+
 
 [1]: https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2017/07/26/linux-tool-cgroup.html "Linux中cgroup的使用方法"
 [2]: http://man7.org/linux/man-pages/man7/cgroups.7.html "cgroups - Linux control groups"
 [3]: https://www.kernel.org/doc/Documentation/cgroup-v2.txt "Linux Control Group v2"
 [4]: https://www.lijiaocn.com/%E9%97%AE%E9%A2%98/2019/01/25/kubernetes-failed-to-get-cgroup-stats.html#%E7%9B%B4%E6%8E%A5%E7%94%A8cadvisor%E6%9F%A5%E8%AF%A2%E6%89%80%E6%9C%89cgroup "直接用cadvisor查询所有cgroup"
-[5]: https://www.kernel.org/doc/Documentation/cgroup-v2.txt "Linux Control Group v2"
+[5]: https://www.kernel.org/doc/Documentation/cgroup-v2.txt "Documentation/cgroup-v2.txt"
+[6]: https://www.kernel.org/doc/Documentation/cgroup-v1/00-INDEX "cgroup-v1/00-INDEX"

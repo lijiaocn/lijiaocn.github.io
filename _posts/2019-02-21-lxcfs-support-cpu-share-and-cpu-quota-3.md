@@ -1,11 +1,11 @@
 ---
 layout: default
-title: "Lxcfs根据cpu-share、cpu-quota等cgroup信息生成容器内的/proc文件（下）"
+title: "lxcfs: 根据 cgroup 信息生成容器内的 /proc（下）"
 author: 李佶澳
 createdate: "2019-02-21 10:38:48 +0800"
-last_modified_at: "2019-02-21 13:55:59 +0800"
+last_modified_at: "2023-01-14 16:57:38 +0800"
 categories: 技巧
-tags: cgroup docker
+tags: lxcfs
 keywords: cpuacct.usage_percpu,cpuacct.usage_all,lxcfs,cgroup,cpu-share,cpu-quota
 description: 修改lxcfs，解决cpuacct.usage_all不存在导致cpu使用率不准，显示了host的cpu使用率的问题
 ---
@@ -17,22 +17,6 @@ description: 修改lxcfs，解决cpuacct.usage_all不存在导致cpu使用率不
 ## 说明
 
 这篇笔记记录了[There is no cpuacct.usage_all file in CentOS 7.2，should use cpuacct.usage_percpu ?][1]的解决方法。这个问题最早在[Lxcfs是什么？怎样通过lxcfs在容器内显示容器的CPU、内存状态](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/01/09/kubernetes-lxcfs-docker-container.html#%E6%9F%A5%E7%9C%8B%E5%AE%B9%E5%99%A8cpu%E7%8A%B6%E6%80%81)中记录。
-
-**相关笔记**：
-
-[Lxcfs根据cpu-share、cpu-quota等cgroup信息生成容器内的/proc文件（上）](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/02/11/lxcfs-support-cpu-share-and-cpu-quota-1.html)
-
-[Lxcfs根据cpu-share、cpu-quota等cgroup信息生成容器内的/proc文件（中）](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/02/15/lxcfs-support-cpu-share-and-cpu-quota-2.html)
-
-[Lxcfs根据cpu-share、cpu-quota等cgroup信息生成容器内的/proc文件（下）](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/02/21/lxcfs-support-cpu-share-and-cpu-quota-3.html)
-
-[Lxcfs是什么？怎样通过lxcfs在容器内显示容器的CPU、内存状态](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/01/09/kubernetes-lxcfs-docker-container.html)
-
-[Linux的cgroup功能（三）：cgroup controller汇总和控制器的参数（文件接口）](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/02/18/linux-tool-cgroup-parameters.html)
-
-[Linux的cgroup功能（二）：资源限制cgroup v1和cgroup v2的详细介绍](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2019/01/28/linux-tool-cgroup-detail.html)
-
-[Linux的cgroup功能（一）：初级入门使用方法](https://www.lijiaocn.com/%E6%8A%80%E5%B7%A7/2017/07/26/linux-tool-cgroup.html)
 
 ## 问题描述
 
