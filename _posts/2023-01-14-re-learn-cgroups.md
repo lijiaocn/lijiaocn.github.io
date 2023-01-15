@@ -3,7 +3,7 @@ layout: default
 title: "重学 cgroups: 入门指引、基本概念和 cgroup v1 基础使用"
 author: 李佶澳
 date: "2023-01-14 14:30:06 +0800"
-last_modified_at: "2023-01-14 22:34:46 +0800"
+last_modified_at: "2023-01-15 21:56:16 +0800"
 categories: 技巧
 cover:
 tags: cgroup linux
@@ -151,6 +151,91 @@ $ mkdir -p /demo/cgroups/v1/devicesA-3
 $ mount -t cgroup -o devices,name=devicesB none /demo/cgroups/v1/devicesA-3/
 mount: none already mounted or /demo/cgroups/v1/devicesA-3/ busy
 ```
+
+## cgroups v1 的文件接口
+
+### group 管理相关接口
+
+cgroups v1 的虚拟文件系统中既包含用于管理 task 分组的文件接口，也有 subsystem 相关的的文件接口。
+挂载的时候如果用 `-o none` 表明不关联任何 subsystem，虚拟文件系统中将只存在 group 管理相关的文件接口。
+
+```sh
+$ mkdir -p /demo/cgroups/v1/pure-cgroups
+# 不关联 subsystem 时，必须用 name 命名
+$ mount -t cgroup -o none,name=pure-cgroups pure-cgroups /demo/cgroups/v1/pure-cgroups/
+```
+注意：不关联 subsystem 时，必须用 name 命名，否则会出现下面的错误：
+
+```sh
+$ mount -t cgroup -o none pure-cgroups /demo/cgroups/v1/pure-cgroups/
+mount: wrong fs type, bad option, bad superblock on none,
+       missing codepage or helper program, or other error
+       (for several filesystems (e.g. nfs, cifs) you might
+       need a /sbin/mount.<type> helper program)
+       In some cases useful info is found in syslog - try
+       dmesg | tail  or so
+```
+
+cgroups v1 自身的提供文件接口如下：
+
+```sh
+$ ls -1 /demo/cgroups/v1/pure-cgroups/
+cgroup.clone_children       # flag 0/1，子目录是否继承父目录的 cpuset 配置
+cgroup.event_control        # 未找到用法说明 2023-01-15 12:41:35
+cgroup.procs                # 可编辑文件，当前分组包含的 thread group IDs，thread group 包含的所有 thread 被一同纳入
+cgroup.sane_behavior        # cgroups v2 开发过程中引入，当前保留是为了历史兼容，value 一直为0，详情见 man 7 cgroups
+notify_on_release           # flag 0/1，当前分组包含的 task 变为空时，是否调用 release_agent
+release_agent               # release_agent 所在的路径
+tasks                       # 可编辑文件，当前分组包含的 PID
+```
+
+### group 的创建和 task 的增删
+
+新分组创建方法非常简单，在 cgroups v1 的虚拟文件系统中直接用 mkdir 创建子目录即可。
+
+```sh
+$ mkdir /demo/cgroups/v1/pure-cgroups/group1
+$ ls /demo/cgroups/v1/pure-cgroups/group1
+cgroup.clone_children  cgroup.event_control  cgroup.procs  notify_on_release  tasks
+```
+
+子目录中会自动出现相应的文件接口，向新分组中添加任务，只需用文本编辑器将 thread group IDs 写入 cgroup.procs，或者将 pid 写入 tasks 文件。
+
+## subsystem 的文件接口
+
+不同 subsystem 的文件接口不同，挂载时用 -o 指定的 subsystem 的文件接口会出现在虚拟文件系统中。
+
+```sh
+$ ls /demo/cgroups/v1/memory/memory.*
+/demo/cgroups/v1/memory/memory.failcnt                      /demo/cgroups/v1/memory/memory.limit_in_bytes
+/demo/cgroups/v1/memory/memory.force_empty                  /demo/cgroups/v1/memory/memory.max_usage_in_bytes
+/demo/cgroups/v1/memory/memory.kmem.failcnt                 /demo/cgroups/v1/memory/memory.move_charge_at_immigrate
+/demo/cgroups/v1/memory/memory.kmem.limit_in_bytes          /demo/cgroups/v1/memory/memory.numa_stat
+/demo/cgroups/v1/memory/memory.kmem.max_usage_in_bytes      /demo/cgroups/v1/memory/memory.oom_control
+/demo/cgroups/v1/memory/memory.kmem.slabinfo                /demo/cgroups/v1/memory/memory.pressure_level
+/demo/cgroups/v1/memory/memory.kmem.tcp.failcnt             /demo/cgroups/v1/memory/memory.soft_limit_in_bytes
+/demo/cgroups/v1/memory/memory.kmem.tcp.limit_in_bytes      /demo/cgroups/v1/memory/memory.stat
+/demo/cgroups/v1/memory/memory.kmem.tcp.max_usage_in_bytes  /demo/cgroups/v1/memory/memory.swappiness
+/demo/cgroups/v1/memory/memory.kmem.tcp.usage_in_bytes      /demo/cgroups/v1/memory/memory.usage_in_bytes
+/demo/cgroups/v1/memory/memory.kmem.usage_in_bytes          /demo/cgroups/v1/memory/memory.use_hierarchy
+```
+
+subsystem 种类和参数比较多，而且要理解每类资源具体细节，需要花较多时间逐个学习。
+
+[cgroup-v1][3] 给出了部分 subsystem 的介绍：
+
+* [cpusets](https://www.kernel.org/doc/Documentation/cgroup-v1/cpusets.txt)
+* [cpuacct](https://www.kernel.org/doc/Documentation/cgroup-v1/cpuacct.txt)
+* [memory](https://www.kernel.org/doc/Documentation/cgroup-v1/memory.txt)
+* [memcg_test](https://www.kernel.org/doc/Documentation/cgroup-v1/memcg_test.txt)
+* [hugetlb](https://www.kernel.org/doc/Documentation/cgroup-v1/hugetlb.txt)
+* [net_cls](https://www.kernel.org/doc/Documentation/cgroup-v1/net_cls.txt)
+* [net_prio](https://www.kernel.org/doc/Documentation/cgroup-v1/net_prio.txt)
+* [devices](https://www.kernel.org/doc/Documentation/cgroup-v1/devices.txt)
+* [blkio-controller](https://www.kernel.org/doc/Documentation/cgroup-v1/blkio-controller.txt)
+* [freezer-subsystem](https://www.kernel.org/doc/Documentation/cgroup-v1/freezer-subsystem.txt)
+* [pids](https://www.kernel.org/doc/Documentation/cgroup-v1/pids.txt)
+* [rdma](https://www.kernel.org/doc/Documentation/cgroup-v1/rdma.txt)
 
 ## 参考
 
