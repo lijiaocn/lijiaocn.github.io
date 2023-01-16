@@ -3,12 +3,12 @@ layout: default
 title: "重学 cgroups: 入门指引、基本概念和 cgroup v1 基础使用"
 author: 李佶澳
 date: "2023-01-14 14:30:06 +0800"
-last_modified_at: "2023-01-15 21:56:16 +0800"
+last_modified_at: "2023-01-16 15:46:51 +0800"
 categories: 技巧
 cover:
 tags: cgroup linux
 keywords: cgroups
-description: 英文全称为 Control Groups，即分组的管理。将 tasks 分组主要是为了能够给不同的 task 设置不同的资源配额（至少 cgroups 被创造的初衷是这样的），比如为 task1 配置 2G 内存上限、为 task2 配置 3G 内存上限。
+description: cgroups 是在 linux kernel 中运行的一种机制，它提供了一种将系统上的资源和 task 进行分组管理的方法。cgroups 的英文全称为 Control Groups，即控制分组。
 
 ---
 
@@ -19,11 +19,13 @@ description: 英文全称为 Control Groups，即分组的管理。将 tasks 分
 
 ## cgroups 的作用
 
-cgroups 是在 linux kernel 中运行的一种机制，它提供了一种将系统上运行的 tasks 进行分组的能力。英文全称为 Control Groups，即分组的管理。将 tasks 分组主要是为了能够给不同的 task 设置不同的资源配额（至少 cgroups 被创造的初衷是这样的），比如为 task1 配置 2G 内存上限、为 task2 配置 3G 内存上限。
+cgroups 是在 linux kernel 中运行的一种机制，它提供了一种将系统上的资源和 task 进行分组管理的方法。cgroups 的英文全称为 Control Groups，即控制分组。它用目录树的形式定义分组，目录树中的每个目录对应一个分组，父目录可以通过创建子目录继续分组。
 
-面向内核开发，cgroups 定义了一套内核 API，具有接纳 subsystem 的能力。subsystem 通常是负责某一类资源的配额管理器，比如 CPU、内存、带宽、进程号等，也被称为 resource controller。接入 cgroups 后，subsystem 能够能够获悉 tasks 的分组情况，从而可以按分组限定 task 的资源使用上限。
+面向系统用户，cgroups 将分组情况以虚拟文件系统的方式呈现，展示出一个树形的文件目录，通过修改目录中文件的内容来调整 task 分组以及涉及的 subsystem 定义的资源配置。
+面向内核开发，cgroups 定义了一套内核 API，具有接纳 subsystem 的能力。
 
-面向系统用户，cgroups 将分组情况以虚拟文件系统的方式呈现，展示出一个树形的层级目录，通过修改目录中文件的内容来调整 task 分组，subsystem 的配置项也以文件的方式出现在目录中。
+subsystem 通常是负责某一类资源的配额管理器，比如 CPU、内存、带宽、进程号等，也被称为 resource controller。
+subsystem 能够从 cgroups 中获悉 tasks 的分组情况，从而可以按找配置限定 task 的资源使用。
 
 cgroups 有 v1 和 v2 两个版本，两个版本都有实际应用，本篇通过学习 cgroups v1 入门。
 
@@ -185,7 +187,7 @@ cgroup.event_control        # 未找到用法说明 2023-01-15 12:41:35
 cgroup.procs                # 可编辑文件，当前分组包含的 thread group IDs，thread group 包含的所有 thread 被一同纳入
 cgroup.sane_behavior        # cgroups v2 开发过程中引入，当前保留是为了历史兼容，value 一直为0，详情见 man 7 cgroups
 notify_on_release           # flag 0/1，当前分组包含的 task 变为空时，是否调用 release_agent
-release_agent               # release_agent 所在的路径
+release_agent               # release_agent 所在的路径，只存在于 cgroup 的顶层目录
 tasks                       # 可编辑文件，当前分组包含的 PID
 ```
 
@@ -200,6 +202,49 @@ cgroup.clone_children  cgroup.event_control  cgroup.procs  notify_on_release  ta
 ```
 
 子目录中会自动出现相应的文件接口，向新分组中添加任务，只需用文本编辑器将 thread group IDs 写入 cgroup.procs，或者将 pid 写入 tasks 文件。
+
+### notify_on_release
+
+notify_on_release 设置为 1 时，所在分组中的 tasks 变为空时，会调用 release_agent 中指定的命令，入参为对应的 cgroups 目录路径。
+
+准备文件 /root/agent.sh ，内容如下
+
+```bash
+#!/bin/bash
+echo $* >>/tmp/cgroup_release_note.log
+```
+
+给予执行权限: 
+
+```sh
+chmod +x /root/agent.sh
+```
+
+为 /demo/cgroups/v1/pure-cgroups/ 配置 release_agent（release_agent 只在顶层目录中存在）:
+
+```sh
+$ echo "/root/agent.sh" > /demo/cgroups/v1/pure-cgroups/release_agent
+```
+
+触发 release_agent 执行：
+
+```sh
+# 创建新的分组 group2
+$ mkdir -p /demo/cgroups/v1/pure-cgroups/group2
+# 启动 group2 的 notify_on_release
+$ echo 1 >/demo/cgroups/v1/pure-cgroups/group2/notify_on_release
+# 向 group2 添加 task：将当前 sh 加入 group2
+echo $$ >/demo/cgroups/v1/pure-cgroups/group2/tasks
+# 从 group2 移除 task：将当前 sh 移动到 group2 的父目录，移动后 group2 中的 task 为空
+echo $$ >/demo/cgroups/v1/pure-cgroups/tasks
+```
+
+/root/agent.sh 被执行，结果如下：
+
+```sh
+$ cat /tmp/cgroup_release_note.log
+/group2
+```
 
 ## subsystem 的文件接口
 
