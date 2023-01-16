@@ -3,7 +3,7 @@ layout: default
 title: "重学 cgroups: 入门指引、基本概念和 cgroup v1 基础使用"
 author: 李佶澳
 date: "2023-01-14 14:30:06 +0800"
-last_modified_at: "2023-01-16 15:46:51 +0800"
+last_modified_at: "2023-01-16 15:48:55 +0800"
 categories: 技巧
 cover:
 tags: cgroup linux
@@ -207,7 +207,7 @@ cgroup.clone_children  cgroup.event_control  cgroup.procs  notify_on_release  ta
 
 notify_on_release 设置为 1 时，所在分组中的 tasks 变为空时，会调用 release_agent 中指定的命令，入参为对应的 cgroups 目录路径。
 
-准备文件 /root/agent.sh ，内容如下
+准备文件 /root/agent.sh ，内容如下: 
 
 ```bash
 #!/bin/bash
