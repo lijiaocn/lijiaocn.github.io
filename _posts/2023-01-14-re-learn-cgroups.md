@@ -3,13 +3,12 @@ layout: default
 title: "重学 cgroups: 入门指引、基本概念和 cgroup v1 基础使用"
 author: 李佶澳
 date: "2023-01-14 14:30:06 +0800"
-last_modified_at: "2023-01-16 15:48:55 +0800"
+last_modified_at: "2023-01-16 17:35:45 +0800"
 categories: 技巧
 cover:
 tags: cgroup linux
 keywords: cgroups
 description: cgroups 是在 linux kernel 中运行的一种机制，它提供了一种将系统上的资源和 task 进行分组管理的方法。cgroups 的英文全称为 Control Groups，即控制分组。
-
 ---
 
 ## 目录

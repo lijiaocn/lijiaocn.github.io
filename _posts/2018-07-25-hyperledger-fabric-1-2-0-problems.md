@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  超级账本HyperLedger: Fabric 1.2.0使用时遇到的问题
+title:  "超级账本HyperLedger: Fabric 1.2.0使用时遇到的问题"
 author: 李佶澳
 createdate: 2018/07/26 11:07:00
 last_modified_at: 2018/09/01 15:15:53

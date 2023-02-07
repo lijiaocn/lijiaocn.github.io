@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  超级账本HyperLedger: Fabric的基本概念与基础用法
+title:  "超级账本HyperLedger: Fabric的基本概念与基础用法"
 author: 李佶澳
 createdate: 2018/02/23 10:50:00
 last_modified_at: 2018/07/16 10:18:48
