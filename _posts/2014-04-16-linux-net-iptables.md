@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "iptables: Linux的 iptables 使用"
+title: "iptables: Linux iptables 使用"
 author: 李佶澳
 createdate: 2014/04/16 10:16:55
 last_modified_at: 2018/06/17 21:48:31
