@@ -3,7 +3,7 @@ layout: default
 title: "cgroups: 入门指引、基本概念和 cgroup v1 基础使用"
 author: 李佶澳
 date: "2023-01-14 14:30:06 +0800"
-last_modified_at: "2023-02-22 11:26:58 +0800"
+last_modified_at: "2023-02-22 13:12:19 +0800"
 categories: 技巧
 cover:
 tags: cgroup
@@ -18,19 +18,20 @@ description: cgroups 是在 linux kernel 中运行的一种机制，它提供了
 
 ## cgroups 的作用
 
-cgroups 是在 linux kernel 中运行的一种机制，它提供了一种将系统上的资源和 task 进行分组管理的方法。cgroups 的英文全称为 Control Groups，即控制分组。它用目录树的形式定义分组，目录树中的每个目录对应一个分组，父目录可以通过创建子目录继续分组。
+cgroups 是在 linux kernel 中运行的一种机制，它提供了一种将系统上的 task 进行分组管理的方法。
+cgroups 的英文全称为 Control Groups，即控制组。控制组支持层级结构，用目录树的方式描述，每个目录对应一个分组。
 
-面向系统用户，cgroups 将分组情况以虚拟文件系统的方式呈现，展示出一个树形的文件目录，通过修改目录中文件的内容来调整 task 分组以及涉及的 subsystem 定义的资源配置。
-面向内核开发，cgroups 定义了一套内核 API，具有接纳 subsystem 的能力。
+面向系统用户，cgroups 将控制组以虚拟文件系统的方式呈现，展示出一个树形的文件目录，通过目录中文件接口来调整控制组以及涉及的 subsystem。
+面向内核开发，cgroups 定义了一套内核 API，支持各种 subsystem  的接入。
 
-subsystem 通常是负责某一类资源的配额管理器，比如 CPU、内存、带宽、进程号等，也被称为 resource controller。
-subsystem 能够从 cgroups 中获悉 tasks 的分组情况，从而可以按找配置限定 task 的资源使用。
+subsystem 从 cgroups 中获悉每个控制组中的 task，进而对 task 进行管控。
+一个 subsystem 通常负责管控某一类资源的使用配额，比如 CPU、内存、带宽、进程号等，也被称为 resource controller。
 
-cgroups 有 v1 和 v2 两个版本，两个版本都有实际应用，本篇通过学习 cgroups v1 入门。
+cgroups 有 v1 和 v2 两个版本，两个版本都有实际应用，这里先学习 cgroups v1。
 
 ## cgroups v1 的虚拟文件系统
 
-cgroups 是在 kernel 中运行的机制，对 cgroups 进行调整配置，需要先用 mount 命令挂载它的虚拟文件系统，把它的文件接口暴露出来。
+cgroups 是在 kernel 中运行的机制，需要先用 mount 命令挂载它的虚拟文件系统，把它的文件接口暴露出来。
 
 cgroups v1 和 cgroup v2 的挂载方式略有不同，这里以 cgroups v1 为例：
 
@@ -40,13 +41,15 @@ cgroups v1 和 cgroup v2 的挂载方式略有不同，这里以 cgroups v1 为�
 $ mount -t cgroup xxx /sys/fs/cgroup
 ```
 
-挂载动作只是将运行在内核中的 cgroups 的状态暴露出来，所以我们可以将 cgroups 的虚拟文件系统多次挂载到不同的目录中。linux 发行版通常已经默认将其挂载到 /sys/fs/cgroup 目录。
+挂载操作只是将运行在内核中的 cgroups 的状态暴露出来，可以多次挂载到不同的目录中（每个挂载目录中的内容都相同）。linux 发行版通常已经默认挂载到 /sys/fs/cgroup 。
 
-CentOS 是先挂载一个 tmpfs 类型的文件系统，然后在其中继续挂载 cgroups：
+CentOS 是先挂载一个 tmpfs 类型的文件系统，然后作为 cgroup 的挂载点：
 
 ```sh
 $ cat /proc/mounts  |grep cgroup
-tmpfs /sys/fs/cgroup tmpfs ro,seclabel,nosuid,nodev,noexec,mode=755 0 0
+# /sys/fs/cgroup 是一个 tmpfs
+tmpfs /sys/fs/cgroup tmpfs ro,seclabel,nosuid,nodev,noexec,mode=755 0 0      
+# /sys/fs/cgroup/* cgroup v1 每类资源的挂载点
 cgroup /sys/fs/cgroup/systemd cgroup rw,seclabel,nosuid,nodev,noexec,relatime,xattr,release_agent=/usr/lib/systemd/systemd-cgroups-agent,name=systemd 0 0
 cgroup /sys/fs/cgroup/hugetlb cgroup rw,seclabel,nosuid,nodev,noexec,relatime,hugetlb 0 0
 cgroup /sys/fs/cgroup/freezer cgroup rw,seclabel,nosuid,nodev,noexec,relatime,freezer 0 0
@@ -60,7 +63,7 @@ cgroup /sys/fs/cgroup/devices cgroup rw,seclabel,nosuid,nodev,noexec,relatime,de
 cgroup /sys/fs/cgroup/net_cls,net_prio cgroup rw,seclabel,nosuid,nodev,noexec,relatime,net_prio,net_cls 0 0
 ```
 
-下面创建一个新的目录，在这个目录来演示后续的 cgroups v1 操作：
+创建一个新目录，在这个目录来演示后续的 cgroups v1 操作：
 
 ```sh
 $ mkdir -p /demo/cgroups/v1
@@ -69,24 +72,22 @@ $ mount -t tmpfs tmpfs_for_cgroups_v1 /demo/cgroups/v1
 
 ## cgroups v1 的资源管理理念
 
-cgroups v1 的采用的资源管理理念是：为每类资源或者每种资源组合创建一个目录，在其中管理所有 tasks 的该类资源配额。
-挂载 cgroups v1 的虚拟文件系统时，用 -o 指定该目录管理的资源或资源组合，
+cgroups v1 的资源管理理念：每类资源或资源组合单独一个目录，在其中管理所有 task 对该类资源的使用。
 
-cgroups v1 将 -o 参数传递来的字符串，理解成挂载目录要关联的 subsystem 组合（即 resource controller 组合）。组合中可以只有一个 subsystem，也可以包含多个用 ",”间隔的 subsystem。
+挂载 cgroups v1 的虚拟文件系统时，要用 -o 指定目标目录要关联的 subsystem（即 resource controller），多个 subsystem 之间用“,”间隔。
 
 ```sh
-# 挂载只有包含一个 memory subsystem 的组合
+# 在目标目录中挂载一个 subsystem： memory
 $ mkdir -p /demo/cgroups/v1/memory
 $ mount -t cgroup -o memory none /demo/cgroups/v1/memory
 
-# 挂载包含 cpu 和 cpuacct 两个 subsystem 的组合
+# 在目标目录中挂载两个 subsystem： cpu 和 cpuacct 
 $ mkdir -p /demo/cgroups/v1/cpu,cpuacct
 $ mount -t cgroup -o cpu,cpuacct none /demo/cgroups/v1/cpu,cpuacct
 ```
 
-在 cgroups v1 中，会为每个 subsystem 组合创建对应的 `active hierarchy`。
-挂载时 cgroups v1 先检查 -o 指定的 subsystem 组合是有已经有对应的 active hierarchy，如果已有，就直接复用。
-从系统用户的角度看，就是一个 subsystem 组合可以多次挂载到不同的目录中，这些目录中的内容是完全相同的。
+cgroups v1 会为每个 subsystem 组合创建一个 `active hierarchy`。挂载时先检查 -o 指定的 subsystem 组合是否已经有对应的 active hierarchy，如果已有，就直接复用。
+从用户的角度看，就是一个 subsystem 组合可以多次挂载到不同的目录中，但是这些目录中的内容是完全相同的，因为关联的是同一个 active hierarchy。
 
 ```sh
 # 将 memory subsystem 再次挂载到一个新目录
@@ -100,7 +101,7 @@ $ ls /demo/cgroups/v1/memory2/ |grep example-mem
 example-mem
 ```
 
-每个 subsystem 只能在所有的 active hierarchy 中出现一次，比如 cpu 和 cpuacct 已经出现在 cpu,cpuacct 组合对应的 active hierarchy，不能再出现在别的组合中：
+一个 subsystem 只能在所有的 active hierarchy 中出现一次，比如 cpu 和 cpuacct 已经出现在 cpu,cpuacct 组合对应的 active hierarchy，不能再出现在别的组合中：
 
 ```sh
 # cpu 不能出现的新的 subsystem 组合中，无论是单独成组还是和其它 subsystem 组合
@@ -116,7 +117,7 @@ $ mount -t cgroup -o cpu,memory none /demo/cgroups/v1/cpu,memory
 mount: none already mounted or /demo/cgroups/v1/cpu,memory busy
 ```
 
-可以在 -o 中用 name 为 subsystem 组合命名，命名后可以直接通过名称重复挂载：
+可以在 -o 中用 "name=xxx" 为 subsystem 组合命名，命名后可以直接通过名称重复挂载：
 
 ```sh
 # 指定 active hierarchy 名称 devicesA
@@ -132,7 +133,7 @@ $ ls /demo/cgroups/v1/devicesA-1
 cgroup.clone_children  cgroup.event_control  cgroup.procs  cgroup.sane_behavior  devices.allow  devices.deny  devices.list  notify_on_release  release_agent  tasks
 ```
 
-如果没有为 subsystem 组合命名，重复挂载时只能指定具体组合，排列顺序没有影响。
+如果没有为 subsystem 组合命名，重复挂载时只能指定具体组合，排列顺序可以不同。
 
 ```sh
 # cpuacct,cpu 和 cpu,capuacct 是同一个 active hierarchy
@@ -140,7 +141,7 @@ $ mkdir -p /demo/cgroups/v1/cpuacct,cpu/
 $ mount -t cgroup -o cpuacct,cpu none /demo/cgroups/v1/cpuacct,cpu/
 ```
 
-有命名的 subsytem 组合，重复挂载时依然可以指定具体组合。但是如果带有命名，name 必须正确。
+有命名的 subsystem 组合，重复挂载时依然可以指定具体组合。但是如果带有命名，name 必须正确。
 
 ```sh
 # 已经有 name 的组合，不指定 name 挂载
@@ -157,15 +158,16 @@ mount: none already mounted or /demo/cgroups/v1/devicesA-3/ busy
 
 ### group 管理相关接口
 
-cgroups v1 的虚拟文件系统中既包含用于管理 task 分组的文件接口，也有 subsystem 相关的的文件接口。
-挂载的时候如果用 `-o none` 表明不关联任何 subsystem，虚拟文件系统中将只存在 group 管理相关的文件接口。
+cgroups v1 的虚拟文件系统中默认包含控制组的文件接口，如果绑定了 subsystem，还会包含对应 subsystem 的文件接口。
+挂载的时候用 `-o none` 表明不关联任何 subsystem，目录中将只存在控制组的文件接口。
 
 ```sh
 $ mkdir -p /demo/cgroups/v1/pure-cgroups
 # 不关联 subsystem 时，必须用 name 命名
 $ mount -t cgroup -o none,name=pure-cgroups pure-cgroups /demo/cgroups/v1/pure-cgroups/
 ```
-注意：不关联 subsystem 时，必须用 name 命名，否则会出现下面的错误：
+
+不关联 subsystem 时，必须用 name 命名，否则会出现下面的错误：
 
 ```sh
 $ mount -t cgroup -o none pure-cgroups /demo/cgroups/v1/pure-cgroups/
@@ -177,7 +179,7 @@ mount: wrong fs type, bad option, bad superblock on none,
        dmesg | tail  or so
 ```
 
-cgroups v1 自身的提供文件接口如下：
+cgroups v1 控制组的文件接口如下：
 
 ```sh
 $ ls -1 /demo/cgroups/v1/pure-cgroups/
@@ -190,9 +192,9 @@ release_agent               # release_agent 所在的路径，只存在于 cgrou
 tasks                       # 可编辑文件，当前分组包含的 PID
 ```
 
-### group 的创建和 task 的增删
+### 控制组创建和包含的 task 管理
 
-新分组创建方法非常简单，在 cgroups v1 的虚拟文件系统中直接用 mkdir 创建子目录即可。
+新控制组的创建方法非常简单，在 cgroups v1 的虚拟文件系统中直接用 mkdir 创建子目录即可。
 
 ```sh
 $ mkdir /demo/cgroups/v1/pure-cgroups/group1
@@ -200,7 +202,9 @@ $ ls /demo/cgroups/v1/pure-cgroups/group1
 cgroup.clone_children  cgroup.event_control  cgroup.procs  notify_on_release  tasks
 ```
 
-子目录中会自动出现相应的文件接口，向新分组中添加任务，只需用文本编辑器将 thread group IDs 写入 cgroup.procs，或者将 pid 写入 tasks 文件。
+子目录中会自动出现相应的文件接口。
+
+cgroup.procs 和 tasks 用来管理控制组包含的 task，cgroup.procs 管理的是 thread group ID，tasks 管理的是 pid。通过编辑文件内容来进行 task 的增删。
 
 ### notify_on_release
 
@@ -247,7 +251,9 @@ $ cat /tmp/cgroup_release_note.log
 
 ## subsystem 的文件接口
 
-不同 subsystem 的文件接口不同，挂载时用 -o 指定的 subsystem 的文件接口会出现在虚拟文件系统中。
+挂载时用 -o 指定的 subsystem 的文件接口会出现在虚拟文件系统中，subsystem 的文件接口各不相同。
+
+memory subsystem 的文件接口：
 
 ```sh
 $ ls /demo/cgroups/v1/memory/memory.*
@@ -264,7 +270,7 @@ $ ls /demo/cgroups/v1/memory/memory.*
 /demo/cgroups/v1/memory/memory.kmem.usage_in_bytes          /demo/cgroups/v1/memory/memory.use_hierarchy
 ```
 
-subsystem 种类和参数比较多，而且要理解每类资源具体细节，需要花较多时间逐个学习。
+subsystem 的文件接口和管理的资源类型相关，需要花较多时间逐个学习。
 
 [cgroup-v1][3] 给出了部分 subsystem 的介绍：
 
