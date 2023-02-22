@@ -1,24 +1,19 @@
 ---
 layout: default
-title: "cgroups: 基本概念&入门指引"
+title: "（已废弃）cgroups: 基本概念&入门指引"
 author: 李佶澳
 createdate: 2017/07/26 10:29:51
-last_modified_at: "2023-01-14 22:23:12 +0800"
+last_modified_at: "2023-02-22 11:31:50 +0800"
 categories: 技巧
-tags: cgroup linux 
+tags: cgroup
 keywords: cgroup使用,cgroup.procs,cgroup v1,cgroup v2,cgroup controller,linux资源控制器,资源隔离
 description: linux的cgroup功能的初级入门使用，在每个subsystem目录下建立多个目录，每个目录就是一个cgroup，可以分别设置每个cgroup，cgroup中可以继续创建cgroup。
 
 ---
 
-## 目录
+## 重要
 
->该文档已作废。
->
->初学时懵懵懂懂，有理解错误的地方，请见重新修订后的《重学cgroup: xxx》系列。
-
-* auto-gen TOC:
-{:toc}
+>该文档已作废。新文档见 [cgroups: 入门指引、基本概念和 cgroup v1 基础使用](/技巧/2023/01/14/re-learn-cgroups.html)
 
 ## 介绍
 
@@ -96,14 +91,3 @@ pids用来限制一个进程可以派生出的进程数量。
 [6]: https://tech.meituan.com/2015/03/31/cgroups.html "美团技术团队：Linux资源管理之cgroups简介"
 [7]: https://www.kernel.org/doc/Documentation/cgroup-v1/cgroups.txt "doc/Documentation/cgroup-v1/cgroups.txt"
 
-
-1. [李佶澳的博客][1]
-2. [Linux Programmer's Manual: CGROUPS(7)][2]
-3. [doc/Documentation/cgroup-v1/][3]
-4. [doc/Documentation/cgroup-v1/cgroups.txt][4]
-5. [doc/Documentation/cgroup-v2.txt][5]
-
-[1]: https://www.lijiaocn.com "李佶澳的博客"
-[2]: https://man7.org/linux/man-pages/man7/cgroups.7.html "Linux Programmer's Manual: CGROUPS(7)"
-[3]: https://www.kernel.org/doc/Documentation/cgroup-v1/ "doc/Documentation/cgroup-v1/"
-[5]: https://www.kernel.org/doc/Documentation/cgroup-v2.txt "doc/Documentation/cgroup-v2.txt"

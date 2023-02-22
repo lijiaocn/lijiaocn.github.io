@@ -1,20 +1,20 @@
 ---
 layout: default
-title: "cgroups: cgroup v1 和 cgroup v2 详细介绍"
+title: "（已废弃）cgroups: cgroup v1 和 cgroup v2 详细介绍"
 author: 李佶澳
 createdate: "2019-01-28 15:52:58 +0800"
-last_modified_at: "2023-01-14 22:22:48 +0800"
+last_modified_at: "2023-02-22 11:33:55 +0800"
 categories: 技巧
-tags: linux cgroup
+tags: cgroup
 keywords: cgroup介绍文档,cgroup v1,cgroup v2,cgroup controller,linux资源隔离,linux资源控制器
 description: "详细介绍cgroup v1和cgroup v2，cgroup v2从kernel 3.10开始存在，kernel 4.5.0时成为正式特性"
 ---
 
-## 目录
+## 重要
 
->该文档已作废。
->
->初学时懵懵懂懂，有理解错误的地方，请见重新修订后的《重学cgroup: xxx》系列。
+>该文档已作废。新文档见 [cgroups: 入门指引、基本概念和 cgroup v1 基础使用](/技巧/2023/01/14/re-learn-cgroups.html)
+
+## 目录
 
 * auto-gen TOC:
 {:toc}
