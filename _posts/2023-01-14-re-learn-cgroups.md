@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "cgroups: 入门指引、基本概念和 cgroup v1 基础使用"
+title: "cgroups: 入门指引和 cgroup v1 的基础使用"
 author: 李佶澳
 date: "2023-01-14 14:30:06 +0800"
-last_modified_at: "2023-02-22 13:12:19 +0800"
+last_modified_at: "2023-02-22 13:18:39 +0800"
 categories: 技巧
 cover:
 tags: cgroup
@@ -286,6 +286,10 @@ subsystem 的文件接口和管理的资源类型相关，需要花较多时间�
 * [freezer-subsystem](https://www.kernel.org/doc/Documentation/cgroup-v1/freezer-subsystem.txt)
 * [pids](https://www.kernel.org/doc/Documentation/cgroup-v1/pids.txt)
 * [rdma](https://www.kernel.org/doc/Documentation/cgroup-v1/rdma.txt)
+
+### net_cls: 为报文标记 classid
+
+
 
 ## 参考
 
