@@ -3,7 +3,7 @@ layout: default
 title: "cgroups: 入门指引和 cgroup v1 的基础使用"
 author: 李佶澳
 date: "2023-01-14 14:30:06 +0800"
-last_modified_at: "2023-02-22 13:18:39 +0800"
+last_modified_at: "2023-02-23 17:06:41 +0800"
 categories: 技巧
 cover:
 tags: cgroup
@@ -289,6 +289,9 @@ subsystem 的文件接口和管理的资源类型相关，需要花较多时间�
 
 ### net_cls: 为报文标记 classid
 
+net_cls 用于给 group 内的网络报文打上特定的 tag，使报文可以通过 iptalbes 的 `-m cgroup` 识别，以及用于 tc：
+
+* [net_cls](https://www.kernel.org/doc/Documentation/cgroup-v1/net_cls.txt)
 
 
 ## 参考
