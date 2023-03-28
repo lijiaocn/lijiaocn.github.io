@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "Android开发环境搭建，模拟器以及设备上运行"
+title: "Android 开发环境搭建，模拟器以及设备上运行"
 author: 李佶澳
 date: "2022-04-30 18:30:39 +0800"
-last_modified_at: "2022-07-06 18:38:30 +0800"
+last_modified_at: "2023-03-28 11:08:36 +0800"
 categories: 编程
 cover:
 tags: Android 
@@ -48,17 +48,25 @@ res 目录中是 app 使用的资源文件，其中：
 * navigation 存放交互界面的切换顺讯
 * values 存放颜色、字符串等自定义资源
 
-### 模拟器运行
+### 用模拟器运行
 
 通过 Android Studio 的 Tools -> AVD Manager 安装本地安卓模拟器，然后就可以用运行按钮启动：
 
 ![Android Studio运行本地安卓模拟器]({{ site.article }}/android-studio-run1.png)
 
-### 设备上运行
+### 用物理设备运行
 
 进入 android 手机的开发者设置，打开 USB 调试，将手机脸上电脑上，在 Android Studio 中就可以看到增加的设备，选择并运行即可。
 
 ![Android Studio设备上运行]({{ site.article }}/adroid-studio-run2.png)
+
+
+## 应用架构
+
+App component 加载顺序是不确定的，而且可能会被随时销毁，不能在 app component 中存放数据。
+
+>it's possible for your app components to be launched individually and out-of-order, and the operating system or user can destroy them at any time. Because these events aren't under your control, you shouldn't store or keep in memory any application data or state in your app components, and your app components shouldn't depend on each other.
+
 
 
 ## 参考
