@@ -33,14 +33,6 @@
 	</div>
 
 	<div class="col-xs-12 rsidebar-element" style="text-align:left;">
-		<style>
-			li{
-				list-style-position:inside;
-				white-space:nowrap;
-				text-overflow:ellipsis;
-				overflow:hidden;
-			}
-		</style>
 		{% for tag in site.tags %}
 			{% for subtag in page.tags %}
 				{% if subtag == tag[0] %}

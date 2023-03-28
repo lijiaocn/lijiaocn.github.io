@@ -101,6 +101,13 @@ td,th{
 
 }
 
+.rsidebar-element li{
+	list-style-position:inside;
+	white-space:nowrap;
+	text-overflow:ellipsis;
+	overflow:hidden;
+}
+
 div.rsidebar-element img{
     width: 100%;
 }
@@ -341,6 +348,7 @@ div.rsidebar-title p {
     background-image:-webkit-linear-gradient(to bottom, #e8e8e8, #ffffff);
     background-image:linear-gradient(to bottom,#e8e8e8,#ffffff);
 }
+
 
 @media (min-width: 1200px) {
     .main {
