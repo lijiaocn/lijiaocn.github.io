@@ -6,7 +6,7 @@ future: true
 highlighter: rouge
 markdown: kramdown
 
-url:  "https://www.lijiaocn.com"
+url: "https://www.lijiaocn.com"
 plugins:
   - jekyll-feed
   - jekyll-paginate
