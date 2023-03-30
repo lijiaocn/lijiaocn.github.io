@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Go 语言语法一站式手册"
+title: "Go 语法一站式手册"
 author: 李佶澳
 createdate: 2017/11/15 10:49:40
 last_modified_at: 2017/12/01 18:07:59
