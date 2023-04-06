@@ -3,7 +3,7 @@ layout: default
 title: "Kotlin 语法一站式手册"
 author: 李佶澳
 date: "2023-03-30 11:36:56 +0800"
-last_modified_at: "2023-04-04 12:56:53 +0800"
+last_modified_at: "2023-04-06 20:18:35 +0800"
 categories: 编程
 cover:
 tags: 语法手册 kotlin
@@ -313,7 +313,31 @@ when (numberOfFish) {
 }
 ```
 
+### 断言语句
 
+* check(xx){XX} 中的表达式 xx 为 false 时，抛出内容为 XX 的异常
+
+```kotlin
+fun div(a :Int,b :Int) :Int{
+    check(b!=0){ "b is zero"}
+    return  a/b
+}
+
+fun main() {
+    div(10,0)
+}
+```
+
+如下：
+
+```
+Exception in thread "main" java.lang.IllegalStateException: b is zero
+    at CheckKt.div(check.kt:3)
+    at CheckKt.main(check.kt:8)
+    at CheckKt.main(check.kt)
+```
+
+```
 
 ## 数组和列表
 
@@ -1078,7 +1102,83 @@ fun main() {
 
 ## 泛型 generic
 
-TODO
+* 用 T 来指代类型，T 的实质定义为 T: Any? ，即可以为 null 的 Any 类型
+* 如果不允许 null，在泛型定义中用 T: Any
+* 如果只允许特定类型的 class/interface，使用  T: class/interface 声明
+
+```kotlin
+package example
+
+class GenericList<T>(v :T) {  // 实际是 class GenericList<T: Any?>(v :T)
+    var list  = mutableListOf<T>(v)
+    fun add(v:T){
+        list.add(v)
+    }
+}
+
+class UnNullList<T: Any>(v :T){
+    var list  = mutableListOf<T>(v)
+    fun add(v:T){
+        list.add(v)
+    }
+}
+
+open class Fruit(open var weight :Float){}
+class Apple(override var weight :Float, val price :Float):Fruit(weight){}
+class FruitList<T :Fruit?>(v :T){    //必须是 Fruit class
+    var list  = mutableListOf<T>(v)
+    fun add(v:T){
+        list.add(v)
+    }
+}
+
+interface Animal{ var weight: Float }
+class Pig(override var weight :Float, val price :Float):Animal{}
+class AnimalList<T :Animal?>(v :T){   //必须是 Animal
+    var list  = mutableListOf<T>(v)
+    fun add(v:T){
+        list.add(v)
+    }
+}
+
+fun main() {
+    //完整写法
+    val strList :GenericList<String> = GenericList<String>("hello")
+    strList.add("world")
+    println("strList is: ${strList.list}")
+
+    //简单写法
+    val intList = GenericList(1)
+    intList.add(2)
+    println("intList is: ${intList.list}")
+
+    val nullList = GenericList(null)
+    nullList.add(null)
+    println("nullList is: ${nullList.list}")
+
+    //val unNullList = UnNullList(null) //不能是 Null
+
+    val fruitList = FruitList<Fruit>(Apple(1.0.toFloat(),2.0.toFloat()))
+    //val fruitList = FruitList("hello") //不接受非 Fruit class 的类型
+    println("fruitList is: ${fruitList.list}")
+
+    val animalList = AnimalList<Animal>(Pig(1.0.toFloat(),2.0.toFloat()))
+    //val animalList = AnimalList<String>("hello") //不接受非 Animal 的类型
+    println("animalList is: ${animalList.list}")
+}
+```
+
+执行结果如下：
+
+```
+strList is: [hello, world]
+intList is: [1, 2]
+nullList is: [null, null]
+fruitList is: [example.Apple@2f92e0f4]
+animalList is: [example.Pig@28a418fc]
+```
+
+
 
 ## 参考
 
