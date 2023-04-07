@@ -697,3 +697,36 @@ YCM需要7.4的vim，在mac系统上可以通过下面的命令升级 [Mac自带
 重启开启：
 
 	:set nopaste
+
+### vim 快速插入剪切板中的内容
+
+vim 有寄存器功能，将寄存器中的内容粘贴到文件中的速度比 ctrl+v 快很多。
+
+* Ctrl+C 复制的内容存放在系统的剪切板中，对应的 vim 寄存器是 "*（引号+星号）
+* Vim 中用鼠标选中的内容存放在系统缓冲区，对应的 vim 寄存器是 "+ (引号+加号)
+* 在普通模式下（非编辑模式），键入寄存器编号和p，即可将寄存器中的内容粘贴到当前位置
+
+
+在 vim 中加入下面的配置，普通模式下按 p 键即可复制剪切板中的内容，见 :help clipboard 和 :help unnamed
+
+```vim
+"在普通模式中，按 p 键将系统剪切板中的内容插入到光标位置，等同于 "*p
+set clipboard=unnamedplus
+```
+
+```
+> There are nine types of registers:                      
+> 1. The unnamed register ""
+> 2. 10 numbered registers "0 to "9
+> 3. The small delete register "-
+> 4. 26 named registers "a to "z or "A to "Z
+> 5. four read-only registers ":, "., "% and "#
+> 6. the expression register "=
+> 7. The selection and drop registers "*, "+ and "~ 
+> 8. The black hole register "_
+> 9. Last search pattern register "/
+```
+
+参考 [vim粘贴模式快捷方式](http://xstarcd.github.io/wiki/vim/vim-copy-paste.html)
+
+
