@@ -3,10 +3,10 @@ layout: default
 title: "Kotlin 语法一站式手册"
 author: 李佶澳
 date: "2023-03-30 11:36:56 +0800"
-last_modified_at: "2023-04-06 20:18:35 +0800"
+last_modified_at: "2023-04-07 16:39:05 +0800"
 categories: 编程
 cover:
-tags: 语法手册 kotlin
+tags: 语法手册
 keywords:
 description: "Google 给出的 Android 应用示例都用 kotlin 了，简单了解下它的语法，主要内容来自 Kotlin Bootcamp for Programmers"
 ---
@@ -335,8 +335,6 @@ Exception in thread "main" java.lang.IllegalStateException: b is zero
     at CheckKt.div(check.kt:3)
     at CheckKt.main(check.kt:8)
     at CheckKt.main(check.kt)
-```
-
 ```
 
 ## 数组和列表
@@ -726,7 +724,7 @@ class Student {
 
 ### class
 
-class 支持常见的面像对象设计：
+class 支持常见的面向对象设计：
 
 * 支持构造函数，并且支持多个第二构造函数，第二个构造函数用 constructor 关键字声明
 * 多个构造函数之间通过函数签名（入参类型和数量）的差异区分
@@ -785,6 +783,27 @@ fun main() {
     println("set nextYearAget to 15: ")
     stu2.setNextYearAget(15)
     stu2.printBasicInfo()
+}
+```
+
+* 构造函数中的参数作用域和用法
+
+```kotlin
+class User1(name: String){
+    var userName :String
+    init {
+        userName = name
+    }
+}
+class User2(name: String){
+    var userName :String =name
+}
+
+fun main(){
+    val user1 = User1("user1")
+    println(user1.userName)
+    val user2 = User2("user2")
+    println(user2.userName)
 }
 ```
 
@@ -1067,7 +1086,7 @@ fun main() {
 }
 ```
 
-## 自定义扩展
+### 自定义扩展
 
 * 在不修改 class 定义的情况下，为已有的 class 增加方法或者属性
 
@@ -1102,9 +1121,12 @@ fun main() {
 
 ## 泛型 generic
 
+### 泛型的定义
+
 * 用 T 来指代类型，T 的实质定义为 T: Any? ，即可以为 null 的 Any 类型
 * 如果不允许 null，在泛型定义中用 T: Any
 * 如果只允许特定类型的 class/interface，使用  T: class/interface 声明
+
 
 ```kotlin
 package example
@@ -1178,13 +1200,88 @@ fruitList is: [example.Apple@2f92e0f4]
 animalList is: [example.Pig@28a418fc]
 ```
 
+### 泛型的协变和逆变
 
+泛型对象的传入类型 T 可能是具有继承关系的，根据父类泛型和子类泛型之间的可替代性将泛型分为[协变和逆变][3]三类：
+
+* 父类泛型和子类泛型不可互相替代为不可变，默认是都是不可变类型
+* 父类泛型可以替代子类泛型的为协变，用 out 声明，不允许在泛型定义中作为入参类型
+* 子类泛型可以替代父类泛型的为逆变，用 in 声明，不允许在泛型定义中作为返回值类型
+
+out 和 in 解释起来比较麻烦，重点是下面代码中的 pay() 函数和 reboot() 函数：
+
+* produce() 入参对应的泛型是不可变的，只能传入声明中指定的类型
+* pay() 入参是父类泛型，但泛型为协变量类型(out)，可以传入子类泛型
+* reboot() 入参是子类泛型，但是泛型为逆变类型(in)，可以传入父类泛型
+
+```kotlin
+package example
+
+open class Computer(open val name:String){}
+class Laptop(override val name:String) :Computer(name){}
+class Desktop(override val name:String) :Computer(name){}
+
+class Produce<T :Computer>(val item: T){
+    fun produce(){
+        println("produce ${item.name}")
+    }
+}
+
+// 协变类 covariant，子类泛型是父类泛型的子类型，不允许 T 作为参数，因为 T 可能是子类
+class Order<out T :Computer>(val item: T) {
+    // 不允许 T 作为入参类型，因为 T 可能是一个父类对象，作为入参会把父类对象混入到子类对象中
+    // fun dealOrder(v :T){}
+    fun pay(){
+        println("pay ${item.name}")
+    }
+}
+
+// 逆变类 contravariant，父类泛型是子类泛型的子类行，不允许返回 T 类型，因为返回的可能是父类
+class Handler<in T :Computer>(input: T){
+    private val item: T = input
+    // 不允许 T 作为返回类型
+    // fun getItem(): T{ return item }
+    fun reboot(){
+        println("reboot ${item.name}")
+    }
+}
+
+fun produce(item :Produce<Laptop>){item.produce()}    // 入参为子类泛型
+fun pay(o :Order<Computer>){o.pay()}                  // 入参为父类泛型
+fun reboot(h :Handler<Laptop>){h.reboot()}            // 入参为子类泛型
+
+fun main() {
+    val laptop = Laptop("ThinkPad")
+
+    val computerProduce : Produce<Computer> = Produce(laptop)
+    val laptopProduce : Produce<Laptop> = Produce(laptop)
+    // produce(computerProduce)  // 不可变泛型，不能接受父类反省
+    produce(laptopProduce)
+
+    val computerOrder : Order<Computer> = Order(laptop)  //父类泛型对象
+    val laptopOrder : Order<Laptop> = Order(laptop)      //子类泛型对象
+
+    pay(computerOrder)  // 传入父类泛型对象
+    pay(laptopOrder)    // 传入子类泛型对象，如果Order中没有指定 out，语法错误
+
+    val computerHandler : Handler<Computer> = Handler(laptop)  //父类泛型对象
+    val laptopHandler : Handler<Laptop> = Handler(laptop)      //子类泛型对象
+
+    reboot(computerHandler)   // 传入父类泛型对象，如果 Operation 中没有指定 in，语法错误
+    reboot(laptopHandler)     // 传入子类泛型对象
+}
+```
+
+### 泛型函数
+
+TODO
 
 ## 参考
 
 1. [李佶澳的博客][1]
 2. [Kotlin Bootcamp for Programmers][2]
+3. [协变与逆变][3]
 
 [1]: https://www.lijiaocn.com "李佶澳的博客"
 [2]: https://developer.android.com/courses/kotlin-bootcamp/overview?hl=en "Kotlin Bootcamp for Programmers"
-
+[3]: https://zh.wikipedia.org/wiki/%E5%8D%8F%E5%8F%98%E4%B8%8E%E9%80%86%E5%8F%98 "协变与逆变"
