@@ -17,9 +17,7 @@ description: go语言支持reflection，这里go语言的反射机制的学习�
 
 ## 说明
 
-不同语言的反射模式是不同的。
-
-在golang的官网上有一篇文章很详细的介绍了go语言的反射机制: [The Laws of Reflection][1]。
+在 go 的官网上有一篇文章很详细的介绍了go语言的反射机制: [The Laws of Reflection][1]。
 
 ## 反射实现的前提
 
@@ -27,142 +25,304 @@ description: go语言支持reflection，这里go语言的反射机制的学习�
 
 	reflection builds on the type system
 
-golang的变量类型是静态的，在创建变量的时候就已经确定，反射主要与golang的interface类型相关。
+go 的变量类型是静态的，在创建变量的时候就已经确定。反射主要与 interface 类型一起提供一定的动态类型能力。
 
-在golang的实现中，每个interface变量都有一个对应pair，pair中记录了实际变量的值和类型:
+在 go 的实现中，每个 interface 变量都有一个对应 pair，pair 中记录了实际变量的值和类型:
 
 	(value, type)
 	
 	value是实际变量值，type是实际变量的类型
 
-例如，创建类型为`*os.File`的变量，然后将其赋给一个接口变量`r`：
+例如，创建类型为 `*os.File` 的变量，然后将其赋给一个接口变量 `r`：
 
 	tty, err := os.OpenFile("/dev/tty", os.O_RDWR, 0)
 	
 	var r io.Reader
 	r = tty
 
-接口变量r的pair中将记录如下信息：
+接口类型变量 r 的pair 中将记录如下信息：
 
-	(tty, *os.File)
+	(tty, *os.File)   // value tty，类型 *os.File
 
-这个pair在接口变量的连续赋值过程中是不变的，将接口变量r赋给另一个接口变量w:
+这个 pair 在接口变量的连续赋值过程中是不变的，将接口变量 r 赋给另一个接口变量 w:
 
 	var w io.Writer
 	w = r.(io.Writer)
 
-接口变量w的pair与r的pair相同，都是:
+接口变量 w 的 pair 与 r 的 pair 相同，都是:
 
 	(tty, *os.File)
 
-即使w是空接口类型，pair也是不变的。
+即使 w 是空接口类型，pair 也是不变的。
 
-pair的存在，是golang中实现反射的前提，理解了pair，就更容易理解反射。
+pair 是 go中实现反射的前提，理解了pair，就更容易理解反射。
 
-## 从接口变量中获取value和type信息
+##  TypeOf 和 ValueOf
 
-`reflect.TypeOf()`是获取pair中的type，`reflect.ValueOf()`获取pair中的value：
+`reflect.TypeOf()` 是获取 pair 中的 type，`reflect.ValueOf()`获取 pair 中的 value：
 
-	package main
-	import (
-		"fmt"
-		"reflect"
-	)
-	func main() {
-		var x float64 = 3.4
-		fmt.Println("type: ", reflect.TypeOf(x))
-		fmt.Println("type: ", reflect.ValueOf(x))
-	}
+```go
+func TestReflect(t *testing.T) {
+    var x float64 = 3.14526
+    t.Logf("type: %v", reflect.TypeOf(x))
+    t.Logf("value: %v", reflect.ValueOf(x))
+}
+```
 
 运行时输出的结果是:
 
 	type:  float64
-	type:  3.4
+	value: 3.14526
 
-pair中的value和type用类型`reflect.Value`和`reflect.Type`描述。
+pair 中的 value 和 type 用类型 `reflect.Value`和 `reflect.Type` 描述。
 
-[package: reflect][2]中有很详细的信息，例如Kind()返回的类型：
+### reflect.Type
 
-	const (
-		Invalid Kind = iota
-		Bool
-		Int
-		Int8
-		Int16
-		Int32
-		Int64
-		Uint
-		Uint8
-		Uint16
-		Uint32
-		Uint64
-		Uintptr
-		Float32
-		Float64
-		Complex64
-		Complex128
-		Array
-		Chan
-		Func
-		Interface
-		Map
-		Ptr
-		Slice
-		String
-		Struct
-		UnsafePointer
-	)
+reflect.Type 是一个 interface，通过它可以获取类型相关信息：
 
-## 从Value中获取接口信息
+```go
+func TestReflectType(t *testing.T) {
+    type Demo struct {
+        Name string  `json:"name"`
+        Age  int     `json:"age"`
+        Desc *string `yaml:"desc" json:"desc"`
+    }
+    d := Demo{Name: "hello", Age: 10}
+    dtype := reflect.TypeOf(d)
+    for i := 0; i < dtype.NumField(); i++ {
+        field := dtype.Field(i)
+        t.Logf("%d name: %s, type: %v, tag: %v", i, field.Name, field.Type, field.Tag)
+    }
+}
+```
 
-类型为"relfect.Value"变量，通过下面的方法可以获得接口变量：
+输出：
 
-	func (v Value) Interface() interface{}
+```
+0 name: Name, type: string, tag: json:"name"
+1 name: Age, type: int, tag: json:"age"
+2 name: Desc, type: *string, tag: yaml:"desc" json:"desc"``
+```
 
-当收到一个类型为reflect.Value类型的变量时，用下面方式将它转换对应的接口变量，然后进行类型判断：
+### reflect.Value
 
-	y := v.Interface().(float64)
+reflect.Value 是一个 struct 类型，可以通过它的 method 获取 value 的 type 和 kind，并根据 kind 类型转换成对应数值以及发起操作（函数调用、channel读取写入）。
 
-之后就可以使用y的成员和方法。
+#### Type() 和 Kind()
 
-## 通过reflect.Value设置实际变量的值
+注意 type 和 kind 的区别，type 是编码时定义的各种类型，kind 是有限的变量种类，有且只有几种 [kind][2]：
 
-reflect.Value是通过reflect.ValueOf(X)获得的，只有当X是指针的时候，才可以通过reflec.Value修改实际变量X的值。
+```go
+func TestRefelctValue(t *testing.T) {
+    type Demo struct {
+        Name string
+        Desc *string
+    }
 
-例如:
+    d := Demo{
+        Name: "hello",
+        Desc: nil,
+    }
 
-	var x float64 = 3.4
-	p := reflect.ValueOf(&x)    // Note: take the address of x.
-	v := p.Elem()
-	fmt.Println("type of p:", v.Type())
-	fmt.Println("settability of p:", v.CanSet())
-	v.SetFloat(77)
+    // 非指针类型
+    dvalue := reflect.ValueOf(d)
+    t.Logf("value type: %v", dvalue.Type())
+    t.Logf("value kind: %v", dvalue.Kind())
 
-传入的是`* float64`，需要用p.Elem()获取所指向的Value。v.CantSet()输出的是true，因此可以用`v.SetFloat()`修改x的值。
+    // 指针类型
+    pvalue := reflect.ValueOf(&d)
+    t.Logf("ptr value type: %v", pvalue.Type())
+    t.Logf("ptr value kind: %v", pvalue.Kind())
+}
+```
 
-## 收到reflect.Value变量后
+输出：
 
-如果得到了一个类型为reflect.Value的变量，可以通过下面的方式，获得变量的信息。
+```
+value type: main.Demo
+value kind: struct
+ptr value type: *main.Demo
+ptr value kind: ptr
+```
 
-如果知道v的真实类型，可先转换成interface{}，然后转化成对应的类型:
+Kind 的全部定义：
 
-	r := v.Interface().(已知的类型)
+```go
+const (
+    Invalid Kind = iota
+    Bool
+    Int
+    Int8
+    Int16
+    Int32
+    Int64
+    Uint
+    Uint8
+    Uint16
+    Uint32
+    Uint64
+    Uintptr
+    Float32
+    Float64
+    Complex64
+    Complex128
+    Array
+    Chan
+    Func
+    Interface
+    Map
+    Ptr
+    Slice
+    String
+    Struct
+    UnsafePointer
+)
+```
+#### Convert()
 
-除了interface{}，还可以转换成其它类型:
+reflect.Value 提供多种类型转换方法，除了 String 类型转换，其它类型转换都相应提供了一个 Can 方法：
 
-	func (v Value) Bool() bool
-	func (v Value) Bytes() []byte
-	func (v Value) Int() int64
-	func (v Value) Uint() uint64
-	...
+```go
+func TestReflectValue_Convert(t *testing.T) {
+    str := "this is a str"
+    strValue := reflect.ValueOf(str)
 
-如果不知道v的真实类型，获取它的Type，然后遍历Type的Field，和v的Field:
+    t.Logf("String(): %v", strValue.String())
 
-	t := v.Type()
-	for i := 0; i < v.NumField(); i++ {
-		f := v.Field(i)
-		fmt.Printf("%d: %s %s = %v\n", i, t.Field(i).Name, f.Type(), f.Interface())
-	}
+    if strValue.CanInterface() {
+        t.Logf("Interface(): %v", strValue.Interface())
+    } else {
+        t.Logf("Interface() not allowed")
+    }
+
+    if strValue.CanInt() {
+        t.Logf("Int(): %v", strValue.Int())
+    } else {
+        t.Logf("Int() not allowed")
+    }
+
+    strType := reflect.TypeOf("")
+    if strValue.CanConvert(strType) {
+        t.Logf("Str Convert(): %v", strValue.Convert(strType))
+    } else {
+        t.Logf("Str Convert() not allowed")
+    }
+
+    intType := reflect.TypeOf(10)
+    if strValue.CanConvert(intType) {
+        t.Logf("int Convert(): %v", strValue.Convert(intType))
+    } else {
+        t.Logf("int Convert() not allowed")
+    }
+}
+```
+
+运行结果如下：
+
+```
+String(): this is a str
+Interface(): this is a str
+Int() not allowed
+Str Convert(): this is a str
+int Convert() not allowed
+```
+
+#### Set()
+
+value 提供了用于修改数值的 Set() 方法，但不是所有的 value 都可以被 set，只有可寻址的 value 可以 set
+
+```go
+// CanSet reports whether the value of v can be changed.
+// A Value can be changed only if it is addressable and was not
+// obtained by the use of unexported struct fields.
+// If CanSet returns false, calling Set or any type-specific
+// setter (e.g., SetBool, SetInt) will panic.
+func (v Value) CanSet() bool {
+    return v.flag&(flagAddr|flagRO) == flagAddr
+}
+```
+
+指针类型的 Elem() 是可以修改的：
+
+```go
+func TestRefelctValue_Set(t *testing.T) {
+    type Demo struct {
+        Name string
+        Desc *string
+    }
+    d := Demo{
+        Name: "hello",
+        Desc: nil,
+    }
+    d2 := Demo{
+        Name: "hello2",
+        Desc: nil,
+    }
+
+    // 非指针
+    dvalue := reflect.ValueOf(d)
+    t.Logf("dvalue CanSet: %v CanAddr: %v", dvalue.CanSet(), dvalue.CanAddr())
+    if dvalue.CanSet() {
+        dvalue.Set(reflect.ValueOf(d2))
+    }
+    t.Logf("d: %v", d)
+
+    pvalue := reflect.ValueOf(&d)
+    t.Logf("pvalue.Elem() CanSet: %v CanAddr: %v", pvalue.Elem().CanSet(), pvalue.Elem().CanAddr())
+    if pvalue.Elem().CanSet() {
+        pvalue.Elem().Set(reflect.ValueOf(d2)) //需要用 Elem() 获取指针所指 Value
+    }
+    t.Logf("d: %v", d)
+}
+```
+
+运行结果如下：
+
+```
+dvalue CanSet: false CanAddr: false
+d: {hello <nil>}
+pvalue.Elem() CanSet: true CanAddr: true
+d: {hello2 <nil>}
+```
+
+
+#### Field  操作
+
+value 提供了 field 相关操作，如果 value 是指针类型，需要先用 Elem() 获取指针所指的 value：
+
+```go
+func TestRefelctValue_Field(t *testing.T) {
+    type Demo struct {
+        Name string
+        Desc *string
+    }
+
+    d := Demo{Name: "hello", Desc: nil}
+
+    // 非指针类型
+    dvalue := reflect.ValueOf(d)
+    for i := 0; i < dvalue.NumField(); i++ {
+        field := dvalue.Field(i)
+        t.Logf("field %d kind: %v, canSet: %v", i, field.Kind(), field.CanSet())
+    }
+
+    // 指针类型，需要通过 Elem() 获取指定的 value，只有指针的 Elem().Field 是 canSet
+    pvalue := reflect.ValueOf(&d)
+    for i := 0; i < pvalue.Elem().NumField(); i++ {
+        field := pvalue.Elem().Field(i)
+        t.Logf("field %d kind: %v, canSet: %v", i, field.Kind(), field.CanSet())
+    }
+}
+```
+
+运行结果如下：
+
+```
+field 0 kind: string, canSet: false
+field 1 kind: ptr, canSet: false
+field 0 kind: string, canSet: true
+field 1 kind: ptr, canSet: true
+```
 
 ## 参考
 
