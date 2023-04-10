@@ -3,7 +3,7 @@ layout: default
 title: "Kotlin 语法一站式手册"
 author: 李佶澳
 date: "2023-03-30 11:36:56 +0800"
-last_modified_at: "2023-04-07 16:39:05 +0800"
+last_modified_at: "2023-04-10 14:50:55 +0800"
 categories: 编程
 cover:
 tags: 语法手册
@@ -1274,7 +1274,88 @@ fun main() {
 
 ### 泛型函数
 
-TODO
+* 泛型函数是在函数定义定义是声明一个在函数内使用的类型模版 T，T 可以用在函数参数和函数体中
+* 调用函数的时候赋予 T 实际的类型
+* 如果在函数中要用 T 做类型判断，需要将函数设置为 inline 并用 reified 声明，意思是使用运行时实际传入的类型
+
+
+```kotlin
+package example
+
+class AnyList<T>(item: T){
+    var list = mutableListOf<T>(item)
+    fun add(v:T){
+        list.add(v)
+    }
+}
+
+fun <T> printAnyList(input: AnyList<T>){
+    for (item in input.list){
+        println("> $item")
+    }
+    println()
+}
+
+open class Bird(open var name: String){}
+class Seagull(override  var name :String):Bird(name){}
+class Duck(override  var name :String):Bird(name){}
+
+class BirdList<T:Bird>(item: T){
+    var list = mutableListOf<T>(item)
+    fun add(v:T){
+        list.add(v)
+    }
+}
+
+fun <T:Bird> printBirdList(input: BirdList<T>){
+    for (item in input.list){
+        println("> ${item.name}")
+    }
+    println()
+}
+
+//fun <T> isType(input :Any) :Boolean{
+//    // 直接用 T 做类型判断，编译器会提示语法错误
+//    return input is T
+//}
+
+// 函数用用 T 做类型判断，设置为 inline，并声明 reified
+inline fun <reified T> isType(input :Any) :Boolean{
+    return input is T
+}
+
+
+fun main() {
+    val anyList:  AnyList<String> = AnyList("a")
+    anyList.add("b")
+    printAnyList<String>(anyList) // 或者 printAnyList(anyList)
+
+    val birdList: BirdList<Bird> = BirdList(Seagull("seagull"))
+    birdList.add(Duck("duck"))
+    printBirdList<Bird>(birdList)  // 或者 printBirdList(birdList)
+
+    val duck = Duck("duck")
+    println("isType2<Duck>: ${isType<Duck>(duck)}")
+    println("isType2<String>: ${isType<String>(duck)}")
+}
+```
+
+### 泛型的属性扩展
+
+* 泛型也支持属性扩展，扩展时传入类型未知，用 * 指示
+* 扩展函数也可以是泛型函数，如果在函数中遇到类型判断，也要用 inline 和 reified 声明
+
+```kotlin
+// 泛型的属性扩展，用 * 代替传入类型
+fun BirdList<*>.printLen(){
+    println("len is: ${list.size}")
+}
+
+// 泛型的属性扩展，扩展方法为泛型函数，并且用到类型判断，用 inline 和 reified 声明
+inline fun <reified T> BirdList<*>.firstIsType() :Boolean{
+    return list[0] is T
+}
+```
 
 ## 参考
 
