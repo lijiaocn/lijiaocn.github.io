@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 理解go的反射机制reflection
+title: "go 语言的反射操作 reflection"
 author: 李佶澳
 createdate: 2017/11/06 15:34:13
 last_modified_at: 2017/11/08 21:19:49
@@ -322,6 +322,66 @@ field 0 kind: string, canSet: false
 field 1 kind: ptr, canSet: false
 field 0 kind: string, canSet: true
 field 1 kind: ptr, canSet: true
+```
+
+#### Value 的新建 
+
+reflect 的 New() 方法用于创建一个指向指定类型 value 的指针，支持 Set() 操作。可以用下面的方法创建一个 value 并赋值：
+
+```go
+func NewTypeValue(t reflect.Type, fields map[string]interface{}) (interface{}, error) {
+    var err error
+    newValue := reflect.New(t)
+    switch newValue.Elem().Kind() {
+    case reflect.Struct:
+        for fieldName, fieldValue := range fields {
+            field := newValue.Elem().FieldByName(fieldName)
+            if field.CanSet() {
+                field.Set(reflect.ValueOf(fieldValue))
+            }
+        }
+    default:
+        err = fmt.Errorf("not struct type")
+    }
+    if err != nil {
+        return nil, err
+    }
+    if !newValue.CanInterface() {
+        return nil, fmt.Errorf("can't convert")
+    }
+    return newValue.Interface(), nil
+}
+```
+
+用 type 和 fieldMap 的方式新建变量：
+
+```go
+func TestReflect_NewTypeValue(t *testing.T) {
+    type Demo struct {
+        Name string
+        Desc *string
+    }
+
+    desc := "this is a desc"
+    fieldValue := map[string]interface{}{
+        "Name": "hello",
+        "Desc": &desc,
+    }
+
+    newValue, err := NewTypeValue(reflect.TypeOf(Demo{}), fieldValue)
+    if err != nil {
+        t.Errorf("fail: err=%v", err)
+    } else {
+        bytes, _ := json.Marshal(newValue)
+        t.Logf("newValue: %s", bytes)
+    }
+}
+```
+
+运行结果如下：
+
+```
+newValue: {"Name":"hello","Desc":"this is a desc"}
 ```
 
 ## 参考
