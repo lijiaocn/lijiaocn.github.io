@@ -3,7 +3,7 @@ layout: default
 title: "Kotlin 语法一站式手册"
 author: 李佶澳
 date: "2023-03-30 11:36:56 +0800"
-last_modified_at: "2023-04-10 14:50:55 +0800"
+last_modified_at: "2023-04-10 19:48:01 +0800"
 categories: 编程
 cover:
 tags: 语法手册
@@ -276,6 +276,27 @@ repeat(i){
 // hello
 // hello
 // hello
+```
+
+### break 语句
+
+* 标签名@
+
+```kotlin
+fun loop(){
+    outerLoop@ for (i in 1..100){
+        println("$i")
+        for (j in 1..100){
+            if (i >10) {
+                break@outerLoop
+            }
+        }
+    }
+}
+
+fun main(){
+    loop()
+}
 ```
 
 ### 条件判断
