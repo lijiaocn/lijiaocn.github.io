@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 使用calico的ipip模式解决k8s的跨网段通信
+title: "kubernetes 跨网段通信: 通过 calico 的 ipip 模式"
 author: 李佶澳
 createdate: 2017/09/25 15:41:31
 last_modified_at: 2017/11/29 13:51:13

@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  使用 grafana 和 prometheus 监控 kubernetes 集群状态
+title:  "kubernetes 集群状态监控：通过 grafana 和 prometheus"
 author: 李佶澳
 createdate: 2018/08/30 15:59:00
 last_modified_at: 2018/08/31 18:23:21
