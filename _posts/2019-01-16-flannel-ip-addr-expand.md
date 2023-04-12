@@ -3,9 +3,9 @@ layout: default
 title: "flannel ip 地址段扩容方法"
 author: 李佶澳
 createdate: "2019-01-16 13:53:08 +0800"
-last_modified_at: "2019-12-04 10:46:19 +0800"
+last_modified_at: "2023-04-12 16:39:53 +0800"
 categories: 技巧
-tags: flannel kubernetes
+tags: flannel
 keywords: flannel,flanneld,kubernetes
 description: flannel的网段设置的过小，导致kuberntes集群最多只能有256个node，需要对flannel的网段进行扩容。
 ---

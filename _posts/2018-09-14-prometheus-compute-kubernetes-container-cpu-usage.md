@@ -1,11 +1,11 @@
 ---
 layout: default
-title: 通过Prometheus查询计算Kubernetes集群中的容器CPU、内存使用率等指标
+title: "通过 prometheus 查询计算Kubernetes集群中的容器CPU、内存使用率等指标"
 author: 李佶澳
 createdate: "2018-09-14 13:36:26 +0800"
-last_modified_at: "2018-09-14 13:36:26 +0800"
+last_modified_at: "2023-04-12 16:40:54 +0800"
 categories: 技巧
-tags: prometheus kubernetes
+tags: prometheus
 keywords: prometheus,kubernetes,cpu usage,mem usage
 description: Kubernetes的kubelet组件内置了cadvisor，将Node上容器的指标以Prometheus支持的格式展示，可以通过这些指标计算得到更多有用的数据。
 ---

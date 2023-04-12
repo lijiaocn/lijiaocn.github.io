@@ -1,12 +1,12 @@
 ---
 layout: default
-title: "旌旗招展，向网格而行！"
+title: "next kubernetes: 旌旗招展，向网格而行！"
 author: 李佶澳
 date: "2019-12-06 10:08:28 +0800"
-last_modified_at: "2019-12-06 15:09:03 +0800"
+last_modified_at: "2023-04-12 16:39:09 +0800"
 categories: 方法
 cover:
-tags: 实践经验分享 kubernetes istio
+tags: istio
 keywords: 服务网格,阿里云,istio,servicemesh,kubernetes
 description:  你还在彷徨吗？还在犹豫吗？还是找不到方向吗？别纠结了，直接搞网格！
 ---

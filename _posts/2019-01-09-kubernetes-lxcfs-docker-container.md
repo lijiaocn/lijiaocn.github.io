@@ -3,9 +3,9 @@ layout: default
 title: "lxcfs 是什么？ 怎样通过 lxcfs 在容器内显示容器的 CPU、内存状态"
 author: 李佶澳
 createdate: "2019-01-09 14:12:25 +0800"
-last_modified_at: "2019-12-04 10:46:41 +0800"
+last_modified_at: "2023-04-12 16:40:22 +0800"
 categories: 技巧
-tags: kubernetes docker
+tags: docker
 keywords: kubernetes,lxcfs,docker,container,top,memory,disk
 description:  LXCFS，FUSE filesystem for LXC，运行时会维护一组与/proc中的文件同名的文件，提供容器的状态信息
 ---

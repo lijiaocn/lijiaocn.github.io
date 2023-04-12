@@ -1,12 +1,12 @@
 ---
 layout: default
-title: "Prometheus 采集 Kubernetes 中的 pod 的 metrics 的方法"
+title: "prometheus 采集 Kubernetes 中的 pod 的 metrics 的方法"
 author: 李佶澳
 date: "2020-04-15T16:15:59+0800"
 last_modified_at: "2020-04-21T10:52:27+0800"
 categories: 技巧
 cover:
-tags: prometheus kubernetes
+tags: prometheus
 keywords: prometheus,metrics,kubernetes_sd_config
 description: 为pod/service配置annotation，prometheus通过annotation采集pod的metrics
 ---
