@@ -727,6 +727,15 @@ set clipboard=unnamedplus
 > 9. Last search pattern register "/
 ```
 
+"set clipboard=unnamedplus" 方式有个缺点会导致 vim 中的 yy 复制粘贴失效。换用下面的命令，将 ctrl-p 映射到 "*p，在普通模式下，用 ctrl+p 就可以实现快速粘贴。
+
+```vim
+"在普通模式中，按 p 键将系统粘贴板中的内容插入到光标位置，等同于 "*p
+"set clipboard=unnamedplus
+"寄存器内容粘贴快捷键: "*p
+nmap <C-p> "*p
+```
+
 参考 [vim粘贴模式快捷方式](http://xstarcd.github.io/wiki/vim/vim-copy-paste.html)
 
 
