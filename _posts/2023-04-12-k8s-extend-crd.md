@@ -3,7 +3,7 @@ layout: default
 title: "kubernetes 扩展：CRD 的使用（自定义资源）"
 author: 李佶澳
 date: "2023-04-12 17:23:16 +0800"
-last_modified_at: "2023-04-19 17:07:13 +0800"
+last_modified_at: "2023-04-20 15:18:02 +0800"
 categories: 项目
 cover:
 tags: kubernetes
@@ -104,11 +104,11 @@ go mod init
 go mod init study_kubernetes/crd/crontab
 ```
 
-获取以来代码：
+获取依赖代码，v0.26.3 对应 kuberntes 1.26.3：
 
 ```sh
-go get k8s.io/apimachinery@kubernetes-1.26.3      # CronTab 定义需要引用其中的 Struct
-go get k8s.io/code-generator@kubernetes-1.26.3    # 用于代码生成的脚本
+go get k8s.io/apimachinery@v0.26.3      # CronTab 定义需要引用其中的 Struct
+go get k8s.io/code-generator@v0.26.3    # 用于代码生成的脚本
 ```
 
 其中 [code-generator][5] 是从 kubernetes 主代码仓库中抽取出来的代码生成工具，这个工具默认是行在 $GOPATH/src/XX 目录中（Go z早期的代码组织方式）。现在 Go 的代码组织都是用 go mod 的方式，为了运行 code-generator 中的脚本，需要进行一些特殊处理。
@@ -271,6 +271,7 @@ ${CODEGEN_PKG}/generate-groups.sh "deepcopy,client,informer,lister" \
   crontab:v1 \
   --go-header-file ${ROOT}/hack/boilerplate.go.txt \
   --output-base ${ROOT}/../../../   # 必须是study_kubernetes所在的目录，如果没有用 --output-base 指定目录，代码默认生成在 $GOPATH/src 中
+rm -rf ${ROOT}/vendor   # 生成完成后 vendor 就不再需要了
 ```
 
 如果有没有用 --output-base 指定目录，代码默认生成在 $GOPATH/src 中。
@@ -303,6 +304,7 @@ clientset informers listers
 
 ```sh
 mkdir -p cmd/client
+go get k8s.io/client-go@v0.26.3   # 配置文件解析需要用 client-go
 ```
 
 ```go
