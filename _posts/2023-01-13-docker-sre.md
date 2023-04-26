@@ -3,10 +3,10 @@ layout: default
 title: "Docker 问题排查: nslookup: clock_gettime(MONOTONIC) failed"
 author: 李佶澳
 date: "2023-01-13 11:05:01 +0800"
-last_modified_at: "2023-01-13 14:09:56 +0800"
+last_modified_at: "2023-04-26 14:31:11 +0800"
 categories: 问题
 cover:
-tags: Docker问题排查
+tags:  docker
 keywords:
 description: "nslookup: clock_gettime(MONOTONIC) failed:该问题会在 x86、armv7、armhf，以及在 64位机器上运行的 32位 Docker 中出现。根源在 musl 升级到了 1.2 版本，这个版本修改了 32位系统上的 time_t 定义。"
 ---
