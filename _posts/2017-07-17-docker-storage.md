@@ -1,6 +1,6 @@
 ---
 layout: default
-title: docker的storage类型
+title: "docker 深入: storage driver 与容器的可用存储空间限制"
 author: 李佶澳
 createdate: 2017/07/17 13:34:40
 last_modified_at: 2017/07/24 14:28:30
@@ -17,32 +17,30 @@ description: 选择一个合适的存储，是docker的稳定运行的重要前�
 
 ## 说明
 
-docker的文档[Select a storage driver][1]中推荐按照下面的顺序选择storage driver:
+docker 文档 [Select a storage driver][1] 中推荐按照下面的顺序选择 storage driver:
 
 	aufs
 	btrfs,zfs
 	overlay2
 	overlay
 	devicemapper
-	
-	docker还支持vfs，也就是直接存文件
 
-storage driver的特点如下：
+docker还支持vfs，也就是直接存文件。各种 storage driver 的特点如下：
 
 	Name           Type        Storage-opt 
 	-----------------------------------------
 	aufs           基于文件     不支持         
 	btrfs          基于块       支持           
 	zfs            基于块       支持           
-	overlay2       基于文件     基于XFS时支持  
+	overlay2       基于文件     基于 XFS 时支持  
 	overlay        基于文件     不支持         
 	devicemapper   基于块       支持           
 
---storage-opt是`docker run`时可以使用的参数，可以指定容器的根文件系统的大小:
+--storage-opt 是 `docker run` 时的参数，支持设定容器的根文件系统的大小，注意和 docker daemon 的[storage-driver-options][7] 参数区分。
 
 	docker run -it --storage-opt size=120G fedora /bin/bash
 
-[docker run][8]中提示：
+[docker run][8] 中提示：
 
 	This (size) will allow to set the container rootfs size to 120G at creation time.
 	This option is only available for the devicemapper, btrfs, overlay2, windowsfilter
@@ -52,331 +50,299 @@ storage driver的特点如下：
 	mounted with the pquota mount option. Under these conditions, user can pass any size
 	less then the backing fs size.
 
-不同于docker daemon中的[storage-driver-options][7]。
 
-## 测试结果
+## 各种 storage driver 的配置方法
 
-注意事项:
+### docker 版本更新
 
-	指定容器的size为0时，使用默认的大小，oveerlay2默认使用所有可用空间
-	docker不会检查单个容器的大小是否超过可用空间
-	docker不会检查多个容器的累计大小是否超过可用空间
+卸载已有的 docker 并清理残余文件:
 
-device mapper:
+```sh
+systemctl stop docker 
+for i in `rpm -qa |grep docker`;do yum erase $i;done
+rm -rf /var/lib/docker
+```
 
-	优势:  可以在容器的配置文件中指定每个容器的默认的大小
-	       以块设备的形式挂载到容器中，遵循posix协议
-	劣势:  容器大小不能小于默认的大小
-	       node的用于容器的的空间接近100%时，两个版本的docker都不能正常工作
-	       kernel日志中经常出现device mapper的thin删除失败日志
-	       node上的存储耗尽时，容器内的程序感知不到，卡住
+如果是 device mapper，重建lvs:
 
-overlay2:
+```sh
+lvremove /dev/mapper/docker-thinpool
+lvcreate -T -L 95g -n thinpool docker
+```
 
-	优势:  在边界情况下，docker仍能很好的运行
-	劣势:  必须明确指定容器的大小，否则就默认使用所有可用空间
-	       以文件merge的方式的提供，不严格遵守posix中的read()定义，不支持posix中定义的rename()
-	       kubernetes不支持指定容器的大小，需要修改kubelet或者修改docker
+从 [docker download](https://download.docker.com/linux/centos/7/x86_64/stable/Packages/) 中下载最新的 rpm，安装最新的 docker:
 
-## 测试环境
+```sh
+yum install -y ./XXX.rpm
+```
 
-	Node            OS                 Kernel         Docker     Driver     
-	-----------------------------------------------------------------------
-	10.39.0.111     CentOS7.2.1511     3.10.0         1.12.6     device mapper
-	10.39.0.114     CentOS7.2.1511     3.10.0         1.12.6     device mapper
-	10.39.0.115     CentOS7.2.1511     3.10.0         17.06      device mapper
-	10.39.0.116     CentOS7.2.1511     3.10.0         1.12.6     device mapper
-	10.39.0.117     CentOS7.2.1511     3.10.0         1.12.6     device mapper
-	10.39.0.136     CentOS7.2.1511     3.10.0         1.12.6     device mapper
-	10.39.0.137     CentOS7.2.1511     4.12.2         17.06      overlay2
-	10.39.0.138     CentOS7.2.1511     4.12.2         17.06      overlay2
+docker 的配置核实无错后启动:
 
-## 开发环境
+```sh
+systemctl start docker
+chkconfig docker on
+```
 
-	Node            OS                 Kernel         Docker     Driver     
-	-----------------------------------------------------------------------
-	10.39.0.107    CentOS7.2.1511      3.10.0         1.12.6     device mapper
-	10.39.0.108    CentOS7.2.1511      3.10.0         1.12.6     device mapper
-	10.39.0.109    CentOS7.2.1511      3.10.0         17.06      device mapper    
-	10.39.0.110    CentOS7.2.1511      3.10.0         17.06      device mapper
-	10.39.0.112    CentOS7.2.1511      4.12.2         17.06      overlay2
-	10.39.0.140    CentOS7.2.1511      4.12.2         17.06      overlay2
-
-### 节点更新前下线过程
-
-1. 在管理员页面上，将要更新的节点关闭调度。
-
-2. 排空node:
-
-	kubectl drain 节点名称
-	
-	DaemonSet-mananged pod: --ignore-daemonsets
-	pods with local data:   --delete-local-data
-
-3. 核实、删除剩余的pod:
-
-	kubectl get pod --all-namespaces -o wide 2>/dev/null |grep 节点名称 |awk '{print "kubectl -n "$1" delete pod "$2}' >/tmp/delete.sh;bash /tmp/delete.sh; rm /tmp/delete.sh
-
-4. 在管理员界面上，删除节点。
-
-### docker update
-
-从[docker download](https://download.docker.com/linux/centos/7/x86_64/stable/Packages/)中下载最新的rpm。
-
-根据实际情况选择卸载/更新已有的docker，并清理残余文件。
-
-卸载:
-
-	systemctl stop docker 
-	for i in `rpm -qa |grep docker`;do yum erase $i;done
-	rm -rf /var/lib/docker
-
-如果是device mapper，重建lvs:
-
-	lvremove /dev/mapper/docker-thinpool
-	lvcreate -T -L 95g -n thinpool docker
-
-安装:
-
-	yum install -y ./XXX.rpm
-
-docker的配置核实无错后:
-
-	systemctl start docker
-	chkconfig docker on
-
-在管理员界面上重新添加主机节点。
-                   
 ### device mapper 
 
-创建一个名为docker的VG，在创建一个名为thinpool的thin。
+创建一个名为 docker 的 vg、一个名为 thinpool 的 thin。
 
-	pvcreate /dev/vdc1
-	vgcreate docker /dev/vdc1
-	lvcreate -T -L 95g -n thinpool docker
+```sh
+pvcreate /dev/vdc1
+vgcreate docker /dev/vdc1
+lvcreate -T -L 95g -n thinpool docker
+```
 
-在/etc/docker/daemon.json中：
+在 /etc/docker/daemon.json 中配置 storage-driver 和 storage-opts：
 
-	{
-	  "hosts": ["unix:///var/run/docker.sock"],
-	  "storage-driver": "devicemapper",
-	  "storage-opts": ["dm.basesize=10G",
-	     "dm.thinpooldev=/dev/mapper/docker-thinpool",
-	     "dm.use_deferred_removal=true",
-	     "dm.use_deferred_deletion=true"
-	],
-	  "log-driver": "json-file",
-	  "log-opts": {
-	    "max-size": "20m",
-	    "max-file": "10"
-	  }
-	}
-
-### btrfs
-
-[docker btrfs][10]推荐在ubuntu和debian上使用btrfs:
-
-	Docker CE: For Docker CE, btrfs is only recommended on Ubuntu or Debian.
-	Docker EE: For Docker EE and CS-Engine, btrfs is only supported on SLES. 
+```json
+{
+  "hosts": ["unix:///var/run/docker.sock"],
+  "storage-driver": "devicemapper",
+  "storage-opts": ["dm.basesize=10G",
+     "dm.thinpooldev=/dev/mapper/docker-thinpool",
+     "dm.use_deferred_removal=true",
+     "dm.use_deferred_deletion=true"
+],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "20m",
+    "max-file": "10"
+  }
+}
+```
 
 ### overlayfs
 
 升级内核:
 
-	rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
-	rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-2.el7.elrepo.noarch.rpm 
-	yum -y --enablerepo=elrepo-kernel install kernel-ml
+```sh
+rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
+rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-2.el7.elrepo.noarch.rpm 
+yum -y --enablerepo=elrepo-kernel install kernel-ml
+```
 
-修改/etc/default/grub:
+修改 /etc/default/grub:
 
 	GRUB_DEFAULT=0
 
-更新grub2配置:
+执行命令更新 grub2 配置:
 
 	grub2-mkconfig -o /boot/grub2/grub.cfg
 
-准备docker运行使用的磁盘:
+格式化并挂载用于 docker 的磁盘，格式化时必须指定 ftype=1，挂载时必须使用 pquota：
 
-	pvcreate /dev/vdc1
-	vgcreate docker /dev/vdc1
-	lvcreate -L 95g -n graph docker
-	mkfs.xfs -f -n ftype=1 /dev/mapper/docker-graph
-	mount -o pquota /dev/mapper/docker-graph /var/lib/docker/
+```sh
+pvcreate /dev/vdc1
+vgcreate docker /dev/vdc1
+lvcreate -L 95g -n graph docker
+mkfs.xfs -f -n ftype=1 /dev/mapper/docker-graph
+mount -o pquota /dev/mapper/docker-graph /var/lib/docker/
+```
 
-注意格式化时必须指定ftype=1，挂载时必须使用pquota。
+在 /etc/fstab 中添加配置，保证开机时自动挂载:
 
-在/etc/fstab中添加:
+```sh
+/dev/mapper/docker-graph /var/lib/docker/ xfs defaults,pquota 1 1
+```
 
-	/dev/mapper/docker-graph /var/lib/docker/ xfs defaults,pquota 1 1
+编辑 /etc/docker/daemon.json，指定 storage-driver 和 storage-opts。在CentOS上使用 overlay2，必须添加 opts  "overlay2.override_kernel_check=true"：
 
-在/etc/sysctl.conf中添加:
+```json
+{
+  "storage-driver": "overlay2",
+  "storage-opts": [
+    "overlay2.override_kernel_check=true"
+  ]
+}
+```
 
-	net.bridge.bridge-nf-call-ip6tables = 1
-	net.bridge.bridge-nf-call-iptables = 1
-	net.bridge.bridge-nf-call-arptables = 1
+[docker overlayfs][11] 会改变两个系统调用的行为，如果应用用到这两个系统调用需要注意：
 
-编辑/etc/docker/daemon.json:
-
-	{
-	  "storage-driver": "overlay2",
-	  "storage-opts": [
-	    "overlay2.override_kernel_check=true"
-	  ]
-	}
-
-在CentOS上使用overlay2，必须添加opts:
-
-	    "overlay2.override_kernel_check=true"
-
-[docker overlayfs][11]影响了两个系统调用，在部署一些会用到这两个系统调用的应用时需要特别小心:
-
-open(2):
+open(2): 同一个文件修改之后的再次 open 得到文件句柄指向的是另一个文件。下面的 fd1和fd2将指向两个不同的文件，fd1指定的 lower layer 中的foo 文件，fd2 指向的复制到 upperdir 中的 foo 文件。
 
 	fd1=open("foo", O_RDONLY)    //修改foo之前
 	fd2=open("foo", O_RDONLY)    //修改foo之后
-	
-	fd1和fd2将指向两个不同的文件。
-	fd1指定的lower layer中的foo文件，fd2指向的复制到upperdir中的foo文件。
 
-rename(2):
+rename(2): overlayfs 不支持 rename 系统调用。
 
-	overlayfs不支持rename系统调用。
+### btrfs
 
-## 条件测试
+[docker btrfs][10] 中建议在 ubuntu 和 debian 上使用 btrfs:
 
-### 不指定容器根分区大小，查看容器的根分区可用空间
+	Docker CE: For Docker CE, btrfs is only recommended on Ubuntu or Debian.
+	Docker EE: For Docker EE and CS-Engine, btrfs is only supported on SLES. 
 
-	docker run --name=test-default -idt  harbor.enncloud.cn/lijiaob/sshproxy:master
-	docker exec -it test-default /bin/sh
-	df
-	
-	Node           Result 
-	---------------------------------------------
-	10.39.0.114    dockerd配置的默认大小10G
-	10.39.0.115    dockerd配置的默认大小10G
-	10.39.0.137    /var/lib/docker中剩余可用空间
+## storage-driver 对比
 
-### --storage-opt size=0M
+测试机器如下：
 
-	docker run --name=test-default -idt --storage-opt size=0M  harbor.enncloud.cn/lijiaob/sshproxy:master
-	docker exec -it test-default /bin/sh
-	df
-	
-	Node           Result 
-	---------------------------------------------
-	10.39.0.114    dockerd配置的默认大小10G
-	10.39.0.115    dockerd配置的默认大小10G
-	10.39.0.137    /var/lib/docker中剩余可用空间
+```sh
+Node            OS                 Kernel         Docker     Driver     
+-----------------------------------------------------------------------
+10.39.0.114     CentOS7.2.1511     3.10.0         1.12.6     device mapper
+10.39.0.115     CentOS7.2.1511     3.10.0         17.06      device mapper
+10.39.0.137     CentOS7.2.1511     4.12.2         17.06      overlay2
+```
 
-### --storage-opt size=1M
+### 容器根分区显示可用容量：默认
 
-	docker run --name=test-default -idt --storage-opt size=1M  harbor.enncloud.cn/lijiaob/sshproxy:master
-	docker exec -it test-default /bin/sh
-	df
-	
-	Node           Result 
-	---------------------------------------------
-	10.39.0.114    创建失败，不能小于dockerd指定的默认大小
-	10.39.0.115    创建失败，不能小于dockerd指定的默认大小
-	10.39.0.137    1M
+```sh
+docker run --name=test-default -idt  harbor.enncloud.cn/lijiaob/sshproxy:master
+docker exec -it test-default /bin/sh
+df
+```
 
-### --storage-opt  size=11G, 写入超过11G
+```sh
+Node           Result 
+---------------------------------------------
+10.39.0.114(device mapper)    dockerd 配置的默认大小，10G
+10.39.0.115(device mapper)    dockerd 配置的默认大小，10G
+10.39.0.137(overlay2)         /var/lib/docker中剩余可用空间
+```
 
-	docker run --name=test-default -idt --storage-opt size=11G  harbor.enncloud.cn/lijiaob/sshproxy:master
-	docker exec -it test-default /bin/sh
-	df
-	dd if=/dev/zero of=/test.dat bs=1G count=200
+### 容器根分区显示可用容量：--storage-opt size=0M 
 
-	Node           Result    
-	---------------------------------------------
-	10.39.0.114    超过11G后，dd程序退出
-	10.39.0.115    超过11G后，dd程序退出
-	10.39.0.137    超过11G后，dd程序退出
+```sh
+docker run --name=test-default -idt --storage-opt size=0M  harbor.enncloud.cn/lijiaob/sshproxy:master
+docker exec -it test-default /bin/sh
+df
+```
 
-### --storage-opt  size=200G, 写入超过node的存储空间
+```sh
+Node           Result 
+---------------------------------------------
+10.39.0.114(device mapper)    dockerd 配置的默认大小，10G
+10.39.0.115(device mapper)    dockerd 配置的默认大小，10G
+10.39.0.137(overlay2)         /var/lib/docker中剩余可用空间
+```
 
-	docker run --name=test-default -idt --storage-opt size=200G  harbor.enncloud.cn/lijiaob/sshproxy:master
-	docker exec -it test-default /bin/sh
-	df
-	dd if=/dev/zero of=/test.dat bs=1G count=200
-	
-	Node           Result    
-	---------------------------------------------
-	10.39.0.114    显示可用200G，dd命令写满真实可用空间后，卡住
-	10.39.0.115    显示可用200G，dd命令写满真实可用空间后，卡住
-	10.39.0.137    /var/lib/docker中剩余可用空间，dd命令写满空间后退出
+### 容器根分区显示可用容量：--storage-opt size=1M
 
-### 实际存储空间写满时，继续创建容器
+```sh
+docker run --name=test-default -idt --storage-opt size=1M  harbor.enncloud.cn/lijiaob/sshproxy:master
+docker exec -it test-default /bin/sh
+df
+```
 
-	docker run --name=test-default -idt --storage-opt size=15G  harbor.enncloud.cn/lijiaob/sshproxy:master
-	
-	Node           Result    
-	---------------------------------------------
-	10.39.0.114    创建失败，提示空间不足
-	10.39.0.115    创建失败，提示空间不足
-	10.39.0.137    可以创建，显示设置的可用空间，但实际无法继续写入
+```sh
+Node           Result 
+---------------------------------------------
+10.39.0.114(device mapper)     创建失败，不能小于dockerd指定的默认大小
+10.39.0.115(device mapper)     创建失败，不能小于dockerd指定的默认大小
+10.39.0.137(overlay2)          1M
+```
 
-### 多个容器的根分区设置的Size累加超过node的存储空间，实际占用空间不超过node存储空间
+### 容器根分区指定 size 超出 node 存储空间：--storage-opt size=200G
 
-	docker run --name=test-default-1 -idt --storage-opt size=50G  harbor.enncloud.cn/lijiaob/sshproxy:master
-	docker run --name=test-default-2 -idt --storage-opt size=50G  harbor.enncloud.cn/lijiaob/sshproxy:master
-	docker run --name=test-default-3 -idt --storage-opt size=50G  harbor.enncloud.cn/lijiaob/sshproxy:master
-	docker run --name=test-default-4 -idt --storage-opt size=50G  harbor.enncloud.cn/lijiaob/sshproxy:master
-	
-	Node           Result    
-	---------------------------------------------
-	10.39.0.114    创建成功，均显示设置的可用空间
-	10.39.0.115    创建成功，均显示设置的可用空间
-	10.39.0.137    创建成功，均显示设置的可用空间
+```sh
+docker run --name=test-default -idt --storage-opt size=200G  harbor.enncloud.cn/lijiaob/sshproxy:master
+docker exec -it test-default /bin/sh
+df
+dd if=/dev/zero of=/test.dat bs=1G count=200
+```
 
-### 多个容器的根分区设置的Size累加超过node的存储空间，多个容器均写入自身的根分区
+```sh
+Node           Result    
+---------------------------------------------
+10.39.0.114(device mapper)   显示可用200G，dd命令写满真实可用空间后，卡住
+10.39.0.115(device mapper)   显示可用200G，dd命令写满真实可用空间后，卡住
+10.39.0.137(overlay2)        现实/var/lib/docker中剩余可用空间，dd命令写满后退出
+```
 
-	docker run --name=test-default-1 -idt --storage-opt size=50G  harbor.enncloud.cn/lijiaob/sshproxy:master
-	docker run --name=test-default-2 -idt --storage-opt size=50G  harbor.enncloud.cn/lijiaob/sshproxy:master
-	docker run --name=test-default-3 -idt --storage-opt size=50G  harbor.enncloud.cn/lijiaob/sshproxy:master
-	docker run --name=test-default-4 -idt --storage-opt size=50G  harbor.enncloud.cn/lijiaob/sshproxy:master
+### 容器根分区指定 size 累计超出 node 的存储空间
 
-	docker exec -idt test-default-1 bash -c "sleep 10; dd if=/dev/zero of=/test.dat bs=1G count=40"
-	docker exec -idt test-default-2 bash -c "sleep 10; dd if=/dev/zero of=/test.dat bs=1G count=40"
-	docker exec -idt test-default-3 bash -c "sleep 10; dd if=/dev/zero of=/test.dat bs=1G count=40"
-	docker exec -idt test-default-4 bash -c "sleep 10; dd if=/dev/zero of=/test.dat bs=1G count=40"
-	
-	docker exec -it test-default-1 ls -lh /test.dat
-	docker exec -it test-default-2 ls -lh /test.dat
-	docker exec -it test-default-3 ls -lh /test.dat
-	docker exec -it test-default-4 ls -lh /test.dat
-	
-	Node           Result    
-	---------------------------------------------
-	10.39.0.114    状态异常，node空间接近饱和后，容器内的写入几乎不再增长，响应迟钝，docker重启失败
-	10.39.0.115    状态异常，node空间接近饱和后，容器内的写入几乎不再增长，响应迟钝，docker重启卡住
-	10.39.0.137    node空间写满后，每个容器显示还有空余空间，但无法再写入
+```sh
+docker run --name=test-default-1 -idt --storage-opt size=50G  harbor.enncloud.cn/lijiaob/sshproxy:master
+docker run --name=test-default-2 -idt --storage-opt size=50G  harbor.enncloud.cn/lijiaob/sshproxy:master
+docker run --name=test-default-3 -idt --storage-opt size=50G  harbor.enncloud.cn/lijiaob/sshproxy:master
+docker run --name=test-default-4 -idt --storage-opt size=50G  harbor.enncloud.cn/lijiaob/sshproxy:master
+```
 
-## 稳定性测试
+```sh
+Node           Result    
+---------------------------------------------
+10.39.0.114(device mapper)    创建成功，均显示设置的可用空间
+10.39.0.115(device mapper)    创建成功，均显示设置的可用空间
+10.39.0.137(overlay2)         创建成功，均显示设置的可用空间
+```
 
-在控制台上创建下面的应用，观察运行情况。
+容器执行执行真实写入：
 
-### Pod频繁失败、重启
+```sh
+docker exec -idt test-default-1 bash -c "sleep 10; dd if=/dev/zero of=/test.dat bs=1G count=40"
+docker exec -idt test-default-2 bash -c "sleep 10; dd if=/dev/zero of=/test.dat bs=1G count=40"
+docker exec -idt test-default-3 bash -c "sleep 10; dd if=/dev/zero of=/test.dat bs=1G count=40"
+docker exec -idt test-default-4 bash -c "sleep 10; dd if=/dev/zero of=/test.dat bs=1G count=40"
 
-	panic-k3-1-12-6-dm
-	panic-k3-17-06-dm
-	panic-k4-17-06-lay2
+docker exec -it test-default-1 ls -lh /test.dat
+docker exec -it test-default-2 ls -lh /test.dat
+docker exec -it test-default-3 ls -lh /test.dat
+docker exec -it test-default-4 ls -lh /test.dat
+```
 
-### Pod持续申请内存直到OOM
+```sh
+Node           Result    
+---------------------------------------------
+10.39.0.114(device mapper)   状态异常，node 空间接近饱和后，容器内的写入几乎不再增长，响应迟钝，docker 重启失败
+10.39.0.115(device mapper)   状态异常，node 空间接近饱和后，容器内的写入几乎不再增长，响应迟钝，docker 重启卡住
+10.39.0.137(overlay2)        node 空间写满后，每个容器显示还有空余空间，但无法再写入
+```
 
-容器内存设置为500MB，持续申请，每次申请5MB。
+### node 存储空间不足时，继续创建容器
 
-	oom-k3-1-12-6-dm      
-	oom-k3-17-06-dm
-	oom-k4-17-06-lay2
+```sh
+docker run --name=test-default -idt --storage-opt size=15G  harbor.enncloud.cn/lijiaob/sshproxy:master
+```
 
-### Pod持续的写入根分区
+```sh
+Node           Result    
+---------------------------------------------
+10.39.0.114(device mapper)   创建失败，提示空间不足
+10.39.0.115(device mapper)   创建失败，提示空间不足
+10.39.0.137(overlay2)        可以创建，显示设置的可用空间，但实际无法继续写入
+```
 
-	disk-k3-1-12-6-dm      写满容器的根分区后停止
-	disk-k3-17-06-dm       写满容器的根分区后停止
-	disk-k4-17-06-lay2     写满Node的存储空间后停止
+### 容器根分区写满：--storage-opt  size=11G, 写入超过11G
 
-# 参考
+```sh
+docker run --name=test-default -idt --storage-opt size=11G  harbor.enncloud.cn/lijiaob/sshproxy:master
+docker exec -it test-default /bin/sh
+df
+dd if=/dev/zero of=/test.dat bs=1G count=200
+```
+
+```sh
+Node           Result    
+---------------------------------------------
+10.39.0.114(device mapper)     超过11G后，dd程序退出
+10.39.0.115(device mapper)     超过11G后，dd程序退出
+10.39.0.137(overlay2)          超过11G后，dd程序退出
+```
+
+## 总结
+
+* 指定容器的 size 为 0 时，devicemapper 默认限定为 basesize，overlay2 默认使用所有可用空间
+* docker 不会检查单个容器声明的存储空间大小是否超过可用空间
+* docker 不会检查多个容器累计声明的存储空间大小是否超过可用空间
+
+device mapper:
+
+	优势:  可以在容器的配置文件中指定每个容器的默认的大小
+	       以块设备的形式挂载到容器中，遵循 posix 协议
+	劣势:  容器大小不能小于默认的大小
+	       node 的实际存储空间接近 100% 时，docker 不能正常工作
+	       kernel 日志中经常出现 device mapper 的 thin 删除失败日志
+	       node 上的存储耗尽时，容器内的程序感知不到，会卡住
+
+overlay2:
+
+	优势:  在存储空间 100% 的情况下，docker 仍能很好的运行
+	劣势:  必须明确指定容器的大小，否则就默认使用所有可用空间
+	       以文件merge的方式的提供，不严格遵守posix中的read()定义，不支持posix中定义的rename()
+	       kubernetes 不支持指定容器的大小，需要修改 kubelet 或者修改 docker
+
+## 参考
 
 1. [Select a storage driver][1]
 2. [Docker存储驱动之OverlayFS简介][2]
