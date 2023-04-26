@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  "docker 镜像管理（二）: 镜像文件格式与镜像仓库"
+title: "docker 镜像：镜像文件格式与镜像仓库"
 author: 李佶澳
 date: "2020-02-08T17:35:36+0800"
 last_modified_at: "2020-02-08T17:35:36+0800"

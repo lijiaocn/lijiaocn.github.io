@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "docker 镜像管理（一）: 本地镜像、本地容器的文件存放目录"
+title: "docker 分析 ：本地镜像、本地容器的文件存储方式"
 author: 李佶澳
 date: "2020-02-08T10:18:12+0800"
 last_modified_at: "2020-02-08T10:18:12+0800"
@@ -20,7 +20,7 @@ description: 用 Docker 下载到本地的镜像存放在哪里？怎样不通�
 
 用 Docker 下载到本地的镜像存放在哪里？怎样不通过 docker 直接查看、修改运行中的容器的文件？
 
-## 本地镜像目录
+## docker 的存储目录
 
 这里的 docker 版本是 1.13.1（比较老的版本），Storage Driver 是 overlay2：
 
@@ -39,7 +39,9 @@ $ ls -F /var/lib/docker/
 containers/  image/  network/  overlay2/  plugins/  swarm/  tmp/  trust/  volumes/
 ```
 
-镜像文件存放在 `image` 和 `overlay2` 目录中，入口是 `image/overlay2/repositories.json`，这个文件里记录本地的镜像目录：
+## 本地镜像文件
+
+image/overlay2/repositories.json 是本地镜像的索引：
 
 ```sh
 $ cat image/overlay2/repositories.json |jq
@@ -53,7 +55,7 @@ $ cat image/overlay2/repositories.json |jq
 }
 ```
 
-sha256:e7d92... 就是镜像的 ID：
+镜像名称之后的 `sha256:e7d92...` 就是镜像的 id：
 
 ```sh
 $ docker images
@@ -61,7 +63,7 @@ REPOSITORY          TAG                 IMAGE ID            CREATED             
 docker.io/alpine    latest              e7d92cdc71fe        3 weeks ago         5.59 MB
 ```
 
-镜像信息记录在 imagedb/content/sha256/e7d92cdc7.. 中：
+image/overlay2/imagedb/content/sha256/{镜像ID} 中记录每个镜像的详细信息：
 
 ```sh
 $ cat  imagedb/content/sha256/e7d92c
@@ -76,29 +78,34 @@ $ cat  imagedb/content/sha256/e7d92c
   ...
 ```
 
-diff_ids 是镜像的分层内容位于 image/overlay2/layerdb/sha256/ 中：
+镜像详情中的 diff_ids 索引的是目录 image/overlay2/layerdb/sha256/{ID} ：
 
 ```sh
-# 目录名和 diff_ids 可能不一致，diff 文件中的为准
 $ ls image/overlay2/layerdb/sha256/5216338...
 cache-id  diff  size  tar-split.json.gz
 ```
 
-里面有一个 cache-id，它记录了镜像在 overlay2 中对应的目录：
+文件 cache-id 中记录的 id 索引的时目录 /var/lib/docker/overlay2/{ID}：
 
 ```sh
 $ ls -F overlay2/fa30ac31a3*
 diff/  link
 ```
 
-可以看到 diff 目录中就是这一层镜像的内容：
+/var/lib/docker/overlay2/{ID}/diff 目录中就是这一层镜像的内容：
 
 ```sh
 $ ls -F overlay2/fa30ac31a3(省略..)/diff/
 bin/  dev/  etc/  home/  lib/  media/  mnt/  opt/  proc/  root/  run/  sbin/  srv/  sys/  tmp/  usr/  var/
 ```
 
-用下面的 dockerfile 制作一个新镜像：
+目录关系总结如下：
+
+![Docker镜像目录说明]({{ site.imglocal}}/article/dockerimage.png)
+
+### 包含多层的镜像
+
+用下面的 dockerfile 制作一个包含三层的镜像：
 
 ```Dockerfile
 FROM docker.io/alpine
@@ -106,7 +113,7 @@ ADD / ./text
 RUN mkdir /xxx
 ```
 
-在 imagedb/content/sha256/xxx 中可以看到这个镜像包含 3 层：
+在 imagedb/content/sha256/{镜像ID} 中可以看到镜像有三个 diff_ids：
 
 ```json
   "os": "linux",
@@ -119,9 +126,6 @@ RUN mkdir /xxx
     ]
 ```
 
-用前面的方法可以找到各个 diff 层的文件内容。
-
-![Docker镜像目录说明]({{ site.imglocal}}/article/dockerimage.png)
 
 ## 容器的文件目录
 
@@ -133,14 +137,14 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 548574d0924a        docker.io/alpine    "sleep 10000000"    22 minutes ago      Up 22 minutes                           tender_noether
 ```
 
-容器的配置文件存放目录为 /var/lib/docker/containers/{容器ID}：
+/var/lib/docker/containers/{容器ID} 存放容器的配置文件：
 
 ```sh
 $ ls /var/lib/docker/containers/548574d0924ae172f6bdccdebdbbaa5cd151c2d8ab2bf45720e4070e95db082a/
 checkpoints  config.v2.json  hostconfig.json  hostname  hosts  resolv.conf  resolv.conf.hash  secrets  shm
 ```
 
-容器的数据目录记录在 GraphDriver 中：
+`docker inspect` 显示的  GraphDriver 索引了容器使用的目录：
 
 ```sh
 $ docker inspect 548574d0924a
@@ -156,6 +160,8 @@ $ docker inspect 548574d0924a
   },
 ...
 ```
+
+其中 LowerDir 是容器使用镜像的各层文件，带有 `-init` 后缀的目录是第一层容器自身的目录。diff 记录容器产生的改动，merged 时所有层叠加后的结果。
 
 ## 参考
 
