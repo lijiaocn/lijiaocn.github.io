@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "Docker 问题排查: nslookup: clock_gettime(MONOTONIC) failed"
+title: "docker 问题排查: nslookup: clock_gettime(MONOTONIC) failed"
 author: 李佶澳
 date: "2023-01-13 11:05:01 +0800"
-last_modified_at: "2023-04-26 14:31:11 +0800"
+last_modified_at: "2023-04-26 14:38:21 +0800"
 categories: 问题
 cover:
 tags:  docker

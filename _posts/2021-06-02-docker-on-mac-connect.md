@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "在 Mac 上直接访问 Docker 容器的地址: 通过虚拟机内 vpn 接入"
+title: "docker 使用: Mac 直接访问 Docker 容器的地址，虚拟机内 vpn 接入"
 author: 李佶澳
 date: "2021-06-02 22:10:47 +0800"
-last_modified_at: "2021-06-02 22:10:47 +0800"
+last_modified_at: "2023-04-26 14:37:59 +0800"
 categories: 技巧
 cover:
 tags: mac docker

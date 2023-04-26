@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Docker 镜像管理（四）: harbor 项目学习"
+title: "docker 镜像管理（四）: harbor 项目学习"
 author: 李佶澳
 date: "2020-02-11T18:10:55+0800"
 last_modified_at: "2020-02-11T18:10:55+0800"
