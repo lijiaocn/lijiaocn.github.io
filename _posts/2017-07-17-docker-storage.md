@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "docker 深入: storage driver 与容器的可用存储空间限制"
+title: docker 使用：storage driver 对比
 author: 李佶澳
 createdate: 2017/07/17 13:34:40
 last_modified_at: 2017/07/24 14:28:30
@@ -112,7 +112,9 @@ lvcreate -T -L 95g -n thinpool docker
 }
 ```
 
-### overlayfs
+### overlay2
+
+overlay2 的使用参考 [overlay2 限制单个容器可用存储空间][13]。
 
 升级内核:
 
@@ -356,6 +358,7 @@ overlay2:
 10. [docker btrfs][10]
 11. [docker overlayfs][11]
 12. [centos 7 yum 方式升级内核][12]
+13. [overlay2 限制单个容器可用存储空间][13]
 
 [1]: https://docs.docker.com/engine/userguide/storagedriver/selectadriver/ "Select a storage driver"
 [2]: http://www.cnblogs.com/styshoo/p/6503953.html "Docker存储驱动之OverlayFS简介"
@@ -369,3 +372,5 @@ overlay2:
 [10]: https://docs.docker.com/engine/userguide/storagedriver/btrfs-driver/ "docker btrfs"
 [11]: https://docs.docker.com/engine/userguide/storagedriver/overlayfs-driver/ "docker overlayfs"
 [12]: https://mp.weixin.qq.com/s?__biz=MzAwMTY4ODA5NA==&mid=2247483689&idx=1&sn=0df56a527b89c3cf85d12c1f64ccc689&chksm=9ad49658ada31f4e620610e36c2e2792ea9dd342cc1ae25600e0e9d7f4ff848c69e22d156e44&mpshare=1&scene=1&srcid=0718hcCFxhVmXkGhA1t75UYy&key=e57780a9dd53e6fc79c3e62e07f97037a0dd895f61aae470a3d8d138e256f13dabe9c15cac84b1f8f99ae35f912910b5f20fd9e04305c069d3e7b3379403a00a084499bc052137a86ddb7de1a44eac9f&ascene=0&uin=MjcxNTQ5MTM0MA%3D%3D&devicetype=iMac+MacBookPro11%2C5+OSX+OSX+10.11.6+build(15G1510)&version=12020810&nettype=WIFI&fontScale=100&pass_ticket=UneAzrJ%2BHX23EF5RsVvv2cJOrgYH9bbbI%2BWiyyOsM2StQqNX%2BiQoTg5%2BzJKP9Zht "centos 7 yum 方式升级内核"
+[13]: /问题/2018/12/26/docker-overlay2-size-limit.html "overlay2 限制单个容器可用存储空间"
+

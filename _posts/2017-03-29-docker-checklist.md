@@ -1,6 +1,6 @@
 ---
 layout: default
-title: docker使用前的检查清单
+title: docker 使用：使用前的检查清单
 author: 李佶澳
 createdate: 2017/03/29 11:11:53
 last_modified_at: 2017/09/11 16:20:32

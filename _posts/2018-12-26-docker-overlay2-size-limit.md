@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "docker的storage-driver是overlay2时，限制单个容器可占用的磁盘空间"
+title: "docker 使用：overlay2 限制单个容器可用存储空间"
 author: 李佶澳
 createdate: "2018-12-26 10:56:40 +0800"
-last_modified_at: "2018-12-26 10:56:40 +0800"
+last_modified_at: "2023-04-26 18:58:07 +0800"
 categories: 问题
 tags:  docker
 keywords: docker,storage-driver,overlay2,size limit
@@ -134,10 +134,25 @@ total 1048572
 -rw-r--r--    1 root     root       24.0M Dec 26 03:38 b
 ```
 
+## overlay2 副作用
+
+[docker overlayfs][3] 会改变两个系统调用的行为，如果应用用到这两个系统调用需要注意：
+
+open(2): 同一个文件修改之后的再次 open 得到文件句柄指向的是另一个文件。下面的 fd1和fd2将指向两个不同的文件，fd1指定的 lower layer 中的foo 文件，fd2 指向的复制到 upperdir 中的 foo 文件。
+
+	fd1=open("foo", O_RDONLY)    //修改foo之前
+	fd2=open("foo", O_RDONLY)    //修改foo之后
+
+rename(2): overlayfs 不支持 rename 系统调用。
+
 ## 参考
 
 1. [docker daemon配置项][1]
 2. [How to Enable Disk Quotas on an XFS File System][2]
+3. [docker overlayfs][3]
+4. [docker 使用：storage driver 对比][4]
 
 [1]: https://docs.docker.com/engine/reference/commandline/dockerd/#docker-runtime-execution-options "docker daemon cli (dockerd cli)"
 [2]: https://www.thegeekdiary.com/how-to-enable-disk-quotas-on-an-xfs-file-system/ "How to Enable Disk Quotas on an XFS File System"
+[3]: https://docs.docker.com/engine/userguide/storagedriver/overlayfs-driver/ "docker overlayfs"
+[4]: 项目/2017/07/17/docker-storage.html "docker 使用：storage driver 对比"
