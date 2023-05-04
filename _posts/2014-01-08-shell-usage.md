@@ -25,9 +25,80 @@ description:  积累的一些shell用法。
 
 ## BASH内置命令与语法 
 
-### BASH BUILTIN COMMANDS
+### bash builtin commands
 
-### exec
+bash 内置了大量命令，在 man bash 的 “SHELL BUILTIN COMMANDS” 一节中给出了说明。下面是部分内置命令：
+
+	| 命令     | 说明                                     |
+	|----------|------------------------------------------|
+	| :        | 空，永远返回true                         |
+	| .        | 从当前shell中执行操作                    |
+	| break    |                                          |
+	| cd       |                                          |
+	| continue |                                          |
+	| echo     |                                          |
+	| eval     | 先扫描命令行进行所有的置换，然后执行命令 |
+	| exec     | 执行命令，不在当前shell                  |
+	| exit     |                                          |
+	| export   |                                          |
+	| pwd      |                                          |
+	| read     |                                          |
+	| readonly |                                          |
+	| return   |                                          |
+	| set      |                                          |
+	| shift    | 去除前n个输入参数                        |
+	| test     | 评估条件表达式                           |
+	| times    |                                          |
+	| trap     | 当捕获信号时执行指定命令                 |
+	| ulimit   | 显示或设置shell资源                      |
+	| umask    |                                          |
+	| unset    | 清除变量                                 |
+	| wait     | 等待子进程运行完毕                       |
+	| type     | 命令是否有效和在系统中的位置             |
+	| logger   | 写入系统日志文件                         |
+	| local    | 定义局部变量                             |
+
+#### let（算数运算）
+
+用法：
+
+	let arg [arg ...]
+	Each arg is an arithmetic expression to be evaluated (see ARITHMETIC EVALUATION above).
+	If the last arg evaluates to 0, let returns 1; 0 is returned otherwise.
+
+运算符:
+
+	+：对两个变量做加法。
+	-：对两个变量做减法。
+	*：对两个变量做乘法。
+	/：对两个变量做除法。
+	**：对两个变量做幂运算。
+	%：取模运算，第一个变量除以第二个变量求余数。
+	+=：加等于，在自身基础上加第二个变量。
+	-=：减等于，在第一个变量的基础上减去第二个变量。
+	*=：乘等于，在第一个变量的基础上乘以第二个变量。
+	/=：除等于，在第一个变量的基础上除以第二个变量。
+	%=: 取模赋值，第一个变量对第二个变量取模运算，再赋值给第一个变量
+
+示例：
+
+	let a+=1        //echo $a: 1
+	let a+=1        //echo $a: 2
+
+let后面可以添加多个表达式：
+
+	let a=2**2 b=1  //a=2^2 b=1
+
+#### test 或 [ ]
+
+test 接收一个条件表达式，根据表达式结果返回 true/false。可以写成 test expr 或者 [ expr ]
+
+```
+test expr  或者 [ expr ]
+Return a status of 0 (true) or 1 (false) depending on the evaluation of the conditional expression expr.  
+```
+
+#### exec
 
 	exec [-cl] [-a name] [command [arguments]]
 	
@@ -35,8 +106,9 @@ description:  积累的一些shell用法。
 	-l: the shell places  a  dash  at the  beginning of  the  zeroth argument passed to command
 	-c: causes command to be executed with an empty environment
 	-a: passes name as the zeroth argument to the executed command
+```
 
-### eval
+#### eval
 
 	eval [arg ...]
 	
@@ -114,7 +186,8 @@ pipelines通过下面保留字符拼接：
 ### Compound Commands
 
 
-命令有以下几种组合方式：
+命令有以下几种组合方式。（注意 `[ expr ]` 不是 compound commands，而是shell内置命令，作用和test命令相同）
+
 
 	( list )
 	    list在一个独立的shell环境中运行，运行时对shell做的设置，在运行结束后失效。
@@ -175,9 +248,6 @@ pipelines通过下面保留字符拼接：
 	while list; do list; done
 	until list; do list; done
 
-注意`[ expr ]`不是compound commands，而是shell内置命令，作用和test命令相同。
-
-expr是CONDITIONAL EXPRESSIONS。
 
 ### Shell Function Definitions
 
@@ -322,7 +392,96 @@ Shell的变量比较多，这里不列出
 
 ### ARITHMETIC EVALUATION
 
-### CONDITIONAL EXPRESSIONS
+### conditional expressions（条件表达式）
+
+```
+-a file       True if file exists.
+-b file       True if file exists and is a block special file.
+-c file       True if file exists and is a character special file.
+-d file       True if file exists and is a directory.
+-e file       True if file exists.
+-f file       True if file exists and is a regular file.
+-g file       True if file exists and is set-group-id.
+-h file       True if file exists and is a symbolic link.
+-k file       True if file exists and its ``sticky'' bit is set.
+-p file       True if file exists and is a named pipe (FIFO).
+-r file       True if file exists and is readable.
+-s file       True if file exists and has a size greater than zero.
+-t fd         True if file descriptor fd is open and refers to a terminal.
+-u file       True if file exists and its set-user-id bit is set.
+-w file       True if file exists and is writable.
+-x file       True if file exists and is executable.
+-G file       True if file exists and is owned by the effective group id.
+-L file       True if file exists and is a symbolic link.
+-N file       True if file exists and has been modified since it was last read.
+-O file       True if file exists and is owned by the effective user id.
+-S file       True if file exists and is a socket.
+file1 -ef file2  True if file1 and file2 refer to the same device and inode numbers.
+file1 -nt file2  True if file1 is newer (according to modification date) than file2, 
+                 or if file1 exists and file2 does not.
+file1 -ot file2  True if file1 is older than file2, or if file2 exists and file1 does not.
+-o optname       True if the shell option optname is enabled.  
+                 See the list of options under the description of the -o option to the set builtin below.
+-v varname       True if the shell variable varname is set (has been assigned a value).
+-R varname       True if the shell variable varname is set and is a name reference.
+-z string        True if the length of string is zero.
+string /-n string    True if the length of string is non-zero.
+string1 == string2
+string1 = string2    True if the strings are equal.  = should be used with the test command for POSIX conformance.  
+                     When used with the [[ command, this performs pattern matching as described above (Compound Commands).
+string1 != string2   True if the strings are not equal.
+string1 < string2    True if string1 sorts before string2 lexicographically.
+string1 > string2    True if string1 sorts after string2 lexicographically.
+arg1 OP arg2         OP  is  one  of  -eq, -ne, -lt, -le, -gt, or -ge.  
+                     These arithmetic binary operators return true if arg1 is equal to, not equal to, 
+                     less than, less than or equal to, greater than, or greater than or equal to arg2, respectively.  
+                     Arg1 and arg2 may be positive or negative integers.
+```
+
+#### 字符串判断
+
+	=     相等
+	!=    不相等
+	-z    空串
+	-n    非空串
+
+#### 数值判断
+
+	-eq   equal
+	-ne   not equal
+	-gt   great
+	-lt   little
+	-le   litter or equal
+	-ge   great or littel
+
+#### 文件类型判断
+
+	| 操作      | 测试条件                                 |
+	|-----------|------------------------------------------|
+	| -e        | 文件是否存在                             |
+	| -f        | 是一个标准文件                           |
+	| -d        | 是一个目录                               |
+	| -h        | 文件是一个符号链接                       |
+	| -L        | 文件是一个符号链接                       |
+	| -b        | 文件是一个块设备                         |
+	| -c        | 文件是一个字符设备                       |
+	| -p        | 文件是一个管道                           |
+	| -S        | 文件是一个socket                         |
+	| -t        | 文件与一个终端相关联                     |
+	| -N        | 从这个文件最后一次被读取之后, 它被修改过 |
+	| -O        | 这个文件的宿主是你                       |
+	| -G        | 文件的组id与你所属的组相同               |
+	| !         | "非" (反转上边的测试结果)                |
+	| -s        | 文件大小不为0                            |
+	| -r        | 文件具有读权限                           |
+	| -w        | 文件具有写权限                           |
+	| -x        | 文件具有执行权限                         |
+	| -g        | 设置了sgid标记                           |
+	| -u        | 设置了suid标记                           |
+	| -k        | 设置了"粘贴位"                           |
+	| F1 -nt F2 | 文件F1比文件F2新 *                       |
+	| F1 -ot F2 | 文件F1比文件F2旧 *                       |
+	| F1 -ef F2 | 文件F1和文件F2都是同一个文件的硬链接 *   |
 
 ### SIMPLE COMMAND EXPANSION
 
@@ -429,42 +588,6 @@ comm命令用来比较两个排好序的文件，用`-1`、`-2`、`-3`控制输�
 
 ## 以往遗留的，未整理的内容
 
-### 算数运算
-
-#### let
-
-手册：
-
-	man let
-
-用法：
-
-	let arg [arg ...]
-	Each arg is an arithmetic expression to be evaluated (see ARITHMETIC EVALUATION above).
-	If the last arg evaluates to 0, let returns 1; 0 is returned otherwise.
-
-运算符:
-
-	+：对两个变量做加法。
-	-：对两个变量做减法。
-	*：对两个变量做乘法。
-	/：对两个变量做除法。
-	**：对两个变量做幂运算。
-	%：取模运算，第一个变量除以第二个变量求余数。
-	+=：加等于，在自身基础上加第二个变量。
-	-=：减等于，在第一个变量的基础上减去第二个变量。
-	*=：乘等于，在第一个变量的基础上乘以第二个变量。
-	/=：除等于，在第一个变量的基础上除以第二个变量。
-	%=: 取模赋值，第一个变量对第二个变量取模运算，再赋值给第一个变量
-
-示例：
-
-	let a+=1        //echo $a: 1
-	let a+=1        //echo $a: 2
-
-let后面可以添加多个表达式：
-
-	let a=2**2 b=1  //a=2^2 b=1
 
 #### echo $[表达式]
 
@@ -806,36 +929,6 @@ trap "command" signal
 
 必须是4.1.2以上的bash
 
-### shell嵌入命令完整列表 
-
-	| 命令     | 说明                                     |
-	|----------|------------------------------------------|
-	| :        | 空，永远返回true                         |
-	| .        | 从当前shell中执行操作                    |
-	| break    |                                          |
-	| cd       |                                          |
-	| continue |                                          |
-	| echo     |                                          |
-	| eval     | 先扫描命令行进行所有的置换，然后执行命令 |
-	| exec     | 执行命令，不在当前shell                  |
-	| exit     |                                          |
-	| export   |                                          |
-	| pwd      |                                          |
-	| read     |                                          |
-	| readonly |                                          |
-	| return   |                                          |
-	| set      |                                          |
-	| shift    | 去除前n个输入参数                        |
-	| test     | 评估条件表达式                           |
-	| times    |                                          |
-	| trap     | 当捕获信号时执行指定命令                 |
-	| ulimit   | 显示或设置shell资源                      |
-	| umask    |                                          |
-	| unset    | 清除变量                                 |
-	| wait     | 等待子进程运行完毕                       |
-	| type     | 命令是否有效和在系统中的位置             |
-	| logger   | 写入系统日志文件                         |
-	| local    | 定义局部变量                             |
 
 ### 解引用 
 
@@ -855,50 +948,6 @@ trap "command" signal
 
 	屏蔽特殊函数，可以屏蔽反引号`
 
-### 文件类型测试 
-
-	| 操作      | 测试条件                                 |
-	|-----------|------------------------------------------|
-	| -e        | 文件是否存在                             |
-	| -f        | 是一个标准文件                           |
-	| -d        | 是一个目录                               |
-	| -h        | 文件是一个符号链接                       |
-	| -L        | 文件是一个符号链接                       |
-	| -b        | 文件是一个块设备                         |
-	| -c        | 文件是一个字符设备                       |
-	| -p        | 文件是一个管道                           |
-	| -S        | 文件是一个socket                         |
-	| -t        | 文件与一个终端相关联                     |
-	| -N        | 从这个文件最后一次被读取之后, 它被修改过 |
-	| -O        | 这个文件的宿主是你                       |
-	| -G        | 文件的组id与你所属的组相同               |
-	| !         | "非" (反转上边的测试结果)                |
-	| -s        | 文件大小不为0                            |
-	| -r        | 文件具有读权限                           |
-	| -w        | 文件具有写权限                           |
-	| -x        | 文件具有执行权限                         |
-	| -g        | 设置了sgid标记                           |
-	| -u        | 设置了suid标记                           |
-	| -k        | 设置了"粘贴位"                           |
-	| F1 -nt F2 | 文件F1比文件F2新 *                       |
-	| F1 -ot F2 | 文件F1比文件F2旧 *                       |
-	| F1 -ef F2 | 文件F1和文件F2都是同一个文件的硬链接 *   |
-
-### 字符串测试 
-
-	=     相等
-	!=    不相等
-	-z    空串
-	-n    非空串
-
-### 数值测试 
-
-	-eq   equal
-	-ne   not equal
-	-gt   great
-	-lt   little
-	-le   litter or equal
-	-ge   great or littel
 
 ### 控制结构 
 
@@ -975,6 +1024,7 @@ continue
 	.   /path/function.sh    ## 引入了函数文件
 
 shift
+
 	将参数向左偏移一位 
 
 获取最后一个参数
