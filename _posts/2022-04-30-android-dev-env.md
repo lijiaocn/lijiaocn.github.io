@@ -3,7 +3,7 @@ layout: default
 title: "Android 开发环境搭建，模拟器以及设备上运行"
 author: 李佶澳
 date: "2022-04-30 18:30:39 +0800"
-last_modified_at: "2023-04-25 17:36:22 +0800"
+last_modified_at: "2023-05-04 19:52:19 +0800"
 categories: 编程
 cover:
 tags: Android 
@@ -67,32 +67,51 @@ Android 项目用 gradle 进行构建，gradle 的用法见：
 * 声明 app 包含的组件 activity、service、broadcast receiver、content provider
 * 声明 app 需要的权限
 * 声明 app 需要的硬件和软件限制
+* 指定 app 的启动入口 application->activity（见启动流程）
 
-AndroidManifest.xml 必须包含的 manifest 和 application，其它例如 activity 等根据实际情况配置。[App manifest overview][10] 列出了所有支持的配置项。
+AndroidManifest.xml 必须包含的 manifest 和 application，其它例如 activity 等根据实际情况配置。
+AndroidMainfest.xml 可用的每个标签都有众多属性，比如 application/activity/service等，属性类别到 [App manifest overview][10] 中查阅。
 
 ### 启动流程
 
-AndroidManifest.xml 中每个 activity 指定了关联的类，例如下面的 .MainActivity：
+一句话描述：
+
+* AndroidManifest.xml 指定了 .MainActivity
+* .MainActivity 初始化时引用导航资源文件 R.id.nav_host_fragment_content_main
+* 导航资源文件中定义了多个 fragment 以及各自的跳转动作，并指定了起始的 fragment
+
+具体如下：
+
+AndroidManifest.xml 的 application 中包含多个 activity，每个 activity 指定了关联的类，例如下面的 .MainActivity：
 
 ```xml
-<activity
-    android:name=".MainActivity"    
-    android:exported="true"
+<application
+    android:allowBackup="true"
+    android:dataExtractionRules="@xml/data_extraction_rules"
+    android:fullBackupContent="@xml/backup_rules"
+    android:icon="@mipmap/ic_launcher"
     android:label="@string/app_name"
-    android:theme="@style/Theme.Android_03_basic_proj_kotlin.NoActionBar">
-    <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
-
-        <category android:name="android.intent.category.LAUNCHER" />
-    </intent-filter>
-</activity>
+    android:supportsRtl="true"
+    android:theme="@style/Theme.Android_03_basic_proj_kotlin"
+    tools:targetApi="31">
+    <activity
+        android:name=".MainActivity"     （指定activity对应的代码）
+        android:exported="true"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.Android_03_basic_proj_kotlin.NoActionBar">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+    
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+    </activity>
 ```
 
 .MainActivity 在 onCreate 中指定 navController：
 
 ```kotlin
 class MainActivity : AppCompatActivity() {
-    ...省略...
+    /*...省略...*/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -101,6 +120,7 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
 
+        （指定导航资源文件）
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -133,7 +153,7 @@ R.id.nav_host_fragment_content_main 对应一个 xml 文件(res/layout/content_m
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navGraph="@navigation/nav_graph" />
+        app:navGraph="@navigation/nav_graph" /> (指向具体的导航图谱文件)
 </androidx.constraintlayout.widget.ConstraintLayout>
 ```
 
@@ -145,7 +165,7 @@ nav_graph.xml 中声明了多个 fragment，在 app:startDestination 中指定�
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/FirstFragment"> （指定初始页）
 
     <fragment
         android:id="@+id/FirstFragment"
@@ -154,7 +174,7 @@ nav_graph.xml 中声明了多个 fragment，在 app:startDestination 中指定�
         tools:layout="@layout/fragment_first">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
+            android:id="@+id/action_FirstFragment_to_SecondFragment" （定义跳转动作）
             app:destination="@id/SecondFragment" />
     </fragment>
     <fragment
@@ -164,10 +184,10 @@ nav_graph.xml 中声明了多个 fragment，在 app:startDestination 中指定�
         tools:layout="@layout/fragment_second">
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
+            android:id="@+id/action_SecondFragment_to_FirstFragment" （定义跳转动作）
             app:destination="@id/FirstFragment" />
-        <argument
-            android:name="random"
+        <argument  
+            android:name="random"        （当前fragment支持的传入参数）
             app:argType="integer" />
     </fragment>
 </navigation>
@@ -178,16 +198,90 @@ Fragment 实现代码可以调用 action 跳转到其它 fragment，比如下面
 ```kotlin
 binding.random.setOnClickListener{
     val count = binding.textviewFirst.text.toString().toInt()
+    （跳转到另一个fragment，并传入参数count）
     val action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(count)
     findNavController().navigate(action)
 }
 ```
 
+为 fragment 设置参数需要引用 [navigation-safe-args-gradle-plugin][14] 插件，分别配置项目顶层的  build.gradle 和 app 中的 build.gradle。
+
+项目顶层层的 build.gradle 中添加：
+
+```groovy
+buildscript {
+    repositories {
+        google()
+    }
+    dependencies {
+        def nav_version = "2.5.3"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
+    }
+}
+```
+
+app 中的 build.gradle 添加：
+
+```groovy
+plugins {
+  id 'androidx.navigation.safeargs.kotlin'
+}
+```
+
 ### Layouts xml
 
-应用展示的页面布局用 res/layout 中的 xml 文件描述
+应用中每个页面的布局也用 xml 文件描述，通常位于项目的 res/layout 目录中，参考 [Create XML layouts for Android][7]。
 
-* [Create XML layouts for Android][7]
+* 页面布局是由 ViewGroup 和 View 组织成的层级结构，ViewGroup 可以包含 View  以及其它的 ViewGroup。
+* ViewGroup 和 View 都有多种不同的实现，分别对应不同的 class
+* layout/ 目录中的布局文件通过 xml 标签指定使用的 class
+
+#### ViewGroup
+
+下面的 activity_main.xml 的顶层 ViewGroup 是 [androidx.coordinatorlayout.widget.CoordinatorLayout][15]（标签名即对应的 class 路径)。顶层 ViewGroup 嵌入了 AppBarLayout 等 layout，并且导入另一个 xml 文件 laytout/content_main。
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <com.google.android.material.appbar.AppBarLayout  (对应的具体的类)
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.Android_03_basic_proj_kotlin.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/Theme.Android_03_basic_proj_kotlin.PopupOverlay" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <include layout="@layout/content_main" />  (可以导入文件)
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginBottom="16dp"
+        app:srcCompat="@android:drawable/ic_dialog_email" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+```
+
+除了 [androidx.coordinatorlayout.widget.*][15]，还有 [androidx.constraintlayout.widget.*][16] 等 ViewGroup 实现。
+
+#### View
+
+view 有 TextView、Button 等多种实现，位于 [android.widget.*][17] 中。
 
 ## 用模拟器运行
 
@@ -236,6 +330,10 @@ App component 加载顺序是不确定的，而且可能会被随时销毁，不
 11. [Building Kotlin Applications Sample][11]
 12. [Gradle 入门教程][12]
 13. [Understand the Android build system][13]
+14. [navigation-safe-args-gradle-plugin][14]
+15. [androidx.coordinatorlayout.widget.CoordinatorLayou][15]
+16. [androidx.constraintlayout.widget.ConstraintLayout][16]
+17. [android.widget.*][17]
 
 [1]: https://www.lijiaocn.com "李佶澳的博客"
 [2]: https://www.android.com/ "Android"
@@ -243,10 +341,14 @@ App component 加载顺序是不确定的，而且可能会被随时销毁，不
 [4]: https://developer.android.com/codelabs/build-your-first-android-app#2 "Build Your First Android App in Java"
 [5]: https://developer.android.com/topic/architecture?hl=en "Guide to app architectur"
 [6]: https://developer.android.com/codelabs/build-your-first-android-app-kotlin "Build Your First Android App in Kotlin"
-[7]: https://developer.android.com/codelabs/basic-android-kotlin-training-xml-layouts#0 "Create XML layouts for Android"
+[7]: https://developer.android.com/codelabs/basic-android-kotlin-training-xml-layouts "Create XML layouts for Android"
 [8]: https://developer.android.com/courses/android-basics-kotlin/course "Android Basics in Kotlin"
 [9]: https://developer.android.com/courses/pathways/android-architecture "Modern Android App Architecture"
 [10]: https://developer.android.com/guide/topics/manifest/manifest-intro "App manifest overview"
 [11]: https://docs.gradle.org/current/samples/sample_building_kotlin_applications.html "Building Kotlin Applications Sample"
 [12]: https://www.imooc.com/wiki/gradlebase/intro.html "Gradle 入门教程"
 [13]: https://developer.android.com/build "Understand the Android build system"
+[14]: https://developer.android.com/jetpack/androidx/releases/navigation#safe_args "navigation-safe-args-gradle-plugin"
+[15]: https://developer.android.com/reference/androidx/coordinatorlayout/widget/CoordinatorLayout "androidx.coordinatorlayout.widget.CoordinatorLayout"
+[16]: https://developer.android.com/reference/androidx/constraintlayout/widget/ConstraintLayout "androidx.constraintlayout.widget.ConstraintLayout"
+[17]: https://developer.android.com/reference/android/widget/package-summary#classes "android.widget.*"
