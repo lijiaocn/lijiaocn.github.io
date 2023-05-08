@@ -3,7 +3,7 @@ layout: default
 title: "Android 开发环境搭建以及项目结构初探"
 author: 李佶澳
 date: "2022-04-30 18:30:39 +0800"
-last_modified_at: "2023-05-08 13:43:48 +0800"
+last_modified_at: "2023-05-08 13:47:18 +0800"
 categories: 编程
 cover:
 tags: Android 
@@ -22,13 +22,13 @@ Android 的文档非常丰富，通过 [Android docs][21] 可以找到大量学�
 
 [Build your first Android app][23] 给出了入门资料的学习顺序：
 
-* [Create a Hello World app][24]：kotlin demo
-* [Start the Android Basics course][25]：最新的推荐做法
+* [Create a Hello World app][24]：一个用 kotlin 实现的 app demo
+* [Start the Android Basics course][25]：最新的推荐做法，比如摒弃了用 xml 描述布局的做法
 * [Browse learning resources][20]： 更多入门&进阶教程，视频+文档
 * [Explore sample apps][19]：各种功能的示例代码
 * [Android CodeLabs][22]：codelabs 中的 anroid 项目
 
-这里的项目结构部分用的是 “Create a Hello World app” 中的例子：
+这里用的是第一部分 “Create a Hello World app” 中的例子：
 
 * [Build Your First Android App in Kotlin][6]
 * [Build Your First Android App in Java][4]

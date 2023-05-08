@@ -3,7 +3,7 @@ layout: default
 title: "Kotlin 语法一站式手册"
 author: 李佶澳
 date: "2023-03-30 11:36:56 +0800"
-last_modified_at: "2023-04-10 19:48:01 +0800"
+last_modified_at: "2023-05-06 14:42:13 +0800"
 categories: 编程
 cover:
 tags: 语法手册
@@ -606,6 +606,8 @@ fun main() {
 
 ## 函数
 
+### 函数声明
+
 函数使用关键字 fun 声明。函数本身也是一种类型，入参为 Int 返回值也为 Int 的函数的类型是：(Int)->Int。
 
 >js 函数声明关键字是 function，go 是 func，kotlin 是 fun。真是恶趣味，干脆直接用 f 得了。
@@ -673,6 +675,8 @@ fun main(){
 }
 ```
 
+### lambda 函数
+
 支持 lambda 函数，lambda 函数有两种写法，一种是带有类型声明，一种是不带类型声明。lambda 函数直接作为函数参数，不需要在名称加 ::。
 
 ```kotlin
@@ -699,6 +703,20 @@ halfValue: Function1<java.lang.Integer, java.lang.Integer>; doubleValue: Functio
 call halfValue: 2; call doubleValue: 8
 lambdaAsParam: 2
 ageAdd: 11
+```
+
+如果函数的入参是类型是函数，可以进一步简写：
+
+```kotlin
+fun funAsParam2(operation: () -> Int){
+    println("opeartion result: ${operation()}")
+}
+
+fun main(){
+    funAsParam2 { 10 }    /* { 10 } 是一个函数*/
+    funAsParam2(operation = {10+2})
+    funAsParam2({10+3})
+}
 ```
 
 ## 类和对象
