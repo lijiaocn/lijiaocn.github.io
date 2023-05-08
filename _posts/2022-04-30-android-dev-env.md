@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "Android 开发环境搭建，模拟器以及设备上运行"
+title: "Android 开发环境搭建以及项目结构初探"
 author: 李佶澳
 date: "2022-04-30 18:30:39 +0800"
-last_modified_at: "2023-05-04 19:52:19 +0800"
+last_modified_at: "2023-05-08 13:43:48 +0800"
 categories: 编程
 cover:
 tags: Android 
@@ -16,13 +16,39 @@ description: AndroidStudio的File->NewProject创建BasicActivity，选择Java/Ko
 * auto-gen TOC:
 {:toc}
 
-## 创建项目
+## 资料
 
-通过 Android Studio 的 File->New Project 创建一个 Basic Activity，选择 Java 或者 Kotlin 语言，选择最小的 sdk  版本。
+Android 的文档非常丰富，通过 [Android docs][21] 可以找到大量学习资料和系统手册。
 
-* [Build Your First Android App in Java][4]。
+[Build your first Android app][23] 给出了入门资料的学习顺序：
+
+* [Create a Hello World app][24]：kotlin demo
+* [Start the Android Basics course][25]：最新的推荐做法
+* [Browse learning resources][20]： 更多入门&进阶教程，视频+文档
+* [Explore sample apps][19]：各种功能的示例代码
+* [Android CodeLabs][22]：codelabs 中的 anroid 项目
+
+这里的项目结构部分用的是 “Create a Hello World app” 中的例子：
+
 * [Build Your First Android App in Kotlin][6]
+* [Build Your First Android App in Java][4]
 * [Create XML layouts for Android][7]
+
+## 项目创建与运行
+
+通过 Android Studio 的 File->New Project 创建一个 Basic Activity，选择 Java 或者 Kotlin 语言，选择 app 需要的最小 sdk  版本。Kotlin 语言可以通过 [Kotlin 语法一站式手册](/编程/2023/03/30/kotlin-syntax.html) 快速学习。
+
+### 用模拟器运行
+
+通过 Android Studio 的 Tools -> AVD Manager 安装本地安卓模拟器，然后就可以用运行按钮启动：
+
+![Android Studio运行本地安卓模拟器]({{ site.article }}/android-studio-run1.png)
+
+### 用物理设备运行
+
+进入 android 手机的开发者设置，打开 USB 调试，将手机连上电脑，在 Android Studio 中就可以看到增加的设备，选择并运行即可。
+
+![Android Studio设备上运行]({{ site.article }}/adroid-studio-run2.png)
 
 ## 项目结构
 
@@ -30,16 +56,16 @@ description: AndroidStudio的File->NewProject创建BasicActivity，选择Java/Ko
 
 ![Android Studio目录结构]({{ site.article }}/android-studio-proj1.png)
 
-源代码目录主要是 app/src/main，在 Android Studio 的左侧面板中看到目录树的根是 app/src/main。
+源代码目录是 app/src/main：
 
 ```sh
 ➜  01-first-proj git:(main) ✗ ls app/src/main   
 AndroidManifest.xml java res
 ```
 
-其中 AndroidManifest.xml 是对 app 内各组件的描述，android runtime 读取该文件。 
+其中 AndroidManifest.xml 是对 app 内各组件的描述，android runtime 会读取该文件。 
 
-java 目录中是 app 的源代码。res 目录中是 app 使用的资源文件，包括以下子目录：
+java 目录中是 app 源代码，res 目录中是 app 使用的资源文件，包括以下子目录：
 
 * drawable 存放图片
 * layout 存放每个交互界面的 UI 布局
@@ -48,13 +74,15 @@ java 目录中是 app 的源代码。res 目录中是 app 使用的资源文件�
 * navigation 存放交互界面的切换顺讯
 * values 存放颜色、字符串等自定义资源
 
-### 项目构建方式
+### 编译打包方式
 
 Android 项目用 gradle 进行构建，gradle 的用法见：
 
-* [Building Kotlin Applications Sample][11]
 * [Gradle 入门教程][12]
+* [Building Kotlin Applications Sample][11]
 * [Understand the Android build system][13]
+
+Android 项目中的 gradle 文件：
 
 * settings.gradle: 定义项目名称，以及包含的子项目目录
 * app/build.gradle: 子项目的构建文件
@@ -69,10 +97,10 @@ Android 项目用 gradle 进行构建，gradle 的用法见：
 * 声明 app 需要的硬件和软件限制
 * 指定 app 的启动入口 application->activity（见启动流程）
 
-AndroidManifest.xml 必须包含的 manifest 和 application，其它例如 activity 等根据实际情况配置。
-AndroidMainfest.xml 可用的每个标签都有众多属性，比如 application/activity/service等，属性类别到 [App manifest overview][10] 中查阅。
+必须包含 manifest 和 application，其它例如 activity 等根据实际情况配置。
+每个标签都有众多属性，比如 application/activity/service 等，可以到 [App manifest overview][10] 中查阅。
 
-### 启动流程
+### App 启动流程
 
 一句话描述：
 
@@ -82,7 +110,7 @@ AndroidMainfest.xml 可用的每个标签都有众多属性，比如 application
 
 具体如下：
 
-AndroidManifest.xml 的 application 中包含多个 activity，每个 activity 指定了关联的类，例如下面的 .MainActivity：
+AndroidManifest.xml 中为 activity 指定了关联的类，例如下面的 .MainActivity：
 
 ```xml
 <application
@@ -132,8 +160,7 @@ class MainActivity : AppCompatActivity() {
     }
 ```
 
-R.id.nav_host_fragment_content_main 对应一个 xml 文件(res/layout/content_main.xml)。
-@+id/nav_host_fragment_content_main 又通过属性 app:navGraph 指定了另一个 xml 文件（res/navigation/nav_graph.xml)：
+R.id.nav_host_fragment_content_main 对应了资源文件 res/layout/content_main.xml（文件声明了ID：@+id/nav_host_fragment_content_main)。资源文件又在属性 app:navGraph 指定了另一个 xml 文件 res/navigation/nav_graph.xml：
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -193,20 +220,20 @@ nav_graph.xml 中声明了多个 fragment，在 app:startDestination 中指定�
 </navigation>
 ```
 
-Fragment 实现代码可以调用 action 跳转到其它 fragment，比如下面的 actionFirstFragmentToSecondFragment：
+Fragment 代码可以调用 action 跳转到其它 fragment，比如下面的 actionFirstFragmentToSecondFragment：
 
 ```kotlin
 binding.random.setOnClickListener{
     val count = binding.textviewFirst.text.toString().toInt()
-    （跳转到另一个fragment，并传入参数count）
+    /*跳转到另一个fragment，并传入参数count*/
     val action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(count)
     findNavController().navigate(action)
 }
 ```
 
-为 fragment 设置参数需要引用 [navigation-safe-args-gradle-plugin][14] 插件，分别配置项目顶层的  build.gradle 和 app 中的 build.gradle。
+上面用到了 [navigation-safe-args-gradle-plugin][14] 插件（支持为 fragment 传入后参数），需要分别配置项目顶层的  build.gradle 和 app 中的 build.gradle。
 
-项目顶层层的 build.gradle 中添加：
+项目顶层的 build.gradle 中添加：
 
 ```groovy
 buildscript {
@@ -228,7 +255,7 @@ plugins {
 }
 ```
 
-### Layouts xml
+### 布局文件 layout/*.xml
 
 应用中每个页面的布局也用 xml 文件描述，通常位于项目的 res/layout 目录中，参考 [Create XML layouts for Android][7]。
 
@@ -277,43 +304,52 @@ plugins {
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 ```
 
-除了 [androidx.coordinatorlayout.widget.*][15]，还有 [androidx.constraintlayout.widget.*][16] 等 ViewGroup 实现。
+ViewGroup 实现除了 [androidx.coordinatorlayout.widget.\*][15]，还有 [androidx.constraintlayout.widget.\*][16] 等。
 
 #### View
 
-view 有 TextView、Button 等多种实现，位于 [android.widget.*][17] 中。
-
-## 用模拟器运行
-
-通过 Android Studio 的 Tools -> AVD Manager 安装本地安卓模拟器，然后就可以用运行按钮启动：
-
-![Android Studio运行本地安卓模拟器]({{ site.article }}/android-studio-run1.png)
-
-## 用物理设备运行
-
-进入 android 手机的开发者设置，打开 USB 调试，将手机脸上电脑上，在 Android Studio 中就可以看到增加的设备，选择并运行即可。
-
-![Android Studio设备上运行]({{ site.article }}/adroid-studio-run2.png)
+view 有 TextView、Button 等多种实现，位于 [android.widget.\*][17] 中。
 
 ## 应用架构
+
+>这里只作简单记录，后续专门学习。
 
 App component 加载顺序是不确定的，而且可能会被随时销毁，不能在 app component 中存放数据。
 
 >it's possible for your app components to be launched individually and out-of-order, and the operating system or user can destroy them at any time. Because these events aren't under your control, you shouldn't store or keep in memory any application data or state in your app components, and your app components shouldn't depend on each other.
 
-[Guide to app architectur][5] 给出以下架构原则：
+[Guide to app architecture][5] 给出以下架构原则：
 
-* 代码按功能分离，不要都写在 activity 和 fragment 中。Activity 和 Fragment 是连接 Android OS 和 App 的 glue classes，操作系统的会在需要的将其销毁，要尽可能减少对其 Activity 和 Fragment 的依赖。
+* 代码按功能分离，不要都写在 activity 和 fragment 中。Activity 和 Fragment 是连接 Android OS 和 App 的 glue classes，操作系统会在需要时将其销毁，要尽可能减少对其 Activity 和 Fragment 的依赖。
 * Data model 和 UI 等组件分离且持久化。
 * 每个数据都有唯一的出处(SSOT, single source of truth)，且只能通过 SSOT 提供的方法修改。
 * 数据保持单向流动，application data 从 data sources 流向 UI，操作事件从 UI 流向数据的唯一出处。
-
-### 推荐的应用架构
 
 三层架构：UI Layer -> Domain Layer(optional) -> Data Layer。
 
 ![Android 推荐应用架构]({{ site.article }}/mad-arch-overview.png)
 
+## 示例代码
+
+[Android Samples][19] 中提供了大量的示例代码，可以通过左边选项筛选出需要的示例。
+
+### 应用架构示例
+
+[architecture-samples#stable-samples---kotlin][18] 中包含了多个应用架构示例，分别位于不同的分支中。
+
+```sh
+git clone https://github.com/android/architecture-samples.git
+```
+
+#### architecture-single-module
+
+```sh
+git clone https://github.com/android/architecture-templates.git --branch renovate/base-kotlin
+mv architecture-templates architecture-single-module
+cd architecture-single-module 
+# 如果在 mac 需要升级 bash， brew install bash，将 /usr/local/bin/ 放在 $PATH 最前面
+bash ./customizer.sh com.example.arch_single_module DataItemType ArchSingleModule
+```
 
 ## 参考
 
@@ -334,6 +370,12 @@ App component 加载顺序是不确定的，而且可能会被随时销毁，不
 15. [androidx.coordinatorlayout.widget.CoordinatorLayou][15]
 16. [androidx.constraintlayout.widget.ConstraintLayout][16]
 17. [android.widget.*][17]
+18. [architecture-samples#stable-samples---kotlin ][18]
+19. [Android Samples][19]
+20. [Android Training: Browse learning resources][20]
+21. [Android docs][21]
+22. [Android CodeLabs][22]
+23. [Build your first Android app][23]
 
 [1]: https://www.lijiaocn.com "李佶澳的博客"
 [2]: https://www.android.com/ "Android"
@@ -352,3 +394,11 @@ App component 加载顺序是不确定的，而且可能会被随时销毁，不
 [15]: https://developer.android.com/reference/androidx/coordinatorlayout/widget/CoordinatorLayout "androidx.coordinatorlayout.widget.CoordinatorLayout"
 [16]: https://developer.android.com/reference/androidx/constraintlayout/widget/ConstraintLayout "androidx.constraintlayout.widget.ConstraintLayout"
 [17]: https://developer.android.com/reference/android/widget/package-summary#classes "android.widget.*"
+[18]: https://github.com/android/architecture-samples#stable-samples---kotlin "architecture-samples#stable-samples---kotlin "
+[19]: https://developer.android.com/samples "Android Samples"
+[20]: https://developer.android.com/courses "Start the Android Basics course"
+[21]: https://developer.android.com/docs "Android docs"
+[22]: https://codelabs.developers.google.com/?cat=Android "Android CodeLabs"
+[23]: https://developer.android.com/training/basics/firstapp "Build your first Android app"
+[24]: https://developer.android.com/codelabs/basic-android-kotlin-compose-first-app "kotlin demo: Create a Hello World app"
+[25]: https://developer.android.com/courses/android-basics-compose/course "Start the Android Basics course"
