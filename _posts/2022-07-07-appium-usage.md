@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "移动端自动化测试工具 Appium 安装配置和使用方法"
+title: "Appium 安装配置和使用方法，移动端自动化测试工具"
 author: 李佶澳
 date: "2022-07-07 15:24:12 +0800"
-last_modified_at: "2022-07-11 18:42:33 +0800"
+last_modified_at: "2023-05-08 14:08:19 +0800"
 categories: 编程
 cover:
 tags: Android Appium
