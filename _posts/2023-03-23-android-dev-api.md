@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "Android 系统的 API 概览"
+title: "Android 生态系统的 API 构成"
 author: 李佶澳
 date: "2023-03-23 11:13:19 +0800"
-last_modified_at: "2023-05-08 14:14:37 +0800"
+last_modified_at: "2023-05-12 14:14:41 +0800"
 categories: 编程
 cover:
 tags: Android
@@ -18,12 +18,15 @@ description: Android 的 API 有 Java 和 Kotlin 版本,API 接口和 Android �
 
 ## 概要
 
-Android 的 API 有 Java 和 Kotlin 版本：
+[Android API reference][2] 列出 Android 生态系统中主要的可用 API：
 
-* [Android API Java][4]
-* [Android API Kotlin][3]
+* Android 系统 API：[Android API Java][4]、[Android API Kotlin][3]
+* JetPack 系列 API：重构的系统 api AndroidX、jetpack compose 等
+* Device API
+* Others..
+* Google Play API
 
-除了上面的标准 API，还提供了一些可选用的 Library，见 [Android API reference][2]。
+## Android 系统 API
 
 API 接口和 Android 系统版本是关联的，在 API 列表会给出每个 API 适用的系统版本。
 
