@@ -3,7 +3,7 @@ layout: default
 title: "Google 是如何实践 RESTful API 设计的？"
 author: 李佶澳
 date: "2022-11-24 16:52:28 +0800"
-last_modified_at: "2022-12-11 21:00:01 +0800"
+last_modified_at: "2023-06-19 19:43:49 +0800"
 categories: 方法
 cover:
 tags: 系统设计
@@ -18,26 +18,26 @@ description:  经手了几个应用层的项目，API设计的都不怎么理想
 
 ## 说明
 
-经手了几个应用层的项目，API设计的都不怎么理想，有的项目乱到一塌糊涂。在参考国外公司的 API 时，发现 Google 在 2017 年公布了 2014 年制定 [API Design Guide][2]，维护至今。这里提炼下要点。 
+经手了几个应用层的项目，API设计的都不怎么理想，有的项目乱到一塌糊涂。在参考国外公司的 API 时，发现 Google 在 2017 年公布了 2014 年制定 [API Design Guide][2]，维护至今，这里提炼下要点。 
 
-## 规范应用情况怎样？
+## 应用情况怎样？
 
 Google 有的服务遵守了这份规范，比如 Google Cloud APIs、[Google Calendar API][4]，有的没有完全准守，比如 [Blogger API v3][5]。
-
 采用了该规范的 Google Cloud API 是 Google 整个云服务的接口，具有接口数量多、类别多的特点。可以认为这份规范在谷歌内得到了较多支持，一些服务没有遵循规范可能是历史原因。
 
-## 是否有规范实践案例？
+## 是否有实践案例？
 
-Google 在 github 上开放了一份原始的 protobuf 格式的接口描述文件 [googleapis][6]。里面主要是 Google Cloud API 的接口描述，没有覆盖 google 所有产品的 API（Google 开放的所有 API 汇总在 [Google API Explorer][3]）。
+Google 开放了一份 protobuf 格式的接口描述文件 [googleapis][6]，里面主要是 Google Cloud API 的接口，没有覆盖 google 所有产品的 API（Google 开放的所有 API 汇总在 [Google API Explorer][3] 中）。
 
 ```sh
 git clone https://github.com/googleapis/googleapis.git 
 ```
 
-googleapis 的文件组织上存在一些不是很理想的做法：
+googleapis 在文件组织上存在一些不理想的做法：
 
-* 存放公用定义的目录比如 google/api/、google/rpc/ 和业务接口定义所在的目录比如 google/cloud/、google/container/ 等平铺在一起，不方便区分以及查阅。
-* 文件名的命名方式不统一，比如包含 service 定义的 proto 文件，有几种方式的命名：
+* 存放公用定义的目录比如 google/api/、google/rpc/ 和业务接口目录比如 google/cloud/、google/container/ 等平铺在一起，不方便区分以及查找
+* 文件名的命名方式不统一，比如包含 service 定义的 proto 文件，有以下几种方式的命名：
+
 ```sh
 google/firestore/v1/firestore.proto、
 google/cloud/aiplatform/v1/{dataset_,endpoint_,feature_store,...}_service.proto
@@ -46,20 +46,21 @@ google/actions/sdk/v2/actions_sdk.proto
 
 ## API 设计的核心原则？
 
-以用名词描述的 Resource 为中心进行设计，Resource 按父子层级关系进行组织。
+以名词描述的 Resource 为中心，Resource 按父子层级关系进行组织。
 为 Resource 赋予统一的标准操作（LIST, GET, CREATE, UPDATE, DELETE），无法用标准操作表示的动作单独设计非标准操作。
 
 ## Resource URI 命名风格和 URL 风格？
 
-Resource 通过 URI 进行定位，采用 collecionID/resourceId 的层级方式命名，支持嵌套。
+Resource 通过 URI 锚定，URI 采用可多层嵌套 `collecionID/resourceId` 样式。
 
-```sh
-//     domain name      /collectionID/    resourceID   /collecionID/resourceID
-//storage.googleapis.com/buckets     /bucket-id        /objects    /object-id
-//mail.googleapis.com   /users       /name@example.com/settings    /customFrom
+```bash
+//      域名              /父类别         /资源ID              /子类别        /资源ID
+//     domain name        /collectionID   /resourceID          /collecionID   /resourceID
+//storage.googleapis.com  /buckets        /bucket-id           /objects       /object-id
+//mail.googleapis.com     /users          /name@example.com    /settings      /customFrom
 ```
 
-URI 中包含主版本号和路径参数，标准的 LIST/GET/CREATE/UPDATE/DELETE 方法不出现在在 URL 中，非标准方法用后缀方式添加。
+URI 体现接口版本号、路径参数，不体现标准的 LIST/GET/CREATE/UPDATE/DELETE 操作（通过 HTTP Method 区分），用后缀的方式体现非标准操作。
 
 ```sh
 # 标准方法通过 HTTP Method 区分
@@ -68,29 +69,27 @@ https://service.name/v1/some/resource/name
 https://service.name/v1/some/resource/name:customVerb
 ```
 
-还约定了 Packag/Service/Method/Enum 等命名方式，详情见 [Naming conventions][10]。
+Package/Service/Method/Enum 的命名方式也有约定，详情见 [Naming conventions][10]。
 
+## Resource 的唯一标识要如何设计？
 
-## Resource Name 如何设计？
-
-Google API Design Guide 设计 Resource Name 的方式和以往见到的做法非常不同：
-
-**Resource 的第一个 field 是 string 类型的 name 而不是数值类型的 id，value 为用/分隔的 URI**。
+最常见的做法用一个 int64 数值作为 Resource 的唯一标识，通常称为 Resource ID。Google 采用了另一种做法，用一个字符串类型的 name 作为 Resource 的唯一标识：
+**Resource 的第一个 field 是 string 类型的 name，value 为用“/”分隔的 URI**。
 
 ```sh
 //calendar.googleapis.com/users/john smith/events/123
 ```
 
-这个约定和常规做法很不相同。Google 认为这种格式的字符串才是最完整的表达，单个数值 id 表达不出 Parent ID/Child ID 这种层次关系。
+这和常规做法很不相同，Google 认为这种格式的字符串才是最完整的表达，单个数值 id 表达不出 Parent ID/Child ID 的层次关系。
 具体解释见 [Why not use resource IDs to identify a resource?][11]。
 
-Resource Name 的这种设计使对应的路径参数捕获方式和以前常见的做法也有所不同：
+Resource Name 的这种设计使路径参数捕获方式也相应发生变化：
 
 ```proto
 service LibraryService {
   rpc GetBook(GetBookRequest) returns (Book) {
     option (google.api.http) = {
-      //注意看：参数 name 匹配的是字符串 shelves/*/books/* ，而不是一个数值字段
+      //注意看：{} 中的参数 name 匹配的是字符串 shelves/*/books/* ，而不是一个数值字段
       get: "/v1/{name=shelves/*/books/*}" 
     };
   };
@@ -103,22 +102,22 @@ service LibraryService {
 }
 ```
 
-字段 name 从路径参数中捕获的 value 是一个有层次关系的字符串，我个人认为这个字符串 name 显然是不能写入数据库的，更不能作为查询的索引字段。
-比较好奇 Google 是怎样写实现代码的，请求时在代码中进行字符串分隔提取 ID，响应中时在代码中拼接生成 name ?
+上面的 name 从路径参数中捕获的 value 是一个有层次关系的字符串，这个字符串显然是不能整体作为作为数据库表的主键或者索引。
+比较好奇 Google 是怎样写实现代码的，在代码中进行字符串分隔提取出各级 ID，返回时再将多级 ID 拼接成 name ?
 
-## 是否复用 HTTP Method，以及标准方法、非标准方法的表示方式？
+## 是否复用 HTTP Method 的语义？
 
-**复用**。
+Google 的答案是：**`复用`**。
 
-有的项目全部都是 POST 方法，在 URI 中使用 GET/LIST 等动词表示接口含义，这种方式浪费了 HTTP Method 的表达力，增加了 URI 长度。
+现实中有的项目全部都是 POST 方法，在 URI 中添加 GET/LIST 等动词区分不同的操作，这种做法浪费了 HTTP Method 的表达力，并且增加了 URI 长度。
+Google API Design Guide 约定 Resource 上的常规操作 LIST/GET/CREATE/UPDATE/DELETE 分别用对应的 HTTP method 承接，这些操作的 URI 中不包含动词。
 
-Google API Design Guide 约定 Resource 上的常规操作 LIST GET CREATE UPDATE DELETE 分别用不同的 HTTP method 承接，对应 URI PATH 中不出现含义相同的动词。
-
-Resource 标准方法和 HTTP Method 的映射：
+Resource 标准操作和 HTTP Method 的映射：
 
 ```sh
-Standard    HTTP Mapping                 HTTP Request Body    HTTP Response Body
-Method
+Standard    HTTP                         HTTP                 HTTP
+Method      Mapping                      Request Body         Response Body
+----------------------------------------------------------------------------------------
 List        GET <collection URL>         N/A                  Resource* list
 Get         GET <resource URL>           N/A                  Resource*
 Create      POST <collection URL>        Resource             Resource*
@@ -126,29 +125,24 @@ Update      PUT or PATCH <resource URL>  Resource             Resource*
 Delete      DELETE <resource URL>        N/A                  google.protobuf.Empty**
 ```
 
-**无法用 HTTP Method 区分的非标准方法，在 URI 中增加非标准方法名，用`:`分隔。**
+**非常规操作无法用 HTTP Method 映射，通过在 URI 中增加后缀动词区分，例如下面的 :customVerb。**
 
 ```sh
 https://service.name/v1/some/resource/name:customVerb
 ```
 
-这也是一个和平常所见不太相同的做法，过去比较常见的是下面的做法（统一用 / 分隔）：
+这也是一个和平常所见不太相同的做法，比较常见的是下面的做法（/customVerb）。
+Google 用`:customVerb` 的方式大概是为了避免 customVerb 和 ResourceName 冲突，比如 customVerb 同时是一个特殊的 Resource Name 的时候。
 
 ```sh
 https://service.name/v1/some/resource/name/customVerb
 ```
 
-Google 用`:`分隔非标准方法的大概是为了避免方法名和 ResourceName 冲突，比如 customVerb 同时是一个特殊的 Resource Name 的时候。
-
-
 ## 是否使用路径参数？
 
-**使用**。
+Google 的答案是：**`使用`**。
 
-严格遵循 URI 是资源定位符的定义，只通过 URI 就能定位目标资源。query parameter 和 request body 中的参数只影响 resource 的呈现/representation。
-
-前面提到过，由于比较特殊的 Resource Name 设计，路径参数的捕获方式也比较特殊。
-
+严格遵循 URI 是资源定位符的定义，只通过 URI 就能定位目标资源。query parameter 和 request body 中的参数只影响 resource 的呈现（representation)。前面提到过，由于比较特殊的 Resource Name 设计，路径参数的捕获方式也比较特殊。
 
 ```proto
 service LibraryService {
@@ -169,15 +163,14 @@ service LibraryService {
 
 ## 是否在 URI 中包含版本号？
 
-**包含**。
+Google 的答案是：**`包含`**。
 
-主版本号作为 URI 的前缀，放在最开始处，URI 中只包含主版本号，不体现小版本号。
+主版本号作为 URI 的前缀，URI 中只包含主版本号，不体现小版本号。
 
-Mark Masse 在 2011 年出版的《REST API Design Rulebook》中提到一个观点：URI 作为 Resource 的标识符号应该唯一的，包含 /V1 /V2 等版本信息会导致一个 Resoruce 有多个标识符，因此建议在 URI 中不包含版本信息。
+Mark Masse 在 2011 年出版的《REST API Design Rulebook》中提到一个观点：URI 作为 Resource 的标识符号应该唯一的，包含 /V1 /V2 等版本信息会导致一个 Resoruce 有多个标识符，因此建议在 URI 中不包含版本信息。这个观点在实践中比较难采用。
 
-这个观点在实践中比较难采用，API 一定会变化的，在路径中增加版本前缀带来的便利远远比 URI 唯一重要。
+API 一定会变化的，在路径中增加版本前缀带来的便利远远比 URI 唯一重要。
 可以把 URI 中的版本前缀看作是 URI 的一部分，而不是 Resource Name 的一部分来保证 Resource Name 的唯一。
-
 Google Design Guide 正是这么做的，下面是 Resource Name 和 URL 的区别：
 
 ```sh
@@ -189,16 +182,13 @@ https://calendar.googleapis.com/v3/users/john%20smith/events/123
 
 ## 是否复用 HTTP 错误状态码？
 
-**复用**。
+Google 的答案是：**`复用`**。
 
-HTTP 的错误状态码有限并且不能完全表达具体的业务逻辑含义，有的项目全部返回 200 OK，然后在 response body 中用定义一个 status 字段表示相应状态。个人认为这种做法不可取，会影响到网络中的各种 HTTP 缓存设备的判断。
+HTTP 的错误状态码的数量有限，覆盖不了数量众多的业务逻辑错误。为此，有的项目在实践中全部返回 200 OK，然后在 response body 中用定义一个 status 字段表示相应状态。个人认为这种做法不是很好，会影响到网络中的各种 HTTP 缓存设备的判断。
 
 Google API Design Guide 以及 paypal、stripe 等公司的 REST API 接口设计都印证了这一点，正确的做法是：
 **把业务的错误状态映射到有限的 HTTP 错误状态码，然后在 response body 中解释具体的业务错误码和错误详情**。
-
-通用的 rpc 错误码和 HTTP 错误码映射：[google/rpc/code.proto][9]。
-
-Response body 中的 Error Status：
+通用的 rpc 错误码和 HTTP 错误码映射见 [google/rpc/code.proto][9]，Response body 中的 Error Status 定义如下: 
 
 ```proto
 package google.rpc;
@@ -220,11 +210,11 @@ message Status {
 }
 ```
 
-## 接口描述文件的内容结构?
+## 接口定义文件的组织方式?
 
-Google API Design Guide 对接口描述文件的内容格式也作出了要求（针对 protobuf）。
+Google API Design Guide 对接口文件的组织方式也做出要求（针对 protobuf）。
 
-* **接口文件按照主版本号分目录，彼此独立**
+* **按照主版本号分目录，不同版本之间独立**
 
 ```sh
 container
@@ -247,7 +237,7 @@ container
     └── container_v1beta1.yaml
 ```
 
-* **把重要的内容放在前面，比如接口定义放在前面，message 定义放在后面**
+* **重要的内容放在前面，比如接口定义在前，message 定义在后**
 
 ```proto
 // Manages workspaces.
@@ -287,13 +277,14 @@ message ListWorkspacesRequest {
 ...省略...
 ```
 
-* **接口共用的 message 定义可以单独放在 XX_resource.proto/resource.proto 文件中**
+* **共用的 message 可以单独放在 XX_resource.proto/resource.proto 文件**
 
-## 公用的定义怎样放置？
+## 共用的定义怎样放置？
 
 Design Guide 中没有明确说明，参考 [googleapis][6] 中的做法。
 
-* 全局公用的定义单独占用一个顶层目录，例如 googleapis 全局公用定义主要位于以下几个目录：
+* 跨业务共用的定义：单独占用一个顶层目录，例如 googleapis 全局共用定义主要位于以下几个目录：
+
 ```sh
 google/api  这里目录包含的文件不全是公用的，
             可以公用的主要是用来描述 api 到 rpc 映射关系的 annotation.proto 和 http.proto
@@ -302,18 +293,19 @@ google/type 公用的类型定义，Color、Date、DateTime、TimeZone 等
 google/geo  一个公用的用四点描述的地理平面空间 google.geo.type.Viewport
 ```
 
-* 局部公用的定义在对应的业务目录下独占一个目录，例如： 
+* 业务内共用的定义：在对应的业务目录下独占一个目录，例如： 
+
 ```sh
-# 局部公用定义 type 目录
+# actions 业务共用 type 目录
 google/actions
 ├── sdk
 │   └── v2
-└── type  # actions 中公用的定义
+└── type  # actions 中共用的定义
     ├── BUILD.bazel
     ├── date_range.proto
     ├── datetime_range.proto
     └── type_aog.yaml
-# 局部公用定义 data 目录
+# analytics 共用 data 目录
 google/analytics
 ├── admin
 │   ├── BUILD.bazel
@@ -321,7 +313,7 @@ google/analytics
 │   └── v1beta
 └── data
     ├── BUILD.bazel
-    ├── v1alpha  # 公用的定义也可以按照版本分目录
+    ├── v1alpha  # 共用的定义也可以按照版本分目录
     └── v1beta
 ```
 
@@ -329,15 +321,13 @@ google/analytics
 
 Google API Design Guide 中针对一些比较具体的场景做了约定，有的约定和平常接触的一些做法不同。
 
-给出了常用的标准字段集：[Standard fields][12]
-
-提供了常见场景的解决方式，比如分页、排序等，根据实际情况采用： [Common design patterns][13]。
+* 常用的标准字段集：[Standard fields][12]
+* 常见场景的解决方式，比如分页、排序等： [Common design patterns][13]。
 
 ### 空白响应 - Empty Responses
 
 Delete 操作执行成功，返回空白响应 google.protobuf.Empty，如果是软删除，返回状态发生更新的 Resource。
-
-其它操作即使没有需要返回的内容也返回 xxxResponse，为未来预留空间。
+其它操作即使没有需要返回的内容也返回 xxxResponse，为未来变化预留空间。
 
 ### 区间描述约定 - Representing Ranges
 
@@ -379,7 +369,7 @@ message ListBooksResponse {
 
 ### 操作完成前返回 - Long Running Operations
 
-对于需要较长执行时间的动作，接口直接返回，比提供获取任务状态的方法。如果是 Resource 创建操作，立即返回的 Resource 可能需要被标记为未就绪。
+需要较长时间才完成的操作，接口不等待执行结束，直接返回，同时设计一个获取任务状态的方法。如果是 Resource 创建操作，把立即返回的 Resource 标记为未就绪。
 
 ### 跨层级查询 List Sub-Collections/Get Unique Resource From Sub-Collection
 
@@ -429,7 +419,7 @@ bool validate_only = ...;
 string request_id = ...;
 ```
 
-### 枚举从 0 开始定义 - Enum Default Value
+### 枚举从 0 开始定义，从 1 开始使用 - Enum Default Value
  
 ```proto
 enum Isolation {
@@ -459,6 +449,9 @@ GET https://library.googleapis.com/v1/shelves/123?$fields=name
 ```
 
 ### 同一资源多种视图 - Resource View
+
+用一个枚举参数指明想要的视图格式，例如下面的 view：
+
 ```proto
 package google.example.library.v1;
 
@@ -498,7 +491,7 @@ message ListBooksRequest {
 
 ### 标记由服务端设置字段 - Output Fields
 
-Google 用 google.api.field_behavior 来标记字段是输入赋值和输出赋值:
+Google 用 google.api.field_behavior 来标记字段是输入赋值还是输出赋值:
 
 ```proto
 import "google/api/field_behavior.proto";
@@ -569,7 +562,7 @@ string region_code as defined by Unicode regions.
 
 string language_code as defined by Unicode locales.
 
-### 删除的数据的保留期限 - Data Retention
+### 被删数据的保留期限 - Data Retention
 
 被删除的资源需要根据情况保留 30 天, 7 天，1天。
 
@@ -590,12 +583,10 @@ Request body 和 Response body 不超过 32 MB。32MB is a commonly used limit i
 
 ## 怎么避免用两套文件分别描述 API 接口和 RPC 接口？
 
-Google 通过自身平台的 [Transcoding HTTP/JSON to gRPC][14] 能力，实现了用一套 protobuf 文件同时描述 API 接口和 RPC 接口。
-
-Google 的 Extensible Service Proxy 能够识别 protobuf 文件中用 option 描述 API 接口和 RPC 接口的映射关系，能够将收到的 HTTP 请求转换为 RPC 请求，不需要再单独定义 API 接口。
+Google 通过自身平台的 [Transcoding HTTP/JSON to gRPC][14] 能力，能够用一套 protobuf 文件同时描述 API 接口和 RPC 接口。
+Google 的 Extensible Service Proxy 能够识别 protobuf 文件中用 option 描述的 API 接口和 RPC 接口的映射关系，自动将收到的 HTTP 请求转换为 RPC 请求，不需要再单独定义 API 接口。
 
 如果不使用 google cloud，需要自行寻找解决方法。
-
 [Transcoding HTTP/JSON to gRPC][14] 和 [google/api/http.proto][7] 介绍了 Google 采用的映射描述方法，样式如下：
 
 ```proto
@@ -632,13 +623,12 @@ rpc DeleteWorkspace(DeleteWorkspaceRequest) returns (google.protobuf.Empty) {
 
 ## 怎样自动生成 API 接口的代码文件？
 
-不同的 http 框架的代码不同，没有统一的解决方案，目标框架应当提供相应的代码生成工具，或者利用 protoc 的 `--plugin=` 功能自我实现。
+不同的 http 框架的代码不同，没有统一的解决方案，目标框架应当提供相应的代码生成工具，或者利用 protoc 的 `--plugin=` 功能自我实现。目标框架的代码生成工具如果能够识别 [Transcoding HTTP/JSON to gRPC][14] 使用的 option 注解，可以避免再写一份 API 接口描述文件。
 
-目标框架的代码生成工具如果能够识别 [Transcoding HTTP/JSON to gRPC][14] 使用的 option 注解，可以避免再写一份 API 接口描述文件。
+## 怎样导入 API 网关？
 
-## 怎样导入 API 网关服务？
 
-[google/example/endpointsapis][8] 是一个演示 demo，Google 是借助于 glcoud 平台的 Service Management API 来实现 HTTP API 的转换。
+Google 是借助于 glcoud 平台的 Service Management API 来实现 HTTP API 的转换。[google/example/endpointsapis][8] 是一个演示 demo。
 
 用 protoc 生成文件 service.descriptors:
 
