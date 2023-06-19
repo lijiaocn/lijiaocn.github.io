@@ -3,7 +3,7 @@ layout: default
 title: "Google 是如何实践 RESTful API 设计的？"
 author: 李佶澳
 date: "2022-11-24 16:52:28 +0800"
-last_modified_at: "2023-06-19 19:43:49 +0800"
+last_modified_at: "2023-06-19 19:59:33 +0800"
 categories: 方法
 cover:
 tags: 系统设计
@@ -18,7 +18,7 @@ description:  经手了几个应用层的项目，API设计的都不怎么理想
 
 ## 说明
 
-经手了几个应用层的项目，API设计的都不怎么理想，有的项目乱到一塌糊涂。在参考国外公司的 API 时，发现 Google 在 2017 年公布了 2014 年制定 [API Design Guide][2]，维护至今，这里提炼下要点。 
+经手了几个应用层的项目，API设计的都不怎么理想，有的项目乱到一塌糊涂。在参考国外公司的 API 时，发现 Google 在 2017 年公布了 2014 年制定并使用至今的 [API Design Guide][2]，这里提炼下要点。 
 
 ## 应用情况怎样？
 
@@ -317,7 +317,7 @@ google/analytics
     └── v1beta
 ```
 
-## 其它约定和常用接口场景设计
+## 常见场景下的接口设计约定
 
 Google API Design Guide 中针对一些比较具体的场景做了约定，有的约定和平常接触的一些做法不同。
 
@@ -338,7 +338,7 @@ Delete 操作执行成功，返回空白响应 google.protobuf.Empty，如果是
 [start_time, end_time)
 ```
 
-### 用 Labels 方式支持动态属性 - Resource Labels
+### 用 Labels 描述动态属性 - Resource Labels
 
 ```proto
 message Book {
@@ -367,11 +367,11 @@ message ListBooksResponse {
 }
 ```
 
-### 操作完成前返回 - Long Running Operations
+### 异步接口设计 - Long Running Operations
 
 需要较长时间才完成的操作，接口不等待执行结束，直接返回，同时设计一个获取任务状态的方法。如果是 Resource 创建操作，把立即返回的 Resource 标记为未就绪。
 
-### 跨层级查询 List Sub-Collections/Get Unique Resource From Sub-Collection
+### 跨层级查询- List Sub-Collections/Get Unique Resource From Sub-Collection
 
 比如在所有的shelves 中查询某个 book，用 `-` 泛指所有：
 
@@ -489,7 +489,7 @@ message ListBooksRequest {
 
 遵循 ETags 定义即可。
 
-### 标记由服务端设置字段 - Output Fields
+### 标记由服务端赋值的字段 - Output Fields
 
 Google 用 google.api.field_behavior 来标记字段是输入赋值还是输出赋值:
 
@@ -538,13 +538,14 @@ message UpdateSettingsRequest {
 }
 ```
 
-### Streaming Half-Close
+### 客户端主动断开 -  Streaming Half-Close
 
-这一节没看懂想表达什么。连接需要由 client 主动断开？？
+双向数据的通信连接或者 client 发起的长连接，连接断开时由客户端主动发起 half-close，不需要专门定义一个关闭连接的 message。
+
 
 ### 用带有域名的 Resource Name 避免跨组织合作时命名冲突 - Domain-scoped names
 
-Domain-scoped names are widely used among Google APIs and Kubernetes APIs, such as:
+定义的 Resourcce 时带上所在组织的域名。Domain-scoped names are widely used among Google APIs and Kubernetes APIs, such as:
 
 * The Protobuf Any type representation: type.googleapis.com/google.protobuf.Any
 * Stackdriver metric types: compute.googleapis.com/instance/cpu/utilization
@@ -552,7 +553,7 @@ Domain-scoped names are widely used among Google APIs and Kubernetes APIs, such 
 * Kubernetes API versions: networking.k8s.io/v1
 * The kind field in the x-kubernetes-group-version-kind OpenAPI extension.
 
-### Bool,Enum 和 String 的选择
+### 多值参数怎么选类型？ Bool、Enum 还是 String ？
 
 * Using bool type if we want to have a fixed design and intentionally don't want to extend the functionality. For example, bool enable_tracing or bool enable_pretty_print.
 * Using an enum type if we want to have a flexible design but don't expect the design will change often. The rule of thumb is the enum definition will only change once a year or less often. For example, enum TlsVersion or enum HttpVersion.
@@ -576,12 +577,13 @@ Request body 和 Response body 不超过 32 MB。32MB is a commonly used limit i
 
 如果数据量超过 10MB，考虑是否要写入对象存储，通过连接传递数据。
 
-### 区别 empty value 和 unset value - Optional Primitive Fields
+### 区分 empty value 和 unset value - Optional Primitive Fields
 
 用 protobuf 3 中 optional 字段。
 
+## 其它便捷操作
 
-## 怎么避免用两套文件分别描述 API 接口和 RPC 接口？
+### 怎么避免用两套文件分别描述 API 接口和 RPC 接口？
 
 Google 通过自身平台的 [Transcoding HTTP/JSON to gRPC][14] 能力，能够用一套 protobuf 文件同时描述 API 接口和 RPC 接口。
 Google 的 Extensible Service Proxy 能够识别 protobuf 文件中用 option 描述的 API 接口和 RPC 接口的映射关系，自动将收到的 HTTP 请求转换为 RPC 请求，不需要再单独定义 API 接口。
@@ -621,11 +623,11 @@ rpc DeleteWorkspace(DeleteWorkspaceRequest) returns (google.protobuf.Empty) {
 }
 ```
 
-## 怎样自动生成 API 接口的代码文件？
+### 怎样自动生成 API 接口的代码文件？
 
 不同的 http 框架的代码不同，没有统一的解决方案，目标框架应当提供相应的代码生成工具，或者利用 protoc 的 `--plugin=` 功能自我实现。目标框架的代码生成工具如果能够识别 [Transcoding HTTP/JSON to gRPC][14] 使用的 option 注解，可以避免再写一份 API 接口描述文件。
 
-## 怎样导入 API 网关？
+### 怎样导入 API 网关？
 
 
 Google 是借助于 glcoud 平台的 Service Management API 来实现 HTTP API 的转换。[google/example/endpointsapis][8] 是一个演示 demo。
