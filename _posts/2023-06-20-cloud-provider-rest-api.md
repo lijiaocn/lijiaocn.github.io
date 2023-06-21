@@ -3,7 +3,7 @@ layout: default
 title: "各大云厂商的 API 设计风格"
 author: 李佶澳
 date: "2023-06-20 16:21:51 +0800"
-last_modified_at: "2023-06-21 16:07:30 +0800"
+last_modified_at: "2023-06-21 17:57:11 +0800"
 categories: 方法
 cover:
 tags: 系统设计
@@ -104,6 +104,8 @@ POST https://{service-endpoint}/v1/{name}:cancel
 整体来看接口风格都在往 REST 靠齐， Google 的 [RESTful API 设计规范][7] 和微软的 [REST API Guidelines][6] 也有很多共同的地方。
 不过 Azure 和 AWS 用日期字符串作为版本，我感觉这是奇葩设计，日期做版本会鼓励 API 版本滥发而且用户用的时候要指定日期，更倾向于 Google 通过 /v1 区别版本的方式。
 
+Google 对待 API 更重视，除了发布 [RESTful API 设计规范][7]，还发起了一个 API 改善计划：[API Improvement Proposals][11]。发起人 JJ Geewax 还在 2021 年初出版了《API Design Patterns》对 API 设计规范进行解释。
+
 ## 参考
 
 1. [李佶澳的博客][1]
@@ -115,6 +117,8 @@ POST https://{service-endpoint}/v1/{name}:cancel
 7. [Google 是如何实践 RESTful API 设计的？][7]
 8. [Google Method: projects.locations.batchPredictionJobs.cancel][8]
 9. [AWS EKS: UpdateClusterVersion][9]
+10. [AWS Lambda][10]
+11. [Google: API Improvement Proposals][11]
 
 [1]: https://www.lijiaocn.com "李佶澳的博客"
 [2]: https://docs.aws.amazon.com/AWSEC2/latest/APIReference/CommonParameters.html "Amazon EC2 Common query parameters"
@@ -125,4 +129,5 @@ POST https://{service-endpoint}/v1/{name}:cancel
 [7]: /方法/2022/11/24/google-api-design.html "Google 是如何实践 RESTful API 设计的？"
 [8]: https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.batchPredictionJobs/cancel "Google: Method: projects.locations.batchPredictionJobs.cancel"
 [9]: https://docs.aws.amazon.com/eks/latest/APIReference/API_UpdateClusterVersion.html "AWS EKS: UpdateClusterVersion"
-[10]: https://docs.aws.amazon.com/lambda/latest/dg/API_GetProvisionedConcurrencyConfig.html "AWS Lambda"
+[10]: https://docs.aws.amazon.com/lambda/latest/dg/API_GetProvisionedConcurrencyConfig.html "AWS Lambda" 
+[11]: https://google.aip.dev/ "Google: API Improvement Proposals"

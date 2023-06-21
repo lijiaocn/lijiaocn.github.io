@@ -3,7 +3,7 @@ layout: default
 title: "Google 是如何实践 RESTful API 设计的？"
 author: 李佶澳
 date: "2022-11-24 16:52:28 +0800"
-last_modified_at: "2023-06-19 19:59:33 +0800"
+last_modified_at: "2023-06-21 18:03:39 +0800"
 categories: 方法
 cover:
 tags: 系统设计
@@ -19,6 +19,8 @@ description:  经手了几个应用层的项目，API设计的都不怎么理想
 ## 说明
 
 经手了几个应用层的项目，API设计的都不怎么理想，有的项目乱到一塌糊涂。在参考国外公司的 API 时，发现 Google 在 2017 年公布了 2014 年制定并使用至今的 [API Design Guide][2]，这里提炼下要点。 
+
+后续：2021 年 Google API Design Guide 编写人之一 JJ Geewax 出版了一本《API Design Patterns》对 API 设计规范进行解释，还发起了 [API Improvement Proposals][15] 项目，收集 API 设计规范并提供了检查是否复合规范的 [Google API Linter][16]。
 
 ## 应用情况怎样？
 
@@ -662,6 +664,8 @@ gcloud endpoints services deploy service.descriptors endpointsapis.yaml
 12. [Standard fields][12]
 13. [Common design patterns][13]
 14. [Transcoding HTTP/JSON to gRPC][14]
+15. [Google: API Improvement Proposals][15]
+16. [Google API Linter][16]
 
 [1]: https://www.lijiaocn.com "李佶澳的博客"
 [2]: https://cloud.google.com/apis/design?hl=en "Google API Design Guide"
@@ -677,3 +681,5 @@ gcloud endpoints services deploy service.descriptors endpointsapis.yaml
 [12]: https://cloud.google.com/apis/design/standard_fields?hl=en "Standard fields"
 [13]: https://cloud.google.com/apis/design/design_patterns?hl=en "Common design patterns"
 [14]: https://cloud.google.com/endpoints/docs/grpc/transcoding?hl=en "Transcoding HTTP/JSON to gRPC"
+[15]: https://google.aip.dev/ "Google: API Improvement Proposals"
+[16]: https://linter.aip.dev/ "Google API Linter"
