@@ -3,7 +3,7 @@ layout: default
 title: "Android 声明式 UI 开发工具 JetPack Compose"
 author: 李佶澳
 date: "2023-05-09 10:59:18 +0800"
-last_modified_at: "2023-05-12 11:54:55 +0800"
+last_modified_at: "2023-06-05 10:53:24 +0800"
 categories: 编程
 cover:
 tags: Android
@@ -21,8 +21,8 @@ description: jetpack/compose是当前推荐使用的 android 原生 UI 开发工
 [jetpack/compose][2] 是当前（2023-05-09 11:00:59）推荐使用的 android 原生 UI 开发工具，用声明式代码完成 UI 编写，替代之前用 xml 文件描述 UI 布局的做法。 
 
 * [JetPack Quick Start][6]： JetPack 手册
-* [jetpack-compose/course][5]：JetPack 系列教程
 * [jetpack/compose/tutorial][3]：JetPack Start Tutorial
+* [jetpack-compose/course][5]：JetPack 系列教程
 
 
 ## 原理说明
