@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2018/04/18 16:25:00
 last_modified_at: 2018/09/04 17:55:52
 categories: 编程
-tags:  前端
+tags: 语法手册
 keywords: typescript,javascript,angularjs
 description: 了解AngularJS2的时候学习了一下TypeScript
 

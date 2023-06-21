@@ -6,7 +6,7 @@ date: "2022-07-07 10:56:44 +0800"
 last_modified_at: "2022-07-07 17:15:55 +0800"
 categories: 编程
 cover:
-tags: Android
+tags: android
 keywords: android,android sdk
 description: 简单了解下 Android SDK 提供的工具，为下一步自动化操作移动端应用、采集应用内数据做技术储备。
 ---

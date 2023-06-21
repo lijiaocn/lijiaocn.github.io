@@ -6,7 +6,7 @@ date: "2019-08-04T11:41:22+0800"
 last_modified_at: "2019-08-04T11:41:22+0800"
 categories: 编程
 cover: 
-tags: spider python
+tags: spider
 keywords: python3,网络爬虫
 description: 介绍了Requests、Selenium、PhantomJS、Beautiful Soup、Charles、Scrapy等python库或工具的用法
 

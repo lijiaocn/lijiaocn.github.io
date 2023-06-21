@@ -18,7 +18,11 @@
 			<ul class="nav navbar-nav">
 				{% for cate in site.categories %} 
 					{% if cate[0] != 'hidden' %} 
-					<li><a href="{{ site.baseurl }}/categories/{{ cate[0]}}.html">{{ cate[0] }}</a></li>
+						{% if cate[0] == '好货' %} 
+						<li><a href="{{ site.baseurl }}/categories/{{ cate[0]}}.html">推广</a></li>
+						{% else %}
+						<li><a href="{{ site.baseurl }}/categories/{{ cate[0]}}.html">{{ cate[0] }}</a></li>
+						{% endif %}
 					{% endif %}
 				{% endfor %}
 				<li><a href="{{ site.baseurl }}/tags/all.html">标签</a></li>

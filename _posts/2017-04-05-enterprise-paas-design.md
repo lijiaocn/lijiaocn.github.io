@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2017/04/05 13:07:40
 last_modified_at: 2017/10/28 12:12:55
 categories: 方法
-tags: paas
+tags: 系统设计
 keywords: PaaS,paas,企业级
 description: 对企业用PaaS的一些理解
 

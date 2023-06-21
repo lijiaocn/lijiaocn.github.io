@@ -5,7 +5,7 @@ author: "冯大辉@小道消息"
 createdate: 2018/05/01 11:53:25
 last_modified_at: 2018/05/08 10:40:41
 categories: 好货
-tags: 知识星球精华
+tags: 知识星球
 keywords: 知识星球精华,冯大辉,X-art,小道消息,farewell
 description: X-Art 这个公司挺有意思。看到纽约客上的一篇报道，像软文，但切入的角度很好。
 

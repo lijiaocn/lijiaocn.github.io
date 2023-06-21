@@ -5,7 +5,7 @@ author: "冯大辉@小道消息"
 createdate: 2018/05/01 11:53:25
 last_modified_at: 2018/05/08 10:40:01
 categories: 好货
-tags: 知识星球精华
+tags: 知识星球
 keywords: 知识星球精华,冯大辉,小道消息,年终总结,晋升
 description: 写好了，有助于说明自己的工作绩效，绩效好可以多拿年终奖，还有晋升机会
 

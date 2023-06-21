@@ -3,10 +3,10 @@ layout: default
 title: "kubernetes 中的容器设置透明代理，自动在 HTTP 请求头中注入 Pod 信息"
 author: 李佶澳
 date: "2019-11-14 20:00:30 +0800"
-last_modified_at: "2019-12-04 10:53:32 +0800"
+last_modified_at: "2023-06-21 17:00:54 +0800"
 categories: 技巧
 cover:
-tags: kubernetes nginx apigateway
+tags: kubernetes nginx gateway
 keywords: kubernetes,nginx,透明代理
 description: 集群外部的服务获取不到 Pod 的信息，会给故障排查增加一些困难，基于源 IP 的功能也会受到影响
 ---

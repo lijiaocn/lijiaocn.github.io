@@ -6,7 +6,7 @@ date: "2019-12-14T15:06:07+0800"
 last_modified_at: "2019-12-14T15:06:07+0800"
 categories: 问题 
 cover:
-tags: linux_problem
+tags: linux
 keywords: bpftrace,lockdown,kernel, maps failed
 description: 网上关闭 lockdown 的方法不靠谱，是 snap 的原因，不是 kernel lockdown 造成的
 ---

@@ -3,10 +3,10 @@ layout: default
 title: "用代码操作浏览器的方法: Puppeteer/Chromedp/Selenium"
 author: 李佶澳
 date: "2022-02-22 19:41:52 +0800"
-last_modified_at: "2022-05-22 22:11:25 +0800"
+last_modified_at: "2023-06-21 16:48:51 +0800"
 categories: 编程
 cover:
-tags:  spider 浏览器
+tags: spider
 keywords: Puppeteer,Chromedp,Selenium,CDP
 description: 基于CDP协议的Puppeteer和Chromedp能操作Chrome浏览器，Selenium可以驱动大部分主流浏览器
 

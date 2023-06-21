@@ -5,7 +5,7 @@ createdate: "2019-02-09 13:27:31 +0800"
 last_modified_at: "2019-02-09 13:27:31 +0800"
 author: 刘慈欣
 categories: 好货
-tags: 好货
+tags: 推广
 keywords: 流浪地球,刘慈欣,原著,科幻小说
 description: 电影《流浪地球》同名小说，作者刘慈欣，2008年出版，《流浪地球》2019年春节档上映，票房口碑俱佳
 ---

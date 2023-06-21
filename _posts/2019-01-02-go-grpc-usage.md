@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2019-01-02 13:19:40 +0800"
 last_modified_at: "2019-07-18 10:11:10 +0800"
 categories: 技巧
-tags: grpc
+tags: protocol
 keywords: grpc,protobuf,golang,go
 description: 用Go语言实现grpc通信，即用protobuf消息格式实现client和server之间的高效通信
 ---

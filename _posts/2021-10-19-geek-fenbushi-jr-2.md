@@ -3,10 +3,10 @@ layout: default
 title: "《分布式金融架构课》阅读笔记2: 线性一致的分布式数据系统的实现过程"
 author: 李佶澳
 date: "2021-10-19 11:01:55 +0800"
-last_modified_at: "2021-10-19 11:01:55 +0800"
+last_modified_at: "2023-06-21 16:26:26 +0800"
 categories: 编程
 cover:
-tags: 阅读笔记 分布式
+tags: 系统设计
 keywords: 事务,并发,一致性,可串行化,mvcc,多副本
 description: 内容质量特别高！对单机并发、多机并发、多副本读写场景下的各种问题的阐述，让人脑塞顿开
 ---

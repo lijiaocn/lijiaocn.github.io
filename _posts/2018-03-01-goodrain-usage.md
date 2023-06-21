@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2018/03/01 14:02:00
 last_modified_at: 2018/07/15 13:23:04
 categories: 项目
-tags: paas
+tags: 系统设计
 keywords: goodrain, rainbond,好雨云
 description: 知道这个产品已经有很长一段时间了，但是一直没试用，最近有时间整一下
 

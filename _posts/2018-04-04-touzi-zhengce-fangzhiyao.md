@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2018/04/04 08:00:02
 last_modified_at: 2018/04/04 08:07:17
 categories: 投资
-tags: 政策
+tags: 投资
 keywords:  仿制药,办公厅,药物研发,政策
 description: 4月3日，国务院办公厅印发了2018年的第20号文件
 

@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2017/12/26 14:22:25
 last_modified_at: 2017/12/26 15:22:22
 categories: 方法
-tags: spec
+tags: 系统设计
 keywords: semver,版本命名
 description: 可以参考软件版本命名规范Semantic Versioning 2.0.0
 

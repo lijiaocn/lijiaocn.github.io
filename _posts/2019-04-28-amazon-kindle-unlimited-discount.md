@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2019-04-28 00:13:30 +0800"
 last_modified_at: "2019-04-28 00:41:11 +0800"
 categories: 好货
-tags: 好货
+tags: 推广
 keywords: 亚马逊,Kindle,
 description: "Kindle Unlimited电子书包月服务，购买后无限制的阅读所有电子书，特别适合大量阅读者"
 ---

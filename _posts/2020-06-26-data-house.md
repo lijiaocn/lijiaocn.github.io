@@ -6,7 +6,7 @@ date: "2020-06-26T15:48:34+0800"
 last_modified_at: "2020-08-26T17:01:05+0800"
 categories: 项目
 cover:
-tags: 数据仓库
+tags: database
 keywords:
 description: 经过连续多天的资料翻阅、看书看视频以及公开案例研究，总算搞清楚了数据仓库是干嘛的
 ---

@@ -6,7 +6,7 @@ date: "2023-03-23 11:13:19 +0800"
 last_modified_at: "2023-05-12 14:14:41 +0800"
 categories: 编程
 cover:
-tags: Android
+tags: android
 keywords:
 description: Android 的 API 有 Java 和 Kotlin 版本,API 接口和 Android 系统版本是关联的，在 API 列表会给出每个 API 适用的系统版本。
 ---

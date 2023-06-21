@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2018-11-05 15:12:07 +0800"
 last_modified_at: "2019-05-09 17:24:54 +0800"
 categories: 项目
-tags: gateway
+tags: 系统设计
 keywords:  gateway,haproxy,nginx,envoy
 description: 基于OpenResty的api网关项目kong的学习曲线有些陡峭，特别是如果要添加一些nginx不支持的特性，大概率要自己开发nginx模块，需要抬头看看路
 ---

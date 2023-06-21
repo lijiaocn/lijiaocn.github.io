@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2017/10/22 20:09:47
 last_modified_at: 2017/10/28 12:12:20
 categories: 方法
-tags: opensource
+tags: 系统设计
 keywords: license,opensource
 description: 在发布源代码的时候需要选择合适的license，在使用开源代码的时候更是要注意所用代码的license。
 

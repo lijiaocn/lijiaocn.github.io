@@ -5,7 +5,7 @@ author: "冯大辉@小道消息"
 createdate: 2018/05/01 11:53:25
 last_modified_at: 2018/05/08 10:40:26
 categories: 好货
-tags: 知识星球精华
+tags: 知识星球
 keywords: 知识星球精华,冯大辉,小公司大公司,小道消息,机会
 description: 以前大公司还算有盲点，会犯战略错误，现在好了，人家有大数据，有大量用户行为，
 

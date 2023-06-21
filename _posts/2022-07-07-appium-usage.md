@@ -3,10 +3,10 @@ layout: default
 title: "Appium 安装配置和使用方法，移动端自动化测试工具"
 author: 李佶澳
 date: "2022-07-07 15:24:12 +0800"
-last_modified_at: "2023-05-08 14:08:19 +0800"
+last_modified_at: "2023-06-21 16:59:41 +0800"
 categories: 编程
 cover:
-tags: Android Appium
+tags: appium android
 keywords:  Appium Android
 description: 通过 appium 的 http api 可以模拟人工操作 android/ios/windows 上的应用
 ---

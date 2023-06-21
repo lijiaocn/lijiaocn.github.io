@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2019-05-21 11:03:40 +0800"
 last_modified_at: "2019-09-03 16:47:24 +0800"
 categories: 项目
-tags: apigateway envoy istio
+tags: gateway envoy istio
 cover:
 keywords: apigateway,envoy,kong,nginx,servicemesh,ingress controller
 description: "对比Kubernetes文档列出的Ingress Controller：ambassador,contour,gloo,istio, traefik, voyager"

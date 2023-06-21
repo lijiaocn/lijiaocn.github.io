@@ -6,7 +6,7 @@ date: "2022-04-30 18:30:39 +0800"
 last_modified_at: "2023-05-08 13:47:18 +0800"
 categories: 编程
 cover:
-tags: Android 
+tags: android 
 keywords: android,移动应用开发
 description: AndroidStudio的File->NewProject创建BasicActivity，选择Java/Kotlin语言、最小的sdk版本
 ---

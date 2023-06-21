@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2018/09/20 22:37:00
 last_modified_at: 2018/09/28 00:23:19
 categories: 好货
-tags: 阅读笔记
+tags: 系统设计
 keywords: 极客时间,Kubernetes,docker,张磊,深入剖析,原理
 description: 张磊是《Docker容器与容器云》的作者，Kubernetes多个核心特性的作者之一。他在极客时间
 

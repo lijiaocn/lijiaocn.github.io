@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2018/09/21 00:26:00
 last_modified_at: 2018/09/28 00:24:05
 categories: 好货
-tags: 阅读笔记
+tags: 系统设计
 keywords: 极客时间,陈皓,左耳朵耗子，职业规划，方法论
 description: 订阅的第一个付费专栏, 这个专栏涉猎范围比较广，侧重观点分享、职业规划和技术方法论。
 

@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2017/04/26 09:49:03
 last_modified_at: 2017/09/04 21:44:53
 categories: 技巧
-tags: 前端
+tags: web
 keywords: yeoman,adminlte,前端技术,折腾笔记
 description: 折腾了很久总算是大概厘清了yeoman套件的工作过程。算是有了一点小进步。
 

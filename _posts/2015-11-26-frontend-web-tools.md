@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2015/11/26 13:50:55
 last_modified_at: 2017/10/28 12:37:08
 categories: 技巧
-tags: 前端
+tags: web
 keywords:
 description: yeoman是一套前端工作中用到的脚手架，在了解前端技术时遇到的。
 

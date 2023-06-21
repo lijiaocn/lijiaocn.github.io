@@ -6,7 +6,7 @@ date: "2021-10-08 16:44:38 +0800"
 last_modified_at: "2021-10-09 16:44:38 +0800"
 categories: 编程
 cover:
-tags: 阅读笔记 系统设计
+tags: 系统设计 系统设计
 keywords: 缓存,redis
 description: Redis 的存储开销方面讲的具体生动，特别是通过压缩列表减少内存空间的分析过程很细致
 ---

@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2019-03-09 15:38:09 +0800"
 last_modified_at: "2019-05-01 21:32:30 +0800"
 categories: 方法
-tags: 前端 SEO
+tags: web SEO
 keywords: 网页设计法则,网页设计方法,专业设计网站推荐,免费商用字体,免费商用图片
 description: 搭建起网页设计的概念框架，介绍网页设计的基本流程，参考网站、学习工具、经验总结、网站配色技巧
 ---

@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2019-06-03T22:28:44+0800"
 last_modified_at: "2019-06-13T00:03:02+0800"
 categories: 方法
-tags: 前端
+tags: web
 cover:
 keywords: 前端开发,html,css,javascript,前端组件开发,ECMAScript
 description: "一句话总结：掌握结构层 HTML、表现层 CSS、行为层 JavaScript 的最新标准，使用组件化开发"

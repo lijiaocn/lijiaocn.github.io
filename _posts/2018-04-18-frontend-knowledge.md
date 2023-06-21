@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2018/05/22 13:31:00
 last_modified_at: 2018/06/06 13:37:28
 categories: 编程
-tags: 前端
+tags: web
 keywords: 前端知识
 description: 没有系统学习过前端开发，这里都是道听途说的一些内容。
 

@@ -6,7 +6,7 @@ date: "2022-10-30 17:43:27 +0800"
 last_modified_at: "2023-01-08 21:56:29 +0800"
 categories: 投资
 cover:
-tags: 认知笔记
+tags: 投资
 keywords:
 description: 完全由人类主观意愿决定的事情能够发生，必然是支持的力量更大。
 ---

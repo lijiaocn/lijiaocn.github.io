@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2017/12/06 13:38:42
 last_modified_at: 2017/12/07 17:04:04
 categories: 问题
-tags: grpc
+tags: protocol
 keywords: grpc,微服务,系统调用
 description: 用户反映在kubernetes平台上使用自主开发的微服务系统（使用grpc调用），经常出现timeout的情况。
 

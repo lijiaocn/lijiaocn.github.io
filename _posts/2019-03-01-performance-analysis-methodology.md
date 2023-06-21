@@ -3,9 +3,9 @@ layout: default
 title: "系统性能分析方法论: 统计图谱工具"
 author: 李佶澳
 createdate: "2019-03-01 15:09:50 +0800"
-last_modified_at: "2019-03-01 18:27:00 +0800"
+last_modified_at: "2023-06-21 16:32:07 +0800"
 categories: 方法
-tags: linux 基础知识
+tags: linux 系统设计
 keywords: 系统性能分析,火焰图,延迟热图,直方图,统计图表
 description: 精心设计的统计图片能够将采集的系统状态数据以非常直观的方式呈现出来，揭示数据中蕴含的重要信息
 ---

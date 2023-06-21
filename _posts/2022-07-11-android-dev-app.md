@@ -6,7 +6,7 @@ date: "2022-07-11 11:48:19 +0800"
 last_modified_at: "2023-05-08 14:15:10 +0800"
 categories: 编程
 cover:
-tags: Android
+tags: android
 keywords: Android,AndroidManifest.xml
 description: Android App 由 AndroidManifest.xml、组件实现代码、资源文件组件，均位于 app/src/main 目录中
 ---

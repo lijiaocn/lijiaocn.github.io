@@ -3,10 +3,10 @@ layout: default
 title: "多机数据系统的正确性与一致性"
 author: 李佶澳
 date: "2022-05-07 20:28:55 +0800"
-last_modified_at: "2022-09-20 17:35:08 +0800"
+last_modified_at: "2023-06-21 16:26:12 +0800"
 categories: 编程
 cover:
-tags: 基础知识 分布式
+tags: 系统设计
 keywords:
 description: 在「本地」保存数据并对外开放「读写」功能的系统，都是数据系统，数据系统都属于「有状态服务」
 ---

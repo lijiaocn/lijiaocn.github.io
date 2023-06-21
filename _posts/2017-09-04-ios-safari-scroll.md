@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2017/09/04 23:01:31
 last_modified_at: 2017/09/04 23:23:50
 categories: 问题
-tags: 前端
+tags: web
 keywords: scroll-x, safari, ios
 description: "ios和safari中，为`pre标签`设置了overflow:auto，没有产生水平滚动条"
 

@@ -3,10 +3,10 @@ layout: default
 title: "公众号文章同步: istio 的目标是去掉中心化网关吗？"
 author: 李佶澳
 date: "2019-11-28 20:47:38 +0800"
-last_modified_at: "2019-11-29 13:03:10 +0800"
+last_modified_at: "2023-06-21 17:00:41 +0800"
 categories: 项目
 cover:
-tags: istio apigateway 
+tags: istio gateway 
 keywords: istio,service mesh,微服务
 description: istio 的分布式设计更先进，Google 的选择表明达到一定量级以后，分布式方案在成本方面更有优势
 ---

@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: 2018/10/23 14:02:00
 last_modified_at: 2018/10/23 14:02:00
 categories: 方法
-tags: DevOps
+tags: 系统设计
 keywords: 蓝绿部署,AB测试,金丝雀发布
 description: 蓝绿部署、A/B测试、金丝雀发布，以及灰度发布、流量切分等，经常被混为一谈，人们耳熟能详能够熟练地谈起，对这些术语的理解却没有达成一致。
 

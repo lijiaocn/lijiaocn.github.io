@@ -5,7 +5,7 @@ author: "枫.二@caoz的小密圈"
 createdate: 2018/05/01 11:53:25
 last_modified_at: 2018/05/08 10:40:15
 categories: 好货
-tags: 知识星球精华
+tags: 知识星球
 keywords: 知识星球精华,caoz的小密圈,外贸套路,利基市场,变现
 description: 既然我有找利基市场这个需求，那这些店铺的卖家也有，那我把店铺列表有针对性的卖给他们，也是一种变现途径
 

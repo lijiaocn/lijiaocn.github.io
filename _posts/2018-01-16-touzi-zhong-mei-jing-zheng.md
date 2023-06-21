@@ -5,7 +5,7 @@ author: 张立伟
 createdate: 2018/01/16 14:42:07
 last_modified_at: 2018/01/22 22:13:53
 categories: 投资
-tags: 中美竞争
+tags: 投资
 keywords:
 description:  “次贷”危机之后的美国出现一种焦虑，即中国经济会赶超美国，这种焦虑感在过去十年随着中国经济与全球影响力增长而越来越强。
 

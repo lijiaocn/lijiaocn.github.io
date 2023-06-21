@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2019-02-22 10:32:35 +0800"
 last_modified_at: "2019-02-22 16:28:30 +0800"
 categories: 技巧
-tags: grpc
+tags: protocol
 keywords: grpc性能压测,grpc benchmark,ghz
 description: github中搜索“grpc benchmark”，ghz位置比较靠前，也有文章分享了用Locust进行grpc压测的方法
 ---

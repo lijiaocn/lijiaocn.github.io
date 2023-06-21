@@ -6,7 +6,7 @@ date: "2023-05-09 10:59:18 +0800"
 last_modified_at: "2023-06-05 10:53:24 +0800"
 categories: 编程
 cover:
-tags: Android
+tags: android
 keywords:
 description: jetpack/compose是当前推荐使用的 android 原生 UI 开发工具，用少量代码完成 UI 编写，替代之前用 xml 文件描述 UI 布局的做法。 
 ---

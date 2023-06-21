@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2019-05-28 11:28:33 +0800"
 last_modified_at: "2019-06-01 17:16:38 +0800"
 categories: 项目
-tags: apigateway
+tags: gateway
 cover:
 keywords: gloo,apigateway,网关,服务网格,service mesh
 description: "gloo 的核心组件有四个：glooctl、gloo、discovery、gateway。glooctl 是命令行，gloo 是主体"

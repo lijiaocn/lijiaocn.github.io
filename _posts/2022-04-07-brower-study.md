@@ -3,10 +3,10 @@ layout: default
 title: "浏览器的能力和行为学习，通用的 WebAPIs"
 author: 李佶澳
 date: "2022-04-07 17:44:19 +0800"
-last_modified_at: "2022-04-08 12:04:30 +0800"
+last_modified_at: "2023-06-21 16:48:31 +0800"
 categories: 编程
 cover:
-tags: web 浏览器
+tags: web
 keywords: webapi,浏览器
 description: Web 开发技术提供大量 Web 相关知识，如果想了解某个浏览器特有的api，查看浏览器手册
 ---

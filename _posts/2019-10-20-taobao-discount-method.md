@@ -5,7 +5,7 @@ createdate: "2019-04-15 22:26:03 +0800"
 last_modified_at: "2019-05-06 20:32:34 +0800"
 categories: 好货
 permalink: /discount/
-tags: 好货
+tags: 推广
 keywords: 淘宝内部优惠券,天猫超市优惠券,淘宝优惠,天猫优惠,京东优惠券,优惠券
 description: 淘宝天猫优惠的正确领取方法，为要买的商品找到隐藏的优惠券，京东亚马逊拼多多唯品会准备中
 ---

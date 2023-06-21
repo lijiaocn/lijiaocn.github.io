@@ -6,7 +6,7 @@ date: "2020-04-17T14:55:26+0800"
 last_modified_at: "2021-10-27T14:41:48+0800"
 categories: 编程
 cover:
-tags: 阅读笔记 database
+tags: 系统设计 database
 keywords: mysql,事务隔离,索引优化,存储过程,全局锁,表级锁,行级锁
 description: MySQL下载安装后，还需掌握事务隔离、索引优化、存储过程、全局锁、表级锁以及行级锁等高级知识
 ---

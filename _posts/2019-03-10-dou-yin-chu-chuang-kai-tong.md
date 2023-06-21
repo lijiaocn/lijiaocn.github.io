@@ -3,9 +3,9 @@ layout: default
 title: "抖音商品橱窗: 怎样申请开通？怎样添加商品？商品顺序调整与属性设置方法"
 author: 李佶澳
 createdate: "2019-03-10 22:02:59 +0800"
-last_modified_at: "2019-03-10 22:02:59 +0800"
+last_modified_at: "2023-06-21 16:10:58 +0800"
 categories: 方法
-tags: 国内网赚
+tags: 网赚
 keywords: 抖音橱窗,抖音卖货,淘宝联盟,橱窗开通方法,抖音淘宝客
 description: 抖音的橱窗功能向所有用户开放，无缝对接淘宝客和抖音小店。抖音橱窗商品添加顺序调整方法
 ---

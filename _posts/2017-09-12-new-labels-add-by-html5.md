@@ -5,7 +5,7 @@ author: 李佶澳
 createdate: "2018-09-12 12:22:07 +0800"
 last_modified_at: "2018-09-12 12:22:07 +0800"
 categories: 编程
-tags: 前端
+tags: web
 keywords: html5,html标签,新标签
 description: html5引进了新的html元素，改进了互操作性，并减少了开发成本，这里粗略汇总一下
 
