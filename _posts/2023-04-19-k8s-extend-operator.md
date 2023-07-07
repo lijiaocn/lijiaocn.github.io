@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "kubernetes 扩展：Operator 的开发"
+title: "kubernetes 扩展：operator 开发"
 author: 李佶澳
 date: "2023-04-19 16:52:06 +0800"
-last_modified_at: "2023-04-20 15:34:04 +0800"
+last_modified_at: "2023-07-07 11:32:11 +0800"
 categories: 项目
 cover:
 tags: kubernetes
@@ -18,20 +18,18 @@ description: "进行 Operator 开发之前要先了解 CRD 使用，以及了解
 
 ## 说明
 
-进行 Operator 开发之前要先了解 CRD 的使用，以及了解下 Operator 出现的背景和它要解决的问题：
+进行 operator 开发之前要先了解 CRD 的使用，以及了解下 operator 出现的背景和它要解决的问题：
 
-* [kubernetes 扩展：CRD 的使用（自定义资源）][2]
 * [kubernetes API 与 Operator: 不为人知的开发者战争][3]
+* [kubernetes 扩展：CRD 的使用][2]
 
-## 基于 CRD 生成代码直接开发
+## Operator 开发框架
 
-Operator 的作用是单独实现自定义的资源的操作，从原理上来说，只要能够监听并操作集群中的自定义资源就可以开发 operator 了，可以直接基于 [自动生成的 CRD 代码][2] 开发 operator。
+从原理上来说，只要能够监听并操作集群中的 CR 就可以开发 operator 了，在 [自动生成的 CRD 代码][2] 基础上直接写 operator 是可行的。但这种方式需要从头实现所有逻辑，而 operator 中有相当一部分逻辑是可以通用的。这些通用部分并且已经被整理成了多种开发框架，比如 [kubernetes controller-runtime project][4] 、[kubebuilder][5]、[operator-framework/operator-sdk][6] 等，使用这些框架可以大幅提高 operator 的开发效率。
 
-这种方式需要从头实现各种逻辑，而 operator 中有相当一部分逻辑是可以通用的，并且已经形成了多种开发框架，比如 [Kubernetes controller-runtime Project][4] 、[kubebuilder][5]、[operator-framework/operator-sdk][6] 等。使用这些框架可以大幅提高 operator 的开发效率。
+## 开发框架：controller-runtime
 
-## 基于 controller-runtime 开发
-
-[Kubernetes controller-runtime Project][4] 是一套可以用于实现 operator 的基础 SDK。参照 controller-runtime 给出的示例  [example-Builder][7]：
+[kubernetes controller-runtime project][4] 的用法参照 [example-builder][7]。
 
 ```sh
 mkdir -p crontab/cmd/operator/controller-runtime
