@@ -3,7 +3,7 @@ layout: default
 title: "kubernetes 开发：代码生成工具"
 author: 李佶澳
 date: "2023-07-07 11:41:17 +0800"
-last_modified_at: "2023-07-07 14:45:33 +0800"
+last_modified_at: "2023-07-07 14:57:53 +0800"
 categories: 编程
 cover:
 tags: kubernetes
