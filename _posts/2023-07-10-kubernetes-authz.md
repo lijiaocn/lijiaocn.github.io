@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "kubernetes 鉴权：用户操作权限鉴定"
+title: "kubernetes 鉴权：用户操作权限鉴定（Authorization）"
 author: 李佶澳
 date: "2023-07-10 16:57:32 +0800"
-last_modified_at: "2023-07-10 19:25:59 +0800"
+last_modified_at: "2023-07-11 11:46:57 +0800"
 categories: 项目
 cover:
 tags:
