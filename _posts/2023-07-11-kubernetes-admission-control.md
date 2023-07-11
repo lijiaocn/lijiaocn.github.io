@@ -3,7 +3,7 @@ layout: default
 title: "kubernetes 准入：操作合法性检查（Admission Control）"
 author: 李佶澳
 date: "2023-07-11 11:19:08 +0800"
-last_modified_at: "2023-07-11 16:13:31 +0800"
+last_modified_at: "2023-07-11 17:21:31 +0800"
 categories: 项目
 cover:
 tags: kubernetes
