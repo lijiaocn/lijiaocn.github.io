@@ -4,6 +4,7 @@ $('#navbarcolumn a').on('click', function(){
 	$('.navbar-toggle').click() //bootstrap 3.x by Richard
 });
 
+/* Google 已经支持广告挽回消息
 function DetectAds(){
     innerHtml=""
     ads=document.querySelectorAll('.adsbygoogle')
@@ -20,3 +21,4 @@ function DetectAds(){
     }
 }
 setTimeout(DetectAds,20000)
+*/
