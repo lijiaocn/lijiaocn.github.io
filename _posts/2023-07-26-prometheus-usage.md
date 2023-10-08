@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "Prometheus 高频功能使用方法"
+title: "Prometheus 查询语法手册"
 author: 李佶澳
 date: "2023-07-26 16:13:11 +0800"
-last_modified_at: "2023-07-26 16:43:48 +0800"
+last_modified_at: "2023-10-08 17:24:38 +0800"
 categories: 技巧
 cover:
 tags: prometheus
@@ -163,10 +163,8 @@ Prometheus 的数据查询语句叫做 Prometheus Query Language，提供了不�
 
 * Scalar: 浮点数值
 * String: 字符串（预留类型，当前没有实现 2019-08-07 18:04:55）
-* Instant vector：瞬时值数组，从不同采集地址采集到的同一指标的当前值组成的数组
-* Range vector: 区间数组，从不同采集地址采集到的同一指标在一段时间的内数值组成的数组
-
-前两种类型容易理解，Instant vector 和 Range vector 的有区别前者是一个一个当前值组成的数组，后者是一段区间里的数值组成的数组，继续组成的数组，一看便知：
+* Instant vector：当前数值，每个时间戳对应一个数值
+* Range vector: 区间数值， 每个时间戳对应一个数组
 
 **Instant vector**：
 
@@ -177,7 +175,7 @@ Prometheus 的数据查询语句叫做 Prometheus Query Language，提供了不�
 ![Promethes查询语句执行结果：Range vector]({{ site.article }}/prom/range.png)
 
 
-Range Vector 的用途可以参考 [Understanding Prometheus Range Vectors][8]），简单来说为了支持对区间内的数值进行运算，比如计算增量、方差等等。
+Range Vector 的用途可以参考 [Understanding Prometheus Range Vectors][8]，简单来说为了支持对区间内的数值进行运算，比如计算增量、方差等等。
 
 ### 指标查询
 
@@ -652,5 +650,4 @@ label_replace(up{job="api-server",service="a:c"}, "foo", "$1", "service", "(.*):
 [5]: https://prometheus.io/docs/prometheus/latest/querying/functions/ "Prometheus Functions"
 [6]: https://www.lijiaocn.com/soft/prometheus/exporters.html  "Prometheus Exporters"
 [7]: https://www.lijiaocn.com/soft/prometheus/pushgateway.html "Prometheus Push Gateway"
-[8]: https://satyanash.net/software/2021/01/04/understanding-prometheus-range-vectors.html "Understanding Prometheus Range Vectors
-"
+[8]: https://satyanash.net/software/2021/01/04/understanding-prometheus-range-vectors.html "Understanding Prometheus Range Vectors"

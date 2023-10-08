@@ -3,7 +3,7 @@ layout: default
 title: "《Elements of Android Jetpack》"
 author: 李佶澳
 date: "2023-06-29 10:38:58 +0800"
-last_modified_at: "2023-07-03 19:31:49 +0800"
+last_modified_at: "2023-07-26 18:48:07 +0800"
 categories: 编程
 cover:
 tags: android
@@ -31,8 +31,6 @@ description: "Elements of Android Jetpack 是目前找到的最好的 Android Je
 ## 章节笔记
 
 ### Starting Simple：TextView and Button
-
-* 
 
 
 
