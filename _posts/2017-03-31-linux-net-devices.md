@@ -224,7 +224,7 @@ MACVTAP 是对 MACVLAN的改进，把 MACVLAN 与 TAP 设备的特点综合一�
 
 ipvlan和macvlan的区别在于它在ip层进行流量分离而不是基于mac地址，同属于一块宿主以太网卡的所有ipvlan虚拟网卡的mac地址都是一样的。
 
-![ipvlan工作原理]({{ site.imglocal }}/net-devices/ipvlan-work.png)
+![ipvlan工作原理]({{ site.imglocal }}/net-devices/ipvlan-work.jpeg)
 
 	ip link add link <master-dev> <slave-dev> type ipvlan mode { l2 | L3 }
 
