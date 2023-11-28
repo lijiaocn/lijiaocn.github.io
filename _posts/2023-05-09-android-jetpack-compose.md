@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "Android 声明式 UI 开发工具 JetPack Compose"
+title: "Android：JetPack Compose"
 author: 李佶澳
 date: "2023-05-09 10:59:18 +0800"
-last_modified_at: "2023-06-05 10:53:24 +0800"
+last_modified_at: "2023-11-28 14:25:11 +0800"
 categories: 编程
 cover:
 tags: android

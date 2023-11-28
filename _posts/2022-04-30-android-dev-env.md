@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "Android 开发环境搭建以及项目结构初探"
+title: "Android：开发环境与项目结构"
 author: 李佶澳
 date: "2022-04-30 18:30:39 +0800"
-last_modified_at: "2023-05-08 13:47:18 +0800"
+last_modified_at: "2023-11-28 14:27:55 +0800"
 categories: 编程
 cover:
 tags: android 

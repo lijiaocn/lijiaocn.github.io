@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "Android SDK 安装目录以及相关文件说明"
+title: "Android：SDK 安装和使用"
 author: 李佶澳
 date: "2022-07-07 10:56:44 +0800"
-last_modified_at: "2022-07-07 17:15:55 +0800"
+last_modified_at: "2023-11-28 14:27:26 +0800"
 categories: 编程
 cover:
 tags: android
