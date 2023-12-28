@@ -3,7 +3,7 @@ layout: default
 title: "kubernetes 使用：多可用区、Pod 部署拓扑与 Topology Aware Routing"
 author: 李佶澳
 date: "2023-10-20 15:33:09 +0800"
-last_modified_at: "2023-10-20 17:12:57 +0800"
+last_modified_at: "2023-12-28 17:43:01 +0800"
 categories: 项目
 cover:
 tags: kubernetes
