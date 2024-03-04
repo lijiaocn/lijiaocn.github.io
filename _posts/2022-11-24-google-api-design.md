@@ -3,10 +3,10 @@ layout: default
 title: "Google 是如何实践 RESTful API 设计的？"
 author: 李佶澳
 date: "2022-11-24 16:52:28 +0800"
-last_modified_at: "2023-06-21 18:03:39 +0800"
+last_modified_at: "2024-04-22 11:26:14 +0800"
 categories: 方法
 cover:
-tags: 系统设计
+tags: API设计
 keywords: API Desigin,REST,Google API
 description:  经手了几个应用层的项目，API设计的都不怎么理想，有的项目乱到一塌糊涂。在参考国外公司的 API 时，发现 Google 在 2017 年公布了 2014 年制定 API Design Guide，维护至今。这里提炼下要点。 
 ---

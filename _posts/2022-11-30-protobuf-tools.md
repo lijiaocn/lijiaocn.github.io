@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "Protocol Buffers 使用建议、部分细节以及生态工具"
+title: "Protocol Buffers 使用建议以及生态工具"
 author: 李佶澳
 date: "2022-11-30 18:29:32 +0800"
-last_modified_at: "2023-01-08 22:36:46 +0800"
+last_modified_at: "2024-04-25 19:56:04 +0800"
 categories: 编程
 cover:
 tags: protobuf 
@@ -95,21 +95,44 @@ message SelfDescribingMessage {
 }
 ```
 
-## Protocol Buffers 消息编码方式
+## Protocol Buffers 编码方式
 
 [Protocol Buffer Wire Format][4] 介绍了 protobuf 的编码方式，即二进制格式， 按需了解。
 
-## Protocol Buffers 生态工具/第三方插件
+## Protocol Buffer 编译
 
-Protocol Buffers 自带的编译命令 [protoc][11] 能够对接第三方插件：[Compiler Plugins][9] 。
+Proto 文件编写完成后，需要再将 .proto 文件转化成目标语言的代码文件或 object 文件。
+Protocol Buffer 提供了编译命令 [protoc][11]。protoc 自身内置支持 cpp/csharp/java 等语音。还没内置支持的语言，可以用插件辅助编译：[Compiler Plugins][9] 。有很多第三方开发维护的 addon: [Third-Party Add-ons][6]。
 
-Protocol Buffers 提供了多种编程语言的 runtime：[Protobuf Runtime][12]。
+编译后生成的代码通常会引用对应语言的 runtime 库：[Protobuf Runtime][12]。
 
-此外还有很多第三方项目，提供了对更多编程语言的多种支持方式以及更多的 rpc 框架，统一收录在：[Third-Party Add-ons][6]。
+### 编译成 Go 代码
 
-### protoc 插件 & 更多编程语言支持
+参考：[Protocol Buffer Basics: Go][19] 
 
-[protoc][11] 的 [Compiler Plugins][9] 功能，可以用 `--plugin` 参数指定第三方插件：
+Google 开发了 [protobuf-go][20] 项目实现对 go 语言的支持。protobuf-go 实现了插件 protoc-gen-go，同时也是 go 版本的 protobuf runtime 库： google.golang.org/protobuf。
+
+protoc-gen-go 用 go 或者 mac 的 brew 命令安装：
+
+```bash
+go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+# 或者
+brew install protoc-gen-go
+```
+
+将 proto 文件编译成 go 代码，--go_out 即编译成 go 代码的意思，protoc 会搜寻 protoc-gen-go 插件：
+
+```bash
+protoc -I=$SRC_DIR --go_out=$DST_DIR $SRC_DIR/*.proto
+```
+
+如果要为 protoc-gen-go 传入参数，用 go_opt=X=xx 的方式指定。比如下面指定参数 paths=source_relateive。paths 是用来设置生成的的代码的位置，详情见 [Compiler Invocation][21]。
+
+```bash
+protoc -I=$SRC_DIR --go_opt=paths=source_relative --go_out=$DST_DIR $SRC_DIR/*.proto
+````
+
+也可以用 --plugin 明确指定要使用的插件：
 
 ```text
 --plugin=EXECUTABLE         Specifies a plugin executable to use.
@@ -122,23 +145,28 @@ Protocol Buffers 提供了多种编程语言的 runtime：[Protobuf Runtime][12]
                             the executable's own name differs.
 ```
 
-[Programming Languages Support][13] 中收录的项目基本都提供了各自的 complier plugin。比如 [github.com/golang/protobuf][16] 中实现的 [protoc-gen-go][15] 是默认的 Go 语言代码生成插件，下面的命令会默认到 $PATH 路径中寻找 protoc-gen-go 命令。
+### 编译成 grpc 代码
 
-```sh
-protoc --go_out=paths=source_relative:. path/to/file.proto
+proto 文件还可以编译成支持 proto 的 rpc 框架的代码，比如 [gRPC][17]，还有 [RPC Implementations][14] 等。
+grpc 框架本身也是支持多语言的，这里以 go 语言为例，需要同时安装 protoc-gen-go 和 protoc-gen-go-grpc 两个插件：
+
+```bash
+go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.28
+go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
+# 或者
+brew install protoc-gen-go protoc-gen-go-grpc
 ```
 
-### Protobuf 的 Go 语言 Runtime
+编译成 grpc 代码：
 
-* [google.golang.org/protobuf][8] 是 protobuf 的 Go 语言 runtime，提供了操作 protocol buffers 的方法
-* [github.com/jhump/protoreflect][10] 一个可以解析 protobuf 文件的第三方 package
+```bash
+protoc --go_out=. --go-grpc_out=. helloworld/helloworld.proto
+```
 
+## 解析 proto 文件
 
-### 支持 Protobuf 的 RPC 框架
+一个可以解析 proto 文件的 package：[github.com/jhump/protoreflect][10]。
 
-支持 Protobuf 的 RPC 框架很多（[RPC Implementations][14]）：
-
-* [gRPC][17] 是 Google 开源的 RPC 实现，重点关注
 
 ## 参考
 
@@ -179,3 +207,7 @@ protoc --go_out=paths=source_relative:. path/to/file.proto
 [16]: https://github.com/golang/protobuf "github.com/golang/protobuf"
 [17]: https://grpc.io/ "gRPC"
 [18]: https://developers.google.com/protocol-buffers/docs/tutorials "Protocol Buffers Tutorials"
+[19]: https://protobuf.dev/getting-started/gotutorial/#compiling-protocol-buffers 
+[20]: https://github.com/protocolbuffers/protobuf-go 
+[21]: https://grpc.io/docs/languages/go/quickstart/ 
+[22]: https://protobuf.dev/reference/go/go-generated/#invocation

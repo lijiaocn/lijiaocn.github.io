@@ -3,7 +3,7 @@ layout: default
 title: "Prometheus 查询语法手册"
 author: 李佶澳
 date: "2023-07-26 16:13:11 +0800"
-last_modified_at: "2023-10-08 17:24:38 +0800"
+last_modified_at: "2024-04-18 19:02:06 +0800"
 categories: 技巧
 cover:
 tags: prometheus
@@ -15,6 +15,40 @@ description: "Prometheus 的查询语句支持运算，可以使用二元运算�
 
 * auto-gen TOC:
 {:toc}
+
+## 常用查询
+
+### 按时间段聚合指标数值
+
+[aggregation_over_time][9] 系列函数用于聚合单个指标在过去一段时间的多个采样数值。比如计算某指标在过去5分钟内采样数值的平均值。先用 [5m] 取 5 分钟内地采样数组，然后用 avg_over_time 计算平均值：
+
+```sh
+avg_over_time(kube_pod_status_phase{cluster="abcd",phase="Pending"}[5m]
+```
+
+### 统计查询到的指标的数量
+
+[aggregation operators][10] 系列操作符号，对查询出来的指标进行计算。count 统计查询到指标的数量。这些操作支持按 lable 聚合，用 by 指定。比如下面的语句统计位于不同 phase 状态的指标数量。注意这些聚合的是多个指标，而不是单个指标的多个采样数据，和 aggrXX_over_time 系列函数区分开。
+
+```bash
+count(kube_pod_status_phase{cluster="abcd"}) by(phase)
+```
+
+### 查询持续处于 pending 状态的 pod
+
+kubernetes 的指标 kube_pod_status_phase 反应 pod 是否处于指定的 phase 状态，1 表示是，0 表是否。找出过去 5min 一直处于 pending 状态的 pod。立即在过去 5min 中里的 Pending 的采样数值都是 1 的 pod：
+
+```sh
+avg_over_time(kube_pod_status_phase{phase="Pending"}[5m]) == 1
+```
+
+计算这些 Pod 的占比，按照 cluster 区分：
+
+```sh
+sum(avg_over_time(kube_pod_status_phase{phase="Pending"}[5m])==1) by (cluster) 
+/  
+count(avg_over_time(kube_pod_status_phase{phase="Pending"}[5m])) by (cluster)
+```
 
 ## 安装配置
 
@@ -642,6 +676,8 @@ label_replace(up{job="api-server",service="a:c"}, "foo", "$1", "service", "(.*):
 6. [Prometheus Exporters][6]
 7. [Prometheus Push Gateway][7]
 8. [Understanding Prometheus Range Vectors][8]
+9. [aggregation_over_time][9]
+10. [Aggregation operators][10]
 
 [1]: https://www.lijiaocn.com "李佶澳的博客"
 [2]: https://prometheus.io/download/ "prometheus download"
@@ -651,3 +687,5 @@ label_replace(up{job="api-server",service="a:c"}, "foo", "$1", "service", "(.*):
 [6]: https://www.lijiaocn.com/soft/prometheus/exporters.html  "Prometheus Exporters"
 [7]: https://www.lijiaocn.com/soft/prometheus/pushgateway.html "Prometheus Push Gateway"
 [8]: https://satyanash.net/software/2021/01/04/understanding-prometheus-range-vectors.html "Understanding Prometheus Range Vectors"
+[9]: https://prometheus.io/docs/prometheus/latest/querying/functions/#aggregation_over_time "aggregation_over_time"
+[10]: https://prometheus.io/docs/prometheus/latest/querying/operators/#aggregation-operators "Aggregation operators"

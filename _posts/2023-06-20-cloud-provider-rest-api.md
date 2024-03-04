@@ -1,12 +1,12 @@
 ---
 layout: default
-title: "各大云厂商的 API 设计风格"
+title: "AWS/Azure/Google Cloud 等云平台的 API 设计风格"
 author: 李佶澳
 date: "2023-06-20 16:21:51 +0800"
-last_modified_at: "2023-06-21 17:57:11 +0800"
+last_modified_at: "2024-04-22 11:25:55 +0800"
 categories: 方法
 cover:
-tags: 系统设计
+tags: API设计
 keywords:
 description: 没想到各大公有云厂商的 API 是这么乱糟糟的，自家不同服务的风格都不统一。
 ---
