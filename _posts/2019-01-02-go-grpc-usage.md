@@ -3,9 +3,9 @@ layout: default
 title: "Go 语言实现 grpc 的 server 和 client，用 protobuf 定义消息格式和接口"
 author: 李佶澳
 createdate: "2019-01-02 13:19:40 +0800"
-last_modified_at: "2024-04-26 14:37:50 +0800"
+last_modified_at: "2024-04-30 15:25:25 +0800"
 categories: 技巧
-tags: protobuf
+tags: protobuf grpc
 keywords: protobuf
 description: 用Go语言实现grpc通信，即用protobuf消息格式实现client和server之间的高效通信
 ---

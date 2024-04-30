@@ -1,11 +1,11 @@
 ---
 layout: default
-title: "Grpc性能压测方法: 用ghz进行压测"
+title: "grpc 性能压测方法: ghz"
 author: 李佶澳
 createdate: "2019-02-22 10:32:35 +0800"
-last_modified_at: "2019-02-22 16:28:30 +0800"
+last_modified_at: "2024-04-30 15:26:41 +0800"
 categories: 技巧
-tags: protocol
+tags: grpc
 keywords: grpc性能压测,grpc benchmark,ghz
 description: github中搜索“grpc benchmark”，ghz位置比较靠前，也有文章分享了用Locust进行grpc压测的方法
 ---
