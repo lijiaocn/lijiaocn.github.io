@@ -18,6 +18,10 @@ description: OpenTracing 收集了各种语言的埋点 SDK，能与多种链路
 
 ## 说明
 
+>`OpenTracing 项目已经终止，OpenTelemetry 接替了它:`
+>
+>[用 OpenTelemetry 开发可观测的软件系统（Observability）](/方法/2024/05/06/opentelemetry.html)
+
 链路跟踪就是在每个处理环节埋点，通过埋点记录每个处理环节的开始时间和结束时间，并将信息发送到链路跟踪服务，譬如 Jaeger，从而掌握了整个请求链路的处理情况。
 
 譬如 http 请求发送时时间、接收时间、和处理过程中的每次函数调用的耗时。
