@@ -1,6 +1,6 @@
 ---
 createtime: "2024-04-22 11:07:37 +0800"
-last_modified_at: "2024-04-23 18:15:52 +0800"
+last_modified_at: "2024-05-29 15:30:34 +0800"
 categories: "方法"
 title: "谷歌是怎样用 Protobuf 定义开放 API 的？"
 tags: API设计 protobuf
@@ -82,8 +82,11 @@ v1
 └── safety.proto                     # Message 定义
 ├── BUILD.bazel                      # bazel 构建目标
 ├── generativeai_grpc_service_config.json  # 不知道哪里使用的服务描述文件
-├── generativelanguage_v1.yaml             # 不知道哪里使用的服务描述文件
+├── generativelanguage_v1.yaml             # 可以应用到 grpc-gateway 的配置文件
 ```
+
+其中 generativelanguage_v1.yaml  是适用于 [grpc-gateway][10] 的配置文件。grpc-gateway 可以通过该文件中的配置生成和 rpc 接口对应的 http gateway 代码。grpc-gateway 感觉就是 goole 内部使用方式的开源实现，它支持两种配置方式：1 在 proto 文件中定义每个方法时用 google.api.http 标注；2 用单独的 yaml 文件描述。方式1 的好处是可以在编写 rpc 接口同时完成 http 定义，方式 2 的好处是可以不用修改 proto 文件。Google 公开的
+
 
 ## 扩展的 option
 
@@ -208,3 +211,4 @@ func main() {
 [7]: https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/descriptor.proto 
 [8]: /编程/2022/11/29/protobuf-v3.html#自定义-options
 [9]: https://github.com/googleapis/googleapis/tree/master/google/api
+[10]: https://grpc-ecosystem.github.io/grpc-gateway/docs/mapping/grpc_api_configuration/ "gRPC API Configuration"

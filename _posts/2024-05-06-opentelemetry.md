@@ -1,6 +1,6 @@
 ---
 createtime: "2024-05-06 15:37:19 +0800"
-last_modified_at: "2024-05-13 16:01:18 +0800"
+last_modified_at: "2024-05-17 14:51:20 +0800"
 categories: 方法
 title: "用 OpenTelemetry 开发可观测的软件系统（Observability）"
 tags: 软件工程
@@ -31,9 +31,9 @@ OpenTelemetry 同时提供了一系列配套代码库，适配各种开发框架
 
 [OpenTelemetry Client Architecture][20] 介绍了整体架构。
 
-* 以 Signal 为中心进行组织，Signal 是同类型的观测数据。比如 Tracing、Metricing、Loging 是三个不同的 signal；
-* 所有 signal 共用一套 context propagation 机制；
-* 每个 signal 由四部分组成： api、sdk、Semantic Conventions、Contrib Packages。
+* 以 signal 为中心进行组织同类型的观测数据，比如 Tracing、Metricing、Loging 是三个不同的 signal；
+* signal 共用一套 context propagation 机制；
+* signal 由四部分组成： api、sdk、Semantic Conventions、Contrib Packages。
 
 signal 的构成：
 
@@ -42,17 +42,34 @@ signal 的构成：
 * [Semantic Conventions][22]：常用的属性名称和属性数值命名约定
 * Contrib Packages： 未纳入 sdk 的可选代码
 
-每种语言单独实现，比如 Go 语言实现包括下面的项目：([otel go][21])
+每种语言单独实现，比如 Go 语言实现包括下面的项目：[otel go][21]
 
 * [opentelemetry-go][14]：          OpenTelemetry Go API and SDK
 * [opentelemetry-go-contrib][23]：  Collection of extensions for OpenTelemetry-Go
 
-Semantic Conventions 是一套用 yaml 文档描述的属性，每种实现语言需要根据描述文档生成对应的常量或者枚举。
-Go 语言实现的 Semantic Conventions 位于 [opentelemetry-go][14] 的 semconv 目录。
+### Semantic Conventions 
 
-此外，还有一系列的 [instrumentation libraries][13]。它们是针对特定的开发框架提供的 sdk。
-在 [OpenTelemetry Registry][15] 可以查找已经支持的框架，比如适用于 grpc 的配套代码：[instrumentation/google.golang.org/grpc/][16]。
+Semantic Conventions 是一套命名约定，目的为了将观测数据中的名称统一，定义了各种场景里 metrics 名称、通用的属性名称等。在项目 [Semantic Conventions][22] 中用 yaml 文件的方式维护，页面 [OpenTelemetry Semantic Conventions 1.25.0][24] 中进行了分类展示。
 
+每种实现语言需要根据描述文档生成对应的常量或者枚举
+
+* Go 语言实现的 Semantic Conventions ：[opentelemetry-go/semconv][25]
+
+Go 的实现中对于通用的属性提供了function，可以直接用来创举属性的键值对，比如下面的 semconv.ServerAddress()。metrics 名称等则是用常量定义的。
+
+```go
+counter.Add(ctx, 1, metric.WithAttributes(
+    semconv.ServerAddress(serverAddr),
+    semconv.ClientAddress(clientAddr),
+    semconv.RPCMethod(method),
+))
+```
+
+### instrumentation libraries
+
+otel 还包括一系列的 [instrumentation libraries][13]。它们是针对特定的开发框架提供的 sdk，可以在 [OpenTelemetry Registry][15] 中查找相关项目。
+
+* 适用于 grpc 的配套代码：[instrumentation/google.golang.org/grpc/][16]
 
 ## 基础使用
 
@@ -246,6 +263,8 @@ server 端创建 server 时添加 grpc.StatsHandler(otelgrpc.NewServerHandler())
 21. [otel go][21]
 22. [OpenTelemetry Semantic Conventions][22]
 23. [opentelemetry-go-contrib][23]
+24. [OpenTelemetry Semantic Conventions 1.25.0][24]
+25. [v1.26.0/semconv][25]
 
 [1]: https://www.lijiaocn.com "李佶澳的博客"
 [2]: https://opentelemetry.io/docs/concepts/observability-primer/ "Observability Primer"
@@ -270,3 +289,5 @@ server 端创建 server 时添加 grpc.StatsHandler(otelgrpc.NewServerHandler())
 [21]: https://github.com/orgs/open-telemetry/repositories?type=all&q=go "otel go"
 [22]: https://github.com/open-telemetry/semantic-conventions "OpenTelemetry Semantic Conventions"
 [23]: https://github.com/open-telemetry/opentelemetry-go-contrib "opentelemetry-go-contrib"
+[24]: https://opentelemetry.io/docs/specs/semconv/ "OpenTelemetry Semantic Conventions 1.25.0"
+[25]: https://github.com/open-telemetry/opentelemetry-go/tree/v1.26.0/semconv "v1.26.0/semconv"
