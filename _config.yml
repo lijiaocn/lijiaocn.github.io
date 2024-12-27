@@ -8,12 +8,12 @@ markdown: kramdown
 
 url: "https://www.lijiaocn.com"
 plugins:
-  - jekyll-feed
   - jekyll-paginate
   - jekyll-sitemap
+  - jekyll-feed
 
-baseurl:    
-imgurl: 
+baseurl:
+imgurl:  
 imglocal: /img
 article: /img/article
 lsi:      false
