@@ -1,17 +1,22 @@
+ignore_theme_config: true
+jekyll_admin:
+  hidden_links:
+    - pages
+    - datafiles
+    - configuration
+#    - staticfiles
+  homepage: "posts"
 encoding:    UTF-8
 paginate_path: '/page/:num'
 paginate: 21
 future: true
-
 highlighter: rouge
 markdown: kramdown
-
 url: "https://www.lijiaocn.com"
 plugins:
   - jekyll-paginate
   - jekyll-sitemap
   - jekyll-feed
-
 baseurl:
 imgurl:  
 imglocal: /img
