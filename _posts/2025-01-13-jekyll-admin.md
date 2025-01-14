@@ -4,9 +4,10 @@ createtime: '2025-01-13 16:18:45 +0800'
 last_modified_at: '2025-01-13 16:19:51 +0800'
 categories:
 - 技巧
-tags: []
-keywords: null
-description: null
+tags:
+- jekyll
+keywords: jekyll
+description: jekyll-admin是一个 jekyll 插件，安装该插件后。就可以在浏览器里编辑 jekyll 笔记了，在文章里添加图片方便多了
 author: 李佶澳
 layout: default
 ---

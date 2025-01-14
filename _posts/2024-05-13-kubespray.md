@@ -1,11 +1,14 @@
 ---
-createtime: "2024-05-13 16:20:50 +0800"
-last_modified_at: "2024-05-17 14:52:10 +0800"
-categories: 
-title: "使用 kubespray 部署 kubernetes 集群"
+title: 使用 kubespray 部署 kubernetes 集群
+createtime: '2024-05-13 16:20:50 +0800'
+last_modified_at: '2024-05-17 14:52:10 +0800'
+categories:
+- 技巧
 tags:
-keywords:
-description:
+- kubernetes
+keywords: kubernetes
+description: kubespray是kubernetes社区维护的一个部署方案，通过生成 ansible 文件，指定生成的 hosts.yaml 以及 kubespray
+  项目中的 cluster.yml，完成部署。
 author: 李佶澳
 layout: default
 ---
