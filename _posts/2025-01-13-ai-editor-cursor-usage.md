@@ -1,5 +1,5 @@
 ---
-title: AI集成环开发环境 Cursor 使用
+title: AI 代码编辑器 Cursor 使用
 createtime: '2025-01-13 12:31:58 +0800'
 last_modified_at: '2025-01-13 12:32:02 +0800'
 categories:
