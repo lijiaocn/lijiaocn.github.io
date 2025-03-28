@@ -6,8 +6,8 @@ categories:
 - 方法
 tags:
 - llm
-keywords: null
-description: null
+keywords: mcp,Model Context Protocol
+description: MCP 只是一套接口定义标准，接口的实现（ 即MCP 层的 MCP Server） 需要自行开发的。开放接口标准，借助社区的力量扩展能力，成功的概率非常大。
 author: 李佶澳
 layout: default
 ---
