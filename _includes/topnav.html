@@ -1,0 +1,32 @@
+<nav class="navbar navbar-inverse navbar-fixed-static topnav">
+	<!-- display sm md lg -->
+	<div class="container" >
+		<div class="navbar-header ">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#categories" aria-expanded="false" aria-controls="navbar">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<div class="navbar-brand hidden-sm">
+				<span><a href="/" title="主页">李佶澳</a></span>
+				<span class="glyphicon glyphicon-hand-right" style="margin-left:15px"></span>
+			</div>
+
+		</div>
+		<div class="collapse navbar-collapse " id="categories">
+			<ul class="nav navbar-nav">
+				{% for cate in site.categories %} 
+					{% if cate[0] != 'hidden' %} 
+						{% if cate[0] == '好货' %} 
+						<li><a href="{{ site.baseurl }}/categories/{{ cate[0]}}.html">推广</a></li>
+						{% else %}
+						<li><a href="{{ site.baseurl }}/categories/{{ cate[0]}}.html">{{ cate[0] }}</a></li>
+						{% endif %}
+					{% endif %}
+				{% endfor %}
+				<li><a href="{{ site.baseurl }}/tags/all.html">标签</a></li>
+			</ul>
+		</div>
+	</div>
+</nav>

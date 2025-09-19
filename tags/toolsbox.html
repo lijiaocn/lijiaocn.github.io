@@ -1,0 +1,24 @@
+---
+layout: category
+title:  问题排查工具箱
+keywords:  工具箱,黑客工具,Linux工具,视频教程
+description: 收集的一些比较有用的工具，可以用来排查各种疑难问题
+
+---
+
+<h2>问题调查工具箱</h2>
+
+{% for tag in site.tags %}
+	{% if tag[0] == "toolsbox" or tag[0] == "linuxtool" %}
+		<h5>{{ tag[0] }}:</h5>
+		<ul>
+		{% for post in tag[1] %}
+		<li><a target="_blank" href="{{ site.baseurl }}{{ post.url }}">《{{ post.title }}》</a></li>
+		{% endfor %}
+		</ul>
+		{% endif %}
+{% endfor %}
+
+<p>持续更新中...</p>
+<p>网址：<a href="{{ site.baseurl }}/tags/blockchain.html">http://www.lijiaocn.com/tags/blockchain.html</a></p>
+<h4>微信公众号，扫描右下角二维码</h4>

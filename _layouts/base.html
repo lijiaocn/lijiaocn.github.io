@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	{% include head.html %}
+<body class="body custom-background" data-spy="scroll" data-target="sidebarMenu">
+	{% include topnav.html %}
+	<div class="container noticerow">
+		<div class="row">
+			{% include first-row.html %}
+		</div>
+	</div>
+
+	<div class="container main">
+		<div class="row">
+			<div class="visible-md-block visible-lg-block col-md-2 col-lg-2 lsidebar">
+				{% include main-lsidebar.html %}
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 center">
+				<div class="row content">
+					<h1>{{ page.title }}</h1>
+				</div>
+
+				<div class="row pageheader">
+					{{ site.pageheader }}
+				</div>
+
+				{% if page.author %}
+				<div class="row">
+					<p class="author">作者:&nbsp;<a href="{{ site.baseurl }}/2010/10/10/about.html">{{ page.author }}</a>&nbsp;&nbsp;&nbsp;转载保留：<a href="{{ post.url }}">原文地址</a>&nbsp;&nbsp;&nbsp;更新时间：{{ page.changedate }}</p>
+				</div>
+				{% endif %}
+
+				<div class="row">
+					{% include top_banner_ad.html %}
+				</div>
+
+				<div class="row">
+					{% include social.html.no %}
+				</div>
+
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 content">
+						{{content}}
+						<div style="text-align:center">
+							<p>本文<strong><a href="https://www.lijiaocn.com">原创首发</a></strong>于网站：<a href="https://www.lijiaocn.com">www.lijiaocn.com</a></p>
+						</div>
+					</div>
+				</div>
+
+				<div class="row" style="text-align:center">
+					{% include main-bottom.html %}
+				</div>
+			</div>
+
+			<div class="visible-md-block visible-lg-block col-md-2 col-lg-2 rsidebar">
+				{% include main-rsidebar.html %}
+			</div>
+
+		</div>
+	</div>
+
+	<div class="container-fluid foot">
+	{% include foot.html %}
+	</div>
+
+	<script src="{{ site.baseurl }}/js/jquery-1.24.4.min.js"></script>
+	<script src="{{ site.baseurl }}/js/bootstrap-3.3.7.min.js"></script>
+	<script type="text/javascript" src="{{ site.baseurl }}/js/body-2023-2.js"></script>
+	<script src="https://s1.bdstatic.com/r/www/cache/global/js/BaiduHttps_20150714_zhanzhang.js"></script>
+</body>
+</html>

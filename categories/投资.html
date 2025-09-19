@@ -1,0 +1,17 @@
+---
+layout: category
+title: 投资
+keywords:  知识星球精华帖,投资,遇到的投资,干货,神秘付费社区
+description: 记录遇到的各种投资,来自于知识星球的精彩讨论，干货分享,一个神秘付费社区中的讨论
+
+---
+
+{% for cate in site.categories %}
+	{% if cate[0] == page.title %}
+		<div class="postlist">
+		{% for post in cate[1] %}
+		{% include postitem.html post=post %}
+		{% endfor %}
+		</div>
+	{% endif %}
+{% endfor %}

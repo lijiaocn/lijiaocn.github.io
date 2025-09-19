@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	{% include head.html %}
+<body class="body custom-background ">
+	{% include topnav.html %}
+	<div class="container noticerow">
+		<div class="row">
+			{% include first-row.html %}
+		</div>
+	</div>
+
+	<div class="container main">
+		<div class="row">
+			<div class="visible-md-block visible-lg-block col-md-2 col-lg-2 lsidebar">
+				{% include main-lsidebar.html %}
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 center">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pageheader">
+						{{ site.pageheader }}<hr style="margin-top:0px;margin-bottom:0px">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 content">
+						{% if page.author %}
+							<p class="author">作者: {{ page.author }} 创建: {{ page.createdate }}</p>
+						{% endif %}
+						{{content}}
+					</div>
+				</div>
+				<div class="row">
+					{% include social.html.no %}
+				</div>
+				<div class="row" style="text-align:center">
+					{% include listpage-bottom.html %}
+				</div>
+			</div>
+			<div class="visible-md-block visible-lg-block col-md-2 col-lg-2 rsidebar">
+				{% include main-rsidebar.html %}
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid foot">
+	{% include foot.html %}
+	</div>
+
+	<script src="{{ site.baseurl }}/js/jquery-1.24.4.min.js"></script>
+	<script src="{{ site.baseurl }}/js/bootstrap-3.3.7.min.js"></script>
+	<script type="text/javascript" src="{{ site.baseurl }}/js/body-2023-2.js"></script>
+	<script src="https://s1.bdstatic.com/r/www/cache/global/js/BaiduHttps_20150714_zhanzhang.js"></script>
+</body>
+</html>

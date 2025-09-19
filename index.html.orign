@@ -1,0 +1,45 @@
+---
+layout: category
+title: "IT技术工作学习折腾笔记"
+author: 
+keywords: hyperledger,pass,kubernetes,docker,calico,envoy,kong,consul,openresty,openwrt,linux,go,python,lua,nginx,proxy,投资,理财,股票,A股,港股,美股,基金
+description: 区块开源项目超级账本HyperLedger、Paas平台kubernetes,以及相关组件Docker、Calico、Envoy、Kong、Consul、OpenResty、Nginx等开源项目的使用笔记，和Go、python、lua等编程语言笔记，以及OpenWrt等偏门项目的研究笔记。
+notinclude: hidden
+---
+
+<div class="postlist">
+	<!-- 遍历分页后的文章 -->
+	{% for post in paginator.posts %}
+		{% if  post.categories[0] != page.notinclude %}
+		{% include postitem.html post=post %}
+		{% endif %}
+	{% endfor %}
+</div>
+
+<!-- 分页链接 -->
+{% if paginator.total_pages > 1 %}
+<div class="pageination">
+  {% if paginator.previous_page %}
+    <a href="{{ '/index.html' | prepend: paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">&laquo; 上一页</a>
+  {% else %}
+    <span>&laquo; 上一页</span>
+  {% endif %}
+
+  {% for page in (1..paginator.total_pages) %}
+    {% if page == paginator.page %}
+      <em>{{ page }}</em>
+    {% elsif page == 1 %}
+      <a href="{{ '/index.html' | prepend: site.baseurl | replace: '//', '/' }}">{{ page }}</a>
+    {% else %}
+      <a href="{{ site.paginate_path | prepend: site.baseurl | replace: '//', '/' | replace: ':num', page }}/index.html"/>{{ page }}</a>
+    {% endif %}
+  {% endfor %}
+
+  {% if paginator.next_page %}
+    <a href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}/index.html">下一页 &raquo;</a>
+  {% else %}
+    <span>Next &raquo;</span>
+  {% endif %}
+</div>
+{% endif %}
+<hr>

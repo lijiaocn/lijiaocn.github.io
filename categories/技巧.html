@@ -1,0 +1,17 @@
+---
+layout: category
+title:  技巧
+keywords:  知识星球精华帖,技巧,使用技巧,使用方法
+description: 记录了常用的软件、工作技巧,来自于知识星球的精彩讨论，干货分享,一个神秘付费社区中的讨论。
+
+---
+
+{% for cate in site.categories %}
+	{% if cate[0] == page.title %}
+		<div class="postlist">
+		{% for post in cate[1] %}
+		{% include postitem.html post=post %}
+		{% endfor %}
+		</div>
+	{% endif %}
+{% endfor %}

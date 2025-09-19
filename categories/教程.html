@@ -1,0 +1,17 @@
+---
+layout: category
+title: 教程
+keywords:  视频教程,IT技术教程手册,kubernetes教程,hyperledger教程,区块链教程
+description:  这里是我制作的IT技术系列视频教程，内容包括kubernetes、hyperledge、docker等，主要在网易云课堂IT技术快速入门学院中发布。
+
+---
+
+{% for cate in site.categories %}
+	{% if cate[0] == page.title %}
+		<div class="postlist">
+		{% for post in cate[1] %}
+		{% include postitem.html post=post %}
+		{% endfor %}
+		</div>
+	{% endif %}
+{% endfor %}
