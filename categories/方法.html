@@ -1,0 +1,17 @@
+---
+layout: category
+title:  方法
+keywords:  方法,好书精选,方法笔记,知识星球精华帖
+description: 方法笔记，优质好书的方法笔,来自于知识星球的精彩讨论，干货分享,一个神秘付费社区中的讨论
+
+---
+
+{% for cate in site.categories %}
+	{% if cate[0] == page.title %}
+		<div class="postlist">
+		{% for post in cate[1] %}
+		{% include postitem.html post=post %}
+		{% endfor %}
+		</div>
+	{% endif %}
+{% endfor %}

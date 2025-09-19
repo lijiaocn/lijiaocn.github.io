@@ -1,0 +1,29 @@
+---
+layout: category
+title:  Prometheus等监控告警系统使用视频讲解，与疑难问题解决
+keywords: 文章列表,知识星球精华帖
+description: 这里是关于Prometheus的系列文章，是Prometheus学习、使用过程中做的详细记录。
+
+---
+
+{% for tag in site.tags %}
+	{% if tag[0] == "prometheus" %}
+		<h5>{{ tag[0] }}:</h5>
+		<ul>
+		{% for post in tag[1] %}
+		<li><a href="{{ site.baseurl }}{{ post.url }}">《{{ post.title }}》</a></li>
+		{% endfor %}
+		</ul>
+		{% endif %}
+{% endfor %}
+
+{% for tag in site.tags %}
+	{% if tag[0] == "consul" or tag[0] == "confd" %}
+		<h5>{{ tag[0] }}:</h5>
+		<ul>
+		{% for post in tag[1] %}
+		<li><a href="{{ site.baseurl }}{{ post.url }}">《{{ post.title }}》</a></li>
+		{% endfor %}
+		</ul>
+		{% endif %}
+{% endfor %}

@@ -1,0 +1,28 @@
+ignore_theme_config: true
+jekyll_admin:
+  hidden_links:
+    - pages
+    - datafiles
+    - configuration
+#    - staticfiles
+  homepage: "posts"
+encoding:    UTF-8
+paginate_path: '/page/:num'
+paginate: 21
+future: true
+highlighter: rouge
+markdown: kramdown
+url: "https://www.lijiaocn.com"
+plugins:
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-feed
+baseurl:
+imgurl:  
+imglocal: /img
+article: /img/article
+lsi:      false
+excerpt_separator: "----"
+ICP-number:
+Copyright: Copyright @2011-2019 All rights reserved.
+pageheader: <!--a href='/shop' style='color:red'><strong>1.每日红包</strong></a>&nbsp;&nbsp;<a href='/geekclass' style='color:red'><strong>2.极客专栏推荐</strong></a-->
