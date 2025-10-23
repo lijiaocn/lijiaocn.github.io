@@ -11,4 +11,4 @@ rm -rf /tmp/jekyll.log
 #nohup bundle exec jekyll serve --port $port --incremental --force_polling  2>&1 1 > /tmp/jekyll.log &
 #nohup bundle exec jekyll serve --port $port  --force_polling 2>&1 1 > /tmp/jekyll.log &
 #bundle exec jekyll serve --port $port  --force_polling 2>&1 
-nohup bundle exec jekyll serve --port $port   2>&1  1>/tmp/jekyll.log 
+bundle exec jekyll serve --port $port  

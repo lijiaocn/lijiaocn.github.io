@@ -17,6 +17,7 @@ plugins:
   - jekyll-paginate
   - jekyll-sitemap
   - jekyll-feed
+  - jekyll-last-modified-at
 baseurl:
 imgurl:  
 imglocal: /img
