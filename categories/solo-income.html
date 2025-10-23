@@ -1,0 +1,17 @@
+---
+layout: category
+title:  独立赚钱笔记
+catename: solo-income
+keywords:  独立赚钱
+description: 独立赚钱是指不依赖于传统的全职工作，通过自己的技能、项目或业务来获得收入的方式。记录了独立赚钱的各种方法和经验分享。
+---
+
+{% for cate in site.categories %}
+	{% if cate[0] == page.catename %}
+		<div class="postlist">
+		{% for post in cate[1] %}
+		{% include postitem.html post=post %}
+		{% endfor %}
+		</div>
+	{% endif %}
+{% endfor %}

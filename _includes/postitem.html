@@ -6,7 +6,8 @@ Include vars:
 <h2><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>
 <div class="postinfo" >
 	<p>
-		<span><a href="{{ site.baseurl }}/categories/{{ post.categories }}.html">{{ post.categories }}</a> / <a href="{{ site.baseurl }}/2010/10/10/about.html">{{ post.author }}</a> / {{ post.createdate }} </span>
+		<span style="color:gray">{{ post.date | date: "%Y-%m-%d"}}</span>
+		<span><a href="{{ site.baseurl }}/2010/10/10/about.html">{{ post.author }}</a></span>
 		{% for tag in post.tags %}
 		<span><a href="{{ site.baseurl }}/tags/all.html#{{ tag }}">{{ tag }}</a></span>&nbsp;
 		{% endfor %}

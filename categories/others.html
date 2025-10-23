@@ -1,0 +1,16 @@
+---
+layout: category
+title:  技术杂项笔记
+keywords:  
+description: 
+---
+
+{% for cate in site.categories %}
+	{% if cate[0] == 'others' or cate[0] == '编程' %}
+		<div class="postlist">
+		{% for post in cate[1] %}
+		{% include postitem.html post=post %}
+		{% endfor %}
+		</div>
+	{% endif %}
+{% endfor %}

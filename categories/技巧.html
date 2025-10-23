@@ -7,7 +7,7 @@ description: 记录了常用的软件、工作技巧,来自于知识星球的精
 ---
 
 {% for cate in site.categories %}
-	{% if cate[0] == page.title %}
+	{% if cate[0] == page.title or cate[0] == '编程' %}
 		<div class="postlist">
 		{% for post in cate[1] %}
 		{% include postitem.html post=post %}

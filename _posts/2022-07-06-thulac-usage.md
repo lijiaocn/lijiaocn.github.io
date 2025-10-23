@@ -4,7 +4,7 @@ title: "中文分词包 THULAC 使用"
 author: 李佶澳
 date: "2022-07-06 15:00:59 +0800"
 last_modified_at: "2022-07-06 15:07:06 +0800"
-categories: 编码
+categories: 编程
 cover:
 tags:  ElasticSearch
 keywords: thulac,中文分词,分词工具

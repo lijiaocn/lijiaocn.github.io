@@ -4,7 +4,7 @@ title: "Chrome/Edge/Safari/Firefox/Opera浏览器扩展插件的开发过程概�
 author: 李佶澳
 date: "2022-07-19 18:40:28 +0800"
 last_modified_at: "2022-07-21 11:37:08 +0800"
-categories: 编码
+categories: 编程
 cover:
 tags: brower
 keywords: 浏览器插件,chrome插件,插件开发

@@ -1,0 +1,21 @@
+---
+layout: category
+title: 解决方案学习笔记
+keywords:  
+description: 
+---
+
+<br>
+<blockquote>
+因为早期没有明确的分类规划，2025年以及之前的文章内容是比较杂乱的。
+</blockquote>
+
+{% for cate in site.categories %}
+	{% if cate[0] == 'resolution' or cate[0]=='方法' %}
+		<div class="postlist">
+		{% for post in cate[1] %}
+		{% include postitem.html post=post %}
+		{% endfor %}
+		</div>
+	{% endif %}
+{% endfor %}

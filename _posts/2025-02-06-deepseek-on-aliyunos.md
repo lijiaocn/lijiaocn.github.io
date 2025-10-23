@@ -3,11 +3,11 @@ title: 免费使用云厂商提供的 DeepSeek 大模型
 createtime: '2025-02-06 16:59:17 +0800'
 last_modified_at: '2025-02-06 17:10:27 +0800'
 categories:
-- 工具
+- 技巧
 tags:
 - llm
 keywords: null
-description: null
+description: DeepSeek 的官网和 APP 压力过大经常不可用，并且自我审查厉害，经常突然就要求换个话题。
 author: 李佶澳
 layout: default
 ---

@@ -7,7 +7,7 @@ description: 编程语言学习,来自于知识星球的精彩讨论，干货分
 ---
 
 {% for cate in site.categories %}
-	{% if cate[0] == page.title %}
+	{% if cate[0] == page.title or cate[0] == '工具' %}
 		<div class="postlist">
 		{% for post in cate[1] %}
 		{% include postitem.html post=post %}

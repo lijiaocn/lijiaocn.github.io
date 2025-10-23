@@ -16,16 +16,23 @@
 		</div>
 		<div class="collapse navbar-collapse " id="categories">
 			<ul class="nav navbar-nav">
+						<li><a href="{{ site.baseurl }}/categories/solo-income.html">独立赚钱</a></li>
+						<li><a href="{{ site.baseurl }}/categories/invest.html">投资理财</a></li>
+						<li><a href="{{ site.baseurl }}/categories/project.html">项目学习</a></li>
+						<li><a href="{{ site.baseurl }}/categories/resolution.html">解决方案</a></li>
+						<li><a href="{{ site.baseurl }}/categories/problems.html">问题排查</a></li>
+						<li><a href="{{ site.baseurl }}/categories/others.html">技术杂项</a></li>
 				{% for cate in site.categories %} 
 					{% if cate[0] != 'hidden' %} 
-						{% if cate[0] == '好货' %} 
-						<li><a href="{{ site.baseurl }}/categories/{{ cate[0]}}.html">推广</a></li>
+						{% if cate[0] == 'solo-income' or cate[0] =='好货'  or cate[0]=='编程' or cate[0]=='技巧' or cate[0]==
+						'项目' or cate[0]=='方法'  or cate=[0]=='问题' %}
+						{% elsif cate[0] == '投资' %} 
 						{% else %}
 						<li><a href="{{ site.baseurl }}/categories/{{ cate[0]}}.html">{{ cate[0] }}</a></li>
 						{% endif %}
 					{% endif %}
 				{% endfor %}
-				<li><a href="{{ site.baseurl }}/tags/all.html">标签</a></li>
+				<li><a href="{{ site.baseurl }}/tags/all.html">全站标签</a></li>
 			</ul>
 		</div>
 	</div>

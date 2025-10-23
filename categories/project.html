@@ -1,0 +1,16 @@
+---
+layout: category
+title: 开源项目学习笔记
+keywords:  
+description: 
+---
+
+{% for cate in site.categories %}
+	{% if cate[0] == 'project' or cate[0] == '项目' %}
+		<div class="postlist">
+		{% for post in cate[1] %}
+		{% include postitem.html post=post %}
+		{% endfor %}
+		</div>
+	{% endif %}
+{% endfor %}

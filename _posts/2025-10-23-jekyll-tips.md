@@ -6,13 +6,14 @@ categories: 技巧
 tags: [jekyll]
 keywords:  jekyll,使用技巧
 description:  这个博客站点是在没有完全了解 jekyll 功能的情况下，摸索着用 jekyll 生成，走了不少弯路。有一些功能其实只要安装下 jekyll 的插件就能很好的支持。这里记录一些更好的 jekyll 用法。
-
 ---
 
 ## 目录
 
 * auto-gen TOC:
 {:toc}
+
+>测试
 
 
 ## 说明
@@ -51,6 +52,8 @@ gem 'jekyll-last-modified-at'
 plugins:
     - jekyll-last-modified-at
 ```
+
+## 多语言支持
 
 ## 参考
 
