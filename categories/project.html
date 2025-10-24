@@ -6,7 +6,16 @@ description:
 ---
 
 {% for cate in site.categories %}
-	{% if cate[0] == 'project' or cate[0] == '项目' %}
+	{% if cate[0] == 'project' %}
+		<div class="postlist">
+		{% for post in cate[1] %}
+		{% include postitem.html post=post %}
+		{% endfor %}
+		</div>
+	{% endif %}
+{% endfor %}
+{% for cate in site.categories %}
+	{% if cate[0] == '项目' %}
 		<div class="postlist">
 		{% for post in cate[1] %}
 		{% include postitem.html post=post %}

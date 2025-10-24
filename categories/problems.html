@@ -7,7 +7,17 @@ description:
 ---
 
 {% for cate in site.categories %}
-	{% if cate[0] == 'problems' or cate[0] == '问题' %}
+	{% if cate[0] == 'problems' %}
+		<div class="postlist">
+		{% for post in cate[1] %}
+		{% include postitem.html post=post %}
+		{% endfor %}
+		</div>
+	{% endif %}
+{% endfor %}
+
+{% for cate in site.categories %}
+	{% if cate[0] == '问题' %}
 		<div class="postlist">
 		{% for post in cate[1] %}
 		{% include postitem.html post=post %}

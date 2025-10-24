@@ -11,7 +11,16 @@ description:
 </blockquote>
 
 {% for cate in site.categories %}
-	{% if cate[0] == 'resolution' or cate[0]=='方法' %}
+	{% if cate[0] == 'resolution' %}
+		<div class="postlist">
+		{% for post in cate[1] %}
+		{% include postitem.html post=post %}
+		{% endfor %}
+		</div>
+	{% endif %}
+{% endfor %}
+{% for cate in site.categories %}
+	{% if  cate[0]=='方法' %}
 		<div class="postlist">
 		{% for post in cate[1] %}
 		{% include postitem.html post=post %}

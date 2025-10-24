@@ -2,7 +2,7 @@
 layout: default
 title:  "Jekyll 的一些更高效的使用方法"
 author: 李佶澳
-categories: 技巧
+categories: [others]
 tags: [jekyll]
 keywords:  jekyll,使用技巧
 description:  这个博客站点是在没有完全了解 jekyll 功能的情况下，摸索着用 jekyll 生成，走了不少弯路。有一些功能其实只要安装下 jekyll 的插件就能很好的支持。这里记录一些更好的 jekyll 用法。
@@ -12,9 +12,6 @@ description:  这个博客站点是在没有完全了解 jekyll 功能的情况�
 
 * auto-gen TOC:
 {:toc}
-
->测试
-
 
 ## 说明
 
@@ -55,8 +52,13 @@ plugins:
 
 ## 多语言支持
 
+多语言支持目前还在维护的插件是 [jekyll-polyglot][2]，不过这个插件的设计思路是每中语言下都需要有在一个对应的 post 文件，侧重的是多语言内容的维护。和 android/ios 应用的多语言支持不太一样，毕竟 jekyll 的发布主体是内容。
+
+如果单纯只是为一个 post 生成多种语言的版本，gemini 建议用更简单的方式：Jekyll 原生 _data 文件 + Liquid 逻辑。
+
 ## 参考
 
 1. [李佶澳的博客][1]
 
 [1]: https://www.lijiaocn.com "李佶澳的博客"
+[2]: https://github.com/untra/polyglot/tree/main "jekyll-polyglot"
