@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  "独立赚钱日记：序言"
+title: "独立赚钱日记：序言"
 author: 李佶澳
 categories: [solo-income]
 tags: [独立赚钱日记]
