@@ -26,6 +26,8 @@ Google 推出的 Firebase 是一个后端即服务（BaaS）平台，提供了�
 
 ```bash
 curl -sL firebase.tools | bash
+# mac 上用 brew 安装
+brew install firebase-cli
 ```
 
 安装 firebase 之后需要现在命令行登录，登录成功之后才能顺利执行后续的操作：
@@ -300,7 +302,7 @@ $ npm run shell
 这里用 jest 测试框架，先在开发环境安装 jest 以及它的 ts 描述文件。如果 package.json 的 devDependencies 没有 firebase-functions-test 还需要用同样方式安装。
 
 ```bash
-npm install --save-dev jest @types/jest
+npm install --save-dev jest ts-jest @types/jest
 npm install --save-dev firebase-functions-test # 通常默认已经安装
 ```
 
@@ -449,24 +451,9 @@ if (isEmulator) {
 ## 本地模拟器的不足
 
 如果用 cloud storage 的 getSingedUrl 获取 object 文件的临时连接，在本地模拟器运行时可能遇到 SigningError。
-gemini 的解释是：Cloud Storage 模拟器 旨在模拟 Storage 的存储功能，但它通常不会完全模拟 Google Cloud Storage 的所有底层 IAM 基础设施，特别是用于生成 Signed URL 的复杂签名服务。
+gemini 的解释是：Cloud Storage 模拟器旨在模拟 Storage 的存储功能，但它通常不会完全模拟 Google Cloud Storage 的所有底层 IAM 基础设施，特别是用于生成 Signed URL 的复杂签名服务。
 
-如果您只是想在本地测试函数的主体逻辑，并不需要真正的 Signed URL，可以尝试以下方法：
-
-在functions/index.js 或入口文件中，确保 Admin SDK 是通过 firebase-admin 初始化的。 停止模拟器，然后在运行 firebase emulators:start 之前，设置 GOOGLE_APPLICATION_CREDENTIALS 环境变量。环境变量指定的 JSON 文件从 Firebase Console -> Project settings -> Service accounts -> Generate new private key 下载。
-
-```bash
-# 假设您已下载了您的测试项目服务账号 JSON 文件
-# 尽管是本地模拟器，但 GCS 签名还是需要这个 GCLOUD 凭据
-export GOOGLE_APPLICATION_CREDENTIALS="/path/to/your/service-account-key.json" 
-
-# 启动模拟器
-firebase emulators:start
-```
-
-但是！这种方式生成的 singedUrl 不能真正用来上传文件，应为本地的模拟器本身不支持 signedUrl 的验证。这导致没有办法在本地完成完整流程测试。
-
-一种解决方法时在云函数中判断运行环境，如果时在模拟器运行返回 singedUrl 而是返回无签名的 url。本地代码可以通过模拟器的无签名 url 把文件上传到本地到模拟器。需要注意的通过无签名的 url 上传文件相当于直接操作本地的 cloud storage，会遇到 cloud storage 的 rule 检查。为了代码一只，本地可以把 cloud storage 的规则完全放开：
+如果您只是想在本地测试函数的主体逻辑，并不需要真正的 Signed URL。一种解决方法是在云函数中判断运行环境，如果是在模拟器运行不执行 singed 操作而是返回无签名的 url。本地代码可以通过模拟器的无签名 url 把文件上传到本地到模拟器。通过无签名的 url 上传文件相当于直接操作本地的 cloud storage，会遇到 cloud storage 的 rule 检查。为了代码一致，本地可以把 cloud storage 的规则完全放开：
 
 ```js
 rules_version = '2';
@@ -478,6 +465,19 @@ service firebase.storage {
     }
   }
 }
+```
+
+gemini 还给了一种方法是设置 GOOGLE_APPLICATION_CREDENTIALS。这种方式能生成的 singedUrl，但是本地的模拟器本身不支持 signedUrl 的验证，不能在本地完成完整流程测试。
+
+在functions/index.js 或入口文件中，确保 Admin SDK 是通过 firebase-admin 初始化的。停止模拟器，然后在运行 firebase emulators:start 之前，设置 GOOGLE_APPLICATION_CREDENTIALS 环境变量。环境变量指定的 JSON 文件从 Firebase Console -> Project settings -> Service accounts -> Generate new private key 下载。
+
+```bash
+# 假设您已下载了您的测试项目服务账号 JSON 文件
+# 尽管是本地模拟器，但 GCS 签名还是需要这个 GCLOUD 凭据
+export GOOGLE_APPLICATION_CREDENTIALS="/path/to/your/service-account-key.json" 
+
+# 启动模拟器
+firebase emulators:start
 ```
 
 ## 参考
