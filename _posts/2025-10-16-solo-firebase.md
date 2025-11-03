@@ -3,7 +3,7 @@ layout: default
 title: "学习 firebase 的基础用法"
 categories: "solo-income"
 author: 李佶澳
-tags: [独立赚钱]
+tags: [firebase]
 keywords: 独立赚钱,firebase,后端服务
 description: Firebase是Google推出的后端即服务（BaaS）平台，提供了实时数据库、身份验证、云存储、托管、分析等功能。本文详细介绍了Firebase的基础配置和使用方法。
 ---
