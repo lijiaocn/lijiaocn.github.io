@@ -1,0 +1,40 @@
+---
+layout: default
+title: "gstack skill 的使用方法"
+author: 李佶澳
+categories: [solo-income,invest,project,resolution,problems,others]
+tags: [独立赚钱日记]
+keywords: 
+description: gstack 是 Garry Tan（YC 的 CEO) 编写的一组用于应用开发的 skill，感觉特别适合从 0 到 1 的过程。
+---
+
+## 说明
+
+* auto-gen TOC:
+{:toc}
+
+[gstack][2] 是 Garry Tan（YC 的 CEO) 编写的一组用于应用开发的 skill，感觉特别适合从 0 到 1 的过程。
+
+## 基础使用方法
+
+gstack 现在的 readme 虽然介绍了使用方法，但是总感觉有点不具体。实际测试一下，感觉应该按照下面的过程使用。
+
+调用 /office-hours：描述想要开发的应用，这个 skill 会提出很具体的问题，分析这个想法，给出于一些建议。这个u过程模拟的 YC 专家和创业者第一次在办公室沟通的过程，帮创业者明确关键问题。会生成一份记录文档。
+
+调用 /plan-ceo-review：应用需求进行进一步分析，对可能的形态进行进一步畅想，会生成一个 ceo plan 文档。
+
+调用 /design-consultation：如果是全新的应用，需要用这个 skill 从零开始设计。
+
+调用 /plan-design-review: 编码之前的设计审核。
+
+调用 /plan-eng-review：工程实现。它没有给出在文件中记录架构图或者数据库以及接口设计等信息，而是在对话窗口输出了一堆内容，落地到文件记录中的只有 test plan 和 todo。应该是需要在 review 接受，直接输入指令退出 plan 模式，然后就开始编码 Approve plan. Exit plan mode.
+
+
+
+## 参考
+
+1. [李佶澳的博客][1]
+2. [gstack][2]
+
+[1]: https://www.lijiaocn.com "李佶澳的博客"
+[2]: https://github.com/garrytan/gstack "gstack"
