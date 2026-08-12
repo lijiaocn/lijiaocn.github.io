@@ -82,31 +82,43 @@ Google Play 和 Apple 的开发者身份类型分为个人和公司。个人开�
 
 ![个人身份和公司身份收款差异]({{ site.article}}/duns-money.png)
 
-### Google Play 个人注册
+### 个人开发者注册
 
-直接按照提示注册就可以了，需要上传身份证明文件和地址证明文件，审核需要几天时间，注册时一次缴费25美金。
+Google Play 直接按照提示注册就可以了，需要上传身份证明文件和地址证明文件，审核需要几天时间，注册时一次缴费25美金。
 
 * [Google Play 账号注册](https://play.google.com/apps/publish/signup)
 
-### 苹果开发者注册-个人身份
+Apple 开发者在 Developer APP 上进行注册，每年支付 688 元费用，注册之后要等收到邮件才生效。
 
-在 Developer APP 上进行注册，每年支付 688 元费用。注册之后要等收到邮件才生效。
+* [apple 开发者注册过程](https://developer.apple.com/cn/help/account/membership/enrolling-in-the-app/)
 
-* [注册过程](https://developer.apple.com/cn/help/account/membership/enrolling-in-the-app/)
+### 公司邓白氏编码申请
 
-### 公司身份注册（未完成）
+使用公司身份注册时需要为注册公司申请D-U-N-S 邓白氏编码。邓白氏编码可以[免费申请][2]，申请入口有三个。对于应用开发者而言最方便的两个免费渠道是 Apple 和 Google。Apple 和 Google 的申请过程、时效是不同的。Apple 全免费需 5 个工作日，Google 全免费需要 30 个工作日，但是可以付费成 1 个工作日。
 
-使用公司身份注册时需要提前准备两项：1. 注册一个公司；2. 为注册公司申请D-U-N-S 邓白氏编码。
+![邓白氏编码的三个申请入口]({{site.article }}/duns-entry.png)
 
-邓白氏编码直接到邓白氏网站上申请，申请入口有三个：1. 常规申请；2. FDA要求的申请；3. 苹果开发者申请。苹果开发者的申请是免费的，直接选。
+点击苹果业务申请进入的是 apple 的页面 [D-U-N-S® Number][3]，按下面步骤操作：
 
-![邓白氏编码的三个申请入口]({{site.article }}/duns-entry.jpg)
-
-点击之后会进入 apple 的网页，需要先点击链接到查询页面里面查询，查不到的时候才会出来申请入口。
+* 在页面的下方有一行提交申请的小字，也可以先查询然后未找到页面中提交申请
+* 提交之后会收到邓白氏的邮件，然后按照邓白氏的邮件指示操作
+* 第一封邮件是当天就收到的受理通知
+* 第二封需要1～2个工作日后收到包含验证码的操作邮件
 
 ![苹果开发者duns申请入口]({{ site.article }}/duns-apple-entry.png)
 
-查询页面的输入框只能输入英文，用 AI 把公司的中文名称翻译成英文。
+![提交申请]({{ site.article }}/apple-duns-submit.png)
+
+点击 Google 业务进入的是[邓白氏自助服务平台][4]：
+
+* 填写公司信息、完成公司核验
+* 自助平台上直接点邓白氏编码申请会弹出添加客服的提示，联系客服沟通发现，其实就是需要进入这个网址申请：[https://www.dnbportal.cn/apply-specific-duns-number][5]
+* 申请页面下方有场景选择，选择不同场景进入不同的申请通道，如果选 apple 开发者进入的就是需要提供 apple 生成的订单号和验证码信息的页面，如果选择 google 进入的就是另一套可以选择1个工作日完结的通道
+* `注意：不要同时办理两个通道！只要有一个通道完成就可了，两个通道同时办理反而容易信息混乱。`
+
+![邓白氏alert]({{ site.article }}/duns-alert.png)
+
+![申请页面场景选择]({{ site.article }}/duns-apply-scene.png)
 
 ## 应用发布
 
@@ -124,3 +136,7 @@ Google Play 和 Apple 的开发者身份类型分为个人和公司。个人开�
 1. [李佶澳的博客][1]
 
 [1]: https://www.lijiaocn.com "李佶澳的博客"
+[2]: https://www.dnb.com.cn/duns-registered-solution/duns-application-cn.html "邓白氏"
+[3]: https://developer.apple.com/support/D-U-N-S/ "apple duns support"
+[4]: https://www.dnbportal.cn/ "邓白氏自助服务平台"
+[5]: https://www.dnbportal.cn/apply-specific-duns-number "dnus 自助申请页面"
