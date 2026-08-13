@@ -2,7 +2,7 @@
 layout: default
 title: "flutter 的常规使用，一套代码适配多平台"
 author: 李佶澳
-categories: [solo-income,invest,project,resolution,problems,others]
+categories: [solo-income]
 tags: [独立赚钱日记]
 keywords: 
 description: 即使在 ai code 效果和成本都越来越好的情况，flutter 用一套代码完成 ios 和 android 两个平台应用的设计依旧能节省不少时间，比如不需要反复对齐两个平台的 ui 
