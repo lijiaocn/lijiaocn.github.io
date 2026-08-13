@@ -2,7 +2,7 @@
 layout: default
 title: "firebase 使用中遇到的问题记录"
 author: 李佶澳
-categories: [solo-incomes]
+categories: [solo-income]
 tags: [独立赚钱日记]
 keywords: 
 description:  记录使用 firebase 时遇到的一些问题以及对应的处理方法

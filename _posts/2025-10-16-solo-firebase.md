@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "学习 firebase 的基础用法"
+title: "firebase 基础使用，海外应用最佳后端方案"
 categories: "solo-income"
 author: 李佶澳
 tags: [firebase]
