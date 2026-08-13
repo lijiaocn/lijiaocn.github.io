@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "工具准备: 多储备可以借助的工具/服务"
+title: "多储备可以借助的工具/服务"
 categories: "solo-income"
 author: 李佶澳
 tags: [独立赚钱]

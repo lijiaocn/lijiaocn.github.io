@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "思想准备: 确认财务安全以及初步思路"
+title: "确认财务安全以及初步思路"
 categories: "solo-income"
 author: 李佶澳
 tags: [独立赚钱]
