@@ -64,6 +64,32 @@ $ pod --version
 
 shfit + cmd + p， 输入 flutter，选择 flutter: New Project
 
+### 运行调试
+
+在 vscode 中可以分别将应用在 android、ios、真机以及本地浏览器中运行。
+
+首先要选择目标设备。shift + cmd + p，输入 flutter，点击 flutter: selecte device，弹出本地识别的设备列表。选中的设备名称显示在 ide 右下角，直接点击右下角的设备名称也能唤出设备选择列表。
+
+然后就和调试其它项目类似，通过 vscode 侧边栏的 Run & Debug 功能运行。
+
+### android 和 ios 版本分别调试
+
+在 vscode 中指定哪个设备，就会构建对应的 android 或者 ios 版本。如果 vscode 中构建失败，可能是存在某些缺失，先用 android studio 以及 xcode 打开对应的项目文件，在其中修复相关问题。
+
+* android 项目文件：./android
+* ios 项目文件: ./ios/Runner.xcodeproj
+
+### flutter 接入腾讯 tcb 微信登录
+
+腾讯云的 CloudBase 支持多种第三方登录方式，flutter 项目可以直接用 [CloudBase Flutter SDK][3] 完成接入。
+
+还需要两个配置：
+
+* 在微信开放平台中注册移动应用，配置应用包名和签名，并开启微信登陆（账号认证后才可以开通，认证费用300）
+* 在腾讯的 cloudbase 中开启微信开放平台登陆，配置移动应用的 appid 和 secret
+
+
+
 ## 打包发布
 
 ### ios 应用构建以及提交
@@ -128,3 +154,4 @@ buildTypes {
 
 [1]: https://www.lijiaocn.com "李佶澳的博客"
 [2]: https://docs.flutter.dev/install/quick "Set up and test drive Flutter"
+[3]: https://docs.cloudbase.net/api-reference/flutter "CloudBase Flutter SDK"

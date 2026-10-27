@@ -13,11 +13,73 @@ description: 记录 ios app 开发过程中遇到一些问题，或者一定功�
 * auto-gen TOC:
 {:toc}
 
+## Universal Links 
+
+Universal Links 是 ios 系统支持的一个能力：将 app 和特定的域名关联。ios 设备上打开关联域名网址的时候，通过 path 路径匹配找到对应的 app，可以在网页中直接唤起 app。
+
+要使用这个能力需要：
+
+* 在开发者后台的 Identifiers 或者 xcode->targets->capalitity 中开启 Associated Domains
+* 在 xcode 中 targets->Signing&Capabilities->Profile 中填写 domain
+* 在 domain 的根目录中发布 apple-app-site-association 文件
+
+apple-app-site-association 文件（简称 AASA）必须的访问路径必须是：
+
+`https://设置的域名/.well-known/apple-app-site-association`
+
+AASA 文件中配置的是 path 和 appID 的对应关系，path 支持通配符：
+
+```json
+{
+  "applinks": {
+    "apps": [],
+    "details": [{
+      "appID": "TeamID.BundleID",   //用TeamID和BundleID拼接
+      "paths": ["/links/app1/*"]    //必须包含Universal Link的path
+    }]
+  }
+}
+```
+
+ios app 中需要增加对 Universal Links 的处理代码，可以从唤起的 url 解析参数，参考文档： [Supporting universal links in your app][3]。
+
+## iOS APP 的证书
+
+ios 应用的签署证书管理和 android 区别比较大：
+
+* 证书不能自签署，先在本地生成签署请求，然后通过 [apple developer certificates][4] 获得证书
+* 开发构建、发布打包用的证书，需要分别创建，每个证书在创建时都需要指定用途
+* Xcode 构建时不是指定证书，而是指定开发者后台中 Profiles
+* Profile 在开发者后台创建，profile 是 appid、cert、device 的绑定关系
+* 开发用的 profile 中需要指定 device，所以还需要在开发者后台创建 device
+
+以上就是 apple 开发者后台中的这几个类别的关系： 
+
+![apple dev]({{ site.article }}/apple-dev-profile.png)
+
+手动维护这些证书实在是繁琐，比如这个开发用 profile 的创建过程：[iOS 证书申请与配置][5]。
+xcode 提供了自动签署功能，使用自动签署后，开发构建以及打包发布的证书都自动处理，不需要人工去操作了。
+
+![xcode自动签署功能]({{ site.article }}/xcode-auto-signing.png)
+
+xcode 自动管理使用的`发布证书` 是开发者后台中类型为 Distribution Managed 的证书。这种类型的证书存放在 apple 云端，没有下载公钥和指纹的途径。如果需要发布证书的公钥和指纹（比如国内备案），只能从构建好的 ipk 文件解析。apple 如果在云端更新了发布证书，备案里提交的证书会和实际证书不一致。
+
+```bash
+unzip -q XXXX.ipa
+APP=$(find Payload -maxdepth 2 -name '*.app' -type d | head -1)
+codesign -d --extract-certificates "$APP"
+
+#可能会得到多个证书文件，codesign0 通常是最后的签名证书，从中提取公钥和指纹：
+
+# 证书公钥
+openssl x509 -inform DER -in codesign0 -pubkey -noout
+# 证书 SHA-1 指纹
+openssl x509 -inform DER -in codesign0 -noout -fingerprint -sha1
+```
+
 ## Add Package 增加 firebase sdk 依赖后，依然提示找不到 module
 
-按照 firebase 的文档在 add package 中添加 firebase sdk 以后，在应用入口处初始化 firebase。 IDE 报错找不到 firebasecore 模块。
-
-在 add package 的操作的最后阶段，还需要一步操作，在 Add To Target 中选中当前 Target，默认是不添加到 target 的。
+按照 firebase 的文档在 add package 中添加 firebase sdk 以后，在应用入口处初始化 firebase。IDE 报错找不到 firebasecore 模块。在 add package 的操作的最后阶段，还需要一步操作，在 Add To Target 中选中当前 Target，默认是不添加到 target 的。
 
 ![add to target]({{ site.article }}/xcode-add-package.png)
 
@@ -138,7 +200,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
 ## ios app 内测
 
-在[appstoreconnect](https://appstoreconnect.apple.com/) 创建 app 后，可以先进行内测，内测试时不需要完成所有资料填写。
+在 [appstoreconnect](https://appstoreconnect.apple.com/) 创建 app 后，可以先进行内测，内测试时不需要完成所有资料填写。
 
 创建 app 的时候需要指定 bundle identifier，和 xcode Target 中的保持一致。
 
@@ -148,7 +210,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
 ## 配置使用 apple id 登录
 
->如果只在 ios 平台上支持 apple id 登录，不需要过多设置，启用相关能力即可：
+如果只在 ios 平台上支持 apple id 登录，不需要过多设置，启用相关能力即可：
 
 ![xcode 添加 Sign in with Apple]({{ site.article}}/xcode-add-signin.png)
 
@@ -260,3 +322,6 @@ xcode 中还可以设置本地证书，在 Xcode -> Apple Account -> Manage Cert
 
 [1]: https://www.lijiaocn.com "李佶澳的博客"
 [2]: https://firebase.google.com/docs/auth/ios/apple?authuser=0&_gl=1*1ql6ary*_ga*MTQxNDY5MTY1OS4xNzYxNzkxNjkw*_ga_CW55HF8NVT*czE3NjY1NDE2NjEkbzMzJGcxJHQxNzY2NTQyNTQyJGo2MCRsMCRoMA.. "Authenticate Using Apple"
+[3]: https://developer.apple.com/documentation/xcode/supporting-universal-links-in-your-app "Supporting universal links in your app"
+[4]: https://developer.apple.com/account/resources/certificates/list "apple developer certificates"
+[5]: https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/miniapp/handbook/certificate/ios.html "iOS 证书申请与配置"
