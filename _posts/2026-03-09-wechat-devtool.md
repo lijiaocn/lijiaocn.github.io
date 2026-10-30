@@ -17,7 +17,7 @@ description: firebase 太好用了，唯一的问题就是在国内用不了，�
 
 firebase 在国内用不了，需要找个国内的平替。尝试用微信小程序的多端应用+微信云开发平替 flutter 和 firebase。
 
-* [小程序多端框架概述][4] 能把小程序直接转成 ios/android/鸿蒙 应用，支持微信登陆和 apple 原生登陆。
+* [小程序多端框架概述][4] 能把小程序直接转成 ios/android/鸿蒙应用，支持微信登陆和 apple 原生登陆。
 * 微信云开发底层就是腾讯云的 cloudbase
 
 微信一共有三个管理平台，分别用来管理不同形态的业务，后面会在这几个后台里跳转：
@@ -26,7 +26,12 @@ firebase 在国内用不了，需要找个国内的平替。尝试用微信小�
 * [微信**开放**平台][8]: 管理要集成微信能力（比如微信登录/微信支付）的独立应用或网站等。 
 * [微信**开发者**平台][7]: 管理微信生态内的各种类型应用的，多端应用在这里管理。
 
-## 将小程序升级为多端应用
+还没有解决的问题(多端应用是个成熟方案么，有点疑虑了)：
+
+* 接入 apple 登录时，多端应用后台保存 apple key 弹系统错误
+* 微信小程序升级为多端应用后，虚拟支付接口出错：requestVirtualPayment: fail createOperateWXData: fail SDK 暂不支持 operateWXData API。如果不能直接复用小程序里的购买代码，用的多端应用意义似乎不大了
+
+## 小程序转换成多端应用
 
 现有的小程序代码能够升级为多端应用（微信开发者工具->工具->升级为多端项目），按照提示进行操作即可，升级时会提示到微信开发者平台上创建一个和当前小程序绑定的多端应用。
 
@@ -101,7 +106,7 @@ Universal Links 需要两步操作：
 AASA 文件的路径必须是直接在域名后面，中间不能再有其它路径，这是 apple 约定的获取方式。
 AASA 文件中需要配置 path 和 appid 的对应关系：
 
-```json
+```bash
 {
   "applinks": {
     "apps": [],
@@ -117,10 +122,9 @@ AASA 文件中需要配置 path 和 appid 的对应关系：
 
 AASA 文件未配置或者配置错误，ios 版本的微信小程序/微信登录时可能会失败：从多端应用能够跳转到微信，并且能在授权页中授权，授权后能够返回到多端应用，但是多端应用中的 wx.login 执行失败，错误信息是“wx.getMiniProgramCode fail: -700000.系统登录页登录失败”，多端应用没有获得登录态。
 
-### ios 开发和发布证书
+**ios 应用的开发和发布证书**
 
 ios 应用不需要在微信开发者平台上配置证书信息，需要用另外的方式设置开发和发布的签署证书。
-
 最简单的做法是 [iOS 证书自动管理][32]，让微信开发者工具使用 App Store Connect 的 API 自动管理证书：
 
 * 打开 App Store Connect 后台，进入用户和访问->集成，创建 App Store Connect API 的访问密钥
@@ -163,13 +167,61 @@ openssl x509 -inform DER -in codesign0 -noout -fingerprint -sha1
 
 ![苹果开发者发布证书]({{ site.article }}/apple-dev-certs.png)
 
-## 多端应用代码适配
 
-将小程序应用转换成多端应用后，小程序代码只需要在个别地方进行细微调整。
+## 多端应用的构建和发布
 
-### 如果使用了云开发，需指定小程序 appid
+多端应用支持 ios、android 和鸿蒙，一套代码可以构建出适配三个平台的安装包。
 
-如果小程序使用了微信云开发，升级为多端应用后，需要在 cloud.init 中指定对应的小程序 appid([多端应用使用微信云开发][16])。否则开发者工具控制台会报错误信息：“多端模式下使用云开发，wx.cloud.init 需要传入 appid, 具体可参考文档 https://dev.weixin.qq.com/docs/framework/dev/cloud”。
+### ios 版本构建、部署、发布
+
+用下面方法构建多端应用的 ipa 文件：`必选勾选远程构建，本地构建的 ipa 文件在 iphone 上闪退`
+
+* 开发者工具右上角的构建（锤子图案）-> 打包生成 IPA -> 勾选`远程构建`，构建结束后得到 ipa 文件 
+* Mac 安装 Apple Configurator，识别到用数据线连接到电脑的 iphone
+* 在 Configurator 进入目标手机，然后点 + -> App -> Choose from My Mac，选中 ipa 文件
+
+Configurator 安装完成后，就可以在 iphone 上使用刚安装的 app。
+
+**注意构建界面中的选项**：
+
+* 是否采用分发证书，要提交到 app store 到 ipa 构建，需要选择分发证书
+* 选择打包类型：正式版、开发版、开发版（远程调试）、开发版（热更新）
+
+此外，微信开发者工具因为不支持 ios26 系统，无法直接在 ios 模拟器和真机上部署开发版。现阶段只能通过远程构建 ipa 然后手动部署到 ios 设备的方式。[多端应用在iOS26真机运行时出现闪退，怎么办？][34]。
+
+正式版的 ipk 文件发布到的 appstore 
+
+**get valid profile fail **
+
+构建 iOS 版本构建时，勾选证书自动管理可能遇到下面的问题:
+
+![get valid profile fail]({{ site.article }}/getvalidprofilefail.png)
+
+从错误信息来看是没有开启 APPLE_ID_AUTH。进入 apple developer -> Identifiers，给对应的 appid 开通 Sign In With Apple。
+
+![开通 sign-in-with-apple]({{ site.article }}/sign-in-with-apple.png)
+
+比较奇怪的是在 apple developer 勾选以后 sign in with apple 后，开发者工具中还是会出现这个错误。先把 project.miniapp.json 中的 Idaas SDK 关闭，再进入构建界面选择证书（此时不会出错），然后再把 Idaas SDK 打开，再次回到构建界面就不会出错，并且远程构建的 ipa 能够正常使用第三方登录。 
+
+![idaas-sdk]({{ site.article }}/idaas-sdk.png)
+
+### android 版本构建、部署、发布
+
+开发阶段，直接在开发者工具中选择目标 andorid 设备，然后点运行即可。
+
+对外发布时，构建->打包生成 APK，确认签署证书，然后点确定即可。
+
+## 多端应用的远程调试
+
+在 project.miniapp.json 中启用 Network SDK，然后构建的时候选择：开发版（远程调试）。
+
+## 多端应用的云开发初始化和配置
+
+如果使用了微信云开发，升级为多端应用后，需要进行一些细微调整：[多端应用使用微信云开发][16]
+
+**cloud.init 中指定对应的小程序 appid**
+
+如果不指定，开发者工具控制台会报错误信息：“多端模式下使用云开发，wx.cloud.init 需要传入 appid, 具体可参考文档 https://dev.weixin.qq.com/docs/framework/dev/cloud”。
 
 ```js
    wx.cloud.init({
@@ -178,7 +230,7 @@ openssl x509 -inform DER -in codesign0 -noout -fingerprint -sha1
     });
 ```
 
-### 如果使用了云函数，需配置函数访问权限
+**如果使用了云函数，需配置函数访问权限**
 
 如果存在不需要登录就可以访问的云函数，需要额外配置云函数权限：([多端应用使用微信云开发][16])
 否则请求云函数时会报错错误信息，“cloud.callFunction:fail Error: errCode: -501023 permission denied | errMsg: Unauthenticated access is denied 更多错误信息请访问：https://docs.cloudbase.net/error-code/basic/PERMISSION_DENIED ”
@@ -186,26 +238,23 @@ openssl x509 -inform DER -in codesign0 -noout -fingerprint -sha1
 1. 在云开发环境的设置中将云函数设置为允许未登陆用户访问
 2. 然后再到云函数权限中修改自定义规则，允许匿名调用
 
-## 多端应用接入第三方登录
 
-多端应用支持微信登录、Apple登录，国内的有这两个登录方式就足够了：* [多端应用支持的登录方式][27]。
+## 多端应用接入小程序登录
 
-其中微信登录支持两种方式：
+不改动代码就可以接入小程序登录，登录页面都可以不添加，因为多端应用对微信小程序登录进行了特殊处理：
 
-* [唤起微信小程序登录][9]：登录时跳转到对应的小程序授权页
-* 唤起微信登录：登录时直接唤起微信
+* 处理1：将代码中的 wx.login 自动适配成多端应用 API wx.getMiniProgramCode 
+* 处理2：wx.getMiniProgramCode 返回的 code 可以像小程序的 code 那样用 [code2session][13] 校验
+* 处理3：为小程序登录提供了默认的登录页面
 
-### 接入微信小程序登陆
+代码可以不改，但是还需要进行一些配置操作 [快速接入小程序登录服务][9]：
 
-接入微信小程序登录时，必须先完成微信开放平台的账号认证(个人开发者可以不认证)，否则小程序登录页时会显示: has_no_permission。完成认证后，按照 [快速接入小程序登录服务][9] 中的步骤操作。
+1. 完成微信开放平台的账号认证(个人开发者可以不认证)，否则小程序登录页时会显示: has_no_permission；
+2. 登录 [微信开发者平台][7]，进入多端应用-身份管理，开通微信小程序登录
+3. 微信开发者工具：打开项目里的 project.miniapp.json，勾选 OpenSDK（android/ios都需要勾选）;
+4. 微信开发者工具：工具->配置小程序登录服务，点击后按提示操作即可。
 
-主要操作有：
-
-1. 登录 [微信开发者平台][7]，进入多端应用-身份管理，开通微信小程序登录
-2. 微信开发者工具：打开项目里的 project.miniapp.json，勾选 OpenSDK（android/ios都需要勾选）;
-3. 微信开发者工具：工具->配置小程序登录服务，点击后按提示操作即可。
-
-步骤3会调转到网页 [Donut控制台][26]（不知道这又是个啥控制台），按页面提示输入就可以了。之后开发者工具显示配置已经完成， app.json 和 app.miniapp.json 中多出一些内容。
+最后一步跳转到网页 [Donut控制台][26]（不知道这又是个啥控制台），按页面提示输入就可以了。回到开发者工具会看到提示配置已经完成。 app.json 和 app.miniapp.json 中多出下面的配置：
 
 ```json
 //app.json
@@ -223,93 +272,95 @@ openssl x509 -inform DER -in codesign0 -noout -fingerprint -sha1
 }
 ```
 
-在 app.miniapp.json 开启 adaptWxLogin 后，自动把代码里的 wx.login 适配成 wx.getMiniProgramCode。
-多端应用中的 wx.getMiniProgramCode 和小程序中的 wx.login 具有相同效果。
-因此转换成多端应用，小程序后端服务不需要任何修改。
+多端应用中的 wx.login（被适配为 wx.getMiniProgramCode ）执行时，先判断是否处于登录状态，如果不是登录状态就唤起 miniprogramLoginPath 指定的页面请求登录授权([快速接入小程序登录][9])。授权成功后，wx.getMiniProgramCode 返回的 code 可以被小程序的 [code2session][13] 接口校验。在不修改小程序前后端的情况下，就适配了小程序登录。
 
+如果对内置的默认登录页不满意，可以配置指向自定义的小程序页面。在定义登录页中，用 wx.weixinMiniProgramLogin 唤起小程序，授权成功后 wx.weixinMiniProgramLogin 返回 code。经测试，这是一个可以用[code2session][13] 校验的code，所以使用自定义登录页时，小程序服务端代码也不需要调整。
 
-### 多端应用使用微信登陆
+## 多端应用接入第三方登录
 
->**`特别注意`**：    
->微信登陆返回的 token 的校验用接口： [code2Verifyinfo][12] (使用多端应用的 appid 和 secret）     
->小程序登陆返回的 token 的校验用接口：[code2session][13]   (使用小程序的 appid 和 secret )
+多端应用接入第三方登录（[支持的登录方式][27]）时，使用[多端应用的身份管理 API][36]（和 [微信小程序 API][37] 是两套）。
+里面的 API 大体可以分为两类。
 
-先到 [微信开放平台][8] 中，给多端应用绑定的移动应用开通微信登录接口权限（能力专区->微信登陆）。个人开发者就可以开通，但是有调用次数限制(好像是每天20次），如果要接触限制需要用非个人身份注册账号并完成认证。
+第一类 API 和小程序的 wx.login 对应，这类 API 执行过程唤起第三方 APP 或者发送登录信息，但是最终都像 wx.login 那样在登录成功后返回登录凭证（code)。
+
+* wx.weixinAppLogin  微信登录
+* wx.weixinMiniProgramLogin 微信小程序登录
+* wx.phoneSmsLogin 手机号验证码登录
+* wx.appleLogin Apple账号登录
+
+第二类 API 分别和小程序的 wx.checkSession、wx.login 对应，用于检查登录态、在登录态时获取登录凭证（小程序在登录状态时获取登录凭证也用 wx.login)。
+
+* wx.checkIdentitySession  检查当前是否登录状态
+* wx.getIdentityCode  获取登录凭证（处于登录状态时）
+* wx.getMiniProgramCode 获取小程序的登录凭证（只适用于微信小程序登录成功的场景）
+
+多端应用 API 返回的登录凭证，和小程序里 wx.login 返回的登录凭证是不同的，服务端要用不同的接口校验：
+
+* [code2Verifyinfo][12]：校验多端应用 API 返回的 code，接口使用时指定多端应用的 appid 和 secret
+* [code2session][13]：校验小程序的 wx.login 返回的 code，接口使用时指定小程序的 appid 和 secret
+
+### 接入微信登录 
+
+微信登录用多端应用的 wx.weixinAppLogin 唤起，这个接口返回的 code 的校验方式和小程序不一样。而且云开发服务端的 cloud.getWXContext() 读不到微信登录时的 openid。接入微信登录时，前后端代码都需要改造：
+
+* 增加微信登录入口，用多端应用 wx.weixinAppLogin 唤起微信登录
+* 服务端必须用 [code2Verifyinfo][12] 校验 code 获得用户信息（解析小程序用 code 的 [code2session][13] 无法识别）
+* 设计一套鉴权机制，比如请求云开发时，携带登录时下发的 webtoken，云开发服务端解析 webtoken 鉴权
+
+除了改造代码，还需要完成以下设置：
+
+* 在[微信开放平台][8]，给多端应用绑定的移动应用启用微信登录（企业账号认证后能开启，个人开发者账号有次数限制）
+* 如果使用了微信云开发，将移动应用 appid 加入云开发的环境共享
+
+**开通微信登录权限**
+
+微信登陆接口的权限开通以后，可能需要等一段时间才能生效。
+未生效的时候跳转到微信时会提示：“此公众号没有这些scope权限，错误码：10005”。
 
 ![微信登陆接口权限开通]({{ site.article }}/wxlogin.png)
 
-然后将小程序中使用 [微信登陆][9] 中的登录方法即可，可以用多端应用支持的[条件编译][11]在小程序平台和移动端app使用不同的登录方法：
+**加入云开发环境共享**
 
->微信登陆接口的权限开通以后，可能需要等一段时间才能生效，未生效的时候跳转到微信时会提示：此公众号没有这些scope权限，错误码：10005
+将微信移动应用的 appid 加入云开发的环境共享后，多端应用才能调用对应云开发中的资源，否则会出现环境未授权错误。
+被设置成匿名访问的云函数不受环境共享的影响，参考 [多端应用使用微信云开发][16]。
 
-```js
-// #if MP
-wx.login({
-  success: res => {
-    ObtainUserTokenPromise(res.code).then((res)=>{
-      console.log("new token: ",res.data.jwtToken)
-    }).catch((err)=>{
-      reject(err)
-    })
-  }
-})
-// #else
-wx.weixinAppLogin({
-  success: res => {
-    ObtainUserTokenPromise(res.code).then((res)=>{
-      console.log("new token: ",res.data.jwtToken)
-    }).catch((err)=>{
-      reject(err)
-    })
-  }
-})
-// #endif
-```
+云开发的环境共享就是访问云开发的 appid 白名单，在云开发->设置->扩展功能->环境共享中添加。
+接入微信登录时，在云开发环境共享添加的 appid 是微信开放平台中的移动应用的 appid（不是小程序的 appid，也不是多端应用的 appid）。
 
-## 多端应用的构建和发布
+![云开发环境共享]({{ site.article }}/cloud-env-share.png)
 
-### 构建并部署到 ios 设备
+**云开发环境共享后，需要改变调用方式**
 
-用下面方法构建多端应用的 ipa 文件：`必选勾选远程构建，本地构建的 ipa 文件在 iphone 上闪退`
+启用如果使用了云开发时，改成用实例化的方式调用云开发，参考[多端应用使用云开发][38]。
 
-* 开发者工具右上角的构建（锤子图案）-> 打包生成 IPA -> 勾选`远程构建`，构建结束后得到 ipa 文件 
-* Mac 安装 Apple Configurator，识别到用数据线连接到电脑的 iphone
-* 在 Configurator 进入目标手机，然后点 + -> App -> Choose from My Mac，选中 ipa 文件
+### 小程序登录和微信登录用户的关联
 
-Configurator 安装完成后，就可以在 iphone 上使用刚安装的 app。
+小程序登录和微信登录是两套登录系统，同一个微信号用这两种方式登录得到的 openid 分别隶属于小程序和移动应用，是两个不同的 openid。但是从用户角度来看，通过微信小程序登录和微信登录，唤起的是同一个微信，应当是同一个用户。
 
-**注意构建界面中的选项**：
+小程序绑定移动开放平台后，[code2session][13] 会返回一个 unionid，这个 unionid 在两种登录方式中是相同的。后续若果使用微信登录，可以借助 unionid 实现小程序和微信登录用户的关联。
 
-* 是否采用分发证书，要提交到 app store 到 ipa 构建，需要选择分发证书
-* 选择打包类型：正式版、开发版、开发版（远程调试）、开发版（热更新）
+这个绑定在**开发者平台**操作，我的服务与业务->开放平台：
 
-此外，微信开发者工具因为不支持 ios26 系统，无法直接在 ios 模拟器和真机上部署开发版。现阶段只能通过远程构建 ipa 然后手动部署到 ios 设备的方式。[多端应用在iOS26真机运行时出现闪退，怎么办？][34]。
+![小程序绑定开放平台]({{ site.article }}/wexin-unionid.png)
 
-### ios 版本发布到 app store TODO
+### 接入 Apple 登录
 
-TODO
+[多端应用接入 Apple 登录][39] 需要进行如下操作：
 
-### ios 构建时，get valid profile fail
+* 在苹果开发者后台的 Identifies 中，在多端应用对应的 appid 中开启 Sign in with Apple
+* 在苹果开发者后台的 Keys 中，新建一个启用 Sing in with Apple 并绑定了多端应用 appid 的 key
+* 在微信开发者平台，多端应用->身份管理->Apple登录中，填入刚创建的 key
 
-构建 iOS 版本构建时，勾选证书自动管理可能遇到下面的问题:
+按照文档操作最后保存的报错，这个问题25年就有人遇到了，等解决方案。[https://developers.weixin.qq.com/community/develop/doc/000acae6688768f87f3498f9866000?highLine=Apple%25E7%2599%25BB%25E5%25BD%2595](https://developers.weixin.qq.com/community/develop/doc/000acae6688768f87f3498f9866000?highLine=Apple%25E7%2599%25BB%25E5%25BD%2595)
 
-![get valid profile fail]({{ site.article }}/getvalidprofilefail.png)
+多端应用是不是个试验品啊
 
-从错误信息来看是没有开启 APPLE_ID_AUTH。进入 apple developer -> Identifiers，给对应的 appid 开通 Sign In With Apple。
+## 多端应用的虚拟支付
 
-![开通 sign-in-with-apple]({{ site.article }}/sign-in-with-apple.png)
+升级为多端应用后，虚拟支付好像不能用了，虚拟支付的接口似乎没有适配多端应用。
 
-比较奇怪的是在 apple developer 勾选以后 sign in with apple 后，开发者工具中还是会出现这个错误。先把 project.miniapp.json 中的 Idaas SDK 关闭，再进入构建界面选择证书（此时不会出错），然后再把 Idaas SDK 打开，再次回到构建界面就不会出错，并且远程构建的 ipa 能够正常使用第三方登录。 
 
-![idaas-sdk]({{ site.article }}/idaas-sdk.png)
 
-### 构建并部署到 android 设备
-
-开发阶段，直接在开发者工具中选择目标 andorid 设备，然后点运行即可。
-
-对外发布时，构建->打包生成 APK，确认签署证书，然后点确定即可。
-
-### android 版本发布到应用商店
 
 ## 微信云开发
 
@@ -457,7 +508,7 @@ tcb 后台中开启apple 账号登陆配置中，要求传入 client id 等。�
 [9]: https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/miniapp/quickstart/auth.html "快速接入小程序登录服务"
 [10]: https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/miniapp/api/auth/wx.weixinAppLogin.html "微信登陆"
 [11]: https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/miniapp/pre-read/condition-compile.html "条件编译"
-[12]: https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/miniapp/openapi/code2 "code2Verifyinfo"
+[12]: https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/miniapp/openapi/code2Verifyinfo "code2Verifyinfo"
 [13]: https://developers.weixin.qq.com/miniprogram/dev/server/API/user-login/ "小程序登录接口列表"
 [14]: https://developers.weixin.qq.com/miniprogram/dev/devtools/auto/quick-start.html "小程序自动化"
 [15]: https://developers.weixin.qq.com/miniprogram/dev/devtools/auto/record.html "录制回放"
@@ -480,3 +531,8 @@ tcb 后台中开启apple 账号登陆配置中，要求传入 client id 等。�
 [32]: https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/miniapp/handbook/certificate/ios-mgnt.html "iOS 证书自动管理"
 [33]: https://developer.apple.com/account/resources/certificates/list "apple developer certificates"
 [34]: https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/miniapp/troubleshooting/dev.html#_12%E3%80%81-%E5%A4%9A%E7%AB%AF%E5%BA%94%E7%94%A8%E5%9C%A8iOS26%E7%9C%9F%E6%9C%BA%E8%BF%90%E8%A1%8C%E6%97%B6%E5%87%BA%E7%8E%B0%E9%97%AA%E9%80%80%EF%BC%8C%E6%80%8E%E4%B9%88%E5%8A%9E%EF%BC%9F "多端应用ios26闪退"
+[35]: https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/miniapp/api/auth/wx.weixinMiniProgramLogin.html "wx.weixinMiniProgramLogin"
+[36]: https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/miniapp/api/auth/wx.weixinAppLogin.html "多端应用的身份管理 API"
+[37]: https://developers.weixin.qq.com/miniprogram/dev/api/ "微信小程序 API"
+[38]: https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/miniapp/new-capability/cloud/cloud.html "多端应用使用云开发"
+[39]: https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/miniapp/api/auth/wx.appleLogin.html "多端应用接入 Apple 登录"
