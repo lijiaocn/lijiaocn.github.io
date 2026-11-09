@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "独立赚钱日记：微信小程序开发"
+title: "微信小程序开发"
 author: 李佶澳
 categories: [solo-income,invest,project,resolution,problems,others]
 tags: [独立赚钱日记]
