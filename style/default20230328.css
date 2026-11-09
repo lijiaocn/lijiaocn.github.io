@@ -6,6 +6,111 @@ ul#markdown-toc ul, ul#markdown-toc li{
     list-style-type:decimal;
 }
 
+/* 右侧浮动面板：样式始终一致，吸顶只改定位 */
+.rsidebar-float {
+    text-align: left;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.rsidebar-tabs {
+    display: flex;
+    border: none;
+    background: #eff0f1;
+    flex-shrink: 0;
+}
+
+.rsidebar-tab {
+    flex: 1;
+    margin: 0;
+    padding: 8px 0;
+    border: none;
+    background: #eff0f1;
+    color: #1f2329;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    outline: none;
+}
+
+.rsidebar-tab.is-active {
+    color: #8f959e;
+    background: #fff;
+}
+
+.rsidebar-tab:hover {
+    color: #646a73;
+}
+
+.rsidebar-tab-toc {
+    font-weight: bold;
+}
+
+.rsidebar-panels {
+    min-height: 0;
+    flex: 1;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.rsidebar-panels::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.rsidebar-panel {
+    display: none;
+    padding: 8px 6px 12px;
+}
+
+.rsidebar-panel.is-active {
+    display: block;
+}
+
+.rsidebar-float.no-toc .rsidebar-panel[data-panel="aside"] {
+    display: block;
+}
+
+#rsidebar-toc #markdown-toc,
+#rsidebar-toc #markdown-toc ul {
+    background-color: transparent !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin: 0;
+    border-radius: 0;
+}
+
+#rsidebar-toc #markdown-toc {
+    padding-left: 18px !important;
+    list-style-type: decimal;
+}
+
+#rsidebar-toc #markdown-toc li {
+    font-size: 13px;
+    line-height: 1.55;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-right: 0;
+    white-space: normal;
+    word-break: break-word;
+}
+
+#rsidebar-toc #markdown-toc a {
+    color: #555;
+}
+
+#rsidebar-toc #markdown-toc a:hover {
+    color: #00a67c;
+}
+
 /*google广告未填充时，不占用空间：https://support.google.com/adsense/answer/10762946?hl=en*/
 ins.adsbygoogle[data-ad-status="unfilled"] {
     display: none !important;
@@ -19,9 +124,10 @@ ins.adsbygoogle[data-ad-status="unfilled"] {
 .body {
     padding-left:0px;
     padding-top:0px;
-    font-family:"宋体";
+    font-family:"宋体", "PingFang SC", "Microsoft YaHei", sans-serif;
     -ms-overflow-style: scrollbar;
     color: #333333;
+    -webkit-font-smoothing: antialiased;
 }
 
 body.custom-background {
@@ -50,6 +156,7 @@ td,th{
     padding: 0px;
     background-color: #ffffff;
     font-size: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 
@@ -74,7 +181,7 @@ td,th{
 }
 
 .center {
-    padding:0px;
+    padding:8px 12px 20px;
     margin:0px;
 }
 
@@ -180,15 +287,15 @@ div.center table{
 div.center .author {
     font-size:13px;
     text-align:center;
-    color: gray;
+    color: #888888;
 }
 
 
 div.center ol {
-    background-color: lightyellow;
+    background-color: #fffdf0;
     padding-top: 10px;
     padding-bottom: 10px;
-   /*color: white;*/
+    border-radius: 4px;
 }
 
 div.center ol li{
@@ -207,10 +314,10 @@ div.center ul{
 }
 
 div.center ul {
-    background-color: lightyellow;
+    background-color: #fffdf0;
     padding-top: 10px;
     padding-bottom: 10px;
-   /*culor: white;*/
+    border-radius: 4px;
 }
 
 div.center ul li{
@@ -230,62 +337,74 @@ div.center ul li p{
 
 div.center p {
     font-size: 16px;
-    font-family: 宋体;
-    line-height: 180%;
+    font-family: "宋体", "PingFang SC", "Microsoft YaHei", sans-serif;
+    line-height: 1.85;
+    margin-bottom: 12px;
 }
 
 div.center img {
     max-width: 90%;
-    -webkit-box-shadow: 0 0 10px #555;
+    -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    border-radius: 2px;
     display:block;
-    margin:0 auto;
+    margin:12px auto;
 }
 
 div.center h1 {
     font-size:30px;
-    font-family: "思源黑体";
+    font-family: "思源黑体", "PingFang SC", "Microsoft YaHei", sans-serif;
     font-weight:bold;
     text-align:center;
+    line-height: 1.4;
+    margin: 12px 0 16px;
 }
 
 div.center h2 {
-    border-left: 8px solid #00a67c;
+    border-left: 6px solid #00a67c;
     border-bottom: 1px solid #00a67c;
     font-size:24px;
-    font-family: "思源黑体";
-    padding:10px;
+    font-family: "思源黑体", "PingFang SC", "Microsoft YaHei", sans-serif;
+    padding: 8px 10px;
+    margin: 28px 0 14px;
+    line-height: 1.4;
 }
 
 div.center h3 {
-    border-left: 8px solid #00a67c;
+    border-left: 6px solid #00a67c;
     border-bottom: 1px solid #00a67c;
     font-size:22px;
-    font-family: "思源黑体";
-    padding:10px;
+    font-family: "思源黑体", "PingFang SC", "Microsoft YaHei", sans-serif;
+    padding: 8px 10px;
+    margin: 24px 0 12px;
+    line-height: 1.4;
 }
 
 div.center h4 {
-    border-left: 8px solid #00a67c;
+    border-left: 6px solid #00a67c;
     border-bottom: 1px solid #00a67c;
     font-size:18px;
-    font-family: "思源黑体";
-    padding:10px;
+    font-family: "思源黑体", "PingFang SC", "Microsoft YaHei", sans-serif;
+    padding: 8px 10px;
+    margin: 20px 0 10px;
 }
 
 div.center h5 {
-    border-left: 8px solid #00a67c;
+    border-left: 6px solid #00a67c;
     border-bottom: 1px solid #00a67c;
     font-size:16px;
-    font-family: "思源黑体";
-    padding:10px;
+    font-family: "思源黑体", "PingFang SC", "Microsoft YaHei", sans-serif;
+    padding: 8px 10px;
+    margin: 18px 0 8px;
 }
 
 div.center h6 {
-    border-left: 8px solid #00a67c;
+    border-left: 6px solid #00a67c;
     border-bottom: 1px solid #00a67c;
     font-size:15px;
-    font-family: "思源黑体";
-    padding:10px;
+    font-family: "思源黑体", "PingFang SC", "Microsoft YaHei", sans-serif;
+    padding: 8px 10px;
+    margin: 16px 0 8px;
 }
 
 div.center pre {
@@ -294,11 +413,12 @@ div.center pre {
     border: solid 0px lightgrey;
     background-color: #000000;
     color: #ffffff;
-    padding: 10px;
-    line-height: 1.3;
+    padding: 12px 14px;
+    line-height: 1.45;
     -webkit-overflow-scrolling:touch;
     word-wrap: normal;
     overflow: auto;
+    border-radius: 4px;
 }
 
 div.center pre code {
@@ -306,16 +426,28 @@ div.center pre code {
     color: #cfcfcf;
 }
 
+div.center a {
+    color: #0066cc;
+    transition: color 0.15s ease;
+}
+
+div.center a:hover {
+    color: #00a67c;
+}
+
 div.postlist p {
-    line-height:130%;
+    line-height:140%;
     padding-top:5px;
     padding-left:0px
 }
 
 div.postlist h2 {
     font-size:20px;
-    font-family: 宋体;
+    font-family: "宋体", "PingFang SC", "Microsoft YaHei", sans-serif;
     background-color: white;
+    border: none;
+    padding: 0;
+    margin: 16px 0 6px;
 }
 
 div.postinfo p {
@@ -340,7 +472,9 @@ div.mainbottomright h2 {
 }
 
 div.rsidebar img {
-    -webkit-box-shadow: 0 0 10px #555;
+    -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    border-radius: 2px;
 }
 
 div.rsidebar-title p {
@@ -398,5 +532,3 @@ div.rsidebar-title p {
 .search {
     width: 60%;
 }
-
-

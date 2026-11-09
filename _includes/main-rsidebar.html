@@ -1,4 +1,11 @@
 <div class="row rsidebar-content">
+	<div id="rsidebar-float" class="rsidebar-float">
+		<div class="rsidebar-tabs" role="tablist">
+			<button type="button" class="rsidebar-tab is-active" data-panel="aside" role="tab" aria-selected="true">关于</button>
+			<button type="button" class="rsidebar-tab rsidebar-tab-toc" data-panel="toc" role="tab" aria-selected="false">目录</button>
+		</div>
+		<div class="rsidebar-panels">
+			<div id="rsidebar-aside" class="rsidebar-panel is-active" data-panel="aside" role="tabpanel">
 
 	<div class="col-xs-12 rsidebar-element searchbar">
 		<form action="https://www.google.com/search" class="searchform" method="get" name="searchform" target="_blank">
@@ -10,13 +17,10 @@
 			</div>
 		</div>
 		</form>
-	</div>
-	<div class="col-xs-12 rsidebar-element searchbar">
-<script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=9223757389429746735' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>
+		<script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=9223757389429746735' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>
 	</div>
 
-
-	<div class="col-xs-12 rsidebar-element">
+	<!--<div class="col-xs-12 rsidebar-element">
 		<span><a target="_blank" href="/prog/">编程基础</a></span>&nbsp;
 		<span><a target="_blank" href="/soft/">系统基础</a></span>&nbsp;
 		<span><a target="_blank" href="/note/">关注跟踪</a></span>&nbsp;
@@ -29,7 +33,7 @@
 		<span><a target="" href="/tags/blockchain.html">超级账本</a></span>&nbsp;
 		<br>
 		<br>
-	</div>
+	</div>-->
 
 	<!--div class="col-xs-12 rsidebar-element">
 		<a href="/img/ercode/course-online.jpeg"><img src="/img/ercode/course-online.jpeg"></img></a>
@@ -114,4 +118,8 @@
 	</script>
 	</div-->
 
+			</div>
+			<div id="rsidebar-toc" class="rsidebar-panel" data-panel="toc" role="tabpanel"></div>
+		</div>
+	</div>
 </div>
