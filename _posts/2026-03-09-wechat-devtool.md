@@ -28,7 +28,6 @@ firebase 在国内用不了，需要找个国内的平替。尝试用微信小�
 
 还没有解决的问题(多端应用是个成熟方案么，有点疑虑了)：
 
-* 接入 apple 登录时，多端应用后台保存 apple key 弹系统错误
 * 微信小程序升级为多端应用后，虚拟支付接口出错：requestVirtualPayment: fail createOperateWXData: fail SDK 暂不支持 operateWXData API。如果不能直接复用小程序里的购买代码，用的多端应用意义似乎不大了
 
 ## 小程序转换成多端应用
@@ -205,39 +204,23 @@ Configurator 安装完成后，就可以在 iphone 上使用刚安装的 app。
 
 ![idaas-sdk]({{ site.article }}/idaas-sdk.png)
 
+### 配置 ios 应用的 info.plist
+
+多端应用中可以指定 [iOS 应用 info.plist 内配置][49]，project.minapp.json->mini-ios->customInfoPlist 中的内容在构建时应用于 ios 项目的 info.plist。
+
+```bash
+"mini-ios": {
+  "customInfoPlist": {          # 需要在 json 模式下直接编写
+    "MinimumOSVersion": "15.0"  # ios最低适配版本
+    "ITSAppUsesNonExemptEncryption": false  # 声明没有使用例外的加密算法
+  },
+```
+
 ### android 版本构建、部署、发布
 
 开发阶段，直接在开发者工具中选择目标 andorid 设备，然后点运行即可。
 
 对外发布时，构建->打包生成 APK，确认签署证书，然后点确定即可。
-
-## 多端应用的远程调试
-
-在 project.miniapp.json 中启用 Network SDK，然后构建的时候选择：开发版（远程调试）。
-
-## 多端应用的云开发初始化和配置
-
-如果使用了微信云开发，升级为多端应用后，需要进行一些细微调整：[多端应用使用微信云开发][16]
-
-**cloud.init 中指定对应的小程序 appid**
-
-如果不指定，开发者工具控制台会报错误信息：“多端模式下使用云开发，wx.cloud.init 需要传入 appid, 具体可参考文档 https://dev.weixin.qq.com/docs/framework/dev/cloud”。
-
-```js
-   wx.cloud.init({
-      ...
-      appid: 'xxx' //对应小程序的appid
-    });
-```
-
-**如果使用了云函数，需配置函数访问权限**
-
-如果存在不需要登录就可以访问的云函数，需要额外配置云函数权限：([多端应用使用微信云开发][16])
-否则请求云函数时会报错错误信息，“cloud.callFunction:fail Error: errCode: -501023 permission denied | errMsg: Unauthenticated access is denied 更多错误信息请访问：https://docs.cloudbase.net/error-code/basic/PERMISSION_DENIED ”
-
-1. 在云开发环境的设置中将云函数设置为允许未登陆用户访问
-2. 然后再到云函数权限中修改自定义规则，允许匿名调用
-
 
 ## 多端应用接入小程序登录
 
@@ -256,19 +239,17 @@ Configurator 安装完成后，就可以在 iphone 上使用刚安装的 app。
 
 最后一步跳转到网页 [Donut控制台][26]（不知道这又是个啥控制台），按页面提示输入就可以了。回到开发者工具会看到提示配置已经完成。 app.json 和 app.miniapp.json 中多出下面的配置：
 
-```json
-//app.json
-
+```bash
+# app.json
 "miniApp": {
-  "useAuthorizePage": true    //把小程序授权页内置到小程序中（不占用小程序代码包大小）
+  "useAuthorizePage": true    # 把小程序授权页内置到小程序中（不占用小程序代码包大小）
 }
 
-//app.miniapp.json
-
+#app.miniapp.json
 "identityServiceConfig": {
-  "authorizeMiniprogramType": 1,         //小程序版本，1开发版，2体验版，0正式版，
-  "miniprogramLoginPath": "__default__", //__defalut__是donut内置的登录页，可以更换为自定义页面
-  "adaptWxLogin": true                   //将 wx.login 适配为 wx.getMiniProgramCode
+  "authorizeMiniprogramType": 1,         #小程序版本，1开发版，2体验版，0正式版，
+  "miniprogramLoginPath": "__default__", #__defalut__是donut内置的登录页，可以更换为自定义页面
+  "adaptWxLogin": true                   #将 wx.login 适配为 wx.getMiniProgramCode
 }
 ```
 
@@ -351,28 +332,22 @@ Configurator 安装完成后，就可以在 iphone 上使用刚安装的 app。
 * 在苹果开发者后台的 Keys 中，新建一个启用 Sing in with Apple 并绑定了多端应用 appid 的 key
 * 在微信开发者平台，多端应用->身份管理->Apple登录中，填入刚创建的 key
 
-按照文档操作最后保存的报错，这个问题25年就有人遇到了，等解决方案。[https://developers.weixin.qq.com/community/develop/doc/000acae6688768f87f3498f9866000?highLine=Apple%25E7%2599%25BB%25E5%25BD%2595](https://developers.weixin.qq.com/community/develop/doc/000acae6688768f87f3498f9866000?highLine=Apple%25E7%2599%25BB%25E5%25BD%2595)
+按照文档操作保存apple登录配置时曾遇到[错误][41]，也不知道是咋回事，社区发帖体温也没反应，大概三四天重试又可以了。
 
-多端应用是不是个试验品啊
+完成上面的配置后，代码里直接用 wx.appleLogin 唤起 apple 登录即可。注意和微信登录一样：
 
-## 多端应用的虚拟支付
+* 服务端必须用 [code2Verifyinfo][12] 校验 code 获得用户信息
+* 要有自行设计一套鉴权机制（可以和微信登录用同样的jwt机制）
 
-升级为多端应用后，虚拟支付好像不能用了，虚拟支付的接口似乎没有适配多端应用。
+## 多端应用使用微信云开发
 
+微信云开发是一个包含云函数、云数据库、云存储等资源的环境，可以用来承接服务端的需求。和 fireabase 有点类似，但主要基于微信生态，配套工具也比 firebase 弱一些，比如本地模拟环境不很完整，但是足够用了。
 
-
-
-## 微信云开发
-
-微信云开发提供了类似 firebase 的云函数、云数据库、云存储等。基础支持都有了，但是工具生态不如 firebase 完整，比如登陆方式就是微信，本地模拟环境不完整（只支持云函数本地运行）。但是也够用了。
-
-微信云开发，通过微信开发者工具右侧的云开发按钮点开管理面板：
+通过微信开发者工具右侧的云开发按钮进入云开发管理面板：
 
 ![打开云开发环境面板]({{ site.article }}/open-cloud-env.png)
 
-### 指定云环境
-
-通过指定不同的云环境进行开发数据、线上数据的隔离。如果当前小程序尚未发布，可以创建一个在开发期免费的云环境。开发期免费的云环境只支持一个。[说明文档](https://developers.weixin.qq.com/miniprogram/dev/wxcloudservice/wxcloud/billing/price.html)
+云开发的基本单位是云环境，启用云开发时必须创建云环境，微信目前提供一个[免费的云环境][42]：
 
 ```bash
 为更好地助力小程序开发者高效开发，云开发推出开发阶段免费体验活动，具体细则如下：
@@ -382,29 +357,163 @@ Configurator 安装完成后，就可以在 iphone 上使用刚安装的 app。
 小程序发布上线后，免费云环境将转为付费环境，在下一云环境续费周期生效。
 具体付费信息将提前通过微信公众平台、腾讯云等渠道下发通知，开发者需留意并自行处理；
 此活动时间截止到 2026 年 12 月 31 日，如有调整将提前 3 个月在微信开放社区及腾讯云官网进行通知。
-
 ```
 
-可以在云开发管理面板中随时切换当前代码的发布、运行环境：
-
-![切换当前代码的运行环境]({{ site.article }}/switch-cloud-env.png)
-
-微信云开发的云环境和腾讯云的 CloudBase 的云环境是直接对应的（微信云开发是构建在腾讯云 CloudBase 之上），所以除了在开发者工具上查看云环境资源情况，还可以登陆腾讯云 [CloudBase][25] 查看：选择微信公众号平台登录，然后微信扫码，选择目标应用。
+此外，微信云开发构建在腾讯云 CloudBase 上，在腾讯云对应账号的 [CloudBase][25] 中也能进行管理操作：
 
 ![选择微信公众平台登陆]({{ site.article }}/tcb-cloud-env-login.png)
 
+### 不同于小程序的注意事项
 
-### 本地调试
+多端应用使用云开发时，有一些不同于小程序的地方，[多端应用使用微信云开发][16]:
 
-目前只支持云函数本地调试，数据库和存储都是在云环境中的，本地调试时，云函数虽然是在本地执行，但是操作的资源还都是云环境中的。
+**cloud.init 中指定对应的小程序 appid**
+
+如果不指定，开发者工具控制台会报错误信息：“多端模式下使用云开发，wx.cloud.init 需要传入 appid, 具体可参考文档 https://dev.weixin.qq.com/docs/framework/dev/cloud”。
+
+```js
+   wx.cloud.init({
+      ...
+      appid: 'xxx' //对应小程序的appid
+    });
+```
+
+**如果使用了云函数，需配置函数访问权限**
+
+如果存在不需要登录就可以访问的云函数，需要额外配置云函数权限：([多端应用使用微信云开发][16])
+否则请求云函数时会报错错误信息，“cloud.callFunction:fail Error: errCode: -501023 permission denied | errMsg: Unauthenticated access is denied 更多错误信息请访问：https://docs.cloudbase.net/error-code/basic/PERMISSION_DENIED ”
+
+1. 在云开发环境的设置中将云函数设置为允许未登陆用户访问
+2. 然后再到云函数权限中修改自定义规则，允许匿名调用
+
+### 启用多个云环境
+
+**使用多个云环境**
+
+一个云开发中可以创建多个云环境，不同云环境之间的资源是隔离的。可以根据自己的需求为开发、测试、线上指定不同的云环境。
+在云开发管理面板中查看不同云环境中的资源：
+
+![切换当前代码的运行环境]({{ site.article }}/switch-cloud-env.png)
+
+存在多个云环境时，需要在代码中需要明确要使用的云环境的，否则会默认选择其中一个，[cloud.init][43]：
+
+```bash
+wx.cloud.init({
+  env: runtime.cloudEnvId,
+  ...
+});
+```
+
+## 多端应用访问 CloudBase 云托管
+
+CloudBase 云托管可以被小程序/多端调用，也能调用相同云环境中的资源：
+
+* [微信小程序访问 CloudBase 云托管][24]：访问微信云开发对应的腾讯云 CloudBase 环境中的云托管
+*  CloudBase 云托管能访问同一个环境中，也就是微信云开发中的数据库/存储等
+
+ CloudBase 云托管访问同环境中的其它资源时，需要配置访问凭证。最简单做法是在控制台配置 api key，然后用 [js sdk][21] 访问。配好后启动的容器的环境变量中会包含 api key，js sdk 能自动读取通过鉴权。
+
+![配置 api 鉴权 ]({{ site.article }}/cloudrun-api-key.png)
+
+ CloudBase 云托管其它参考文档：
+
+* [腾讯云托管使用文档][20]: 是打包成成一个 docker 镜像后部署
+* [js sdk][21]、[js sdk 的服务端接口][22]：云托管中代码访问同环境中其它资源的方法
+
+### 与微信云托管的区别
+
+ CloudBase 云托管和微信云托管是两套系统，前者直接在腾讯云 CloudBase 控制台管理，后者需要通过单独的[微信云托管控制台][19]管理，[云托管的收费方式][18] 中有说明。
+
+```
+  云托管如今在两个不同环境中提供服务：
+  - 微信云托管
+  - 云开发中的云托管
+```
+
+### CloudBase 云托管本地运行
+
+ CloudBase 云托管可以直接在本地运行，本地运行时如果会访问云端资源时，需要配置环境变量：
+
+```bash
+# 从腾讯 CloudBase  云托管实例内部获取
+CLOUDBASE_APIKEY_ID=XXX 
+CLOUDBASE_APIKEY=XXX
+```
+
+## 多端应用的 API 总揽
+
+多端应用的 API 和小程序 API 本质上是同一套 API（同源），只是有的 API 同时支持小程序环境和多端环境下使用，有的只支持小程序环境下使用，有的只支持多端环境下使用。
+
+* 多端应用的中可用的 API：[多端应用 API 总揽][45] 
+* 小程序中可用的 API：[小程序 API][37]
+
+## 多端应用中使用支付
+
+当前（2026/11/3）[虚拟支付][46] 使用的 API 比如 wx.requestVirtualPayment 没有出现在[多端应用的 API 总揽][45]中，在多端应用中是无法使用虚拟支付的，实际测试结果也是不能用，会遇到下面的错误：
+
+![虚拟支付失败]({{ site.article }}/virualpaymentfail.jpg)
+
+多端应用里的购买支付，需要用 [微信支付][46] 或者 [苹果支付][47]
+
+### 使用苹果支付
+
+多端应用将苹果支付的部分原生接口封装成了 API，通过这些 API 拉取在 appstore connect 中配置的商品、发起购买、坚挺交易事件等。[苹果支付][47] 中列出了目前实现的 API。
+
+注意多端应用只是提供了 API 接口的封装，商品信息需要到 appstore connect 中在对应的 app 中设置，参考 [ios 应用内购买](/solo-income/2025/12/22/ios-app-dev.html)。
+
+### 使用微信支付
+
+[多端应用使用微信支付][46]:
+
+* 在微信开放平台已经创建了对应的的移动应用，开通微信支付
+* 按照开通微信支付时的引导，到微信支付网站上创建商户
+
+在微信支付开通商户的时候，需要审批每一个经营场景，比如小程序、app 就是两个场景。申请 app 场景时需要按照 [微信支付商户申请APP支付时的截图标准示范][48] 提供应用截图，文档要求比如主流应用市场上架后才可以。
+
+## 用微信云开发和 CloudBase 提供后端服务
+
+微信云开发提供云函数、数据库、云存储等。其中用于处理服务端逻辑的云函数灵活性较低，比如运行时长、绑定自定义域名等，如果云函数不能满足需求，可以用 CloudBase 云托管。
+
+CloudBase 云托管支持绑定自定义域名，并且可以用于域名备案。
+
+CloudBase 云托管中的代码可以访问微信云开发中的数据库、云存储等，和微信云开发的能力在一个体系中。
+
+
+### 云函数调用 CloudBase 云托管
+
+微信云函数可以访问 CloudBase 云托管，但是 [wx-server-sdk][50] 里目前没有 callContainier 方法(2026/11/09)，需要用 CloudBase 的 [js sdk][22]。
+在微信云函数环境中，不需要特殊配置，[js sdk][22] 可以直接同一个账户名下的不同环境中的 CloudBase 云托管。
+
+```bash
+const cloudbase = require("@cloudbase/js-sdk");
+jsApp = cloudbase.init({env: ENVID});  //ENVID如果为空表示当前在同环境内访问，可以配置为其他的环境
+jsApp.callContainer({
+  name: CLOUD_RUN_SERVICE,
+  method: "GET",
+  path: "/health",
+  header: {
+    "Content-Type": "application/json",
+  }
+```
+
+## 开发工具以及辅助功能
+
+### 多端应用的远程调试
+
+在 project.miniapp.json 中启用 Network SDK，然后构建的时候选择：开发版（远程调试）。
+
+### 云函数本地调试
+
+云开发中的云函数支持本地调试，只有云函数代码在本地运行，数据库和存储等不支持本地。
 
 * 在云函数目录上点击右键，然后选择开启本地调试
+
 
 ### CloudBase-MCP 
 
 腾讯的 CloudBase 提供 MCP：[CloudBase-MCP](https://github.com/TencentCloudBase/CloudBase-MCP?tab=readme-ov-file)。在 cursor 配置 mcp 之后，可以直接通过对话方式创建数据库、云函数上传等等。
 
-```json
+```bash
 {
   "mcpServers": {
     "cloudbase": {
@@ -421,75 +530,6 @@ CloudBase-MCP 提供给 AI 的是操作腾讯云中的云环境的方法，而�
 [小程序自动化][14]：微信官方提供的一个可以连接模拟器中小程序、模拟操作以及提取页面元素的 sdk。可以用它来编写 e2e 自动化测试。
 
 [录制回放][15]: 将操作过程录制下来，然后可以进行回放测试。
-
-## 腾讯云托管解决云函数最长60s的问题
-
-微信云函数使用的腾讯云函数实际支持执行900秒的，但是微信云开发的配置最大只能配置到60秒，微信云函数每次执行如果超过 60s会被直接终结。如果一个接口的处理耗时超过 60s，可以把这接口部署到腾讯云托管。
-
-微信云开发、微信云托管、腾讯云开发、腾讯云托管的关系如下：
-
-* 微信提供的服务：微信云开发、微信云托管，这两个中间没有关系，是两个独立服务。
-* 腾讯云提供服务：腾讯云开发，其中包含腾讯云托管形态
-* 微信云开发：对腾讯云开发的封装，一个微信云开发环境对应一个腾讯云开发环境，可以直接登录到底层腾讯云开发控制台进行操作（扫码登录）
-* 微信云托管：底层也使用了腾讯云的服务，但是在一个单独环境中，腾讯云开发控制台看不到微信云托管的资源，只能在[微信云托管控制台][19]操作。
-
-腾讯的[云托管的收费方式][18] 中提到：
-
-```
-  云托管如今在两个不同环境中提供服务：
-  - 微信云托管
-  - 云开发中的云托管
-```
-有点搞不懂微信是怎么想的，怎么搞了一个和微信云开发、腾讯云开发都独立的微信云托管。在应用没有太多访问量早期，用微信云开发实现低耗时接口，然后用腾讯云托管实现高耗时接口比较合适。因为这样就可以在腾讯云开发的控制台中同时管理所有用到资源，资源之间也能互通。
-
-### 腾讯云托管访问微信云开发资源
-
-直接在腾讯云开发中创建，可以通过模版创建，也可以直接配置代码库通过代码库创建
-
-* [腾讯云托管使用文档][20]: 本质就是打包成成一个 docker 镜像。
-
-腾讯云托管能够访问对应的微信云开发资源，使用腾讯云提供的 [js sdk][21]，可以在客户端使用也可以在服务端使用（[js sdk 的服务端接口][22])。这套 sdk 自动从环境变量读取 api key 用于鉴权。
-
-最简单的鉴权配置方式：在腾讯云托管控制台配置 api key。配置完成之后，云托管启动的容器的环境变量中会包含 api key，js sdk 自动读取，不需要在代码里指定。
-
-![配置 api 鉴权 ]({{ site.article }}/cloudrun-api-key.png)
-
-
-本地开发环境配置下面的变量以后（从腾讯云托管实例内部获取，控制台只能在首次创建时获得Key的内容），本地能直接访问：
-
-```bash
-CLOUDBASE_APIKEY_ID=XXX 
-CLOUDBASE_APIKEY=XXX
-```
-
-### 从微信云函数调用腾讯云托管接口
-
-腾讯云函数应该是可以使用 [js sdk][22] 访问腾讯云托管接口的，但是在实测中发现微信开发者工具的本地 node 环境和 js sdk 似乎存在不匹配，存在 fetch is not defined 的问题，已经被宣布不再维护的 [node sdk][23] 反而可以工作。
-
-而 node sdk 也有一个奇怪的地方，它发出请求时在 path 中增加了一个前缀（目标托管服务的名称），此外腾讯云函数中通过 node sdk 发送的请求不会包含微信鉴权相关的信息。
-
-### 从微信小程序调用腾云托管接口
-
-这个是腾讯云托管直接支持的：[微信小程序调用腾讯云托管][24]。
-
-## 腾讯云的 CloudBase（放弃）
-
-腾讯云的 CloudBase（下称 tcb） 从设计上看是最能对标 firebase 的，多种登陆注册方式、云函数、文档数据库等等。现在只有上海区可用，免费计划可以使用 6 个月。
-
-它的 apple 账号原生登陆我没有调通。
-
->apple 规定如果 app 使用了第三方登陆那么必须支持 apple 账号的原生登陆，所以这个支持很重要。
-
-tcb 的文档上写的是支持第三方令牌登陆（[auth.signInWithIdToken][3]），但是我把 apple 原生登陆获得的 token 传入后，总是返回 kid not found。apple 原生方式生成的token 是用 Apple 官方的密钥签署的， jwt token 中的 kid 明明就在 appple 公布的证书列表汇总。不知道 tcb 怎么会找不到。
-
-tcb 后台中开启apple 账号登陆配置中，要求传入 client id 等。这些按理是在非 apple 原生登陆方式时才需要的。按照 [tcb Apple 登录][2] 中进行配置以后，使用 apple 令牌登陆还是不行。tcb 后台还有一个 web 登陆页，我试了一下也不通。
-
-微信登陆，需要先去微信开放平台注册并完成认证。微信开放平台又不支持个人认证，而且认证一次 300元，每年都要重新认证一下。没有尝试
-
-直接放弃了，不在这浪费时间。
-
->其实微信云开发使用的就是 CloudBase，微信云开发包装的更好用了，直接就能用微信小程序/微信登陆。
-
 
 ## 参考
 
@@ -518,7 +558,7 @@ tcb 后台中开启apple 账号登陆配置中，要求传入 client id 等。�
 [19]: https://cloud.weixin.qq.com/cloudrun/console "微信云托管控制台"
 [20]: https://docs.cloudbase.net/run/quick-start/introduce "腾讯云托管使用文档"
 [21]: https://docs.cloudbase.net/api-reference/webv3/initialization "js sdk"
-[22]: https://docs.cloudbase.net/api-reference/webv3/server "js sdk 服务端接口"
+[22]: https://docs.cloudbase.net/api-reference/webv3/initialization "js sdk 服务端接口"
 [23]: https://docs.cloudbase.net/api-reference/server/node-sdk/cloudrun "node sdk"
 [24]: https://docs.cloudbase.net/run/develop/access/mini "微信小程序调用腾讯云托管"
 [25]: https://tcb.cloud.tencent.com/ "https://tcb.cloud.tencent.com/"
@@ -536,3 +576,14 @@ tcb 后台中开启apple 账号登陆配置中，要求传入 client id 等。�
 [37]: https://developers.weixin.qq.com/miniprogram/dev/api/ "微信小程序 API"
 [38]: https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/miniapp/new-capability/cloud/cloud.html "多端应用使用云开发"
 [39]: https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/miniapp/api/auth/wx.appleLogin.html "多端应用接入 Apple 登录"
+[40]: https://developers.weixin.qq.com/miniprogram/dev/wxcloudservice/wxcloudrun/src/practice/call.html "wx.cloud.callContainer 技术原理和使用指南"
+[41]: https://developers.weixin.qq.com/community/develop/doc/000acae6688768f87f3498f9866000?highLine=Apple%25E7%2599%25BB%25E5%25BD%2595 "apple登录配置错误"
+[42]: https://developers.weixin.qq.com/miniprogram/dev/wxcloudservice/wxcloud/billing/price.html "小程序免费云环境"
+[43]: https://developers.weixin.qq.com/miniprogram/dev/wxcloudservice/wxcloud/reference-sdk-api/Cloud.init.html "cloud.init"
+[44]: https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/miniapp/api/total.html "多端应用 API 总揽"
+[45]: https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/business-capabilities/virtual-payment.html "微信小程序虚拟支付"
+[46]: https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/miniapp/api/miniapp/requestPayment.html "多端应用使用微信支付"
+[47]: https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/miniapp/api/miniapp/IAP.html "多端应用使用苹果支付"
+[48]: https://kf.qq.com/faq/161226bymQ3y161226yQbmQv.html "微信支付商户申请APP支付时的截图标准示范"
+[49]: https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/miniapp/pre-read/config.html#%E5%8D%81%E4%BA%94%E3%80%81iOS-%E5%BA%94%E7%94%A8%E9%85%8D%E7%BD%AE%EF%BC%88info-plist-%E7%9B%B8%E5%85%B3%EF%BC%89 "iOS 应用配置（info.plist 相关）"
+[50]: https://developers.weixin.qq.com/miniprogram/dev/wxcloudservice/wxcloud/guide/functions/wx-server-sdk.html "wx-server-sdk"

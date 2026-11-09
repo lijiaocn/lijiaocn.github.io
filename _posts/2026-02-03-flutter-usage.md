@@ -79,6 +79,12 @@ shfit + cmd + p， 输入 flutter，选择 flutter: New Project
 * android 项目文件：./android
 * ios 项目文件: ./ios/Runner.xcodeproj
 
+## 设置 bundle name 
+
+flutter 项目创建后，就为 ios/android 设置了默认的 bundle id 和 package name，通常不符合我们需要，需要修改。
+
+* 方法 1：可以分别到 xcode 和 android studio 修改
+
 ### flutter 接入腾讯 tcb 微信登录
 
 腾讯云的 CloudBase 支持多种第三方登录方式，flutter 项目可以直接用 [CloudBase Flutter SDK][3] 完成接入。
@@ -87,7 +93,6 @@ shfit + cmd + p， 输入 flutter，选择 flutter: New Project
 
 * 在微信开放平台中注册移动应用，配置应用包名和签名，并开启微信登陆（账号认证后才可以开通，认证费用300）
 * 在腾讯的 cloudbase 中开启微信开放平台登陆，配置移动应用的 appid 和 secret
-
 
 
 ## 打包发布
@@ -106,7 +111,7 @@ shfit + cmd + p， 输入 flutter，选择 flutter: New Project
 
 #### android 上传证书设置
 
-andorid/app/build.gradle.kts 中为默认为 release 指定的 debug 证书签名，需要生成一个上传密钥，然后构建出的 bundle 文件才能被 google play 接受。
+andorid/app/build.gradle.kts 中默认为 release 指定 debug 证书签名，需要生成一个上传密钥，然后构建出的 bundle 文件才能被 google play 接受。
 
 andorid/app/build.gradle.kts 中默认用的是 debug：
 ```bash

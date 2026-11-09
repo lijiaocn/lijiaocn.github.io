@@ -232,17 +232,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
 ## 应用内购买
 
-### 开发环境的本地商品
+### 签署协议、登记银行账号
 
-开发阶段可以直接使用本地模拟商品，点击 File-> File From Template 选择 StoreKit Configuration File，然后在选择一个位置创建文件。这个文件的实际存放位置可以位于 ios 项目目录之外，xcode 中会自动创建引用。然后在 Xcode 中点击新创建的 config 文件，可以用图形界面下，点击左下角的 + 号，手动添加商品 (创建文件的时候不要勾选自动同步)。
-
-然后在 scheme -> Run -> Option 中启用 Storekit Configuration 选中创建的配置文件，然后就可以在本地环境下直接查询展示购买商品。
-
-* 注意正式打包的时候需要去掉，否则正式 app 就是无法购买。可以创建两个 scheme 一个用于本地开发，一个用于发布。
-
-### 生产环境的本地商品
-
-首先需要提供资料以及完成一系列协议签署，否则即使创建了商品， ios 端也获取不到：
+开发者账号需要完成一系列协议签署，否则即使创建了内购商品，ios 端也获取不到：
 
 * 在 appstoreconnect->商务 中签署付费 App 协议，
 * 如果要在欧洲地区分发，需要签署数字服务法，需要提供地址证明
@@ -250,29 +242,41 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 * 添加银行账号
 * 提交报税表
 
-在 appstore connect 中配置，在目标应用左侧的 app 内购买项目中创建商品。填充需要的信息，是商品状态变成准备提交状态。注意本地化也是必须设置的，否则会提示元数据缺失，可以先只设置主区域的本地化。
+### 本地模拟商品 
 
-然后还需要创建沙盒账号，只有沙盒账号才可以访问草稿状态的商品。沙盒账号需要使用真实的有效，否则在设备上添加沙盒账号时会收不到验证码。可以使用 gmail 的 「账号+后缀@gmail.com」邮箱，一个账号可以模拟出多个邮箱，比如 xxx+bbb@gamil.com，将会发送到 xxx@gmail.com。
+开发阶段可以直接使用本地模拟商品，点击 File-> File From Template 选择 StoreKit Configuration File，然后在选择一个位置创建文件。这个文件的实际存放位置可以位于 ios 项目目录之外，xcode 中会自动创建引用。然后在 Xcode 中点击新创建的 config 文件，可以用图形界面下，点击左下角的 + 号，手动添加商品 (创建文件的时候不要勾选自动同步)。
 
-* 在 用户和访问->沙盒 中创建沙盒账号。
-* 在手机上添加沙盒账号：设置->开发者->沙盒账号。
+然后在 scheme -> Run -> Option 中启用 Storekit Configuration 选中创建的配置文件，然后就可以在本地环境下直接查询展示购买商品。
+
+* 注意正式打包的时候需要去掉，否则正式 app 无法购买。可以创建两个 scheme 一个用于本地开发，一个用于发布。
+
+### 云端正式商品
+
+在 appstore connect 中配置，在目标应用左侧的 app 内购买项目中创建商品。填充需要的信息，使商品状态变成准备提交状态。注意本地化也是必须设置的，否则会提示元数据缺失，可以先只设置主区域的本地化。
+
+然后还需要创建沙盒账号，只有沙盒账号才可以访问草稿状态的商品。沙盒账号需要使用真实的邮箱，否则在设备上添加沙盒账号时会收不到验证码。可以使用 gmail 的 「账号+后缀@gmail.com」邮箱，一个账号可以模拟出多个邮箱，比如 xxx+bbb@gamil.com，将会发送到 xxx@gmail.com。
+
+* 开发者创建沙盒账号：用户和访问->沙盒
+* 手机上添加沙盒账号：设置->开发者->沙盒账号。
 
 如果先创建的商品后签署协议，可能存在一定的同步延迟，最多可能需要等 24 小时。能够看到商品列表后，就可以在手机上直接购买，支付页面下方会显示只是测试。
 
 ### 购买过程处理
 
-apple 的应用内购买是先买后验模式:
+Apple 支付是先买后验模式，用户在先发起支付，客户端代码在用户支付成功后，再调用应用服务端完成订单创建以及履约等。与之对比，微信等支付方式采用的是服务端回调的方式，客户端先请求应用服务端创建订单，然后再唤起微信支付，微信支付服务通过回调应用服务端告知订单支付状态。
 
-* 用户在 ios 端完成购买后，app 里需要有一段代码把订单 ID 发送到服务端
-* 服务端调用 appstore 的接口获取订单信息，验证订单，完成相应的商品处理
-* apple 提供了用于请求的官方库 @apple/app-store-server-library，调用的时候需要设置密钥（密钥在 appstore connect 中创建）
-* 需要在 appstore connect 配置退款时的回调 url，回调 url 的处理逻辑中需要用 apple 公钥进行校验
+Apple 支付的先付款后履约方式：
 
-密钥创建操作：用户和访问->集成。
+* 用户在 ios 端点击购买时，立即进入 apple 支付页面完成支付
+* 客户端监听到用户支付结果时，将 apple 返回的交易 id 发送到应用服务端
+* 应用的服务端收到交易 id 后，通过 appstore 的接口获取交易详情，将履约结果返回客户端
+* 客户端根据应用服务端返回结果，确认交易完成或者取消交易
 
-apple 根证书下载：[https://www.apple.com/certificat](https://www.apple.com/certificat)
+服务端可以使用 apple 的官方库 @apple/app-store-server-library。调用的时候需要设置密钥，密钥在 appstore connect 中创建：用户和访问->集成。安全起见，使用的密钥不要写在代码中，放到 secret manager 中，firebase 支持和 gcloud secret manager 联通。
 
-安全起见，使用的密钥不要写在代码中，放到 secret manager 中， firebase 支持和 gcloud  secret manager 联通。
+此外，appstore connect 提供通知回调功能，支付退款等事件都会发送到 appstore connect 中配置的 url。appstore 回调时使用 https 请求端证书，应用服务端用 apple 公钥进行校验（拒绝非 apple 发送的请求）：
+
+* apple 根证书下载：[https://www.apple.com/certificat](https://www.apple.com/certificat)
 
 ## 国内备案
 
