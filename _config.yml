@@ -19,6 +19,8 @@ plugins:
   - jekyll-feed
   - jekyll-last-modified-at
 baseurl:
+# 本地 CSS/JS 缓存版本，改样式或脚本后递增此值
+asset_version: "20261109"
 imgurl:  
 imglocal: /img
 article: /img/article
