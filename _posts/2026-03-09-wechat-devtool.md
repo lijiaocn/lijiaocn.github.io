@@ -15,7 +15,7 @@ description: firebase 太好用了，唯一的问题就是在国内用不了，�
 
 ## 背景
 
-firebase 在国内用不了，需要找个国内的平替。尝试用微信小程序的多端应用+微信云开发平替 flutter 和 firebase。
+firebase 在国内用不了，需要找个国内的平替，微信的多端应用+微信云开发似乎可以。
 
 * [小程序多端框架概述][4] 能把小程序直接转成 ios/android/鸿蒙应用，支持微信登陆和 apple 原生登陆。
 * 微信云开发底层就是腾讯云的 cloudbase
@@ -155,17 +155,19 @@ APP=$(find Payload -maxdepth 2 -name '*.app' -type d | head -1)
 codesign -d --extract-certificates "$APP"
 
 #可能会得到多个证书文件，codesign0 通常是最后的签名证书，从中提取公钥和指纹：
-
-# 证书公钥
-openssl x509 -inform DER -in codesign0 -pubkey -noout
-# 证书 SHA-1 指纹
-openssl x509 -inform DER -in codesign0 -noout -fingerprint -sha1
 ```
 
 微信开发者工具通过 api 创建的发布证书是可以下载的。Distribution Managed 类型证书是托管在 Apple 云端的证书，没有下载途径，xcode 的自动签署使用的是此类证书。而微信开发者工具构建 ios 版本时，使用的常规的 Distribution 证书，可以从 apple 开发者后台下载。
 
 ![苹果开发者发布证书]({{ site.article }}/apple-dev-certs.png)
 
+解析出来的证书和下载的证书都是 DER 格式，用下面的的命令获得公钥和指纹：
+
+```bash
+openssl x509 -inform DER -in codesign0 -pubkey -noout
+# 证书 SHA-1 指纹
+openssl x509 -inform DER -in codesign0 -noout -fingerprint -sha1
+```
 
 ## 多端应用的构建和发布
 
@@ -190,7 +192,7 @@ Configurator 安装完成后，就可以在 iphone 上使用刚安装的 app。
 
 正式版的 ipk 文件发布到的 appstore 
 
-**get valid profile fail **
+**get valid profile fail**
 
 构建 iOS 版本构建时，勾选证书自动管理可能遇到下面的问题:
 

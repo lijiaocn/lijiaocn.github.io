@@ -1,5 +1,5 @@
 ul#markdown-toc ul, ul#markdown-toc li{
-    font-size: 15px;
+    font-size: 14px;
     padding-top: 5px;
     padding-bottom: 0px;
     padding-right: 0px;
@@ -32,7 +32,7 @@ ul#markdown-toc ul, ul#markdown-toc li{
     border: none;
     background: #eff0f1;
     color: #1f2329;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: bold;
     cursor: pointer;
     outline: none;
@@ -95,7 +95,7 @@ ul#markdown-toc ul, ul#markdown-toc li{
 
 #rsidebar-toc #markdown-toc li {
     font-size: 13px;
-    line-height: 1.55;
+    line-height: 1.6;
     padding-top: 3px;
     padding-bottom: 3px;
     padding-right: 0;
@@ -125,6 +125,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] {
     padding-left:0px;
     padding-top:0px;
     font-family:"宋体", "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-size: 16px;
     -ms-overflow-style: scrollbar;
     color: #333333;
     -webkit-font-smoothing: antialiased;
@@ -147,8 +148,19 @@ td,th{
     margin-bottom: 0px;
 }
 
+.topnav .navbar-brand,
+.topnav .navbar-brand a {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.topnav .navbar-nav > li > a {
+    font-size: 14px;
+}
+
 .noticerow {
     text-align: center;
+    font-size: 13px;
 }
 
 .main {
@@ -165,6 +177,7 @@ td,th{
     padding-top:10px;
     text-align:center;
     background-color: #5a5a5a;
+    font-size: 13px;
 }
 
 .lsidebar {
@@ -205,7 +218,7 @@ td,th{
 }
 
 .rsidebar-element {
-
+    font-size: 13px;
 }
 
 .rsidebar-element li{
@@ -213,6 +226,8 @@ td,th{
 	white-space:nowrap;
 	text-overflow:ellipsis;
 	overflow:hidden;
+    font-size: 13px;
+    line-height: 1.7;
 }
 
 div.rsidebar-element img{
@@ -241,6 +256,7 @@ div.rsidebar-element img{
     padding:2px;
     margin:2px 0 2px 0;
     text-align: center;
+    font-size: 13px;
 }
 
 .postlist {
@@ -274,6 +290,10 @@ div.lsidebar li {
     display:block;
 }
 
+div.lsidebar {
+    font-size: 13px;
+}
+
 div.lsidebar span {
     display: block;
     float: left;
@@ -282,12 +302,23 @@ div.lsidebar span {
 div.center table{
     background-color: #000000;
     color: #cfcfcf;
+    font-size: 14px;
 }
 
 div.center .author {
     font-size:13px;
     text-align:center;
     color: #888888;
+}
+
+.row.content > h1,
+div.content > h1 {
+    font-size: 28px;
+    font-family: "思源黑体", "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-weight: bold;
+    text-align: center;
+    line-height: 1.35;
+    margin: 12px 0 16px;
 }
 
 
@@ -299,14 +330,15 @@ div.center ol {
 }
 
 div.center ol li{
-    font-size: 15px;
+    font-size: 16px;
     padding-top: 5px;
     padding-bottom: 5px;
     padding-right: 5px;
+    line-height: 1.75;
 }
 
 div.center ol li p{
-    font-size: 15px;
+    font-size: 16px;
 }
 
 div.center ul{
@@ -321,14 +353,15 @@ div.center ul {
 }
 
 div.center ul li{
-    font-size: 15px;
+    font-size: 16px;
     padding-top: 5px;
     padding-bottom: 5px;
     padding-right: 5px;
+    line-height: 1.75;
 }
 
 div.center ul li p{
-    font-size: 15px;
+    font-size: 16px;
 }
 
 #markdown-toc ul{
@@ -352,18 +385,18 @@ div.center img {
 }
 
 div.center h1 {
-    font-size:30px;
+    font-size:28px;
     font-family: "思源黑体", "PingFang SC", "Microsoft YaHei", sans-serif;
     font-weight:bold;
     text-align:center;
-    line-height: 1.4;
+    line-height: 1.35;
     margin: 12px 0 16px;
 }
 
 div.center h2 {
     border-left: 6px solid #00a67c;
     border-bottom: 1px solid #00a67c;
-    font-size:24px;
+    font-size:22px;
     font-family: "思源黑体", "PingFang SC", "Microsoft YaHei", sans-serif;
     padding: 8px 10px;
     margin: 28px 0 14px;
@@ -373,7 +406,7 @@ div.center h2 {
 div.center h3 {
     border-left: 6px solid #00a67c;
     border-bottom: 1px solid #00a67c;
-    font-size:22px;
+    font-size:19px;
     font-family: "思源黑体", "PingFang SC", "Microsoft YaHei", sans-serif;
     padding: 8px 10px;
     margin: 24px 0 12px;
@@ -383,7 +416,7 @@ div.center h3 {
 div.center h4 {
     border-left: 6px solid #00a67c;
     border-bottom: 1px solid #00a67c;
-    font-size:18px;
+    font-size:17px;
     font-family: "思源黑体", "PingFang SC", "Microsoft YaHei", sans-serif;
     padding: 8px 10px;
     margin: 20px 0 10px;
@@ -409,16 +442,20 @@ div.center h6 {
 
 div.center pre {
     font-family: Inconsolata, Consolas, "DEJA VU SANS MONO", "DROID SANS MONO", Proggy, monospace;
-    font-size: 90%;
+    font-size: 13px;
     border: solid 0px lightgrey;
     background-color: #000000;
     color: #ffffff;
     padding: 12px 14px;
-    line-height: 1.45;
+    line-height: 1.5;
     -webkit-overflow-scrolling:touch;
     word-wrap: normal;
     overflow: auto;
     border-radius: 4px;
+}
+
+div.center code {
+    font-size: 0.9em;
 }
 
 div.center pre code {
@@ -436,14 +473,16 @@ div.center a:hover {
 }
 
 div.postlist p {
-    line-height:140%;
+    line-height:1.5;
     padding-top:5px;
-    padding-left:0px
+    padding-left:0px;
+    font-size: 14px;
 }
 
 div.postlist h2 {
-    font-size:20px;
-    font-family: "宋体", "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-size:18px;
+    font-family: "思源黑体", "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-weight: bold;
     background-color: white;
     border: none;
     padding: 0;
@@ -451,24 +490,23 @@ div.postlist h2 {
 }
 
 div.postinfo p {
-    font-size:13px;
+    font-size:12px;
     padding-top:0px;
-    padding-left:3px
+    padding-left:3px;
+    color: #888;
 }
 
 div.postdesc a {
-    font-size:15px;
+    font-size:14px;
     padding-top:0px;
     padding-left:1px;
     color: #888;
 }
 
-div.mainbottomleft h2 {
-    text-align:center;
-}
-
+div.mainbottomleft h2,
 div.mainbottomright h2 {
     text-align:center;
+    font-size: 16px;
 }
 
 div.rsidebar img {
@@ -516,6 +554,22 @@ div.rsidebar-title p {
     }
     div.center img {
         max-width: 100%;
+    }
+    .row.content > h1,
+    div.content > h1,
+    div.center h1 {
+        font-size: 24px;
+    }
+    div.center h2 {
+        font-size: 20px;
+    }
+    div.center h3 {
+        font-size: 18px;
+    }
+    div.center p,
+    div.center ol li,
+    div.center ul li {
+        font-size: 15px;
     }
 }
 /*百度搜索框*/
