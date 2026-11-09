@@ -1,4 +1,4 @@
-/* 右侧栏：目录 + 关于整合浮动；高度按视口剩余空间算，内部可滚完整个目录 */
+/* 右侧栏一开始即吸顶；目录随滚动高亮当前章节 */
 (function () {
   function ready(fn) {
     if (document.readyState !== 'loading') fn();
@@ -23,15 +23,22 @@
       }
     }
 
-    var pinOffset = 12;
+    var topGap = 12;
     var bottomGap = 16;
     var placeholder = null;
-    var affixed = false;
     var hasToc = !!toc;
-    var alignMargin = 0;
+    var tocLinks = [];
+    var spyOffset = 80;
+    var activeLink = null;
 
     function isDesktop() {
       return window.matchMedia('(min-width: 992px)').matches;
+    }
+
+    function getPinTop() {
+      var nav = document.querySelector('.topnav') || document.querySelector('.navbar');
+      var navH = nav ? Math.round(nav.getBoundingClientRect().height) : 50;
+      return navH + topGap;
     }
 
     function switchTab(name) {
@@ -53,119 +60,97 @@
       switchTab(btn.getAttribute('data-panel'));
     });
 
-    function findContentColumn() {
-      var sidebar = floatBox.closest('.rsidebar');
-      if (!sidebar || !sidebar.parentElement) return null;
-      var kids = sidebar.parentElement.children;
-      for (var i = 0; i < kids.length; i++) {
-        if (kids[i] !== sidebar && /col-/.test(kids[i].className || '')) {
-          return kids[i];
-        }
-      }
-      return null;
-    }
-
-    function findFirstBodyHeading(contentCol) {
-      var headings = contentCol.querySelectorAll('h1, h2, h3, h4, h5, h6');
-      for (var i = 0; i < headings.length; i++) {
-        var h = headings[i];
-        var style = window.getComputedStyle(h);
-        if (style.display === 'none' || style.visibility === 'hidden') continue;
-        if (/^目录$/.test((h.textContent || '').trim())) continue;
-        return h;
-      }
-      return null;
-    }
-
-    // 高度 = 视口底部到面板顶边的剩余空间，保证内部滚动能看完目录
-    function syncMaxHeight() {
-      if (!isDesktop()) {
-        floatBox.style.maxHeight = '';
-        return;
-      }
-      var top;
-      if (affixed) {
-        top = pinOffset;
-      } else {
-        top = floatBox.getBoundingClientRect().top;
-      }
-      var h = Math.floor(window.innerHeight - top - bottomGap);
+    function syncMaxHeight(pinTop) {
+      var h = Math.floor(window.innerHeight - pinTop - bottomGap);
       if (h < 120) h = 120;
       floatBox.style.maxHeight = h + 'px';
     }
 
-    function alignWithFirstHeading() {
-      alignMargin = 0;
-      floatBox.style.marginTop = '';
-      if (!isDesktop() || affixed) return;
-
-      var contentCol = findContentColumn();
-      if (!contentCol) return;
-      var heading = findFirstBodyHeading(contentCol);
-      if (!heading) return;
-
-      var delta = Math.round(heading.getBoundingClientRect().top - floatBox.getBoundingClientRect().top);
-      if (delta > 0) {
-        alignMargin = delta;
-        floatBox.style.marginTop = delta + 'px';
-      }
-      syncMaxHeight();
-    }
-
-    function clearAffix() {
-      affixed = false;
+    function clearFixed() {
       floatBox.classList.remove('is-fixed');
       floatBox.style.position = '';
       floatBox.style.top = '';
       floatBox.style.left = '';
       floatBox.style.width = '';
+      floatBox.style.maxHeight = '';
       floatBox.style.zIndex = '';
+      floatBox.style.marginTop = '';
       if (placeholder && placeholder.parentNode) {
         placeholder.parentNode.removeChild(placeholder);
       }
       placeholder = null;
-      alignWithFirstHeading();
     }
 
-    function applyAffix(left, width) {
-      if (affixed) return;
-      affixed = true;
-      var marginTop = alignMargin;
-      floatBox.style.marginTop = '';
-      alignMargin = 0;
+    function pinFixed() {
+      var sidebar = floatBox.closest('.rsidebar');
+      if (!sidebar) return;
 
-      placeholder = document.createElement('div');
-      placeholder.id = 'rsidebar-float-placeholder';
-      placeholder.style.height = floatBox.offsetHeight + marginTop + 'px';
-      placeholder.style.width = '100%';
-      floatBox.parentNode.insertBefore(placeholder, floatBox);
+      var pinTop = getPinTop();
+      var rect = sidebar.getBoundingClientRect();
+
+      if (!placeholder) {
+        placeholder = document.createElement('div');
+        placeholder.id = 'rsidebar-float-placeholder';
+        placeholder.style.width = '100%';
+        placeholder.style.height = '1px';
+        floatBox.parentNode.insertBefore(placeholder, floatBox);
+      }
 
       floatBox.classList.add('is-fixed');
       floatBox.style.position = 'fixed';
-      floatBox.style.top = pinOffset + 'px';
-      floatBox.style.left = Math.round(left) + 'px';
-      floatBox.style.width = Math.round(width) + 'px';
+      floatBox.style.top = pinTop + 'px';
+      floatBox.style.left = Math.round(rect.left) + 'px';
+      floatBox.style.width = Math.round(rect.width) + 'px';
       floatBox.style.zIndex = '100';
-      syncMaxHeight();
+      floatBox.style.marginTop = '';
+      syncMaxHeight(pinTop);
     }
 
-    function onScroll() {
-      if (!isDesktop()) return;
+    function collectTocLinks() {
+      tocLinks = [];
+      if (!toc) return;
+      var links = toc.querySelectorAll('a[href^="#"]');
+      for (var i = 0; i < links.length; i++) {
+        var href = links[i].getAttribute('href');
+        if (!href || href === '#') continue;
+        var id = decodeURIComponent(href.slice(1));
+        var target = document.getElementById(id);
+        if (!target) continue;
+        tocLinks.push({ link: links[i], target: target });
+      }
+    }
 
-      if (!affixed) {
-        syncMaxHeight();
-        var rect = floatBox.getBoundingClientRect();
-        if (rect.top <= pinOffset) {
-          applyAffix(rect.left, rect.width);
-        }
-      } else if (placeholder) {
-        var phRect = placeholder.getBoundingClientRect();
-        if (phRect.top > pinOffset) {
-          clearAffix();
-        } else {
-          syncMaxHeight();
+    function setActiveLink(link) {
+      if (activeLink === link) return;
+      if (activeLink) activeLink.classList.remove('is-active');
+      activeLink = link;
+      if (activeLink) {
+        activeLink.classList.add('is-active');
+        var panels = floatBox.querySelector('.rsidebar-panels');
+        if (panels && tocPanel.classList.contains('is-active')) {
+          var linkTop = activeLink.offsetTop;
+          var linkBottom = linkTop + activeLink.offsetHeight;
+          var viewTop = panels.scrollTop;
+          var viewBottom = viewTop + panels.clientHeight;
+          if (linkTop < viewTop + 8) {
+            panels.scrollTop = Math.max(0, linkTop - 8);
+          } else if (linkBottom > viewBottom - 8) {
+            panels.scrollTop = linkBottom - panels.clientHeight + 8;
+          }
         }
       }
+    }
+
+    function updateActiveToc() {
+      if (!tocLinks.length) return;
+      var marker = getPinTop() + spyOffset;
+      var current = tocLinks[0].link;
+      for (var i = 0; i < tocLinks.length; i++) {
+        var top = tocLinks[i].target.getBoundingClientRect().top;
+        if (top <= marker) current = tocLinks[i].link;
+        else break;
+      }
+      setActiveLink(current);
     }
 
     function setupDesktop() {
@@ -176,24 +161,21 @@
         tabsWrap.style.display = '';
         floatBox.classList.remove('no-toc');
         switchTab('aside');
+        collectTocLinks();
       } else {
         tabsWrap.style.display = 'none';
         floatBox.classList.add('no-toc');
         switchTab('aside');
+        tocLinks = [];
       }
-      clearAffix();
       window.requestAnimationFrame(function () {
-        alignWithFirstHeading();
-        syncMaxHeight();
-        onScroll();
+        pinFixed();
+        updateActiveToc();
       });
     }
 
     function setupMobile() {
-      clearAffix();
-      floatBox.style.marginTop = '';
-      floatBox.style.maxHeight = '';
-      alignMargin = 0;
+      clearFixed();
       floatBox.classList.remove('is-desktop', 'no-toc');
       tabsWrap.style.display = 'none';
       switchTab('aside');
@@ -207,6 +189,10 @@
         }
         if (tocHeading) tocHeading.style.display = '';
       }
+      if (activeLink) {
+        activeLink.classList.remove('is-active');
+        activeLink = null;
+      }
     }
 
     function place() {
@@ -215,10 +201,9 @@
     }
 
     place();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', function () {
-      clearAffix();
-      place();
-    });
+    window.addEventListener('resize', place);
+    window.addEventListener('scroll', function () {
+      if (isDesktop() && hasToc) updateActiveToc();
+    }, { passive: true });
   });
 })();

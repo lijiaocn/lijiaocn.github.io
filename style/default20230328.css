@@ -1,18 +1,16 @@
 ul#markdown-toc ul, ul#markdown-toc li{
-    font-size: 14px;
+    font-size: 15px;
     padding-top: 5px;
     padding-bottom: 0px;
     padding-right: 0px;
     list-style-type:decimal;
 }
 
-/* 右侧浮动面板：样式始终一致，吸顶只改定位 */
+/* 文章页右侧浮动面板（关于 / 目录） */
 .rsidebar-float {
     text-align: left;
     background: #fff;
-    border: 1px solid #e5e5e5;
-    border-radius: 4px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: none;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -20,7 +18,11 @@ ul#markdown-toc ul, ul#markdown-toc li{
 
 .rsidebar-tabs {
     display: flex;
+    gap: 4px;
+    margin: 8px 8px 0;
+    padding: 3px;
     border: none;
+    border-radius: 8px;
     background: #eff0f1;
     flex-shrink: 0;
 }
@@ -28,27 +30,31 @@ ul#markdown-toc ul, ul#markdown-toc li{
 .rsidebar-tab {
     flex: 1;
     margin: 0;
-    padding: 8px 0;
+    padding: 7px 0;
     border: none;
-    background: #eff0f1;
+    border-radius: 6px;
+    background: transparent;
     color: #1f2329;
-    font-size: 15px;
-    font-weight: bold;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.2;
     cursor: pointer;
     outline: none;
+    transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .rsidebar-tab.is-active {
     color: #8f959e;
     background: #fff;
+    box-shadow: 0 1px 2px rgba(31, 35, 41, 0.08);
 }
 
 .rsidebar-tab:hover {
-    color: #646a73;
+    color: #3370ff;
 }
 
 .rsidebar-tab-toc {
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .rsidebar-panels {
@@ -68,7 +74,7 @@ ul#markdown-toc ul, ul#markdown-toc li{
 
 .rsidebar-panel {
     display: none;
-    padding: 8px 6px 12px;
+    padding: 12px 10px 14px;
 }
 
 .rsidebar-panel.is-active {
@@ -79,6 +85,90 @@ ul#markdown-toc ul, ul#markdown-toc li{
     display: block;
 }
 
+/* 关于：区块间距 */
+#rsidebar-aside .rsidebar-block {
+    margin: 0 0 14px;
+}
+
+#rsidebar-aside .rsidebar-block:last-child {
+    margin-bottom: 0;
+}
+
+#rsidebar-aside .rsidebar-search {
+    text-align: center;
+}
+
+#rsidebar-aside .rsidebar-search .searchform {
+    text-align: center;
+}
+
+#rsidebar-aside .rsidebar-search .search {
+    width: 62%;
+    max-width: 100%;
+    vertical-align: middle;
+}
+
+#rsidebar-aside .rsidebar-search .button {
+    vertical-align: middle;
+}
+
+#rsidebar-aside .rsidebar-media {
+    text-align: center;
+}
+
+#rsidebar-aside .rsidebar-media img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    border-radius: 4px;
+    box-shadow: none;
+}
+
+#rsidebar-aside .rsidebar-related-title {
+    margin: 0 0 6px;
+    color: #8f959e;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+#rsidebar-aside .rsidebar-related-group + .rsidebar-related-group {
+    margin-top: 12px;
+}
+
+#rsidebar-aside .rsidebar-related-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: transparent;
+    text-align: left;
+}
+
+#rsidebar-aside .rsidebar-related-list li {
+    margin: 0;
+    padding: 4px 0;
+    list-style: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+#rsidebar-aside .rsidebar-related-list a {
+    color: #646a73;
+}
+
+#rsidebar-aside .rsidebar-related-list a:hover {
+    color: #3370ff;
+}
+
+/* 目录：飞书文档风格 */
+#rsidebar-toc {
+    text-align: left;
+    padding-top: 4px;
+}
+
 #rsidebar-toc #markdown-toc,
 #rsidebar-toc #markdown-toc ul {
     background-color: transparent !important;
@@ -86,29 +176,47 @@ ul#markdown-toc ul, ul#markdown-toc li{
     padding-bottom: 0 !important;
     margin: 0;
     border-radius: 0;
+    list-style: none;
 }
 
 #rsidebar-toc #markdown-toc {
-    padding-left: 18px !important;
-    list-style-type: decimal;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+#rsidebar-toc #markdown-toc ul {
+    padding-left: 12px !important;
+    margin-top: 2px;
 }
 
 #rsidebar-toc #markdown-toc li {
     font-size: 13px;
-    line-height: 1.6;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    padding-right: 0;
+    line-height: 1.55;
+    padding: 0;
+    margin: 0;
     white-space: normal;
     word-break: break-word;
+    list-style: none;
 }
 
 #rsidebar-toc #markdown-toc a {
-    color: #555;
+    display: block;
+    padding: 5px 8px;
+    color: #646a73;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 #rsidebar-toc #markdown-toc a:hover {
-    color: #00a67c;
+    color: #3370ff;
+    background-color: rgba(51, 112, 255, 0.08);
+}
+
+#rsidebar-toc #markdown-toc a.is-active {
+    color: #3370ff;
+    background-color: rgba(51, 112, 255, 0.12);
+    font-weight: 600;
 }
 
 /*google广告未填充时，不占用空间：https://support.google.com/adsense/answer/10762946?hl=en*/
@@ -124,11 +232,9 @@ ins.adsbygoogle[data-ad-status="unfilled"] {
 .body {
     padding-left:0px;
     padding-top:0px;
-    font-family:"宋体", "PingFang SC", "Microsoft YaHei", sans-serif;
-    font-size: 16px;
+    font-family:"宋体";
     -ms-overflow-style: scrollbar;
     color: #333333;
-    -webkit-font-smoothing: antialiased;
 }
 
 body.custom-background {
@@ -148,19 +254,8 @@ td,th{
     margin-bottom: 0px;
 }
 
-.topnav .navbar-brand,
-.topnav .navbar-brand a {
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.topnav .navbar-nav > li > a {
-    font-size: 14px;
-}
-
 .noticerow {
     text-align: center;
-    font-size: 13px;
 }
 
 .main {
@@ -168,7 +263,6 @@ td,th{
     padding: 0px;
     background-color: #ffffff;
     font-size: 16px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 
@@ -177,7 +271,6 @@ td,th{
     padding-top:10px;
     text-align:center;
     background-color: #5a5a5a;
-    font-size: 13px;
 }
 
 .lsidebar {
@@ -194,7 +287,7 @@ td,th{
 }
 
 .center {
-    padding:8px 12px 20px;
+    padding:0px;
     margin:0px;
 }
 
@@ -218,7 +311,7 @@ td,th{
 }
 
 .rsidebar-element {
-    font-size: 13px;
+
 }
 
 .rsidebar-element li{
@@ -226,8 +319,6 @@ td,th{
 	white-space:nowrap;
 	text-overflow:ellipsis;
 	overflow:hidden;
-    font-size: 13px;
-    line-height: 1.7;
 }
 
 div.rsidebar-element img{
@@ -256,7 +347,6 @@ div.rsidebar-element img{
     padding:2px;
     margin:2px 0 2px 0;
     text-align: center;
-    font-size: 13px;
 }
 
 .postlist {
@@ -290,10 +380,6 @@ div.lsidebar li {
     display:block;
 }
 
-div.lsidebar {
-    font-size: 13px;
-}
-
 div.lsidebar span {
     display: block;
     float: left;
@@ -302,43 +388,31 @@ div.lsidebar span {
 div.center table{
     background-color: #000000;
     color: #cfcfcf;
-    font-size: 14px;
 }
 
 div.center .author {
     font-size:13px;
     text-align:center;
-    color: #888888;
-}
-
-.row.content > h1,
-div.content > h1 {
-    font-size: 28px;
-    font-family: "思源黑体", "PingFang SC", "Microsoft YaHei", sans-serif;
-    font-weight: bold;
-    text-align: center;
-    line-height: 1.35;
-    margin: 12px 0 16px;
+    color: gray;
 }
 
 
 div.center ol {
-    background-color: #fffdf0;
+    background-color: lightyellow;
     padding-top: 10px;
     padding-bottom: 10px;
-    border-radius: 4px;
+   /*color: white;*/
 }
 
 div.center ol li{
-    font-size: 16px;
+    font-size: 15px;
     padding-top: 5px;
     padding-bottom: 5px;
     padding-right: 5px;
-    line-height: 1.75;
 }
 
 div.center ol li p{
-    font-size: 16px;
+    font-size: 15px;
 }
 
 div.center ul{
@@ -346,22 +420,21 @@ div.center ul{
 }
 
 div.center ul {
-    background-color: #fffdf0;
+    background-color: lightyellow;
     padding-top: 10px;
     padding-bottom: 10px;
-    border-radius: 4px;
+   /*culor: white;*/
 }
 
 div.center ul li{
-    font-size: 16px;
+    font-size: 15px;
     padding-top: 5px;
     padding-bottom: 5px;
     padding-right: 5px;
-    line-height: 1.75;
 }
 
 div.center ul li p{
-    font-size: 16px;
+    font-size: 15px;
 }
 
 #markdown-toc ul{
@@ -370,92 +443,75 @@ div.center ul li p{
 
 div.center p {
     font-size: 16px;
-    font-family: "宋体", "PingFang SC", "Microsoft YaHei", sans-serif;
-    line-height: 1.85;
-    margin-bottom: 12px;
+    font-family: 宋体;
+    line-height: 180%;
 }
 
 div.center img {
     max-width: 90%;
-    -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-    border-radius: 2px;
+    -webkit-box-shadow: 0 0 10px #555;
     display:block;
-    margin:12px auto;
+    margin:0 auto;
 }
 
 div.center h1 {
-    font-size:28px;
-    font-family: "思源黑体", "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-size:30px;
+    font-family: "思源黑体";
     font-weight:bold;
     text-align:center;
-    line-height: 1.35;
-    margin: 12px 0 16px;
 }
 
 div.center h2 {
-    border-left: 6px solid #00a67c;
+    border-left: 8px solid #00a67c;
     border-bottom: 1px solid #00a67c;
-    font-size:22px;
-    font-family: "思源黑体", "PingFang SC", "Microsoft YaHei", sans-serif;
-    padding: 8px 10px;
-    margin: 28px 0 14px;
-    line-height: 1.4;
+    font-size:24px;
+    font-family: "思源黑体";
+    padding:10px;
 }
 
 div.center h3 {
-    border-left: 6px solid #00a67c;
+    border-left: 8px solid #00a67c;
     border-bottom: 1px solid #00a67c;
-    font-size:19px;
-    font-family: "思源黑体", "PingFang SC", "Microsoft YaHei", sans-serif;
-    padding: 8px 10px;
-    margin: 24px 0 12px;
-    line-height: 1.4;
+    font-size:22px;
+    font-family: "思源黑体";
+    padding:10px;
 }
 
 div.center h4 {
-    border-left: 6px solid #00a67c;
+    border-left: 8px solid #00a67c;
     border-bottom: 1px solid #00a67c;
-    font-size:17px;
-    font-family: "思源黑体", "PingFang SC", "Microsoft YaHei", sans-serif;
-    padding: 8px 10px;
-    margin: 20px 0 10px;
+    font-size:18px;
+    font-family: "思源黑体";
+    padding:10px;
 }
 
 div.center h5 {
-    border-left: 6px solid #00a67c;
+    border-left: 8px solid #00a67c;
     border-bottom: 1px solid #00a67c;
     font-size:16px;
-    font-family: "思源黑体", "PingFang SC", "Microsoft YaHei", sans-serif;
-    padding: 8px 10px;
-    margin: 18px 0 8px;
+    font-family: "思源黑体";
+    padding:10px;
 }
 
 div.center h6 {
-    border-left: 6px solid #00a67c;
+    border-left: 8px solid #00a67c;
     border-bottom: 1px solid #00a67c;
     font-size:15px;
-    font-family: "思源黑体", "PingFang SC", "Microsoft YaHei", sans-serif;
-    padding: 8px 10px;
-    margin: 16px 0 8px;
+    font-family: "思源黑体";
+    padding:10px;
 }
 
 div.center pre {
     font-family: Inconsolata, Consolas, "DEJA VU SANS MONO", "DROID SANS MONO", Proggy, monospace;
-    font-size: 13px;
+    font-size: 90%;
     border: solid 0px lightgrey;
     background-color: #000000;
     color: #ffffff;
-    padding: 12px 14px;
-    line-height: 1.5;
+    padding: 10px;
+    line-height: 1.3;
     -webkit-overflow-scrolling:touch;
     word-wrap: normal;
     overflow: auto;
-    border-radius: 4px;
-}
-
-div.center code {
-    font-size: 0.9em;
 }
 
 div.center pre code {
@@ -463,56 +519,41 @@ div.center pre code {
     color: #cfcfcf;
 }
 
-div.center a {
-    color: #0066cc;
-    transition: color 0.15s ease;
-}
-
-div.center a:hover {
-    color: #00a67c;
-}
-
 div.postlist p {
-    line-height:1.5;
+    line-height:130%;
     padding-top:5px;
-    padding-left:0px;
-    font-size: 14px;
+    padding-left:0px
 }
 
 div.postlist h2 {
-    font-size:18px;
-    font-family: "思源黑体", "PingFang SC", "Microsoft YaHei", sans-serif;
-    font-weight: bold;
+    font-size:20px;
+    font-family: 宋体;
     background-color: white;
-    border: none;
-    padding: 0;
-    margin: 16px 0 6px;
 }
 
 div.postinfo p {
-    font-size:12px;
+    font-size:13px;
     padding-top:0px;
-    padding-left:3px;
-    color: #888;
+    padding-left:3px
 }
 
 div.postdesc a {
-    font-size:14px;
+    font-size:15px;
     padding-top:0px;
     padding-left:1px;
     color: #888;
 }
 
-div.mainbottomleft h2,
+div.mainbottomleft h2 {
+    text-align:center;
+}
+
 div.mainbottomright h2 {
     text-align:center;
-    font-size: 16px;
 }
 
 div.rsidebar img {
-    -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-    border-radius: 2px;
+    -webkit-box-shadow: 0 0 10px #555;
 }
 
 div.rsidebar-title p {
@@ -554,22 +595,6 @@ div.rsidebar-title p {
     }
     div.center img {
         max-width: 100%;
-    }
-    .row.content > h1,
-    div.content > h1,
-    div.center h1 {
-        font-size: 24px;
-    }
-    div.center h2 {
-        font-size: 20px;
-    }
-    div.center h3 {
-        font-size: 18px;
-    }
-    div.center p,
-    div.center ol li,
-    div.center ul li {
-        font-size: 15px;
     }
 }
 /*百度搜索框*/
