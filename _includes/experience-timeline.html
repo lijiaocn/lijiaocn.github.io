@@ -1,0 +1,28 @@
+{% comment %}工作状态时间线：数据来自 site.data.experience.timeline；org 为数组。{% endcomment %}
+<ul class="sidebar-timeline">
+  {% for item in site.data.experience.timeline %}
+  <li class="sidebar-timeline-item">
+    <div class="sidebar-timeline-axis" aria-hidden="true">
+      <span class="sidebar-timeline-dot"></span>
+      <span class="sidebar-timeline-stem"></span>
+    </div>
+    <div class="sidebar-timeline-content">
+      <span class="sidebar-timeline-period">{{ item.period }}</span>
+      {% if item.role %}
+      <span class="sidebar-timeline-role">{{ item.role }}</span>
+      {% endif %}
+      {% if item.org and item.org.size > 0 %}
+      <p class="sidebar-timeline-orgs">
+        {% for o in item.org %}
+        {% unless forloop.first %}<span class="sidebar-timeline-sep" aria-hidden="true">·</span>{% endunless %}
+        <span class="sidebar-timeline-org">{{ o }}</span>
+        {% endfor %}
+      </p>
+      {% endif %}
+      {% if item.description %}
+      <p class="sidebar-timeline-desc">{{ item.description }}</p>
+      {% endif %}
+    </div>
+  </li>
+  {% endfor %}
+</ul>

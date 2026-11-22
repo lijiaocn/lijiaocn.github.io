@@ -1,0 +1,16 @@
+# 左栏入口（顺序即展示顺序）
+# - url：普通链接（如首页）
+# - collection：对应 _config.yml 里 collections 的键名，链接为 /{collection}/
+# - icon：对应 _includes/icons/<name>.svg
+- label: 动态
+  url: /
+  icon: person
+- label: 作品
+  collection: works
+  icon: grid
+- label: 文章
+  collection: posts
+  icon: document
+- label: 笔记
+  collection: notes
+  icon: notebook

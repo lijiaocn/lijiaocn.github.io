@@ -1,0 +1,55 @@
+{% comment %}
+文章 / 笔记首页：单行标签（可展开）+ 按年分组列表（默认全部）。
+参数：include.collection = posts | notes
+{% endcomment %}
+{% assign col = include.collection %}
+{% if col == 'posts' %}
+  {% assign col_items = site.posts %}
+{% else %}
+  {% assign col_items = site.notes | sort: "date" | reverse %}
+{% endif %}
+
+{% assign tag_list = "" | split: "," %}
+{% for item in col_items %}
+  {% for t in item.tags %}{% assign tag_list = tag_list | push: t %}{% endfor %}
+{% endfor %}
+{% assign uniq_tags = tag_list | uniq %}
+
+<div class="tag-index">
+  <div class="tag-toolbar">
+    <div class="tag-row is-collapsed" id="tag-row" aria-label="按主题浏览">
+      <button class="tag-chip is-active" type="button" data-tag="all" data-count="{{ col_items.size }}" aria-pressed="true">
+        <span class="tag-chip-name">全部</span>
+        <span class="tag-chip-count">{{ col_items.size }}</span>
+      </button>
+      {% for t in uniq_tags %}
+        {% assign tag_count = 0 %}
+        {% for item in col_items %}
+          {% if item.tags contains t %}{% assign tag_count = tag_count | plus: 1 %}{% endif %}
+        {% endfor %}
+      <button class="tag-chip" type="button" data-tag="{{ t }}" data-count="{{ tag_count }}" aria-pressed="false">
+        <span class="tag-chip-name">{{ t }}</span>
+        <span class="tag-chip-count">{{ tag_count }}</span>
+      </button>
+      {% endfor %}
+    </div>
+    <button class="tag-expand" id="tag-expand" type="button" hidden aria-expanded="false" aria-controls="tag-row" aria-label="展开标签">
+      <svg class="tag-expand-icon tag-expand-icon--more" viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+      <svg class="tag-expand-icon tag-expand-icon--less" viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 15 12 9 18 15"/></svg>
+    </button>
+  </div>
+
+  <ul class="entry-list tag-results" id="content-list" data-collection="{{ col }}">
+    {% assign prev_year = "" %}
+    {% for item in col_items %}
+      {% assign y = item.date | date: "%Y" %}
+      {% if y != prev_year %}
+      <li class="entry-year" data-year="{{ y }}">{{ y }}</li>
+      {% assign prev_year = y %}
+      {% endif %}
+    <li class="entry" data-tags="{{ item.tags | join: '|' }}" data-year="{{ y }}">
+      <a class="entry-title" href="{{ site.baseurl }}{{ item.url }}">{{ item.title }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>

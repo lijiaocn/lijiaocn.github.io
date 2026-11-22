@@ -1,0 +1,44 @@
+{% comment %}左窄栏：入口来自 site.data.rail；图标来自 _includes/icons/{% endcomment %}
+<aside class="rail">
+  <nav class="rail-nav" aria-label="内容入口">
+    {% for item in site.data.rail %}
+      {% assign skip = false %}
+      {% if item.collection %}
+        {% assign col = nil %}
+        {% for c in site.collections %}
+          {% if c.label == item.collection %}{% assign col = c %}{% endif %}
+        {% endfor %}
+        {% if col == nil or col.output == false %}
+          {% assign skip = true %}
+        {% else %}
+          {% assign item_url = '/' | append: item.collection | append: '/' %}
+        {% endif %}
+      {% else %}
+        {% assign item_url = item.url %}
+      {% endif %}
+
+      {% unless skip %}
+      {% assign is_active = false %}
+      {% if item_url == '/' %}
+        {% if cur == '/' %}{% assign is_active = true %}{% endif %}
+      {% elsif cur == item_url or cur contains item_url %}
+        {% assign is_active = true %}
+      {% endif %}
+
+      <a class="rail-link{% if is_active %} is-active{% endif %}" href="{{ site.baseurl }}{{ item_url }}"{% if is_active %} aria-current="page"{% endif %}>
+        {% if item.icon and item.icon != '' %}
+          {% capture icon_file %}icons/{{ item.icon }}.svg{% endcapture %}
+          {% include {{ icon_file }} %}
+        {% endif %}
+        <span>{{ item.label | default: item.collection }}</span>
+      </a>
+      {% endunless %}
+    {% endfor %}
+  </nav>
+
+  <button class="rail-mid-toggle" id="mid-panel-toggle" type="button" aria-expanded="true" aria-label="收起侧栏" title="收起侧栏">
+    <svg class="rail-mid-toggle-collapse" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/><polyline points="14.5 9 11.5 12 14.5 15"/></svg>
+    <svg class="rail-mid-toggle-expand" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/><polyline points="12.5 9 15.5 12 12.5 15"/></svg>
+    <span>侧栏</span>
+  </button>
+</aside>

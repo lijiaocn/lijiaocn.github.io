@@ -1,0 +1,10 @@
+{% comment %}
+页内目录导航：当正文含 kramdown {:toc} 生成的 #markdown-toc 时显示。
+由 JS 从正文 TOC 克隆链接，并隐藏文内原 TOC。
+{% endcomment %}
+{% if content contains 'id="markdown-toc"' %}
+<nav class="article-toc" id="article-toc" aria-label="页内目录">
+  <p class="article-toc-title">本页目录</p>
+  <div class="article-toc-nav" id="article-toc-nav"></div>
+</nav>
+{% endif %}

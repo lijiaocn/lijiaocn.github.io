@@ -1,0 +1,73 @@
+# ============================================================
+# 站点基础信息 —— 改这里即可替换个人信息
+# ============================================================
+title: "李佶澳"
+description: "做的东西、自我解惑中的思考，以及一些随手记录的笔记。"
+author: "李佶澳"
+
+url: "https://www.lijiaocn.com"
+baseurl: ""
+asset_version: "20261125f"
+
+# collections（仅 Jekyll 原生字段；左栏见 _data/rail.yml）
+collections:
+  posts:
+    output: true
+    permalink: /posts/:year/:month/:day/:title/
+  works:
+    output: true
+    permalink: /works/:name/
+  notes:
+    output: true
+    permalink: /notes/:name/
+
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+  - scope:
+      path: ""
+      type: "notes"
+    values:
+      layout: "note"
+  - scope:
+      path: ""
+      type: "works"
+    values:
+      layout: "work"
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - README.md
+  - run.sh
+  - .gitignore
+  - .workbuddy
+  - .gems
+  - assets/style          # 旧站 bootstrap / highlight，现行站点未引用
+  - node_modules
+  - package.json
+  - package-lock.json
+
+plugins:
+  - jekyll-sitemap
+
+# 构建设置
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+  syntax_highlighter: rouge
+highlighter: rouge
+excerpt_separator: "<!--more-->"
+timezone: Asia/Shanghai
+encoding: UTF-8
+
+# 文章正文引用的图片路径变量（正文使用 {{ site.imglocal }}/xxx 与 {{ site.article }}/xxx）
+# 历史文章配图在 assets/history/img（与现行 assets 资源分离）
+imgurl:   /assets/history/img
+imglocal: /assets/history/img
+article:  /assets/history/img/article

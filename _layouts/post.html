@@ -1,0 +1,27 @@
+---
+layout: default
+---
+{% assign has_page_toc = false %}
+{% if content contains 'id="markdown-toc"' %}{% assign has_page_toc = true %}{% endif %}
+<article class="article{% if has_page_toc %} article--with-toc{% endif %}">
+  <header class="article-header">
+    <div class="wrap">
+      <h1 class="article-title">{{ page.title }}</h1>
+      <div class="article-meta">
+        <time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: "%Y 年 %m 月 %d 日" }}</time>
+        <span class="dot">·</span>
+        <span>{{ page.content | strip_html | size }} 字</span>
+      </div>
+    </div>
+  </header>
+
+  {% include article-ad.html %}
+
+  <div class="wrap">
+    <div class="prose article-content">{{ content }}</div>
+  </div>
+
+  {% include article-ad-footer.html %}
+
+  {% include article-toc.html %}
+</article>

@@ -1,0 +1,45 @@
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<title>{% if page.title %}{{ page.title }} · {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
+<meta name="description" content="{{ page.description | default: site.description | strip_html | truncate: 160 }}">
+<meta name="author" content="{{ site.author }}">
+
+<!-- Open Graph -->
+<meta property="og:type" content="{% if page.layout == 'post' or page.layout == 'note' %}article{% else %}website{% endif %}">
+<meta property="og:title" content="{% if page.title %}{{ page.title }} · {{ site.title }}{% else %}{{ site.title }}{% endif %}">
+<meta property="og:description" content="{{ page.description | default: site.description | strip_html | truncate: 160 }}">
+<meta property="og:url" content="{{ site.url }}{{ site.baseurl }}{{ page.url }}">
+<meta property="og:locale" content="zh_CN">
+
+<link rel="canonical" href="{{ site.url }}{{ site.baseurl }}{{ page.url }}">
+<link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ site.baseurl }}/feed.xml">
+
+<link rel="stylesheet" href="{{ site.baseurl }}/assets/css/main.css?v={{ site.asset_version }}">
+
+<!-- Google ads -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8176866190626448" crossorigin="anonymous"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-105389858-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-105389858-1');
+</script>
+<script async="async" src="{{ site.baseurl }}/assets/js/head.js?v={{ site.asset_version }}"></script>
+<script defer src="{{ site.baseurl }}/assets/js/toc-sidebar.js?v={{ site.asset_version }}"></script>
+
+<script>
+  /* 渲染前恢复目录栏宽度与收起态，避免闪一下默认状态 */
+  (function () {
+    try {
+      var w = parseInt(localStorage.getItem('catalog-width'), 10);
+      if (w >= 220 && w <= 480) document.documentElement.style.setProperty('--catalog-w', w + 'px');
+      var midCollapsed = localStorage.getItem('mid-panel-collapsed');
+      if (midCollapsed === null) midCollapsed = localStorage.getItem('catalog-collapsed');
+      if (midCollapsed === '1') document.documentElement.classList.add('is-mid-collapsed');
+    } catch (e) {}
+  })();
+</script>

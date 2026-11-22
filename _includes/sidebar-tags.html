@@ -1,0 +1,52 @@
+{% comment %}
+中栏标签旁栏：与 sidebar-ad 同槽位/定位，整栏替换 catalog。
+通过 front matter `mid_panel: tags` 启用；展示当前 collection 全部 tag + 数量（高→低由 JS 排序）。
+点击后筛选主栏 #content-list（与 tag-toolbar 同一套筛选逻辑）。
+{% endcomment %}
+{% if a_works %}
+  {% assign col_items = site.works %}
+  {% unless col_items %}{% assign col_items = "" | split: "," %}{% endunless %}
+  {% assign col_label = "作品标签" %}
+{% elsif a_notes %}
+  {% assign col_items = site.notes | sort: "date" | reverse %}
+  {% assign col_label = "笔记标签" %}
+{% elsif a_posts %}
+  {% assign col_items = site.posts %}
+  {% assign col_label = "文章标签" %}
+{% else %}
+  {% assign col_items = site.notes | sort: "date" | reverse %}
+  {% assign col_label = "标签" %}
+{% endif %}
+
+{% assign tag_list = "" | split: "," %}
+{% for item in col_items %}
+  {% for t in item.tags %}{% assign tag_list = tag_list | push: t %}{% endfor %}
+{% endfor %}
+{% assign uniq_tags = tag_list | uniq %}
+
+<aside class="sidebar-tags" id="sidebar-tags" aria-label="{{ col_label }}">
+  {% include mid-panel-resizer.html %}
+  <div class="sidebar-tags-inner">
+    <div class="sidebar-tags-head"><h2>{{ col_label }}</h2></div>
+    <ul class="sidebar-tags-list" id="sidebar-tags-list" role="list">
+      <li class="sidebar-tags-item">
+        <button class="sidebar-tag is-active" type="button" data-tag="all" data-count="{{ col_items.size }}" aria-pressed="true">
+          <span class="sidebar-tag-name">全部</span>
+          <span class="sidebar-tag-count">{{ col_items.size }}</span>
+        </button>
+      </li>
+      {% for t in uniq_tags %}
+        {% assign tag_count = 0 %}
+        {% for item in col_items %}
+          {% if item.tags contains t %}{% assign tag_count = tag_count | plus: 1 %}{% endif %}
+        {% endfor %}
+      <li class="sidebar-tags-item">
+        <button class="sidebar-tag" type="button" data-tag="{{ t }}" data-count="{{ tag_count }}" aria-pressed="false">
+          <span class="sidebar-tag-name">{{ t }}</span>
+          <span class="sidebar-tag-count">{{ tag_count }}</span>
+        </button>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</aside>

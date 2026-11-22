@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  {% include head.html %}
+</head>
+<body>
+  {% comment %}判断当前页归属，供中列 catalog / tags 与左栏高亮约定共用{% endcomment %}
+  {% assign cur = page.url %}
+  {% assign lay = page.layout %}
+  {% assign a_works = false %}
+  {% assign a_posts = false %}
+  {% assign a_notes = false %}
+  {% if cur contains '/works/' or lay == 'work' %}{% assign a_works = true %}{% endif %}
+  {% if cur contains '/posts/' or lay == 'post' %}{% assign a_posts = true %}{% endif %}
+  {% if cur contains '/notes/' or lay == 'note' %}{% assign a_notes = true %}{% endif %}
+
+  <div class="layout">
+    {% include rail.html %}
+    <div class="stage">
+      {% comment %}中栏：mid_panel=ad|tags 整栏替换 catalog{% endcomment %}
+      {% if page.mid_panel == 'ad' %}
+        {% include sidebar-ad.html %}
+      {% elsif page.mid_panel == 'tags' %}
+        {% include sidebar-tags.html %}
+      {% else %}
+        {% include catalog.html %}
+      {% endif %}
+      <main class="main" id="main" role="main">
+        {% unless cur == '/' %}
+        <button class="main-back" id="main-back" type="button" hidden aria-label="返回上一页" title="返回上一页">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="14.5 6 8.5 12 14.5 18"/></svg>
+          <span>返回</span>
+        </button>
+        {% endunless %}
+        {{ content }}
+      </main>
+    </div>
+  </div>
+  <script src="{{ site.baseurl }}/assets/js/main.js?v={{ site.asset_version }}"></script>
+</body>
+</html>
