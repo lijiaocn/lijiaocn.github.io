@@ -1,7 +1,9 @@
 ---
 layout: default
 ---
-<article class="article work-detail">
+{% assign has_page_toc = false %}
+{% if content contains 'id="markdown-toc"' %}{% assign has_page_toc = true %}{% endif %}
+<article class="article work-detail{% if has_page_toc %} article--with-toc{% endif %}">
   <header class="article-header">
     <div class="wrap work-head">
       <h1 class="article-title">{{ page.title }}</h1>
@@ -10,7 +12,6 @@ layout: default
         {% if page.type %}<span>{{ page.type }}</span>{% endif %}
         {% if page.status %}<span class="work-status"><span class="status-dot"></span>{{ page.status }}</span>{% endif %}
       </div>
-      {% if page.description %}<p class="work-desc">{{ page.description }}</p>{% endif %}
     </div>
     {% if page.link or page.type %}
     <div class="work-hero">
@@ -25,4 +26,6 @@ layout: default
   <div class="wrap">
     <div class="prose article-content">{{ content }}</div>
   </div>
+
+  {% include article-toc.html %}
 </article>
