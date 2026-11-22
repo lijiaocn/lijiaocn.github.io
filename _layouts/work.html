@@ -6,18 +6,20 @@ layout: default
     <div class="wrap work-head">
       <h1 class="article-title">{{ page.title }}</h1>
       <div class="work-meta">
-        {% if page.year %}<span>{{ page.year }}</span>{% endif %}
-        {% if page.role %}<span>{{ page.role }}</span>{% endif %}
+        {% if page.date %}<span>{{ page.date | date: "%Y" }}</span>{% endif %}
+        {% if page.type %}<span>{{ page.type }}</span>{% endif %}
         {% if page.status %}<span class="work-status"><span class="status-dot"></span>{{ page.status }}</span>{% endif %}
       </div>
+      {% if page.description %}<p class="work-desc">{{ page.description }}</p>{% endif %}
     </div>
-    <div class="work-hero" style="--from:{{ page.from }}; --to:{{ page.to }}">
-      <span class="work-hero-icon" aria-hidden="true">{{ page.icon }}</span>
-      <span class="work-hero-type">{{ page.type }}</span>
+    {% if page.link or page.type %}
+    <div class="work-hero">
+      {% if page.type %}<span class="work-hero-type">{{ page.type }}</span>{% endif %}
       {% if page.link %}
       <a class="work-hero-cta" href="{{ page.link }}"{% if page.link contains 'http' %} target="_blank" rel="noopener noreferrer"{% endif %}>{{ page.link_label | default: "访问作品" }} →</a>
       {% endif %}
     </div>
+    {% endif %}
   </header>
 
   <div class="wrap">

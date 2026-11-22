@@ -44,19 +44,13 @@ tags: ["设计", "产品", "方法论"]
 
 ```yaml
 title: "作品名称"
-tagline: "一句话定位"      # 列表卡用；详情页不展示
-year: "2025"
-type: "App"
-role: "设计 & 开发"
-status: "正在运营"
-link: "https://..."        # 可选；有则详情 hero 右下角 CTA
-link_label: "App Store 下载" # 可选
-icon: "✦"
-from: "#4f46e5"
-to: "#7c3aed"
-featured: true
+description: "一句话定位"   # 原 tagline；列表卡与详情页可用
 date: 2025-03-01
 tags: ["标签1", "标签2"]
+status: "正在运营"
+link: "https://..."         # 可选
+type: "App"
+link_label: "App Store 下载" # 可选
 ```
 
 ## 部署

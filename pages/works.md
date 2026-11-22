@@ -17,20 +17,20 @@ mid_panel: tags
   <div class="work-grid" id="content-list" data-collection="works">
     {% for work in works %}
     <a class="work-tile" href="{{ site.baseurl }}{{ work.url }}" data-tags="{{ work.tags | join: '|' }}">
-      <div class="work-tile-cover" style="--from:{{ work.from }}; --to:{{ work.to }}">
-        <span class="work-tile-icon" aria-hidden="true">{{ work.icon }}</span>
-        <span class="work-tile-type">{{ work.type }}</span>
+      <div class="work-tile-cover">
+        {% if work.type %}<span class="work-tile-type">{{ work.type }}</span>{% endif %}
       </div>
       <div class="work-tile-body">
         <div class="work-tile-top">
           <h3 class="work-tile-title">{{ work.title }}</h3>
-          <time class="work-tile-year">{{ work.year }}</time>
+          {% if work.date %}<time class="work-tile-year" datetime="{{ work.date | date: '%Y-%m-%d' }}">{{ work.date | date: "%Y" }}</time>{% endif %}
         </div>
-        <p class="work-tile-tagline">{{ work.tagline }}</p>
+        {% if work.description %}<p class="work-tile-tagline">{{ work.description }}</p>{% endif %}
+        {% if work.status %}
         <div class="work-tile-foot">
-          <span class="work-tile-role">{{ work.role }}</span>
           <span class="work-tile-status"><span class="status-dot"></span>{{ work.status }}</span>
         </div>
+        {% endif %}
       </div>
     </a>
     {% endfor %}
