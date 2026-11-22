@@ -162,27 +162,6 @@ a{color:inherit;text-decoration:none}
   background:var(--accent);border-radius:0 2px 2px 0;
 }
 
-/* rail 底部：收起 / 展开中栏（catalog / ad / tags） */
-.rail-mid-toggle{
-  flex:none;width:calc(100% - 24px);margin:12px 12px 0;
-  position:relative;display:flex;flex-direction:column;align-items:center;gap:5px;
-  padding:12px 0;border:0;border-radius:9px;
-  background:transparent;color:var(--muted);
-  font-family:var(--font-sans);cursor:pointer;
-  transition:color .2s,background .2s;
-}
-.rail-mid-toggle svg{
-  width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.6;
-  stroke-linecap:round;stroke-linejoin:round;
-}
-.rail-mid-toggle-pane{fill:currentColor;stroke:none;opacity:.28}
-.rail-mid-toggle span{font-size:11px;line-height:1.2}
-.rail-mid-toggle:hover{color:var(--ink);background:rgba(26,26,28,.04)}
-.rail-mid-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.rail-mid-toggle-expand{display:none}
-.is-mid-collapsed .rail-mid-toggle-collapse{display:none}
-.is-mid-collapsed .rail-mid-toggle-expand{display:block}
-
 /* ============================================================
    Catalog — 内容列（跟随入口联动，唯一会增长的区域，自身滚动）
    ============================================================ */
@@ -196,7 +175,7 @@ a{color:inherit;text-decoration:none}
   padding:64px 24px 40px;overflow:hidden;
 }
 
-/* 右边界拖拽手柄（仅调宽；收起改由 rail 底部按钮） */
+/* 右边界拖拽手柄（仅调宽） */
 .catalog-resizer{
   position:absolute;top:0;right:0;width:12px;height:100%;
   background:transparent;
@@ -210,11 +189,6 @@ a{color:inherit;text-decoration:none}
 .catalog-resizer:focus-visible::after{background:var(--accent)}
 body.is-resizing{cursor:col-resize;user-select:none}
 body.is-resizing .catalog-resizer::after{background:var(--accent)}
-
-/* 中栏统一收起：catalog / 广告 / 标签 */
-.is-mid-collapsed .catalog,
-.is-mid-collapsed .sidebar-ad,
-.is-mid-collapsed .sidebar-tags{display:none}
 
 .catalog-head{flex:none;display:flex;align-items:center;margin-bottom:22px;transition:color .2s}
 .catalog-head h2{
@@ -258,7 +232,7 @@ body.is-resizing .catalog-resizer::after{background:var(--accent)}
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 
-/* 中栏旁栏（广告 / 标签）：与 catalog 同槽位，整栏替换（无拖宽/收起） */
+/* 中栏旁栏（广告 / 标签）：与 catalog 同槽位，整栏替换 */
 .sidebar-ad,
 .sidebar-tags{
   position:fixed;top:0;left:var(--rail-w);z-index:20;height:100vh;
@@ -818,11 +792,10 @@ a.entry-title:visited:hover{color:#57445e}
    Responsive — sidebar collapses to top
    ============================================================ */
 @media (max-width:1100px){
-  /* 中等屏隐藏浮层中栏；rail 收起按钮一并隐藏 */
+  /* 中等屏隐藏浮层中栏 */
   .catalog,
   .sidebar-ad,
-  .sidebar-tags,
-  .rail-mid-toggle{display:none}
+  .sidebar-tags{display:none}
   body:has(.sidebar-tags) .tag-toolbar{display:block}
 }
 
@@ -832,14 +805,13 @@ a.entry-title:visited:hover{color:#57445e}
   .rail{
     /* 负边距抵消 layout 左右 padding，背景拉满全宽 */
     position:static;width:auto;height:auto;z-index:auto;
-    flex-direction:row;justify-content:space-between;
+    flex-direction:row;justify-content:flex-start;
     margin:0 -28px 28px;padding:20px 28px 14px;
     border-right:0;border-bottom:1px solid var(--line);
   }
   .rail-nav{flex-direction:row;width:auto;padding:0;flex:none}
   .rail-link{padding:8px 11px}
   .rail-link.is-active::before{display:none}
-  .rail-mid-toggle{display:none}
   .main{padding:48px 0 40px}
   .main-back{top:8px;left:0;right:auto}
   .block--first{padding-top:0}

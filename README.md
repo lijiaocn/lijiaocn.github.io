@@ -1,6 +1,6 @@
 # 个人博客（Jekyll）
 
-三列布局：左栏入口（简介 / 作品 / 文章 / 笔记）→ 中栏目录（工作经历 / 作品列表 / 文章列表 / 笔记目录）→ 右侧正文。中栏可拖拽调宽、一键收起。
+三列布局：左栏入口（简介 / 作品 / 文章 / 笔记）→ 中栏目录（工作经历 / 作品列表 / 文章列表 / 笔记目录）→ 右侧正文。中栏可拖拽调宽。
 
 每个 collection 是独立页面；作品为网格 + 详情页，文章 / 笔记首页为标签云 + 按年归档列表（可用 hash 深链，如 `#设计`）。
 
@@ -64,12 +64,12 @@ link_label: "App Store 下载" # 可选
 ├── _config.yml
 ├── _data/experience.yml # 工作经历
 ├── _layouts/            # default / post / note / work
-├── _includes/           # rail / catalog / collection-list / sidebar-ad …
+├── _includes/           # rail / catalog / collection-list / ad-sidebar …
 ├── _posts/              # 文章
 ├── _notes/              # 笔记
 ├── _works/              # 作品详情
 ├── pages/               # posts / notes / works / index
 ├── assets/css/main.scss
-├── assets/js/main.js    # 标签云、related、目录拖拽/收起、联系我
+├── assets/js/main.js    # 标签云、related、目录拖拽、联系我
 └── index.md             # 简介首页
 ```

@@ -19,7 +19,7 @@
     <div class="stage">
       {% comment %}中栏：mid_panel=ad|tags 整栏替换 catalog{% endcomment %}
       {% if page.mid_panel == 'ad' %}
-        {% include sidebar-ad.html %}
+        {% include ad-sidebar.html %}
       {% elsif page.mid_panel == 'tags' %}
         {% include sidebar-tags.html %}
       {% else %}
