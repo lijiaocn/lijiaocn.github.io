@@ -125,7 +125,7 @@ permalink: /
       {% endif %}
       {% if site.data.contact.email %}
       <div class="home-contact-row">
-        <dd aria-label="邮箱">{{ site.data.contact.email }}</dd>
+        <dd aria-label="邮箱"><a class="home-contact-mail" href="mailto:{{ site.data.contact.email }}">{{ site.data.contact.email }}</a></dd>
       </div>
       {% endif %}
     </dl>
@@ -144,13 +144,13 @@ permalink: /
       {% if site.data.contact.email %}
       <div class="contact-dialog-row">
         <dt>邮箱</dt>
-        <dd>{{ site.data.contact.email }}</dd>
+        <dd><a class="home-contact-mail" href="mailto:{{ site.data.contact.email }}">{{ site.data.contact.email }}</a></dd>
       </div>
       {% endif %}
       {% if site.data.contact.wechat %}
       <div class="contact-dialog-row">
         <dt>微信</dt>
-        <dd>{% include wechat-id.html uid="dialog" %}</dd>
+        <dd>{% include wechat-id.html uid="dialog" show_qr=false %}</dd>
       </div>
       {% endif %}
       {% if site.data.contact.location %}
@@ -160,5 +160,10 @@ permalink: /
       </div>
       {% endif %}
     </dl>
+    {% if site.data.contact.wechat_qr and site.data.contact.wechat_qr != "" %}
+    <div class="contact-dialog-qr">
+      <img src="{{ site.baseurl }}{{ site.data.contact.wechat_qr }}{% if site.asset_version %}?v={{ site.asset_version }}{% endif %}" alt="微信二维码：{{ site.data.contact.wechat }}" width="240" height="306">
+    </div>
+    {% endif %}
   </div>
 </dialog>

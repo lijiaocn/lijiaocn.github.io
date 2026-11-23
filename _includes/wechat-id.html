@@ -1,10 +1,13 @@
 {% comment %}
-  微信号 + 可选二维码缩略图；悬停/聚焦缩略图时放大预览。
+  微信号；默认附带缩略图，悬停/聚焦时放大预览。
+  include.show_qr = false 时只显示微信号（弹窗底部另展完整图）。
   数据：site.data.contact.wechat / wechat_qr
 {% endcomment %}
+{% assign show_qr = true %}
+{% if include.show_qr == false or include.show_qr == 'false' %}{% assign show_qr = false %}{% endif %}
 <span class="wechat-id">
   <span>{{ site.data.contact.wechat }}</span>
-  {% if site.data.contact.wechat_qr and site.data.contact.wechat_qr != "" %}
+  {% if show_qr and site.data.contact.wechat_qr and site.data.contact.wechat_qr != "" %}
   <span class="wechat-pop">
     <button type="button" class="wechat-pop-trigger" aria-label="查看微信二维码" aria-describedby="wechat-qr-{{ include.uid }}">
       <img class="wechat-pop-thumb" src="{{ site.baseurl }}{{ site.data.contact.wechat_qr }}{% if site.asset_version %}?v={{ site.asset_version }}{% endif %}" alt="" width="36" height="46">
