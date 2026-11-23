@@ -8,6 +8,11 @@ layout: default
     <div class="wrap">
       <h1 class="article-title">{{ page.title }}</h1>
       <div class="article-meta">
+        {% assign page_author = page.author | default: site.author %}
+        {% if page_author %}
+        <span>{{ page_author }}</span>
+        <span class="dot">·</span>
+        {% endif %}
         <time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: "%Y 年 %m 月 %d 日" }}</time>
       </div>
     </div>

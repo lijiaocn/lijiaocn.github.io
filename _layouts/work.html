@@ -8,7 +8,10 @@ layout: default
     <div class="wrap work-head">
       <h1 class="article-title">{{ page.title }}</h1>
       <div class="work-meta">
+        {% assign work_author = page.author | default: site.author %}
+        {% if work_author %}<span>{{ work_author }}</span>{% endif %}
         {% if page.date %}<span>{{ page.date | date: "%Y" }}</span>{% endif %}
+        <span>{{ page.content | strip_html | size }} 字</span>
         {% if page.type %}<span>{{ page.type }}</span>{% endif %}
         {% if page.status %}<span class="work-status"><span class="status-dot"></span>{{ page.status }}</span>{% endif %}
       </div>
