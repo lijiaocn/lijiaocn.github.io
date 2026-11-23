@@ -170,6 +170,7 @@ a{color:inherit;text-decoration:none}
   width:var(--catalog-w);
   overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;
   border-right:1px solid var(--line);background:var(--doc-bg);
+  transition:border-color .2s;
   scrollbar-width:none;
 }
 .mid-panel::-webkit-scrollbar{display:none;width:0;height:0}
@@ -177,7 +178,9 @@ a{color:inherit;text-decoration:none}
   height:100%;box-sizing:border-box;
   padding:64px 24px 40px;
 }
-.mid-panel--ad{border-right:0}
+/* pages 列表页（tags/ad）：右侧边框不显示 */
+.mid-panel--ad,
+.mid-panel--tags{border-right:0}
 .mid-panel--ad .mid-panel-inner,
 .mid-panel--tags .mid-panel-inner{padding:64px 20px 40px}
 

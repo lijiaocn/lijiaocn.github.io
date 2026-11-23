@@ -34,7 +34,7 @@ gem 'jekyll-admin',"0.11.1"
 
 效果如下，在文章里添加图片方便多了：
 
-![jekyll-admin可视化编辑页面]({{ 'img/article/jekyll-admin.png' | relative_url }})
+![jekyll-admin可视化编辑页面]({{ site.article }}/jekyll-admin.png)
 
 
 ## 遇到的问题

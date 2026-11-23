@@ -27,7 +27,7 @@ DeepSeek 让开源大模型在国内彻底出圈，达到了各行各业都在�
 大模型文件是非常庞大，比如 DeepSeek-v3 的模型文件包含 6710 亿个神经网络参数，大小超过 700 G。庞大文件的分发就是一个问题，现在都是上传到 [huggingface][2] 网站上。 下图是 deepseekv3 的文件构成：
 
 
-![deepseekv3 模型文件]({{ 'img/article/openllm-deepseekv3.png' | relative_url }})
+![deepseekv3 模型文件]({{ site.article }}/openllm-deepseekv3.png)
 
 ## 开源大模型怎样运行？
 

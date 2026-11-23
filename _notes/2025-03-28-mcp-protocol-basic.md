@@ -26,7 +26,7 @@ Anthropic 公司除了提供 Claude 模型服务（通过 api 调用），还开
 Anthropic  公司采用下面的方式实现终极目标。 Host 就是部署在手机或者电脑上的软件，比如 Anthropic 公司的  Claude for Desktop。Host 软件和远端或者本地的 Server 建立连接，从 Server 中获取数据或调用 Server 中的功能。
 
 
-![mcp core]({{ 'img/article/mcp-core.png' | relative_url }})
+![mcp core]({{ site.article }}/mcp-core.png)
 
 
 如果 Host 连接的众多 Server 使用完全不一样的接口定义，那几乎需要为每个 Server 开发 client，这显然不是一个好的方式。解决方法就是再加一层：`用 MCP Server 层规范所有  Server 的接口`。
@@ -55,15 +55,15 @@ Anthropic  公司采用下面的方式实现终极目标。 Host 就是部署在
 
 下图是 MCP 文档上给出一个代码示例：
 
-![mcp client ]({{ 'img/article/mcp-client.png' | relative_url }})
+![mcp client ]({{ site.article }}/mcp-client.png)
 
 ## 其它
 
 MCP 只是一套接口定义标准，接口的实现（ 即MCP 层的 MCP Server） 需要自行开发的。社区里不仅有各种语言的 SDK 来帮助简化开发过程，还有很多已经开发好的 MCP Server。
  
-![mcp sdk]({{ 'img/article/mcp-sdk.png' | relative_url }})
+![mcp sdk]({{ site.article }}/mcp-sdk.png)
 
-![mcp server]({{ 'img/article/mcp-servers.png' | relative_url }})
+![mcp server]({{ site.article }}/mcp-servers.png)
 
 ## 最后
 

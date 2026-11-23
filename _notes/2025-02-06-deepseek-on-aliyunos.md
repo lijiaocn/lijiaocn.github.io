@@ -19,7 +19,7 @@ DeepSeek 的官网和 APP 压力过大经常不可用，并且自我审查厉害
 
 50 万个免费token：
 
-![deep-seek]({{ 'img/article/deepseek-at-ark.png' | relative_url }})
+![deep-seek]({{ site.article }}/deepseek-at-ark.png)
  
 ## 开通阿里云百炼
 
@@ -72,7 +72,7 @@ docker run -d  \
 
 本地打开：127.0.0.1:3000
 
-![open-webui]({{ 'img/article/open-webui-1.png' | relative_url }})
+![open-webui]({{ site.article }}/open-webui-1.png)
 
 
 >晕死，此路不通。阿里云的API返回的 models 只有千问系列，在open-webui 中找不到deepseek。
