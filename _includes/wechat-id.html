@@ -1,14 +1,17 @@
 {% comment %}
-  微信号 + 可选二维码悬停预览。
+  微信号 + 可选二维码缩略图；悬停/聚焦缩略图时放大预览。
   数据：site.data.contact.wechat / wechat_qr
 {% endcomment %}
-{% if site.data.contact.wechat_qr and site.data.contact.wechat_qr != "" %}
-<span class="wechat-pop">
-  <button type="button" class="wechat-pop-trigger" aria-describedby="wechat-qr-{{ include.uid }}">{{ site.data.contact.wechat }}</button>
-  <span class="wechat-pop-tip" id="wechat-qr-{{ include.uid }}" role="tooltip">
-    <img src="{{ site.baseurl }}{{ site.data.contact.wechat_qr }}{% if site.asset_version %}?v={{ site.asset_version }}{% endif %}" alt="微信二维码：{{ site.data.contact.wechat }}" width="240" height="306">
+<span class="wechat-id">
+  <span>{{ site.data.contact.wechat }}</span>
+  {% if site.data.contact.wechat_qr and site.data.contact.wechat_qr != "" %}
+  <span class="wechat-pop">
+    <button type="button" class="wechat-pop-trigger" aria-label="查看微信二维码" aria-describedby="wechat-qr-{{ include.uid }}">
+      <img class="wechat-pop-thumb" src="{{ site.baseurl }}{{ site.data.contact.wechat_qr }}{% if site.asset_version %}?v={{ site.asset_version }}{% endif %}" alt="" width="36" height="46">
+    </button>
+    <span class="wechat-pop-tip" id="wechat-qr-{{ include.uid }}" role="tooltip">
+      <img src="{{ site.baseurl }}{{ site.data.contact.wechat_qr }}{% if site.asset_version %}?v={{ site.asset_version }}{% endif %}" alt="微信二维码：{{ site.data.contact.wechat }}" width="240" height="306">
+    </span>
   </span>
+  {% endif %}
 </span>
-{% else %}
-<span>{{ site.data.contact.wechat }}</span>
-{% endif %}

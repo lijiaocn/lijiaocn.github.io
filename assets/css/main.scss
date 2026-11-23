@@ -600,28 +600,21 @@ a.entry-title:visited:hover{color:#57445e}
 .home-contact-row{display:flex;align-items:baseline;gap:8px;min-width:0}
 .home-contact-row dt{margin:0;font-size:12.5px;color:var(--muted);flex:none}
 .home-contact-row dd{margin:0;font-size:15px;line-height:1.5;color:var(--ink-soft);overflow-wrap:anywhere}
-.home-contact-note{color:var(--faint);font-size:12.5px}
-/* 可交互联系项（微信）：虚线下划线，区别于纯文本 */
-.wechat-pop-trigger{
-  color:var(--ink);
-  text-decoration:underline;
-  text-decoration-style:dotted;
-  text-decoration-color:var(--faint);
-  text-underline-offset:3px;
-  cursor:pointer;
-  transition:color .2s,text-decoration-color .2s;
-}
-.wechat-pop-trigger:hover,
-.wechat-pop-trigger:focus-visible{
-  color:var(--ink);
-  text-decoration-color:var(--muted);
-}
 
-/* 微信号：悬停/聚焦显示二维码 */
-.wechat-pop{position:relative;display:inline-block;vertical-align:baseline}
+/* 微信号 + 缩略图同行；悬停/聚焦缩略图放大二维码 */
+.wechat-id{
+  display:inline-flex;align-items:center;gap:.4em;
+  white-space:nowrap;
+}
+.wechat-pop{position:relative;display:inline-flex;flex:none;line-height:0}
 .wechat-pop-trigger{
-  margin:0;padding:0;border:0;border-radius:0;background:transparent;
-  font:inherit;line-height:inherit;
+  margin:0;padding:0;border:0;border-radius:2px;background:transparent;
+  line-height:0;cursor:pointer;
+}
+.wechat-pop-trigger:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wechat-pop-thumb{
+  display:block;max-width:none;
+  height:1.75em;width:auto;border-radius:3px;
 }
 .wechat-pop-tip{
   position:absolute;left:50%;bottom:calc(100% + 14px);

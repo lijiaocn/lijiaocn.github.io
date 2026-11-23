@@ -115,17 +115,17 @@ permalink: /
     <dl class="home-contact-list">
       {% if site.data.contact.location %}
       <div class="home-contact-row">
-        <dd aria-label="地点">{{ site.data.contact.location }}<span class="home-contact-note">（地点）</span></dd>
+        <dd aria-label="地点">{{ site.data.contact.location }}</dd>
       </div>
       {% endif %}
       {% if site.data.contact.wechat %}
       <div class="home-contact-row">
-        <dd aria-label="微信">{% include wechat-id.html uid="home" %}<span class="home-contact-note">（微信）</span></dd>
+        <dd aria-label="微信">{% include wechat-id.html uid="home" %}</dd>
       </div>
       {% endif %}
       {% if site.data.contact.email %}
       <div class="home-contact-row">
-        <dd aria-label="邮箱">{{ site.data.contact.email }}<span class="home-contact-note">（邮箱）</span></dd>
+        <dd aria-label="邮箱">{{ site.data.contact.email }}</dd>
       </div>
       {% endif %}
     </dl>
