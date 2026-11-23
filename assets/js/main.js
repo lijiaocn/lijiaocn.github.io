@@ -265,17 +265,17 @@
     apply(tabs[0].getAttribute('data-tag'));
   })();
 
-  // —— 目录栏独立滚动：滚轮不传到 main ——
+  // —— 中栏独立滚动：滚轮不传到 main（内容高度自然撑开，滚动在 mid-panel）——
   (function initCatalogScrollLock() {
-    var body = document.querySelector('.catalog-body');
-    if (!body) return;
+    var panel = document.querySelector('.mid-panel--catalog');
+    if (!panel) return;
 
     // 每个列表(about/posts/works/notes)用各自的 key，避免串位
-    var head = document.querySelector('.catalog .catalog-head');
+    var head = document.querySelector('.mid-panel--catalog .catalog-head');
     var key = 'catalog-scroll:' + (head ? (head.getAttribute('href') || head.id || 'tags') : 'default');
 
     function clamp(v) {
-      var max = body.scrollHeight - body.clientHeight;
+      var max = panel.scrollHeight - panel.clientHeight;
       return Math.max(0, Math.min(v, Math.max(0, max)));
     }
 
@@ -285,37 +285,32 @@
       if (saved == null || saved === '') return;
       var v = parseInt(saved, 10);
       if (isNaN(v)) return;
-      body.scrollTop = clamp(v);
+      panel.scrollTop = clamp(v);
     }
 
-    // 脚本在 body 末尾执行，DOM 已就绪，可立即恢复
     restore();
-    // 字体/图片加载可能改变列表高度，加载完成后再校准一次
     window.addEventListener('load', restore);
 
-    // 滚动时节流保存
     var timer = null;
-    body.addEventListener('scroll', function () {
+    panel.addEventListener('scroll', function () {
       if (timer) clearTimeout(timer);
       timer = setTimeout(function () {
-        try { localStorage.setItem(key, String(body.scrollTop)); } catch (e) {}
+        try { localStorage.setItem(key, String(panel.scrollTop)); } catch (e) {}
       }, 80);
     }, { passive: true });
 
-    // 点击目录里的链接跳转前立即保存（节流可能尚未触发）
-    body.addEventListener('click', function (e) {
+    panel.addEventListener('click', function (e) {
       var a = e.target.closest ? e.target.closest('a') : null;
       if (!a) return;
-      try { localStorage.setItem(key, String(body.scrollTop)); } catch (err) {}
+      try { localStorage.setItem(key, String(panel.scrollTop)); } catch (err) {}
     }, true);
 
-    body.addEventListener('wheel', function (e) {
-      var max = body.scrollHeight - body.clientHeight;
-      if (max <= 0) return; // 内容未溢出时不拦截，交给页面滚动
-      var top = body.scrollTop;
+    panel.addEventListener('wheel', function (e) {
+      var max = panel.scrollHeight - panel.clientHeight;
+      if (max <= 0) return;
+      var top = panel.scrollTop;
       var goingUp = e.deltaY < 0;
       var goingDown = e.deltaY > 0;
-      // 滑到顶/底后继续滚时，不带动 main
       if ((goingUp && top <= 0) || (goingDown && top >= max - 1)) {
         e.preventDefault();
       }

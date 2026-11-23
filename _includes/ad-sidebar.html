@@ -1,23 +1,13 @@
-{% comment %}
-中栏广告旁栏：通过 front matter `mid_panel: ad` 启用，与 catalog / tags 同槽位。
-支持拖宽。广告代码粘贴到 .sidebar-ad-slot。
-{% endcomment %}
-<aside class="sidebar-ad" aria-label="赞助">
-  {% include mid-panel-resizer.html %}
-  <div class="sidebar-ad-inner">
-    <div class="sidebar-ad-slot">
-      <!-- TODO: 在此粘贴 Google 广告单元代码 -->
-      <!-- 左侧边栏 -->
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-8176866190626448"
-           data-ad-slot="9275462939"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-      <script>
-           (adsbygoogle = window.adsbygoogle || []).push({});
-      </script>
-
-    </div>
-  </div>
-</aside>
+{% comment %}中栏广告内容（壳层由 mid-panel.html 提供）{% endcomment %}
+<div class="sidebar-ad-slot">
+  <!-- TODO: 在此粘贴 Google 广告单元代码 -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-8176866190626448"
+       data-ad-slot="9275462939"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>
+       (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+</div>

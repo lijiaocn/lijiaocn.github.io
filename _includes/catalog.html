@@ -1,74 +1,68 @@
-{% comment %}中列目录：与左栏入口联动（高亮由 default layout 传入）{% endcomment %}
-<aside class="catalog">
-  {% include mid-panel-resizer.html %}
+{% comment %}中栏目录内容（壳层由 mid-panel.html 提供）{% endcomment %}
+{% if a_posts %}
+  {% if page.tags and page.tags.size > 0 %}
+<div class="catalog-head catalog-tag-tabs" id="catalog-tag-tabs" role="tablist" aria-label="按标签筛选文章">
+  {% for t in page.tags %}
+    {% assign tag_count = 0 %}
+    {% for item in site.posts %}
+      {% if item.tags contains t %}{% assign tag_count = tag_count | plus: 1 %}{% endif %}
+    {% endfor %}
+  <button class="catalog-tag-tab" type="button" role="tab" data-tag="{{ t }}" data-count="{{ tag_count }}" aria-selected="false">{{ t }}<span class="catalog-tag-count">{{ tag_count }}</span></button>
+  {% endfor %}
+  <button class="catalog-tag-tab catalog-tag-tab--all" type="button" role="tab" data-tag="all" data-count="{{ site.posts.size }}" aria-selected="false">全部<span class="catalog-tag-count">{{ site.posts.size }}</span></button>
+</div>
+  {% else %}
+<a class="catalog-head" href="{{ site.baseurl }}/posts/"><h2>文章列表</h2></a>
+  {% endif %}
+<div class="catalog-body">
+  <ul class="catalog-list" id="catalog-list">
+    {% for item in site.posts %}
+    <li class="catalog-item{% if item.url == cur %} is-current{% endif %}" data-tags="{{ item.tags | join: '|' }}">
+      <a href="{{ site.baseurl }}{{ item.url }}">{{ item.title }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
 
-  <div class="catalog-inner" id="catalog-inner">
-    {% if a_posts %}
-      {% if page.tags and page.tags.size > 0 %}
-    <div class="catalog-head catalog-tag-tabs" id="catalog-tag-tabs" role="tablist" aria-label="按标签筛选文章">
-      {% for t in page.tags %}
-        {% assign tag_count = 0 %}
-        {% for item in site.posts %}
-          {% if item.tags contains t %}{% assign tag_count = tag_count | plus: 1 %}{% endif %}
-        {% endfor %}
-      <button class="catalog-tag-tab" type="button" role="tab" data-tag="{{ t }}" data-count="{{ tag_count }}" aria-selected="false">{{ t }}<span class="catalog-tag-count">{{ tag_count }}</span></button>
-      {% endfor %}
-      <button class="catalog-tag-tab catalog-tag-tab--all" type="button" role="tab" data-tag="all" data-count="{{ site.posts.size }}" aria-selected="false">全部<span class="catalog-tag-count">{{ site.posts.size }}</span></button>
-    </div>
-      {% else %}
-    <a class="catalog-head" href="{{ site.baseurl }}/posts/"><h2>文章列表</h2></a>
-      {% endif %}
-    <div class="catalog-body">
-      <ul class="catalog-list" id="catalog-list">
-        {% for item in site.posts %}
-        <li class="catalog-item{% if item.url == cur %} is-current{% endif %}" data-tags="{{ item.tags | join: '|' }}">
-          <a href="{{ site.baseurl }}{{ item.url }}">{{ item.title }}</a>
-        </li>
-        {% endfor %}
-      </ul>
-    </div>
+{% elsif a_works %}
+<a class="catalog-head" href="{{ site.baseurl }}/works/"><h2>作品列表</h2></a>
+<div class="catalog-body">
+  <ul class="catalog-list">
+    {% assign works_list = site.works %}
+    {% unless works_list %}{% assign works_list = "" | split: "," %}{% endunless %}
+    {% assign sorted_works = works_list | sort: "date" | reverse %}
+    {% for item in sorted_works %}
+    <li class="catalog-item{% if item.url == cur %} is-current{% endif %}">
+      <a href="{{ site.baseurl }}{{ item.url }}">{{ item.title }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
 
-    {% elsif a_works %}
-    <a class="catalog-head" href="{{ site.baseurl }}/works/"><h2>作品列表</h2></a>
-    <div class="catalog-body">
-      <ul class="catalog-list">
-        {% assign works_list = site.works %}
-        {% unless works_list %}{% assign works_list = "" | split: "," %}{% endunless %}
-        {% assign sorted_works = works_list | sort: "date" | reverse %}
-        {% for item in sorted_works %}
-        <li class="catalog-item{% if item.url == cur %} is-current{% endif %}">
-          <a href="{{ site.baseurl }}{{ item.url }}">{{ item.title }}</a>
-        </li>
-        {% endfor %}
-      </ul>
-    </div>
-
-    {% elsif a_notes %}
-      {% if page.tags and page.tags.size > 0 %}
-      {% assign catalog_notes = site.notes | sort: "date" | reverse %}
-    <div class="catalog-head catalog-tag-tabs" id="catalog-tag-tabs" role="tablist" aria-label="按标签筛选笔记">
-      {% for t in page.tags %}
-        {% assign tag_count = 0 %}
-        {% for item in catalog_notes %}
-          {% if item.tags contains t %}{% assign tag_count = tag_count | plus: 1 %}{% endif %}
-        {% endfor %}
-      <button class="catalog-tag-tab" type="button" role="tab" data-tag="{{ t }}" data-count="{{ tag_count }}" aria-selected="false">{{ t }}<span class="catalog-tag-count">{{ tag_count }}</span></button>
-      {% endfor %}
-      <button class="catalog-tag-tab catalog-tag-tab--all" type="button" role="tab" data-tag="all" data-count="{{ catalog_notes.size }}" aria-selected="false">全部<span class="catalog-tag-count">{{ catalog_notes.size }}</span></button>
-    </div>
-      {% else %}
-    <a class="catalog-head" href="{{ site.baseurl }}/notes/"><h2>笔记目录</h2></a>
-      {% endif %}
-    <div class="catalog-body">
-      <ul class="catalog-list" id="catalog-list">
-        {% assign sorted_notes = site.notes | sort: "date" | reverse %}
-        {% for item in sorted_notes %}
-        <li class="catalog-item{% if item.url == cur %} is-current{% endif %}" data-tags="{{ item.tags | join: '|' }}">
-          <a href="{{ site.baseurl }}{{ item.url }}">{{ item.title }}</a>
-        </li>
-        {% endfor %}
-      </ul>
-    </div>
-    {% endif %}
-  </div>
-</aside>
+{% elsif a_notes %}
+  {% if page.tags and page.tags.size > 0 %}
+  {% assign catalog_notes = site.notes | sort: "date" | reverse %}
+<div class="catalog-head catalog-tag-tabs" id="catalog-tag-tabs" role="tablist" aria-label="按标签筛选笔记">
+  {% for t in page.tags %}
+    {% assign tag_count = 0 %}
+    {% for item in catalog_notes %}
+      {% if item.tags contains t %}{% assign tag_count = tag_count | plus: 1 %}{% endif %}
+    {% endfor %}
+  <button class="catalog-tag-tab" type="button" role="tab" data-tag="{{ t }}" data-count="{{ tag_count }}" aria-selected="false">{{ t }}<span class="catalog-tag-count">{{ tag_count }}</span></button>
+  {% endfor %}
+  <button class="catalog-tag-tab catalog-tag-tab--all" type="button" role="tab" data-tag="all" data-count="{{ catalog_notes.size }}" aria-selected="false">全部<span class="catalog-tag-count">{{ catalog_notes.size }}</span></button>
+</div>
+  {% else %}
+<a class="catalog-head" href="{{ site.baseurl }}/notes/"><h2>笔记目录</h2></a>
+  {% endif %}
+<div class="catalog-body">
+  <ul class="catalog-list" id="catalog-list">
+    {% assign sorted_notes = site.notes | sort: "date" | reverse %}
+    {% for item in sorted_notes %}
+    <li class="catalog-item{% if item.url == cur %} is-current{% endif %}" data-tags="{{ item.tags | join: '|' }}">
+      <a href="{{ site.baseurl }}{{ item.url }}">{{ item.title }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}

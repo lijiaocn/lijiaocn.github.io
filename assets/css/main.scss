@@ -163,17 +163,23 @@ a{color:inherit;text-decoration:none}
 }
 
 /* ============================================================
-   Catalog — 内容列（跟随入口联动，唯一会增长的区域，自身滚动）
+   Mid panel — 中栏外壳（catalog / tags / ad 共用）
    ============================================================ */
-.catalog{
+.mid-panel{
   position:fixed;top:0;left:var(--rail-w);z-index:20;height:100vh;
-  width:var(--catalog-w);overflow:hidden;
+  width:var(--catalog-w);
+  overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;
   border-right:1px solid var(--line);background:var(--doc-bg);
+  scrollbar-width:none;
 }
-.catalog-inner{
-  height:100%;min-height:0;display:flex;flex-direction:column;
-  padding:64px 24px 40px;overflow:hidden;
+.mid-panel::-webkit-scrollbar{display:none;width:0;height:0}
+.mid-panel-inner{
+  height:100%;box-sizing:border-box;
+  padding:64px 24px 40px;
 }
+.mid-panel--ad{border-right:0}
+.mid-panel--ad .mid-panel-inner,
+.mid-panel--tags .mid-panel-inner{padding:64px 20px 40px}
 
 /* 右边界拖拽手柄（仅调宽） */
 .catalog-resizer{
@@ -215,15 +221,8 @@ body.is-resizing .catalog-resizer::after{background:var(--accent)}
 .catalog-tag-tab:hover .catalog-tag-count,
 .catalog-tag-tab.is-active .catalog-tag-count{color:var(--muted)}
 .catalog-item[hidden]{display:none}
-/* 目录自身滚动，与 main 文档滚动隔离；长列表只在此区域滑动 */
-.catalog-body{
-  flex:1;min-height:0;
-  overflow-x:hidden;overflow-y:auto;
-  overscroll-behavior:contain;
-  -webkit-overflow-scrolling:touch;
-  scrollbar-width:none;
-}
-.catalog-body::-webkit-scrollbar{display:none;width:0;height:0}
+/* 高度由列表内容自然撑开；滚动在 .mid-panel */
+.catalog-body{min-width:0}
 .catalog-list{list-style:none;margin:0;padding:0}
 .catalog-item{position:relative;min-width:0;max-width:100%}
 .catalog-item a{
@@ -232,37 +231,14 @@ body.is-resizing .catalog-resizer::after{background:var(--accent)}
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 
-/* 中栏旁栏（广告 / 标签）：与 catalog 同槽位，整栏替换 */
-.sidebar-ad,
-.sidebar-tags{
-  position:fixed;top:0;left:var(--rail-w);z-index:20;height:100vh;
-  width:var(--catalog-w);overflow:hidden;
-  background:var(--doc-bg);
-}
-.sidebar-ad-inner{
-  height:100%;padding:64px 20px 40px;overflow-y:auto;overscroll-behavior:contain;
-  border-right:0;scrollbar-width:none;
-}
-.sidebar-ad-inner::-webkit-scrollbar{display:none;width:0;height:0}
 .sidebar-ad-slot{width:100%}
 
-.sidebar-tags-inner{
-  height:100%;min-height:0;padding:64px 20px 40px;
-  display:flex;flex-direction:column;overflow:hidden;
-}
-.sidebar-tags-head{flex:none;margin:0 0 16px}
+.sidebar-tags-head{margin:0 0 16px}
 .sidebar-tags-head h2{
   margin:0;font-family:var(--font-display);font-size:16px;font-weight:700;
   letter-spacing:-.01em;color:var(--ink);
 }
-.sidebar-tags-list{
-  list-style:none;margin:0;padding:0;
-  flex:1;min-height:0;
-  overflow-x:hidden;overflow-y:auto;
-  overscroll-behavior:contain;
-  scrollbar-width:none;
-}
-.sidebar-tags-list::-webkit-scrollbar{display:none;width:0;height:0}
+.sidebar-tags-list{list-style:none;margin:0;padding:0}
 .sidebar-tags-item{margin:0}
 .sidebar-tag{
   width:100%;display:flex;align-items:baseline;justify-content:space-between;gap:12px;
@@ -282,7 +258,7 @@ body.is-resizing .catalog-resizer::after{background:var(--accent)}
 .sidebar-tag.is-active .sidebar-tag-count{color:var(--accent)}
 
 /* 中栏已铺开标签时，隐藏主栏顶部 tag-toolbar */
-body:has(.sidebar-tags) .tag-toolbar{display:none}
+body:has(.mid-panel--tags) .tag-toolbar{display:none}
 .catalog-item a:hover{color:var(--ink)}
 .catalog-item.is-current::before{
   content:"";position:absolute;left:0;top:11px;bottom:11px;width:2px;
@@ -912,10 +888,8 @@ a.entry-title:visited:hover{color:#57445e}
    ============================================================ */
 @media (max-width:1100px){
   /* 中等屏隐藏浮层中栏 */
-  .catalog,
-  .sidebar-ad,
-  .sidebar-tags{display:none}
-  body:has(.sidebar-tags) .tag-toolbar{display:block}
+  .mid-panel{display:none}
+  body:has(.mid-panel--tags) .tag-toolbar{display:block}
 }
 
 @media (max-width:720px){

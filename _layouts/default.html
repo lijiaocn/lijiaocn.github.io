@@ -17,14 +17,7 @@
   <div class="layout">
     {% include rail.html %}
     <div class="stage">
-      {% comment %}中栏：mid_panel=ad|tags 整栏替换 catalog{% endcomment %}
-      {% if page.mid_panel == 'ad' %}
-        {% include ad-sidebar.html %}
-      {% elsif page.mid_panel == 'tags' %}
-        {% include sidebar-tags.html %}
-      {% else %}
-        {% include catalog.html %}
-      {% endif %}
+      {% include mid-panel.html %}
       <main class="main" id="main" role="main">
         {% unless cur == '/' %}
         <button class="main-back" id="main-back" type="button" hidden aria-label="返回上一页" title="返回上一页">

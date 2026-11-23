@@ -1,0 +1,26 @@
+{% comment %}
+中栏外壳：统一壳层 + 拖宽手柄；按 mid_panel 装入具体内容。
+mid_panel: ad → 仅广告；tags /（缺省）catalog → 主内容后再跟广告
+{% endcomment %}
+{% assign mid = page.mid_panel | default: "catalog" %}
+{% if mid != "ad" and mid != "tags" %}{% assign mid = "catalog" %}{% endif %}
+
+<aside
+  class="mid-panel mid-panel--{{ mid }}"
+  {% if mid == "tags" %}id="sidebar-tags"{% endif %}
+  aria-label="{% if mid == "ad" %}赞助{% elsif mid == "tags" %}标签{% else %}目录{% endif %}"
+>
+  <div class="catalog-resizer" id="catalog-resizer" role="separator" aria-orientation="vertical" aria-label="拖动调整侧栏宽度" tabindex="0"></div>
+  <div class="mid-panel-inner"{% if mid == "catalog" %} id="catalog-inner"{% endif %}>
+    {% if mid == "ad" %}
+      {% include ad-sidebar.html %}
+    {% else %}
+      {% if mid == "tags" %}
+        {% include sidebar-tags.html %}
+      {% else %}
+        {% include catalog.html %}
+      {% endif %}
+      {% include ad-sidebar.html %}
+    {% endif %}
+  </div>
+</aside>
