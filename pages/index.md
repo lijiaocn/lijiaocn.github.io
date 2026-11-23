@@ -32,7 +32,10 @@ permalink: /
   <aside class="home-split-left">
     <div class="block-head block-head--start">
       <h2>工作状态</h2>
-      <button type="button" class="contact-trigger" id="contact-trigger" aria-haspopup="dialog" aria-controls="contact-dialog" aria-label="联系我">💬</button>
+      <span class="contact-trigger-wrap">
+        <button type="button" class="contact-trigger" id="contact-trigger" aria-haspopup="dialog" aria-controls="contact-dialog" aria-label="联系我" aria-describedby="contact-trigger-tip">💬</button>
+        <span class="contact-trigger-tip" id="contact-trigger-tip" role="tooltip">单击获取联系方式</span>
+      </span>
     </div>
     {% include experience-timeline.html %}
   </aside>

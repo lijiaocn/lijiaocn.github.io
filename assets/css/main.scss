@@ -362,6 +362,7 @@ body:has(.sidebar-tags) .tag-toolbar{display:none}
   position:absolute;width:1px;height:1px;padding:0;margin:-1px;
   overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
 }
+.contact-trigger-wrap{position:relative;display:inline-flex;flex:none;line-height:0}
 .contact-trigger{
   display:inline-flex;align-items:center;justify-content:center;
   flex:none;box-sizing:border-box;
@@ -373,6 +374,28 @@ body:has(.sidebar-tags) .tag-toolbar{display:none}
   transition:opacity .2s,background .2s,transform .15s;
 }
 .contact-trigger:hover{opacity:.85;background:rgba(26,26,28,.06)}
+.contact-trigger-tip{
+  position:absolute;left:50%;bottom:calc(100% + 10px);
+  transform:translateX(-50%) translateY(4px);
+  padding:6px 10px;border-radius:8px;
+  background:var(--ink);color:#fff;
+  font-family:var(--font-sans);font-size:12px;font-weight:500;line-height:1.3;
+  white-space:nowrap;pointer-events:none;
+  opacity:0;visibility:hidden;
+  transition:opacity .16s ease,visibility .16s ease,transform .16s ease;
+  z-index:40;
+}
+.contact-trigger-tip::after{
+  content:"";position:absolute;left:50%;top:100%;
+  margin-left:-5px;border:5px solid transparent;border-top-color:var(--ink);
+}
+.contact-trigger-wrap:hover .contact-trigger-tip,
+.contact-trigger-wrap:focus-within .contact-trigger-tip{
+  opacity:1;visibility:visible;transform:translateX(-50%) translateY(0);
+}
+.contact-trigger-wrap.is-tip-dismissed .contact-trigger-tip{
+  opacity:0;visibility:hidden;transform:translateX(-50%) translateY(4px);
+}
 .contact-dialog{
   margin:auto;padding:0;border:1px solid var(--line);border-radius:12px;
   background:var(--surface);color:var(--ink);

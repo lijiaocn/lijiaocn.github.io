@@ -7,7 +7,7 @@ author: "李佶澳"
 
 url: "https://www.lijiaocn.com"
 baseurl: ""
-asset_version: "20261125t"
+asset_version: "20261125w"
 
 # collections（仅 Jekyll 原生字段；左栏见 _data/rail.yml）
 collections:

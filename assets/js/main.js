@@ -376,9 +376,27 @@
     var dialog = document.getElementById('contact-dialog');
     if (!trigger || !dialog || typeof dialog.showModal !== 'function') return;
 
+    var wrap = trigger.closest('.contact-trigger-wrap');
+
+    function dismissTip() {
+      if (wrap) wrap.classList.add('is-tip-dismissed');
+    }
+
     trigger.addEventListener('click', function () {
+      dismissTip();
       dialog.showModal();
+      trigger.blur();
     });
+
+    // 关闭弹窗后若鼠标仍停在气泡上，提示应保持隐藏，直到移出后再悬停
+    dialog.addEventListener('close', dismissTip);
+
+    if (wrap) {
+      wrap.addEventListener('pointerleave', function () {
+        if (dialog.open) return;
+        wrap.classList.remove('is-tip-dismissed');
+      });
+    }
 
     dialog.addEventListener('click', function (e) {
       if (e.target === dialog) dialog.close();
