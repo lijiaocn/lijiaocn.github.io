@@ -16,8 +16,17 @@ layout: default
         {% if page.status %}<span class="work-status"><span class="status-dot"></span>{{ page.status }}</span>{% endif %}
       </div>
     </div>
-    {% if page.link or page.type %}
-    <div class="work-hero">
+    {% if page.link or page.type or page.description or page.name %}
+    {% include work-cover-palette.html %}
+    <div class="work-hero work-hero--{{ cover_palette }}">
+      <div class="work-hero-main">
+        {% if page.name %}
+        <p class="work-hero-name">{{ page.name }}</p>
+        {% endif %}
+        {% if page.description %}
+        <p class="work-hero-slogan">{{ page.description }}</p>
+        {% endif %}
+      </div>
       {% if page.type %}<span class="work-hero-type">{{ page.type }}</span>{% endif %}
       {% if page.link %}
       <a class="work-hero-cta" href="{{ page.link }}"{% if page.link contains 'http' %} target="_blank" rel="noopener noreferrer"{% endif %}>{{ page.link_label | default: "访问作品" }} →</a>

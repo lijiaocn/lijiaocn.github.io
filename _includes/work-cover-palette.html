@@ -1,0 +1,22 @@
+{% comment %}
+  为作品分配封面/hero 配色（与 works 列表轮替规则一致）。
+  可选：front matter palette 覆盖（mint|coral|sky|sunset）
+  入参：work（可选，默认 page）
+  产出：cover_palette
+{% endcomment %}
+{% assign _palette_work = include.work | default: page %}
+{% if _palette_work.palette %}
+  {% assign cover_palette = _palette_work.palette %}
+{% else %}
+  {% assign cover_palettes = "mint,coral,sky,sunset" | split: "," %}
+  {% assign cover_palette_count = cover_palettes | size %}
+  {% assign _palette_works = site.works | sort: "date" | reverse %}
+  {% assign cover_i = 0 %}
+  {% for w in _palette_works %}
+    {% if w.url == _palette_work.url %}
+      {% assign cover_i = forloop.index0 | modulo: cover_palette_count %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+  {% assign cover_palette = cover_palettes[cover_i] %}
+{% endif %}

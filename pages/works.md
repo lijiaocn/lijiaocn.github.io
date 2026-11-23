@@ -16,18 +16,23 @@ mid_panel: tags
   {% assign works = works_list | sort: "date" | reverse %}
   <div class="work-grid" id="content-list" data-collection="works">
     {% for work in works %}
+    {% include work-cover-palette.html work=work %}
     <a class="work-tile" href="{{ site.baseurl }}{{ work.url }}" data-tags="{{ work.tags | join: '|' }}">
-      <div class="work-tile-cover">
+      <div class="work-tile-cover work-tile-cover--{{ cover_palette }}">
+        <div class="work-tile-cover-main">
+          {% if work.name %}
+          <p class="work-tile-name">{{ work.name }}</p>
+          {% elsif work.title %}
+          <p class="work-tile-name">{{ work.title }}</p>
+          {% endif %}
+          {% if work.description %}<p class="work-tile-slogan">{{ work.description }}</p>{% endif %}
+        </div>
         {% if work.type %}<span class="work-tile-type">{{ work.type }}</span>{% endif %}
       </div>
       <div class="work-tile-body">
-        <div class="work-tile-top">
-          <h3 class="work-tile-title">{{ work.title }}</h3>
-          {% if work.date %}<time class="work-tile-year" datetime="{{ work.date | date: '%Y-%m-%d' }}">{{ work.date | date: "%Y" }}</time>{% endif %}
-        </div>
-        {% if work.description %}<p class="work-tile-tagline">{{ work.description }}</p>{% endif %}
+        <h3 class="work-tile-title">{{ work.title }}</h3>
         {% if work.status %}
-        <div class="work-tile-foot">
+        <div class="work-tile-meta">
           <span class="work-tile-status"><span class="status-dot"></span>{{ work.status }}</span>
         </div>
         {% endif %}

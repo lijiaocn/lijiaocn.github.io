@@ -474,43 +474,98 @@ a.entry-title:visited:hover{color:#57445e}
 .work-tile{
   display:flex;flex-direction:column;overflow:hidden;
   border:1px solid var(--line);border-radius:11px;background:var(--surface);
-  transition:border-color .2s,transform .2s,box-shadow .2s;
+  transition:border-color .2s,box-shadow .2s;
 }
 .work-tile[hidden],
 .work-tile.is-tag-hidden{display:none!important}
-.work-tile:hover{border-color:rgba(79,70,229,.35);transform:translateY(-3px);box-shadow:0 10px 26px rgba(26,26,28,.06)}
+.work-tile:hover{border-color:rgba(14,165,233,.55);box-shadow:0 0 0 1px rgba(14,165,233,.18)}
 .work-tile-cover{
-  position:relative;height:118px;padding:20px 22px;
-  display:flex;align-items:flex-start;justify-content:flex-end;
-  --from:#4b5563;--to:#1f2937;
-  background:linear-gradient(135deg,var(--from),var(--to));color:#fff;
-  overflow:hidden;
+  position:relative;min-height:148px;padding:22px 20px 20px;
+  display:flex;align-items:flex-start;justify-content:space-between;gap:14px;
+  color:#fff;overflow:hidden;
 }
 .work-tile-cover::before{
   content:"";position:absolute;inset:-40% -10% auto auto;width:220px;height:220px;
-  border:1px solid rgba(255,255,255,.25);border-radius:50%;
+  border:1px solid rgba(255,255,255,.28);border-radius:50%;pointer-events:none;
 }
 .work-tile-cover::after{
   content:"";position:absolute;inset:-25% -2% auto auto;width:150px;height:150px;
-  border:1px solid rgba(255,255,255,.2);border-radius:50%;
+  border:1px solid rgba(255,255,255,.2);border-radius:50%;pointer-events:none;
+}
+/* 封面 / hero 共用配色：mint / coral / sky / sunset */
+.work-tile-cover--mint,
+.work-hero--mint{
+  background:
+    radial-gradient(ellipse 55% 70% at 100% 0%,rgba(255,255,255,.28),transparent 52%),
+    radial-gradient(ellipse 48% 58% at 0% 100%,rgba(253,224,71,.32),transparent 52%),
+    radial-gradient(ellipse 42% 50% at 78% 88%,rgba(251,113,133,.22),transparent 55%),
+    linear-gradient(135deg,#0ea5e9 0%,#14b8a6 48%,#22c55e 100%);
+}
+.work-tile-cover--coral,
+.work-hero--coral{
+  background:
+    radial-gradient(ellipse 55% 70% at 100% 0%,rgba(255,255,255,.3),transparent 52%),
+    radial-gradient(ellipse 48% 58% at 0% 100%,rgba(253,224,71,.36),transparent 52%),
+    radial-gradient(ellipse 42% 50% at 78% 88%,rgba(251,146,60,.28),transparent 55%),
+    linear-gradient(135deg,#fb7185 0%,#fb923c 52%,#fbbf24 100%);
+}
+.work-tile-cover--sky,
+.work-hero--sky{
+  background:
+    radial-gradient(ellipse 55% 70% at 100% 0%,rgba(255,255,255,.32),transparent 52%),
+    radial-gradient(ellipse 48% 58% at 0% 100%,rgba(125,211,252,.4),transparent 52%),
+    radial-gradient(ellipse 42% 50% at 78% 88%,rgba(34,211,238,.22),transparent 55%),
+    linear-gradient(135deg,#38bdf8 0%,#60a5fa 48%,#2dd4bf 100%);
+}
+.work-tile-cover--sunset,
+.work-hero--sunset{
+  background:
+    radial-gradient(ellipse 55% 70% at 100% 0%,rgba(255,255,255,.28),transparent 52%),
+    radial-gradient(ellipse 48% 58% at 0% 100%,rgba(253,186,116,.38),transparent 52%),
+    radial-gradient(ellipse 42% 50% at 78% 88%,rgba(244,114,182,.26),transparent 55%),
+    linear-gradient(135deg,#f472b6 0%,#fb7185 46%,#fb923c 100%);
+}
+.work-tile-cover-main{
+  position:relative;z-index:1;flex:1;min-width:0;
+  display:flex;flex-direction:column;justify-content:center;gap:8px;
+  padding-right:8px;align-self:center;
+}
+.work-tile-name{
+  margin:0;
+  font-family:var(--font-display);
+  font-size:22px;font-weight:700;letter-spacing:-.02em;line-height:1.2;
+  color:#fff;text-shadow:0 1px 2px rgba(15,23,42,.12);
+}
+.work-tile-slogan{
+  margin:0;
+  font-family:var(--font-sans);
+  font-size:13.5px;font-weight:500;line-height:1.55;
+  color:rgba(255,255,255,.9);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
 }
 .work-tile-icon{position:relative;font-size:40px;line-height:1;font-weight:700;text-shadow:0 1px 12px rgba(0,0,0,.12)}
 .work-tile-type{
-  position:relative;align-self:flex-start;padding:3px 10px;border-radius:20px;
-  background:rgba(255,255,255,.2);backdrop-filter:blur(4px);
-  font-size:11px;letter-spacing:.02em;white-space:nowrap;
+  position:relative;z-index:1;flex:none;align-self:flex-start;padding:3px 10px;border-radius:999px;
+  background:rgba(255,255,255,.28);backdrop-filter:blur(4px);
+  color:#fff;font-size:11px;font-weight:600;letter-spacing:.02em;white-space:nowrap;
 }
-.work-tile-body{display:flex;flex-direction:column;flex:1;padding:18px 22px 20px}
-.work-tile-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
-.work-tile-title{margin:0;font-family:var(--font-display);font-size:19px;font-weight:700;letter-spacing:-.01em;line-height:1.35}
-.work-tile-year{flex:none;font-family:var(--font-mono);font-size:11.5px;color:var(--faint)}
+.work-tile-body{
+  display:flex;flex-direction:column;gap:8px;
+  padding:16px 20px 18px;
+}
+.work-tile-title{
+  margin:0;
+  font-family:var(--font-display);font-size:17px;font-weight:600;
+  letter-spacing:-.01em;line-height:1.45;color:var(--ink);
+}
+.work-tile-meta{
+  display:inline-flex;align-items:center;align-self:flex-end;gap:6px;
+  font-size:11.5px;line-height:1.35;color:var(--muted);white-space:nowrap;
+}
+.work-tile-year{font-family:var(--font-mono);font-size:11px;color:var(--faint)}
+.work-tile-sep{color:var(--faint);font-weight:400}
 .work-tile-tagline{margin:8px 0 18px;color:var(--ink-soft);font-size:13.5px;line-height:1.7}
-.work-tile-foot{
-  margin-top:auto;padding-top:13px;border-top:1px solid var(--line);
-  display:flex;align-items:center;gap:10px;font-size:11.5px;color:var(--muted);
-}
-.work-tile-role{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.work-tile-status{display:inline-flex;align-items:center;gap:6px;margin-left:auto;white-space:nowrap}
+.work-tile-status{display:inline-flex;align-items:center;gap:5px}
 .status-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex:none}
 
 /* 作品详情页：先标题信息，再视觉块 */
@@ -521,32 +576,70 @@ a.entry-title:visited:hover{color:#57445e}
 .work-desc{margin:14px 0 0;font-size:15px;line-height:1.7;color:var(--ink-soft)}
 .work-status{display:inline-flex;align-items:center;gap:6px}
 .work-hero{
-  position:relative;height:148px;margin:0;padding:22px 28px;
-  display:flex;align-items:flex-start;justify-content:flex-end;
-  --from:#4b5563;--to:#1f2937;
-  border-radius:12px;background:linear-gradient(135deg,var(--from),var(--to));color:#fff;overflow:hidden;
+  position:relative;min-height:220px;margin:0;padding:36px 32px 64px;
+  display:flex;align-items:center;justify-content:space-between;gap:28px;
+  border-radius:16px;
+  color:#fff;overflow:hidden;
 }
 .work-hero::before{
   content:"";position:absolute;inset:-60% -10% auto auto;width:320px;height:320px;
-  border:1px solid rgba(255,255,255,.25);border-radius:50%;
+  border:1px solid rgba(255,255,255,.28);border-radius:50%;pointer-events:none;
 }
 .work-hero::after{
   content:"";position:absolute;inset:-25% -3% auto auto;width:200px;height:200px;
-  border:1px solid rgba(255,255,255,.2);border-radius:50%;
+  border:1px solid rgba(255,255,255,.2);border-radius:50%;pointer-events:none;
+}
+.work-hero-main{
+  position:relative;z-index:1;flex:1;min-width:0;max-width:min(520px,72%);
+  display:flex;flex-direction:column;justify-content:center;gap:12px;
+}
+.work-hero-name{
+  margin:0;
+  font-family:var(--font-display);
+  font-size:clamp(28px,4vw,40px);
+  font-weight:700;
+  letter-spacing:-.03em;
+  line-height:1.15;
+  color:#fff;
+  text-shadow:0 1px 2px rgba(15,23,42,.12),0 10px 24px rgba(15,23,42,.1);
+}
+.work-hero-slogan{
+  margin:0;
+  font-family:var(--font-sans);
+  font-size:clamp(15px,2vw,18px);
+  font-weight:500;
+  letter-spacing:.01em;
+  line-height:1.55;
+  color:rgba(255,255,255,.9);
+  text-wrap:balance;
+  text-shadow:0 1px 2px rgba(15,23,42,.1);
 }
 .work-hero-icon{position:relative;font-size:56px;line-height:1;font-weight:700;text-shadow:0 2px 20px rgba(0,0,0,.12)}
 .work-hero-type{
-  position:relative;align-self:flex-start;padding:5px 13px;border-radius:20px;
-  background:rgba(255,255,255,.2);backdrop-filter:blur(4px);font-size:12px;letter-spacing:.02em;white-space:nowrap;
+  position:relative;z-index:1;flex:none;align-self:flex-start;padding:5px 13px;border-radius:999px;
+  background:rgba(255,255,255,.28);backdrop-filter:blur(6px);
+  color:#fff;font-size:12px;font-weight:600;letter-spacing:.02em;white-space:nowrap;
 }
 .work-hero-cta{
   position:absolute;right:20px;bottom:18px;z-index:1;
-  display:inline-flex;align-items:center;padding:8px 14px;border-radius:8px;
-  background:rgba(255,255,255,.22);backdrop-filter:blur(6px);
-  color:#fff;font-size:13px;font-weight:600;letter-spacing:.01em;
-  transition:background .2s;
+  display:inline-flex;align-items:center;padding:9px 16px;border-radius:999px;
+  background:#fff;
+  color:#0f172a;
+  font-size:13px;font-weight:600;letter-spacing:.01em;
+  box-shadow:0 8px 20px rgba(15,23,42,.12);
+  transition:background .2s,color .2s,box-shadow .2s;
 }
-.work-hero-cta:hover{background:rgba(255,255,255,.34);color:#fff}
+.work-hero-cta:hover{
+  background:#f8fafc;color:#0f172a;
+  box-shadow:0 10px 24px rgba(15,23,42,.16);
+}
+@media (max-width:720px){
+  .work-hero{min-height:180px;padding:28px 18px 58px;gap:16px}
+  .work-hero-main{max-width:100%}
+  .work-hero-name{font-size:28px}
+  .work-hero-slogan{font-size:15px}
+  .work-hero-type{position:absolute;top:16px;right:16px}
+}
 
 /* ============================================================
    Home
@@ -858,7 +951,8 @@ a.entry-title:visited:hover{color:#57445e}
   .entry-note{display:none}
   .entry-title{font-size:15px}
   .work-grid{grid-template-columns:1fr;gap:14px}
-  .work-tile-cover{height:100px}
+  .work-tile-cover{min-height:132px;padding:18px 16px}
+  .work-tile-name{font-size:20px}
   .home-stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
   .home-stat{min-height:96px;gap:16px;padding:14px 12px 12px}
   .home-stat-label{font-size:12px}

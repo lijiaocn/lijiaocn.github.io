@@ -43,14 +43,16 @@ tags: ["设计", "产品", "方法论"]
 ### 作品 front matter 要点
 
 ```yaml
-title: "作品名称"
-description: "一句话定位"   # 原 tagline；列表卡与详情页可用
+title: "作品标题"            # 详情页文章标题
+name: "产品名"              # 产品名；work-hero 主品牌
+description: "一句话定位"   # slogan；列表卡与 work-hero
 date: 2025-03-01
 tags: ["标签1", "标签2"]
 status: "正在运营"
 link: "https://..."         # 可选
 type: "App"
 link_label: "App Store 下载" # 可选
+palette: "mint"             # 可选：mint|coral|sky|sunset；不填则按列表顺序轮替
 ```
 
 ## 部署
