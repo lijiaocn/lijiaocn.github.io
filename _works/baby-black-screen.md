@@ -3,7 +3,7 @@ date: 2026-11-23
 title: "App：哄娃黑屏-假装关机"
 name: "哄娃黑屏"
 description: "一键假关机，减少宝宝玩手机"
-type: "App"
+type: "工具"
 tags: ["App"]
 link: "https://apps.apple.com/cn/app/%E5%93%84%E5%A8%83%E9%BB%91%E5%B1%8F/id6758646187"
 link_label: "下载地址"

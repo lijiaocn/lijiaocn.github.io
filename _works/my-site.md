@@ -3,8 +3,8 @@ date: 2026-11-22
 title: "网站：我的个人网站"
 name: "李佶澳"
 description: "采用三列工作台式设计的个人站点"
-type: "Web"
-tags: ["网站"]
+type: "博客"
+tags: ["Web"]
 link: "https://www.lijiaocn.com"
 link_label: "访问地址"
 status: "正在运营"
