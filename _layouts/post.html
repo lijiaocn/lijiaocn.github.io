@@ -3,6 +3,16 @@ layout: default
 ---
 {% assign has_page_toc = false %}
 {% if content contains 'id="markdown-toc"' %}{% assign has_page_toc = true %}{% endif %}
+<div class="main-tools">
+  <button class="main-tool article-copy" id="article-copy" type="button" aria-label="复制整篇文章" title="复制整篇文章" hidden>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h2"/></svg>
+    <span class="main-tool-text" aria-live="polite">复制文章</span>
+  </button>
+  <button class="main-tool mobile-preview-toggle" id="mobile-preview-toggle" type="button" aria-pressed="false" aria-label="开启移动端预览" title="移动端预览">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg>
+    <span class="main-tool-text">手机预览</span>
+  </button>
+</div>
 <article class="article{% if has_page_toc %} article--with-toc{% endif %}">
   <header class="article-header">
     <div class="wrap">

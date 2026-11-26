@@ -936,6 +936,82 @@ a.entry-title:visited:hover{color:#57445e}
   .home-stat-count{font-size:clamp(28px,9vw,40px)}
 }
 
+/* ============================================================
+   Post — 桌面端正文的移动端预览
+   ============================================================ */
+.main-tools{display:none}
+@media (min-width:721px){
+  .main-tools{
+    position:absolute;top:16px;right:18px;z-index:6;
+    display:flex;align-items:center;gap:8px;
+    opacity:0;pointer-events:none;transform:translateY(-2px);
+    transition:opacity .18s,transform .18s;
+  }
+  /* 透明热区只覆盖按钮本身，鼠标移到这块才把按钮显出来 */
+  .main-tools::before{
+    content:"";position:absolute;inset:-8px -10px;pointer-events:auto;
+  }
+  .main-tools:hover,
+  .main-tools:focus-within{
+    opacity:1;pointer-events:auto;transform:none;
+  }
+  .main-tool{
+    /* 抬到透明热区（::before，绝对定位）之上，否则点击会被热区吞掉 */
+    position:relative;z-index:1;
+    display:inline-flex;align-items:center;gap:6px;
+    pointer-events:none;
+    margin:0;padding:7px 10px;
+    border:1px solid var(--line);border-radius:8px;
+    background:rgba(255,255,255,.94);color:var(--muted);
+    font-family:var(--font-sans);font-size:12.5px;line-height:1;white-space:nowrap;
+    cursor:pointer;
+    transition:color .2s,background .2s,border-color .2s;
+  }
+  .main-tool[hidden]{display:none}
+  .main-tools:hover .main-tool,
+  .main-tools:focus-within .main-tool{pointer-events:auto}
+  .main-tool svg{
+    width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.7;
+    stroke-linecap:round;stroke-linejoin:round;
+  }
+  .main-tool:hover{color:var(--ink);border-color:#d8d5cf;background:#fff}
+  .main-tool:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .mobile-preview-toggle[aria-pressed="true"]{
+    color:var(--accent);border-color:rgba(79,70,229,.35);background:rgba(79,70,229,.06);
+  }
+  .article-copy.is-copied{
+    color:#15803d;border-color:rgba(21,128,61,.35);background:rgba(21,128,61,.06);
+  }
+  .article-copy.is-copy-error{
+    color:#b91c1c;border-color:rgba(185,28,28,.3);background:rgba(185,28,28,.05);
+  }
+
+  .article.is-mobile-preview{
+    width:390px;max-width:100%;height:min(760px,calc(100vh - 96px));
+    margin:0 auto 32px;padding:18px 16px 22px;
+    overflow-y:auto;overscroll-behavior:contain;
+    border:8px solid #232428;border-radius:30px;background:var(--surface);
+    box-shadow:0 18px 46px rgba(24,24,30,.16),0 2px 8px rgba(24,24,30,.07);
+    scrollbar-width:none;
+  }
+  .article.is-mobile-preview::-webkit-scrollbar{display:none;width:0;height:0}
+  .article.is-mobile-preview .article-header{padding:6px 0 20px}
+  .article.is-mobile-preview .article-title{font-size:26px;line-height:1.35}
+  .article.is-mobile-preview .article-meta{font-size:12px;gap:4px}
+  .article.is-mobile-preview .article-toc{display:none!important}
+  .article.is-mobile-preview .prose{font-size:15.5px;line-height:1.85}
+  .article.is-mobile-preview .prose h2{font-size:21px;margin:34px 0 14px}
+  .article.is-mobile-preview .prose h3{font-size:18px;margin:26px 0 10px}
+  .article.is-mobile-preview .prose h4{font-size:16px;margin:22px 0 8px}
+  .article.is-mobile-preview .prose blockquote{margin:20px 0;padding:12px 14px;font-size:14px}
+  .article.is-mobile-preview .prose pre{margin:20px -4px;padding:14px;font-size:12.5px;border-radius:7px}
+  .article.is-mobile-preview .prose img{margin:18px 0}
+  .article.is-mobile-preview .prose table{display:block;overflow-x:auto;white-space:nowrap;font-size:12.5px}
+}
+@media (hover:none){
+  .main-tools{display:none}
+}
+
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}

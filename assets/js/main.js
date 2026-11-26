@@ -106,6 +106,154 @@
     });
   })();
 
+  // —— post：正文的移动端预览 + 一键复制，桌面端移到 main 右上角才显现 ——
+  (function initPostTools() {
+    var tools = document.querySelector('.main-tools');
+    var previewBtn = document.getElementById('mobile-preview-toggle');
+    var copyBtn = document.getElementById('article-copy');
+    if (!tools || !previewBtn || !copyBtn) return;
+    var main = previewBtn.closest('.main');
+    var article = main && main.querySelector('.article');
+    if (!article) return;
+    var previewLabel = previewBtn.querySelector('.main-tool-text');
+    var copyLabel = copyBtn.querySelector('.main-tool-text');
+    var copyTimer = null;
+    var small = window.matchMedia ? window.matchMedia('(max-width:720px)') : null;
+
+    function setPreview(on) {
+      article.classList.toggle('is-mobile-preview', on);
+      copyBtn.hidden = !on;
+      if (!on) {
+        clearTimeout(copyTimer);
+        copyBtn.classList.remove('is-copied', 'is-copy-error');
+        if (copyLabel) copyLabel.textContent = '复制文章';
+        copyBtn.title = '复制整篇文章';
+      }
+      previewBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      previewBtn.setAttribute('aria-label', on ? '退出移动端预览' : '开启移动端预览');
+      previewBtn.title = on ? '退出移动端预览' : '移动端预览';
+      if (previewLabel) previewLabel.textContent = on ? '退出预览' : '手机预览';
+      if (on) article.scrollTop = 0;
+    }
+
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+      });
+    }
+
+    function buildCopyData() {
+      var titleEl = article.querySelector('.article-title');
+      var title = titleEl ? titleEl.textContent.trim() : '';
+      var metaEl = article.querySelector('.article-meta');
+      var authorEl = metaEl && metaEl.querySelector('span:not(.dot)');
+      var dateEl = metaEl && metaEl.querySelector('time');
+      var metaLine = [
+        authorEl && authorEl.textContent.trim(),
+        dateEl && dateEl.textContent.trim()
+      ].filter(Boolean).join(' · ');
+
+      var source = article.querySelector('.article-content');
+      var clone = source ? source.cloneNode(true) : document.createElement('div');
+      var junk = clone.querySelectorAll('#markdown-toc, .article-toc, .article-ad, script, style, noscript, iframe, ins');
+      Array.prototype.forEach.call(junk, function (n) {
+        if (n.parentNode) n.parentNode.removeChild(n);
+      });
+      var bodyHtml = clone.outerHTML;
+
+      var holder = document.createElement('div');
+      holder.setAttribute('aria-hidden', 'true');
+      holder.style.cssText = 'position:fixed;left:-10000px;top:0;width:640px;';
+      holder.appendChild(clone);
+      document.body.appendChild(holder);
+      var bodyText = holder.innerText || holder.textContent || '';
+      document.body.removeChild(holder);
+      bodyText = bodyText.replace(/\u00a0/g, ' ')
+        .replace(/[ \t]+\n/g, '\n')
+        .replace(/\n{3,}/g, '\n\n')
+        .trim();
+
+      return {
+        text: [title, metaLine, bodyText].filter(Boolean).join('\n\n'),
+        html: (title ? '<h1>' + escapeHtml(title) + '</h1>' : '')
+          + (metaLine ? '<p>' + escapeHtml(metaLine) + '</p>' : '')
+          + bodyHtml
+      };
+    }
+
+    function legacyCopy(text) {
+      var ta = document.createElement('textarea');
+      var sel = window.getSelection();
+      var saved = sel && sel.rangeCount ? sel.getRangeAt(0).cloneRange() : null;
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.cssText = 'position:fixed;left:-10000px;top:0;opacity:0;';
+      document.body.appendChild(ta);
+      ta.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(ta);
+      if (sel && saved) {
+        sel.removeAllRanges();
+        sel.addRange(saved);
+      }
+      return ok;
+    }
+
+    function finishCopy(ok) {
+      copyBtn.classList.toggle('is-copied', ok);
+      copyBtn.classList.toggle('is-copy-error', !ok);
+      if (copyLabel) copyLabel.textContent = ok ? '已复制' : '复制失败';
+      copyBtn.title = ok ? '已复制到剪贴板' : '复制失败，请重试';
+      clearTimeout(copyTimer);
+      copyTimer = setTimeout(function () {
+        copyBtn.classList.remove('is-copied', 'is-copy-error');
+        if (copyLabel) copyLabel.textContent = '复制文章';
+        copyBtn.title = '复制整篇文章';
+      }, 1800);
+    }
+
+    copyBtn.addEventListener('click', function () {
+      var data = buildCopyData();
+      try {
+        if (navigator.clipboard && window.ClipboardItem && navigator.clipboard.write) {
+          var item = new ClipboardItem({
+            'text/html': new Blob([data.html], { type: 'text/html' }),
+            'text/plain': new Blob([data.text], { type: 'text/plain' })
+          });
+          navigator.clipboard.write([item]).then(
+            function () { finishCopy(true); },
+            function () { finishCopy(legacyCopy(data.text)); }
+          );
+        } else if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(data.text).then(
+            function () { finishCopy(true); },
+            function () { finishCopy(legacyCopy(data.text)); }
+          );
+        } else {
+          finishCopy(legacyCopy(data.text));
+        }
+      } catch (e) {
+        finishCopy(legacyCopy(data.text));
+      }
+    });
+
+    previewBtn.addEventListener('click', function () {
+      setPreview(previewBtn.getAttribute('aria-pressed') !== 'true');
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && previewBtn.getAttribute('aria-pressed') === 'true') setPreview(false);
+    });
+    function onSmallScreen() {
+      if (small.matches) setPreview(false);
+    }
+    if (small) {
+      if (small.addEventListener) small.addEventListener('change', onSmallScreen);
+      else if (small.addListener) small.addListener(onSmallScreen);
+      onSmallScreen();
+    }
+  })();
+
   // —— 文章 / 笔记 / 作品：标签筛选（主栏 tag-toolbar 与/或中栏 sidebar-tags）——
   (function initCollectionTagFilter() {
     var list = document.getElementById('content-list');
