@@ -1,6 +1,6 @@
 ---
 title: "flutter 的常规使用，一套代码适配多平台"
-tags: [独立赚钱日记]
+tags: [独立赚钱]
 permalink: "/solo-income/2026/02/03/flutter-usage.html"
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: "微信小程序多端应用+微信云开发，平替 flutter & firebase"
-tags: [独立赚钱日记]
+tags: [独立赚钱]
 permalink: "/solo-income/2026/03/09/wechat-devtool.html"
 ---
 

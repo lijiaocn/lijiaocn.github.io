@@ -1,6 +1,6 @@
 ---
 title: "gstack skill 的使用方法"
-tags: [独立赚钱日记]
+tags: [独立赚钱]
 permalink: "/solo-income/invest/project/resolution/problems/others/2026/04/10/gstack-usage.html"
 ---
 

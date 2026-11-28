@@ -1,6 +1,6 @@
 ---
 title: "firebase 使用中遇到的问题记录"
-tags: [独立赚钱日记]
+tags: [独立赚钱]
 permalink: "/solo-income/2025/12/10/firebase-use-problem.html"
 ---
 

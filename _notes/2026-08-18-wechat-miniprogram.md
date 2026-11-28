@@ -1,6 +1,6 @@
 ---
 title: "微信小程序开发"
-tags: [独立赚钱日记]
+tags: [独立赚钱]
 permalink: "/solo-income/invest/project/resolution/problems/others/2026/08/18/wechat-miniprogram.html"
 ---
 

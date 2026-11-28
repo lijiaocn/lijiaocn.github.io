@@ -546,37 +546,77 @@
     });
   })();
 
-  // —— 文章页内目录（右侧导航，来自 kramdown {:toc}）——
+  // —— 文章页内目录：优先用 {:toc}，没有时从 h2/h3/h4 生成 ——
   (function initArticleToc() {
-    var source = document.getElementById('markdown-toc');
-    if (!source) return;
-
-    // 主区域内：隐藏 markdown-toc 前方最近的那个 h2（通常是「目录」）
-    var prevH2 = source.previousElementSibling;
-    while (prevH2 && prevH2.tagName !== 'H2') {
-      prevH2 = prevH2.previousElementSibling;
-    }
-    var hiddenHeadingId = prevH2 && prevH2.id ? prevH2.id : null;
-    if (prevH2) prevH2.style.display = 'none';
-
     var shell = document.getElementById('article-toc');
     var nav = document.getElementById('article-toc-nav');
     if (!shell || !nav) return;
 
-    var clone = source.cloneNode(true);
-    clone.removeAttribute('id');
-    clone.querySelectorAll('[id]').forEach(function (el) {
-      el.removeAttribute('id');
-    });
-    // 去掉指向已隐藏标题的条目
-    if (hiddenHeadingId) {
-      var selfHref = '#' + hiddenHeadingId;
-      clone.querySelectorAll('a[href="' + selfHref + '"]').forEach(function (a) {
-        var li = a.closest('li');
-        if (li && li.parentElement === clone) li.remove();
+    var source = document.getElementById('markdown-toc');
+
+    if (source) {
+      // 主区域内：隐藏 markdown-toc 前方最近的那个 h2（通常是「目录」）
+      var prevH2 = source.previousElementSibling;
+      while (prevH2 && prevH2.tagName !== 'H2') {
+        prevH2 = prevH2.previousElementSibling;
+      }
+      var hiddenHeadingId = prevH2 && prevH2.id ? prevH2.id : null;
+      if (prevH2) prevH2.style.display = 'none';
+
+      var clone = source.cloneNode(true);
+      clone.removeAttribute('id');
+      clone.querySelectorAll('[id]').forEach(function (el) {
+        el.removeAttribute('id');
       });
+      // 去掉指向已隐藏标题的条目
+      if (hiddenHeadingId) {
+        var selfHref = '#' + hiddenHeadingId;
+        clone.querySelectorAll('a[href="' + selfHref + '"]').forEach(function (a) {
+          var li = a.closest('li');
+          if (li && li.parentElement === clone) li.remove();
+        });
+      }
+      nav.appendChild(clone);
+    } else {
+      var content = document.querySelector('.article-content');
+      if (!content) return;
+
+      var hs = Array.prototype.slice.call(content.querySelectorAll('h2, h3, h4'));
+      if (!hs.length) return;
+
+      // 保证每个标题都有唯一 id，便于锚点跳转和高亮
+      var seen = {};
+      var seq = 0;
+      hs.forEach(function (h) {
+        var id = h.id;
+        if (!id || seen[id]) {
+          do { seq += 1; id = 'section-' + seq; } while (seen[id]);
+          h.id = id;
+        }
+        seen[id] = true;
+      });
+
+      var root = document.createElement('ul');
+      var stack = [{ level: 2, ul: root }];
+      hs.forEach(function (h) {
+        var level = Number(h.tagName.charAt(1));
+        while (stack.length > 1 && stack[stack.length - 1].level >= level) stack.pop();
+        var li = document.createElement('li');
+        var a = document.createElement('a');
+        a.setAttribute('href', '#' + encodeURIComponent(h.id));
+        a.textContent = (h.textContent || '').trim();
+        li.appendChild(a);
+        stack[stack.length - 1].ul.appendChild(li);
+        var children = document.createElement('ul');
+        li.appendChild(children);
+        stack.push({ level: level, ul: children });
+      });
+      // 清掉没有子项的空 ul
+      Array.prototype.slice.call(root.querySelectorAll('ul')).forEach(function (ul) {
+        if (!ul.children.length) ul.parentNode.removeChild(ul);
+      });
+      nav.appendChild(root);
     }
-    nav.appendChild(clone);
 
     var links = Array.prototype.slice.call(nav.querySelectorAll('a[href^="#"]'));
     var headings = links
@@ -586,12 +626,20 @@
       })
       .filter(Boolean);
 
-    if (!headings.length) return;
+    if (!headings.length) {
+      shell.hidden = true;
+      return;
+    }
+    shell.hidden = false;
+
+    function linkId(a) {
+      var raw = (a.getAttribute('href') || '').slice(1);
+      try { return decodeURIComponent(raw); } catch (e) { return raw; }
+    }
 
     function setActive(id) {
       links.forEach(function (a) {
-        var match = a.getAttribute('href') === '#' + id;
-        a.classList.toggle('is-active', match);
+        a.classList.toggle('is-active', linkId(a) === id);
       });
     }
 
@@ -616,7 +664,7 @@
 
     links.forEach(function (a) {
       a.addEventListener('click', function (e) {
-        var id = decodeURIComponent((a.getAttribute('href') || '').slice(1));
+        var id = linkId(a);
         var target = id ? document.getElementById(id) : null;
         if (!target) return;
         e.preventDefault();
@@ -650,5 +698,68 @@
       if (h.offsetTop <= top) current = h;
     });
     if (current) setActive(current.id);
+  })();
+
+  // —— 正文图片：点击弹出大图（原生 dialog，Esc / 点击空白处关闭）——
+  (function initImageLightbox() {
+    if (typeof HTMLDialogElement !== 'function' ||
+        typeof HTMLDialogElement.prototype.showModal !== 'function') return;
+
+    var scopes = Array.prototype.slice.call(document.querySelectorAll('.prose'));
+    if (!scopes.some(function (scope) { return scope.querySelector('img'); })) return;
+
+    var dialog = document.createElement('dialog');
+    dialog.className = 'image-lightbox';
+    dialog.setAttribute('aria-label', '图片预览');
+
+    var inner = document.createElement('div');
+    inner.className = 'image-lightbox-inner';
+
+    var img = document.createElement('img');
+    img.alt = '';
+
+    var caption = document.createElement('div');
+    caption.className = 'image-lightbox-caption';
+
+    var close = document.createElement('button');
+    close.type = 'button';
+    close.className = 'image-lightbox-close';
+    close.setAttribute('aria-label', '关闭图片预览');
+    close.textContent = '\u00d7';
+
+    inner.appendChild(img);
+    inner.appendChild(caption);
+    dialog.appendChild(inner);
+    dialog.appendChild(close);
+    document.body.appendChild(dialog);
+    document.body.classList.add('has-image-lightbox');
+
+    function open(source, alt) {
+      img.src = source;
+      img.alt = alt || '';
+      caption.textContent = alt || '';
+      caption.hidden = !alt;
+      dialog.showModal();
+      close.focus();
+    }
+
+    scopes.forEach(function (scope) {
+      scope.addEventListener('click', function (e) {
+        var target = e.target;
+        if (!target || target.tagName !== 'IMG') return;
+        e.preventDefault();
+        e.stopPropagation();
+        open(target.currentSrc || target.src, target.alt || '');
+      });
+    });
+
+    close.addEventListener('click', function () { dialog.close(); });
+    dialog.addEventListener('click', function (e) {
+      if (e.target === dialog || e.target === inner || e.target === caption) dialog.close();
+    });
+    dialog.addEventListener('close', function () {
+      img.removeAttribute('src');
+      caption.textContent = '';
+    });
   })();
 })();

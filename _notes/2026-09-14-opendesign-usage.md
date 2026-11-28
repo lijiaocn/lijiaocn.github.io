@@ -1,6 +1,6 @@
 ---
 title: "尝试 OpenDesign 进行原型设计"
-tags: [独立赚钱日记]
+tags: [独立赚钱]
 permalink: "/solo-income/2026/09/14/opendesign-usage.html"
 ---
 

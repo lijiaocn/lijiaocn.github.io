@@ -7,7 +7,7 @@ author: "李佶澳"
 
 url: "https://www.lijiaocn.com"
 baseurl: ""
-asset_version: "20261126i"
+asset_version: "20261128h"
 
 # collections（仅 Jekyll 原生字段；左栏见 _data/rail.yml）
 collections:
@@ -65,6 +65,8 @@ highlighter: rouge
 excerpt_separator: "<!--more-->"
 timezone: Asia/Shanghai
 encoding: UTF-8
+
+img: /assets/img
 
 # 文章正文引用的图片路径变量（正文使用 {{ site.imglocal }}/xxx 与 {{ site.article }}/xxx）
 # 历史文章配图在 assets/history/img（与现行 assets 资源分离）

@@ -1,6 +1,6 @@
 ---
 title: "ios app 开发相关事项记录"
-tags: [独立赚钱日记]
+tags: [独立赚钱]
 permalink: "/solo-income/2025/12/22/ios-app-dev.html"
 ---
 
